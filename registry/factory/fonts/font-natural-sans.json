@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-natural-sans",
+  "type": "registry:item",
+  "title": "NaturalSans",
+  "description": "web-factory 폰트 키트: NaturalSans (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — jayeonsans-medium 대신 커밋 e74c395af7d65481e09bcb9b462b4ad651d39c03 로 고정. 자체 호스팅은 P3-3",
+  "fontFace": {
+    "font-family": "\"NaturalSans\"",
+    "src": "url(\"https://cdn.jsdelivr.net/gh/Project-Noonnu/2607201621@e74c395af7d65481e09bcb9b462b4ad651d39c03/jayeonsans-medium/JayeonSans-Regular.woff2\") format(\"woff2\")",
+    "font-weight": "400",
+    "font-style": "normal",
+    "font-display": "swap"
+  },
+  "cssVars": {
+    "theme": {
+      "font-natural-sans-wf": "\"NaturalSans\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://notforall.tistory.com/39",
+    "source": "https://github.com/Project-Noonnu/2607201621/tree/e74c395af7d65481e09bcb9b462b4ad651d39c03",
+    "family": "NaturalSans",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

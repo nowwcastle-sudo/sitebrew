@@ -1,0 +1,44 @@
+/* B1 사각(0) — 0 계열. 모서리 90°, 2px 틀, 굵은 글자. 채움은 잉크색(색은 레시피의 --primary). 원천 style_axes.md 축 1.
+ * 바닥선: 기본 h-11, 글자 14px 이상. 44px 히트 영역은 부품의 식이 맡는다(작은 크기도). */
+.cn-button {
+  @apply rounded-none border-2 text-sm font-semibold [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-button-variant-outline {
+  @apply dark:bg-transparent dark:hover:bg-muted;
+}
+.cn-button-size-default {
+  @apply h-11 gap-2 px-6 has-data-[icon=inline-end]:pe-5 has-data-[icon=inline-start]:ps-5;
+}
+.cn-button-size-xs {
+  @apply h-7 gap-1 rounded-none px-2.5 text-sm has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-sm {
+  @apply h-9 gap-1.5 rounded-none px-4 text-sm has-data-[icon=inline-end]:pe-3 has-data-[icon=inline-start]:ps-3 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-lg {
+  @apply h-12 gap-2 px-8 text-base has-data-[icon=inline-end]:pe-6 has-data-[icon=inline-start]:ps-6;
+}
+.cn-button-size-icon {
+  @apply size-11;
+}
+.cn-button-size-icon-xs {
+  @apply size-7 rounded-none [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-icon-sm {
+  @apply size-9 rounded-none;
+}
+.cn-button-size-icon-lg {
+  @apply size-12;
+}
+.cn-button-group {
+  @apply has-[>[data-slot=button-group]]:gap-3 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-none;
+}
+.cn-button-group-orientation-horizontal {
+  @apply *:data-slot:rounded-none [&>[data-slot]~[data-slot]]:border-l-0;
+}
+.cn-button-group-orientation-vertical {
+  @apply *:data-slot:rounded-none [&>[data-slot]~[data-slot]]:border-t-0;
+}
+.cn-button-group-text {
+  @apply gap-2 rounded-none border-2 px-3 text-sm font-semibold [&_svg:not([class*='size-'])]:size-4;
+}

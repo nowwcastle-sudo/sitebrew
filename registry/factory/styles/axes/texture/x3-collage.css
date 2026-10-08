@@ -1,0 +1,6 @@
+/* X3 콜라주 레이어 — 내용 뒤에 종이 한 장(::after, 불투명 바탕색 + 1px 테두리)을 깔고, 그 뒤에 2.5° 기운 종이 조각(::before, muted)이 비어져 나온다.
+ * 글자는 늘 바탕색 종이 위라 대비가 레시피 본문 대비 그대로다(texture-contrast 대상 아님). 조각은 칸 밖으로 8px 안쪽만 비어져 가로 넘침이 없다.
+ * 호환(compat.json): dashboard·public 원형 제외. P3-2 Task 16a, 원천 styles.json proposals X(collage-scrapbook · maximalism). */
+.cn-texture {
+  @apply [--wf-texture-b-display:block] [--wf-texture-b-inset:0.5rem_0.75rem_-0.5rem] [--wf-texture-b-z:-2] [--wf-texture-b-rotate:2.5deg] [--wf-texture-b-bg:var(--muted)] [--wf-texture-a-display:block] [--wf-texture-a-bg:var(--background)] [--wf-texture-a-border:1px_solid_var(--border)];
+}

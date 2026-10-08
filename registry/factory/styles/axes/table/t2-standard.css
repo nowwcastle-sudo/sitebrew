@@ -1,0 +1,25 @@
+/* T2 표준 — 행 48px(머리·셀 h-12, 셀 px-4), 행 사이 헤어라인. hover·선택 색은 부품(muted). 원천 style_axes.md 축 4. */
+.cn-table {
+  @apply text-base;
+}
+.cn-table-header {
+  @apply [&_tr]:border-b;
+}
+.cn-table-body {
+  @apply [&_tr:last-child]:border-0;
+}
+.cn-table-footer {
+  @apply border-t font-medium [&>tr]:last:border-b-0;
+}
+.cn-table-row {
+  @apply border-b;
+}
+.cn-table-head {
+  @apply h-12 px-4 font-medium [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-cell {
+  @apply h-12 px-4 py-0 [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-caption {
+  @apply text-sm;
+}

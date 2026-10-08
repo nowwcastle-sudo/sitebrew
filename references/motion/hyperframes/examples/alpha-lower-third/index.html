@@ -1,0 +1,47 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"store_name","type":"string","label":"가게 이름","default":"달빛 베이커리","maxLength":14},
+    {"id":"tagline","type":"string","label":"한 줄 소개","default":"매일 새벽 구운 빵","maxLength":22},
+    {"id":"accent","type":"color","label":"포인트 색","default":"#f2b84b"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>wf alpha lower third</title>
+    <link rel="stylesheet" href="assets/noto-sans-kr-700.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* NO background on html/body/root: transparency only survives where nothing is painted */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 720px; overflow: hidden; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Noto Sans KR", sans-serif; font-weight: 700; color: #fbf6ee; }
+      #lower { position: absolute; left: 80px; bottom: 72px; display: flex; flex-direction: column; gap: 8px; padding: 22px 30px; background: rgba(10,8,6,0.72); border-left: 8px solid var(--accent, #f2b84b); }
+      #name { font-size: 64px; letter-spacing: -0.03em; line-height: 1.05; }
+      #tag { font-size: 34px; color: var(--accent, #f2b84b); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1280" data-height="720">
+      <div id="lower" class="clip" data-start="0" data-duration="5" data-track-index="0">
+        <div id="name"></div>
+        <div id="tag"></div>
+      </div>
+    </div>
+    <script>
+      const v = window.__hyperframes.getVariables();
+      document.documentElement.style.setProperty("--accent", v.accent);
+      document.getElementById("name").textContent = v.store_name;
+      document.getElementById("tag").textContent = v.tagline;
+      document.fonts.load('700 100px "Noto Sans KR"', v.store_name + v.tagline).then(() => document.fonts.ready).then(() => {
+        const tl = gsap.timeline({ paused: true });
+        // overlay: first and last frames are EMPTY (it must clear cleanly over footage)
+        tl.fromTo("#lower", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 0.3);
+        tl.to("#lower", { x: -60, opacity: 0, duration: 0.5, ease: "power2.in" }, 4.2);
+        window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>

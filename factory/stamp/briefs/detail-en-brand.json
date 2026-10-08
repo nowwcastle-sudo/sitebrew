@@ -1,0 +1,21 @@
+{
+  "topic": "Hand-thrown ceramic pour-over coffee dripper product page",
+  "archetype": "detail",
+  "locale": "en",
+  "facts": {
+    "name": "Hand-thrown ceramic pour-over dripper",
+    "price": "$48 including VAT",
+    "seller": "Kiln & Kettle Studio",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "address": "12 Example Street, Seoul",
+    "shipping": "Ships within 3 business days, tracked, free over $80",
+    "returns": "Return unused items within 14 days of delivery for a refund",
+    "origin": "Thrown and glazed by hand in a small studio in Icheon, Korea",
+    "specs": "Stoneware, fits size 02 filters, 11 cm wide, dishwasher safe"
+  },
+  "brand": {
+    "colors": ["#0F5C6E", "#F2C14E"],
+    "fonts": ["Fraunces", "Inter"]
+  }
+}

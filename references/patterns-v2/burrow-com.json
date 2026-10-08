@@ -1,0 +1,60 @@
+{
+  "id": "burrow-com",
+  "archetype": "commerce",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://burrow.com/",
+  "structure": {
+    "hero": "거실 사진 위 세일 문구와 버튼, 모바일은 색 블록 분리",
+    "sections": [
+      "고동색 공지띠(세일·견본·쇼룸)",
+      "헤더(로고·내비 10개·검색·계정·장바구니)",
+      "전폭 사진 히어로",
+      "모바일 테라코타 프로모 블록",
+      "다음 섹션 브랜드 약속(작은 대문자 라벨+큰 제목)",
+      "플로팅 채팅"
+    ]
+  },
+  "type": {
+    "display": "굵은 기하학 산세리프, 고정폭 대문자 라벨",
+    "body": "같은 산세리프 본문",
+    "scale": "세일 문구 매우 크게, 내비는 작은 일반 굵기"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지띠 링크 화살표",
+    "10개 항목 가로 내비와 색 다른 세일 항목",
+    "플로팅 채팅",
+    "모바일 햄버거+검색이 한 쌍"
+  ],
+  "cta": {
+    "pattern": "흰 사각 Shop Sale 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.78
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "모바일은 사진과 색 블록을 분리해 글자 대비를 확보한다",
+    "세일 항목을 내비 안 다른 색으로 구분해 이벤트 진입을 유지",
+    "공지띠·히어로·내비가 모두 같은 세일 문구를 가리켜 메시지가 일관",
+    "배송 무료 기준(금액)을 히어로 설명에 함께 넣어 구매 허들을 낮춘다",
+    "대형 가구라 견본·쇼룸 링크를 공지띠 우측에 둔 점이 눈에 띈다"
+  ]
+}

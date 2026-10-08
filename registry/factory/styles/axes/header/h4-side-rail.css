@@ -1,0 +1,59 @@
+/* H4 사이드 레일(대시보드 전용) — 호환표 archetypesAllowed, 반경 계열 중간(8px). 240px 세로 내비(sidebar) + 위 56px 유틸리티 바(내비 뭉치).
+ * 레일 폭은 부품 기본(16rem)을 고치지 않고 이 값의 훅(cn-sidebar-frame·cn-sidebar-static)이 --sidebar-width 로 정한다.
+ * 메뉴 줄 40px 는 크기 훅(cn-sidebar-menu-button-size-*)이 정한다 — 크기 훅이 몸통 훅보다 뒤에 붙어 이기기 때문이다.
+ * 1024px 미만 서랍 전환은 sidebar 부품의 동작. 원천 style_axes.md 축 5. */
+.cn-navigation-menu {
+  @apply h-14 max-w-none gap-4 border-b px-4;
+}
+.cn-navigation-menu-list {
+  @apply gap-1;
+}
+.cn-navigation-menu-trigger-style {
+  @apply h-10 rounded-[8px] px-3 py-2 text-sm font-medium;
+}
+.cn-navigation-menu-link {
+  @apply h-10 gap-2 rounded-[8px] px-3 py-2 text-sm in-data-[slot=navigation-menu-content]:h-auto in-data-[slot=navigation-menu-content]:rounded-[6px] [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-sidebar-frame {
+  @apply [--sidebar-width:15rem];
+}
+.cn-sidebar-static {
+  @apply [--sidebar-width:15rem];
+}
+.cn-sidebar-header {
+  @apply h-14 justify-center gap-2 border-b px-4 py-0;
+}
+.cn-sidebar-group {
+  @apply px-3 py-3;
+}
+.cn-sidebar-group-label {
+  @apply h-8 rounded-[6px] px-2 text-sm font-semibold [&>svg]:size-4;
+}
+.cn-sidebar-menu {
+  @apply gap-0.5;
+}
+.cn-sidebar-menu-button {
+  @apply gap-3 rounded-[8px] px-3 text-sm group-has-data-[sidebar=menu-action]/menu-item:pe-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! data-active:font-semibold [&_svg]:size-4;
+}
+.cn-sidebar-menu-button-size-default {
+  @apply h-10 text-sm;
+}
+.cn-sidebar-menu-button-size-sm {
+  @apply h-8 text-sm;
+}
+.cn-sidebar-menu-button-size-lg {
+  @apply h-12 text-sm group-data-[collapsible=icon]:p-0!;
+}
+/* 셸(SiteShell): 768px 이상 스티키 56px 유틸리티 바(세로 레일은 sidebar 부품이 맡는다). */
+.cn-site-shell-header {
+  @apply border-b md:[--site-shell-position:sticky];
+}
+.cn-site-shell-header-inner {
+  @apply min-h-14 gap-x-2 px-4 py-2 md:h-14 md:gap-x-4 md:py-0;
+}
+.cn-site-shell-nav-list {
+  @apply gap-1 md:py-1;
+}
+.cn-site-shell-nav-link {
+  @apply min-h-10 rounded-[8px] px-3 text-sm font-medium aria-[current=page]:font-semibold [--site-shell-current-line:underline];
+}

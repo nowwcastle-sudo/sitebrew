@@ -1,0 +1,60 @@
+{
+  "id": "plausible-io",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://plausible.io/plausible.io",
+  "structure": {
+    "hero": "지표 탭 6개, 대형 영역 차트, 하단 순위 표 2열",
+    "sections": [
+      "헤더(로고·로그인·가입)",
+      "사이트명·실시간 방문·필터·기간",
+      "지표 6개 탭 줄",
+      "방문 추이 영역 차트",
+      "채널·소스·캠페인 표",
+      "상위·진입·이탈 페이지 표"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 24px 지표 수치",
+    "body": "산세리프 13~14px 표",
+    "scale": "지표 24px, 라벨 12px 대문자, 표 14px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "지표 탭 선택으로 차트 변경",
+    "필터 버튼·기간 선택",
+    "표 탭 전환(채널·소스·캠페인)",
+    "표 전체 화면 아이콘",
+    "더보기 점 메뉴"
+  ],
+  "cta": {
+    "pattern": "가입 버튼 + 로그인 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "지표 6개가 곧 차트 선택 탭이라 요약과 조작이 한 줄에 합쳐진다",
+    "표 행 배경에 가로 막대를 깔아 수치 크기를 동시에 보인다",
+    "375에서는 지표가 2열 3행 격자로 바뀌고 차트가 전폭이 된다",
+    "남색 하나와 초록·빨강 증감 화살표만 쓰는 절제된 색 구성이다"
+  ]
+}

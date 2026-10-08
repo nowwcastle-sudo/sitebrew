@@ -1,0 +1,58 @@
+{
+  "id": "vivmgmt-com",
+  "archetype": "portfolio",
+  "sourceGallery": "siteinspire",
+  "url": "https://vivmgmt.com/",
+  "structure": {
+    "hero": "폭 가득 굵은 로고 글자를 아티스트 사진 콜라주가 일부 덮음",
+    "sections": [
+      "양쪽 끝 + 아이콘 내비(Artists·Production)와 가운데 링크 3개",
+      "굵은 로고 타입(ViV)",
+      "한 줄 설명(Artist management + production)",
+      "크기가 다른 사진 콜라주 격자",
+      "모바일 세로 회전 내비 라벨"
+    ]
+  },
+  "type": {
+    "display": "극굵은 기하 산세리프 로고, 글자 아래쪽이 사진에 가려짐",
+    "body": "중립 산세리프 중형 설명",
+    "scale": "로고 초대형, 설명 중형, 내비 소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 모바일 사진의 분홍·회색 덮개는 효과인지 확인 불가"
+  },
+  "interaction": [
+    "양쪽 + 아이콘 내비 펼침",
+    "사진 격자 클릭(추정)",
+    "모바일 햄버거와 세로 라벨"
+  ],
+  "cta": {
+    "pattern": "내비 링크만, CTA 없음",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "초대형 로고 위에 사진을 걸쳐 층이 생기는 콜라주를 만든다",
+    "사진 크기와 높이를 들쭉날쭉하게 놓아 균일 격자의 단조로움을 깬다",
+    "양쪽 끝 + 아이콘 내비로 메뉴를 가장자리에 밀어 사진에 공간을 준다",
+    "모바일은 내비 라벨을 세로로 돌려 좌우 가장자리에 붙인다"
+  ]
+}

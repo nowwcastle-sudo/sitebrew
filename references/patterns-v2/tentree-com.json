@@ -1,0 +1,67 @@
+{
+  "id": "tentree-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.tentree.com/products/sasquatch-hoodie-deep-mahogany-heather-lumberjack",
+  "structure": {
+    "hero": "왼쪽 모델 사진 2열 그리드, 오른쪽 세리프 제목·별점·할인가·스와치 16개·사이즈 원",
+    "sections": [
+      "녹색 공지띠(통화·지역)",
+      "헤더(로고·내비 5개·계정·검색·가방)",
+      "2열 사진 그리드",
+      "브레드크럼",
+      "제목·부제·별점·리뷰 수",
+      "정가 취소선·할인가·할인율 칩",
+      "같은 스타일 다른 상품 링크",
+      "색상 스와치(신규 점 표시)",
+      "사이즈 원(품절은 사선)",
+      "나무 심기·무료배송·반품 문구",
+      "개요 섹션",
+      "지역 선택 모달"
+    ]
+  },
+  "type": {
+    "display": "세리프 제목과 로고",
+    "body": "세리프·산세리프 혼용 본문",
+    "scale": "제목 중간, 라벨 작은 일반 굵기"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "색상 스와치 16개(신색상 점)",
+    "사이즈 원(품절 사선)",
+    "지역·통화 선택 모달",
+    "이미지 위 「모델 키 6'2.5\" M 착용」 알약",
+    "플로팅 버튼"
+  ],
+  "cta": {
+    "pattern": "색상·사이즈 선택 뒤 장바구니(첫 화면 아래)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.88
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "이미지에 모델 키와 착용 사이즈를 알약으로 붙여 사이즈 판단을 돕는다",
+    "색상 16개를 작은 원으로 두 줄에 모으고 신색상은 점으로 표시",
+    "품절 사이즈를 사선으로 지운 원으로 보여 가용성을 즉시 알린다",
+    "나무 심기 미션 문구와 무료배송·반품 링크를 옵션 아래에 묶는다",
+    "지역 선택 모달이 첫 화면을 덮는다. 상단 선택기가 낫다"
+  ]
+}

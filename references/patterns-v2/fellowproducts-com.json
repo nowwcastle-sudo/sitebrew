@@ -1,0 +1,61 @@
+{
+  "id": "fellowproducts-com",
+  "archetype": "commerce",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://fellowproducts.com/",
+  "structure": {
+    "hero": "왼쪽 큰 제목·설명·윤곽선 CTA, 오른쪽 절반은 진녹색·상아색 타일 4장",
+    "sections": [
+      "검정 공지띠(이전·다음)",
+      "헤더(로고·내비 10개·검색·계정·가방)",
+      "2분할 히어로(텍스트+4타일)",
+      "Shop by category 줄(이전·다음·점·Shop All)",
+      "쿠키 동의 대화상자",
+      "배송 국가 안내 모달(모바일)",
+      "칩 내비(모바일)"
+    ]
+  },
+  "type": {
+    "display": "넓은 자간 대문자 로고, 둥근 기하학 산세리프 제목",
+    "body": "같은 산세리프 본문",
+    "scale": "제목 중간~큼, 내비는 작고 촘촘"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지띠 이전·다음",
+    "카테고리 줄 이전·다음·점",
+    "쿠키 대화상자(모두 수락·거부·설정)",
+    "모바일 칩 내비(베스트·에스프레소·커피메이커)"
+  ],
+  "cta": {
+    "pattern": "윤곽선 알약 CTA와 Shop All 알약",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.78
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "2×2 타일로 제품을 색과 구도 변주로 보여주는 히어로 구성",
+    "내비 10개를 한 줄로 두는 대신 모바일은 칩 줄로 바꿔 횡스크롤",
+    "카테고리 줄에 이전·다음과 점 표시를 함께 둬 진행 상태를 알린다",
+    "배송 불가 국가 모달이 첫 방문에서 뜨므로 지역 안내는 띠가 낫다",
+    "쿠키·국가 모달이 동시에 떠 첫 화면이 가려진다. 증거로 읽기 어렵다"
+  ]
+}

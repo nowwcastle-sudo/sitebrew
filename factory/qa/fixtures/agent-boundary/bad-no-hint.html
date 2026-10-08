@@ -1,0 +1,8 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>agent-boundary fixture</title><style>body{font:16px/1.6 sans-serif;padding:16px}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style></head><body><main>
+<h1>음성 대조 — 안내 글 없음·숨김·화면 밖(sr-only)·비어 있음·너무 김</h1>
+<button type="button" data-requires-human="delete-account">계정 지우기(안내 없음)</button>
+<p id="h-hidden" data-human-hint style="display:none">직접 확인하고 눌러 주세요</p><button type="button" data-requires-human="cancel-subscription" aria-describedby="h-hidden">해지(숨긴 안내)</button>
+<p id="h-sr" data-human-hint class="sr">직접 확인하고 눌러 주세요</p><button type="button" data-requires-human="change-plan" aria-describedby="h-sr">요금제 변경(sr-only 안내)</button>
+<p id="h-empty" data-human-hint> </p><button type="button" data-requires-human="change-email" aria-describedby="h-empty">이메일 변경(빈 안내)</button>
+<p id="h-long" data-human-hint>이 버튼을 누르면 되돌릴 수 없는 변경이 바로 적용되니 내용을 하나하나 꼼꼼히 읽고 확인한 다음에 직접 눌러 주세요 꼭 부탁드려요</p><button type="button" data-requires-human="sign-up" aria-describedby="h-long">가입(긴 안내)</button>
+</main></body></html>

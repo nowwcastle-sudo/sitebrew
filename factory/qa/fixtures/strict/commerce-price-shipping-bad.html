@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>strict fixture — commerce-price-shipping-bad</title>
+<style>
+  html, body { margin: 0; font-family: system-ui, sans-serif; background: #fff; color: #1a1a1a; }
+  header { padding: 12px 16px; border-bottom: 1px solid #ccc; }
+  header nav a { margin-right: 12px; color: #1a1a1a; }
+  main { padding: 16px; max-width: 960px; margin: 0 auto; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .card, .kpi { border: 1px solid #ccc; padding: 12px; border-radius: 8px; }
+  .filler { height: 2000px; }
+</style>
+</head>
+<body>
+<header><nav aria-label="주 메뉴"><a href="/">개요</a><a href="/orders">주문</a><a href="/settings">설정</a></nav></header>
+<main>
+  <h1>오늘의 빵</h1>
+  <ul class="grid">
+    <li class="card"><a href="/p/1">소금 식빵</a><p><span data-numeric>5,800원</span></p></li>
+    <li class="card"><a href="/p/2">단팥 크루아상</a><p><span data-numeric>4,200원</span></p></li>
+  </ul>
+  <div class="filler"></div>
+  <p>배송 안내: 3만원 이상 무료배송</p>
+</main>
+</body>
+</html>

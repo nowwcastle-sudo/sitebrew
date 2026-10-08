@@ -1,0 +1,5 @@
+{
+  "_comment": "lang-mix.mjs 기본 허용목록(UXGATE1 · G9). strings = 글에서 지운 뒤 검사하는 낱말(브랜드·고유명사), patterns = 정규식 문자열. 제품마다 --allow <파일> 로 더한다. 로캘과 다른 lang 속성·translate=no 요소는 이 목록 없이도 건너뛴다. 이름 하나하나가 근거 있는 예외여야 한다 — 비어 있는 것이 기본이다.",
+  "strings": [],
+  "patterns": []
+}

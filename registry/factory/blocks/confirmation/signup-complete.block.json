@@ -1,0 +1,14 @@
+{
+  "kind": "confirmation",
+  "variant": "signup-complete",
+  "title": "가입 완료 — 열린 기능·다음 일과 때·행동 하나·도움, 가운데 한 판",
+  "layout": "centered-unlocked-card",
+  "density": "spacious",
+  "archetypes": [ "saas", "pwa" ],
+  "archetypeKinds": [ "signup-confirmation", "welcome" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A10", "P10", "V4", "X1", "M1" ],
+  "notes": "가운데 좁은 판: 확인 표지 · h2 · 한 줄 · 지금 바로 쓸 수 있는 것(data-unlocked — P10) · 다음 일과 그때(data-next-steps · data-when) · 다음 행동 하나(data-next-action) · 도움 링크(data-help). 평점·리뷰 요청 없음(V4 — 온보딩 시작). 계측(선택): cta_click P3-6: copy.confirm 이 있고 확인 전이면 맨 위가 이메일 확인(보낸 주소 굵게·스팸함·다시 보내기+대기 타이머·이메일 바꾸기, data-confirm), 가입 완료·열린 기능은 「기다리는 동안」 아래(A01) · signedIn:false+copy.signIn 이면 다음 행동이 로그인, 이미 확인했으면 제목·본문도 로그인 안내(A08). copy.confirm 없으면 옛 모양(갤러리 fx=min). 포트: resendVerification?(sendVerificationEmail)·email·emailVerified·signedIn."
+}

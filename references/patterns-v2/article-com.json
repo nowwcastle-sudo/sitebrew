@@ -1,0 +1,62 @@
+{
+  "id": "article-com",
+  "archetype": "commerce",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.article.com/",
+  "structure": {
+    "hero": "코랄 프로모 띠 아래 전폭 영상 히어로와 흰 알약 CTA",
+    "sections": [
+      "검정 공지띠(닫기)",
+      "2행 헤더(로고·중앙 검색창·아이콘 / 텍스트 내비 12개)",
+      "그라디언트 프로모 띠",
+      "전폭 영상 히어로",
+      "룸별 쇼핑 썸네일 6개 줄",
+      "전폭 배너(가죽 소파)"
+    ]
+  },
+  "type": {
+    "display": "굵은 기하학 산세리프",
+    "body": "같은 산세리프 계열 본문",
+    "scale": "프로모 제목 대형, 내비는 작고 촘촘"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "프로모 띠가 먼저 보이고 히어로 이미지가 흰 바탕에서 서서히 나타남",
+    "scroll": "천천히 스크롤하면 룸별 썸네일 6개 줄과 전폭 배너가 차례로 지나감",
+    "hover": null,
+    "transition": "히어로 영상이 장면을 이어 붙이며 반복",
+    "durationsMs": [
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "헤더 중앙 상시 검색창",
+    "공지띠·프로모 띠 닫기",
+    "룸별 썸네일 클릭",
+    "모바일은 검색창을 로고 아래 한 줄로 내림"
+  ],
+  "cta": {
+    "pattern": "흰 알약 버튼(SHOP NOW, SHOP DINING ROOM) 2개",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.82
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "가구 몰 정석: 프로모 띠·영상 히어로·룸별 진입·배너",
+    "검색창과 도움말 아이콘을 헤더에 상시 두어 큰 카탈로그를 탐색하게 한다",
+    "룸별 썸네일 줄이 카테고리 진입을 시각적으로 대신한다",
+    "모바일에서 프로모 띠와 히어로를 세로로 쌓고 CTA를 가운데에 둔다",
+    "그라디언트 띠는 화려하지만 한 번만 써서 화면 전체 톤은 중립으로 유지"
+  ]
+}

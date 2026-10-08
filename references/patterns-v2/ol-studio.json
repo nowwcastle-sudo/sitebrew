@@ -1,0 +1,56 @@
+{
+  "id": "ol-studio",
+  "archetype": "portfolio",
+  "sourceGallery": "siteinspire",
+  "url": "https://www.ol.studio/",
+  "structure": {
+    "hero": "폭 가득 초대형 세리프 스튜디오명, 아래 흐린 이미지 위 중앙 소개 세 줄과 서명",
+    "sections": [
+      "폭 가득 세리프 워드마크",
+      "중앙 소개 문장(이탤릭 강조 포함)",
+      "손글씨 서명",
+      "흐린 이미지 자리(블러 상태로 보임)"
+    ]
+  },
+  "type": {
+    "display": "고대비 세리프 대문자, 자간을 붙여 글자끼리 맞물림",
+    "body": "가는 세리프 본문 중소형 + 이탤릭 강조",
+    "scale": "워드마크 초대형, 소개문 소형, 서명 이미지 한 단계"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 흐린 이미지는 로딩 또는 연출 상태일 수 있음"
+  },
+  "interaction": [
+    "내비 표시 없음(첫 화면 기준)"
+  ],
+  "cta": {
+    "pattern": "첫 화면에 CTA 없음",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "워드마크를 화면 폭에 맞춘 초대형 세리프로 놓아 첫인상을 타이포 하나로 결정한다",
+    "크림 바탕과 짙은 잉크 두 색으로 잡지 같은 어조를 만든다",
+    "손글씨 서명을 소개문 아래 두어 개인 작가의 신뢰감을 더한다",
+    "모바일은 워드마크를 상단에 두고 소개문을 흐린 이미지 아래쪽에 둔다"
+  ]
+}

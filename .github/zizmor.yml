@@ -1,0 +1,13 @@
+# zizmor 설정(워크플로 보안 점검). 기준: 모든 액션은 전체 커밋 해시로 고정(`hash-pin`) — 태그·브랜치 고정은 실패다(2026-03 trivy-action 태그 75개가 강제 이동된 사고).
+# 예외는 `rules.<id>.ignore: 파일:줄` 로만, 줄마다 이유 주석을 단다(아래 1건).
+# 문서: https://docs.zizmor.sh/configuration/ (v1.30.1, 2026-10-05 확인)
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        "*": hash-pin
+  # 예외 1건(2026-10-07): launch-preview.yml 63줄 `npm install --global vercel@61.0.0` — Vercel CLI 를 잠금 파일 밖에서 설치한다.
+  # 판이 정확히 고정돼 있고(VERCEL_CLI_VERSION) 이 단계에는 배포 토큰을 주지 않는다(토큰은 pull·deploy 단계에만). 줄이 바뀌면 이 예외도 같이 고친다.
+  adhoc-packages:
+    ignore:
+      - launch-preview.yml:63

@@ -1,0 +1,7 @@
+{
+  "$comment": "web-factory 래퍼(render-hyperframes.mjs)가 읽는 템플릿 설명. inputs = assets/s1..sN.jpg 로 복사할 사진 수. 글자 없음(히어로 배경용 — GUIDE 0.4).",
+  "inputs": 4,
+  "seconds": 8,
+  "size": [1920, 1080],
+  "textBaked": false
+}

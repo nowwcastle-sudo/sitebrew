@@ -1,0 +1,59 @@
+{
+  "id": "georgeandwilly-com",
+  "archetype": "commerce",
+  "sourceGallery": "httpster",
+  "url": "https://www.georgeandwilly.com/",
+  "structure": {
+    "hero": "포스터 같은 전폭 이미지 히어로에 스티커와 좁은 대문자 문구를 얹음",
+    "sections": [
+      "붉은 공지띠(통화 선택)",
+      "헤더(로고·내비 4개·계정·검색·가방)",
+      "스티커 포스터 히어로",
+      "Best Sellers 캐러셀(이전·다음·VIEW ALL)",
+      "채팅·리워드 플로팅 버튼"
+    ]
+  },
+  "type": {
+    "display": "좁고 굵은 대문자 포스터 서체, 세리프 섹션 제목",
+    "body": "세리프 헤더 내비, 산세리프 본문",
+    "scale": "포스터 제목 매우 크고 섹션 제목은 중간"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "Best Sellers 이전·다음",
+    "카드 위 절감액 배지",
+    "플로팅 채팅·리워드 버튼",
+    "모바일 카드 안 이미지 슬라이드 화살표"
+  ],
+  "cta": {
+    "pattern": "VIEW ALL 밑줄 링크, 포스터 전체가 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "세일 히어로를 사진+스티커+포스터 문구로 만들어 개성을 낸다",
+    "이미지 좌상단 붉은 「$ off」 배지로 할인을 바로 알린다",
+    "가격에 시작가와 정가 취소선을 모바일 카드에 함께 보여준다",
+    "크림 바탕에 붉은 포인트 하나로 식당·카페 집기 몰 분위기를 낸다",
+    "채팅 말풍선과 리워드 버튼이 겹쳐 모바일 하단이 복잡해진다"
+  ]
+}

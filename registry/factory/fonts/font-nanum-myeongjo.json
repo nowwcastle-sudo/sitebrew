@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-nanum-myeongjo",
+  "type": "registry:font",
+  "title": "Nanum Myeongjo",
+  "description": "web-factory 폰트 키트: Nanum Myeongjo (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Nanum Myeongjo', serif",
+    "provider": "google",
+    "import": "Nanum_Myeongjo",
+    "variable": "--font-nanum-myeongjo-wf",
+    "weight": [
+      "400",
+      "700",
+      "800"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/nanum-myeongjo"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/nanummyeongjo/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Nanum+Myeongjo",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

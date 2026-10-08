@@ -1,0 +1,59 @@
+{
+  "id": "cerebrium-ai",
+  "archetype": "saas",
+  "sourceGallery": "awwwards",
+  "url": "https://cerebrium.ai/",
+  "structure": {
+    "hero": "전체 화면 다크 3D 곡면 리본 영상 위에 3행 대형 헤드라인(좌하단), 우측에 짧은 설명과 주·보조 버튼 2개",
+    "sections": [
+      "내비(메뉴 칩·로그인·가입)",
+      "풀블리드 3D 히어로"
+    ]
+  },
+  "type": {
+    "display": "중간 굵기 그로테스크 대형, 마지막 어구 일부만 핑크 강조",
+    "body": "그로테스크 본문 + 모노스페이스 대문자 UI 라벨",
+    "scale": "H1 약 80px·본문 약 17px·라벨 약 13px 모노 대문자(1440)"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "헤드라인 어절이 순서대로 나타나고 설명·버튼이 뒤이어 페이드인",
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [
+      750,
+      500
+    ],
+    "easing": null,
+    "note": "흰 빛줄기가 리본 곡선을 따라 1.5~2초 간격으로 반복해 지나간다(약 0.5초)",
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "내비 칩 드롭다운(사용 사례 점 표시)",
+    "모바일은 메뉴 버튼으로 접힘",
+    "모바일 히어로에 재생 버튼 표시"
+  ],
+  "cta": {
+    "pattern": "핑크 채움 주 버튼 + 어두운 고스트 보조 버튼, 우상단 가입 버튼 반복",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "한 줄 약속을 3행으로 쌓고 핵심 어절 하나만 액센트색으로 칠한다",
+    "제품 화면 대신 추상 3D 리본을 배경 영상으로 써 개발자 인프라의 무게감을 낸다",
+    "주 버튼과 보조 버튼을 바로 옆에 나란히 둬 가입·상담 두 길을 동시에 연다",
+    "내비를 둥근 칩 묶음으로 떼어 배경 위에 띄우고 가입만 색으로 강조",
+    "빛줄기 반복 한 가지만 움직여 배경이 정지 화면처럼 보이지 않게 한다"
+  ]
+}

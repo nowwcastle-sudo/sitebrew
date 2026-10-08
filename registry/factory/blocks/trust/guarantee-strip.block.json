@@ -1,0 +1,14 @@
+{
+  "kind": "trust",
+  "variant": "guarantee-strip",
+  "title": "보증 띠 — CTA 바로 아래 보증 한 줄 + 신뢰 요소 줄",
+  "layout": "cta-underline-guarantee",
+  "density": "compact",
+  "archetypes": [ "commerce", "detail", "saas", "local" ],
+  "archetypeKinds": [ "guarantee", "trust-strip", "cta" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "T1", "T2", "T3", "X1", "M1" ],
+  "notes": "왼쪽 제목·한 줄, 오른쪽 CTA 와 그 바로 아래 보증 한 줄(data-guarantee — 기간 {days}·조건 2개 이하·자세히 링크). 아래 신뢰 요소 줄(반품·결제 보안·리뷰 수와 기준일·배송, 글자만 — 인증 씰 그림 없음). guaranteeIssues: 조건 ≤ 2 · 기간 ≥ 7일(청약철회) · 문구에 {days}. 계측(선택): cta_click"
+}

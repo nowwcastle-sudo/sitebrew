@@ -1,0 +1,58 @@
+{
+  "name": "feature-billing-gumroad",
+  "title": "결제 — Gumroad 대비",
+  "description": "Paddle 승인 전 대비. Gumroad 판매 알림(ping) 경로(공유 비밀 + API 재조회), 재확인 Cron, 결제 서버 액션. 해지·등급 변경·결제수단 변경은 Gumroad 화면의 일이라 provider_unsupported 로 끝난다.",
+  "npm": [
+    "@launch-factory/billing-gumroad",
+    "@launch-factory/consent",
+    "@launch-factory/contract",
+    "@launch-factory/db",
+    "@launch-factory/env",
+    "@launch-factory/i18n",
+    "@launch-factory/security",
+    "drizzle-orm",
+    "postgres"
+  ],
+  "registryDependencies": [
+    "feature-auth-betterauth",
+    "feature-email-resend",
+    "feature-security"
+  ],
+  "envVars": [
+    "LF_MODE",
+    "DATABASE_URL",
+    "GUMROAD_ACCESS_TOKEN",
+    "GUMROAD_PING_SECRET",
+    "CRON_SECRET",
+    "NEXT_PUBLIC_APP_URL",
+    "LF_EU_SALES"
+  ],
+  "files": [
+    "files/lib/launch/gumroad.ts",
+    "files/lib/launch/gumroad-plans.ts",
+    "files/app/api/webhooks/gumroad/route.ts",
+    "files/app/api/cron/gumroad/route.ts",
+    "files/app/actions/gumroad-billing.ts",
+    "../_shared/lib/launch/eu-sales.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": [
+    "subscriptions.ts",
+    "webhook-events.ts"
+  ],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다. 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. lib/launch/gumroad-plans.ts 에 멤버십 상품 id·상품 링크를 적는다. 체험은 상품 설정이라 7일 또는 1개월(30)만 되고, 체험용 상품이 따로 있어야 한다.",
+    "3. Gumroad 설정 → Advanced 의 Ping 주소: https://<도메인>/api/webhooks/gumroad?key=<GUMROAD_PING_SECRET>. Gumroad 알림에는 서명이 없다 — 공유 비밀 + API 재조회로 처리한다.",
+    "4. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/gumroad\", \"schedule\": \"0 3 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.",
+    "5. 가격 인상은 Gumroad 가 기존 손님에게 7일 전 안내만 보낸다 — 한국 30일 동의 규칙보다 짧다(대장 D164). 한국 판매 전에 법률 검토가 필요하다.",
+    "6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.",
+    "7. 청약철회 동의(D230): 결제 시작은 언제나 철회 제한 동의(withdrawalConsent)를 요구한다 — 체크가 없으면 결제 포트를 부르기 전에 fieldErrors.withdrawalConsent 로 거절한다. 동의를 끄는 설정 값은 없다. web-factory 쪽 legal.withdrawalPolicy 가 full 이라 결제 블록이 고지·체크를 빼는 제품은 이 거절 때문에 결제가 열리지 않으므로, 그런 제품은 결제 블록을 다시 이어 고지·체크를 받아야 한다(대장 D230 — 시험 scripts/test/withdrawal-consent-lock.test.mjs)."
+  ]
+}

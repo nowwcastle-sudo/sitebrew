@@ -1,0 +1,61 @@
+{
+  "id": "afg-kr",
+  "archetype": "brand",
+  "sourceGallery": "webaward-kr",
+  "url": "https://afg.kr/",
+  "structure": {
+    "hero": "진한 남색 면에 초대형 굵은 영문 사명 두 줄과 한글 한 줄, 흐린 로고 도형",
+    "sections": [
+      "상단 메뉴(로고·메뉴 5개·흰 알약 지원 버튼)",
+      "초대형 사명 히어로",
+      "배경 로고 도형(반투명)",
+      "한글 한 줄 비전 문구"
+    ]
+  },
+  "type": {
+    "display": "굵은 기하 산세리프 대문자, 화면 폭 80%",
+    "body": "한글 고딕 보통 굵기 소형, 핵심어만 굵게",
+    "scale": "사명 초대형, 부제 소형, 메뉴 극소형"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": "검은 화면에서 약 0.5초 뒤 사명이 흐릿하게 나타나 약 1초에 선명해지고 약 1.25초에 남색 배경이 점등됨",
+    "scroll": null,
+    "hover": null,
+    "transition": "약 4.25초에 사명 단어가 좌우로 갈라져 사라졌다 약 6초에 제자리로 돌아옴",
+    "durationsMs": [
+      500,
+      750,
+      1250,
+      1750
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "단어 분리 연출은 영상 후반 4.25~6초 구간에서 한 번 관찰"
+  },
+  "interaction": [
+    "흰 알약 지원 버튼",
+    "모바일 햄버거"
+  ],
+  "cta": {
+    "pattern": "우측 상단 흰 알약 지원하기 버튼",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.75
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "사명 두 줄을 초대형 굵은 대문자로 채워 첫 화면 위계를 하나로 만든다",
+    "남색 한 색상 계열의 명도 차이만으로 도형과 면을 구분한다",
+    "단어가 갈라졌다 모이는 연출이 이미지 없이도 움직임을 만든다",
+    "모바일은 사명을 세 줄로 쌓고 햄버거만 남기며 CTA는 사라진다"
+  ]
+}

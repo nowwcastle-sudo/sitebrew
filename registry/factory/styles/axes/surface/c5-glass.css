@@ -1,0 +1,36 @@
+/* C5 글래스(프리미엄 소비재 전용) — 큰 반경 계열(20px). 호환표: dashboard·public 원형 금지.
+ * DESIGN 조정(style_axes.md 축 3 · §6 MUST): backdrop-filter 는 고정·스티키·모달 배경에만 건다 — 흐르는 카드는 불투명하다.
+ *  - 카드(흐름 안): 불투명 면 + 글래스 결(액센트 9% 틴트, 1px 흰 안쪽 테두리, 위 밝은 선), 글자는 조금 굵게·자간 조금 넓게(mo-064).
+ *  - 모달 배경(dialog·alert-dialog·sheet·drawer overlay): 블러 20px(상한) + saturate. prefers-reduced-transparency·prefers-contrast: more 에서
+ *    블러를 끄고 배경을 짙게 한다. 반투명 위 글자는 없다(오버레이는 빈 면).
+ *  헤더의 반투명 크롬은 헤더 축(H1·H2)이 맡는다. */
+.cn-card {
+  @apply gap-(--card-spacing) rounded-[20px] border-t border-t-white/70 bg-[color-mix(in_oklch,var(--card),var(--primary)_9%)]! py-(--card-spacing) text-sm ring-1 inset-shadow-[0_0_0_1px_rgb(255_255_255/0.75)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[20px] *:[img:last-child]:rounded-b-[20px] dark:border-t-white/15 dark:inset-shadow-[0_0_0_1px_rgb(255_255_255/0.1)] [--card-spacing:--spacing(6)] data-[size=sm]:[--card-spacing:--spacing(4)];
+}
+.cn-card-header {
+  @apply gap-1.5 rounded-t-[20px] px-(--card-spacing) [.border-b]:pb-(--card-spacing);
+}
+.cn-card-title {
+  @apply text-lg leading-snug font-semibold tracking-[0.01em] group-data-[size=sm]/card:text-base;
+}
+.cn-card-description {
+  @apply text-sm leading-relaxed font-medium tracking-[0.01em];
+}
+.cn-card-content {
+  @apply px-(--card-spacing) font-medium tracking-[0.01em];
+}
+.cn-card-footer {
+  @apply rounded-b-[20px] border-t border-foreground/10 px-(--card-spacing) py-4;
+}
+.cn-dialog-overlay {
+  @apply supports-backdrop-filter:bg-black/20! supports-backdrop-filter:backdrop-blur-[20px] supports-backdrop-filter:backdrop-saturate-[1.8] contrast-more:bg-black/60! contrast-more:backdrop-blur-none [@media(prefers-reduced-transparency:reduce)]:bg-black/50! [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none;
+}
+.cn-alert-dialog-overlay {
+  @apply supports-backdrop-filter:bg-black/20! supports-backdrop-filter:backdrop-blur-[20px] supports-backdrop-filter:backdrop-saturate-[1.8] contrast-more:bg-black/60! contrast-more:backdrop-blur-none [@media(prefers-reduced-transparency:reduce)]:bg-black/50! [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none;
+}
+.cn-sheet-overlay {
+  @apply supports-backdrop-filter:bg-black/20! supports-backdrop-filter:backdrop-blur-[20px] supports-backdrop-filter:backdrop-saturate-[1.8] contrast-more:bg-black/60! contrast-more:backdrop-blur-none [@media(prefers-reduced-transparency:reduce)]:bg-black/50! [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none;
+}
+.cn-drawer-overlay {
+  @apply supports-backdrop-filter:bg-black/20! supports-backdrop-filter:backdrop-blur-[20px] supports-backdrop-filter:backdrop-saturate-[1.8] contrast-more:bg-black/60! contrast-more:backdrop-blur-none [@media(prefers-reduced-transparency:reduce)]:bg-black/50! [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none;
+}

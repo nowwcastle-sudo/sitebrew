@@ -1,0 +1,60 @@
+{
+  "id": "summermoon-com",
+  "archetype": "local",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://summermooncoffee.com/",
+  "structure": {
+    "hero": "파란 공지 띠와 흰 내비 아래 가을 상품 사진 슬라이드, 제목과 노란 구매 버튼",
+    "sections": [
+      "공지 띠(이전/다음 화살표)",
+      "로고·내비(구매·구독·매장·연락·주문 예약·소개)·장바구니·계정",
+      "사진 캐러셀 히어로(점 3개·일시정지)",
+      "제품군 소제목"
+    ]
+  },
+  "type": {
+    "display": "굵은 슬랩 느낌 디스플레이 대문자와 필기체 로고",
+    "body": "대문자 산세리프",
+    "scale": "제목 약 72px, 내비 약 22px 대문자"
+  },
+  "colorLogic": "K7",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지 띠 이전·다음 화살표",
+    "히어로 캐러셀 점·화살표·일시정지",
+    "내비 드롭다운(구매·연락·소개)",
+    "장바구니·계정 아이콘"
+  ],
+  "cta": {
+    "pattern": "노란 채움 지금 구매 버튼과 상단 구독·주문 예약 링크",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce",
+      "local"
+    ],
+    "score": 0.55
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "내비에 매장 위치와 주문 예약이 구매·구독과 같은 급으로 있다.",
+    "맨 위 공지 띠로 신규 구독 혜택을 알리고 상세 링크를 붙인다.",
+    "파란 띠와 주황 사진, 노란 버튼이 서로 반대색이라 눈에 띈다.",
+    "캐러셀에 일시정지 버튼이 있어 자동 전환을 멈출 수 있다.",
+    "쇼핑 비중이 커서 지역 가게보다 이커머스에 가깝다.",
+    "모바일은 공지가 세 줄로 접히고 로고가 중앙에 크게 놓인다."
+  ]
+}

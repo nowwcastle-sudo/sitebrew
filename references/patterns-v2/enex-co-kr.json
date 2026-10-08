@@ -1,0 +1,63 @@
+{
+  "id": "enex-co-kr",
+  "archetype": "commerce",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.enex.co.kr/",
+  "structure": {
+    "hero": "전폭 슬라이드 사진에 얇은 흰 영문 제목과 한글 부제",
+    "sections": [
+      "투명 헤더(햄버거·로고·내비·알약 링크 3개·로그인)",
+      "전폭 슬라이드 히어로",
+      "쿠폰팩 팝업(우하단)",
+      "슬라이드 점 컨트롤",
+      "플로팅 앱 아이콘"
+    ]
+  },
+  "type": {
+    "display": "얇은 영문 대문자 제목과 한글 고딕 부제",
+    "body": "한글 고딕 본문",
+    "scale": "제목 매우 크고 얇게, 부제는 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "슬라이드 사진 위에 제목이 약 0.75초 안에 페이드로 들어옴",
+    "scroll": null,
+    "hover": null,
+    "transition": "슬라이드는 약 7초마다 침실에서 주방으로 교체",
+    "durationsMs": [
+      750,
+      7000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "슬라이드 간격은 8초 영상에서 어림한 값"
+  },
+  "interaction": [
+    "슬라이드 점 컨트롤·일시정지",
+    "쿠폰팩 팝업(오늘 하루 보지 않기)",
+    "헤더 알약형 사업부 링크",
+    "모바일 하단 시트 팝업"
+  ],
+  "cta": {
+    "pattern": "쿠폰팩 발급받기 + 알약형 링크 3개",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.58
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "공간 사진을 전폭으로 쓰는 인테리어 브랜드의 정석 히어로",
+    "헤더 알약 링크로 사업부(홈·오피스·회사)를 구분해 B2C·B2B를 가른다",
+    "쿠폰 팝업을 우하단 카드로 두면 데스크톱에서 히어로를 덜 가린다",
+    "모바일에서는 팝업이 하단 시트로 화면의 절반을 덮는다",
+    "커머스 장바구니·상품 그리드가 첫 화면에 없다. 맞춤 제작 상담형 사이트"
+  ]
+}

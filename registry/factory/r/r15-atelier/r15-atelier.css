@@ -1,0 +1,85 @@
+/* 생성물 — factory/scripts/recipe.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* 아틀리에 지면(r15-atelier) 순수 CSS 변수 — shadcn 없이 단일 HTML 에 붙인다. 원천: registry/factory/recipes/r15-atelier/DESIGN.md */
+:root {
+  --background: oklch(0.9750 0.0040 85.00);
+  --foreground: oklch(0.1900 0.0150 55.00);
+  --card: oklch(0.9950 0.0030 85.00);
+  --card-foreground: oklch(0.1900 0.0150 55.00);
+  --popover: oklch(0.9950 0.0030 85.00);
+  --popover-foreground: oklch(0.1900 0.0150 55.00);
+  --primary: oklch(0.3300 0.0450 50.00);
+  --primary-foreground: oklch(0.9800 0.0060 85.00);
+  --secondary: oklch(0.9450 0.0060 85.00);
+  --secondary-foreground: oklch(0.1900 0.0150 55.00);
+  --muted: oklch(0.9500 0.0060 85.00);
+  --muted-foreground: oklch(0.3900 0.0150 60.00);
+  --accent: oklch(0.8800 0.0450 135.00);
+  --accent-foreground: oklch(0.2500 0.0400 140.00);
+  --destructive: oklch(0.5200 0.1800 27.00);
+  --border: oklch(0.8700 0.0080 85.00);
+  --input: oklch(0.5000 0.0200 70.00);
+  --ring: oklch(0.3300 0.0450 50.00);
+  --success: oklch(0.5200 0.1100 152.00);
+  --success-foreground: oklch(0.9850 0.0050 152.00);
+  --warning: oklch(0.5500 0.1200 68.00);
+  --warning-foreground: oklch(0.9850 0.0050 68.00);
+  --info: oklch(0.5000 0.1200 255.00);
+  --info-foreground: oklch(0.9850 0.0040 255.00);
+  --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading: "Libre Caslon Text", "Hahmlet", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading-ko: "Hahmlet", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --icon-stroke: 2;
+  --icon-linecap: round;
+  --icon-linejoin: round;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-in-screen: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 160ms;
+  --duration-hover: 200ms;
+  --duration-popover: 200ms;
+  --duration-enter: 700ms;
+  --duration-sheet: 350ms;
+  --wf-axes: "R1 B2 I4 C4 T3 H1 S1 X1";
+  --wf-font-tuned: "display body";
+  --wf-motion: 3;
+  --wf-heading-weight: 400;
+  --radius: 13px;
+  --wf-mask-radius: calc(infinity * 1px);
+  --wf-shadow-surface: 0px 1px 1px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 14%,transparent),1px 2px 2px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 11%,transparent),1px 4px 4px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 8%,transparent),2px 8px 8px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 6%,transparent);
+}
+
+.dark {
+  --background: oklch(0.1700 0.0120 50.00);
+  --foreground: oklch(0.9500 0.0080 85.00);
+  --card: oklch(0.2100 0.0140 50.00);
+  --card-foreground: oklch(0.9500 0.0080 85.00);
+  --popover: oklch(0.2100 0.0140 50.00);
+  --popover-foreground: oklch(0.9500 0.0080 85.00);
+  --primary: oklch(0.8000 0.0700 135.00);
+  --primary-foreground: oklch(0.1700 0.0200 140.00);
+  --secondary: oklch(0.2500 0.0150 50.00);
+  --secondary-foreground: oklch(0.9500 0.0080 85.00);
+  --muted: oklch(0.2500 0.0150 50.00);
+  --muted-foreground: oklch(0.7600 0.0150 75.00);
+  --accent: oklch(0.3000 0.0300 50.00);
+  --accent-foreground: oklch(0.9500 0.0080 85.00);
+  --destructive: oklch(0.7000 0.1500 25.00);
+  --border: oklch(0.3300 0.0200 50.00);
+  --input: oklch(0.5050 0.0250 50.00);
+  --ring: oklch(0.8000 0.0700 135.00);
+  --success: oklch(0.7400 0.1100 152.00);
+  --success-foreground: oklch(0.1900 0.0200 152.00);
+  --warning: oklch(0.8000 0.1200 78.00);
+  --warning-foreground: oklch(0.2000 0.0300 78.00);
+  --info: oklch(0.7400 0.1000 255.00);
+  --info-foreground: oklch(0.1900 0.0150 255.00);
+}
+
+/* 제목 굵기(한글 제목 굵기 → fonts.display.weight → 700): 기본 층이라 굵기를 따로 준 요소가 이긴다 */
+@layer base {
+.font-heading { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+.font-heading-ko { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+}

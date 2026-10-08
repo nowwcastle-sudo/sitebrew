@@ -1,0 +1,13 @@
+{
+  "kind": "nav",
+  "variant": "centered-mark",
+  "title": "상단 내비 — 가운데 워드마크·양옆 링크",
+  "layout": "centered-mark",
+  "density": "spacious",
+  "archetypes": ["brand", "portfolio", "local", "commerce"],
+  "archetypeKinds": ["header"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "넓은 화면: 세 칸 격자 — 왼쪽 링크(앞 절반) · 가운데 큰 워드마크 · 오른쪽 링크(뒤 절반)와 행동 링크. 375: 워드마크가 가운데 첫 줄, 링크 전부가 둘째 줄 가운데 가로 스크롤. 모든 폭에서 위에 붙는다"
+}

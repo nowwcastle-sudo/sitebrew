@@ -1,0 +1,15 @@
+{
+  "kind": "hero",
+  "variant": "grid-lines-baseline-word",
+  "title": "히어로 — 보이는 12칸 세로선 + 바닥에 걸친 응축 한 낱말",
+  "layout": "grid-lines-baseline-word",
+  "density": "spacious",
+  "archetypes": ["brand", "local", "portfolio"],
+  "archetypeKinds": ["hero", "hero-visit-info", "statement"],
+  "states": [],
+  "media": ["grid"],
+  "motion": ["clip-reveal", "split-text", "rise", "parallax", "tilt-3d"],
+  "titleWidth": "full",
+  "titleMaxUnits": 5.3,
+  "notes": "전폭 그림(media grid, 선택) 위 12칸(좁은 화면 8칸) 세로선, 한 낱말 제목 h1(응축 대문자 17.8vw, 면 글자색)이 화면 아래 끝에 걸친다 — 면에서 번지는 아래 가림막 + 가운데 높이 바탕색 안개 띠 위에 왼쪽 캡션 두 줄 · 오른쪽 선 사이 링크(▶). 기본 기법 split-text·clip-reveal. P3-1 r8-dusk B 구성(죽은 버튼 → 링크). 제목 길이 상한 5.3em(한글 5자쯤 — 설계 크기 17.8vw 한 줄): 넘으면 찍어내기가 다른 변형을 쓰고 블록은 글자 크기를 줄여 줄을 나눈다(C296)"
+}

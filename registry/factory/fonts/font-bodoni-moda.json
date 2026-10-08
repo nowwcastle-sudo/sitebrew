@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-bodoni-moda",
+  "type": "registry:font",
+  "title": "Bodoni Moda",
+  "description": "web-factory 폰트 키트: Bodoni Moda (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Bodoni Moda Variable', serif",
+    "provider": "google",
+    "import": "Bodoni_Moda",
+    "variable": "--font-bodoni-moda-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/bodoni-moda"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bodonimoda/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Bodoni+Moda",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "theeddynyc-com",
+  "archetype": "local",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.theeddynyc.com/",
+  "structure": {
+    "hero": "밤의 식당 정면 사진 위에 도메인 글자 로고를 놓고, 아래 검은 띠에 다섯 항목 메뉴를 가운데 정렬",
+    "sections": [
+      "필기체 도메인 로고",
+      "정면 사진 히어로",
+      "검은 내비 띠(예약·시간·메뉴·소개·언론)",
+      "아래로 이동 화살표(모바일)"
+    ]
+  },
+  "type": {
+    "display": "장식 필기체 느낌 서체(로고)",
+    "body": "넓은 자간 세리프 대문자",
+    "scale": "로고 약 32px, 메뉴 약 14px"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "내비 항목 5개(예약·시간 포함)",
+    "모바일 아래로 이동 화살표"
+  ],
+  "cta": {
+    "pattern": "내비의 예약 링크 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "local"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "내비가 예약·영업시간·메뉴·소개·언론 다섯 항목뿐이다.",
+    "예약과 영업시간을 내비 맨 앞 두 칸에 둔다.",
+    "사진 한 장과 검은 띠만 있는 미니멀 구조다.",
+    "모바일은 사진이 화면 전체를 채우고 내비는 스크롤 아래로 밀려 화살표로 안내한다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

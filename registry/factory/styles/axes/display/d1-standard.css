@@ -1,0 +1,5 @@
+/* D1 표준 디스플레이 — 기본값(레시피 머리에 display 가 없으면 이것, base.css 와 같은 모양). 제목 36~72px(4.5vw), 행간 1.1(균형 줄바꿈은 부품 규칙).
+ * 새 축 D(디스플레이 규모)는 부품 DisplayTitle(display.tsx)의 제목 칸만 덮는다. P3-2 Task 16a(대표 판단 2026-09-29), 원천 styles.json proposals D. */
+.cn-display-title {
+  @apply text-[clamp(2.25rem,4.5vw,4.5rem)] leading-[1.1] tracking-tight;
+}

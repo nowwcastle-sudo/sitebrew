@@ -1,0 +1,58 @@
+{
+  "id": "floydhome-com",
+  "archetype": "commerce",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://floydhome.com/",
+  "structure": {
+    "hero": "침실 사진 한 장과 크림 헤더, 사진 위 글자 없음",
+    "sections": [
+      "연한 파랑 공지띠(이전·다음)",
+      "크림 헤더(로고·Shop 드롭다운·링크 4개·계정·카트·검색)",
+      "전폭 라이프스타일 사진",
+      "모바일 브랜드 선언 블록(고정폭 라벨+큰 문장)",
+      "플로팅 채팅"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 로고, 고정폭 대문자 라벨",
+    "body": "큰 산세리프 선언문 본문",
+    "scale": "선언문을 매우 크게, 라벨은 작은 고정폭"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지띠 이전·다음",
+    "밑줄 텍스트 내비",
+    "플로팅 채팅",
+    "모바일 선언 문단이 사진 아래로 이어짐"
+  ],
+  "cta": {
+    "pattern": "히어로엔 CTA 없음, 헤더 링크만",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.7
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "사진 위에 글자를 올리지 않아 대비 문제가 없고 사진이 산다",
+    "크림 바탕과 연한 파랑 공지띠의 조합이 차분하고 따뜻하다",
+    "고정폭 대문자 라벨과 큰 선언문은 브랜드 소개의 단정한 패턴",
+    "첫 화면에 CTA가 없어 전환은 내비에 맡긴다. 상품 진입이 약하다"
+  ]
+}

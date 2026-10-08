@@ -1,0 +1,59 @@
+{
+  "id": "gilhuybrecht-com",
+  "archetype": "portfolio",
+  "sourceGallery": "awwwards",
+  "url": "https://gilhuybrecht.com/",
+  "structure": {
+    "hero": "검은 면 위 정보 한 줄, 아래로 번호 붙은 쪽 썸네일이 프로젝트별로 가로 줄지음",
+    "sections": [
+      "상단 정보 줄(이름·가능 시점·서비스·수상 목록·프로필·메일)",
+      "프로젝트 행(이름 + 번호 붙은 쪽 썸네일)",
+      "보기 방식 토글(Grid·Gallery, Normal·Star Wars)",
+      "모바일은 프로젝트마다 썸네일 2열"
+    ]
+  },
+  "type": {
+    "display": "중립 네오그로테스크 중간 굵기, 흰 글자",
+    "body": "같은 서체 소형 목록",
+    "scale": "프로젝트 이름 중형, 정보 줄 소형, 번호 극소형"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": "검은 화면에 로딩 퍼센트가 뜨고 썸네일이 흩어져 있다 약 1.5초에 격자 자리로 모임",
+    "scroll": null,
+    "hover": null,
+    "transition": "썸네일이 흩어진 위치에서 순서대로 제자리에 들어오고 정보 줄이 이어서 나타남",
+    "durationsMs": [
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "Star Wars 스크롤 모드는 영상에서 확인 불가, 라벨 텍스트로만 판단"
+  },
+  "interaction": [
+    "보기 방식 토글 두 쌍",
+    "썸네일 클릭으로 프로젝트 열기",
+    "프로필·메일 링크"
+  ],
+  "cta": {
+    "pattern": "텍스트 링크 Email me",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.9
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "프로젝트마다 쪽 썸네일을 번호와 늘어놓아 사이트 흐름을 작업물로 보인다",
+    "정보 줄에 서비스와 수상 이력을 적어 신뢰를 한 번에 준다",
+    "토글 두 쌍으로 보기 방식을 바꾸는 장치를 첫 화면에 둔다",
+    "검은 바탕과 흰 쪽 썸네일의 대비가 분류 표처럼 읽힌다"
+  ]
+}

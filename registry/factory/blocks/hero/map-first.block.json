@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "map-first",
+  "title": "히어로 — 지도 먼저(정적 지도 + 지점 표지)",
+  "layout": "map-first",
+  "density": "spacious",
+  "archetypes": ["public", "dashboard", "local"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["map"],
+  "motion": ["kinetic-type", "stagger-in", "rise", "scrub-timeline"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "layout",
+  "notes": "배치로 대담: 전폭 큰 제목 아래 첫 화면의 무게가 지도다. 왼쪽 큰 지도(정적 그림 — media map, 없으면 도식 격자 — 위에 지점 표지, 외부 지도 SDK·iframe 없음), 오른쪽에 선택한 지점 카드(주소·영업·전화·지도 앱 링크). 표지는 이름을 가진 단추의 목록(ul) — 키보드로 차례로 지나고 누르면 그 지점 카드가 열린다(aria-expanded·aria-controls, 카드는 aria-live polite). 처음엔 첫 지점이 열려 있다. hours-location 자료(주소·영업·전화·지도 링크)로 묶는다. FV1 Task 5.7"
+}

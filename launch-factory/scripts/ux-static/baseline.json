@@ -1,0 +1,84 @@
+[
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#signIn",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#signUp",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#resetPassword",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#signOut",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#verifyTwoFactor",
+    "item": "C04"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#sendVerificationEmail",
+    "item": "A10"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/auth.ts#updatePreferences",
+    "item": "D11"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/billing.ts#getSubscription",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/billing.ts#startCheckout",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/billing.ts#openPortal",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/billing.ts#acceptPriceChange",
+    "item": "F04"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/billing.ts#cancelAtPeriodEnd",
+    "item": "F04"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/billing.ts#resumeSubscription",
+    "item": "N03"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/inquiry-admin.ts#reclassifyInquiry",
+    "item": "D137",
+    "note": "문의 번들(feature-inquiry)이 템플릿 기본이 되며 들어온 관리자용 액션 — 이 액션을 부르는 관리 화면은 제품이 만든다(대장 D137, item.json 안내 5번). 화면이 생기면 뺀다"
+  },
+  {
+    "check": "actions-without-screen",
+    "target": "template/app/actions/inquiry-admin.ts#markInquiryAsComplaint",
+    "item": "D137",
+    "note": "문의 번들(feature-inquiry)이 템플릿 기본이 되며 들어온 관리자용 액션 — 이 액션을 부르는 관리 화면은 제품이 만든다(대장 D137, item.json 안내 5번). 화면이 생기면 뺀다"
+  },
+  {
+    "check": "copy-promises",
+    "target": "verify-resend-after-sign-in",
+    "item": "A10"
+  }
+]

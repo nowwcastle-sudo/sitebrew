@@ -1,0 +1,58 @@
+{
+  "id": "vennstudiola-com",
+  "archetype": "portfolio",
+  "sourceGallery": "httpster",
+  "url": "https://www.vennstudiola.com/",
+  "structure": {
+    "hero": "전면 건축 사진을 가로지르는 가는 선에 상호·분야·문의가 한 줄로 걸림",
+    "sections": [
+      "우상단 소형 메뉴 4개(Projects·Journal·About·Contact)",
+      "전면 건축 사진",
+      "가운데 가로선 + 좌 상호·우 분야·문의 링크(세로 보조선 포함)",
+      "모바일 햄버거와 중앙 정렬 선"
+    ]
+  },
+  "type": {
+    "display": "가는 기하 산세리프 대문자 자간 넓음(상호), 그 외 같은 산세리프 소형",
+    "body": "같은 산세리프 소형",
+    "scale": "단일 소형 위계, 제목 없음"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "메뉴 링크 4개",
+    "가로선 위 문의 링크",
+    "모바일 햄버거"
+  ],
+  "cta": {
+    "pattern": "가로선 위 텍스트 링크 Schedule a Conversation",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.75
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "사진 위 가는 선에 글자를 걸어 제목 없이 구조를 만든다",
+    "글자 크기를 단일 소형으로 통일해 사진이 위계를 독점한다",
+    "문의 링크를 선 오른쪽 끝에 두어 시선 끝에 닿게 한다",
+    "모바일은 선과 두 문구를 중앙으로 모으고 햄버거로 메뉴를 접는다"
+  ]
+}

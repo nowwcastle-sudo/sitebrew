@@ -1,0 +1,13 @@
+{
+  "kind": "announcement",
+  "variant": "update-toast",
+  "title": "새 판 알림 토스트 — PWA 서비스 워커가 새 판을 받았을 때 [지금 새로 고침][나중에]",
+  "layout": "bottom-toast",
+  "density": "compact",
+  "archetypes": ["pwa"],
+  "archetypeKinds": ["update-toast", "announcement"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "available(대기 중인 서비스 워커가 있을 때 true)일 때만 화면 아래에 작게 뜬다: role=status(초점을 빼앗지 않는다) · 제목 + 한 줄 · [나중에][지금 새로 고침] 대등(choice-pair). 「나중에」는 version 마다 이번 방문 동안 기억하고 DOM 에서 지운다. 하단 탭·쿠키 띠 위로 올라앉고(--bottom-bar-height·--wf-float-bar) 가린 높이만큼 scroll-padding-bottom(WCAG 2.4.11). 서비스 워커 연결은 조립하는 쪽: onUpdate 가 건너뛰기 신호 후 새로 고친다(없으면 쪽을 다시 읽는다). 이 블록 이름(block-announcement-update-toast)은 pwa 원형 연결(5.9)이 쓴다. 계측(선택): cta_click"
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-archivo",
+  "type": "registry:font",
+  "title": "Archivo",
+  "description": "web-factory 폰트 키트: Archivo (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Archivo Variable', sans-serif",
+    "provider": "google",
+    "import": "Archivo",
+    "variable": "--font-archivo-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/archivo"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/archivo/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Archivo",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

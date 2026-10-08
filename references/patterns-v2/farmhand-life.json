@@ -1,0 +1,62 @@
+{
+  "id": "farmhand-life",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://www.farmhand.life/",
+  "structure": {
+    "hero": "파란 상단 바, 하늘색 좌측 패널, 호박 무늬 본문의 환영 카드",
+    "sections": [
+      "상단 바(홈·날짜·잔액)",
+      "좌측 패널(제목·방 이름·메뉴 아이콘 6개)",
+      "인벤토리 검색",
+      "환영·개발자 노트 카드",
+      "게임 방법 카드",
+      "알림 토스트 3개",
+      "하단 슬라이드 컨트롤"
+    ]
+  },
+  "type": {
+    "display": "픽셀 디스플레이 서체 대형 제목 48px",
+    "body": "픽셀 산세리프 16px",
+    "scale": "제목 48px, 카드 제목 18px, 본문 16px"
+  },
+  "colorLogic": "K7",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "좌측 아이콘 메뉴 6개",
+    "온라인 플레이 토글과 방 이름 입력",
+    "인벤토리 검색",
+    "개발자 노트 펼침",
+    "슬라이드 이전·정지·다음",
+    "수면 버튼"
+  ],
+  "cta": {
+    "pattern": "수면 버튼 + 슬라이드 이동 버튼",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "픽셀 서체와 두꺼운 테두리 카드로 게임 HUD 전체를 한 세계관으로 묶는다",
+    "알림 토스트가 성공·경고·정보 세 가지를 색과 아이콘으로 나눠 쌓인다",
+    "375에서는 좌측 패널이 사라지고 상단 바와 카드 한 열로 줄어든다",
+    "토스트와 슬라이드 컨트롤이 본문 글을 가려 읽기 방해가 있다"
+  ]
+}

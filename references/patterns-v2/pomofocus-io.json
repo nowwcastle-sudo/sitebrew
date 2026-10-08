@@ -1,0 +1,61 @@
+{
+  "id": "pomofocus-io",
+  "archetype": "pwa",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://pomofocus.io/",
+  "structure": {
+    "hero": "적갈색 전면 바탕 가운데 좁은 열에 큰 25:00 타이머 카드와 흰 시작 버튼, 아래 할 일 목록",
+    "sections": [
+      "상단 바(로고·리포트·설정·로그인·더보기)",
+      "모드 탭 3개(집중·짧은 휴식·긴 휴식)",
+      "타이머 숫자 카드",
+      "흰 시작 버튼",
+      "현재 회차 문구",
+      "할 일 목록과 점선 추가 줄"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 숫자",
+    "body": "산세리프 14~16px",
+    "scale": "타이머 숫자 약 120px, 탭·버튼 약 16~20px, 보조 글 12~14px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "모드 탭 3개",
+    "시작 버튼",
+    "설정 열기",
+    "리포트 열기",
+    "할 일 추가 줄",
+    "로그인 버튼"
+  ],
+  "cta": {
+    "pattern": "흰 시작 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "화면 전체를 붉은 한 색으로 칠하고 타이머 숫자와 시작 버튼만 흰색으로 남긴다.",
+    "시작 버튼이 가장 밝은 면이라 첫 행동이 분명하다.",
+    "할 일 목록을 점선 빈 칸 한 줄로 시작해 입력 부담을 낮춘다.",
+    "375에서도 같은 구성이 폭만 채워 그대로 이어진다."
+  ]
+}

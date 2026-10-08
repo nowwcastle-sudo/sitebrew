@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "framed-card-outline-title",
+  "title": "히어로 — 여백 액자 속 둥근 카드 + 외곽선·채움 교대 대문자 + 도는 배지",
+  "layout": "framed-card-outline-title",
+  "density": "comfortable",
+  "archetypes": ["commerce", "local", "brand"],
+  "archetypeKinds": ["hero", "purchase-area"],
+  "states": [],
+  "media": ["still"],
+  "motion": ["clip-reveal", "split-text", "rise", "parallax", "tilt-3d"],
+  "titleWidth": "column",
+  "notes": "뿌리 여백 액자 안 둥근 카드(faces[0], 토큰 반경 3xl — 머리를 header 로 넘기면 카드가 머리 아래로 5rem 올라와 겹친다): 위쪽 타일 줄눈, 왼쪽 7칸 별점 → 제목 h1(외곽선 줄·채움 줄) → 설명 → 둥근 버튼 + 밑줄 링크, 오른쪽 5칸 둥근 그림(media still), 오른쪽 아래 도는 글자 배지. 기본 기법 split-text·tilt-3d·clip-reveal. P3-1 r9-clay A 구성(반경 24px → rounded-3xl)"
+}

@@ -1,0 +1,94 @@
+{
+  "note": "보드 판마다 글자(A·B)가 보인 첫 화면(히어로 id) 기록 — 보드를 지은 커밋의 레시피 원천을 optionsOf 로 읽었다(Task 16). build2.mjs letterKeys 가 지금 글자 → 3판 글자(v3Keys) → 2판 글자(v2Keys)를 합성한 뒤 이 기록과 히어로가 맞는지 보고, 안 맞으면 보드를 짓지 않는다. 다시 만들지 않는다(게시한 판의 기록이다).",
+  "boards": {
+    "2": {
+      "commit": "f6489ed",
+      "heroes": {
+        "r1-measure": {
+          "A": "step-band-orbit",
+          "B": "baseline-split"
+        },
+        "r2-signal": {
+          "A": "cropped-title-list",
+          "B": "inline-chip-title"
+        },
+        "r3-woodblock": {
+          "A": "staggered-oval-frame",
+          "B": "twin-panels"
+        },
+        "r4-evidence": {
+          "A": "stepped-crop-figure",
+          "B": "centered-proof-panel"
+        },
+        "r5-celadon": {
+          "A": "banded-full-bleed",
+          "B": "corner-meta-line"
+        },
+        "r6-civic": {
+          "A": "crosshair-quadrants",
+          "B": "identity-strip-banner"
+        },
+        "r7-docs": {
+          "A": "leaking-app-panel",
+          "B": "narrow-title-wide-window"
+        },
+        "r8-dusk": {
+          "A": "grid-lines-baseline-word",
+          "B": "vertical-title-slides"
+        },
+        "r9-clay": {
+          "A": "framed-card-outline-title",
+          "B": "layered-landscape-logotype"
+        },
+        "r10-console": {
+          "A": "baseline-news-app-window",
+          "B": "crop-marks-typed-title"
+        }
+      }
+    },
+    "3": {
+      "commit": "c5b0ea3",
+      "heroes": {
+        "r1-measure": {
+          "A": "step-band-orbit",
+          "B": "baseline-split"
+        },
+        "r2-signal": {
+          "A": "inline-chip-title",
+          "B": "cropped-title-list"
+        },
+        "r3-woodblock": {
+          "A": "staggered-oval-frame",
+          "B": "twin-panels"
+        },
+        "r4-evidence": {
+          "A": "stepped-crop-figure",
+          "B": "centered-proof-panel"
+        },
+        "r5-celadon": {
+          "A": "banded-full-bleed"
+        },
+        "r6-civic": {
+          "A": "crosshair-quadrants",
+          "B": "identity-strip-banner"
+        },
+        "r7-docs": {
+          "A": "leaking-app-panel",
+          "B": "narrow-title-wide-window"
+        },
+        "r8-dusk": {
+          "A": "grid-lines-baseline-word",
+          "B": "vertical-title-slides"
+        },
+        "r9-clay": {
+          "A": "framed-card-outline-title",
+          "B": "layered-landscape-logotype"
+        },
+        "r10-console": {
+          "A": "baseline-news-app-window",
+          "B": "crop-marks-typed-title"
+        }
+      }
+    }
+  }
+}

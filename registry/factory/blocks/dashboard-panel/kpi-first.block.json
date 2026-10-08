@@ -1,0 +1,13 @@
+{
+  "kind": "dashboard-panel",
+  "variant": "kpi-first",
+  "title": "대시보드 — 1순위 결정 + KPI 줄",
+  "layout": "focus-kpi-row",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas"],
+  "archetypeKinds": ["kpi-row", "breakdown-panels"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "큰 칸: 지금 먼저 할 한 가지(focus, 없으면 순위 1 KPI) + 행동 | 순위 1 KPI 큰 숫자. 아래 나머지 KPI 격자(순위 순). KPI 는 값·단위·델타(부호 + 읽기 문장)·판단 기준(목표·범위·비교 기간), 숫자 data-numeric. 읽기 4상태"
+}

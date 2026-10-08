@@ -1,0 +1,63 @@
+{
+  "id": "tinycomputer-co",
+  "archetype": "portfolio",
+  "sourceGallery": "opl",
+  "url": "https://tinycomputer.co/",
+  "structure": {
+    "hero": "크림 면 좌측 세리프 두 줄, 아래 모노스페이스 한 줄이 타이핑되고 커서가 깜박임",
+    "sections": [
+      "소형 세리프 로고",
+      "대형 세리프 두 줄 제목",
+      "모노스페이스 부제(타이핑 + 깜박이는 커서)",
+      "스크롤하면 앱 UI 스크린샷 줄이 올라옴",
+      "앱 소개 모노스페이스 문단"
+    ]
+  },
+  "type": {
+    "display": "고대비 세리프 대형, 짙은 회색",
+    "body": "모노스페이스 소형 부제와 소개문",
+    "scale": "제목 대형, 모노스페이스 소형 두 단계"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": "제목이 먼저 보이고 약 1.5초 뒤 모노스페이스 부제가 한 글자씩 타이핑되며 커서가 깜박임",
+    "scroll": "스크롤하면 제목이 밀리고 앱 UI 스크린샷 줄과 앱 소개 문단이 올라옴",
+    "hover": null,
+    "transition": "타이핑이 끝난 뒤 앱 목업 줄이 약 1초에 걸쳐 올라오고 소개문이 타이핑됨",
+    "durationsMs": [
+      1500,
+      3000,
+      1000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "타이핑 속도는 4fps 프레임 수로 추정"
+  },
+  "interaction": [
+    "타이핑 커서",
+    "앱 목업 가로 스크롤",
+    "소개문 안 밑줄 링크"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, 앱 이름 밑줄 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "세리프 제목과 모노스페이스 부제를 짝지어 개발 스튜디오의 장인 같은 인상을 만든다",
+    "타이핑 한 줄과 깜박이는 커서만으로 움직임 하나를 두는 절제된 연출이다",
+    "제품 스크린샷을 스크롤하면 올라오는 줄로 보여 결과물을 바로 증명한다",
+    "모바일은 모노스페이스 부제를 크게 키워 타이핑이 화면 중앙에서 읽히게 한다"
+  ]
+}

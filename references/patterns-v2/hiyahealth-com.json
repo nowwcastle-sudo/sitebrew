@@ -1,0 +1,67 @@
+{
+  "id": "hiyahealth-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://hiyahealth.com/products/kids-daily-protein",
+  "structure": {
+    "hero": "연분홍 바탕 왼쪽에 분홍 가루 포장과 통 사진·인증 도장·8g 노랑 배지, 오른쪽에 제품명·가격·할인 배지·설명·아이 수 선택·남색 구매 버튼",
+    "sections": [
+      "맨 위 노랑 혜택 띠",
+      "내비(메뉴·로고·계정·검색·카트)",
+      "상품 사진(확대 버튼·인증 도장·배지)과 썸네일 줄",
+      "별점 두 줄",
+      "제품명·가격·할인 배지",
+      "설명과 성분표 링크",
+      "혜택 체크 3개",
+      "아이 수 선택 3칸",
+      "남색 지금 시작 버튼",
+      "혜택 안내 두 줄과 특징 아이콘 4개"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 남색 제품명",
+    "body": "산세리프 14px",
+    "scale": "제품명 약 24px, 가격 약 20px, 설명 약 14px, 버튼 글 약 18px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "영상은 문서 읽기 한도에 두 번 걸려 찍지 못함. 움직임은 정지 화면으로 못 쟀다."
+  },
+  "interaction": [
+    "사진 확대·썸네일 넘기기",
+    "아이 수 선택 3칸",
+    "지금 시작 버튼",
+    "성분표 링크",
+    "혜택 띠 닫기",
+    "메뉴·검색·카트"
+  ],
+  "cta": {
+    "pattern": "남색 지금 시작 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "분홍 바탕과 상품 포장의 분홍·노랑이 한 팔레트라 포장 사진이 화면에 녹는다.",
+    "사진 위 인증 도장 두 개와 8g 배지로 신뢰 정보를 사진 안에 넣는다.",
+    "할인가·취소선·할인 배지를 한 줄에 모아 가격 판단을 한눈에 보인다.",
+    "아이 수 선택 3칸이 수량 선택을 대신해 구매 구조를 단순하게 만든다.",
+    "375에서는 사진이 전폭으로 서고 정보 열이 사진 아래로 내려간다."
+  ]
+}

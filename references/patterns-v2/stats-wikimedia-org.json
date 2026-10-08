@@ -1,0 +1,60 @@
+{
+  "id": "stats-wikimedia-org",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://stats.wikimedia.org/",
+  "structure": {
+    "hero": "중앙 폭 제한 흰 틀 안 카드마다 큰 숫자와 12개월 막대",
+    "sections": [
+      "로고+주 메뉴",
+      "주제 탐색 검색 띠",
+      "월간 개요 제목+프로젝트 선택",
+      "읽기 카드 그룹",
+      "기여 카드 그룹",
+      "지표별 12개월 막대"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 48px 큰 수치",
+    "body": "산세리프 14~16px",
+    "scale": "큰 수치 48px, 카드 제목 24px, 보조 14px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "프로젝트 검색 선택",
+    "질문 검색 입력",
+    "카드 캐러셀 점(모바일)",
+    "주제 탐색 펼침",
+    "지표 상세로 이동"
+  ],
+  "cta": {
+    "pattern": "상단 메뉴 읽기·기여·내용·모든 메트릭 링크",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "카드마다 큰 수치, 증감 화살표, 12개월 막대의 3단 구조를 반복한다",
+    "읽기 카드는 청록, 기여 카드는 파랑으로 그룹마다 한 색을 준다",
+    "375에서는 카드를 가로 캐러셀로 바꾸고 점 표시로 페이지를 알린다",
+    "지원 안 되는 지표 칸은 흐린 틀과 안내로 빈 상태를 처리한다"
+  ]
+}

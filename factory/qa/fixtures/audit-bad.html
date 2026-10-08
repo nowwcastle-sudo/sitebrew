@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — audit bad</title>
+<style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  nav { position: sticky; top: 0; background: #ffffff; border-bottom: 1px solid #ccc; padding: 12px 16px; }
+  main { padding: 16px; max-width: 640px; }
+  p { color: #1a1a1a; font-size: 16px; }
+  .b { width: 16px; height: 16px; padding: 0; border: 1px solid #1a1a1a; background: #fff; }
+
+  /* Case 1 (p1): parent has a decorative, non-interactive ::before that sits
+     exactly over the whole card — pointer-events:none, so it can never
+     receive a click and must not be read as a hit-area expander. */
+  .card { position: relative; width: 300px; height: 100px; }
+  .card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(#0000, #0000); }
+
+  /* Case 2 (p2): a CSS tooltip bubble on the button's own ::after — parked
+     above the button (bottom:100%), invisible (opacity:0) and
+     pointer-events:none until hover. Not a hit-area expander either. */
+  .t { position: relative; }
+  .t::after { content: attr(aria-label); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 8px; opacity: 0; pointer-events: none; }
+
+  /* Case 2b (p4): a painted tooltip bubble on a bordered 16px button's own
+     ::after — bottom:100%, NO pointer-events:none, opacity:0. It sits
+     entirely above the button (touching its padding box, never overlapping
+     it), so it is not part of the resting hit area. The 1px border is the
+     trap: measured from the border box instead of the padding box (the
+     pseudo's real containing block), the bubble seemed to overlap the button
+     by 2px and rescued it. */
+  .t4 { position: relative; }
+  .t4::after { content: attr(aria-label); position: absolute; bottom: 100%; left: 0; width: 120px; height: 30px; opacity: 0; background: #222222; color: #ffffff; }
+
+  /* Case 3 (p3): screen-reader-only checkbox, kept out of tab order
+     (tabindex=-1) but still in the accessibility tree — a real AT can land
+     on it by other navigation, so "unlabeled" must still be flagged. */
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); margin: -1px; border: 0; padding: 0; }
+
+  /* Case 4: clip-hidden but still keyboard-reachable (no tabindex=-1, no
+     aria-hidden) — a genuine defect wearing a "framework form mirror"
+     costume. Must not be excused by the visually-hidden skip. Uses the same
+     clip technique as .sr (not a 1px content-box that a border would widen
+     past the <=1px check). */
+  .clip-hidden-focusable { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); margin: -1px; border: 0; padding: 0; }
+
+  /* Case 5: plain 16px checkbox, no pseudo-element at all — the baseline
+     WCAG 2.5.8 violation (same shape as the p0 control). */
+  .checkbox { position: relative; display: inline-block; width: 16px; height: 16px; border: 1px solid #1a1a1a; border-radius: 4px; vertical-align: middle; }
+</style>
+</head>
+<body>
+  <nav aria-label="fixture nav">audit-bad fixture</nav>
+  <main>
+    <p>이 문단은 감사 대조군을 위한 본문 텍스트입니다. 충분히 길게 작성합니다.</p>
+
+    <div class="card">
+      <button class="b" aria-label="p1 부모 장식" type="button"></button>
+    </div>
+
+    <p style="margin-top: 60px;">
+      <button class="b t" aria-label="p2 툴팁" type="button"></button>
+    </p>
+
+    <p style="margin-top: 60px;">
+      <button class="b t4" aria-label="p4 칠한 툴팁" type="button"></button>
+    </p>
+
+    <input id="p3-sr-input" class="sr" type="checkbox" tabindex="-1" />
+
+    <input id="clip-hidden-focusable" class="clip-hidden-focusable" type="text" />
+
+    <span class="checkbox" role="checkbox" aria-label="일반 체크박스" tabindex="0"></span>
+  </main>
+</body>
+</html>

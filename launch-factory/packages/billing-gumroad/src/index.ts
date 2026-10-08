@@ -1,0 +1,13 @@
+// @launch-factory/billing-gumroad — Gumroad 대비 BillingPort 어댑터(Paddle 미승인 때). 서버 전용이다.
+export { gumroadBilling, PROVIDER_UNSUPPORTED, UNSUPPORTED_METHODS } from "./adapter.ts"
+export type { GumroadBilling, GumroadBillingConfig, GumroadFailure, GumroadSession } from "./adapter.ts"
+export { applyGumroadSubscription, handleGumroadPing, MAX_PING_BYTES, SALE_RESOURCES, SUBSCRIPTION_RESOURCES } from "./ping.ts"
+export type { PingDeps, PingOutcome } from "./ping.ts"
+export { createGumroadClient, GUMROAD_API, GumroadApiError } from "./gumroad.ts"
+export type { GumroadClient, GumroadSale, GumroadSubscriber } from "./gumroad.ts"
+export { nextBillingAt, PROVIDER, RECURRENCE_MONTHS, stateFromGumroad, UnknownSubscriberStatusError } from "./map.ts"
+export { GUMROAD_TRIAL_DAYS, planById, planIdForProduct, validateGumroadConfig } from "./plans.ts"
+export type { GumroadPlan } from "./plans.ts"
+export { REF_PARAM, REF_TTL_MS, signRef, verifyRef } from "./ref.ts"
+export { EntitlementError, protectAction, requireEntitlement, withEntitlement } from "./entitlement.ts"
+export type { GumroadEntitlementOptions } from "./entitlement.ts"

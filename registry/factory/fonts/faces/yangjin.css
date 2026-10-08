@@ -1,0 +1,3 @@
+/* 생성물 — factory/scripts/gen-fonts.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* web-factory 폰트 키트 font-yangjin: yangjin (Yangjin Font License (양진체 — 상업 무료·수정 판매 금지·배포 형태 그대로), https://github.com/supernovice-lab/font) — 원천 https://github.com/supernovice-lab/font/tree/ccf73414cb70a8108cd85101adf74d3d4aa6a619 */
+@font-face { font-family: "yangjin"; src: url("https://cdn.jsdelivr.net/gh/supernovice-lab/font@ccf73414cb70a8108cd85101adf74d3d4aa6a619/yangjin.woff") format("woff"); font-weight: 400; font-style: normal; font-display: swap; }

@@ -1,0 +1,25 @@
+{
+  "$comment": "히어로 미디어 칸(Task 12). build-media.mjs 가 이 목록과 .tmp/media-src(Pexels 원본 + 출처 기록 — fetch-pexels.mjs get)·Higgsfield 폴더(HIGGSFIELD_DIR)에서 public/media/<recipe>/<slot>.* 와 public/media/credits.json·manifest.json 을 만든다. widths 는 정지 그림(영상은 포스터)의 폭 — 전폭 칸은 1440·960·480, 작은 칸은 그 칸이 배율 2 에서 쓰는 폭까지만. source \"hyperframes\" 칸은 template(factory/media/hyperframes/<이름>)·inputs(원본 칸 id — 그 칸들의 출처 줄을 credits 에 이어 적는다)·file(HYPERFRAMES_DIR 안 렌더 mp4)을 갖는다(factory/media/render-hyperframes.mjs 가 렌더). higgsfield 정지 그림 칸의 file 은 png·jpg.",
+  "higgsfieldLicense": "생성물 — 운영자 계정 Higgsfield 생성(2026-09-28)",
+  "higgsfieldLicenseUrl": "https://higgsfield.ai/terms-of-use-agreement",
+  "slots": [
+    { "recipe": "r1-measure", "slot": "field", "hero": "baseline-split", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "r2-signal", "slot": "chip", "hero": "inline-chip-title", "kind": "image", "source": "pexels", "widths": [480, 240] },
+    { "recipe": "r3-woodblock", "slot": "oval", "hero": "staggered-oval-frame", "kind": "video", "source": "higgsfield", "file": "r3-A-woodblock.mp4", "videoWidth": 1280, "widths": [1440, 960, 480] },
+    { "recipe": "r3-woodblock", "slot": "panel-left", "hero": "twin-panels", "kind": "image", "source": "pexels", "widths": [960, 480] },
+    { "recipe": "r3-woodblock", "slot": "panel-right", "hero": "twin-panels", "kind": "image", "source": "pexels", "widths": [960, 480] },
+    { "recipe": "r5-celadon", "slot": "band", "hero": "banded-full-bleed", "kind": "video", "source": "higgsfield", "file": "r5-A-celadon.mp4", "videoWidth": 1920, "widths": [1440, 960, 480] },
+    { "recipe": "r8-dusk", "slot": "grid", "hero": "grid-lines-baseline-word", "kind": "video", "source": "higgsfield", "file": "r8-A-pine.mp4", "videoWidth": 1920, "widths": [1440, 960, 480] },
+    { "recipe": "r8-dusk", "slot": "slide-1", "hero": "vertical-title-slides", "kind": "video", "source": "higgsfield", "file": "r8-B-hanok.mp4", "videoWidth": 1920, "widths": [1440, 960, 480] },
+    { "recipe": "r8-dusk", "slot": "slide-0", "hero": "vertical-title-slides", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "r8-dusk", "slot": "slide-2", "hero": "vertical-title-slides", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "r9-clay", "slot": "still", "hero": "framed-card-outline-title", "kind": "video", "source": "higgsfield", "file": "r9-A-cookies.mp4", "videoWidth": 1280, "widths": [960, 480] },
+    { "recipe": "motkit", "slot": "kinetic-video", "hero": "kinetic-type-video", "kind": "video", "source": "pexels", "videoWidth": 1920, "widths": [1440, 960, 480] },
+    { "recipe": "motkit", "slot": "reel-0", "hero": "ken-burns-stills", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "motkit", "slot": "reel-1", "hero": "ken-burns-stills", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "motkit", "slot": "reel-2", "hero": "ken-burns-stills", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "motkit", "slot": "reel-3", "hero": "ken-burns-stills", "kind": "image", "source": "pexels", "widths": [1440, 960, 480] },
+    { "recipe": "motkit", "slot": "reel-montage", "hero": "ken-burns-stills", "kind": "video", "source": "hyperframes", "template": "ken-burns-stills", "inputs": ["motkit/reel-0", "motkit/reel-1", "motkit/reel-2", "motkit/reel-3"], "file": "motkit/reel-montage.mp4", "videoWidth": 1920, "widths": [1440, 960, 480] },
+    { "recipe": "motkit", "slot": "punch", "hero": "punch-in-statement", "kind": "image", "source": "higgsfield", "file": "motkit-punch.png", "widths": [1440, 960, 480] }
+  ]
+}

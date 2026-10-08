@@ -1,0 +1,76 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"name","type":"string","label":"출력 파일 이름(slug)","default":"hero"},
+    {"id":"store_name","type":"string","label":"가게 이름","default":"달빛 베이커리","maxLength":14},
+    {"id":"tagline","type":"string","label":"한 줄 소개","default":"매일 새벽 구운 빵","maxLength":22},
+    {"id":"detail","type":"string","label":"영업 정보","default":"서울 마포구 · 매일 07:00-20:00","maxLength":34},
+    {"id":"accent","type":"color","label":"포인트 색","default":"#f2b84b"},
+    {"id":"bg","type":"color","label":"바탕 색","default":"#14110f"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>wf hero kinetic lower-third</title>
+    <link rel="stylesheet" href="assets/noto-sans-kr-700.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg, #14110f); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: "Noto Sans KR", sans-serif; font-weight: 700; color: #fbf6ee; }
+      .glow { position: absolute; inset: -20%; background: radial-gradient(60% 50% at 70% 40%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 70%); }
+      .stage { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 160px; }
+      #title { font-size: 220px; line-height: 1.05; letter-spacing: -0.04em; display: flex; flex-wrap: nowrap; white-space: pre; }
+      #title .ch { display: inline-block; }
+      #rule { height: 8px; width: 520px; background: var(--accent); margin: 36px 0 0; }
+      .lower { position: absolute; left: 160px; bottom: 120px; display: flex; flex-direction: column; gap: 10px; }
+      #tag { font-size: 64px; color: var(--accent); letter-spacing: -0.02em; }
+      #detail { font-size: 36px; opacity: 0.8; letter-spacing: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <div class="glow clip" id="glow" data-start="0" data-duration="8" data-track-index="0"></div>
+      <div id="stage" class="stage clip" data-start="0" data-duration="8" data-track-index="1">
+        <h1 id="title">달빛 베이커리</h1>
+        <div id="rule"></div>
+      </div>
+      <div id="lower" class="lower clip" data-start="0" data-duration="8" data-track-index="2">
+        <div id="tag" data-var-text="tagline">매일 새벽 구운 빵</div>
+        <div id="detail" data-var-text="detail">서울 마포구 · 매일 07:00-20:00</div>
+      </div>
+    </div>
+    <script>
+      const v = window.__hyperframes.getVariables();
+      document.documentElement.style.setProperty("--accent", v.accent);
+      document.documentElement.style.setProperty("--bg", v.bg);
+      const title = document.getElementById("title");
+      const chars = [...v.store_name];
+      title.textContent = "";
+      chars.forEach((c) => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; title.appendChild(s); });
+      const allText = [v.store_name, v.tagline, v.detail].join("");
+      // fonts must be loaded BEFORE measuring, else the fit uses fallback-font widths
+      document.fonts.load('700 100px "Noto Sans KR"', allText).then(() => document.fonts.ready).then(() => {
+        const maxW = 1920 - 320;
+        const fit = Math.min(1, maxW / Math.max(1, title.scrollWidth));
+        title.style.fontSize = Math.floor(220 * fit) + "px";
+        const tl = gsap.timeline({ paused: true });
+        // POSTER-FIRST LOOP: t=0 and t=8 are the SAME composed pose (poster = first frame, seamless loop).
+        // glow drifts out and back (sine yoyo), copy exits at 4.6s and re-enters at 5.4s.
+        tl.to("#glow", { scale: 1.12, duration: 4, ease: "sine.inOut" }, 0);
+        tl.to("#glow", { scale: 1.0, duration: 4, ease: "sine.inOut" }, 4);
+        tl.to(".ch", { y: -80, opacity: 0, rotateX: 40, duration: 0.5, ease: "power2.in", stagger: 0.04 }, 4.6);
+        tl.to("#rule", { width: 0, duration: 0.5, ease: "power3.in" }, 4.8);
+        tl.to("#tag, #detail", { x: -60, opacity: 0, duration: 0.5, ease: "power2.in" }, 4.8);
+        // later fromTo MUST use immediateRender:false, or GSAP applies the "from" state at t=0 and the poster frame is empty
+        tl.fromTo(".ch", { y: 120, opacity: 0, rotateX: -50 }, { y: 0, opacity: 1, rotateX: 0, duration: 0.7, ease: "power4.out", stagger: 0.07, immediateRender: false }, 5.4);
+        tl.fromTo("#rule", { width: 0 }, { width: 520, duration: 0.8, ease: "power3.inOut", immediateRender: false }, 6.2);
+        tl.fromTo("#tag", { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", immediateRender: false }, 6.4);
+        tl.fromTo("#detail", { x: -60, opacity: 0 }, { x: 0, opacity: 0.8, duration: 0.6, ease: "power3.out", immediateRender: false }, 6.7);
+        window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>

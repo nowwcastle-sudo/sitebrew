@@ -1,0 +1,587 @@
+{
+  "id": "public",
+  "purpose": "국민이 목적별로 필요한 민원·정보에 빨리 닿게 한다. KRDS를 우선하되 14px 바닥은 지킨다.",
+  "coreTask": "① 메인에서 대표 민원 서비스(예: 증명서 발급 안내)까지 3클릭 이내. ② 글자 크기를 130%로 바꾼 뒤 같은 과업 — 가로 스크롤 0, 메뉴·검색·바로가기 작동. ③ 긴급 공지가 있으면 링크 1개를 따라가 상세 제목이 공지와 일치하는지 확인. ④ 키보드만으로 첫 Tab = 본문 바로가기 → 공식 배너 → 로고, 푸터 「개인정보 처리방침」까지 도달.",
+  "completion": "site",
+  "locales": [
+    "ko"
+  ],
+  "pages": [
+    {
+      "id": "main",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "hero",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-crosshair-quadrants",
+            "block-hero-identity-strip-banner",
+            "block-hero-illustration-scene",
+            "block-hero-map-first"
+          ],
+          "copySlots": [
+            {
+              "id": "title",
+              "role": "대표 정책 제목(HTML, 이미지에 굽지 않음)",
+              "maxChars": null
+            },
+            {
+              "id": "oneLiner",
+              "role": "한 줄 설명",
+              "maxChars": null
+            },
+            {
+              "id": "link",
+              "role": "바로가기 1개",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "background",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "quick-links",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "바로가기 링크 격자 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "자주 찾는 서비스",
+                "en": "Popular services"
+              },
+              "from": [
+                "quickLinks"
+              ],
+              "fields": {
+                "label": "label",
+                "href": "href"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "label",
+              "role": "목적별(해결·정보·참여·소식)·사용자 유형별 바로가기 레이블",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "icon",
+              "aspect": "1:1",
+              "source": "generated-ok"
+            }
+          ]
+        },
+        {
+          "kind": "policy-cards",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "정책 카드 — 본문",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "주요 정책",
+                "en": "Key policies"
+              },
+              "fields": {
+                "title": "slot:title",
+                "summary": "slot:desc",
+                "meta": [
+                  "slot:deadline"
+                ]
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "title",
+              "role": "제목",
+              "maxChars": null
+            },
+            {
+              "id": "desc",
+              "role": "짧은 설명",
+              "maxChars": null
+            },
+            {
+              "id": "deadline",
+              "role": "기한·최신 업데이트 레이블",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "big-search",
+          "required": false,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "큰 검색 칸 — 본문(검색 입력은 ui 부품)",
+            "missing": "검색 대상(검색 결과 쪽·검색 주소)이 콘텐츠에 없다 — 결과 없는 검색 칸을 그리지 않는다"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "service-categories",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "서비스 분류 링크 — 본문",
+            "missing": "서비스 분류 목록 칸이 콘텐츠 스키마에 없다"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "my-applications",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "로그인 뒤 내 신청 — 본문",
+            "missing": "로그인 뒤 내 신청 자료 — 제품 기능(launch-factory)이라 콘텐츠 칸이 없다"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "news-tabs",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "공지·보도·채용 탭 목록 — 본문",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "공지·소식",
+                "en": "Notices"
+              },
+              "from": [
+                "notices"
+              ],
+              "sort": "-date",
+              "limit": 8,
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date",
+                  "category",
+                  "department"
+                ],
+                "href": "url",
+                "external": "external"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "row",
+              "role": "날짜·분류·제목·담당 부서",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "agency-info",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "hours-location"
+          ],
+          "allowedVariants": [
+            "block-hours-location-hours-table-map-link"
+          ],
+          "copySlots": [
+            {
+              "id": "links",
+              "role": "콜센터·조직도·청사 안내·오시는 길",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "building",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "head-greeting",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "기관장 인사 — 본문",
+            "missing": "기관장 인사말 글 칸이 콘텐츠 스키마에 없다(사진 칸 head-portrait 만 있다)"
+          },
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "head-portrait",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sub",
+      "route": "/guide",
+      "sections": [
+        {
+          "kind": "breadcrumb",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "현재 위치 경로 — ui 부품",
+            "parts": [
+              "breadcrumb"
+            ],
+            "render": {
+              "as": "breadcrumb",
+              "heading": {
+                "ko": "현재 위치",
+                "en": "You are here"
+              },
+              "from": [
+                "@trail"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "side-menu",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "왼쪽 하위 메뉴 — ui 부품",
+            "parts": [
+              "navigation-menu"
+            ],
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "메뉴",
+                "en": "Menu"
+              },
+              "from": [
+                "@pages"
+              ],
+              "mode": "menu"
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "content",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "하위 쪽 본문",
+            "render": { "as": "prose", "heading": { "ko": "안내", "en": "Guide" }, "hideHeading": true, "from": ["subBody"] }
+          },
+          "copySlots": [
+            {
+              "id": "h1",
+              "role": "본문 제목",
+              "maxChars": null
+            },
+            {
+              "id": "meta",
+              "role": "날짜·담당 부서",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "in-page-nav",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 안 이동 — 본문 앵커",
+            "missing": "쪽 안 본문 구획(앵커) 자료가 없다 — 하위 쪽 본문이 없어 이을 곳이 없다"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "satisfaction",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "만족도 조사 — 본문 폼",
+            "missing": "만족도 조사를 받을 곳(폼 어댑터·제출 주소)이 콘텐츠에 없다"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "V1-policy-guide",
+      "order": [
+        "skip-link",
+        "official-banner",
+        "header",
+        "emergency-notice",
+        "hero",
+        "quick-links",
+        "policy-cards",
+        "news-tabs",
+        "agency-info",
+        "footer"
+      ],
+      "evidence": [
+        "KRDS 샘플 메인1-1(방문유형1)",
+        "하남시 웹어워드 2025 수상 사유(해결·정보·참여·소식 4분류를 최초 화면에)",
+        "관찰 부천시청"
+      ]
+    },
+    {
+      "id": "V2-personalized",
+      "order": [
+        "skip-link",
+        "official-banner",
+        "header",
+        "emergency-notice",
+        "my-applications",
+        "quick-links",
+        "news-tabs",
+        "footer"
+      ],
+      "evidence": [
+        "KRDS 방문 패턴(우수: 로그인 기반 개인화 바로가기)",
+        "KRDS 샘플 메인2-1"
+      ]
+    },
+    {
+      "id": "V3-search-first",
+      "order": [
+        "skip-link",
+        "official-banner",
+        "header",
+        "emergency-notice",
+        "big-search",
+        "service-categories",
+        "news-tabs",
+        "footer"
+      ],
+      "evidence": [
+        "KRDS 화면목록(검색 및 서비스 탐색 강화) — 검색 패턴 본문 확인 안 됨"
+      ]
+    },
+    {
+      "id": "sub-page",
+      "order": [
+        "header",
+        "breadcrumb",
+        "side-menu",
+        "content",
+        "in-page-nav",
+        "satisfaction",
+        "footer"
+      ],
+      "evidence": [
+        "KRDS 레이아웃(서브 페이지: 헤더–브레드크럼 24px, 사이드–본문 64px, 브레드크럼–h1 40px/모바일 32, 본문–푸터 64px/모바일 40)"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "skip-link",
+      "required": true,
+      "mustContain": [
+        "본문으로 건너뛰기"
+      ],
+      "evidence": [
+        "DESIGN §10-A",
+        "KRDS 공식 배너(배너보다 먼저)"
+      ]
+    },
+    {
+      "kind": "official-banner",
+      "required": true,
+      "mustContain": [
+        "이 누리집은 대한민국 공식 전자정부 누리집입니다."
+      ],
+      "condition": "공식 정부 서비스일 때만(중앙행정기관·지자체 필수, 공공기관 선택)",
+      "evidence": [
+        "pb-02"
+      ]
+    },
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "logo-top-left",
+        "utility(글자 크기·언어·로그인·관련 사이트)",
+        "search",
+        "main-menu",
+        "sitemap"
+      ],
+      "evidence": [
+        "pb-03",
+        "pb-04"
+      ]
+    },
+    {
+      "kind": "emergency-notice",
+      "required": true,
+      "mustContain": [
+        "severity-label",
+        "one-line",
+        "one-link"
+      ],
+      "condition": "자리는 늘 두고 평소엔 비움, 있을 때 하나만",
+      "evidence": [
+        "pb-09"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "logo",
+        "contact(주소·대표전화·민원전화·유료 여부·운영 시간)",
+        "utility-links",
+        "policy-links(「개인정보 처리방침」 강조·웹 접근성 정책)",
+        "copyright",
+        "agency-identifier(마지막)"
+      ],
+      "evidence": [
+        "pb-06",
+        "pb-07",
+        "pb-08"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "order": "① 기관이 직접 촬영한 현장·청사 사진 ② 공공누리 저작물(유형 마크·출처 표기, https://www.kogl.or.kr) ③ 기관 일러스트 가이드에 맞춘 일러스트",
+    "textInImages": "금지 — 홍보 배너 = HTML 제목·본문 + 배경 이미지",
+    "stockAndGenerated": "일반 스톡과 실제 장소·인물을 대신하는 AI 생성 이미지 금지",
+    "symbols": "정부 상징·기관 로고는 공식 배포 파일만, 변형 금지",
+    "people": "초상권 동의 확인된 것만",
+    "icons": "KRDS 아이콘 세트(크기·굵기 수치 확인 안 됨) 또는 §6 한 패밀리"
+  },
+  "contentSchemaHints": [
+    "decision: { krds_scope: { agencyType: central-main|central-service|public-institution|local-gov, level: standard|extended, officialBanner: bool, identifier: bool } } — 결정 기록 맨 위(pb-01)",
+    "notices[]: { date, category, title, department, url, external: bool }",
+    "emergency: { severity: 상|중|하, text, url, until } | null",
+    "tokens: KRDS 표준형 — breakpoints 360·768·1024·1280, columns 4·8·12·12, gutter 16·16·24·24, margin 16·24·24·24, maxWidth 1200",
+    "typography: Pretendard GOV 400·700(500), line-height 150%, 최소 14px(KRDS 13px 미사용)"
+  ],
+  "references": [
+    {
+      "url": "https://www.bucheon.go.kr/",
+      "why": "웹어워드 2025 지방자치기관분야 대상: 건너뛰기 링크 → 공식 배너 → 유틸리티(글자조절·언어) → 주메뉴 6개+검색+사이트맵 → 기관 바로가기 → 날짜·부서 붙은 소식 탭(자동 회전 팝업존·이미지 배너 문장은 반례)"
+    },
+    {
+      "url": "https://www.hanam.go.kr/",
+      "why": "웹어워드 2025 최우수상: 해결·정보·참여·소식 4분류를 최초 화면에 둔 점이 수상 사유(라이브 관찰 안 함)"
+    },
+    {
+      "url": "https://www.krds.go.kr/html/pattern/sample_main_01.html",
+      "why": "KRDS 공식 메인 샘플(방문유형 1~3 + 긴급공지) — 배너·헤더·푸터·식별자의 기준 구현"
+    },
+    {
+      "url": "https://www.i-award.or.kr/web/prize/2025/Awarded01.aspx",
+      "why": "2025 공공 부문 수상 목록 — 기관 대표 사이트와 재난포털을 함께 볼 입구(개별 사이트 관찰 안 함)"
+    },
+    {
+      "url": "https://design-system.service.gov.uk/styles/page-template/",
+      "why": "대조군: GOV.UK 페이지 골격 순서, USWDS 공식 배너·식별자(https://designsystem.digital.gov/components/banner/)"
+    }
+  ],
+  "legalRequirements": [
+    {
+      "basis": "KRDS 이용 안내(적용 대상) — 정부 표준, 법적 지위는 이 조사에서 확인 안 됨",
+      "appliesWhen": "중앙행정기관·공공기관·지방자치단체 누리집",
+      "requirement": "기관 유형별 KRDS 표준형·확장형 적용, 공식 배너·운영기관 식별자 필수 여부 판정",
+      "source": "https://www.krds.go.kr/html/site/utility/utility_07.html"
+    }
+  ],
+  "legal": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website"
+  },
+  "conversion": [
+    {
+      "event": "form_submit",
+      "match": {
+        "form": "contact"
+      }
+    }
+  ]
+}

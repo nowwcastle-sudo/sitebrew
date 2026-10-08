@@ -1,0 +1,13 @@
+{
+  "kind": "social-proof",
+  "variant": "rating-summary",
+  "title": "사회적 증거 — 평점 큰 숫자·막대 분포·후기 3개",
+  "layout": "rating-histogram",
+  "density": "comfortable",
+  "archetypes": ["local", "commerce", "detail", "landing"],
+  "archetypeKinds": ["reviews", "external-reviews", "social-proof"],
+  "states": [],
+  "media": [],
+  "motion": ["rise", "count-up"],
+  "notes": "왼쪽 기둥: 평균 별점 큰 숫자(세기) + 별 + 후기 수 + 5→1점 막대(Progress). 오른쪽: 대표 후기 카드. 375: 기둥 위, 후기 아래"
+}

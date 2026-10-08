@@ -1,0 +1,132 @@
+{
+ "predictions": [
+  {
+   "id": "board1:r1-measure",
+   "a": "r1-measure#A",
+   "b": "r1-measure#B",
+   "winner": "b",
+   "confidence": 0.8,
+   "reason": "board1:r6-civic·board1:r7-docs·board3:r6-civic — 색 논리 K1/K3 중립 A 대 K6 색 면 B 짝에서 운영자가 K6 B를 골랐고, ownerNote가 단순한 움직임을 반복해 탈락 사유로 들었는데 이 짝은 B가 svg-draw+clip-reveal로 움직임이 더 많고 진한 면이 있다"
+  },
+  {
+   "id": "board1:r10-console",
+   "a": "r10-console#A",
+   "b": "r10-console#B",
+   "winner": "b",
+   "confidence": 0.65,
+   "reason": "board3:r10-console·board3:r6-civic·board1:r7-docs — 운영자가 「움직임이 단순하다/아쉽다」를 반복해 탈락 사유로 적었고 모션이 더 강한 쪽(M2, 패널 clip-path 열림)을 고른 예시가 많다. 이 짝은 둘 다 K6이고 사진 구성이 같아 모션 단계가 갈림길인데 B(M2)가 A(M1)보다 강하다"
+  },
+  {
+   "id": "board1:r2-signal",
+   "a": "r2-signal#A",
+   "b": "r2-signal#B",
+   "winner": "b",
+   "confidence": 0.85,
+   "reason": "board2:r2-signal·board1:r6-civic·board1:r7-docs — 같은 레시피에서 운영자가 「움직임이 너무 단순하고 글자만 가득」인 A를 떨어뜨렸고, 이 짝의 A는 흰 바탕 K4·M0이라 움직임이 없고 글자만 있는 쪽이며 B는 K7 신호 빨강 큰 면·split-text 등장(M1)이다. 예시에서 K6 면이 큰 안(r6-civic B·r7-docs B)을 반복해 골랐다"
+  },
+  {
+   "id": "board1:r3-woodblock",
+   "a": "r3-woodblock#A",
+   "b": "r3-woodblock#B",
+   "winner": "b",
+   "confidence": 0.8,
+   "reason": "board1:r6-civic·board1:r7-docs·board3:r2-signal — 운영자는 A(K1·M0)보다 넓은 색 면과 M2를 가진 B를 반복해 골랐고(civic B K6, docs B K6), 「움직임이 너무 단순」(board3:r6-civic·board3:r10-console), 「글자만 가득」(board2:r2-signal) 같은 불만이 나왔다. 이 짝의 A는 M0이고 거대 글자가 가격 줄을 덮어 어수선한 반면 B는 큰 초록 면에 깔끔하고 M2다."
+  },
+  {
+   "id": "board1:r4-evidence",
+   "a": "r4-evidence#A",
+   "b": "r4-evidence#B",
+   "winner": "b",
+   "confidence": 0.65,
+   "reason": "board1:r6-civic·board1:r7-docs·board3:r6-civic — K1 중립 A vs 색 면이 있는 K6/K7 B 짝에서 운영자가 면이 있는 B를 골랐다(r6-civic K1→K6 b, r7-docs K3→K6 b). 이 짝의 B는 호박색 면 헤더와 svg-draw 역동이 더해져 A보다 움직임·색이 풍부하다. board2:r2-signal·board3:r10-console의 「움직임이 단순하다」 불만도 A 쪽(clip-reveal 하나)에 더 해당한다. 반대 증거는 board1:r8-dusk(K6 A가 K7 B를 이김)이나 이 짝은 K1 대 K7이라 그 경우와 다르다. 사진 두 장은 본문·표·카드가 같고 헤더 띠 색만 달라 차이가 작으므로 확신은 낮다."
+  },
+  {
+   "id": "board1:r5-celadon",
+   "a": "r5-celadon#A",
+   "b": "r5-celadon#B",
+   "winner": "b",
+   "confidence": 0.62,
+   "reason": "board1:r6-civic·board1:r7-docs·board3:r6-civic — 운영자가 K1 중립 안보다 K6 면이 깔리고 움직임이 더 있는 안을 반복해 골랐고(r6·r7 모두 K6 B 승, 「움직임이 너무 단순」 불만), 이 짝의 B가 청자 면+3D 기울임(M3)이라 그쪽이다. 반대 증거는 board2:r5-celadon(빈 공간·단순함을 이유로 B 탈락, A 승)이라 확신은 낮춘다. 사진상 A는 K1·여백 위주로 단순함, B는 면 색과 기울임으로 역동이 큼."
+  },
+  {
+   "id": "board1:r6-civic",
+   "a": "r6-civic#A",
+   "b": "r6-civic#B",
+   "winner": "b",
+   "confidence": 0.8,
+   "reason": "board1:r5-celadon·board1:r7-docs·board1:r8-dusk — 운영자가 K1 중립보다 K6 큰 색 면 안을 반복해 골랐고 이 짝은 b가 K6 파랑 면(사진에서도 첫 화면 상단이 옅은 파랑 면, a는 흰 바탕뿐)이다. board3:r6-civic — 「A안 움직임이 너무 단순」 「B안 깔끔해서 오히려 좋아」, b는 view-transition에 svg-draw를 더해 a보다 움직임이 풍부하다"
+  },
+  {
+   "id": "board1:r7-docs",
+   "a": "r7-docs#A",
+   "b": "r7-docs#B",
+   "winner": "b",
+   "confidence": 0.8,
+   "reason": "board1:r6-civic·board1:r5-celadon·board1:r8-dusk — 같은 문서·안내형 짝에서 운영자가 K1 중립보다 K6 색 면 안(r6 B, r5 B)을 골랐고 움직임이 너무 단순하다는 불만이 반복됐다(board3:r6-civic·board3:r10-console). 이 짝은 B가 K6 청록 면에 M2·view-transition, A는 K3 M0 정지라 B쪽이다"
+  },
+  {
+   "id": "board1:r8-dusk",
+   "a": "r8-dusk#A",
+   "b": "r8-dusk#B",
+   "winner": "a",
+   "confidence": 0.6,
+   "reason": "board1:r9-clay·board1:r5-celadon·board3:r2-signal — 모션 M3·역동 기법이 더 많은 안을 운영자가 반복해 골랐고(r9 A M3, r5 B M3), ownerNote 들도 「움직임이 너무 단순하다」를 탈락 사유로 든다. 이 짝은 A가 K6·M3·split-text+clip-reveal+sticky-stack, B는 M2·먹선 한 번이라 A가 더 강한 쪽이다. 두 안의 첫 화면 사진은 짙은 초록 면과 글 배치가 거의 같아 색·배치로는 갈리지 않는다(확신 낮춤). 반대 증거: board3:r8-dusk 는 b가 이겼으나 그 판의 a·b 내용이 이 묶음과 같은지 묶음에서 알 수 없다."
+  },
+  {
+   "id": "board1:r9-clay",
+   "a": "r9-clay#A",
+   "b": "r9-clay#B",
+   "winner": "a",
+   "confidence": 0.65,
+   "reason": "board2:r5-celadon·board3:r10-console·board2:r2-signal — 운영자가 움직임이 단순한 안을 반복해 탈락시켰고(「모션이 단순하다」), A는 split-text+tilt-3d+clip-reveal M3로 B(clip-reveal M2)보다 움직임이 풍부하다. board1:r8-dusk도 M3 안을 M2 안 대신 골랐다. 반대 근거는 board3:r6-civic(단순해도 깔끔한 B)이라 확신은 중간"
+  },
+  {
+   "id": "board2:r2-signal",
+   "a": "r2-signal#A",
+   "b": "r2-signal#B",
+   "winner": "b",
+   "confidence": 0.6,
+   "reason": "board3:r2-signal·board1:r6-civic·board1:r5-celadon — 같은 레시피를 B로 골랐고, 운영자가 면이 큰(K6~K8)·깔끔하고 움직임이 더 있는 안을 반복해 골랐다. 이 짝은 사진·설명이 없어 확신은 낮다. board2:r5-celadon만 A(B가 빈 공간 많고 단순해서)라서 0.6으로 둔다."
+  },
+  {
+   "id": "board2:r5-celadon",
+   "a": "r5-celadon#A",
+   "b": "r5-celadon#B",
+   "winner": "b",
+   "confidence": 0.7,
+   "reason": "board1:r5-celadon·board3:r6-civic·board2:r2-signal — 같은 레시피 1판에서 운영자가 청자 면(K6)·M3·3D 기울임의 B를 골랐고, 다른 레시피에서도 「움직임이 너무 단순하다」며 A를 탈락시키고 면이 크고 움직임이 더 있는 B를 반복해 골랐다. 이 짝은 사진·설명이 없어 확신은 낮춘다"
+  },
+  {
+   "id": "board3:r10-console",
+   "a": "r10-console#A",
+   "b": "r10-console#B",
+   "winner": "b",
+   "confidence": 0.55,
+   "reason": "board3:r6-civic·board3:r8-dusk·board3:r2-signal — 이 짝은 사진·설명이 없어 특징을 못 읽는다. 같은 판(board3) 예시 셋이 모두 더 단정하고 움직임·면이 갖춰진 B 쪽이었고, 대표 메모도 A의 단순한 움직임·글자만 가득한 배치를 탈락 사유로 들었다. 특징 근거가 약해 확신은 낮다"
+  },
+  {
+   "id": "board3:r2-signal",
+   "a": "r2-signal#A",
+   "b": "r2-signal#B",
+   "winner": "b",
+   "confidence": 0.6,
+   "reason": "board2:r2-signal·board3:r10-console·board3:r6-civic — 같은 레시피 예시에서 A의 단순한 움직임과 글자만 가득한 배치를 탈락 사유로 들었고, 3판 예시에서도 A가 「움직임이 단순」하다는 이유로 B가 이겼다. 이 짝은 사진·설명이 없어 글 근거가 약하므로 확신을 낮춘다"
+  },
+  {
+   "id": "board3:r6-civic",
+   "a": "r6-civic#A",
+   "b": "r6-civic#B",
+   "winner": "b",
+   "confidence": 0.55,
+   "reason": "board1:r6-civic·board3:r8-dusk·board3:r10-console — 사진 없음(글만 판단, 확신 낮음). 같은 레시피 board1에서 운영자가 K6 색 면+움직임 더한 안을 골랐고, board3에서는 움직임 단순한 안을 탈락시키고(r10) 실사·풍부한 움직임 안을 골랐다. 이 짝은 더 풍부한 쪽이 b일 것으로 본다"
+  },
+  {
+   "id": "board3:r8-dusk",
+   "a": "r8-dusk#A",
+   "b": "r8-dusk#B",
+   "winner": "b",
+   "confidence": 0.55,
+   "reason": "board3:r6-civic·board3:r10-console·board3:r2-signal — 같은 3판에서 운영자가 「움직임이 너무 단순하다」며 A를 버리고 B를 세 번 골랐다. 이 짝은 사진·설명 글이 없어 특징을 직접 못 봤고, board1:r8-dusk에서는 역동이 큰 A(M3)가 이겼지만 3판 예시 흐름을 따라 b로 낮은 확신 예측"
+  }
+ ]
+}

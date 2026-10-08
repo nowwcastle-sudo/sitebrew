@@ -1,0 +1,32 @@
+{
+  "name": "feature-email-resend",
+  "title": "메일 — Resend + React Email",
+  "description": "Resend 전송기(live)와 콘솔 출력(mock). 가입 환영·주문 확인·가격 변경 안내·해지 확인·계정 보안 메일 서식은 @launch-factory/email 이 갖는다.",
+  "npm": ["@launch-factory/email", "@launch-factory/env"],
+  "registryDependencies": [],
+  "envVars": [
+    "LF_MODE",
+    "RESEND_API_KEY",
+    "EMAIL_FROM",
+    "NEXT_PUBLIC_APP_URL",
+    "LF_BUSINESS_NAME",
+    "LF_BUSINESS_EMAIL",
+    "LF_BUSINESS_PHONE",
+    "LF_BUSINESS_ADDRESS"
+  ],
+  "files": [
+    "files/lib/launch/mailer.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts"
+  ],
+  "noEntrypointReason": "서버 전용 전송기다. 공개 서버 액션·경로로 열면 우리 도메인으로 아무에게나 메일을 보낼 수 있다. 다른 항목(인증·결제·문의)이 부른다.",
+  "docs": [
+    "설치 뒤 할 일",
+    "0. 설치 전에 앱 폴더 .npmrc 에 save-exact=true 를 적는다 — shadcn CLI 가 npm install 로 의존을 넣으므로 이 설정이 없으면 package.json 에 ^ 범위로 적혀 고정한 판에서 벗어난다.",
+    "1. @launch-factory/* 는 아직 npm 에 게시하지 않은 비공개 패키지다(게시는 운영자 몫). 설치가 실패하면 저장소의 packages/ 를 로컬 경로(file:)로 잇는다.",
+    "2. @launch-factory/* 는 TypeScript 원본을 내보낸다 — next.config.ts 의 transpilePackages 에 쓰는 패키지를 모두 적는다.",
+    "3. .env.local 에 이름이 추가됐다. 값은 Windows 사용자 환경 변수 또는 배포 환경에 넣는다. live 는 RESEND_API_KEY 와 Resend 에서 DNS 인증한 도메인의 EMAIL_FROM 이 필수다(운영자 할 일 O4). mock 은 키 없이 콘솔에 찍힌다.",
+    "4. lib/launch/config.ts 의 PRODUCT_NAME·DEFAULT_LOCALE 을 제품에 맞게 고친다.",
+    "5. 광고성 메일(G03): 광고성 템플릿(marketingAnnouncement)은 LF_BUSINESS_NAME·EMAIL·PHONE·ADDRESS 가 모두 있어야 보낸다(없으면 MarketingComplianceError — 법정 표시 없는 광고 메일은 보내지 않는다). 거래 메일은 영향이 없다. List-Unsubscribe 헤더가 DKIM 서명 대상(h=)에 들어가는지는 Resend 설정으로 확인한다(문서 확인 안 됨)."
+  ]
+}

@@ -1,0 +1,7 @@
+/* D3 키네틱 디스플레이 — 제목 10vw(44~192px). 처음 그릴 때(@starting-style) 넓은 자간·아래 0.12em·투명에서 1.1초 동안 제자리로 모인다(한 번, 반복 없음).
+ * 움직임은 모두 motion-safe 아래라 동작 줄이기(prefers-reduced-motion: reduce)에서는 transition·시작 모양이 없어 처음부터 최종 모양 그대로 정지한다. CSS 만 쓴다(키프레임·JS 없음).
+ * 호환(compat.json): 모션 M0 레시피 금지(움직임 없는 레시피에 키네틱 제목을 두지 않는다 — axisRecipeRules), dashboard·public 원형 제외.
+ * P3-2 Task 16a, 원천 styles.json proposals D(kinetic-typography). */
+.cn-display-title {
+  @apply text-[clamp(2.75rem,10vw,12rem)] leading-[0.95] tracking-[-0.02em] motion-safe:transition-[letter-spacing,opacity,translate] motion-safe:duration-[1100ms] motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:starting:translate-y-[0.12em] motion-safe:starting:tracking-[0.18em] motion-safe:starting:opacity-0;
+}

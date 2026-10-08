@@ -1,0 +1,39 @@
+/*
+ * factory-base — DESIGN.md 바닥 규칙. 부품이 아니라 페이지 전체에 걸리는 규칙이라 전역 CSS로 싣는다.
+ * §2 한국어 조판·본문 크기·행간, §7 포커스 표시, §7-B 고정 내비 스크롤 여백, §8-7 동작 줄이기.
+ * 검수대(app/globals.css)가 이 파일을 import 하고, gen-registry.mjs 가 이 파일을 읽어 factory-base 항목의 css 로 싣는다.
+ * keep-all 은 <html lang="ko"> 에서 걸린다.
+ */
+@layer base {
+  html:lang(ko), :lang(ko) { word-break: keep-all; overflow-wrap: anywhere; }
+  body { font-size: 1rem; line-height: 1.7; font-variant-numeric: tabular-nums; }
+  /* 파괴색 글자 7:1(대장 A171, 7a-run): 글자로 쓰이는 destructive 는 foreground 와 섞은 색 — 레시피 destructive 토큰은 배경에서 5~6.9:1 이라 본문 7:1 에 못 닿는다. 요소마다 자기 토큰으로 풀리도록 * 에 둔다(.dark 구역에서도 맞다). */
+  * { --wf-danger-text: color-mix(in oklch, var(--destructive) 40%, var(--foreground)); }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.2; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  /* 누르는 것은 두 번 눌러 확대를 기다리지 않는다(AI 티 G045). 이동·핀치 확대는 그대로 된다. */
+  button, a[href], [role="button"], summary, input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"], label { touch-action: manipulation; }
+  /* 상단 고정 내비가 포커스된 요소·앵커 목적지를 가리지 않게. 고정 내비에 data-sticky-nav 를 단다. */
+  /* 5rem = 헤더 축 값의 가장 낮은 바닥(H2 섬 24+48=72px, 768px 미만 한 줄 바 ≤ 64px) + 8px. site-shell 은 모든 폭에서 붙는다(P3-2 D4). */
+  html:has([data-sticky-nav]) { scroll-padding-top: 5rem; }
+  /* 동작 줄이기: 계산된 길이·지연을 접고, 모션 토큰 자체도 0 으로 접는다(Task 7 fix 1 — 리뷰 I7). getComputedStyle 로 토큰을 읽어
+   * element.animate()·rAF 에 넘기는 JS 연출도 0 을 받는다. 모든 요소(*)에 !important 로 두어 레시피가 [data-recipe]·:root 에 실은 값을 이긴다. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; scroll-behavior: auto !important; --duration-press: 0ms !important; --duration-hover: 0ms !important; --duration-popover: 0ms !important; --duration-enter: 0ms !important; --duration-sheet: 0ms !important; }
+  }
+}
+
+/*
+ * 인쇄(P3-2 Task 7a, 대장 A104): 예약 확인·영수증·약관을 종이나 PDF 로 남길 때 메뉴·배너·고정 바가 본문을 덮지 않게 한다.
+ * 셸 머리글·바닥글·배너·건너뛰기 링크, 하단 고정 바(bottom-tab), 상단 안내(announcement), 쿠키 띠(consent bottom-banner), 채팅·플로팅 버튼(data-print="hide"),
+ * 인쇄 버튼 자신을 숨기고, 글자는 검정·바탕은 흰색으로, 법정 페이지 링크(정책 줄)는 주소를 글자로 적는다. 화면 스타일은 건드리지 않는다.
+ */
+@media print {
+  [data-slot="site-shell-skip-link"], [data-slot="site-shell-banner"], [data-slot="site-shell-header"], [data-slot="site-shell-footer"],
+  [data-block^="bottom-tab-"], [data-block^="announcement-"], [data-block="consent-bottom-banner"], [data-print="hide"] { display: none !important; }
+  html, body, [data-slot="site-shell"] { background: #fff !important; color: #000 !important; }
+  [data-slot="site-shell-policy"] a[href]::after, main a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.875em; word-break: break-all; }
+  * { animation: none !important; transition: none !important; box-shadow: none !important; }
+  [data-enter] { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+  a, button { break-inside: avoid; }
+}

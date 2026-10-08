@@ -1,0 +1,59 @@
+{
+  "id": "overpass-com",
+  "archetype": "saas",
+  "sourceGallery": "httpster",
+  "url": "https://www.overpass.com/",
+  "structure": {
+    "hero": "좌우 분할: 왼쪽 흰 바탕에 밑줄 친 2문장 대형 헤드라인·설명·이메일+버튼, 오른쪽 파랑 면에 인물 사진과 속성 칩 3개, 노랑 원과 남색·분홍 블록이 겹침",
+    "sections": [
+      "내비(드롭다운 4·가격·구직 링크·로그인)",
+      "분할 히어로",
+      "인물 후기 슬라이더(남색·분홍 블록)",
+      "챗 플로팅"
+    ]
+  },
+  "type": {
+    "display": "가벼운 기하학 산세리프 약 70px, 줄마다 굵은 밑줄",
+    "body": "같은 계열 약 16px 회색",
+    "scale": "H1 약 70px·본문 약 16px·버튼 대문자 약 14px(1440)"
+  },
+  "colorLogic": "K8",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면만으로는 알 수 없다",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "이메일 입력 후 시작",
+    "후기 슬라이더 위·아래 버튼",
+    "우하단 채팅 플로팅",
+    "구직자용 별도 링크"
+  ],
+  "cta": {
+    "pattern": "이메일 칸 + 남색 알약 버튼(대문자), 모바일은 2버튼 세로 쌓기",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "좌우 분할로 왼쪽은 약속과 입력, 오른쪽은 사람 사진으로 읽는 순서를 둔다",
+    "파랑·노랑·분홍·남색 블록을 면적으로 위계를 두어 겹쳐 색 블록 구성을 만든다",
+    "사진 위에 이력서 같은 속성 칩을 띄워 제품 데이터를 시각화한다",
+    "헤드라인 각 줄에 밑줄을 그어 두 문장을 대구로 읽게 한다",
+    "모바일은 두 열을 세로로 쌓고 칩이 다음 구획 입구가 된다"
+  ]
+}

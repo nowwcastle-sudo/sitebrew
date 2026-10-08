@@ -1,0 +1,60 @@
+{
+  "id": "dashboard-simpleanalytics-com",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://dashboard.simpleanalytics.com/simpleanalytics.com",
+  "structure": {
+    "hero": "연하늘 머리띠와 탭, 큰 얇은 숫자 지표, 그 아래 영역 차트",
+    "sections": [
+      "머리띠(로고·로그인·가입)",
+      "탭(방문자·목표·이벤트·AI)",
+      "지표 4개와 기간 선택",
+      "방문 추이 영역 차트",
+      "유입·페이지 표",
+      "기기·국가·브라우저 막대 표"
+    ]
+  },
+  "type": {
+    "display": "가벼운 기하 산세리프 48px 지표 숫자",
+    "body": "같은 계열 14~16px",
+    "scale": "지표 48px, 표 제목 20px, 본문 15px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "기간 이전·다음 화살표",
+    "탭 4개 전환",
+    "차트 추세선·페이지뷰 체크",
+    "표별 검색 돋보기",
+    "실시간 방문 접기"
+  ],
+  "cta": {
+    "pattern": "가입 알약 버튼 + 로그인 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "큰 얇은 숫자와 작은 증감 알약을 한 쌍으로 둔다",
+    "청록 데이터 색과 산호색 가입 버튼을 나눠 역할을 분리한다",
+    "375에서는 지표가 3열 한 줄로 유지되고 실시간 숫자가 아래로 내려간다",
+    "표 행 수치 뒤에 연한 막대를 깔아 비율을 같이 보인다"
+  ]
+}

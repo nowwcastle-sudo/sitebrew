@@ -1,0 +1,13 @@
+{
+  "kind": "menu-price",
+  "variant": "board-columns",
+  "title": "메뉴·가격표 — 칠판식 두 열",
+  "layout": "board-two-column",
+  "density": "compact",
+  "archetypes": ["local"],
+  "archetypeKinds": ["menu-price"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "뒤집힌 면(글자색 바탕) 한 장에 분류 묶음이 두 열로 흐른다. 줄: 이름 …… 가격(점선 이음, 크기 선택이면 선택마다). 품절은 줄 긋기 + 「품절」. 아래 원산지 표시. 가격은 HTML 글자(data-numeric)"
+}

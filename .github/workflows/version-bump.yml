@@ -1,0 +1,60 @@
+name: version-bump
+
+# A change to the plugin that keeps the same version number never reaches installed copies (Claude Code updates a plugin only when its version goes up).
+# This check fails a pull request or push that changes any file of plugins/sitebrew/ (outside its .github/) without raising "version" in
+# plugins/sitebrew/.claude-plugin/plugin.json. It runs only when plugin files change, so the web-factory and launch-factory parts never wait for it.
+# It also runs ci/check-single-version.mjs: the plugin, the marketplace files and the npx package carry the same number as the rest of the repository.
+on:
+  pull_request:
+    paths:
+      - 'plugins/sitebrew/**'
+      - '.claude-plugin/**'
+      - '.agents/**'
+      - 'packages/create-sitebrew/package.json'
+      - 'ci/check-single-version.mjs'
+      - '.github/check-version-bump.mjs'
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/sitebrew/**'
+      - '.claude-plugin/**'
+      - '.agents/**'
+      - 'packages/create-sitebrew/package.json'
+      - 'ci/check-single-version.mjs'
+      - '.github/check-version-bump.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: version-bump-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  version-bump:
+    name: version-bump
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: one release number in every place
+        run: node ci/check-single-version.mjs
+      - name: version must go up when plugin files change
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            base="origin/$BASE_REF"
+          elif [ "$EVENT_NAME" = "push" ]; then
+            base="$BEFORE_SHA"
+          else
+            base="origin/main"
+          fi
+          node .github/check-version-bump.mjs --plugin plugins/sitebrew --base "$base"

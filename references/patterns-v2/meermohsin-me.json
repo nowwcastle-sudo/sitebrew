@@ -1,0 +1,57 @@
+{
+  "id": "meermohsin-me",
+  "archetype": "portfolio",
+  "sourceGallery": "awwwards",
+  "url": "https://www.meermohsin.me/",
+  "structure": {
+    "hero": "검은 화면 상단에서 붉은 빛이 번지는 로딩과 좌하단 눈금 로딩 바",
+    "sections": [
+      "붉은 전기 질감 로딩 화면",
+      "좌하단 눈금형 로딩 바",
+      "모바일 본 화면(로고 마크·햄버거·초대형 글자)",
+      "소개 두 줄과 직함 3줄(스토리텔러·UI/UX·3D 웹)"
+    ]
+  },
+  "type": {
+    "display": "가는 기하 산세리프 초대형 대문자(흰색), 일부가 화면 밖으로 잘림",
+    "body": "같은 산세리프 소형 소개문",
+    "scale": "초대형 단어, 직함 중형, 소개문 소형"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 데스크톱은 로딩 상태라 본 화면은 모바일로만 확인"
+  },
+  "interaction": [
+    "로딩 바",
+    "햄버거 메뉴(모바일)",
+    "로고 마크"
+  ],
+  "cta": {
+    "pattern": "캡처에서 CTA 확인 안 됨",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.6
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "붉은 전기 질감 로딩으로 대기 시간을 분위기로 채운다",
+    "초대형 가는 대문자가 화면 밖으로 잘리는 구도로 긴장을 만든다",
+    "직함을 세 줄 우측 정렬로 나열해 한눈에 역할을 읽게 한다",
+    "로딩 화면만 첫 화면으로 잡힐 위험이 있어 로딩 단축이 필요하다"
+  ]
+}

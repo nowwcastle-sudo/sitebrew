@@ -1,0 +1,67 @@
+{
+  "_comment": "CI·로컬 관문이 받는 단일 실행 파일. 도구마다 targets 에 linux-x64(CI 러너)와 win32-x64(이 PC 같은 Windows) 두 대상의 주소·sha256·압축 형식을 고정하고, 받은 뒤 해시를 맞춰 본다 — 해시가 다르면 실행하지 않는다. sha256 은 릴리스 쪽 checksums 파일(gitleaks·actionlint·osv-scanner)과 GitHub 릴리스 API 의 asset digest 두 곳이 같은 값이다. zizmor 는 checksums 파일이 없어 API digest 한 곳뿐이다(linux 2026-10-05, win32 2026-10-09; 받은 파일의 해시는 fetchTool 이 다시 맞춘다). Windows 값은 2026-10-09 에 같은 방식으로 두 곳을 대조했다. 올리려면 version 과 대상별 url·sha256 을 같이 바꾸고 scripts/ci/selftest-tools.mjs 가 통과하는지 본다.",
+  "gitleaks": {
+    "version": "8.30.1",
+    "bin": "gitleaks",
+    "targets": {
+      "linux-x64": {
+        "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz",
+        "sha256": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb",
+        "archive": "tar.gz"
+      },
+      "win32-x64": {
+        "url": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip",
+        "sha256": "d29144deff3a68aa93ced33dddf84b7fdc26070add4aa0f4513094c8332afc4e",
+        "archive": "zip"
+      }
+    }
+  },
+  "actionlint": {
+    "version": "1.7.12",
+    "bin": "actionlint",
+    "targets": {
+      "linux-x64": {
+        "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz",
+        "sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+        "archive": "tar.gz"
+      },
+      "win32-x64": {
+        "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_windows_amd64.zip",
+        "sha256": "6e7241b51e6817ea6a047693d8e6fed13b31819c9a0dd6c5a726e1592d22f6e9",
+        "archive": "zip"
+      }
+    }
+  },
+  "zizmor": {
+    "version": "1.30.1",
+    "bin": "zizmor",
+    "targets": {
+      "linux-x64": {
+        "url": "https://github.com/zizmorcore/zizmor/releases/download/v1.30.1/zizmor-x86_64-unknown-linux-gnu.tar.gz",
+        "sha256": "e65324f4430c2717591937edcec90ccbefaf14c174f8ec9415e03ca875b46e1a",
+        "archive": "tar.gz"
+      },
+      "win32-x64": {
+        "url": "https://github.com/zizmorcore/zizmor/releases/download/v1.30.1/zizmor-x86_64-pc-windows-msvc.zip",
+        "sha256": "b183b1e996eddfab9659f1e9b46e059f1ef1cf984a1f14e5da09f7876a4b3a1c",
+        "archive": "zip"
+      }
+    }
+  },
+  "osv-scanner": {
+    "version": "2.6.0",
+    "bin": "osv-scanner",
+    "targets": {
+      "linux-x64": {
+        "url": "https://github.com/google/osv-scanner/releases/download/v2.6.0/osv-scanner_linux_amd64",
+        "sha256": "ca69b3d3cd08f889a49dc0a383122f71cc528b83803671df5fd874d97485b108",
+        "archive": "raw"
+      },
+      "win32-x64": {
+        "url": "https://github.com/google/osv-scanner/releases/download/v2.6.0/osv-scanner_windows_amd64.exe",
+        "sha256": "e0ed7644118b717b028c249ee9d3515024e55e8510747ca08906eb96765354d6",
+        "archive": "raw"
+      }
+    }
+  }
+}

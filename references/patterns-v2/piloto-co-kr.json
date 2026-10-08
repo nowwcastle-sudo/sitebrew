@@ -1,0 +1,57 @@
+{
+  "id": "piloto-co-kr",
+  "archetype": "commerce",
+  "sourceGallery": "webaward-kr",
+  "url": "https://piloto.co.kr/shop/main?",
+  "structure": {
+    "hero": "어두운 풀스크린 영상 위에 휴무 안내 모달이 뜬 첫 화면",
+    "sections": [
+      "투명 헤더(로고·내비 8개·검색·로그인·장바구니)",
+      "풀스크린 영상 히어로",
+      "휴무 안내 팝업(달력)",
+      "우측 세로 점 내비게이션",
+      "세로 라벨(스타일링 스크롤)"
+    ]
+  },
+  "type": {
+    "display": "굵은 한글 고딕 팝업 제목과 세리프 이탤릭 보조",
+    "body": "한글 고딕 본문",
+    "scale": "팝업 제목 중간, 내비는 작은 중간 굵기"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "팝업 오늘 하루 보지 않기·닫기",
+    "우측 점 내비로 풀페이지 섹션 이동",
+    "검색·장바구니 아이콘"
+  ],
+  "cta": {
+    "pattern": "팝업 하단 반반 버튼(오늘 하루 보지 않기·닫기)",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.5
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "공지 팝업을 달력 시각화로 만들어 휴무일을 한눈에 전달",
+    "풀페이지 섹션 점 내비와 세로 라벨은 스크롤 서사형 몰의 신호",
+    "팝업이 제품을 가린다. 공지는 띠나 작은 카드가 낫다",
+    "어두운 단색 톤 영상으로 프리미엄 주방·욕실 브랜드 분위기를 낸다"
+  ]
+}

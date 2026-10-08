@@ -1,0 +1,13 @@
+{
+  "kind": "product-list",
+  "variant": "grid-cards",
+  "title": "상품 목록 — 카드 격자",
+  "layout": "card-grid",
+  "density": "comfortable",
+  "archetypes": ["commerce", "brand", "local"],
+  "archetypeKinds": ["product-grid", "categories", "new-arrivals", "curated"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": ["product-thumb"],
+  "motion": ["rise"],
+  "notes": "[FV1 5.9] 카드 li 에 data-filter-item·data-filter-category(상품 분류)·data-sort-price — filter-bar 가 주소 쿼리(?category=…&sort=price-asc)로 거르고 정렬한다. 2 → 3 → 4열 카드(정사각 사진·상품명 h3 링크·할인율·판매가·정가·단위 가격 data-numeric) + 결과 수. loading 같은 격자 뼈대(높이 고정), empty 안내 + 행동, error 메시지 + 다시 시도"
+}

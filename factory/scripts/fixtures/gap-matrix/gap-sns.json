@@ -1,0 +1,53 @@
+[
+  {
+    "id": "fx-sns-gap",
+    "topic": "motion",
+    "theme": "스크롤 연동 연출을 쉽게 켜는 방법을 묻는 글이 많다",
+    "type": "request",
+    "evidence": {
+      "mentions": 120,
+      "ko": 100,
+      "en": 20,
+      "pointers": [
+        "https://example.com/a"
+      ]
+    },
+    "coverage": "no",
+    "coverageEvidence": [
+      "확인한 파일 없음"
+    ],
+    "proposal": {
+      "kind": "motion",
+      "summary": "스크롤 연출 프리셋 하나를 키트에 더한다"
+    },
+    "archetypes": [
+      "brand",
+      "saas"
+    ],
+    "goldenImpact": false
+  },
+  {
+    "id": "fx-sns-covered",
+    "topic": "seo",
+    "theme": "제목 태그와 메타 설명 길이를 묻는 글",
+    "type": "how-to",
+    "evidence": {
+      "mentions": 300,
+      "ko": 200,
+      "en": 100,
+      "pointers": []
+    },
+    "coverage": "yes",
+    "coverageEvidence": [
+      "registry/factory/ax/seo-meta.ts"
+    ],
+    "proposal": {
+      "kind": "doc",
+      "summary": "이미 있다 — 빈틈 아님"
+    },
+    "archetypes": [
+      "brand"
+    ],
+    "goldenImpact": false
+  }
+]

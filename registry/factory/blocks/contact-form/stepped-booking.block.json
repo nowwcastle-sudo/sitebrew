@@ -1,0 +1,13 @@
+{
+  "kind": "contact-form",
+  "variant": "stepped-booking",
+  "title": "예약 폼 — 날짜 → 시간 → 정보 단계",
+  "layout": "stepper",
+  "density": "spacious",
+  "archetypes": ["local", "pwa"],
+  "archetypeKinds": ["bookable-item", "contact-cta"],
+  "states": ["submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "위 단계 줄(aria-current=step) + 한 단계씩: 날짜 칩 격자 → 시간 칩 격자(진짜 라디오, 마감 비활성) → 이름·연락처·요청. 모든 단계를 한 폼에 두고 지금 단계만 보인다(값 보존). 서버 필드 오류가 앞 단계면 그 단계로 돌아가 첫 오류 칸 포커스"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "bottom-tab",
+  "variant": "icon-tabs",
+  "title": "하단 탭 — 아이콘 + 이름 탭 4~5개 고정",
+  "layout": "icon-tabs",
+  "density": "compact",
+  "archetypes": ["pwa", "commerce"],
+  "archetypeKinds": ["bottom-tab-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "화면 아래 고정 줄에 같은 폭 탭(아이콘 위, 이름 아래 — 이름 14px 이상, 탭 높이 56px). 현재 탭은 윗선 + 아이콘 주색 + aria-current. 768 이상은 가운데 떠 있는 줄(최대 32rem). 줄 높이만큼 제자리 빈 칸 + 문서 --bottom-bar-height·scroll-padding-bottom, 안전 영역 여백"
+}

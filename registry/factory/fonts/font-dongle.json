@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-dongle",
+  "type": "registry:font",
+  "title": "Dongle",
+  "description": "web-factory 폰트 키트: Dongle (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Dongle', sans-serif",
+    "provider": "google",
+    "import": "Dongle",
+    "variable": "--font-dongle-wf",
+    "weight": [
+      "300",
+      "400",
+      "700"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/dongle"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/dongle/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Dongle",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

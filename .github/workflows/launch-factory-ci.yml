@@ -1,0 +1,111 @@
+# CI. 로컬 병합 관문과 같은 명령 한 줄이다 — `npm run ci:verify`(scripts/ci/verify.mjs). 컨트롤러가 병합 전에 같은 명령을 로컬에서 돌린다.
+# 비밀값 없이 통과해야 한다: 실제 공급자(Paddle 샌드박스·Resend·PostHog·Supabase)를 부르는 시험은 수동으로만 돈다.
+# 보안 도구(actionlint·zizmor·gitleaks·osv-scanner)는 이 작업이 고정판을 받아(sha256 확인) 쓴다 — 이 PC 에 설치하지 않는다. 고정 목록은 scripts/ci/tools.json.
+# 문서만 바뀐 푸시·PR 은 건너뛴다(paths-ignore). 분 수: 무료 한도 월 2,000분(비공개) — 한 번에 청구 10분(verify 5 + build-smoke 5, 작업별 올림 — docs/qa/vr-phase2.md §5).
+name: launch-factory CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "launch-factory/**"
+      - "!launch-factory/docs/**"
+      - "!launch-factory/**/*.md"
+      - "registry/factory/contract/**"
+      - "registry/factory/lib/retention-offer.ts"
+      - "registry/factory/**"
+      - "factory/qa/**"
+      - ".github/workflows/launch-factory-ci.yml"
+  pull_request:
+    paths:
+      - "launch-factory/**"
+      - "!launch-factory/docs/**"
+      - "!launch-factory/**/*.md"
+      - "registry/factory/contract/**"
+      - "registry/factory/lib/retention-offer.ts"
+      - "registry/factory/**"
+      - "factory/qa/**"
+      - ".github/workflows/launch-factory-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: launch-factory
+
+concurrency:
+  group: launch-factory-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      # 전체 이력을 받는다: gitleaks 가 이번에 올린 커밋 범위를 훑는다. 토큰은 체크아웃 뒤 남기지 않는다.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: launch-factory/.nvmrc
+          cache: npm
+          cache-dependency-path: launch-factory/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Fetch pinned security tools (sha256 verified)
+        run: node scripts/ci/tools.mjs fetch
+
+      # lint · ux-static · typecheck · 단위 시험 · 건너뜀 래칫 · contract/template/registry · env-check · 한글 리터럴 ·
+      # actionlint · zizmor · gitleaks(트리+범위) · osv-scanner · 도구 양성 대조 — 단계별 결과는 마지막 요약 표와 Job summary 에 남는다.
+      # 빌드 스모크(smoke 단계)는 아래 build-smoke 작업이 따로 돈다 — 로컬 ci:verify 는 둘을 한 번에 돈다.
+      - name: ci:verify
+        env:
+          LF_CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: npm run ci:verify -- --skip smoke
+
+  # 빌드 스모크(LFSMOKE): 실제로 빌드해 `next start` 로 띄우고 Playwright 로 본다 — mock 장면 × 쪽 200·오류 경계·axe(경고) + live 켜짐(필수 이름만 가짜 값).
+  # verify 가 통과한 뒤에만 돈다(깨진 PR 이 브라우저 설치·빌드 분을 또 쓰지 않게). 실패하면 보고서·추적(trace)을 artifact 로 올린다. 분 수 실측은 docs/qa/vr-phase2.md.
+  build-smoke:
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: launch-factory/.nvmrc
+          cache: npm
+          cache-dependency-path: launch-factory/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Install browser (Playwright chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: build-smoke
+        run: npm run ci:verify -- --only smoke
+
+      - name: Upload smoke report and traces
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: smoke-report
+          path: launch-factory/template/.tmp/smoke
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: ignore

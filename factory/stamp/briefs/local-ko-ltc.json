@@ -1,0 +1,21 @@
+{
+  "topic": "동네 주야간보호센터 소개와 상담 예약 홈페이지",
+  "archetype": "local",
+  "locale": "ko",
+  "facts": {
+    "name": "해든 주야간보호센터",
+    "legalName": "사회복지법인 해든",
+    "representative": "박서연",
+    "phone": "02-1234-5678",
+    "address": "서울특별시 마포구 월드컵로 120, 2층",
+    "hours": "월-금 08:30-18:00, 토 09:00-13:00, 일·공휴일 휴무",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "booking": "상담은 전화나 카카오톡 채널로 예약해요",
+    "transit": "월드컵경기장역 2번 출구에서 걸어서 7분",
+    "parking": "건물 뒤편에 주차 3대, 송영 차량 운행",
+    "notice": "이달 어르신 나들이는 셋째 주 수요일에 다녀와요",
+    "naverMapUrl": "https://map.naver.com/p/entry/place/1234567890",
+    "kakaoMapUrl": "https://place.map.kakao.com/1234567890"
+  }
+}

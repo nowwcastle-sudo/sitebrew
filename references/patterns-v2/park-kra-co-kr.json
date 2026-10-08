@@ -1,0 +1,59 @@
+{
+  "id": "park-kra-co-kr",
+  "archetype": "local",
+  "sourceGallery": "webaward-kr",
+  "url": "https://park.kra.co.kr/intro",
+  "structure": {
+    "hero": "렛츠런파크 지점 네 곳을 세로 4분할 사진 패널로 고르게 하고, 아래 검은 띠에 공지 세 건을 놓은 첫 화면",
+    "sections": [
+      "공원 이름 제목",
+      "지점 선택 4분할 패널(서울·부산경남·제주·영천)",
+      "공지사항 목록 3건(분류·제목·날짜)",
+      "목록 펼침 화살표"
+    ]
+  },
+  "type": {
+    "display": "얇은 한글 고딕 큰 지점명",
+    "body": "한글 고딕 보통",
+    "scale": "지점명 약 56px, 공지 약 16px"
+  },
+  "colorLogic": "K8",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "4개 지점 패널 선택",
+    "공지 목록 펼치기",
+    "모바일 지점 막대 오른쪽 화살표"
+  ],
+  "cta": {
+    "pattern": "지점 패널 네 개(선택이 곧 진입)",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "local",
+      "public"
+    ],
+    "score": 0.7
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "지점이 여러 곳이라 첫 화면이 지점 선택 하나다.",
+    "지점마다 실사 사진을 크게 깔아 이름만으로 고르지 않게 한다.",
+    "화면 아래 검은 띠에 최근 공지 세 건을 날짜와 함께 둔다.",
+    "모바일은 패널이 세로 막대 넷으로 쌓이고 왼쪽 색 줄이 파랑·초록·빨강·보라로 구분된다.",
+    "공지 제목은 한 줄로 말줄임 처리한다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

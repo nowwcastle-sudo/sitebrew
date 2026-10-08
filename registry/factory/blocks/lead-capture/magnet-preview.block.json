@@ -1,0 +1,14 @@
+{
+  "kind": "lead-capture",
+  "variant": "magnet-preview",
+  "title": "자료 미리 보기 + 이메일 — 받을 것(표지·목차·분량)을 먼저, 이메일 하나",
+  "layout": "preview-plus-email",
+  "density": "comfortable",
+  "archetypes": [ "saas", "brand", "local", "portfolio", "landing" ],
+  "archetypeKinds": [ "lead-magnet", "lead-capture" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [ "magnet-cover" ],
+  "motion": [ "rise" ],
+  "rules": [ "A4", "A7", "L2", "O2", "X1", "M1" ],
+  "notes": "왼쪽 자료 판(data-magnet-preview): 표지(비율 자리) · 자료 이름 · 형식·분량 · 담긴 것 목록. 오른쪽 h2·설명 + 페이지 안 폼(A4): 이메일(필수) · 이름(선택) · 선택 동의 체크(data-consent=optional, 해제로 시작 — L2) · 쓰임 고지 · 보내기 · 도착 시점(data-arrival — A7). 칸 검사는 떠날 때(port-form, O2). 성공이면 폼 자리에 보낸 곳 알림. 폼 블록: submit({ email, name?, marketing }). 계측(선택): form_start·form_submit·form_error(칸 이름만)"
+}

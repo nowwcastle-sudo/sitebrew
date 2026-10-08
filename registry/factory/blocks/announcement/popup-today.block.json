@@ -1,0 +1,13 @@
+{
+  "kind": "announcement",
+  "variant": "popup-today",
+  "title": "창 공지 — 오늘 하루 보지 않기(기기 저장만)·비모달·닫기 단추가 처음 초점",
+  "layout": "corner-window",
+  "density": "comfortable",
+  "archetypes": ["local", "commerce", "brand", "portfolio"],
+  "archetypeKinds": ["popup", "announcement"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "비모달 창(role=dialog, aria-modal 없음, 가림 막 없음): 넓은 화면은 오른쪽 아래 카드, 좁은 화면은 아래 판 — 화면의 3분의 1 아래라 첫 화면 행동을 막지 않는다. 하이드레이션 뒤 기억을 읽고 나서 나타난다. 닫는 길: 닫기 단추(이번 방문 동안 — 세션 기억)·「오늘 하루 보지 않기」(오늘 날짜를 이 기기 localStorage 에만 적는다 — 서버로 보내지 않는다)·Esc. 닫기 단추가 창 안 첫 눌리는 요소이고, 창이 뜰 때 초점이 body 면 닫기 단추가 처음 초점을 받는다(이미 다른 곳에서 작업 중이면 빼앗지 않는다). endsAt 필수(끝나면 안 그린다). 거절과 권하는 행동은 대등(choice-pair). 계측(선택): cta_click"
+}

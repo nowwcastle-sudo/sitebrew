@@ -1,0 +1,21 @@
+{
+  "topic": "A waitlist for a pocket-sized habit tracker app launching soon (fictional business — example)",
+  "archetype": "landing",
+  "locale": "en",
+  "facts": {
+    "name": "Pocketstreak",
+    "legalName": "Pocketstreak Labs Ltd.",
+    "representative": "Casey Moon",
+    "email": "hello@example.com",
+    "claim": "A habit tracker that fits on one screen, reminds you once, then gets out of the way",
+    "howItWorks": "Join the waitlist, get an invite when your spot opens, install and start your first habit in a minute",
+    "address": "12 Example Street, Seoul",
+    "phone": "+82-2-1234-5678",
+    "audience": "People who want a lighter way to build habits",
+    "action": "Join the waitlist",
+    "mood": "light",
+    "bizNo": "123-45-67890",
+    "faq": "Is the waitlist free? | Yes, joining costs nothing ; When will I get an invite? | Invites go out in the order people joined ; Which phones will it run on? | It will run on the phone browser first"
+  },
+  "seed": 3
+}

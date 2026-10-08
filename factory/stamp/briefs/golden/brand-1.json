@@ -1,0 +1,44 @@
+{
+  "topic": "한옥 스테이·찻집 「솔결재」 브랜드 소개 사이트 — 이야기·소식·채용 (가상 사업체 — 예시)",
+  "archetype": "brand",
+  "locale": "ko",
+  "conditions": [
+    "heritage"
+  ],
+  "facts": {
+    "name": "솔결재",
+    "legalName": "주식회사 솔결재",
+    "representative": "윤도현",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "address": "전북특별자치도 전주시 완산구 예시로 45",
+    "phone": "063-123-4567",
+    "founded": "2019년 문을 열었어요",
+    "story": "백 년 된 한옥을 고쳐 찻집과 하룻밤 머무는 방을 열었어요",
+    "scale": "한옥 방 4칸과 찻집 한 곳을 운영해요",
+    "claim": "직접 덖은 차를 마루에서 내어 드려요",
+    "awards": "2024 한옥 보존 우수 업장",
+    "notice": "이달 가을 찻자리 예약을 받고 있어요",
+    "news": "2026-09-03 가을 찻자리 예약을 시작했어요 https://example.com/news/autumn-tea ; 2026-05-02 마루 찻집에 여름 차 메뉴가 나왔어요 https://example.com/news/summer-menu ; 2024-11-20 한옥 보존 우수 업장에 선정됐어요 https://example.com/news/preservation-award",
+    "history": "2018 백 년 된 한옥을 사서 고치기 시작했어요 ; 2019 마루 찻집 문을 열었어요 ; 2022 하룻밤 머무는 방 4칸을 열었어요 ; 2024 한옥 보존 우수 업장에 선정됐어요",
+    "leaders": "윤도현 | 대표 | 한옥 보존 설계를 15년 했고 찻집 운영을 맡아요 ; 이서윤 | 찻집 총괄 | 차 소믈리에 자격을 갖고 덖음차를 골라요",
+    "reports": "2025 지속가능성 보고서: 차 찌꺼기 퇴비화와 한옥 에너지 사용 기록 | 12쪽 | 1.8MB | https://example.com/reports/2025-sustainability.pdf",
+    "careersUrl": "https://example.com/careers",
+    "audience": "한옥 여행과 전통 차를 좋아하는 30~50대 여행객과 지역 주민",
+    "action": "찻자리나 하룻밤 방을 예약 문의하기",
+    "mood": "차분한"
+  },
+  "brand": {
+    "colors": [
+      "#1F6B4A",
+      "#F4EFE3",
+      "#2B2B2B"
+    ],
+    "fonts": [
+      "Gowun Batang",
+      "Pretendard"
+    ],
+    "logo": "assets/solgyeol-mark.svg"
+  },
+  "seed": 1
+}

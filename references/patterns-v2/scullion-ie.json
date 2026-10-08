@@ -1,0 +1,61 @@
+{
+  "id": "scullion-ie",
+  "archetype": "portfolio",
+  "sourceGallery": "siteinspire",
+  "url": "https://scullion.ie/",
+  "structure": {
+    "hero": "화면 반은 건축 사진 전면, 반은 색 면 위 작은 사진",
+    "sections": [
+      "좌우 분할 슬라이드(전면 사진 + 색 면 안 작은 사진)",
+      "우하단 MENU 텍스트 하나",
+      "모바일 상단 초대형 SCULLION 워드마크",
+      "로딩 흰 화면"
+    ]
+  },
+  "type": {
+    "display": "라이트 웨이트 네오그로테스크 대문자 워드마크(모바일)",
+    "body": "같은 서체 소형 MENU",
+    "scale": "워드마크만 대형, 나머지 극소형"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": "흰 화면이 약 0.25초 보인 뒤 사진과 색 면이 약 0.25초 만에 함께 페이드인",
+    "scroll": null,
+    "hover": null,
+    "transition": "약 2.5초 보이고 약 0.5초 교차 페이드로 다음 쌍으로 바뀌며 색 면이 적갈색에서 올리브로 바뀜",
+    "durationsMs": [
+      250,
+      250,
+      2500,
+      500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "구성 전환 두 번 관찰, 4fps 추정"
+  },
+  "interaction": [
+    "MENU 텍스트 링크",
+    "슬라이드 자동 교체"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, MENU만",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "사진과 색 면을 반반 나눠 면 색을 슬라이드마다 바꾼다",
+    "작은 사진을 색 면 가운데 두어 전면 사진과 크기 대비를 만든다",
+    "메뉴를 모서리 텍스트 하나로 줄여 첫 화면을 사진에 내준다",
+    "모바일은 분할을 풀고 초대형 워드마크를 상단에 올려 위계를 바꾼다"
+  ]
+}

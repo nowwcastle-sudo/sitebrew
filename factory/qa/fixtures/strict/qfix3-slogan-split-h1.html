@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QFIX3 — 쪼갠 글자 H1 구호 (음성 대조)</title>
+<style>
+  html, body { margin: 0; font-family: system-ui, sans-serif; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  main { padding: 24px; min-height: 300vh; }
+</style>
+</head>
+<body>
+  <nav aria-label="주 메뉴"><a href="/">홈</a></nav>
+  <main>
+    <!-- 구호는 접근 이름으로 읽어도 「무엇을 하는지」 문장이 아니다 — 고쳐도 이 쪽은 계속 실패해야 한다 -->
+    <h1><span class="sr-only">내일을 바꾸는 새로운 시작</span><span aria-hidden="true">내일을 바꾸는 새로운 시작</span></h1>
+  </main>
+</body>
+</html>

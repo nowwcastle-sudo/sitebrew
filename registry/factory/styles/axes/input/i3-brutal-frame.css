@@ -1,0 +1,17 @@
+/* I3 단단한 틀(브루탈) — 0 계열. 모서리 0, 2px 틀, 투명 바탕, 48px. 고정폭 글꼴은 숫자 입력(inputmode decimal·numeric, type number·tel)에만 — 한글 이름·메모·선택지는 본문 서체(T7-I1). 틀 색은 --input(브루탈 레시피는 잉크색으로 둔다).
+ * 반투명 없음. 원천 style_axes.md 축 2. */
+.cn-input {
+  @apply h-12 rounded-none border-2 bg-transparent px-3 py-1 text-base tabular-nums md:text-sm [&[inputmode=decimal]]:font-mono [&[inputmode=numeric]]:font-mono [&[type=number]]:font-mono [&[type=tel]]:font-mono file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-semibold dark:bg-transparent;
+}
+.cn-textarea {
+  @apply min-h-28 rounded-none border-2 bg-transparent px-3 py-2.5 text-base md:text-sm dark:bg-transparent;
+}
+.cn-native-select {
+  @apply h-12 rounded-none border-2 bg-transparent py-1 pe-9 ps-3 text-base md:text-sm data-[size=sm]:h-10 data-[size=sm]:rounded-none data-[size=sm]:py-0.5 dark:bg-transparent;
+}
+.cn-select-trigger {
+  @apply gap-2 rounded-none border-2 bg-transparent py-2 pe-2.5 ps-3 text-base md:text-sm data-[size=default]:h-12 data-[size=sm]:h-10 data-[size=sm]:rounded-none *:data-[slot=select-value]:gap-1.5 dark:bg-transparent [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-input-group {
+  @apply h-12 rounded-none border-2 bg-transparent dark:bg-transparent has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pe-1.5 has-[>[data-align=inline-start]]:[&>input]:ps-1.5;
+}

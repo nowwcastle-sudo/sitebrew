@@ -1,0 +1,13 @@
+{
+  "kind": "footer",
+  "variant": "compact-strip",
+  "title": "푸터 — 작은 사이트의 한 줄 띠 + 사업자 정보 한 문단",
+  "layout": "compact-strip",
+  "density": "compact",
+  "archetypes": ["local", "portfolio", "brand", "pwa", "landing"],
+  "archetypeKinds": ["footer", "korean-business-info"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "한 줄: 워드마크 · 링크 몇 개 · 저작권(양끝 정렬). 아래: 사업자 정보 법정 항목 전부가 「이름 값」 흐름 한 문단, 정책 링크 줄. 375: 첫 줄이 쌓인다"
+}

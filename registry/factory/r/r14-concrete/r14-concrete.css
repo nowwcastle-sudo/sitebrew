@@ -1,0 +1,90 @@
+/* 생성물 — factory/scripts/recipe.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* 콘크리트 두 모드(r14-concrete) 순수 CSS 변수 — shadcn 없이 단일 HTML 에 붙인다. 원천: registry/factory/recipes/r14-concrete/DESIGN.md */
+:root {
+  --background: oklch(0.9620 0.0040 95.00);
+  --foreground: oklch(0.1400 0.0000 0.00);
+  --card: oklch(0.9880 0.0020 95.00);
+  --card-foreground: oklch(0.1400 0.0000 0.00);
+  --popover: oklch(0.9880 0.0020 95.00);
+  --popover-foreground: oklch(0.1400 0.0000 0.00);
+  --primary: oklch(0.4650 0.2100 28.00);
+  --primary-foreground: oklch(0.9900 0.0030 28.00);
+  --secondary: oklch(0.9200 0.0030 95.00);
+  --secondary-foreground: oklch(0.1400 0.0000 0.00);
+  --muted: oklch(0.9300 0.0030 95.00);
+  --muted-foreground: oklch(0.3600 0.0000 95.00);
+  --accent: oklch(0.9000 0.0000 0.00);
+  --accent-foreground: oklch(0.1400 0.0000 0.00);
+  --destructive: oklch(0.5200 0.1800 27.00);
+  --border: oklch(0.1400 0.0000 0.00);
+  --input: oklch(0.1400 0.0000 0.00);
+  --ring: oklch(0.4650 0.2100 28.00);
+  --success: oklch(0.5200 0.1100 152.00);
+  --success-foreground: oklch(0.9850 0.0050 152.00);
+  --warning: oklch(0.5500 0.1200 68.00);
+  --warning-foreground: oklch(0.9850 0.0050 68.00);
+  --info: oklch(0.5000 0.1200 255.00);
+  --info-foreground: oklch(0.9850 0.0040 255.00);
+  --font-sans: "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading: "Archivo", "Black Han Sans", "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading-ko: "Black Han Sans", "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --icon-stroke: 2;
+  --icon-linecap: round;
+  --icon-linejoin: round;
+  --ease-standard: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-screen: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 120ms;
+  --duration-hover: 200ms;
+  --duration-popover: 160ms;
+  --duration-enter: 500ms;
+  --duration-sheet: 320ms;
+  --wf-axes: "R0 B1 I3 C2 T3 H3 S2 D2 X2";
+  --wf-font-tuned: "display body mono";
+  --wf-motion: 2;
+  --wf-heading-weight: 800;
+  --radius: 0px;
+  --wf-mask-radius: calc(infinity * 1px);
+  --wf-shadow-surface: 4px 4px 0 0 var(--foreground);
+}
+
+.dark {
+  --background: oklch(0.1700 0.0000 0.00);
+  --foreground: oklch(0.9300 0.0000 0.00);
+  --card: oklch(0.2100 0.0000 0.00);
+  --card-foreground: oklch(0.9300 0.0000 0.00);
+  --popover: oklch(0.2100 0.0000 0.00);
+  --popover-foreground: oklch(0.9300 0.0000 0.00);
+  --primary: oklch(0.6600 0.2000 28.00);
+  --primary-foreground: oklch(0.1400 0.0200 28.00);
+  --secondary: oklch(0.2500 0.0000 0.00);
+  --secondary-foreground: oklch(0.9300 0.0000 0.00);
+  --muted: oklch(0.2500 0.0000 0.00);
+  --muted-foreground: oklch(0.7850 0.0000 0.00);
+  --accent: oklch(0.3000 0.0000 0.00);
+  --accent-foreground: oklch(0.9300 0.0000 0.00);
+  --destructive: oklch(0.7000 0.1500 25.00);
+  --border: oklch(0.5100 0.0000 0.00);
+  --input: oklch(0.5100 0.0000 0.00);
+  --ring: oklch(0.6600 0.2000 28.00);
+  --success: oklch(0.7400 0.1100 152.00);
+  --success-foreground: oklch(0.1900 0.0200 152.00);
+  --warning: oklch(0.8000 0.1200 78.00);
+  --warning-foreground: oklch(0.2000 0.0300 78.00);
+  --info: oklch(0.7400 0.1000 255.00);
+  --info-foreground: oklch(0.1900 0.0150 255.00);
+}
+
+/* 제목 굵기(한글 제목 굵기 → fonts.display.weight → 700): 기본 층이라 굵기를 따로 준 요소가 이긴다 */
+@layer base {
+.font-heading { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+.font-heading-ko { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+}
+
+/* 단일 굵기 제목 서체(Black Han Sans): 굵기 합성 끄기 · 부품 제목은 한글 제목체를 건너뛴 제목 스택 */
+.font-heading { font-synthesis-weight: none; }
+.font-heading-ko { font-synthesis-weight: none; }
+[data-slot$="-title"].font-heading { font-family: "Archivo", "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }

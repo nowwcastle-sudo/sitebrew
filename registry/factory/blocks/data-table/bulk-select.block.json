@@ -1,0 +1,14 @@
+{
+  "kind": "data-table",
+  "variant": "bulk-select",
+  "title": "데이터 표 — 묶음 선택(이 쪽·전체 고르기, 작업 줄, 되돌리기)",
+  "layout": "select-column-action-bar",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas"],
+  "archetypeKinds": ["admin-list", "bulk-actions", "data-table"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["L3", "O7", "X1"],
+  "notes": "admin-list 의 검색·거르기·정렬·쪽 이동 + 첫 열 체크칸(행마다 이름 있는 라벨) · 머리 체크칸(이 쪽 전체·일부면 indeterminate) · 한 쪽을 다 고르면 「전체 N건 모두 고르기」 제안(서버에는 { mode: query, query, expectedTotal }) · 표 위 작업 줄(고른 수 role=status, 자리는 늘 있어 밀리지 않는다) · 지우기 같은 작업은 [취소][N건 지우기] 대등 확인, 나머지는 바로 하고 결과 줄에 [되돌리기]. 처음엔 아무것도 고르지 않는다. 검색·거르기를 바꾸면 선택을 지운다"
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "prose",
+  "title": "본문 글 — 머리 왼쪽·글 오른쪽(약 65자 줄), 콘텐츠 글을 문단으로",
+  "layout": "split-prose",
+  "density": "comfortable",
+  "archetypes": [ "brand", "portfolio" ],
+  "archetypeKinds": [ "mission", "summary", "challenge", "role-collaboration", "process", "solution", "results" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content 섹션 렌더러(대장 C70). paragraphs 는 콘텐츠 $ref(문구 칸·사례 본문) — 줄바꿈에서 문단을 나눈다. 쪽 첫 섹션이면 first(data-enter=keep). 머리를 숨길 때(hideTitle)는 h2 를 sr-only 로 남기고 글이 전폭(65자)으로 선다."
+}

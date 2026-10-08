@@ -1,0 +1,59 @@
+{
+  "id": "jackywinter-com",
+  "archetype": "brand",
+  "sourceGallery": "httpster",
+  "url": "https://www.jackywinter.com/",
+  "structure": {
+    "hero": "8칸 색 블록 격자가 곧 첫 화면이자 내비게이션",
+    "sections": [
+      "알약형 상단 내비 바(로고·메뉴 8개·검색·설정)",
+      "4×2 색 블록 격자(칸마다 이름과 외곽선 도형)",
+      "쿠키 카드(좌하단)",
+      "채팅 말풍선 버튼(우하단)"
+    ]
+  },
+  "type": {
+    "display": "둥근 기하 산세리프, 특징 있는 k·y 글리프",
+    "body": "같은 산세리프 보통 굵기",
+    "scale": "칸 제목 대형 한 단계, 나머지 소형"
+  },
+  "colorLogic": "K8",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "색 블록 8칸이 각각 섹션 링크",
+    "알약형 내비와 검색 아이콘",
+    "쿠키 선택 버튼 3개",
+    "채팅 말풍선"
+  ],
+  "cta": {
+    "pattern": "색 블록 칸 전체가 링크, 별도 버튼 없음",
+    "count": 8
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand",
+      "portfolio"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "메뉴 항목마다 색과 외곽선 도형을 배정해 목차를 놀이처럼 보이게 한다",
+    "칸 크기를 균일하게 두고 색만으로 위계를 만든다",
+    "모바일은 격자 대신 전면 사진과 알약 내비로 바뀌고 쿠키 시트가 하단 40%를 덮는다",
+    "쿠키 문구까지 브랜드 어조로 써서 필수 UI도 개성을 갖는다"
+  ]
+}

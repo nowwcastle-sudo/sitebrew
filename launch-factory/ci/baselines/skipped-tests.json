@@ -1,0 +1,4 @@
+{
+  "max": 13,
+  "reason": "In CI there is no web-factory checkout, so 10 conformance tests are skipped; 3 more tests that assert text of internal documents are skipped in the public export. A local PC with a checkout at the pinned tag skips only the 3. Lower this number when the count drops (ratchet)."
+}

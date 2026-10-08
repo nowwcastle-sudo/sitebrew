@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "baseline-news-app-window",
+  "title": "히어로 — 두 줄 제목 + 같은 기준선 새 소식 + 접힘선 아래 앱 창",
+  "layout": "baseline-news-app-window",
+  "density": "compact",
+  "archetypes": ["saas", "dashboard"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["clip-reveal", "split-text", "rise", "parallax", "view-transition"],
+  "titleWidth": "column",
+  "notes": "위 면 띠(faces[0]) 위 두 줄 제목 h1 + 같은 기준선 설명·새 소식 링크, 띠 아래 끝에 걸쳐 올라오는 앱 창(머리 · 옆 메뉴 · 알림 목록(누르면 제목이 상세로 날아간다 — View Transitions) · 상세, 넓은 화면에서만 세 칸). 기본 기법 view-transition·svg-draw. P3-1 r10-console B 구성(반경 6·12px → sm·xl)"
+}

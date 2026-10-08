@@ -1,0 +1,13 @@
+{
+  "kind": "features",
+  "variant": "compare-table",
+  "title": "기능 — 우리 대 다른 방식 비교표",
+  "layout": "compare-table",
+  "density": "compact",
+  "archetypes": ["saas", "detail", "commerce", "landing"],
+  "archetypeKinds": ["key-points", "enterprise", "business-scope"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "행 = 비교 기준(th scope=row), 첫 값 열 = 우리(muted 면 강조), 나머지 = 다른 방식. 값은 글자(수치면 data-numeric) 또는 있음·없음 아이콘 + sr-only. 375: 표 안에서만 가로 밀림"
+}

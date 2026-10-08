@@ -1,0 +1,56 @@
+/* 히어로 검수대 틀의 CSS(P3-2 Task 3) — 히어로 본체는 블록(registry/factory/blocks/hero, 모양은 styles/base.css 의 cn-block-hero-* 훅)이고,
+   여기에는 틀이 header 칸으로 넘기는 머리의 격자·hover 만 남는다. 틀 머리는 블록 뿌리([data-hero="<id>"]) 안에 그려지므로 그 아래에 가둔다.
+   색은 레시피 토큰만, 길이·곡선은 레시피 모션 토큰(--duration-hover·--duration-press·--ease-standard)만 쓴다. */
+
+/* ── cropped-title-list (r2 대안) — 머리 칸 표지 네모 ─────────── */
+[data-hero="cropped-title-list"] .bracket .box { display: inline-block; width: 0.9em; height: 0.9em; border: 2px solid currentColor; }
+[data-hero="cropped-title-list"] .bracket[aria-current="page"] .box { background: currentColor; }
+[data-hero="cropped-title-list"] .bracket:hover .box { background: currentColor; }
+
+/* ── crosshair-quadrants (r6 대안) ──────────────────────── */
+/* 머리(§21-8): 1280 아래는 1줄 로고·검색·메뉴 단추 + 2줄 글자 크기(+ 펼친 메뉴). 1280 이상은 왼쪽 절반 로고, 오른쪽 절반에 메뉴 두 줄 · 유틸리티·검색 / 신청 버튼 — 어느 폭이든 머리는 두 줄이다.
+   DOM 순서는 로고 → 유틸리티 → 검색 → 메뉴 단추 → 메뉴 → 신청이고, 보이는 자리만 격자 영역이 정한다. 머리는 움직이지 않는다(등장 없음 — 처음부터 누를 수 있다). */
+[data-hero="crosshair-quadrants"] .cq-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "logo search menu" "util util util" "nav nav nav"; align-items: center; }
+[data-hero="crosshair-quadrants"] .cq-right { display: contents; }
+[data-hero="crosshair-quadrants"] .cq-logo { grid-area: logo; }
+[data-hero="crosshair-quadrants"] .cq-util { grid-area: util; }
+[data-hero="crosshair-quadrants"] .cq-search { grid-area: search; }
+[data-hero="crosshair-quadrants"] .cq-menu-btn { grid-area: menu; }
+[data-hero="crosshair-quadrants"] .cq-nav { grid-area: nav; }
+[data-hero="crosshair-quadrants"] .cq-cta { grid-area: cta; justify-self: end; }
+@media (min-width: 1280px) {
+  [data-hero="crosshair-quadrants"] .cq-head { grid-template-columns: 1fr 1fr; grid-template-areas: "logo right"; align-items: start; }
+  [data-hero="crosshair-quadrants"] .cq-right { display: grid; grid-area: right; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "nav util search" "nav cta cta"; align-items: start; }
+}
+
+/* ── identity-strip-banner (r6 머리) ─────────────────────── */
+/* 머리 두 줄(§21-8): DOM 순서 로고 → 유틸리티 → 통합검색 → 메뉴 단추 → 메뉴 → 메가 판. 좁은 화면은 로고·검색·메뉴 단추 / 글자 크기, 넓은 화면은 로고·유틸리티·검색 / 메가메뉴. 식별 띠·머리는 움직이지 않는다. */
+[data-hero="identity-strip-banner"] .isb-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "logo search menu" "util util util" "nav nav nav" "mega mega mega"; align-items: center; }
+[data-hero="identity-strip-banner"] .isb-logo { grid-area: logo; }
+[data-hero="identity-strip-banner"] .isb-util { grid-area: util; }
+[data-hero="identity-strip-banner"] .isb-search { grid-area: search; }
+[data-hero="identity-strip-banner"] .isb-menu-btn { grid-area: menu; }
+[data-hero="identity-strip-banner"] .isb-nav { grid-area: nav; }
+[data-hero="identity-strip-banner"] .isb-mega { grid-area: mega; }
+@media (min-width: 1024px) {
+  [data-hero="identity-strip-banner"] .isb-head { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "logo util search" "nav nav nav" "mega mega mega"; padding-block-end: 0; }
+}
+[data-hero="identity-strip-banner"] .isb-menu { text-decoration: underline 3px transparent; text-underline-offset: 0.75em; transition: text-decoration-color var(--duration-hover) var(--ease-standard); }
+[data-hero="identity-strip-banner"] .isb-menu:hover { text-decoration-color: var(--primary); }
+
+/* ── vertical-title-slides (r8 B) — 머리 현재 장면 밑줄 ─────── */
+[data-hero="vertical-title-slides"] .vts-nav[aria-current="page"] { text-decoration: underline 1px; text-underline-offset: 0.55em; }
+
+/* ── crop-marks-typed-title (r10 B) — 머리 버튼의 딱딱한 그림자 ── */
+/* 감싼 칸이 그림자를 들고, 버튼이 누를 때 그만큼 내려앉는다(버튼 자신의 box-shadow 는 포커스 링 몫). 색은 면 색 하나(K6). 반경은 토큰 sm. */
+[data-hero="crop-marks-typed-title"] .ct-hard-wrap { display: inline-flex; border-radius: var(--radius-sm); box-shadow: 0 4px 0 var(--field-1); }
+[data-hero="crop-marks-typed-title"] .ct-hard-wrap > [data-slot="button"] { transition: transform var(--duration-press) var(--ease-standard); }
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero="crop-marks-typed-title"] .ct-hard-wrap:hover > [data-slot="button"] { transform: translateY(2px); }
+  [data-hero="crop-marks-typed-title"] .ct-hard-wrap:active > [data-slot="button"] { transform: translateY(4px); }
+}
+
+/* 동작 줄이기: 틀 머리의 전환도 끈다(블록 본체는 .cn-block-hero-root 훅이 끈다). */
+@media (prefers-reduced-motion: reduce) {
+  [data-hero] *, [data-hero] *::before, [data-hero] *::after { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>접근성 시험 쪽</title>
+<style>
+body{margin:0;font:16px/1.6 sans-serif;color:#111;background:#fff}
+a{color:#0047b3}
+@media (prefers-color-scheme: dark){body{color:#f2f2f2;background:#111}a{color:#9cf}}
+main{padding:24px;max-width:640px}
+label{display:block;margin:12px 0 4px}
+input{min-height:32px;min-width:240px;font:inherit}
+button{min-height:44px;min-width:88px;font:inherit}
+
+</style></head><body><main>
+<h1>20px 대상</h1>
+<p>아래 단추는 20×20 이고 둘레 24px 원 안에 다른 대상이 겹친다.</p>
+<div><button type="button" data-slot="button" aria-label="하나" style="min-width:0;min-height:0;width:20px;height:20px;padding:0">1</button><button type="button" data-slot="button" aria-label="둘" style="min-width:0;min-height:0;width:20px;height:20px;padding:0;margin-left:2px">2</button></div>
+</main></body></html>

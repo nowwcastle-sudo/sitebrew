@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "facts",
+  "title": "이름 → 값 목록 — 실제 <dl>, 넓은 화면 두 칸·줄마다 선",
+  "layout": "definition-list",
+  "density": "compact",
+  "archetypes": [ "portfolio", "commerce", "dashboard" ],
+  "archetypeKinds": [ "case-meta", "shipping-pickup-info", "origin-info", "page-header" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content 섹션 렌더러(대장 C70). rows 의 이름은 UI 이름표(원형 JSON render.rows), 값은 콘텐츠 $ref + 서식(money·days·year·date·pages). 빈 값의 줄은 그리지 않는다."
+}

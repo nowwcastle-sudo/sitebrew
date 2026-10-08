@@ -1,0 +1,898 @@
+{
+  "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
+  "id": "portfolio",
+  "source": "registry/factory/archetypes/portfolio.json",
+  "ref": "v0.1.0",
+  "purpose": "의뢰인이 실제 작업을 보고 역량을 판단해 프로젝트를 문의하게 한다.",
+  "coreTask": "브라우저 에이전트가 ① 특정 분야(예: 브랜드 아이덴티티) 작업 3개의 제목과 의뢰인을 나열하고(JS를 끈 상태에서도) ② 그중 하나의 사례 페이지를 고유 URL로 열어 결과를 두 문장으로 요약하며 ③ 새 프로젝트 문의 이메일 주소를 돌려준다.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "required": [
+        {
+          "kind": "work-grid",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "작업 격자 — 본문(작업마다 링크, 전용 블록 없음)",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "작업",
+                "en": "Work"
+              },
+              "from": [
+                "works"
+              ],
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "client",
+                  "year:year"
+                ],
+                "tags": "disciplines",
+                "image": "thumb",
+                "href": "@case-link"
+              }
+            }
+          }
+        },
+        {
+          "kind": "about",
+          "blockKinds": [
+            "trust"
+          ],
+          "allowedVariants": [
+            "block-trust-brand-fact-sheet"
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "blockKinds": [
+            "contact-form",
+            "final-cta"
+          ],
+          "allowedVariants": [
+            "block-contact-form-inline-short"
+          ]
+        }
+      ],
+      "optional": [
+        {
+          "kind": "statement",
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-cropped-title-list",
+            "block-hero-grid-lines-baseline-word",
+            "block-hero-inline-chip-title",
+            "block-hero-object-3d-orbit",
+            "block-hero-illustration-scene",
+            "block-hero-video-montage",
+            "block-hero-banded-full-bleed"
+          ]
+        },
+        {
+          "kind": "client-roster",
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-logo-rail"
+          ]
+        },
+        {
+          "kind": "services",
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-bento-grid"
+          ]
+        },
+        {
+          "kind": "recognition",
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-logo-rail"
+          ]
+        },
+        {
+          "kind": "news",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "소식 목록 — 본문 목록",
+            "missing": "소식 목록 칸이 콘텐츠 스키마에 없다"
+          }
+        }
+      ]
+    },
+    {
+      "id": "case-study",
+      "route": "/work",
+      "required": [
+        {
+          "kind": "case-meta",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 메타 dl — 본문",
+            "render": {
+              "as": "facts",
+              "heading": {
+                "ko": "사례 정보",
+                "en": "Project details"
+              },
+              "rows": [
+                {
+                  "label": {
+                    "ko": "의뢰인",
+                    "en": "Client"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.client",
+                    "slot:client"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "제공 서비스",
+                    "en": "Services"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.services",
+                    "slot:services"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "연도",
+                    "en": "Year"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.year",
+                    "slot:year"
+                  ],
+                  "format": "year"
+                },
+                {
+                  "label": {
+                    "ko": "역할",
+                    "en": "Role"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.role",
+                    "slot:role"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "challenge",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "과제",
+                "en": "Challenge"
+              },
+              "from": [
+                "caseStudies.0.challenge"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "role-collaboration",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "역할과 협업",
+                "en": "Role and collaboration"
+              },
+              "from": [
+                "caseStudies.0.role"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "process",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문(버린 선택지 포함)",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "과정",
+                "en": "Process"
+              },
+              "from": [
+                "caseStudies.0.process",
+                "slot:body"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "solution",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "해결",
+                "en": "Solution"
+              },
+              "from": [
+                "caseStudies.0.solution"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "results",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문(측정 결과)",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "결과",
+                "en": "Results"
+              },
+              "from": [
+                "caseStudies.0.results",
+                "slot:result"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "next-work",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "다음 작업 링크 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "다음 작업",
+                "en": "Next work"
+              },
+              "links": [
+                {
+                  "label": {
+                    "ko": "다른 작업 보기",
+                    "en": "See more work"
+                  },
+                  "from": [
+                    "@route:home#work-grid"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "optional": []
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "work",
+        "about",
+        "contact"
+      ],
+      "maxItems": 5
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "email-as-text"
+      ]
+    }
+  ],
+  "sectionOrders": [
+    {
+      "id": "grid-first",
+      "order": [
+        "header",
+        "work-grid",
+        "news",
+        "footer"
+      ]
+    },
+    {
+      "id": "statement-curated",
+      "order": [
+        "header",
+        "statement",
+        "work-grid",
+        "client-roster",
+        "services",
+        "recognition",
+        "about",
+        "news",
+        "contact-cta",
+        "footer"
+      ]
+    },
+    {
+      "id": "case-study",
+      "order": [
+        "case-meta",
+        "challenge",
+        "role-collaboration",
+        "process",
+        "solution",
+        "results",
+        "next-work"
+      ]
+    }
+  ],
+  "legal": [],
+  "legalPages": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website",
+    "install": {
+      "seoMetadata": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/seo-meta#v0.1.0 -y -o",
+      "jsonLdFor": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/geo-entity#v0.1.0 -y -o"
+    },
+    "usage": "seoMetadata(content, page) → Next Metadata(generateMetadata) · jsonLdFor(content, page) → <script type=\"application/ld+json\">. titleTemplate 의 {siteName} 은 content.site 이름(없으면 원형의 회사·가게·제품·기관 이름)이고, type 은 원형 기본 종류다."
+  },
+  "conversion": [
+    {
+      "event": "form_submit",
+      "match": {
+        "form": "contact"
+      }
+    }
+  ],
+  "content": {
+    "item": "content-portfolio",
+    "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/content-portfolio#v0.1.0 -y -o"
+  },
+  "recipes": {
+    "candidates": [
+      {
+        "id": "r13-folio",
+        "name": "무채 문서첩",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r13-folio#v0.1.0 -y -o",
+        "condition": "작품보다 글·기록이 앞서는 포트폴리오(사례 연구·연혁)일 때. 작품 사진이 주인공이면 r4-evidence 나 r7-docs"
+      },
+      {
+        "id": "r2-signal",
+        "name": "흑백 신호",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r2-signal#v0.1.0 -y -o"
+      },
+      {
+        "id": "r5-celadon",
+        "name": "청자 고요",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r5-celadon#v0.1.0 -y -o"
+      }
+    ],
+    "complete": true,
+    "note": "운영자가 레시피 보드(2026-09-27)에서 승인한 레시피 15벌(r1-measure·r10-console·r12-spectrum·r13-folio·r14-concrete·r15-atelier·r16-tonal·r2-signal·r3-woodblock·r4-evidence·r5-celadon·r6-civic·r7-docs·r8-dusk·r9-clay)에서 archetypes 에 이 원형을 적은 것을 모두 뽑았다(결정: factory/board/recipe-decisions.json). condition 이 있는 후보는 그 조건에 맞는 브리프에만 쓴다."
+  },
+  "blocks": {
+    "announcement": [
+      {
+        "item": "block-announcement-notice-ticker",
+        "variant": "notice-ticker",
+        "layout": "rolling-line",
+        "density": "compact",
+        "sectionKinds": [
+          "notice-ticker",
+          "announcement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-notice-ticker#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-announcement-popup-today",
+        "variant": "popup-today",
+        "layout": "corner-window",
+        "density": "comfortable",
+        "sectionKinds": [
+          "popup",
+          "announcement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-popup-today#v0.1.0 -y -o"
+      }
+    ],
+    "consent": [
+      {
+        "item": "block-consent-bottom-banner",
+        "variant": "bottom-banner",
+        "layout": "fixed-bottom-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "cookie-consent",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-bottom-banner#v0.1.0 -y -o"
+      }
+    ],
+    "contact-form": [
+      {
+        "item": "block-contact-form-inline-short",
+        "variant": "inline-short",
+        "layout": "intro-form-split",
+        "density": "comfortable",
+        "sectionKinds": [
+          "contact-cta",
+          "bulk-order-inquiry"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-contact-form-inline-short#v0.1.0 -y -o"
+      }
+    ],
+    "content": [
+      {
+        "item": "block-content-cards",
+        "variant": "cards",
+        "layout": "card-grid",
+        "density": "comfortable",
+        "sectionKinds": [
+          "leadership",
+          "work-grid",
+          "doctors",
+          "policy-cards"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-cards#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-facts",
+        "variant": "facts",
+        "layout": "definition-list",
+        "density": "compact",
+        "sectionKinds": [
+          "case-meta",
+          "shipping-pickup-info",
+          "origin-info",
+          "page-header"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-facts#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-links",
+        "variant": "links",
+        "layout": "link-tiles",
+        "density": "comfortable",
+        "sectionKinds": [
+          "quick-links",
+          "careers",
+          "job-list",
+          "utility-links",
+          "next-work",
+          "side-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-links#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-prose",
+        "variant": "prose",
+        "layout": "split-prose",
+        "density": "comfortable",
+        "sectionKinds": [
+          "mission",
+          "summary",
+          "challenge",
+          "role-collaboration",
+          "process",
+          "solution",
+          "results"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-prose#v0.1.0 -y -o"
+      }
+    ],
+    "features": [
+      {
+        "item": "block-features-bento-grid",
+        "variant": "bento-grid",
+        "layout": "bento",
+        "density": "spacious",
+        "sectionKinds": [
+          "workflow-features",
+          "key-points",
+          "services"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-features-bento-grid#v0.1.0 -y -o"
+      }
+    ],
+    "final-cta": [
+      {
+        "item": "block-final-cta-quiet-link-row",
+        "variant": "quiet-link-row",
+        "layout": "quiet-link-row",
+        "density": "compact",
+        "sectionKinds": [
+          "final-cta",
+          "contact-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-quiet-link-row#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-final-cta-store-badges",
+        "variant": "store-badges",
+        "layout": "store-badge-row",
+        "density": "comfortable",
+        "sectionKinds": [
+          "app-download",
+          "final-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-store-badges#v0.1.0 -y -o"
+      }
+    ],
+    "floating-action": [
+      {
+        "item": "block-floating-action-chat-launcher",
+        "variant": "chat-launcher",
+        "layout": "corner-pill",
+        "density": "comfortable",
+        "sectionKinds": [
+          "chat-widget",
+          "contact-launcher"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-floating-action-quick-menu-rail",
+        "variant": "quick-menu-rail",
+        "layout": "edge-rail",
+        "density": "compact",
+        "sectionKinds": [
+          "quick-menu",
+          "floating-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-quick-menu-rail#v0.1.0 -y -o"
+      }
+    ],
+    "footer": [
+      {
+        "item": "block-footer-compact-strip",
+        "variant": "compact-strip",
+        "layout": "compact-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-compact-strip#v0.1.0 -y -o"
+      }
+    ],
+    "hero": [
+      {
+        "item": "block-hero-banded-full-bleed",
+        "variant": "banded-full-bleed",
+        "layout": "banded-full-bleed",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "band"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-banded-full-bleed#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-cropped-title-list",
+        "variant": "cropped-title-list",
+        "layout": "cropped-title-list",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-cropped-title-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-grid-lines-baseline-word",
+        "variant": "grid-lines-baseline-word",
+        "layout": "grid-lines-baseline-word",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "hero-visit-info",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "grid"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-grid-lines-baseline-word#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-illustration-scene",
+        "variant": "illustration-scene",
+        "layout": "illustration-scene",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "illustration"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-illustration-scene#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-inline-chip-title",
+        "variant": "inline-chip-title",
+        "layout": "inline-chip-title",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "chip"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-inline-chip-title#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-ken-burns-stills",
+        "variant": "ken-burns-stills",
+        "layout": "ken-burns-stills",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "stills"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-ken-burns-stills#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-kinetic-type-video",
+        "variant": "kinetic-type-video",
+        "layout": "kinetic-type-video",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "video"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-kinetic-type-video#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-object-3d-orbit",
+        "variant": "object-3d-orbit",
+        "layout": "object-3d-orbit",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "scene3d",
+          "image"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-object-3d-orbit#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-twin-panels",
+        "variant": "twin-panels",
+        "layout": "twin-panels",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "purchase-area"
+        ],
+        "states": [],
+        "media": [
+          "panel-left",
+          "panel-right"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-twin-panels#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-video-montage",
+        "variant": "video-montage",
+        "layout": "video-montage",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "clips"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-video-montage#v0.1.0 -y -o"
+      }
+    ],
+    "lead-capture": [
+      {
+        "item": "block-lead-capture-magnet-preview",
+        "variant": "magnet-preview",
+        "layout": "preview-plus-email",
+        "density": "comfortable",
+        "sectionKinds": [
+          "lead-magnet",
+          "lead-capture"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [
+          "magnet-cover"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-lead-capture-magnet-preview#v0.1.0 -y -o"
+      }
+    ],
+    "nav": [
+      {
+        "item": "block-nav-centered-mark",
+        "variant": "centered-mark",
+        "layout": "centered-mark",
+        "density": "spacious",
+        "sectionKinds": [
+          "header"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-centered-mark#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-nav-inline-links",
+        "variant": "inline-links",
+        "layout": "inline-links",
+        "density": "comfortable",
+        "sectionKinds": [
+          "header",
+          "top-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-inline-links#v0.1.0 -y -o"
+      }
+    ],
+    "social-proof": [
+      {
+        "item": "block-social-proof-logo-rail",
+        "variant": "logo-rail",
+        "layout": "logo-rail",
+        "density": "compact",
+        "sectionKinds": [
+          "social-proof",
+          "client-roster",
+          "recognition"
+        ],
+        "states": [],
+        "media": [
+          "customer-logo"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-social-proof-logo-rail#v0.1.0 -y -o"
+      }
+    ],
+    "trust": [
+      {
+        "item": "block-trust-author-byline",
+        "variant": "author-byline",
+        "layout": "byline-dl",
+        "density": "compact",
+        "sectionKinds": [
+          "byline",
+          "author-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-author-byline#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-trust-brand-fact-sheet",
+        "variant": "brand-fact-sheet",
+        "layout": "fact-sheet-dl",
+        "density": "spacious",
+        "sectionKinds": [
+          "about",
+          "brand-facts",
+          "company-profile"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-brand-fact-sheet#v0.1.0 -y -o"
+      }
+    ]
+  },
+  "blocksNote": "블록 메타 archetypes 에 이 원형을 적은 블록만 종류(kind)별로 모았다. 블록은 레시피 base 하나를 먼저 설치한 뒤(recipes.candidates 의 install) 블록 install 을 받는다 — B안 색·서체는 그 다음에 `<레시피>-alt` 를 -o 로 덮는다. 부품이 레시피 모양으로 깔리므로 블록 항목에는 ui 의존이 없다."
+}

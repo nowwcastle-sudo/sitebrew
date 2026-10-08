@@ -1,0 +1,55 @@
+{
+  "id": "special-offer-studio",
+  "archetype": "brand",
+  "sourceGallery": "httpster",
+  "url": "https://www.special-offer.studio/",
+  "structure": {
+    "hero": "음반 작업 사진이 전면을 채우고 네 모서리에 소형 메뉴와 캡션만 놓인 첫 화면",
+    "sections": [
+      "모서리 소형 내비(상호·Project Archive·Information)",
+      "전면 작업 이미지(핑크 음반 커버·빨간 레코드·신문 콜라주)",
+      "좌하단 작업 캡션과 우하단 Contact",
+      "모바일은 베이지 단색 위 중앙 문장 한 줄"
+    ]
+  },
+  "type": {
+    "display": "중립 그로테스크 소형 모서리 라벨, 모바일 문장은 압축 굵은 대문자",
+    "body": "같은 서체 극소형",
+    "scale": "내비·캡션 극소형 단일 위계, 이미지가 위계 독점"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "네 모서리 텍스트 링크"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, 모서리 링크 4개",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.75
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "전면 이미지가 곧 홈이고 메뉴는 네 모서리 극소형 글자로 물러난다",
+    "작업 이름을 좌하단 캡션 한 줄로만 알려 이미지 몰입을 지킨다",
+    "모바일은 베이지 단색 위에 압축 대문자 문장 하나만 두어 데스크톱과 인상이 크게 갈린다"
+  ]
+}

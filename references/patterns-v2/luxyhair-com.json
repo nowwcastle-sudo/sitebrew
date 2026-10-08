@@ -1,0 +1,62 @@
+{
+  "id": "luxyhair-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.luxyhair.com/products/heatless-curls-everything-set",
+  "structure": {
+    "hero": "큰 상품 사진과 세리프 제목, 검정 알림 버튼. 팝업이 덮음",
+    "sections": [
+      "공지띠(이전·다음)",
+      "헤더(로고·내비 6개·검색·계정·가방)",
+      "브레드크럼",
+      "큰 상품 사진·썸네일",
+      "상품 정보(세리프 제목·설명)",
+      "재입고 알림 버튼",
+      "아코디언 3개",
+      "세로 도움말 탭(헤어 스타일리스트)",
+      "뉴스레터 팝업"
+    ]
+  },
+  "type": {
+    "display": "고급 세리프 제목, 기하학 산세리프 로고",
+    "body": "가벼운 산세리프 본문",
+    "scale": "제목 중간, 본문 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "재입고 이메일 신청 버튼(품절 상태)",
+    "우측 세로 「Text a Hair Stylist」 탭",
+    "이미지 위 「$80 가치」 검정 태그(모바일)",
+    "이메일 가입 팝업"
+  ],
+  "cta": {
+    "pattern": "검정 전폭 Email me when it's available",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.68
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "품절이어도 버튼 자리를 유지하고 「입고 알림」으로 바꾼다",
+    "세로 도움말 탭으로 상담 채널(문자 스타일리스트)을 늘 보이게 둔다",
+    "이미지 위 「$80 가치」 태그는 세트 구성의 가치를 한눈에 전달",
+    "뉴스레터 팝업이 정보 영역을 거의 가려 첫 화면 증거로는 약하다"
+  ]
+}

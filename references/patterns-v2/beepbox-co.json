@@ -1,0 +1,61 @@
+{
+  "id": "beepbox-co",
+  "archetype": "pwa",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://www.beepbox.co/",
+  "structure": {
+    "hero": "검은 바탕 왼쪽에 줄무늬 시퀀서 격자, 오른쪽에 재생·파일·편집·환경설정 메뉴 열, 아래에 소개 글",
+    "sections": [
+      "시퀀서 트랙 격자",
+      "오른쪽 메뉴 열(재생·파일·편집·환경설정)",
+      "곡 설정(음계·키·템포·리듬)",
+      "악기 설정",
+      "패턴 번호 격자",
+      "아래 소개 글"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 작은 소제목",
+    "body": "산세리프 11~12px",
+    "scale": "소제목 약 16px, 본문 약 12px, 메뉴 약 11px"
+  },
+  "colorLogic": "K4",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "재생 버튼",
+    "파일 메뉴",
+    "편집 메뉴",
+    "환경설정",
+    "키·템포·리듬 선택",
+    "악기 선택",
+    "패턴 격자 클릭 입력"
+  ],
+  "cta": {
+    "pattern": "재생 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.75
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "도구 화면이 곧 첫 화면이고 소개 글은 격자 아래에 작게 붙는다.",
+    "트랙마다 막대와 숫자 색을 달리해 악기를 색으로 구분한다.",
+    "375에서는 메뉴 열이 격자 아래로 내려가 세로로 길어진다."
+  ]
+}

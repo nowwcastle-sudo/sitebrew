@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "punch-in-statement",
+  "title": "히어로 — 펀치 인 한 문장 + 확대 컷 틀",
+  "layout": "punch-in-statement",
+  "density": "spacious",
+  "archetypes": ["saas", "brand", "commerce", "landing", "detail"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["punch"],
+  "motion": ["kinetic-type", "punch-in", "clip-reveal", "stagger-in", "tilt-3d", "scrub-timeline"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "motion",
+  "notes": "바탕색 위 아주 큰 한 문장 제목(낱말 키네틱 등장), 마지막 낱말은 주색 면 위 키워드 — 1.2배에서 착지하는 펀치 인, 등장 뒤 한 번 더 「쿵」. 오른쪽 틀(media punch — 사진·영상·제품 화면, 없으면 muted)이 가운데서 열리며 1.6배 확대 컷에서 제자리로. 문단·버튼 스태거. 틀은 포인터를 따라 기운다(마우스). MOTKIT(P3-5)"
+}

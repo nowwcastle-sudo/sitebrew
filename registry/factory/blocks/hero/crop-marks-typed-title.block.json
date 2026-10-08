@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "crop-marks-typed-title",
+  "title": "히어로 — 재단 표시 + 타자로 써지는 제목 + 딱딱한 그림자 버튼",
+  "layout": "crop-marks-typed-title",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["svg-draw", "rise", "parallax", "tilt-3d"],
+  "titleWidth": "full",
+  "notes": "가운데 교정지 한 장(faces[0], 없으면 muted) 모서리 바깥 재단 표시 넷 · 뒤 와이어프레임 구 · 네 곳 아이콘 칩. 가운데 세 줄 대문자 제목 h1(셋째 줄 끝 낱말은 타자 + 커서), 설명, 딱딱한 그림자 버튼(면 색을 어둡게 한 그림자 — 토큰 반경 sm) + ▸ 링크, 접힘선을 넘는 터미널 창. 기본 기법 view-transition·svg-draw. P3-1 r10-console A 구성(반경 6·8·12px → sm·md·xl)"
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "lead-capture",
+  "variant": "inline-newsletter",
+  "title": "한 줄 소식지 구독 — 무엇·언제·지난 호 + 이메일 한 칸",
+  "layout": "one-line-subscribe",
+  "density": "compact",
+  "archetypes": [ "brand", "local", "saas", "commerce", "public", "landing" ],
+  "archetypeKinds": [ "newsletter", "lead-capture" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A4", "A7", "L2", "X1", "M1" ],
+  "notes": "색 띠 한 줄: 왼쪽 제목·무엇을 받나·언제 오나(data-arrival — 요일·시각)·지난 호 링크, 오른쪽 이메일 + 구독 버튼 한 줄(좁으면 쌓임) · 광고성 정보 수신 동의 체크(data-consent=required — 이 폼의 목적이라 필수지만 해제로 시작, L2) · 언제든 끊기 안내. 칸 검사는 떠날 때(port-form). 폼 블록: submit({ email, consent: true }). 계측(선택): form_start·form_submit·form_error"
+}

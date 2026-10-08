@@ -1,0 +1,57 @@
+{
+  "id": "renebieder-com",
+  "archetype": "portfolio",
+  "sourceGallery": "httpster",
+  "url": "https://www.renebieder.com/",
+  "structure": {
+    "hero": "중앙 소개 문단과 밑줄 링크 둘, 아래 작업 이미지 2열",
+    "sections": [
+      "헤더(로고·메뉴 7개·장바구니)",
+      "중앙 정렬 소개 문단(밑줄 링크 포함)",
+      "작업 이미지 2열(흑백 3D 글자·브랜드 작업)",
+      "쿠키 안내 줄(하단 고정)"
+    ]
+  },
+  "type": {
+    "display": "라이트 웨이트 중립 그로테스크 대형 문단",
+    "body": "같은 서체 소형 메뉴와 링크",
+    "scale": "소개 문단 대형, 메뉴 소형 두 단계"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "밑줄 링크 두 개(맞춤 폰트·서체)",
+    "장바구니 아이콘",
+    "쿠키 수락 알약"
+  ],
+  "cta": {
+    "pattern": "문단 안 밑줄 링크와 헤더 Get in touch",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.55
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "문단 속 핵심 단어에 밑줄 링크를 달아 버튼을 대신한다",
+    "흑백 사진과 흰 바탕이 서체 작업을 돋보이게 한다",
+    "모바일은 이미지 카드를 한 줄로 쌓고 쿠키 알약을 하단에 둔다"
+  ]
+}

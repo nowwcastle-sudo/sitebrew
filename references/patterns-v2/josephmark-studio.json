@@ -1,0 +1,62 @@
+{
+  "id": "josephmark-studio",
+  "archetype": "portfolio",
+  "sourceGallery": "httpster",
+  "url": "https://josephmark.studio/",
+  "structure": {
+    "hero": "검은 면 좌측에 큰 산세리프 소개 문장, 바로 아래 작업 이미지가 이어짐",
+    "sections": [
+      "소형 로고와 우측 Menu 텍스트",
+      "대형 선언 문장(검은 바탕)",
+      "작업 이미지 줄(인물 콜라주)",
+      "올리브 띠 위 음악 기기 앱 목업(노브·BPM·정지 버튼)",
+      "레코드 선택 화면과 앨범 커버 작업 카드(밝은 회색 면)"
+    ]
+  },
+  "type": {
+    "display": "가는 중간 굵기 기하 산세리프 대형, 흰 글자",
+    "body": "같은 산세리프 소형 메뉴",
+    "scale": "선언 문장 대형, 메뉴 극소형 두 단계"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "선언 문장이 약 0.25초 안에 흐릿하게 나타나 선명해짐",
+    "scroll": "스크롤하면 문장이 위로 밀리고 작업 카드가 차례로 올라오며 배경이 검정에서 올리브와 밝은 회색으로 바뀜",
+    "hover": null,
+    "transition": "작업 이미지 줄이 약 1초 간격으로 다른 장면으로 교체됨",
+    "durationsMs": [
+      250,
+      1000,
+      2250
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "스크롤 구간은 자동 스크롤 캡처에서 추정, 4fps 기준"
+  },
+  "interaction": [
+    "Menu 텍스트",
+    "작업 카드 클릭",
+    "앱 목업 안 노브·BPM·정지 조작"
+  ],
+  "cta": {
+    "pattern": "CTA 없음, Menu와 작업 카드",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "선언 문장 하나로 첫 화면을 비우고 작업 이미지가 바로 이어진다",
+    "작업마다 배경색 띠를 바꿔 스크롤하면 프로젝트 분위기가 색으로 구분된다",
+    "앱 목업을 노브와 버튼이 보이는 실제 UI처럼 보여 제작 역량을 증명한다",
+    "모바일은 문장을 가운데 아래로 내리고 올리브 띠 아래 목업을 잇는다"
+  ]
+}

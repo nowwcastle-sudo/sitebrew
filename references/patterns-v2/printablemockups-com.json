@@ -1,0 +1,60 @@
+{
+  "id": "printablemockups-com",
+  "archetype": "landing",
+  "sourceGallery": "opl",
+  "url": "https://www.printablemockups.com/",
+  "structure": {
+    "hero": "중앙 정렬 업데이트 알약 배지, 2행 굵은 헤드라인(둘째 줄 일부 주황 형광 밑줄), 설명, 주황 주 버튼과 흰 보조 버튼, 체크 3개 신뢰 줄, 아래에 빌더 화면 스크린샷",
+    "sections": [
+      "내비(로고·메뉴 6·GitHub·빌더 열기)",
+      "업데이트 배지",
+      "헤드라인·설명",
+      "주·보조 버튼과 신뢰 문구 3개",
+      "빌더 화면 목업(스크롤 아래)"
+    ]
+  },
+  "type": {
+    "display": "굵은 둥근 산세리프 약 80px, 주황 어절 하나",
+    "body": "같은 계열 약 20px 회색",
+    "scale": "H1 약 80px·설명 약 20px·UI 약 15px(1440)"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면만으로는 알 수 없다. 수집 메타상 CSS 애니메이션 3개와 영상 1개",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "내비 메뉴 6개와 GitHub 별 링크",
+    "업데이트 배지 링크",
+    "빌더 화면 목업을 하단에 걸침"
+  ],
+  "cta": {
+    "pattern": "주황 채움 주 버튼 + 흰 윤곽 GitHub 별 주기 버튼, 내비 우측 빌더 열기 반복",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing",
+      "saas"
+    ],
+    "score": 0.85
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "헤드라인 한 어절을 주황 색과 부드러운 광원 밑줄로 강조한다",
+    "버튼 아래에 무료·오픈소스·가입 불필요 세 문구를 체크 표시로 줄 세워 전환 장벽을 걷어 낸다",
+    "주 버튼(도구 열기)과 보조 버튼(GitHub 별 주기)을 나란히 둬 사용자와 개발자 두 길을 연다",
+    "빌더 화면을 바로 아래 걸쳐 놓아 스크롤하면 제품을 바로 본다",
+    "모바일에서 내비 주황 버튼이 오른쪽으로 잘려 넘치는 점은 피해야 한다"
+  ]
+}

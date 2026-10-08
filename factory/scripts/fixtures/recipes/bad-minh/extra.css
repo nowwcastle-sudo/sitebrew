@@ -1,0 +1,4 @@
+/* 시험용: cn-input 에 min-h-14 — 부품의 인라인 min-h-[44px] 가 twMerge 로 조용히 지운다(T4-M4, 경고). */
+.cn-input {
+  @apply h-14 min-h-14 rounded-none border-2 bg-transparent px-3 py-1 text-base;
+}

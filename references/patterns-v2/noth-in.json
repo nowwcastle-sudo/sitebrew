@@ -1,0 +1,64 @@
+{
+  "id": "noth-in",
+  "archetype": "portfolio",
+  "sourceGallery": "siteinspire",
+  "url": "https://www.noth.in/",
+  "structure": {
+    "hero": "검은 화면 글자 사이에 푸른 호일 3D 오브젝트가 낀 로딩, 이어 흰 바탕 초대형 로고타입",
+    "sections": [
+      "검은 로딩 화면(글자와 호일 오브젝트, 퍼센트 카운터)",
+      "쿠키 카드(좌하단)",
+      "흰 바탕 상단 소개 문장 + BOOK A CALL 알약",
+      "화면 폭 가득 굵은 로고타입",
+      "우측 상단 메뉴 목록(WORKS·STUDIO·CONTACT)",
+      "하단 소셜·언어 전환"
+    ]
+  },
+  "type": {
+    "display": "극굵은 기하 산세리프 로고타입 초대형(원형 O), 보조는 중립 그로테스크",
+    "body": "같은 그로테스크 소형 대문자 라벨",
+    "scale": "로고타입 초대형, 문장 중형, 라벨 극소형"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": "로딩에서 글자와 호일 오브젝트가 퍼센트 카운터와 함께 정렬되고 약 2초 뒤 흰 바탕으로 전환됨",
+    "scroll": "스크롤하면 로고타입이 줄어 위로 붙고 아래에서 큰 문장이 나타남",
+    "hover": "BOOK A CALL 알약에 올리면 색이 짙은 회색으로 바뀜",
+    "transition": "로고타입이 아래에서 잘려 올라오는 클립 등장과 검은 얼룩 조각이 뿌려지는 전환이 번갈아 나타남",
+    "durationsMs": [
+      2000,
+      500,
+      750
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "로딩과 전환 시간은 4fps 프레임 수로 추정"
+  },
+  "interaction": [
+    "BOOK A CALL 알약 호버",
+    "메뉴 목록 호버",
+    "쿠키 수락·거부",
+    "소셜 링크와 EN 전환"
+  ],
+  "cta": {
+    "pattern": "검정 알약 BOOK A CALL 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "상호를 폭 가득 극굵은 로고타입으로 놓고 클립으로 등장시킨다",
+    "로딩에 3D 오브젝트를 글자 사이에 끼워 대기를 연출로 쓴다",
+    "흑백 두 색만 쓰고 쿠키 카드까지 통일해 일관성을 지킨다",
+    "모바일은 쿠키 카드가 하단 3분의 1을 차지한다"
+  ]
+}

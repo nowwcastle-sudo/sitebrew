@@ -1,0 +1,63 @@
+{
+  "id": "ember-energy-org",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://ember-energy.org/data/electricity-data-explorer/",
+  "structure": {
+    "hero": "회청색 면 대형 제목과 설명, 남색 도구 탭 띠와 선택 줄",
+    "sections": [
+      "로고+주 메뉴",
+      "빵부스러기",
+      "대형 제목+설명",
+      "짙은 남색 도구 탭",
+      "데이터셋·지표 선택 줄",
+      "개요/연도 변화/계절 탭",
+      "소스·지역 필터",
+      "차트 영역",
+      "쿠키 동의 모달"
+    ]
+  },
+  "type": {
+    "display": "둥근 산세리프 64px 대형 제목",
+    "body": "산세리프 18~20px",
+    "scale": "제목 64px, 도구 라벨 16px, 본문 20px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "데이터셋 드롭다운",
+    "절대값·점유율·1인당 세 가지 지표 토글",
+    "소스·지역 다중 선택 필터",
+    "추이·단일 연도 보기 전환",
+    "공유 세로 탭"
+  ],
+  "cta": {
+    "pattern": "쿠키 동의 수락·거부 버튼",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "탐색 도구를 제목 아래 별도 띠로 분리해 설명과 조작을 나눈다",
+    "쿠키 동의 모달이 차트를 반쯤 가려 첫 화면에 데이터가 적다",
+    "필터 라벨(Select·Metric·Source·View)을 한 줄씩 명시해 단계적 조작을 안내한다",
+    "375에서는 제목이 크게 줄바꿈되고 동의 모달이 화면 절반을 덮는다"
+  ]
+}

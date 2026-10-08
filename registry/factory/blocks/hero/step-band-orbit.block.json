@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "step-band-orbit",
+  "title": "히어로 — 단계 띠 3칸 + 궤도 도면",
+  "layout": "step-band-orbit",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard", "detail"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["clip-reveal", "split-text", "svg-draw", "rise", "parallax", "tilt-3d"],
+  "titleWidth": "column",
+  "notes": "왼쪽 5칸: 레일(상태점 · 이름 / 번호) → 제목 h1(주색 한 낱말) → 설명 → 단계 띠(토글 3칸 — 고른 칸 윗선 primary + muted, 640 아래는 세로 세 줄) → 버튼 둘. 오른쪽 7칸: 직접 그린 동심원·축선·기울어진 궤도 + 네 모서리 판독값. 기본 기법 svg-draw. P3-1 r1-measure A 구성"
+}

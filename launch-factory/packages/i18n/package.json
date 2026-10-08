@@ -1,0 +1,14 @@
+{
+  "name": "@launch-factory/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "한/영 메시지 목록(messages/{ko,en}.json) — 어댑터·서버 액션·메일이 사용자에게 보이는 문구를 여기서만 읽는다. ko 는 해요체.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "messages"
+  ]
+}

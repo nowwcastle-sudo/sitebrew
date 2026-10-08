@@ -1,0 +1,65 @@
+{
+  "id": "mariavasilyeva-com",
+  "archetype": "portfolio",
+  "sourceGallery": "awwwards",
+  "url": "https://www.mariavasilyeva.com/",
+  "structure": {
+    "hero": "검은 로딩 화면의 문구 5줄이 글자 반복 복제로 흐르다 계단식 막이 걷히며 작품 썸네일 띠가 드러남",
+    "sections": [
+      "검은 로딩 화면(문구 5줄 3묶음, 가로 괘선, 하단 퍼센트)",
+      "계단식 막 걷힘 전환",
+      "흰 바탕 가운데 가로 작품 썸네일 띠",
+      "좌측 앞쪽 카드 클러스터(보라색 도형·작품 카드)",
+      "세로 회전 사이드 라벨(이름·직함·사운드·메뉴·수상)",
+      "Scroll 손글씨 라벨과 More details·View project"
+    ]
+  },
+  "type": {
+    "display": "고대비 세리프 대문자 로딩 문구, 본문은 모노·손글씨 혼합",
+    "body": "모노스페이스와 손글씨체 소형",
+    "scale": "로딩 문구 중형, 사이드 라벨 극소형, 손글씨 라벨 소형"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": "로딩 퍼센트가 약 0.75초에 100%에 닿고 문구 줄마다 첫 글자가 반복 복제되며 좌우로 밀려 흘러 약 5초까지 이어짐",
+    "scroll": "앞쪽 큰 카드가 약 1초 간격으로 다른 작품으로 바뀌고 가운데 썸네일 띠가 가로로 흐름",
+    "hover": null,
+    "transition": "검은 막이 계단 모양으로 위에서 걷히며 약 5초에 흰 화면과 썸네일 띠가 드러남",
+    "durationsMs": [
+      750,
+      4250,
+      750
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "4fps 프레임 수로 추정, 모바일 캡처는 로딩 상태에서 멈춤"
+  },
+  "interaction": [
+    "사운드 켜기·끄기",
+    "세로 라벨 메뉴",
+    "작품 상세 보기 링크",
+    "Scroll 손글씨 안내"
+  ],
+  "cta": {
+    "pattern": "More details 손글씨 링크와 View project",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "로딩 화면 자체를 글자 반복 연출로 만들어 대기 시간을 브랜드 경험으로 쓴다",
+    "계단식 막 걷힘으로 로딩에서 본 화면으로 이어지는 전환을 만든다",
+    "작품을 가로 띠로 압축해 한눈에 보이고 앞쪽 카드를 하나씩 키운다",
+    "사이드 라벨을 세로로 돌려 가장자리로 밀어 화면 중앙을 작품에 내준다",
+    "정적 캡처가 로딩 화면뿐이라 첫 화면 기준 판단이 어려운 점은 주의가 필요하다"
+  ]
+}

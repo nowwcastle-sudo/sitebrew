@@ -1,0 +1,49 @@
+{
+  "id": "fx-saas-c",
+  "archetype": "saas",
+  "sourceGallery": "fixture",
+  "url": "https://example.com/fx-saas-c",
+  "structure": {
+    "hero": "배경 영상 위 한 줄 헤드라인",
+    "sections": [
+      "머리글",
+      "본문"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프",
+    "body": "산세리프 16px",
+    "scale": "제목 48px"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": "배경 색이 약 2초마다 순서대로 바뀜",
+    "durationsMs": [],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "메뉴 링크"
+  ],
+  "cta": {
+    "pattern": "메뉴 링크 둘",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "가짜 시험 카드"
+  ]
+}

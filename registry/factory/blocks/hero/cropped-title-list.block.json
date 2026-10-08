@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "cropped-title-list",
+  "title": "히어로 — 오른쪽 끝에서 잘리는 제목 목록",
+  "layout": "cropped-title-list",
+  "density": "comfortable",
+  "archetypes": ["portfolio", "brand"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": [],
+  "motion": ["clip-reveal", "split-text", "rise", "oversize-crop"],
+  "titleWidth": "column",
+  "notes": "2/12 메타 칸(faces[0], 없으면 오른쪽 선 — 라벨/대괄호 값 링크) + 10/12 한 줄 제목 목록(링크, nowrap — 칸이 오른쪽 끝에서 자른다, hover 로 잘린 끝만큼 밀린다). 제목 h1 은 sr-only. 머리를 header 로 넘기면 머리의 .head-face·.bracket .box·.head-cta 도 같은 장면으로 등장한다. 기본 기법 split-text·oversize-crop. P3-1 r2-signal A 구성"
+}

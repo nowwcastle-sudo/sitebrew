@@ -1,0 +1,59 @@
+{
+  "id": "smallbits-design",
+  "archetype": "landing",
+  "sourceGallery": "opl",
+  "url": "https://smallbits.design/",
+  "structure": {
+    "hero": "검은 바탕 전면에 흰 픽셀 아이콘이 격자로 가득 차고, 하단 중앙에 흰 카드(한 문장 소개·검은 전체 받기 버튼·작은 링크 줄)가 떠 있으며 우상단에 Product Hunt 배지",
+    "sections": [
+      "전면 픽셀 아이콘 격자",
+      "하단 흰 소개 카드(소개 문장·받기 버튼)",
+      "카드 안 링크 줄(제작자·라이선스·개인정보·약관·문의)",
+      "우상단 Product Hunt 배지"
+    ]
+  },
+  "type": {
+    "display": "중간 굵기 그로테스크 약 24px 검정(헤드라인이 카드 안 한 문장)",
+    "body": "같은 계열 회색 약 16px 링크 줄, 버튼 글자는 굵은 흰색 약 16px",
+    "scale": "소개 문장 약 24px·링크와 버튼 약 16px(1440), 모바일 소개 약 20px"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "영상 없이 정지 화면 두 장만 봤다. 아이콘 격자가 움직이는지는 알 수 없다."
+  },
+  "interaction": [
+    "전체 받기 버튼",
+    "Product Hunt 배지 링크",
+    "카드 안 보조 링크 다섯 개",
+    "모바일은 격자가 위, 소개 카드가 아래 흰 면으로 분리"
+  ],
+  "cta": {
+    "pattern": "검은 직사각 버튼 하나(전체 받기)와 Product Hunt 배지",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "제품인 아이콘 세트를 전면 격자로 깔아 설명 없이 결과물 자체를 증거로 보여 준다",
+    "소개 문장 하나와 버튼 하나만 흰 카드에 담아 검은 격자 위에서 가장 밝은 면으로 눈에 띄게 한다",
+    "무료 사용 가능 같은 조건은 문구로 늘리지 않고 카드 아래 링크 줄에 라이선스를 둔다",
+    "모바일은 카드를 화면 아래 전폭 흰 면으로 바꿔 격자와 소개를 위아래로 나눈다",
+    "검정·흰색 두 색뿐이라 Product Hunt 배지의 주황이 유일한 색 포인트가 된다"
+  ]
+}

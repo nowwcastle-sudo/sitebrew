@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QFIX3 — role=checkbox 로 그린 필수 동의가 든 사전 등록 폼</title>
+</head>
+<body>
+  <main>
+    <h1>사전 등록</h1>
+    <form id="lead" novalidate>
+      <label for="email">이메일</label>
+      <input id="email" name="email" type="email" aria-required="true" />
+      <!-- 입력 칸이 아니라 role=checkbox(Base UI 모양) — 눌러야 aria-checked 가 바뀐다. 필수 표시는 감싼 칸의 data-consent="required" 이고,
+           숨은 입력 이름에 newsletter 가 들어 있다(이름만 보면 선택 동의로 읽힌다) -->
+      <div data-consent="required">
+        <span id="consent" role="checkbox" tabindex="0" aria-checked="false"></span>
+        <input type="checkbox" name="newsletter-consent" aria-hidden="true" tabindex="-1" />
+        <label id="consent-label">등록한 이메일은 입장 확인 메일을 보내는 데 써요</label>
+      </div>
+      <button type="submit">이메일로 사전 등록하기</button>
+      <div id="alert" role="alert"></div>
+      <p id="done" role="status"></p>
+    </form>
+  </main>
+  <script>
+    const box = document.getElementById('consent')
+    box.addEventListener('click', () => box.setAttribute('aria-checked', box.getAttribute('aria-checked') === 'true' ? 'false' : 'true'))
+    document.getElementById('lead').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      if (box.getAttribute('aria-checked') !== 'true') { document.getElementById('alert').textContent = '안내 메일 수신에 동의해 주세요.'; return }
+      const r = await fetch('/receive', { method: 'POST', body: new FormData(e.target) })
+      if (r.ok) document.getElementById('done').textContent = '접수했어요. 메일을 확인해 주세요.'
+    })
+  </script>
+</body>
+</html>

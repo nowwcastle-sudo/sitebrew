@@ -1,0 +1,65 @@
+{
+  "id": "theindex-website",
+  "archetype": "portfolio",
+  "sourceGallery": "httpster",
+  "url": "https://theindex.website/",
+  "structure": {
+    "hero": "흰 바탕 가운데 일러스트 로고와 소개문, 아래 최신 썸네일 줄, 약 5초 뒤 박물관 소개 팝업이 전면을 덮음",
+    "sections": [
+      "상단 소형 내비(THE INDEX·PROJECTS·INFORMATION)",
+      "일러스트 로고 + 사이트명 + 세리프 소개문",
+      "LATEST 작업 썸네일 가로 줄",
+      "박물관 소개 팝업(대형 압축 대문자 문장 + 외곽선 버튼)",
+      "모바일 하단 플로팅 내비(홈·프로젝트·정보·구독)"
+    ]
+  },
+  "type": {
+    "display": "극굵은 압축 그로테스크 대문자 팝업 제목",
+    "body": "세리프 중형 소개문 + 그로테스크 소형 라벨",
+    "scale": "팝업 제목 초대형, 소개문 중형, 라벨 극소형"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": "내비만 있는 흰 화면에서 약 0.5초 뒤 로고와 소개문이 흐릿하게 나타나고 썸네일 줄이 약 1초에 걸쳐 올라옴",
+    "scroll": null,
+    "hover": "팝업 버튼에 올리면 외곽선이 검은 면으로 반전됨",
+    "transition": "썸네일이 약 1초마다 다른 작업으로 교체되고 약 5.5초 뒤 흰 팝업이 흐린 겹침을 거쳐 전면으로 열림",
+    "durationsMs": [
+      500,
+      1000,
+      1000,
+      5500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "팝업 시점은 4fps 프레임 수로 추정, 데스크톱 캡처는 팝업 상태"
+  },
+  "interaction": [
+    "팝업 닫기 X",
+    "EXPLORE 외곽선 버튼",
+    "썸네일 클릭",
+    "모바일 하단 플로팅 내비 4칸",
+    "LATEST·SHUFFLE 필터"
+  ],
+  "cta": {
+    "pattern": "외곽선 EXPLORE 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.75
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "큐레이션 아카이브라는 성격을 박물관 이름 팝업과 극굵은 대문자 한 덩어리로 전달한다",
+    "썸네일 줄을 계속 교체해 컬렉션이 살아 있는 느낌을 준다",
+    "모바일은 하단 플로팅 내비 4칸으로 엄지 영역에 메뉴를 모은다",
+    "흑백 바탕에 색은 작품 사진에만 맡긴다"
+  ]
+}

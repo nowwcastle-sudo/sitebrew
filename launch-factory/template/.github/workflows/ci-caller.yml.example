@@ -1,0 +1,27 @@
+# 재사용 워크플로 호출부(선택) — 확장자가 .example 라 GitHub 이 읽지 않는다. 쓰려면 ci.yml 을 지우고 이 파일을 ci.yml 로 바꾼다.
+# 먼저 운영자이 launch-factory 저장소 Settings → Actions → General → Access 를 「Accessible from repositories owned by the user」(REST: access_level = user)로 바꿔야 한다.
+# 지금 값은 none 이라 이 호출은 실패한다(2026-10-05 확인). 켠 뒤에는 논리가 launch-factory 한 곳(.github/workflows/product-ci.yml)에 있고 제품은 아래 해시만 올린다.
+# 비공개 저장소 간 호출이 Free 개인 계정에서 저장되는지와 Dependabot 이 이 참조를 갱신하는지는 확인하지 못했다(조사 문서: 확인 안 됨).
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    # <전체 커밋 해시> 는 launch-factory 의 product-ci.yml 이 들어 있는 커밋으로 바꾼다
+    uses: nowwcastle-sudo/sitebrew/.github/workflows/launch-product-ci.yml@<전체 커밋 해시>
+    permissions:
+      contents: read

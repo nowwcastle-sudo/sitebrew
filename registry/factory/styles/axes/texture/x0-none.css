@@ -1,0 +1,5 @@
+/* X0 질감 없음 — 기본값(레시피 머리에 texture 가 없으면 이것, base.css 와 같은 모양). 무늬 가상 요소를 그리지 않는다.
+ * 새 축 X(질감)는 부품 Texture(texture.tsx)의 면 구획만 덮는다. P3-2 Task 16a(대표 판단 2026-09-29), 원천 styles.json proposals X. */
+.cn-texture {
+  @apply [--wf-texture-b-display:none] [--wf-texture-a-display:none];
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-noto-sans-kr",
+  "type": "registry:font",
+  "title": "Noto Sans KR",
+  "description": "web-factory 폰트 키트: Noto Sans KR (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Noto Sans KR Variable', sans-serif",
+    "provider": "google",
+    "import": "Noto_Sans_KR",
+    "variable": "--font-noto-sans-kr-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/noto-sans-kr"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/notosanskr/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Noto+Sans+KR",
+    "role": [
+      "body"
+    ],
+    "korean": true
+  }
+}

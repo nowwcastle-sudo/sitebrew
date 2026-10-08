@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "illustration-scene",
+  "title": "히어로 — 전폭 일러스트 장면 + 큰 제목",
+  "layout": "illustration-scene",
+  "density": "spacious",
+  "archetypes": ["public", "portfolio", "landing", "saas", "pwa"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["illustration"],
+  "motion": ["kinetic-type", "blur-to-sharp", "rise", "scrub-timeline"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "layout",
+  "notes": "배치로 대담: 전폭 큰 제목(D2·D3 를 받는다) 아래 전폭 그림 한 장이 첫 화면을 채우고, 문단·버튼은 그림 오른쪽 아래 바탕색 카드에 든다(그림 위 글 없음 — 어떤 그림에서도 대비가 같다). 그림 칸은 생성 허용(generated-ok) — 없으면 muted 틀. 등장은 제목 키네틱 → 그림 흐림→선명(불투명도 그대로) → 카드, 스크롤은 그림 확대. FV1 Task 5.7"
+}

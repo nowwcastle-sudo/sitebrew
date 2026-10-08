@@ -1,0 +1,29 @@
+{
+  "topic": "동네 꽃집 소개 홈페이지 (가상 사업체 — 예시)",
+  "archetype": "local",
+  "locale": "ko",
+  "facts": {
+    "name": "봄결꽃집",
+    "hours": "화-토 10:00-19:00, 일 12:00-17:00, 월 휴무",
+    "email": "hello@example.com",
+    "menu": "계절 꽃다발 35,000원부터, 화분 22,000원부터",
+    "legalName": "봄결꽃집",
+    "representative": "한소민",
+    "phone": "02-1234-5678",
+    "address": "서울특별시 성동구 예시로 33, 1층",
+    "bizNo": "123-45-67890",
+    "booking": "꽃다발 주문은 전화나 카카오톡 채널로 받아요",
+    "naverMapUrl": "https://example.com/maps/naver/bomgyeol",
+    "kakaoMapUrl": "https://example.com/maps/kakao/bomgyeol",
+    "transit": "가까운 지하철역 1번 출구에서 걸어서 4분",
+    "parking": "가게 앞에 1대, 근처 공영주차장을 이용해요",
+    "notice": "이번 주에 수국 꽃다발이 새로 들어왔어요",
+    "notices": "2026-10-18 | 이번 주에 수국 꽃다발이 새로 들어왔어요",
+    "price": "꽃다발 35,000원부터",
+    "audience": "기념일 선물이나 집 안 꽃을 찾는 동네 주민",
+    "action": "전화나 카카오톡 채널로 꽃다발 주문하기",
+    "mood": "다정한",
+    "faq": "당일 주문도 되나요? | 오전 11시 전에 전화 주시면 당일에 준비해요 ; 배달도 하나요? | 가까운 동네는 배달해요 ; 꽃다발은 얼마나 가나요? | 시원한 곳에 두고 물을 갈아 주면 일주일쯤 가요"
+  },
+  "seed": 1
+}

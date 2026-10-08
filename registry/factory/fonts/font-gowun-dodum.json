@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-gowun-dodum",
+  "type": "registry:font",
+  "title": "Gowun Dodum",
+  "description": "web-factory 폰트 키트: Gowun Dodum (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Gowun Dodum', sans-serif",
+    "provider": "google",
+    "import": "Gowun_Dodum",
+    "variable": "--font-gowun-dodum-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/gowun-dodum"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gowundodum/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Gowun+Dodum",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

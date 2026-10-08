@@ -1,0 +1,14 @@
+{
+  "kind": "onboarding",
+  "variant": "setup-wizard",
+  "title": "설정 마법사 — 환영 질문 하나 → 답에 따라 바뀌는 첫 할 일",
+  "layout": "question-then-branch",
+  "density": "spacious",
+  "archetypes": [ "saas", "pwa" ],
+  "archetypeKinds": [ "onboarding-wizard", "welcome-question" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "O5", "O9", "O10", "V4", "X1", "M1" ],
+  "notes": "두 단계(data-flow=onboarding · data-steps 2 · data-step). ① 환영 질문 하나 — 라디오, 고른 답 없이 시작, 안 고르고 다음이면 오류 알림에 포커스, 건너뛰기 링크. ② copy.branches[답] — 답마다 제목·본문·첫 할 일이 다르다(O9). 권한은 그 갈래의 버튼을 누를 때만 이유 한 줄과 함께 청한다(O10 — Notification.requestPermission, 없으면 「지원 안 함」). 단계가 바뀌면 새 단계 제목에 포커스. 계측(선택): onboarding_step_complete(단계 이름만)·cta_click"
+}

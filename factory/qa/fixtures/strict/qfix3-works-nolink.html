@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QFIX3 — 사례 쪽이 하나뿐인 포트폴리오 (작업 카드: 그림 칸 + 제목, 링크는 하나)</title>
+<style>
+  html, body { margin: 0; font-family: system-ui, sans-serif; }
+  ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; list-style: none; padding: 0 24px; }
+  [data-slot=content-figure] { display: block; aspect-ratio: 4 / 3; background: #e5e5e5; }
+  main { min-height: 300vh; }
+</style>
+</head>
+<body>
+  <nav aria-label="주 메뉴"><a href="/">홈</a></nav>
+  <main>
+    <h1>하은 사진</h1>
+    <section>
+      <h2>작업</h2>
+      <ul>
+        <li><div data-slot="card"><span data-slot="content-figure"><span role="img" aria-label="시장의 아침 사진 — 실제 사진 필요" data-photo-needed>실제 사진 필요</span></span><h3><a href="/work">시장의 아침</a></h3></div></li>
+        <li><div data-slot="card"><span data-slot="content-figure"><span role="img" aria-label="골목 지도 사진 — 실제 사진 필요" data-photo-needed>실제 사진 필요</span></span><h3>골목 지도</h3></div></li>
+        <li><div data-slot="card"><span data-slot="content-figure"><span role="img" aria-label="여름 해변 사진 — 실제 사진 필요" data-photo-needed>실제 사진 필요</span></span><h3>여름 해변</h3></div></li>
+      </ul>
+    </section>
+    <a href="mailto:hello@example.com">hello@example.com</a>
+  </main>
+</body>
+</html>

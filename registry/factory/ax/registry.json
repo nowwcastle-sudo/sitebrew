@@ -1,0 +1,161 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "agent-form-attrs",
+      "type": "registry:lib",
+      "title": "agent-form-attrs",
+      "description": "web-factory ax: agent-form-attrs",
+      "files": [
+        {
+          "path": "agent-form-attrs.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/agent-form-attrs.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.0"
+      ]
+    },
+    {
+      "name": "brand-color",
+      "type": "registry:lib",
+      "title": "brand-color",
+      "description": "web-factory ax: brand-color",
+      "files": [
+        {
+          "path": "brand-color.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/brand-color.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "favicon-kit",
+      "type": "registry:lib",
+      "title": "favicon-kit",
+      "description": "web-factory ax: favicon-kit",
+      "files": [
+        {
+          "path": "favicon-kit.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/favicon-kit.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/brand-color#v0.1.0"
+      ]
+    },
+    {
+      "name": "freshness",
+      "type": "registry:component",
+      "title": "freshness",
+      "description": "web-factory ax: freshness",
+      "files": [
+        {
+          "path": "freshness.tsx",
+          "type": "registry:component",
+          "target": "@components/ax/freshness.tsx"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "geo-entity",
+      "type": "registry:lib",
+      "title": "geo-entity",
+      "description": "web-factory ax: geo-entity",
+      "files": [
+        {
+          "path": "geo-entity.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/geo-entity.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-brand#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-detail#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-local#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-public#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-saas#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-to-jsonld#v0.1.0",
+        "nowwcastle-sudo/sitebrew/freshness#v0.1.0",
+        "nowwcastle-sudo/sitebrew/seo-meta#v0.1.0"
+      ]
+    },
+    {
+      "name": "json-ld",
+      "type": "registry:component",
+      "title": "json-ld",
+      "description": "web-factory ax: json-ld",
+      "files": [
+        {
+          "path": "json-ld.tsx",
+          "type": "registry:component",
+          "target": "@components/ax/json-ld.tsx"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "og-image",
+      "type": "registry:component",
+      "title": "og-image",
+      "description": "web-factory ax: og-image",
+      "files": [
+        {
+          "path": "og-image.tsx",
+          "type": "registry:component",
+          "target": "@components/ax/og-image.tsx"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/brand-color#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0",
+        "nowwcastle-sudo/sitebrew/seo-meta#v0.1.0"
+      ]
+    },
+    {
+      "name": "seo-files",
+      "type": "registry:lib",
+      "title": "seo-files",
+      "description": "web-factory ax: seo-files",
+      "files": [
+        {
+          "path": "seo-files.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/seo-files.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "seo-meta",
+      "type": "registry:lib",
+      "title": "seo-meta",
+      "description": "web-factory ax: seo-meta",
+      "files": [
+        {
+          "path": "seo-meta.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/seo-meta.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    }
+  ]
+}

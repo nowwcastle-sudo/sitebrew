@@ -1,0 +1,62 @@
+{
+  "id": "chillys-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.chillys.com/products/charlie-constantinou-opal-water-bottle",
+  "structure": {
+    "hero": "세로로 이어지는 큰 사진 열과 가격·검정 장바구니 버튼·사양 줄",
+    "sections": [
+      "검정 공지띠(학생 할인)",
+      "헤더(내비 6개·중앙 로고·공동 브랜드·검색 알약·계정·가방)",
+      "브레드크럼",
+      "세로 이미지 열",
+      "가격",
+      "장바구니 버튼",
+      "사양 아이콘 줄(36시간 차갑게·14시간 뜨겁게·누수 방지·소음 없는 바닥)",
+      "상품 상세 아코디언",
+      "채팅 말풍선"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 제목, 로고는 단순한 달 모양",
+    "body": "산세리프 본문",
+    "scale": "가격 굵게, 아이콘 라벨 작은 대문자"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "사양 아이콘 4개 줄",
+    "상품 상세 아코디언",
+    "채팅 말풍선과 닫기",
+    "쿠키 4항목 토글"
+  ],
+  "cta": {
+    "pattern": "검정 전폭 ADD TO BASKET 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.72
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "핵심 사양을 아이콘 4개와 짧은 숫자로 장바구니 버튼 바로 아래에 둔다",
+    "긴 상세 설명은 아코디언 안으로 접는다",
+    "쿠키 대화상자가 큰 4항목 토글이라 첫 화면의 절반 이상을 덮는다",
+    "큰 사진을 세로로 길게 이어 붙이는 갤러리는 모바일에서도 스크롤이 자연스럽다"
+  ]
+}

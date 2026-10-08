@@ -1,0 +1,6 @@
+# gitleaks 설정(제품, v8.30.1) — 기본 규칙 전체. launch-factory 가 실어 준 파일이다(template:check 가 지킨다).
+# 제품에 시험용 가짜 값이 있어 막히면 허용 목록을 이 파일에 더하되 launch-factory 쪽 .gitleaks.toml 처럼 「파일 경로 AND 줄 모양」(condition = "AND")으로 좁게, 항목마다 이유를 적는다.
+title = "product gitleaks"
+
+[extend]
+useDefault = true

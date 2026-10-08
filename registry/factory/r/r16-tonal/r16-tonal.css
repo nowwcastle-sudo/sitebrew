@@ -1,0 +1,85 @@
+/* 생성물 — factory/scripts/recipe.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* 단색 음영(r16-tonal) 순수 CSS 변수 — shadcn 없이 단일 HTML 에 붙인다. 원천: registry/factory/recipes/r16-tonal/DESIGN.md */
+:root {
+  --background: oklch(0.9750 0.0120 262.00);
+  --foreground: oklch(0.2000 0.0500 262.00);
+  --card: oklch(0.9950 0.0050 262.00);
+  --card-foreground: oklch(0.2000 0.0500 262.00);
+  --popover: oklch(0.9950 0.0050 262.00);
+  --popover-foreground: oklch(0.2000 0.0500 262.00);
+  --primary: oklch(0.4200 0.1400 262.00);
+  --primary-foreground: oklch(0.9800 0.0100 262.00);
+  --secondary: oklch(0.9300 0.0300 262.00);
+  --secondary-foreground: oklch(0.2000 0.0500 262.00);
+  --muted: oklch(0.9500 0.0200 262.00);
+  --muted-foreground: oklch(0.4300 0.0500 262.00);
+  --accent: oklch(0.8800 0.0700 262.00);
+  --accent-foreground: oklch(0.2200 0.0600 262.00);
+  --destructive: oklch(0.5200 0.1800 27.00);
+  --border: oklch(0.8600 0.0300 262.00);
+  --input: oklch(0.5000 0.0700 262.00);
+  --ring: oklch(0.4200 0.1400 262.00);
+  --success: oklch(0.5200 0.1100 152.00);
+  --success-foreground: oklch(0.9850 0.0050 152.00);
+  --warning: oklch(0.5500 0.1200 68.00);
+  --warning-foreground: oklch(0.9850 0.0050 68.00);
+  --info: oklch(0.5000 0.1200 255.00);
+  --info-foreground: oklch(0.9850 0.0040 255.00);
+  --font-sans: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading: "Jost", "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading-ko: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --icon-stroke: 2;
+  --icon-linecap: round;
+  --icon-linejoin: round;
+  --ease-standard: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-screen: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 120ms;
+  --duration-hover: 200ms;
+  --duration-popover: 160ms;
+  --duration-enter: 500ms;
+  --duration-sheet: 320ms;
+  --wf-axes: "R2 B4 I1 C3 T2 H2 S1";
+  --wf-font-tuned: "display body mono";
+  --wf-motion: 2;
+  --wf-heading-weight: 500;
+  --radius: 10px;
+  --wf-mask-radius: calc(infinity * 1px);
+  --wf-shadow-surface: 0px 1px 1px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 14%,transparent),1px 2px 2px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 11%,transparent),1px 4px 4px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 8%,transparent),2px 8px 8px color-mix(in oklch,color-mix(in oklch,var(--background),black 72%) 6%,transparent);
+}
+
+.dark {
+  --background: oklch(0.1700 0.0350 262.00);
+  --foreground: oklch(0.9500 0.0150 262.00);
+  --card: oklch(0.2100 0.0400 262.00);
+  --card-foreground: oklch(0.9500 0.0150 262.00);
+  --popover: oklch(0.2100 0.0400 262.00);
+  --popover-foreground: oklch(0.9500 0.0150 262.00);
+  --primary: oklch(0.7800 0.1100 262.00);
+  --primary-foreground: oklch(0.1700 0.0400 262.00);
+  --secondary: oklch(0.2600 0.0450 262.00);
+  --secondary-foreground: oklch(0.9500 0.0150 262.00);
+  --muted: oklch(0.2500 0.0400 262.00);
+  --muted-foreground: oklch(0.7100 0.0450 262.00);
+  --accent: oklch(0.3400 0.0800 262.00);
+  --accent-foreground: oklch(0.9500 0.0150 262.00);
+  --destructive: oklch(0.7000 0.1500 25.00);
+  --border: oklch(0.3300 0.0500 262.00);
+  --input: oklch(0.5050 0.0600 262.00);
+  --ring: oklch(0.7800 0.1100 262.00);
+  --success: oklch(0.7400 0.1100 152.00);
+  --success-foreground: oklch(0.1900 0.0200 152.00);
+  --warning: oklch(0.8000 0.1200 78.00);
+  --warning-foreground: oklch(0.2000 0.0300 78.00);
+  --info: oklch(0.7400 0.1000 255.00);
+  --info-foreground: oklch(0.1900 0.0150 255.00);
+}
+
+/* 제목 굵기(한글 제목 굵기 → fonts.display.weight → 700): 기본 층이라 굵기를 따로 준 요소가 이긴다 */
+@layer base {
+.font-heading { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+.font-heading-ko { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "social-proof",
+  "variant": "logo-rail",
+  "title": "사회적 증거 — 흑백 로고 한 줄",
+  "layout": "logo-rail",
+  "density": "compact",
+  "archetypes": ["saas", "brand", "portfolio", "landing"],
+  "archetypeKinds": ["social-proof", "client-roster", "recognition"],
+  "states": [],
+  "media": ["customer-logo"],
+  "motion": ["rise"],
+  "notes": "넓은 화면: 왼쪽 짧은 제목·근거 한 줄, 오른쪽 흑백 로고가 한 줄(흐르지 않는다). 그림이 없으면 이름 글자 표지. 375: 로고 두 열"
+}

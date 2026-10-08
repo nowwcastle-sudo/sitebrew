@@ -1,0 +1,13 @@
+{
+  "kind": "hours-location",
+  "variant": "branch-list",
+  "title": "지점 목록 — 지점 카드(오늘 시간·전화·지도)",
+  "layout": "branch-cards",
+  "density": "compact",
+  "archetypes": ["local", "commerce", "public"],
+  "archetypeKinds": ["branches", "store-locator"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "카드 격자(1 → 2 → 3열): 지점명 h3 + 지금 상태 배지(요일별 시간을 줬을 때) · 주소 · 오늘 시간 · 전화 · 네이버·카카오 지도 · 지점 안내. 칸은 local 원형 branches 와 같다"
+}

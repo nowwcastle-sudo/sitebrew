@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-tenor-sans",
+  "type": "registry:font",
+  "title": "Tenor Sans",
+  "description": "web-factory 폰트 키트: Tenor Sans (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Tenor Sans', sans-serif",
+    "provider": "google",
+    "import": "Tenor_Sans",
+    "variable": "--font-tenor-sans-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/tenor-sans"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/tenorsans/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Tenor+Sans",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

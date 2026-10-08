@@ -1,0 +1,865 @@
+{
+  "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
+  "id": "public",
+  "source": "registry/factory/archetypes/public.json",
+  "ref": "v0.1.0",
+  "purpose": "국민이 목적별로 필요한 민원·정보에 빨리 닿게 한다. KRDS를 우선하되 14px 바닥은 지킨다.",
+  "coreTask": "① 메인에서 대표 민원 서비스(예: 증명서 발급 안내)까지 3클릭 이내. ② 글자 크기를 130%로 바꾼 뒤 같은 과업 — 가로 스크롤 0, 메뉴·검색·바로가기 작동. ③ 긴급 공지가 있으면 링크 1개를 따라가 상세 제목이 공지와 일치하는지 확인. ④ 키보드만으로 첫 Tab = 본문 바로가기 → 공식 배너 → 로고, 푸터 「개인정보 처리방침」까지 도달.",
+  "completion": "site",
+  "locales": [
+    "ko"
+  ],
+  "pages": [
+    {
+      "id": "main",
+      "route": "/",
+      "required": [
+        {
+          "kind": "hero",
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-crosshair-quadrants",
+            "block-hero-identity-strip-banner",
+            "block-hero-illustration-scene",
+            "block-hero-map-first"
+          ]
+        },
+        {
+          "kind": "quick-links",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "바로가기 링크 격자 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "자주 찾는 서비스",
+                "en": "Popular services"
+              },
+              "from": [
+                "quickLinks"
+              ],
+              "fields": {
+                "label": "label",
+                "href": "href"
+              }
+            }
+          }
+        },
+        {
+          "kind": "news-tabs",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "공지·보도·채용 탭 목록 — 본문",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "공지·소식",
+                "en": "Notices"
+              },
+              "from": [
+                "notices"
+              ],
+              "sort": "-date",
+              "limit": 8,
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date",
+                  "category",
+                  "department"
+                ],
+                "href": "url",
+                "external": "external"
+              }
+            }
+          }
+        },
+        {
+          "kind": "agency-info",
+          "blockKinds": [
+            "hours-location"
+          ],
+          "allowedVariants": [
+            "block-hours-location-hours-table-map-link"
+          ]
+        }
+      ],
+      "optional": [
+        {
+          "kind": "policy-cards",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "정책 카드 — 본문",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "주요 정책",
+                "en": "Key policies"
+              },
+              "fields": {
+                "title": "slot:title",
+                "summary": "slot:desc",
+                "meta": [
+                  "slot:deadline"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "kind": "big-search",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "큰 검색 칸 — 본문(검색 입력은 ui 부품)",
+            "missing": "검색 대상(검색 결과 쪽·검색 주소)이 콘텐츠에 없다 — 결과 없는 검색 칸을 그리지 않는다"
+          }
+        },
+        {
+          "kind": "service-categories",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "서비스 분류 링크 — 본문",
+            "missing": "서비스 분류 목록 칸이 콘텐츠 스키마에 없다"
+          }
+        },
+        {
+          "kind": "my-applications",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "로그인 뒤 내 신청 — 본문",
+            "missing": "로그인 뒤 내 신청 자료 — 제품 기능(launch-factory)이라 콘텐츠 칸이 없다"
+          }
+        },
+        {
+          "kind": "head-greeting",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "기관장 인사 — 본문",
+            "missing": "기관장 인사말 글 칸이 콘텐츠 스키마에 없다(사진 칸 head-portrait 만 있다)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sub",
+      "route": "/guide",
+      "required": [
+        {
+          "kind": "breadcrumb",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "현재 위치 경로 — ui 부품",
+            "parts": [
+              "breadcrumb"
+            ],
+            "render": {
+              "as": "breadcrumb",
+              "heading": {
+                "ko": "현재 위치",
+                "en": "You are here"
+              },
+              "from": [
+                "@trail"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "side-menu",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "왼쪽 하위 메뉴 — ui 부품",
+            "parts": [
+              "navigation-menu"
+            ],
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "메뉴",
+                "en": "Menu"
+              },
+              "from": [
+                "@pages"
+              ],
+              "mode": "menu"
+            }
+          }
+        },
+        {
+          "kind": "content",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "하위 쪽 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "안내",
+                "en": "Guide"
+              },
+              "hideHeading": true,
+              "from": [
+                "subBody"
+              ]
+            }
+          }
+        }
+      ],
+      "optional": [
+        {
+          "kind": "in-page-nav",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 안 이동 — 본문 앵커",
+            "missing": "쪽 안 본문 구획(앵커) 자료가 없다 — 하위 쪽 본문이 없어 이을 곳이 없다"
+          }
+        },
+        {
+          "kind": "satisfaction",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "만족도 조사 — 본문 폼",
+            "missing": "만족도 조사를 받을 곳(폼 어댑터·제출 주소)이 콘텐츠에 없다"
+          }
+        }
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "skip-link",
+      "required": true,
+      "mustContain": [
+        "본문으로 건너뛰기"
+      ]
+    },
+    {
+      "kind": "official-banner",
+      "required": true,
+      "mustContain": [
+        "이 누리집은 대한민국 공식 전자정부 누리집입니다."
+      ],
+      "condition": "공식 정부 서비스일 때만(중앙행정기관·지자체 필수, 공공기관 선택)"
+    },
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "logo-top-left",
+        "utility(글자 크기·언어·로그인·관련 사이트)",
+        "search",
+        "main-menu",
+        "sitemap"
+      ]
+    },
+    {
+      "kind": "emergency-notice",
+      "required": true,
+      "mustContain": [
+        "severity-label",
+        "one-line",
+        "one-link"
+      ],
+      "condition": "자리는 늘 두고 평소엔 비움, 있을 때 하나만"
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "logo",
+        "contact(주소·대표전화·민원전화·유료 여부·운영 시간)",
+        "utility-links",
+        "policy-links(「개인정보 처리방침」 강조·웹 접근성 정책)",
+        "copyright",
+        "agency-identifier(마지막)"
+      ]
+    }
+  ],
+  "sectionOrders": [
+    {
+      "id": "V1-policy-guide",
+      "order": [
+        "skip-link",
+        "official-banner",
+        "header",
+        "emergency-notice",
+        "hero",
+        "quick-links",
+        "policy-cards",
+        "news-tabs",
+        "agency-info",
+        "footer"
+      ]
+    },
+    {
+      "id": "V2-personalized",
+      "order": [
+        "skip-link",
+        "official-banner",
+        "header",
+        "emergency-notice",
+        "my-applications",
+        "quick-links",
+        "news-tabs",
+        "footer"
+      ]
+    },
+    {
+      "id": "V3-search-first",
+      "order": [
+        "skip-link",
+        "official-banner",
+        "header",
+        "emergency-notice",
+        "big-search",
+        "service-categories",
+        "news-tabs",
+        "footer"
+      ]
+    },
+    {
+      "id": "sub-page",
+      "order": [
+        "header",
+        "breadcrumb",
+        "side-menu",
+        "content",
+        "in-page-nav",
+        "satisfaction",
+        "footer"
+      ]
+    }
+  ],
+  "legal": [
+    {
+      "basis": "KRDS 이용 안내(적용 대상) — 정부 표준, 법적 지위는 이 조사에서 확인 안 됨",
+      "appliesWhen": "중앙행정기관·공공기관·지방자치단체 누리집",
+      "requirement": "기관 유형별 KRDS 표준형·확장형 적용, 공식 배너·운영기관 식별자 필수 여부 판정",
+      "source": "https://www.krds.go.kr/html/site/utility/utility_07.html"
+    }
+  ],
+  "legalPages": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website",
+    "install": {
+      "seoMetadata": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/seo-meta#v0.1.0 -y -o",
+      "jsonLdFor": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/geo-entity#v0.1.0 -y -o"
+    },
+    "usage": "seoMetadata(content, page) → Next Metadata(generateMetadata) · jsonLdFor(content, page) → <script type=\"application/ld+json\">. titleTemplate 의 {siteName} 은 content.site 이름(없으면 원형의 회사·가게·제품·기관 이름)이고, type 은 원형 기본 종류다."
+  },
+  "conversion": [
+    {
+      "event": "form_submit",
+      "match": {
+        "form": "contact"
+      }
+    }
+  ],
+  "content": {
+    "item": "content-public",
+    "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/content-public#v0.1.0 -y -o"
+  },
+  "recipes": {
+    "candidates": [
+      {
+        "id": "r12-spectrum",
+        "name": "다차원 지표판",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r12-spectrum#v0.1.0 -y -o",
+        "condition": "기관 누리집의 통계·현황 쪽에서 쓴다. 누리집 전체의 주색 하나 체계는 primary 가 맡고 나머지 색상각은 차트·범례에만"
+      },
+      {
+        "id": "r13-folio",
+        "name": "무채 문서첩",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r13-folio#v0.1.0 -y -o",
+        "condition": "공고·보고서·회의록처럼 문서 본문이 중심인 쪽에서 쓴다"
+      },
+      {
+        "id": "r2-signal",
+        "name": "흑백 신호",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r2-signal#v0.1.0 -y -o"
+      },
+      {
+        "id": "r6-civic",
+        "name": "공공 신뢰",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r6-civic#v0.1.0 -y -o"
+      }
+    ],
+    "complete": true,
+    "note": "운영자가 레시피 보드(2026-09-27)에서 승인한 레시피 15벌(r1-measure·r10-console·r12-spectrum·r13-folio·r14-concrete·r15-atelier·r16-tonal·r2-signal·r3-woodblock·r4-evidence·r5-celadon·r6-civic·r7-docs·r8-dusk·r9-clay)에서 archetypes 에 이 원형을 적은 것을 모두 뽑았다(결정: factory/board/recipe-decisions.json). condition 이 있는 후보는 그 조건에 맞는 브리프에만 쓴다."
+  },
+  "blocks": {
+    "announcement": [
+      {
+        "item": "block-announcement-notice-ticker",
+        "variant": "notice-ticker",
+        "layout": "rolling-line",
+        "density": "compact",
+        "sectionKinds": [
+          "notice-ticker",
+          "announcement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-notice-ticker#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-announcement-top-bar",
+        "variant": "top-bar",
+        "layout": "slim-top-bar",
+        "density": "compact",
+        "sectionKinds": [
+          "announcement-bar",
+          "notice"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-top-bar#v0.1.0 -y -o"
+      }
+    ],
+    "consent": [
+      {
+        "item": "block-consent-bottom-banner",
+        "variant": "bottom-banner",
+        "layout": "fixed-bottom-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "cookie-consent",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-bottom-banner#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-consent-inline-notice",
+        "variant": "inline-notice",
+        "layout": "placeholder-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "consent-placeholder",
+          "directions"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-inline-notice#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-consent-preference-dialog",
+        "variant": "preference-dialog",
+        "layout": "summary-then-dialog",
+        "density": "comfortable",
+        "sectionKinds": [
+          "cookie-settings",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-preference-dialog#v0.1.0 -y -o"
+      }
+    ],
+    "content": [
+      {
+        "item": "block-content-breadcrumb",
+        "variant": "breadcrumb",
+        "layout": "crumb-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "breadcrumb"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-breadcrumb#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-cards",
+        "variant": "cards",
+        "layout": "card-grid",
+        "density": "comfortable",
+        "sectionKinds": [
+          "leadership",
+          "work-grid",
+          "doctors",
+          "policy-cards"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-cards#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-links",
+        "variant": "links",
+        "layout": "link-tiles",
+        "density": "comfortable",
+        "sectionKinds": [
+          "quick-links",
+          "careers",
+          "job-list",
+          "utility-links",
+          "next-work",
+          "side-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-links#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-list",
+        "variant": "list",
+        "layout": "dated-rows",
+        "density": "comfortable",
+        "sectionKinds": [
+          "news",
+          "press-list",
+          "sustainability",
+          "news-tabs",
+          "changelog",
+          "departments"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-list#v0.1.0 -y -o"
+      }
+    ],
+    "faq": [
+      {
+        "item": "block-faq-grouped-by-topic",
+        "variant": "grouped-by-topic",
+        "layout": "topic-groups",
+        "density": "compact",
+        "sectionKinds": [
+          "faq",
+          "qna"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-faq-grouped-by-topic#v0.1.0 -y -o"
+      }
+    ],
+    "features": [
+      {
+        "item": "block-features-numbered-steps",
+        "variant": "numbered-steps",
+        "layout": "numbered-steps",
+        "density": "comfortable",
+        "sectionKinds": [
+          "how-it-works",
+          "workflow-features",
+          "key-points"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-features-numbered-steps#v0.1.0 -y -o"
+      }
+    ],
+    "final-cta": [
+      {
+        "item": "block-final-cta-split-form-hint",
+        "variant": "split-form-hint",
+        "layout": "split-form-hint",
+        "density": "comfortable",
+        "sectionKinds": [
+          "contact-cta",
+          "final-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-split-form-hint#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-final-cta-store-badges",
+        "variant": "store-badges",
+        "layout": "store-badge-row",
+        "density": "comfortable",
+        "sectionKinds": [
+          "app-download",
+          "final-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-store-badges#v0.1.0 -y -o"
+      }
+    ],
+    "floating-action": [
+      {
+        "item": "block-floating-action-call-bar",
+        "variant": "call-bar",
+        "layout": "bottom-bar",
+        "density": "comfortable",
+        "sectionKinds": [
+          "call-bar",
+          "floating-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-call-bar#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-floating-action-chat-launcher",
+        "variant": "chat-launcher",
+        "layout": "corner-pill",
+        "density": "comfortable",
+        "sectionKinds": [
+          "chat-widget",
+          "contact-launcher"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-floating-action-quick-menu-rail",
+        "variant": "quick-menu-rail",
+        "layout": "edge-rail",
+        "density": "compact",
+        "sectionKinds": [
+          "quick-menu",
+          "floating-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-quick-menu-rail#v0.1.0 -y -o"
+      }
+    ],
+    "footer": [
+      {
+        "item": "block-footer-product-legal",
+        "variant": "product-legal",
+        "layout": "product-legal",
+        "density": "compact",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-product-legal#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-footer-stacked-legal",
+        "variant": "stacked-legal",
+        "layout": "stacked-legal",
+        "density": "spacious",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-stacked-legal#v0.1.0 -y -o"
+      }
+    ],
+    "hero": [
+      {
+        "item": "block-hero-crosshair-quadrants",
+        "variant": "crosshair-quadrants",
+        "layout": "crosshair-quadrants",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-crosshair-quadrants#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-identity-strip-banner",
+        "variant": "identity-strip-banner",
+        "layout": "identity-strip-banner",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-identity-strip-banner#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-illustration-scene",
+        "variant": "illustration-scene",
+        "layout": "illustration-scene",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "illustration"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-illustration-scene#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-ken-burns-stills",
+        "variant": "ken-burns-stills",
+        "layout": "ken-burns-stills",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "stills"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-ken-burns-stills#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-map-first",
+        "variant": "map-first",
+        "layout": "map-first",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "map"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-map-first#v0.1.0 -y -o"
+      }
+    ],
+    "hours-location": [
+      {
+        "item": "block-hours-location-branch-list",
+        "variant": "branch-list",
+        "layout": "branch-cards",
+        "density": "compact",
+        "sectionKinds": [
+          "branches",
+          "store-locator"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hours-location-branch-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hours-location-hours-table-map-link",
+        "variant": "hours-table-map-link",
+        "layout": "hours-table-map",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hours-table",
+          "directions",
+          "agency-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hours-location-hours-table-map-link#v0.1.0 -y -o"
+      }
+    ],
+    "lead-capture": [
+      {
+        "item": "block-lead-capture-inline-newsletter",
+        "variant": "inline-newsletter",
+        "layout": "one-line-subscribe",
+        "density": "compact",
+        "sectionKinds": [
+          "newsletter",
+          "lead-capture"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-lead-capture-inline-newsletter#v0.1.0 -y -o"
+      }
+    ],
+    "state-screen": [
+      {
+        "item": "block-state-screen-error-retry",
+        "variant": "error-retry",
+        "layout": "error-retry",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-error-retry#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-state-screen-loading",
+        "variant": "loading",
+        "layout": "loading",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-loading#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-state-screen-not-found",
+        "variant": "not-found",
+        "layout": "not-found",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-not-found#v0.1.0 -y -o"
+      }
+    ],
+    "trust": [
+      {
+        "item": "block-trust-author-byline",
+        "variant": "author-byline",
+        "layout": "byline-dl",
+        "density": "compact",
+        "sectionKinds": [
+          "byline",
+          "author-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-author-byline#v0.1.0 -y -o"
+      }
+    ]
+  },
+  "blocksNote": "블록 메타 archetypes 에 이 원형을 적은 블록만 종류(kind)별로 모았다. 블록은 레시피 base 하나를 먼저 설치한 뒤(recipes.candidates 의 install) 블록 install 을 받는다 — B안 색·서체는 그 다음에 `<레시피>-alt` 를 -o 로 덮는다. 부품이 레시피 모양으로 깔리므로 블록 항목에는 ui 의존이 없다."
+}

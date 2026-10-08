@@ -1,0 +1,13 @@
+{
+  "kind": "floating-action",
+  "variant": "call-bar",
+  "title": "아래 고정 전화 줄 — 좁은 화면에서만 화면 아래에 붙고 넓은 화면은 흐름 안 안내 줄",
+  "layout": "bottom-bar",
+  "density": "comfortable",
+  "archetypes": ["public", "brand", "local"],
+  "archetypeKinds": ["call-bar", "floating-menu"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "md 미만(375): 화면 아래 고정 줄 — 안내 한 줄(선택) + 전화 버튼(tel: 은 normalizePhone, 보이는 번호 포함) + 보조 링크(선택). 줄 높이만큼 제자리 빈 칸 + 문서 뿌리 scroll-padding-bottom(WCAG 2.4.11) + --wf-float-bar(다른 떠 있는 요소가 그 위로 앉는다). md 이상: 붙지 않고 흐름 안의 얇은 안내 줄. 기기 아래 안전 영역만큼 더 띄운다. 하단 탭 블록(bottom-tab/*)이 있는 쪽에서는 그리지 않는다. 등장 모션 없음. 계측(선택): cta_click"
+}

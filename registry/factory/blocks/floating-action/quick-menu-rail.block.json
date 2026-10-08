@@ -1,0 +1,13 @@
+{
+  "kind": "floating-action",
+  "variant": "quick-menu-rail",
+  "title": "가장자리 고정 퀵 메뉴 — 전화·상담·위치와 맨 위로(글자 이름표가 늘 보인다)",
+  "layout": "edge-rail",
+  "density": "compact",
+  "archetypes": ["public", "brand", "dashboard", "local", "portfolio"],
+  "archetypeKinds": ["quick-menu", "floating-menu"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "xl 이상: 오른쪽 가장자리 세로 줄(본문 폭 바깥 여백에 앉아 첫 화면 본문을 가리지 않는다). 그 아래 폭: 왼쪽 아래 모서리 가로 줄 — 아래 고정 줄(call-bar·쿠키 띠)이 있으면 그 위로 올라앉는다(--wf-float-bar·--bottom-bar-height). 아래에 앉을 때는 가린 높이만큼 문서 뿌리 scroll-padding-bottom(useFloatingSpace — WCAG 2.4.11). 하단 탭 블록이 있는 쪽에서는 그리지 않는다. 항목: 전화(tel: 은 normalizePhone)·바깥 링크 몇 개 + 맨 위로 단추(동작 줄이기에서는 바로 이동). 위젯 스크립트 없음. 계측(선택): cta_click"
+}

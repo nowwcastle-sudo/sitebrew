@@ -1,0 +1,14 @@
+{
+  "kind": "paywall",
+  "archetypeKinds": [ "upgrade-prompt", "paywall" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "variant": "upgrade-modal",
+  "title": "업그레이드 대화상자 — 잠긴 기능 판 + 비교표·제안 대화상자",
+  "layout": "locked-card-dialog",
+  "density": "comfortable",
+  "archetypes": [ "saas", "dashboard", "pwa" ],
+  "rules": [ "P1", "P2", "P3", "P6", "L1", "L3", "A6", "X1", "M1" ],
+  "notes": "잠긴 기능 자리의 판(자물쇠·무엇이 잠겼나·[요금제 살펴보기]) — 누르면 대화상자(첫 화면에 저절로 뜨지 않는다, Esc·바깥·닫기로 닫힘·포커스 가둠). 안: 지금↔목표 비교 table(th scope) + plan-offer(청구액 data-price=billed 가장 큼·환산가 equivalent 보조, 체험·첫 결제일·금액·자동 갱신·해지 방법·약관 링크가 버튼 앞, [나중에 할게요][체험 시작하기] 대등). 포트: plans·checkout·track? Task 10d: 청약철회 제한 고지 + 필수 체크(PlanOffer — 체크해야 checkout 에 withdrawalConsent: true). 폼 제출 보호(copy.notices). P3-6 E04: 전환 고지(첫 결제일·금액·결제 수단·해지 방법)와 필수 체크가 행동 줄과 같은 고정 줄에 있어 스크롤 없이 보인다(PlanOffer pinActions), 버튼 글에 이후 금액(ctaTrialThen), 무료 사용자 머리 compare.currentFree(props currentPlanId), 닫으면 포커스가 연 버튼으로(finalFocus). 운영자 판정(2026-10-04 「L3 따름 — 대등하게」): 두 선택지는 L3 대로 대등한 choice-pair 이고, 주 선택지를 채운 버튼으로 하던 emphasis=primary 는 걷었다(PlanOffer 의 emphasis 칸은 남아 있고 기본값이 equal)."
+}

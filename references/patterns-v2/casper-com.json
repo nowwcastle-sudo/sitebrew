@@ -1,0 +1,66 @@
+{
+  "id": "casper-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://casper.com/products/sateen-pillowcase-set-v2",
+  "structure": {
+    "hero": "큰 사진과 썸네일 2열, 세리프 제목·할인가·옵션, 하단 고정 장바구니",
+    "sections": [
+      "네이비 공지띠(매장 찾기·상담·친구 추천)",
+      "헤더(로고·내비 8개·아이콘)",
+      "브레드크럼",
+      "갤러리(큰 사진+2열 썸네일)",
+      "상품 정보(브랜드·제목·NEW·가격·할인율 칩·비교 가치)",
+      "분할 결제 안내",
+      "설명과 아코디언",
+      "사이즈 알약·색상 알약",
+      "하단 고정 장바구니 바",
+      "채팅 버튼"
+    ]
+  },
+  "type": {
+    "display": "굵은 세리프 제목, 둥근 산세리프 UI",
+    "body": "산세리프 본문",
+    "scale": "제목 크게, 가격 굵게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "스크롤하면 나타나는 하단 고정 장바구니 바(이미지·제목·가격·버튼)",
+    "모바일 사진 확대 아이콘",
+    "사이즈·색상 알약 선택",
+    "아코디언 「Why you will love it」",
+    "채팅 알약"
+  ],
+  "cta": {
+    "pattern": "네이비 Add to cart(상단 옵션 아래 + 하단 고정 바)",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "하단 고정 바에 이미지·가격·버튼을 모아 옵션 영역을 지나도 CTA가 따라온다",
+    "할인율 칩과 비교 가치 취소선으로 절약 정도를 분명히 한다",
+    "가격 바로 아래에 분할 결제(월 금액·이자율) 안내를 둔다",
+    "모바일은 하단 바에 사이즈 선택까지 넣어 옵션과 구매를 한 줄에서 끝낸다",
+    "사진 확대 아이콘을 모바일 이미지 모서리에 둬 상세 확인을 쉽게",
+    "네이비·청록 두 색으로 UI를 단순하게 통일"
+  ]
+}

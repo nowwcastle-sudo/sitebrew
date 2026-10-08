@@ -1,0 +1,13 @@
+{
+  "kind": "hours-location",
+  "variant": "hours-table-map-link",
+  "title": "영업시간·오시는 길 — 요일 표 + 지도 앱 링크",
+  "layout": "hours-table-map",
+  "density": "comfortable",
+  "archetypes": ["local", "public", "detail"],
+  "archetypeKinds": ["hours-table", "directions", "agency-info"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "두 단: 왼쪽 지금 상태 한 줄 + 월~일 표(오늘 줄 강조·aria-current, 빠진 요일 휴무) / 오른쪽 주소(복사) · 대중교통 · 주차 · 지도 앱 링크 목록. 지도 iframe 없음. 상태는 서울 시각(_shared/open-now), 붙기 전에는 자리만"
+}

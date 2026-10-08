@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-big-shoulders",
+  "type": "registry:font",
+  "title": "Big Shoulders",
+  "description": "web-factory 폰트 키트: Big Shoulders (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Big Shoulders Variable', sans-serif",
+    "provider": "google",
+    "import": "Big_Shoulders",
+    "variable": "--font-big-shoulders-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/big-shoulders"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bigshoulders/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Big+Shoulders",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

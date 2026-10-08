@@ -1,0 +1,101 @@
+/* 생성물 — factory/scripts/recipe.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* 공공 신뢰(r6-civic) 순수 CSS 변수 — shadcn 없이 단일 HTML 에 붙인다. 원천: registry/factory/recipes/r6-civic/DESIGN.md */
+:root {
+  --background: oklch(0.9970 0.0000 0.00);
+  --foreground: oklch(0.2459 0.0072 248.12);
+  --card: oklch(1.0000 0.0000 0.00);
+  --card-foreground: oklch(0.2459 0.0072 248.12);
+  --popover: oklch(1.0000 0.0000 0.00);
+  --popover-foreground: oklch(0.2459 0.0072 248.12);
+  --primary: oklch(0.4200 0.2011 261.59);
+  --primary-foreground: oklch(1.0000 0.0000 0.00);
+  --secondary: oklch(0.9662 0.0034 247.86);
+  --secondary-foreground: oklch(0.2459 0.0072 248.12);
+  --muted: oklch(0.9662 0.0034 247.86);
+  --muted-foreground: oklch(0.4137 0.0141 252.24);
+  --accent: oklch(0.8855 0.0305 235.67);
+  --accent-foreground: oklch(0.2599 0.0604 251.32);
+  --destructive: oklch(0.53 0.19 27);
+  --border: oklch(0.8645 0.0088 247.93);
+  --input: oklch(0.5617 0.0189 250.97);
+  --ring: oklch(0.4200 0.2011 261.59);
+  --success: oklch(0.52 0.12 150);
+  --success-foreground: oklch(0.99 0.005 150);
+  --warning: oklch(0.54 0.13 58);
+  --warning-foreground: oklch(0.99 0.005 58);
+  --info: oklch(0.5 0.11 238);
+  --info-foreground: oklch(0.99 0.004 238);
+  --field-1: oklch(0.3100 0.0850 260.00);
+  --field-1-foreground: oklch(1.0000 0.0000 0.00);
+  --font-sans: "Pretendard GOV Variable", "Pretendard GOV", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading: "Fragment Mono", "Pretendard GOV Variable", "Pretendard GOV", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading-ko: "Pretendard GOV Variable", "Pretendard GOV", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "Pretendard GOV Variable", "Pretendard GOV", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --icon-stroke: 2;
+  --icon-linecap: round;
+  --icon-linejoin: round;
+  --ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-screen: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 100ms;
+  --duration-hover: 150ms;
+  --duration-popover: 150ms;
+  --duration-enter: 300ms;
+  --duration-sheet: 260ms;
+  --wf-axes: "B2 I1 C1 T2 H1 R2 S0";
+  --wf-font-tuned: "display body";
+  --wf-motion: 1;
+  --wf-heading-weight: 400;
+  --wf-heading-weight-ko: 700;
+  --radius: 10px;
+  --wf-mask-radius: calc(infinity * 1px);
+  --wf-shadow-surface: none;
+}
+
+.dark {
+  --background: oklch(0.1861 0.0294 259.81);
+  --foreground: oklch(0.9570 0.0063 255.48);
+  --card: oklch(0.2256 0.0323 260.34);
+  --card-foreground: oklch(0.9570 0.0063 255.48);
+  --popover: oklch(0.2256 0.0323 260.34);
+  --popover-foreground: oklch(0.9570 0.0063 255.48);
+  --primary: oklch(0.7611 0.1216 264.09);
+  --primary-foreground: oklch(0.1861 0.0294 259.81);
+  --secondary: oklch(0.2422 0.0341 259.57);
+  --secondary-foreground: oklch(0.9570 0.0063 255.48);
+  --muted: oklch(0.2422 0.0341 259.57);
+  --muted-foreground: oklch(0.7919 0.0197 255.55);
+  --accent: oklch(0.2914 0.0513 257.90);
+  --accent-foreground: oklch(0.8855 0.0305 235.67);
+  --destructive: oklch(0.7 0.15 25);
+  --border: oklch(0.3369 0.0326 255.75);
+  --input: oklch(0.6135 0.0289 259.04);
+  --ring: oklch(0.7611 0.1216 264.09);
+  --success: oklch(0.74 0.12 150);
+  --success-foreground: oklch(0.19 0.02 150);
+  --warning: oklch(0.8 0.13 70);
+  --warning-foreground: oklch(0.2 0.03 70);
+  --info: oklch(0.74 0.1 238);
+  --info-foreground: oklch(0.19 0.02 238);
+  --field-1: oklch(0.3300 0.0850 262.00);
+  --field-1-foreground: oklch(1.0000 0.0000 0.00);
+}
+
+/* 제목 굵기(한글 제목 굵기 → fonts.display.weight → 700): 기본 층이라 굵기를 따로 준 요소가 이긴다 */
+@layer base {
+.font-heading { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+.font-heading-ko { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+}
+
+/* 면 스코프(data-face): 면·칸 구획 안의 ring·primary·보조 글자·테두리를 그 면의 짝으로 */
+@layer base {
+[data-face="field-1"] { --background: var(--field-1); --foreground: var(--field-1-foreground); --primary: var(--field-1-foreground); --primary-foreground: var(--field-1); --ring: var(--field-1-foreground); --border: color-mix(in oklch, var(--field-1-foreground) 50%, var(--field-1)); --input: color-mix(in oklch, var(--field-1-foreground) 50%, var(--field-1)); --muted: color-mix(in oklch, var(--field-1-foreground) 10%, var(--field-1)); --muted-foreground: color-mix(in oklch, var(--field-1-foreground) 78%, var(--field-1)); --accent: color-mix(in oklch, var(--field-1-foreground) 10%, var(--field-1)); --accent-foreground: var(--field-1-foreground); --secondary: color-mix(in oklch, var(--field-1-foreground) 10%, var(--field-1)); --secondary-foreground: var(--field-1-foreground); }
+[data-face] [data-slot="card"]:not([data-face]), [data-face] [data-face-reset] { --background: oklch(0.9970 0.0000 0.00); --foreground: oklch(0.2459 0.0072 248.12); --primary: oklch(0.4200 0.2011 261.59); --primary-foreground: oklch(1.0000 0.0000 0.00); --ring: oklch(0.4200 0.2011 261.59); --border: oklch(0.8645 0.0088 247.93); --input: oklch(0.5617 0.0189 250.97); --muted: oklch(0.9662 0.0034 247.86); --muted-foreground: oklch(0.4137 0.0141 252.24); --accent: oklch(0.8855 0.0305 235.67); --accent-foreground: oklch(0.2599 0.0604 251.32); --secondary: oklch(0.9662 0.0034 247.86); --secondary-foreground: oklch(0.2459 0.0072 248.12); }
+.dark [data-face] [data-slot="card"]:not([data-face]), .dark [data-face] [data-face-reset] { --background: oklch(0.1861 0.0294 259.81); --foreground: oklch(0.9570 0.0063 255.48); --primary: oklch(0.7611 0.1216 264.09); --primary-foreground: oklch(0.1861 0.0294 259.81); --ring: oklch(0.7611 0.1216 264.09); --border: oklch(0.3369 0.0326 255.75); --input: oklch(0.6135 0.0289 259.04); --muted: oklch(0.2422 0.0341 259.57); --muted-foreground: oklch(0.7919 0.0197 255.55); --accent: oklch(0.2914 0.0513 257.90); --accent-foreground: oklch(0.8855 0.0305 235.67); --secondary: oklch(0.2422 0.0341 259.57); --secondary-foreground: oklch(0.9570 0.0063 255.48); }
+}
+
+/* 단일 굵기 제목 서체(Fragment Mono): 굵기 합성 끄기 · 부품 제목은 본문 서체 */
+.font-heading { font-synthesis-weight: none; }
+[data-slot$="-title"].font-heading { font-family: "Pretendard GOV Variable", "Pretendard GOV", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }

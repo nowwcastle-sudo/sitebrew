@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-young-serif",
+  "type": "registry:font",
+  "title": "Young Serif",
+  "description": "web-factory 폰트 키트: Young Serif (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Young Serif', serif",
+    "provider": "google",
+    "import": "Young_Serif",
+    "variable": "--font-young-serif-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/young-serif"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/youngserif/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Young+Serif",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

@@ -1,0 +1,21 @@
+/* C2 선 구획 격자 ★운영자 판정(2026-09-26) — 0 계열. 모서리 0, 둥근 링 대신 2px 잉크 선(border-foreground, 불투명)으로 틀과
+ * 머리·바닥을 끊는다. 선은 배경 대비 3:1 이상이어야 한다(foreground 를 쓰므로 본문 대비와 같다 — contrast.mjs --pair 로 기록).
+ * DESIGN §6 「테두리부터 찾지 않는다」의 예외 값. 원천 style_axes.md 축 3. */
+.cn-card {
+  @apply gap-0 rounded-none border-2 border-foreground py-0 text-sm ring-0 has-[>img:first-child]:pt-0 *:[img:first-child]:rounded-none *:[img:last-child]:rounded-none [--card-spacing:--spacing(5)] data-[size=sm]:[--card-spacing:--spacing(4)];
+}
+.cn-card-header {
+  @apply gap-1 rounded-none border-b-2 border-foreground px-(--card-spacing) py-(--card-spacing);
+}
+.cn-card-title {
+  @apply text-lg leading-snug font-bold tracking-tight group-data-[size=sm]/card:text-base;
+}
+.cn-card-description {
+  @apply text-sm leading-relaxed;
+}
+.cn-card-content {
+  @apply px-(--card-spacing) py-(--card-spacing);
+}
+.cn-card-footer {
+  @apply rounded-none border-t-2 border-foreground px-(--card-spacing) py-3;
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-grandiflora-one",
+  "type": "registry:font",
+  "title": "Grandiflora One",
+  "description": "web-factory 폰트 키트: Grandiflora One (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Grandiflora One', serif",
+    "provider": "google",
+    "import": "Grandiflora_One",
+    "variable": "--font-grandiflora-one-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/grandiflora-one"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/grandifloraone/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Grandiflora+One",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

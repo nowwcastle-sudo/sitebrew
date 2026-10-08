@@ -1,0 +1,13 @@
+{
+  "kind": "filter-bar",
+  "variant": "search-filter",
+  "title": "검색·거르기 줄 — 검색 칸 + 상태 거르기 select + 결과 수 + 필터 초기화",
+  "layout": "search-first",
+  "density": "compact",
+  "archetypes": ["dashboard"],
+  "archetypeKinds": ["search-filter-bar", "filter-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "role=search 폼: 검색 칸(보이는 라벨, type=search, 입력할 때마다 바로 걸린다 — 칸의 글은 블록 안 상태라 한글 조합이 흐트러지지 않는다) + 거르기 select 여럿(「전체」 선택지) + 결과 수 role=status + [필터 초기화](걸렸을 때만). 검색어·거르기 값은 주소 쿼리(?q=…&status=…)에 있어 새로고침·공유에서 남는다(_shared/filter-query). target 셀렉터를 주면 같은 문서의 표 행·카드를 직접 거르고(q 는 항목 글, 이름은 data-filter-<이름> 속성), 서버가 쪽마다 거르는 표는 onChange 로 다시 읽는다. 등장 모션 없음"
+}

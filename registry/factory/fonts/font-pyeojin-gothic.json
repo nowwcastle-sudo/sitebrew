@@ -1,0 +1,50 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-pyeojin-gothic",
+  "type": "registry:item",
+  "title": "PyeojinGothic",
+  "description": "web-factory 폰트 키트: PyeojinGothic (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.0 의 커밋 b05de91c74dd2446ff63c937e2120157b2909518 로 고정, Light 300·Regular 400·Bold 700(fonts.json delivery.mirror 는 Light 파일 하나 — Task 10c fix 1 I3). 자체 호스팅은 P3-3",
+  "fontFace": [
+    {
+      "font-family": "\"PyeojinGothic\"",
+      "src": "url(\"https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@b05de91c74dd2446ff63c937e2120157b2909518/PyeojinGothic-Light.woff2\") format(\"woff2\")",
+      "font-weight": "300",
+      "font-style": "normal",
+      "font-display": "swap"
+    },
+    {
+      "font-family": "\"PyeojinGothic\"",
+      "src": "url(\"https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@b05de91c74dd2446ff63c937e2120157b2909518/PyeojinGothic-Regular.woff2\") format(\"woff2\")",
+      "font-weight": "400",
+      "font-style": "normal",
+      "font-display": "swap"
+    },
+    {
+      "font-family": "\"PyeojinGothic\"",
+      "src": "url(\"https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@b05de91c74dd2446ff63c937e2120157b2909518/PyeojinGothic-Bold.woff2\") format(\"woff2\")",
+      "font-weight": "700",
+      "font-style": "normal",
+      "font-display": "swap"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "font-pyeojin-gothic-wf": "\"PyeojinGothic\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://notforall.tistory.com/m/7",
+    "source": "https://github.com/projectnoonnu/2504-1/tree/b05de91c74dd2446ff63c937e2120157b2909518",
+    "family": "PyeojinGothic",
+    "weight": [
+      "300",
+      "400",
+      "700"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

@@ -1,0 +1,558 @@
+{
+  "id": "dashboard",
+  "purpose": "운영자가 오늘 할 조치를 놓치지 않고 그 자리에서 처리하게 한다(§1-A). 분석형이면 원인을 찾게, 관리형이면 레코드를 빨리 찾아 고치게 한다.",
+  "coreTask": "① 경고 1건을 찾아 → 해당 레코드 상세를 열고 → 조치(배정·상태 변경)를 완료한 뒤 → 목록에서 상태가 바뀐 것을 DOM으로 확인한다(클릭 3회 이하). ② 기간을 「지난 7일」로 바꾸고 새로고침 → 같은 조건이 유지되고 모든 수치가 같은 조건인지 확인. ③ 행 3개를 선택해 일괄 작업 실행 → 「3개 선택됨」과 결과 알림(role=\"status\") 확인.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "operational",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "page-header",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 제목 줄 — 셸 h1 과 본문",
+            "render": {
+              "as": "facts",
+              "heading": {
+                "ko": "기준",
+                "en": "Status"
+              },
+              "hideHeading": true,
+              "rows": [
+                {
+                  "label": {
+                    "ko": "기준 시각",
+                    "en": "As of"
+                  },
+                  "from": [
+                    "slot:asOf"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "갱신 주기",
+                    "en": "Refresh"
+                  },
+                  "from": [
+                    "decision.refresh"
+                  ]
+                }
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "title",
+              "role": "페이지 제목",
+              "maxChars": null
+            },
+            {
+              "id": "asOf",
+              "role": "기준 시각·마지막 업데이트",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "filter-bar",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-toolbar"
+          ],
+          "copySlots": [
+            {
+              "id": "period",
+              "role": "기간·필터(URL에 반영)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "refresh-control",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "새로 고침·N분 전 갱신 블록이 없다",
+            "register": [
+              "A87"
+            ]
+          },
+          "copySlots": [
+            {
+              "id": "pause",
+              "role": "갱신 멈춤(자동 갱신이면 필수)",
+              "maxChars": null
+            },
+            {
+              "id": "newItems",
+              "role": "「새 항목 n건 — 보기」",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "action-list",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-action-list"
+          ],
+          "copySlots": [
+            {
+              "id": "alert",
+              "role": "조치가 필요한 항목만 + 조치 링크(열기·배정·연락)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "kpi-row",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-kpi-first"
+          ],
+          "copySlots": [
+            {
+              "id": "value",
+              "role": "값·단위",
+              "maxChars": null
+            },
+            {
+              "id": "baseline",
+              "role": "목표값·정상 범위·비교 기간 중 하나 이상",
+              "maxChars": null
+            },
+            {
+              "id": "delta",
+              "role": "델타",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "trend-charts",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-trend-plus-table"
+          ],
+          "copySlots": [
+            {
+              "id": "chartTitle",
+              "role": "한 문장 결론 제목",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "detail-table",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "데이터 표(일괄 작업·옆 패널) 블록이 없다",
+            "register": [
+              "A82",
+              "A83"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "route": "/analytics",
+      "sections": [
+        {
+          "kind": "filter-bar",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-toolbar"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "kpi-row",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-kpi-first"
+          ],
+          "copySlots": [
+            {
+              "id": "value",
+              "role": "KPI 4~6개, 누르면 주 차트 지표 전환(진짜 button)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "main-trend",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-trend-plus-table"
+          ],
+          "copySlots": [
+            {
+              "id": "chartTitle",
+              "role": "한 문장 결론 제목",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "breakdown-panels",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-kpi-first"
+          ],
+          "copySlots": [
+            {
+              "id": "dimension",
+              "role": "유입·페이지·지역·기기 등 — 항목 클릭 시 필터 추가·URL 반영",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "admin-list",
+      "route": "/admin",
+      "sections": [
+        {
+          "kind": "page-header",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 제목 줄과 주 행동 하나 — 본문",
+            "render": {
+              "as": "links",
+              "heading": { "ko": "주 행동", "en": "Main action" },
+              "hideHeading": true,
+              "mode": "tiles",
+              "links": [{ "labelFrom": ["slot:primaryAction"], "from": ["primaryActionHref"] }]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "primaryAction",
+              "role": "주 행동 1개(「새로 만들기」)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "search-filter-bar",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-search-filter"
+          ],
+          "copySlots": [
+            {
+              "id": "resultCount",
+              "role": "결과 수 + 적용 필터 칩",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "data-table",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "data-table"
+          ],
+          "allowedVariants": [
+            "block-data-table-admin-list",
+            "block-data-table-compact"
+          ],
+          "copySlots": [
+            {
+              "id": "firstColumn",
+              "role": "사람이 읽는 식별자(이름·주문번호)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "avatar",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "pagination",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "쪽 나누기는 목록 표 블록(data-table)이 표 아래에 그린다 — ui pagination 부품",
+            "parts": [
+              "pagination"
+            ],
+            "missing": "목록 표 블록이 쪽 나누기를 함께 그린다 — 표가 그려지지 않은 쪽에는 따로 그릴 것이 없다(대장 A82)"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "detail-panel",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "레코드 상세·편집 패널 블록이 없다",
+            "register": [
+              "A83"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "V1-operational",
+      "order": [
+        "app-shell",
+        "page-header",
+        "filter-bar",
+        "refresh-control",
+        "action-list",
+        "kpi-row",
+        "trend-charts",
+        "detail-table"
+      ],
+      "evidence": [
+        "Few whitepaper(중요한 것 왼쪽 위, 색은 아껴서, 조치는 쉽게)",
+        "NN/g operational dashboards",
+        "DESIGN §1-A·§11-B"
+      ]
+    },
+    {
+      "id": "V2-analytics",
+      "order": [
+        "app-shell",
+        "filter-bar",
+        "kpi-row",
+        "main-trend",
+        "breakdown-panels"
+      ],
+      "evidence": [
+        "관찰 Plausible(필터·기간 → KPI 6개 → 선 그래프 → 분해 패널 5개)",
+        "Bach et al. 2022(매개변수화·탭 전환)",
+        "SaaSFrame Dashboard"
+      ]
+    },
+    {
+      "id": "V3-admin",
+      "order": [
+        "app-shell",
+        "page-header",
+        "search-filter-bar",
+        "data-table",
+        "pagination",
+        "detail-panel"
+      ],
+      "evidence": [
+        "NN/g data-tables",
+        "Carbon data table",
+        "NN/g vertical-nav",
+        "관찰 Grafana Play"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "app-shell-sidebar",
+      "required": true,
+      "mustContain": [
+        "text-labels",
+        "aria-current",
+        "default-expanded",
+        "collapsed-tooltips"
+      ],
+      "evidence": [
+        "db-07",
+        "db-08"
+      ],
+      "blockKinds": [
+        "nav"
+      ],
+      "allowedVariants": [
+        "block-nav-app-sidebar"
+      ]
+    },
+    {
+      "kind": "top-bar",
+      "required": true,
+      "mustContain": [
+        "global-search",
+        "notifications",
+        "account"
+      ],
+      "evidence": [
+        "db-07"
+      ],
+      "blockKinds": [
+        "nav"
+      ],
+      "allowedVariants": [
+        "block-nav-top-bar"
+      ]
+    },
+    {
+      "kind": "state-screens",
+      "required": true,
+      "mustContain": [
+        "empty",
+        "error",
+        "loading"
+      ],
+      "evidence": [
+        "DESIGN §7-D"
+      ],
+      "blockKinds": [
+        "state-screen"
+      ],
+      "allowedVariants": [
+        "block-state-screen-empty-guide",
+        "block-state-screen-error-retry",
+        "block-state-screen-loading",
+        "block-state-screen-not-found",
+        "block-state-screen-offline-cached"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "photos": "사진 슬롯 없음",
+    "dataImages": "real-required — 데이터에서 온 것(아바타·상품 썸네일·첨부)만",
+    "emptyState": "illustration — 사이트 전체 한 스타일, 없으면 아이콘 + 문장",
+    "stockOrGenerated": "장식으로 쓰지 않음",
+    "sampleData": "예시 표시. 실데이터가 없으면 현실적 분포의 합성 데이터(둥근 수·같은 패턴 금지)"
+  },
+  "contentSchemaHints": [
+    "decision: { dashboard_type: operational|analytical|strategic, refresh } — 결정 기록 필수 필드(db-01)",
+    "kpis[]: { id, label, value, unit, baseline{target|range|comparePeriod}, delta, rank }",
+    "alerts[]: { id, severity, recordUrl, actions[] }",
+    "table: { columns[]{id,label,numeric}, density: 32|40|48|64, rows[] }",
+    "chart data → 대응하는 데이터 표(§11-B)"
+  ],
+  "references": [
+    {
+      "url": "https://plausible.io/plausible.io",
+      "why": "로그아웃으로 열리는 실제 분석 대시보드: 필터·기간 한 줄 → KPI 6개(델타) → 선 그래프 → 탭 분해 패널 5개(KPI 타일이 div onclick인 점은 반례)"
+    },
+    {
+      "url": "https://play.grafana.org/",
+      "why": "건너뛰기 링크, 라벨이 붙은 세로 사이드바(최상위 11개), 운영형 셸 참고"
+    },
+    {
+      "url": "https://www.perceptualedge.com/articles/Whitepapers/Dashboard_Design.pdf",
+      "why": "Stephen Few 실시간 대시보드 예시: 색은 조치가 필요한 곳에만, 중요 항목 왼쪽 위, 갱신 일시정지, 이름을 누르면 연락"
+    },
+    {
+      "url": "https://www.saasframe.io/categories/dashboard",
+      "why": "실제 SaaS 대시보드 캡처 모음 — 로그인 뒤 화면을 합법적으로 보는 경로(쿼리 필터 URL은 robots 금지라 안 씀)"
+    },
+    {
+      "url": "https://carbondesignsystem.com/components/data-table/usage/",
+      "why": "관리형 표 기준: 행 높이 5단계, 헤더 = 본문 행 높이, 선택 시 작업 막대"
+    }
+  ],
+  "legalRequirements": [],
+  "legal": {
+    "pages": [
+      "privacy",
+      "terms"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "약관의 규제에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "software"
+  },
+  "conversion": []
+}

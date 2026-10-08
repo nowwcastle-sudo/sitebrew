@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-diphylleia",
+  "type": "registry:font",
+  "title": "Diphylleia",
+  "description": "web-factory 폰트 키트: Diphylleia (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Diphylleia', serif",
+    "provider": "google",
+    "import": "Diphylleia",
+    "variable": "--font-diphylleia-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/diphylleia"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/diphylleia/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Diphylleia",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

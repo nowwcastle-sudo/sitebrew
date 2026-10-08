@@ -1,0 +1,25 @@
+{
+  "styles": [
+    {
+      "id": "minimalism",
+      "verdict": "allow",
+      "recipeFields": {
+        "colorLogic": "K3"
+      }
+    },
+    {
+      "id": "dual-logic",
+      "verdict": "allow-with-rules",
+      "recipeFields": {
+        "colorLogic": "K4,K9"
+      }
+    },
+    {
+      "id": "banned-thing",
+      "verdict": "ban",
+      "recipeFields": {
+        "colorLogic": "K5"
+      }
+    }
+  ]
+}

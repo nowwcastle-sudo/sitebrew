@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "vertical-title-slides",
+  "title": "히어로 — 전폭 저녁 그림 + 세로쓰기 한 줄 + 슬라이드 눈금",
+  "layout": "vertical-title-slides",
+  "density": "spacious",
+  "archetypes": ["local", "brand"],
+  "archetypeKinds": ["hero", "hero-visit-info"],
+  "states": [],
+  "media": ["slide-0", "slide-1", "slide-2"],
+  "motion": ["clip-reveal", "split-text", "parallax", "tilt-3d"],
+  "titleWidth": "column",
+  "notes": "짙은 구역 첫 화면을 장면 그림 여럿(media, 겹쳐 두고 고른 것만 — 영상은 보이는 장면일 때만)이 채우고, 가운데 세로쓰기 제목 h1 뒤 바탕색 안개 띠(아래로 풀린다), 아래 가운데 눈금 단추(aria-pressed)와 장면 이름(aria-live, sr-only). 장면 전환은 교차 페이드. 기본 기법 split-text·clip-reveal. P3-1 r8-dusk A 구성"
+}

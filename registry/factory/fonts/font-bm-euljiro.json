@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-bm-euljiro",
+  "type": "registry:item",
+  "title": "BM Euljiro",
+  "description": "web-factory 폰트 키트: BM Euljiro (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 배민 을지로체. 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.0(jsDelivr @1.0)의 커밋 918ab627023438babbc44544fe9102d54cf09cea 로 고정. 자체 호스팅은 P3-3",
+  "fontFace": {
+    "font-family": "\"BM Euljiro\"",
+    "src": "url(\"https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@918ab627023438babbc44544fe9102d54cf09cea/BMEULJIRO.woff\") format(\"woff\")",
+    "font-weight": "400",
+    "font-style": "normal",
+    "font-display": "swap"
+  },
+  "cssVars": {
+    "theme": {
+      "font-bm-euljiro-wf": "\"BM Euljiro\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://www.woowahan.com/fonts/license",
+    "source": "https://github.com/projectnoonnu/noonfonts_twelve/tree/918ab627023438babbc44544fe9102d54cf09cea",
+    "family": "BM Euljiro",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

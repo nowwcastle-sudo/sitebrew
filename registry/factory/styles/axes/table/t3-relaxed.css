@@ -1,0 +1,25 @@
+/* T3 여유 — 행 56px(머리·셀 h-14), 본문 16px, 줄무늬 없이 선만. 원천 style_axes.md 축 4. */
+.cn-table {
+  @apply text-base;
+}
+.cn-table-header {
+  @apply [&_tr]:border-b;
+}
+.cn-table-body {
+  @apply [&_tr:last-child]:border-0;
+}
+.cn-table-footer {
+  @apply border-t font-medium [&>tr]:last:border-b-0;
+}
+.cn-table-row {
+  @apply border-b;
+}
+.cn-table-head {
+  @apply h-14 px-4 text-sm font-medium [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-cell {
+  @apply h-14 px-4 py-0 [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-caption {
+  @apply [--table-caption-gap:1.5rem] text-sm;
+}

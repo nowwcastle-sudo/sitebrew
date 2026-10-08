@@ -1,0 +1,27 @@
+{
+  "topic": "Clinic appointment and no-show analytics dashboard for a small dental group (fictional business — example)",
+  "archetype": "dashboard",
+  "locale": "en",
+  "facts": {
+    "name": "Brightside Clinic Insights",
+    "email": "hello@example.com",
+    "phone": "+82-2-1234-5678",
+    "address": "21 Example Street, Seoul",
+    "metrics": "184 appointments this week, 9% no-show rate, 2.3 days average wait",
+    "charts": "Weekly appointments by clinic, no-show rate by weekday",
+    "breakdown": "Booked, confirmed, arrived, completed, no-show",
+    "usageLimit": "Up to 3 clinics and 12 staff accounts",
+    "trial": "30-day trial with sample data, no card required",
+    "refresh": "Refreshes every 15 minutes",
+    "primaryActionUrl": "https://example.com/appointments/new",
+    "tableColumns": "Clinic | Day | No-shows (numeric)",
+    "tableRows": "Downtown | Monday | 4 ; Downtown | Tuesday | 2 ; Riverside | Monday | 3 ; Riverside | Tuesday | 1",
+    "audience": "Practice managers of small dental clinic groups",
+    "action": "Check this week's appointments and no-show rate",
+    "mood": "clear",
+    "legalName": "Brightside Clinic Insights Ltd.",
+    "representative": "Dana Cho",
+    "bizNo": "123-45-67890"
+  },
+  "seed": 1
+}

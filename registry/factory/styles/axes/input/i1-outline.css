@@ -1,0 +1,17 @@
+/* I1 외곽선(표준) — 중간 계열. 8px 모서리, 1px 테두리(색은 --input: 레시피가 배경 대비 3:1 을 맞춘다), 바탕은 페이지색.
+ * 모바일 16px → md 이상 14px. 원천 style_axes.md 축 2. */
+.cn-input {
+  @apply h-11 rounded-[8px] border bg-background px-3 py-1 text-base md:text-sm file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium dark:bg-input/30;
+}
+.cn-textarea {
+  @apply min-h-24 rounded-[8px] border bg-background px-3 py-2.5 text-base md:text-sm dark:bg-input/30;
+}
+.cn-native-select {
+  @apply h-11 rounded-[8px] border bg-background py-1 pe-9 ps-3 text-base md:text-sm data-[size=sm]:h-9 data-[size=sm]:rounded-[6px] data-[size=sm]:py-0.5 dark:bg-input/30 dark:hover:bg-input/50;
+}
+.cn-select-trigger {
+  @apply gap-2 rounded-[8px] border bg-background py-2 pe-2.5 ps-3 text-base md:text-sm data-[size=default]:h-11 data-[size=sm]:h-9 data-[size=sm]:rounded-[6px] *:data-[slot=select-value]:gap-1.5 dark:bg-input/30 dark:hover:bg-input/50 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-input-group {
+  @apply h-11 rounded-[8px] border bg-background dark:bg-input/30 has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pe-1.5 has-[>[data-align=inline-start]]:[&>input]:ps-1.5;
+}

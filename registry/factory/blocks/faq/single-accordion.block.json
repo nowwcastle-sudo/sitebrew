@@ -1,0 +1,13 @@
+{
+  "kind": "faq",
+  "variant": "single-accordion",
+  "title": "FAQ — 한 열 아코디언",
+  "layout": "single-column-accordion",
+  "density": "comfortable",
+  "archetypes": ["saas", "commerce", "local", "pwa", "landing"],
+  "archetypeKinds": ["faq", "qna"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "가운데 좁은 열(최대 48rem)에 질문 줄만 쌓고 눌러 답을 연다(여러 개 동시). 닫힌 답도 hiddenUntilFound 로 DOM 에 남아 찾기·색인이 된다. 아래 선택 줄 more 로 연락 링크 하나"
+}

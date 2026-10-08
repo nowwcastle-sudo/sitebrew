@@ -1,0 +1,26 @@
+/* T1 조밀 — 행 36px(셀 h-9, 명세 36~40), 셀 px-3, 숫자 tabular. 글자는 14px(12px 금지 — E1). 표 행은 누르는 요소가 아니고,
+ * 행 안 버튼의 24px 예외는 dashboard 원형 + pointer: fine 에서만(부품 규칙). 원천 style_axes.md 축 4. */
+.cn-table {
+  @apply text-[15px] tabular-nums;
+}
+.cn-table-header {
+  @apply [&_tr]:border-b;
+}
+.cn-table-body {
+  @apply [&_tr:last-child]:border-0;
+}
+.cn-table-footer {
+  @apply border-t font-semibold [&>tr]:last:border-b-0;
+}
+.cn-table-row {
+  @apply border-b;
+}
+.cn-table-head {
+  @apply h-9 px-3 text-sm font-semibold [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-cell {
+  @apply h-9 px-3 py-0 [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-caption {
+  @apply text-sm;
+}

@@ -1,0 +1,56 @@
+{
+  "id": "viviennewestwood-kr",
+  "archetype": "commerce",
+  "sourceGallery": "webaward-kr",
+  "url": "https://viviennewestwood.kr/",
+  "structure": {
+    "hero": "모델 사진 위 흰 제목과 Shop Now 링크, 중앙 로고",
+    "sections": [
+      "검정 공지띠(번호 2/3·일시정지)",
+      "투명 헤더(메뉴·검색 / 중앙 로고 / 계정·찜·가방)",
+      "전폭 사진 히어로",
+      "플로팅 검정 원형 채팅"
+    ]
+  },
+  "type": {
+    "display": "스크립트형 세리프 로고, 굵은 흰 산세리프 대문자 제목",
+    "body": "산세리프 UI",
+    "scale": "제목 매우 크게(데스크톱 두 줄, 모바일 세 줄)"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지띠 순환 번호와 일시정지",
+    "메뉴·검색을 왼쪽에 모으고 계정·찜·가방은 오른쪽",
+    "플로팅 채팅"
+  ],
+  "cta": {
+    "pattern": "흰 텍스트 링크 Shop Now",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.62
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "공지띠에 번호와 일시정지를 노출해 자동 순환 접근성을 확보",
+    "로고를 사진 위 가운데에 걸어 브랜드 존재감을 높이는 헤더",
+    "밝은 사진 위 흰 글자와 링크는 대비가 약하다. 어두운 스크림이 필요",
+    "쿠폰 혜택을 공지띠 문구에 넣어 신규 가입을 유도"
+  ]
+}

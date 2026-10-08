@@ -1,0 +1,24 @@
+{
+  "kind": "hero",
+  "variant": "split",
+  "title": "가짜 히어로",
+  "layout": "baseline-split",
+  "density": "spacious",
+  "archetypes": [
+    "brand",
+    "saas"
+  ],
+  "archetypeKinds": [
+    "hero"
+  ],
+  "states": [],
+  "media": [
+    "video",
+    "still"
+  ],
+  "motion": [
+    "rise",
+    "clip-reveal"
+  ],
+  "titleWidth": "column"
+}

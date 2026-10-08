@@ -1,0 +1,28 @@
+{
+  "name": "@launch-factory/security",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sentry 개인정보 가림, 보안 헤더(CSP nonce), 접속기록 도우미, 요청 제한(rate-limit)·봇 방어(Turnstile)·차단 결과 모양(protect) — 뒤 셋은 서버 전용 하위 경로.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./pii": "./src/pii.ts",
+    "./sentry": "./src/sentry.ts",
+    "./rate-limit": "./src/rate-limit.ts",
+    "./turnstile": "./src/turnstile.ts",
+    "./protect": "./src/protect.ts",
+    "./signed-token": "./src/signed-token.ts",
+    "./action": "./src/action.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@better-auth/core": "1.7.6",
+    "@launch-factory/i18n": "0.0.0",
+    "nosecone": "1.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0"
+  }
+}

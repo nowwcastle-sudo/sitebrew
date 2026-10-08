@@ -1,0 +1,57 @@
+{
+  "id": "archiv-systems",
+  "archetype": "landing",
+  "sourceGallery": "opl",
+  "url": "https://www.archiv.systems/",
+  "structure": {
+    "hero": "좌상단 초대형 세리프 워드마크와 우상단 한 줄 소개, 중앙에 흰 배경 사물 사진 한 장, 하단에 대기자 안내 문구와 이메일 입력 한 칸",
+    "sections": [
+      "워드마크+소개 줄",
+      "중앙 사물 사진",
+      "대기자 안내 문구",
+      "이메일 대기 목록 입력"
+    ]
+  },
+  "type": {
+    "display": "굵은 대비 큰 세리프 대문자 워드마크 약 100px",
+    "body": "그로테스크 소형 회색",
+    "scale": "워드마크 약 100px·소개 약 15px·안내 약 12px(1440)"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면 두 장 사이에 사진 소재가 달라져 순환 전환이 있다. 속도는 알 수 없다",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "이메일 입력 후 화살표 제출",
+    "중앙 사진 순환"
+  ],
+  "cta": {
+    "pattern": "흰 둥근 이메일 입력 칸 + 원형 화살표 제출, 페이지 하나에 행동 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "한 페이지에 행동 하나(대기자 이메일)만 두는 가장 단순한 대기 목록 구성",
+    "초대형 세리프 워드마크가 로고이자 헤드라인 역할을 한다",
+    "여러 사물 사진을 같은 위치에서 순환해 컬렉션 시스템이라는 제품 성격을 보여 준다",
+    "베타 정원이 찼다는 한 줄로 희소성과 대기 목록 이유를 설명한다",
+    "따뜻한 회색 바탕에 흑백 글자만 써 사물 사진의 색이 유일한 색이 된다"
+  ]
+}

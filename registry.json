@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "web-factory",
+  "homepage": "https://github.com/nowwcastle-sudo/sitebrew",
+  "include": [
+    "registry/factory/ui/registry.json",
+    "registry/factory/lib/registry.json",
+    "registry/factory/hooks/registry.json",
+    "registry/factory/themes/registry.json",
+    "registry/factory/base/registry.json",
+    "registry/factory/fonts/registry.json",
+    "registry/factory/motion/registry.json",
+    "registry/factory/icons/registry.json",
+    "registry/factory/contract/registry.json",
+    "registry/factory/content/registry.json",
+    "registry/factory/ax/registry.json",
+    "registry/factory/blocks/registry.json",
+    "registry/factory/r/registry.json"
+  ]
+}

@@ -1,0 +1,779 @@
+<title>레시피 보드</title>
+<meta name="description" content="레시피 10벌 판정 보드 — 승인·반려·수정과 A/B, 분포 계수기">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<style>
+:root { --bg: #f5f6f8; --panel: #ffffff; --ink: #15181e; --muted: #555c68; --line: #d8dce3; --accent: #0b6b69; --accent-ink: #ffffff; --ok: #1d7a3e; --bad: #b3261e; --warn: #8a5a00; --chip: #e9ecf1; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #111418; --panel: #191d23; --ink: #eceff3; --muted: #a8afba; --line: #333a45; --accent: #5cc4bf; --accent-ink: #0b1414; --ok: #6fd08e; --bad: #ff8a80; --warn: #f0c060; --chip: #252b34; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #111418; --panel: #191d23; --ink: #eceff3; --muted: #a8afba; --line: #333a45; --accent: #5cc4bf; --accent-ink: #0b1414; --ok: #6fd08e; --bad: #ff8a80; --warn: #f0c060; --chip: #252b34; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 16px; line-height: 1.6; margin: 0; padding-inline: 16px; padding-block: 0 48px; }
+h1, h2 { text-wrap: balance; line-height: 1.25; margin: 0; }
+code { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 0.85em; color: var(--muted); font-weight: 400; }
+.wrap { max-width: 1200px; margin-inline: auto; display: flex; flex-direction: column; gap: 32px; }
+.intro { display: flex; flex-direction: column; gap: 8px; padding-block: 32px 0; }
+.intro h1 { font-size: 1.953rem; }
+.intro p { margin: 0; max-width: 68ch; color: var(--muted); }
+.counter { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--panel); border: 1px solid var(--line); padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; }
+.meters { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0; list-style: none; font-variant-numeric: tabular-nums; }
+.meters li { display: flex; gap: 6px; align-items: baseline; }
+.meters b { font-size: 1.25rem; }
+.meters .ok b { color: var(--ok); } .meters .bad b { color: var(--bad); }
+.meters .rule { color: var(--muted); font-size: 0.875rem; }
+.problems { margin: 0; padding-inline-start: 18px; color: var(--bad); font-size: 0.9375rem; }
+.problems:empty { display: none; }
+.status-line { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.card { background: var(--panel); border: 1px solid var(--line); padding: 24px; display: flex; flex-direction: column; gap: 20px; scroll-margin-top: 140px; }
+.card-head { display: flex; flex-direction: column; gap: 6px; }
+.card-head h2 { font-size: 1.563rem; }
+.mood { margin: 0; font-size: 1.125rem; }
+.tags { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { background: var(--chip); padding: 2px 10px; font-size: 0.875rem; }
+.shots { display: flex; flex-direction: column; gap: 20px; }
+.view { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.view-label { color: var(--muted); font-size: 0.875rem; margin-inline-start: 8px; }
+.view-label:first-child { margin-inline-start: 0; }
+.seg { min-height: 44px; min-width: 64px; padding: 0 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: inherit; cursor: pointer; }
+.seg[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.scene { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.scene figcaption { font-weight: 600; }
+.ab { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); align-items: start; }
+.card[data-width="375"] .ab { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 320px)); }
+.opt { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.opt-tag { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.opt img, .specimen img { display: block; width: 100%; height: auto; max-width: 100%; border: 1px solid var(--line); background: var(--chip); }
+.noshot { margin: 0; padding: 24px; border: 1px dashed var(--line); color: var(--muted); }
+.specimen summary { min-height: 44px; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; flex-wrap: wrap; }
+.specimen img { max-height: 1600px; object-fit: cover; object-position: top; margin-top: 8px; }
+.hint { font-weight: 400; color: var(--muted); font-size: 0.875rem; }
+.facts { display: grid; gap: 10px 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); margin: 0; }
+.facts div { display: flex; flex-direction: column; gap: 2px; }
+.facts dt { font-size: 0.875rem; color: var(--muted); }
+.facts dd { margin: 0; }
+.cond { color: var(--muted); font-size: 0.9375rem; }
+fieldset { border: 1px solid var(--line); margin: 0; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+legend { font-weight: 600; padding-inline: 4px; }
+.note { margin: 0; color: var(--muted); }
+.table-wrap { overflow-x: auto; }
+table.axes { border-collapse: collapse; width: 100%; font-size: 0.9375rem; }
+.axes th, .axes td { text-align: start; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.axes td.now { font-weight: 700; white-space: nowrap; }
+.axes tr.is-b td.vb, .axes tr:not(.is-b) td.va { background: var(--chip); }
+.radios { display: flex; flex-wrap: wrap; gap: 8px; }
+.radio { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); cursor: pointer; }
+.radio input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+.radio:has(input:checked) { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.verdict legend { font-size: 1.125rem; }
+.v-approve:has(input:checked) { border-color: var(--ok); box-shadow: inset 0 0 0 1px var(--ok); }
+.v-reject:has(input:checked) { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.v-revise:has(input:checked) { border-color: var(--warn); box-shadow: inset 0 0 0 1px var(--warn); }
+.memo { display: flex; flex-direction: column; gap: 4px; font-size: 0.9375rem; color: var(--muted); }
+textarea { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 8px 10px; min-height: 64px; width: 100%; }
+.save { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.save.err { color: var(--bad); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toc { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 0; list-style: none; font-size: 0.9375rem; }
+.toc a { color: var(--ink); display: inline-flex; min-height: 32px; align-items: center; }
+@media (max-width: 640px) { .card { padding: 16px; } .counter { padding: 10px 12px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+<div class="wrap">
+  <header class="intro">
+    <h1>이 레시피로 고객 사이트를 찍어도 되겠나?</h1>
+    <p>레시피 10벌을 한 장씩 보고 승인·반려·수정을 고릅니다. 대표 장면이 먼저, 부품 모양을 보는 공통 견본이 그 뒤에 있습니다. B안이 있는 레시피는 lint 를 통과한 조합에서만 고를 수 있습니다.</p>
+    <p id="db-status" role="status">저장 기능을 확인하는 중입니다.</p>
+    <ul class="toc" aria-label="레시피 바로 가기"><li><a href="#card-r1-measure">도면 계측</a></li><li><a href="#card-r10-console">자홍 콘솔</a></li><li><a href="#card-r2-signal">흑백 신호</a></li><li><a href="#card-r3-woodblock">두도수 목판</a></li><li><a href="#card-r4-evidence">근거 대화</a></li><li><a href="#card-r5-celadon">청자 고요</a></li><li><a href="#card-r6-civic">공공 신뢰</a></li><li><a href="#card-r7-docs">문서 작업대</a></li><li><a href="#card-r8-dusk">솔숲 저녁</a></li><li><a href="#card-r9-clay">말랑 점토</a></li></ul>
+  </header>
+  <section class="counter" aria-label="다양성 분포 계수기" aria-live="polite">
+    <ul class="meters" id="meters"><li>골격 7</li></ul>
+    <p class="status-line" id="counter-ok"></p>
+    <ul class="problems" id="problems"></ul>
+  </section>
+  <article class="card" id="card-r1-measure" data-recipe="r1-measure" aria-labelledby="t-r1-measure">
+    <header class="card-head">
+      <h2 id="t-r1-measure">도면 계측 <code>r1-measure</code></h2>
+      <p class="mood">계측 · 차분 · 정확</p>
+      <p class="tags"><span class="tag">K1 단일 액센트·중립 우세</span><span class="tag">모션 M1</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="도면 계측 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="data-strip">
+        <figcaption><span class="scene-name">수치 띠·빗금 예측 막대</span> <code>data-strip</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r1-measure-A-data-strip-1440-light.webp" width="1376" height="501" loading="lazy" decoding="async" alt="도면 계측 data-strip A안" data-kind="scene" data-option="A" data-scene="data-strip"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r1-measure-B-data-strip-1440-light.webp" width="1376" height="500" loading="lazy" decoding="async" alt="도면 계측 data-strip B안" data-kind="scene" data-option="B" data-scene="data-strip"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="ledger">
+        <figcaption><span class="scene-name">근거 표·신뢰도 칩</span> <code>ledger</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r1-measure-A-ledger-1440-light.webp" width="1376" height="380" loading="lazy" decoding="async" alt="도면 계측 ledger A안" data-kind="scene" data-option="A" data-scene="ledger"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r1-measure-B-ledger-1440-light.webp" width="1376" height="379" loading="lazy" decoding="async" alt="도면 계측 ledger B안" data-kind="scene" data-option="B" data-scene="ledger"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r1-measure-specimen-1440-light.webp" width="1376" height="2679" loading="lazy" decoding="async" alt="도면 계측 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B1 · 입력 I3 · 표면 C2 · 표 T4 · 머리 H3 · 반경 R0 · 그림자 S0</dd></div>
+      <div><dt>서체 짝</dt><dd>display IBM Plex Sans · body IBM Plex Sans KR · mono IBM Plex Mono</dd></div>
+      <div><dt>적합 원형</dt><dd>dashboard · saas</dd></div>
+      <div><dt>역동 기법</dt><dd>SVG 선 그리기</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 청사진 면 — 히어로와 사양 띠를 청사진 파랑 짙은 면(field-1)으로 깔고 흰 선으로 도면을 그린다. 사양 띠는 clip-path로 한 번 걷는다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K1 단일 액센트·중립 우세</td><td class="vb">K6 색 면</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">SVG 선 그리기</td><td class="vb">SVG 선 그리기 · clip-path 리빌</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r1-measure" id="combo-r1-measure-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r1-measure" id="combo-r1-measure-1" value="colorLogic+dynamics" data-combo> <span>B 전체(색 논리·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r1-measure" id="combo-r1-measure-2" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r1-measure" id="combo-r1-measure-3" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r1-measure" id="verdict-r1-measure-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r1-measure" id="verdict-r1-measure-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r1-measure" id="verdict-r1-measure-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r1-measure">메모(선택) <textarea id="note-r1-measure" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r10-console" data-recipe="r10-console" aria-labelledby="t-r10-console">
+    <header class="card-head">
+      <h2 id="t-r10-console">자홍 콘솔 <code>r10-console</code></h2>
+      <p class="mood">조밀 · 즉답 · 절제</p>
+      <p class="tags"><span class="tag">K6 색 면</span><span class="tag">모션 M1</span><span class="tag">다크 기본 — 다크 화면을 먼저 보입니다</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="자홍 콘솔 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="true">다크</button><button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="false">라이트</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="data-strip">
+        <figcaption><span class="scene-name">수치 띠·빗금 예측 막대</span> <code>data-strip</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r10-console-A-data-strip-1440-dark.webp" width="1376" height="500" loading="lazy" decoding="async" alt="자홍 콘솔 data-strip A안" data-kind="scene" data-option="A" data-scene="data-strip"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r10-console-B-data-strip-1440-dark.webp" width="1376" height="500" loading="lazy" decoding="async" alt="자홍 콘솔 data-strip B안" data-kind="scene" data-option="B" data-scene="data-strip"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="ledger">
+        <figcaption><span class="scene-name">근거 표·신뢰도 칩</span> <code>ledger</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r10-console-A-ledger-1440-dark.webp" width="1376" height="371" loading="lazy" decoding="async" alt="자홍 콘솔 ledger A안" data-kind="scene" data-option="A" data-scene="ledger"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r10-console-B-ledger-1440-dark.webp" width="1376" height="371" loading="lazy" decoding="async" alt="자홍 콘솔 ledger B안" data-kind="scene" data-option="B" data-scene="ledger"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r10-console-specimen-1440-dark.webp" width="1376" height="3088" loading="lazy" decoding="async" alt="자홍 콘솔 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B3 · 입력 I1 · 표면 C1 · 표 T1 · 머리 H4 · 반경 R2 · 그림자 S0</dd></div>
+      <div><dt>서체 짝</dt><dd>display Sora · body Pretendard · mono IBM Plex Mono</dd></div>
+      <div><dt>적합 원형</dt><dd>dashboard</dd></div>
+      <div><dt>역동 기법</dt><dd>View Transitions · SVG 선 그리기</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 청록 먹 띠 — 상단 바 면을 자홍 먹에서 청록 먹(220°)으로 바꿔 자홍은 선택·포커스에만 남긴다. 모션은 M2, 오른쪽 상세 패널이 clip-path로 한 번 열린다. r1-measure B안(청사진 255°)과 함께 고르지 않는다 — 대시보드 두 벌이 짙은 파랑 띠로 모인다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K6 색 면</td><td class="vb">K6 색 면</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M1</td><td class="vb">M2</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">View Transitions · SVG 선 그리기</td><td class="vb">View Transitions · clip-path 리빌</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-3" value="colorLogic+dynamics" data-combo> <span>색 논리·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-4" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-5" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-6" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r10-console" id="combo-r10-console-7" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r10-console" id="verdict-r10-console-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r10-console" id="verdict-r10-console-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r10-console" id="verdict-r10-console-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r10-console">메모(선택) <textarea id="note-r10-console" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r2-signal" data-recipe="r2-signal" aria-labelledby="t-r2-signal">
+    <header class="card-head">
+      <h2 id="t-r2-signal">흑백 신호 <code>r2-signal</code></h2>
+      <p class="mood">단정 · 대담 · 신호</p>
+      <p class="tags"><span class="tag">K4 브루탈 두 모드</span><span class="tag">모션 M0</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="흑백 신호 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="hero-display">
+        <figcaption><span class="scene-name">첫 화면 제목·부제·주 CTA</span> <code>hero-display</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r2-signal-A-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="흑백 신호 hero-display A안" data-kind="scene" data-option="A" data-scene="hero-display"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r2-signal-B-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="흑백 신호 hero-display B안" data-kind="scene" data-option="B" data-scene="hero-display"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="bento">
+        <figcaption><span class="scene-name">크기가 다른 칸 3~4개 + 칸 안 조작 하나</span> <code>bento</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r2-signal-A-bento-1440-light.webp" width="1376" height="728" loading="lazy" decoding="async" alt="흑백 신호 bento A안" data-kind="scene" data-option="A" data-scene="bento"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r2-signal-B-bento-1440-light.webp" width="1376" height="728" loading="lazy" decoding="async" alt="흑백 신호 bento B안" data-kind="scene" data-option="B" data-scene="bento"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r2-signal-specimen-1440-light.webp" width="1376" height="2784" loading="lazy" decoding="async" alt="흑백 신호 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B1 · 입력 I3 · 표면 C2 · 표 T3 · 머리 H3 · 반경 R0 · 그림자 S1</dd></div>
+      <div><dt>서체 짝</dt><dd>display Archivo · body Gothic A1 · mono IBM Plex Mono</dd></div>
+      <div><dt>적합 원형</dt><dd>brand · portfolio · public</dd></div>
+      <div><dt>역동 기법</dt><dd>오버사이즈 타입 크롭 · 블렌드 모드</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 듀오톤 포스터 — 신호 빨강 면(field-1)과 코발트 잉크·주 버튼(primary)이 면적을 나눠 갖고(두 색 사이 그라디언트 없음), 첫 화면 제목은 글자 분할로 한 번 등장한다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K4 브루탈 두 모드</td><td class="vb">K7 듀오톤</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M0</td><td class="vb">M1</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">오버사이즈 타입 크롭 · 블렌드 모드</td><td class="vb">글자 분할 등장 · 오버사이즈 타입 크롭</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r2-signal" id="combo-r2-signal-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r2-signal" id="combo-r2-signal-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r2-signal" id="combo-r2-signal-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r2-signal" id="combo-r2-signal-3" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r2-signal" id="combo-r2-signal-4" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r2-signal" id="combo-r2-signal-5" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r2-signal" id="verdict-r2-signal-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r2-signal" id="verdict-r2-signal-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r2-signal" id="verdict-r2-signal-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r2-signal">메모(선택) <textarea id="note-r2-signal" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r3-woodblock" data-recipe="r3-woodblock" aria-labelledby="t-r3-woodblock">
+    <header class="card-head">
+      <h2 id="t-r3-woodblock">두도수 목판 <code>r3-woodblock</code></h2>
+      <p class="mood">손맛 · 인쇄 · 장터</p>
+      <p class="tags"><span class="tag">K1 단일 액센트·중립 우세</span><span class="tag">모션 M0</span><span class="tag">AI 티 13점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="두도수 목판 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="menu-board">
+        <figcaption><span class="scene-name">메뉴·가격표</span> <code>menu-board</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r3-woodblock-A-menu-board-1440-light.webp" width="1376" height="570" loading="lazy" decoding="async" alt="두도수 목판 menu-board A안" data-kind="scene" data-option="A" data-scene="menu-board"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r3-woodblock-B-menu-board-1440-light.webp" width="1376" height="570" loading="lazy" decoding="async" alt="두도수 목판 menu-board B안" data-kind="scene" data-option="B" data-scene="menu-board"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="hero-display">
+        <figcaption><span class="scene-name">첫 화면 제목·부제·주 CTA</span> <code>hero-display</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r3-woodblock-A-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="두도수 목판 hero-display A안" data-kind="scene" data-option="A" data-scene="hero-display"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r3-woodblock-B-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="두도수 목판 hero-display B안" data-kind="scene" data-option="B" data-scene="hero-display"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r3-woodblock-specimen-1440-light.webp" width="1376" height="2656" loading="lazy" decoding="async" alt="두도수 목판 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B1 · 입력 I3 · 표면 C2 · 표 T1 · 머리 H3 · 반경 R0 · 그림자 S2</dd></div>
+      <div><dt>서체 짝</dt><dd>display Black Han Sans · body Noto Sans KR · mono IBM Plex Mono</dd></div>
+      <div><dt>적합 원형</dt><dd>local · commerce</dd></div>
+      <div><dt>역동 기법</dt><dd>그레인(feTurbulence) · 오버사이즈 타입 크롭</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 네 도수 판화 — 메뉴·상품 칸마다 판 색 하나(숲초록·주홍·황토·쪽, block-1~4), 가장 진한 판(주홍)은 한 칸뿐. 「세 번째 도수 금지」를 푼다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K1 단일 액센트·중립 우세</td><td class="vb">K8 색 블록</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M0</td><td class="vb">M2</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">그레인(feTurbulence) · 오버사이즈 타입 크롭</td><td class="vb">그레인(feTurbulence) · clip-path 리빌</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r3-woodblock" id="combo-r3-woodblock-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r3-woodblock" id="combo-r3-woodblock-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r3-woodblock" id="combo-r3-woodblock-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r3-woodblock" id="combo-r3-woodblock-3" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r3-woodblock" id="combo-r3-woodblock-4" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r3-woodblock" id="combo-r3-woodblock-5" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r3-woodblock" id="verdict-r3-woodblock-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r3-woodblock" id="verdict-r3-woodblock-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r3-woodblock" id="verdict-r3-woodblock-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r3-woodblock">메모(선택) <textarea id="note-r3-woodblock" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r4-evidence" data-recipe="r4-evidence" aria-labelledby="t-r4-evidence">
+    <header class="card-head">
+      <h2 id="t-r4-evidence">근거 대화 <code>r4-evidence</code></h2>
+      <p class="mood">근거 · 차분 · 대화</p>
+      <p class="tags"><span class="tag">K1 단일 액센트·중립 우세</span><span class="tag">모션 M1</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="근거 대화 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="ledger">
+        <figcaption><span class="scene-name">근거 표·신뢰도 칩</span> <code>ledger</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r4-evidence-A-ledger-1440-light.webp" width="1376" height="417" loading="lazy" decoding="async" alt="근거 대화 ledger A안" data-kind="scene" data-option="A" data-scene="ledger"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r4-evidence-B-ledger-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="근거 대화 ledger B안" data-kind="scene" data-option="B" data-scene="ledger"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="doc-page">
+        <figcaption><span class="scene-name">문서형 본문·목차</span> <code>doc-page</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r4-evidence-A-doc-page-1440-light.webp" width="1376" height="867" loading="lazy" decoding="async" alt="근거 대화 doc-page A안" data-kind="scene" data-option="A" data-scene="doc-page"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r4-evidence-B-doc-page-1440-light.webp" width="1376" height="866" loading="lazy" decoding="async" alt="근거 대화 doc-page B안" data-kind="scene" data-option="B" data-scene="doc-page"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r4-evidence-specimen-1440-light.webp" width="1376" height="2710" loading="lazy" decoding="async" alt="근거 대화 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B3 · 입력 I1 · 표면 C1 · 표 T2 · 머리 H1 · 반경 R2 · 그림자 S1</dd></div>
+      <div><dt>서체 짝</dt><dd>display Noto Sans KR · body Noto Sans KR · mono IBM Plex Mono · prose Noto Serif KR</dd></div>
+      <div><dt>적합 원형</dt><dd>saas · dashboard</dd></div>
+      <div><dt>역동 기법</dt><dd>clip-path 리빌</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 근거 듀오톤 — 짙은 청 잉크·주 버튼(primary, C 0.1 · 245°)과 호박색 면(field-1 — 근거 카드·계산표 머리)이 면적을 나눠 갖는다. 「강조색 하나」를 푼다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K1 단일 액센트·중립 우세</td><td class="vb">K7 듀오톤</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">clip-path 리빌</td><td class="vb">clip-path 리빌 · SVG 선 그리기</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r4-evidence" id="combo-r4-evidence-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r4-evidence" id="combo-r4-evidence-1" value="colorLogic+dynamics" data-combo> <span>B 전체(색 논리·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r4-evidence" id="combo-r4-evidence-2" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r4-evidence" id="combo-r4-evidence-3" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r4-evidence" id="verdict-r4-evidence-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r4-evidence" id="verdict-r4-evidence-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r4-evidence" id="verdict-r4-evidence-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r4-evidence">메모(선택) <textarea id="note-r4-evidence" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r5-celadon" data-recipe="r5-celadon" aria-labelledby="t-r5-celadon">
+    <header class="card-head">
+      <h2 id="t-r5-celadon">청자 고요 <code>r5-celadon</code></h2>
+      <p class="mood">고요 · 재질 · 여백</p>
+      <p class="tags"><span class="tag">K1 단일 액센트·중립 우세</span><span class="tag">모션 M2</span><span class="tag">AI 티 13점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="청자 고요 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="product-hero">
+        <figcaption><span class="scene-name">상세페이지 첫 장(860px 열)</span> <code>product-hero</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r5-celadon-A-product-hero-1440-light.webp" width="1376" height="1007" loading="lazy" decoding="async" alt="청자 고요 product-hero A안" data-kind="scene" data-option="A" data-scene="product-hero"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r5-celadon-B-product-hero-1440-light.webp" width="1376" height="1007" loading="lazy" decoding="async" alt="청자 고요 product-hero B안" data-kind="scene" data-option="B" data-scene="product-hero"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="hero-display">
+        <figcaption><span class="scene-name">첫 화면 제목·부제·주 CTA</span> <code>hero-display</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r5-celadon-A-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="청자 고요 hero-display A안" data-kind="scene" data-option="A" data-scene="hero-display"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r5-celadon-B-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="청자 고요 hero-display B안" data-kind="scene" data-option="B" data-scene="hero-display"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r5-celadon-specimen-1440-light.webp" width="1376" height="2749" loading="lazy" decoding="async" alt="청자 고요 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B2 · 입력 I2 · 표면 C3 · 표 T3 · 머리 H2 · 반경 R1 · 그림자 S1</dd></div>
+      <div><dt>서체 짝</dt><dd>display Jost · body Pretendard</dd></div>
+      <div><dt>적합 원형</dt><dd>detail · portfolio</dd></div>
+      <div><dt>역동 기법</dt><dd>clip-path 리빌 · 가변 폰트 축 애니메이션</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 청자 면 — 상세페이지 첫 장·구매 포인트 띠를 청자 면(field-1)으로 깔고 한 재질 오브젝트를 3D로 기울인다. 「청자를 큰 면에 깔지 않는다」를 푼다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K1 단일 액센트·중립 우세</td><td class="vb">K6 색 면</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M2</td><td class="vb">M3</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">clip-path 리빌 · 가변 폰트 축 애니메이션</td><td class="vb">3D 기울임·원근 · clip-path 리빌 · 가변 폰트 축 애니메이션</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-3" value="colorLogic+dynamics" data-combo> <span>색 논리·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-4" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-5" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-6" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r5-celadon" id="combo-r5-celadon-7" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r5-celadon" id="verdict-r5-celadon-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r5-celadon" id="verdict-r5-celadon-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r5-celadon" id="verdict-r5-celadon-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r5-celadon">메모(선택) <textarea id="note-r5-celadon" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r6-civic" data-recipe="r6-civic" aria-labelledby="t-r6-civic">
+    <header class="card-head">
+      <h2 id="t-r6-civic">공공 신뢰 <code>r6-civic</code></h2>
+      <p class="mood">공식 · 명료 · 신뢰</p>
+      <p class="tags"><span class="tag">K1 단일 액센트·중립 우세</span><span class="tag">모션 M1</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="공공 신뢰 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="notice-list">
+        <figcaption><span class="scene-name">공지·민원 목록(KRDS)</span> <code>notice-list</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r6-civic-A-notice-list-1440-light.webp" width="1376" height="716" loading="lazy" decoding="async" alt="공공 신뢰 notice-list A안" data-kind="scene" data-option="A" data-scene="notice-list"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r6-civic-B-notice-list-1440-light.webp" width="1376" height="715" loading="lazy" decoding="async" alt="공공 신뢰 notice-list B안" data-kind="scene" data-option="B" data-scene="notice-list"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="doc-page">
+        <figcaption><span class="scene-name">문서형 본문·목차</span> <code>doc-page</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r6-civic-A-doc-page-1440-light.webp" width="1376" height="867" loading="lazy" decoding="async" alt="공공 신뢰 doc-page A안" data-kind="scene" data-option="A" data-scene="doc-page"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r6-civic-B-doc-page-1440-light.webp" width="1376" height="866" loading="lazy" decoding="async" alt="공공 신뢰 doc-page B안" data-kind="scene" data-option="B" data-scene="doc-page"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r6-civic-specimen-1440-light.webp" width="1376" height="2708" loading="lazy" decoding="async" alt="공공 신뢰 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B2 · 입력 I1 · 표면 C1 · 표 T2 · 머리 H1 · 반경 R2 · 그림자 S0</dd></div>
+      <div><dt>서체 짝</dt><dd>display Pretendard GOV · body Pretendard GOV</dd></div>
+      <div><dt>적합 원형</dt><dd>public</dd></div>
+      <div><dt>역동 기법</dt><dd>View Transitions</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 정부 파랑 띠 — 첫 화면 제목·자주 찾는 서비스 띠를 옅은 정부 파랑 면(field-1)에 남색 글자로 올린다(다크에서는 짙은 파랑 면)</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K1 단일 액센트·중립 우세</td><td class="vb">K6 색 면</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">View Transitions</td><td class="vb">View Transitions · SVG 선 그리기</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r6-civic" id="combo-r6-civic-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r6-civic" id="combo-r6-civic-1" value="colorLogic+dynamics" data-combo> <span>B 전체(색 논리·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r6-civic" id="combo-r6-civic-2" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r6-civic" id="combo-r6-civic-3" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r6-civic" id="verdict-r6-civic-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r6-civic" id="verdict-r6-civic-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r6-civic" id="verdict-r6-civic-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r6-civic">메모(선택) <textarea id="note-r6-civic" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r7-docs" data-recipe="r7-docs" aria-labelledby="t-r7-docs">
+    <header class="card-head">
+      <h2 id="t-r7-docs">문서 작업대 <code>r7-docs</code></h2>
+      <p class="mood">문서 · 조용 · 정돈</p>
+      <p class="tags"><span class="tag">K3 문서형 무채색</span><span class="tag">모션 M0</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="문서 작업대 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="doc-page">
+        <figcaption><span class="scene-name">문서형 본문·목차</span> <code>doc-page</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r7-docs-A-doc-page-1440-light.webp" width="1376" height="867" loading="lazy" decoding="async" alt="문서 작업대 doc-page A안" data-kind="scene" data-option="A" data-scene="doc-page"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r7-docs-B-doc-page-1440-light.webp" width="1376" height="866" loading="lazy" decoding="async" alt="문서 작업대 doc-page B안" data-kind="scene" data-option="B" data-scene="doc-page"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="app-shell">
+        <figcaption><span class="scene-name">모바일 하단 탭·카드</span> <code>app-shell</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r7-docs-A-app-shell-1440-light.webp" width="1376" height="851" loading="lazy" decoding="async" alt="문서 작업대 app-shell A안" data-kind="scene" data-option="A" data-scene="app-shell"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r7-docs-B-app-shell-1440-light.webp" width="1376" height="850" loading="lazy" decoding="async" alt="문서 작업대 app-shell B안" data-kind="scene" data-option="B" data-scene="app-shell"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r7-docs-specimen-1440-light.webp" width="1376" height="2764" loading="lazy" decoding="async" alt="문서 작업대 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B2 · 입력 I2 · 표면 C1 · 표 T3 · 머리 H1 · 반경 R2 · 그림자 S0</dd></div>
+      <div><dt>서체 짝</dt><dd>display Gothic A1 · body Pretendard · mono IBM Plex Mono</dd></div>
+      <div><dt>적합 원형</dt><dd>saas · pwa</dd></div>
+      <div><dt>역동 기법</dt><dd>오버사이즈 타입 크롭</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 칠판 표지 — 랜딩 표지와 목차 머리 띠를 칠판 청록 짙은 면(field-1)으로 칠하고, 문서 사이 이동은 View Transitions. 「넓은 면에 원색 금지」를 푼다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K3 문서형 무채색</td><td class="vb">K6 색 면</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M0</td><td class="vb">M2</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">오버사이즈 타입 크롭</td><td class="vb">View Transitions · 스티키 스태킹 카드</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r7-docs" id="combo-r7-docs-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r7-docs" id="combo-r7-docs-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r7-docs" id="combo-r7-docs-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r7-docs" id="combo-r7-docs-3" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r7-docs" id="combo-r7-docs-4" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r7-docs" id="combo-r7-docs-5" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r7-docs" id="verdict-r7-docs-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r7-docs" id="verdict-r7-docs-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r7-docs" id="verdict-r7-docs-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r7-docs">메모(선택) <textarea id="note-r7-docs" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r8-dusk" data-recipe="r8-dusk" aria-labelledby="t-r8-dusk">
+    <header class="card-head">
+      <h2 id="t-r8-dusk">솔숲 저녁 <code>r8-dusk</code></h2>
+      <p class="mood">저녁 · 숲 · 느림</p>
+      <p class="tags"><span class="tag">K6 색 면</span><span class="tag">모션 M3</span><span class="tag">AI 티 12점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="솔숲 저녁 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="hero-display">
+        <figcaption><span class="scene-name">첫 화면 제목·부제·주 CTA</span> <code>hero-display</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r8-dusk-A-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="솔숲 저녁 hero-display A안" data-kind="scene" data-option="A" data-scene="hero-display"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r8-dusk-B-hero-display-1440-light.webp" width="1376" height="416" loading="lazy" decoding="async" alt="솔숲 저녁 hero-display B안" data-kind="scene" data-option="B" data-scene="hero-display"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="menu-board">
+        <figcaption><span class="scene-name">메뉴·가격표</span> <code>menu-board</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r8-dusk-A-menu-board-1440-light.webp" width="1376" height="570" loading="lazy" decoding="async" alt="솔숲 저녁 menu-board A안" data-kind="scene" data-option="A" data-scene="menu-board"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r8-dusk-B-menu-board-1440-light.webp" width="1376" height="570" loading="lazy" decoding="async" alt="솔숲 저녁 menu-board B안" data-kind="scene" data-option="B" data-scene="menu-board"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r8-dusk-specimen-1440-light.webp" width="1376" height="3170" loading="lazy" decoding="async" alt="솔숲 저녁 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B3 · 입력 I1 · 표면 C3 · 표 T2 · 머리 H1 · 반경 R1 · 그림자 S1</dd></div>
+      <div><dt>서체 짝</dt><dd>display Hahmlet · body Nanum Gothic</dd></div>
+      <div><dt>적합 원형</dt><dd>local <span class="cond">(헤리티지 업장(한옥 스테이·찻집·수목원·전통 식음)에만 — 병원·일반 카페·미용실은 r3-woodblock)</span> · brand <span class="cond">(헤리티지 브랜드(한옥 스테이·찻집·전통 식음 등)에만 — IT·일반 소비재·프리미엄 브랜드에 세리프를 기본으로 쓰지 않는다(§13))</span></dd></div>
+      <div><dt>역동 기법</dt><dd>글자 분할 등장 · clip-path 리빌 · 스티키 스태킹 카드</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 솔과 감 — 솔숲 짙은 면(field-1)과 감물 주 버튼·잉크(primary 42°)가 면적을 나눠 갖는다(두 색 사이 그라디언트 없음). 모션은 M2로 한 단계 내리고, 글자 분할 대신 먹선(svg-draw)을 한 번 긋는다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K6 색 면</td><td class="vb">K7 듀오톤</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M3</td><td class="vb">M2</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">글자 분할 등장 · clip-path 리빌 · 스티키 스태킹 카드</td><td class="vb">clip-path 리빌 · SVG 선 그리기</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-3" value="colorLogic+dynamics" data-combo> <span>색 논리·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-4" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-5" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-6" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r8-dusk" id="combo-r8-dusk-7" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r8-dusk" id="verdict-r8-dusk-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r8-dusk" id="verdict-r8-dusk-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r8-dusk" id="verdict-r8-dusk-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r8-dusk">메모(선택) <textarea id="note-r8-dusk" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <article class="card" id="card-r9-clay" data-recipe="r9-clay" aria-labelledby="t-r9-clay">
+    <header class="card-head">
+      <h2 id="t-r9-clay">말랑 점토 <code>r9-clay</code></h2>
+      <p class="mood">말랑 · 친근 · 손끝</p>
+      <p class="tags"><span class="tag">K8 색 블록</span><span class="tag">모션 M3</span><span class="tag">AI 티 13점(기준 r1 12)</span></p>
+    </header>
+    <section class="shots" aria-label="말랑 점토 대표 장면">
+      <div class="view" role="group" aria-label="스크린샷 보기">
+        <span class="view-label">폭</span>
+        <button type="button" class="seg" data-view="width" data-value="1440" aria-pressed="true">1440</button><button type="button" class="seg" data-view="width" data-value="375" aria-pressed="false">375</button>
+        <span class="view-label">테마</span>
+        <button type="button" class="seg" data-view="theme" data-value="light" aria-pressed="true">라이트</button><button type="button" class="seg" data-view="theme" data-value="dark" aria-pressed="false">다크</button>
+      </div>
+      <figure class="scene" data-shot="signature" data-scene="bento">
+        <figcaption><span class="scene-name">크기가 다른 칸 3~4개 + 칸 안 조작 하나</span> <code>bento</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r9-clay-A-bento-1440-light.webp" width="1376" height="722" loading="lazy" decoding="async" alt="말랑 점토 bento A안" data-kind="scene" data-option="A" data-scene="bento"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r9-clay-B-bento-1440-light.webp" width="1376" height="722" loading="lazy" decoding="async" alt="말랑 점토 bento B안" data-kind="scene" data-option="B" data-scene="bento"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="app-shell">
+        <figcaption><span class="scene-name">모바일 하단 탭·카드</span> <code>app-shell</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r9-clay-A-app-shell-1440-light.webp" width="1376" height="918" loading="lazy" decoding="async" alt="말랑 점토 app-shell A안" data-kind="scene" data-option="A" data-scene="app-shell"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r9-clay-B-app-shell-1440-light.webp" width="1376" height="918" loading="lazy" decoding="async" alt="말랑 점토 app-shell B안" data-kind="scene" data-option="B" data-scene="app-shell"></div>
+        </div>
+      </figure>
+<figure class="scene" data-shot="signature" data-scene="product-hero">
+        <figcaption><span class="scene-name">상세페이지 첫 장(860px 열)</span> <code>product-hero</code></figcaption>
+        <div class="ab">
+          <div class="opt"><p class="opt-tag">A · 지금 값</p><img src="shots/r9-clay-A-product-hero-1440-light.webp" width="1376" height="1007" loading="lazy" decoding="async" alt="말랑 점토 product-hero A안" data-kind="scene" data-option="A" data-scene="product-hero"></div>
+          <div class="opt"><p class="opt-tag">B · 대안 전체</p><img src="shots/r9-clay-B-product-hero-1440-light.webp" width="1376" height="1007" loading="lazy" decoding="async" alt="말랑 점토 product-hero B안" data-kind="scene" data-option="B" data-scene="product-hero"></div>
+        </div>
+      </figure>
+    </section>
+    <details class="specimen" data-shot="common">
+      <summary>모든 레시피 공통 견본 <span class="hint">— 부품 모양 확인용, 레시피를 가르는 화면이 아닙니다</span></summary>
+      <img src="shots/r9-clay-specimen-1440-light.webp" width="1376" height="3223" loading="lazy" decoding="async" alt="말랑 점토 모든 레시피 공통 견본" data-kind="specimen" data-option="A" data-scene="">
+    </details>
+    <dl class="facts">
+      <div><dt>축 7개</dt><dd>버튼 B3 · 입력 I1 · 표면 C3 · 표 T3 · 머리 H1 · 반경 R1 · 그림자 S3</dd></div>
+      <div><dt>서체 짝</dt><dd>display Jua · body Gothic A1</dd></div>
+      <div><dt>적합 원형</dt><dd>pwa <span class="cond">(식품·생활·키즈 브랜드 앱에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(금융·업무 앱은 r7-docs))</span> · detail <span class="cond">(식품·생활·키즈 상품 상세에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(재질 상품은 r5-celadon))</span> · commerce <span class="cond">(식품·생활·키즈 몰에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(동네 가게 몰은 r3-woodblock))</span></dd></div>
+      <div><dt>역동 기법</dt><dd>글자 분할 등장 · 3D 기울임·원근 · clip-path 리빌</dd></div>
+    </dl>
+    <fieldset class="combo">
+      <legend>A/B 고르기 <span class="hint">— lint 를 통과한 조합만 고를 수 있습니다</span></legend>
+      <p class="note">B안: 하늘 점토 — 가장 큰 칸(peak)을 노랑에서 하늘 점토(235°)로 옮기고 노랑은 옅은 칸·버튼 글자·선택 칸에만 남긴다. 글자 분할·3D 기울임 없이 M2, 첫 화면 사진 가림막만 한 번 걷는다</p>
+      <div class="table-wrap"><table class="axes"><thead><tr><th scope="col">축</th><th scope="col">A</th><th scope="col">B</th><th scope="col">지금</th></tr></thead><tbody><tr data-axis="colorLogic"><th scope="row">색 논리</th><td class="va">K8 색 블록</td><td class="vb">K8 색 블록</td><td class="now" aria-live="off">A</td></tr><tr data-axis="motion"><th scope="row">모션</th><td class="va">M3</td><td class="vb">M2</td><td class="now" aria-live="off">A</td></tr><tr data-axis="dynamics"><th scope="row">역동 기법</th><td class="va">글자 분할 등장 · 3D 기울임·원근 · clip-path 리빌</td><td class="vb">clip-path 리빌</td><td class="now" aria-live="off">A</td></tr></tbody></table></div>
+      <div class="radios"><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-0" value="" data-combo checked> <span>A 그대로</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-1" value="colorLogic+motion+dynamics" data-combo> <span>B 전체(색 논리·모션·역동 기법)</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-2" value="motion+dynamics" data-combo> <span>모션·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-3" value="colorLogic+dynamics" data-combo> <span>색 논리·역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-4" value="dynamics" data-combo> <span>역동 기법만 B</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-5" value="colorLogic+motion" data-combo> <span>색 논리·모션만 B</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-6" value="motion" data-combo> <span>모션만 B</span></label><label class="radio"><input type="radio" name="combo-r9-clay" id="combo-r9-clay-7" value="colorLogic" data-combo> <span>색 논리만 B</span></label></div>
+    </fieldset>
+    <fieldset class="verdict">
+      <legend>이 레시피로 고객 사이트를 찍어도 되겠나?</legend>
+      <div class="radios">
+        <label class="radio v-approve"><input type="radio" name="verdict-r9-clay" id="verdict-r9-clay-approve" value="approve" data-verdict> <span>승인</span></label>
+        <label class="radio v-reject"><input type="radio" name="verdict-r9-clay" id="verdict-r9-clay-reject" value="reject" data-verdict> <span>반려</span></label>
+        <label class="radio v-revise"><input type="radio" name="verdict-r9-clay" id="verdict-r9-clay-revise" value="revise" data-verdict> <span>수정</span></label>
+      </div>
+    </fieldset>
+    <label class="memo" for="note-r9-clay">메모(선택) <textarea id="note-r9-clay" data-note rows="2" placeholder="수정이면 무엇을 고칠지 적어 주세요"></textarea></label>
+    <p class="save" role="status" data-save>아직 판정하지 않았습니다.</p>
+  </article>
+  <p class="status-line">스크린샷 2026-09-27T08:22:35.069Z 촬영 · 문구는 모두 예시입니다.</p>
+</div>
+<script type="application/json" id="board-data">[{"id":"r1-measure","name":"도면 계측","mood":["계측","차분","정확"],"axes":{"button":"B1","input":"I3","surface":"C2","table":"T4","header":"H3","radius":"R0","shadow":"S0"},"motion":"M1","colorLogic":"K1","defaultTheme":"light","dynamics":["svg-draw"],"fonts":{"display":"IBM Plex Sans","body":"IBM Plex Sans KR","mono":"IBM Plex Mono"},"archetypes":["dashboard","saas"],"archetypeConditions":{},"aiTell":12,"signature":["data-strip","ledger"],"themes":["light","dark"],"alt":{"note":"청사진 면 — 히어로와 사양 띠를 청사진 파랑 짙은 면(field-1)으로 깔고 흰 선으로 도면을 그린다. 사양 띠는 clip-path로 한 번 걷는다","axes":{"colorLogic":{"A":"K1 단일 액센트·중립 우세","B":"K6 색 면"},"dynamics":{"A":"SVG 선 그리기","B":"SVG 선 그리기 · clip-path 리빌"}}},"bAxes":["colorLogic","dynamics"],"combos":[{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":true},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r1-measure","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r1-measure","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"dynamics":{"id":"r1-measure","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r1-measure","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false}},"shots":[{"file":"r1-measure-A-data-strip-1440-light.webp","option":"A","kind":"scene","scene":"data-strip","width":1440,"theme":"light","w":1376,"h":501},{"file":"r1-measure-A-data-strip-1440-dark.webp","option":"A","kind":"scene","scene":"data-strip","width":1440,"theme":"dark","w":1376,"h":501},{"file":"r1-measure-A-data-strip-375-light.webp","option":"A","kind":"scene","scene":"data-strip","width":375,"theme":"light","w":343,"h":858},{"file":"r1-measure-A-data-strip-375-dark.webp","option":"A","kind":"scene","scene":"data-strip","width":375,"theme":"dark","w":343,"h":858},{"file":"r1-measure-A-ledger-1440-light.webp","option":"A","kind":"scene","scene":"ledger","width":1440,"theme":"light","w":1376,"h":380},{"file":"r1-measure-A-ledger-1440-dark.webp","option":"A","kind":"scene","scene":"ledger","width":1440,"theme":"dark","w":1376,"h":380},{"file":"r1-measure-A-ledger-375-light.webp","option":"A","kind":"scene","scene":"ledger","width":375,"theme":"light","w":343,"h":712},{"file":"r1-measure-A-ledger-375-dark.webp","option":"A","kind":"scene","scene":"ledger","width":375,"theme":"dark","w":343,"h":712},{"file":"r1-measure-B-data-strip-1440-light.webp","option":"B","kind":"scene","scene":"data-strip","width":1440,"theme":"light","w":1376,"h":500},{"file":"r1-measure-B-data-strip-1440-dark.webp","option":"B","kind":"scene","scene":"data-strip","width":1440,"theme":"dark","w":1376,"h":500},{"file":"r1-measure-B-data-strip-375-light.webp","option":"B","kind":"scene","scene":"data-strip","width":375,"theme":"light","w":343,"h":857},{"file":"r1-measure-B-data-strip-375-dark.webp","option":"B","kind":"scene","scene":"data-strip","width":375,"theme":"dark","w":343,"h":857},{"file":"r1-measure-B-ledger-1440-light.webp","option":"B","kind":"scene","scene":"ledger","width":1440,"theme":"light","w":1376,"h":379},{"file":"r1-measure-B-ledger-1440-dark.webp","option":"B","kind":"scene","scene":"ledger","width":1440,"theme":"dark","w":1376,"h":379},{"file":"r1-measure-B-ledger-375-light.webp","option":"B","kind":"scene","scene":"ledger","width":375,"theme":"light","w":343,"h":711},{"file":"r1-measure-B-ledger-375-dark.webp","option":"B","kind":"scene","scene":"ledger","width":375,"theme":"dark","w":343,"h":711},{"file":"r1-measure-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2679},{"file":"r1-measure-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2679},{"file":"r1-measure-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4015},{"file":"r1-measure-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4015}]},{"id":"r10-console","name":"자홍 콘솔","mood":["조밀","즉답","절제"],"axes":{"button":"B3","input":"I1","surface":"C1","table":"T1","header":"H4","radius":"R2","shadow":"S0"},"motion":"M1","colorLogic":"K6","defaultTheme":"dark","dynamics":["view-transition","svg-draw"],"fonts":{"display":"Sora","body":"Pretendard","mono":"IBM Plex Mono"},"archetypes":["dashboard"],"archetypeConditions":{},"aiTell":12,"signature":["data-strip","ledger"],"themes":["dark","light"],"alt":{"note":"청록 먹 띠 — 상단 바 면을 자홍 먹에서 청록 먹(220°)으로 바꿔 자홍은 선택·포커스에만 남긴다. 모션은 M2, 오른쪽 상세 패널이 clip-path로 한 번 열린다. r1-measure B안(청사진 255°)과 함께 고르지 않는다 — 대시보드 두 벌이 짙은 파랑 띠로 모인다","axes":{"colorLogic":{"A":"K6 색 면","B":"K6 색 면"},"motion":{"A":"M1","B":"M2"},"dynamics":{"A":"View Transitions · SVG 선 그리기","B":"View Transitions · clip-path 리빌"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":false},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"dynamics":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"motion":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r10-console","skeleton":false,"bold":true,"dark":true,"m3":false,"m0":false,"noDynamics":false}},"shots":[{"file":"r10-console-A-data-strip-1440-dark.webp","option":"A","kind":"scene","scene":"data-strip","width":1440,"theme":"dark","w":1376,"h":500},{"file":"r10-console-A-data-strip-1440-light.webp","option":"A","kind":"scene","scene":"data-strip","width":1440,"theme":"light","w":1376,"h":500},{"file":"r10-console-A-data-strip-375-dark.webp","option":"A","kind":"scene","scene":"data-strip","width":375,"theme":"dark","w":343,"h":857},{"file":"r10-console-A-data-strip-375-light.webp","option":"A","kind":"scene","scene":"data-strip","width":375,"theme":"light","w":343,"h":857},{"file":"r10-console-A-ledger-1440-dark.webp","option":"A","kind":"scene","scene":"ledger","width":1440,"theme":"dark","w":1376,"h":371},{"file":"r10-console-A-ledger-1440-light.webp","option":"A","kind":"scene","scene":"ledger","width":1440,"theme":"light","w":1376,"h":371},{"file":"r10-console-A-ledger-375-dark.webp","option":"A","kind":"scene","scene":"ledger","width":375,"theme":"dark","w":343,"h":685},{"file":"r10-console-A-ledger-375-light.webp","option":"A","kind":"scene","scene":"ledger","width":375,"theme":"light","w":343,"h":685},{"file":"r10-console-B-data-strip-1440-dark.webp","option":"B","kind":"scene","scene":"data-strip","width":1440,"theme":"dark","w":1376,"h":500},{"file":"r10-console-B-data-strip-1440-light.webp","option":"B","kind":"scene","scene":"data-strip","width":1440,"theme":"light","w":1376,"h":500},{"file":"r10-console-B-data-strip-375-dark.webp","option":"B","kind":"scene","scene":"data-strip","width":375,"theme":"dark","w":343,"h":857},{"file":"r10-console-B-data-strip-375-light.webp","option":"B","kind":"scene","scene":"data-strip","width":375,"theme":"light","w":343,"h":857},{"file":"r10-console-B-ledger-1440-dark.webp","option":"B","kind":"scene","scene":"ledger","width":1440,"theme":"dark","w":1376,"h":371},{"file":"r10-console-B-ledger-1440-light.webp","option":"B","kind":"scene","scene":"ledger","width":1440,"theme":"light","w":1376,"h":371},{"file":"r10-console-B-ledger-375-dark.webp","option":"B","kind":"scene","scene":"ledger","width":375,"theme":"dark","w":343,"h":685},{"file":"r10-console-B-ledger-375-light.webp","option":"B","kind":"scene","scene":"ledger","width":375,"theme":"light","w":343,"h":685},{"file":"r10-console-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":3088},{"file":"r10-console-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":3088},{"file":"r10-console-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4386},{"file":"r10-console-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4386}]},{"id":"r2-signal","name":"흑백 신호","mood":["단정","대담","신호"],"axes":{"button":"B1","input":"I3","surface":"C2","table":"T3","header":"H3","radius":"R0","shadow":"S1"},"motion":"M0","colorLogic":"K4","defaultTheme":"light","dynamics":["oversize-crop","blend"],"fonts":{"display":"Archivo","body":"Gothic A1","mono":"IBM Plex Mono"},"archetypes":["brand","portfolio","public"],"archetypeConditions":{},"aiTell":12,"signature":["hero-display","bento"],"themes":["light","dark"],"alt":{"note":"듀오톤 포스터 — 신호 빨강 면(field-1)과 코발트 잉크·주 버튼(primary)이 면적을 나눠 갖고(두 색 사이 그라디언트 없음), 첫 화면 제목은 글자 분할로 한 번 등장한다","axes":{"colorLogic":{"A":"K4 브루탈 두 모드","B":"K7 듀오톤"},"motion":{"A":"M0","B":"M1"},"dynamics":{"A":"오버사이즈 타입 크롭 · 블렌드 모드","B":"글자 분할 등장 · 오버사이즈 타입 크롭"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r2-signal","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":true,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r2-signal","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r2-signal","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r2-signal","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion":{"id":"r2-signal","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r2-signal","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":true,"noDynamics":false}},"shots":[{"file":"r2-signal-A-hero-display-1440-light.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r2-signal-A-hero-display-1440-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r2-signal-A-hero-display-375-light.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":680},{"file":"r2-signal-A-hero-display-375-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":680},{"file":"r2-signal-A-bento-1440-light.webp","option":"A","kind":"scene","scene":"bento","width":1440,"theme":"light","w":1376,"h":728},{"file":"r2-signal-A-bento-1440-dark.webp","option":"A","kind":"scene","scene":"bento","width":1440,"theme":"dark","w":1376,"h":728},{"file":"r2-signal-A-bento-375-light.webp","option":"A","kind":"scene","scene":"bento","width":375,"theme":"light","w":343,"h":899},{"file":"r2-signal-A-bento-375-dark.webp","option":"A","kind":"scene","scene":"bento","width":375,"theme":"dark","w":343,"h":899},{"file":"r2-signal-B-hero-display-1440-light.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r2-signal-B-hero-display-1440-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r2-signal-B-hero-display-375-light.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":680},{"file":"r2-signal-B-hero-display-375-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":680},{"file":"r2-signal-B-bento-1440-light.webp","option":"B","kind":"scene","scene":"bento","width":1440,"theme":"light","w":1376,"h":728},{"file":"r2-signal-B-bento-1440-dark.webp","option":"B","kind":"scene","scene":"bento","width":1440,"theme":"dark","w":1376,"h":728},{"file":"r2-signal-B-bento-375-light.webp","option":"B","kind":"scene","scene":"bento","width":375,"theme":"light","w":343,"h":899},{"file":"r2-signal-B-bento-375-dark.webp","option":"B","kind":"scene","scene":"bento","width":375,"theme":"dark","w":343,"h":899},{"file":"r2-signal-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2784},{"file":"r2-signal-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2784},{"file":"r2-signal-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4274},{"file":"r2-signal-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4274}]},{"id":"r3-woodblock","name":"두도수 목판","mood":["손맛","인쇄","장터"],"axes":{"button":"B1","input":"I3","surface":"C2","table":"T1","header":"H3","radius":"R0","shadow":"S2"},"motion":"M0","colorLogic":"K1","defaultTheme":"light","dynamics":["grain","oversize-crop"],"fonts":{"display":"Black Han Sans","body":"Noto Sans KR","mono":"IBM Plex Mono"},"archetypes":["local","commerce"],"archetypeConditions":{},"aiTell":13,"signature":["menu-board","hero-display"],"themes":["light","dark"],"alt":{"note":"네 도수 판화 — 메뉴·상품 칸마다 판 색 하나(숲초록·주홍·황토·쪽, block-1~4), 가장 진한 판(주홍)은 한 칸뿐. 「세 번째 도수 금지」를 푼다","axes":{"colorLogic":{"A":"K1 단일 액센트·중립 우세","B":"K8 색 블록"},"motion":{"A":"M0","B":"M2"},"dynamics":{"A":"그레인(feTurbulence) · 오버사이즈 타입 크롭","B":"그레인(feTurbulence) · clip-path 리빌"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r3-woodblock","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":true,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r3-woodblock","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r3-woodblock","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r3-woodblock","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion":{"id":"r3-woodblock","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r3-woodblock","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":true,"noDynamics":false}},"shots":[{"file":"r3-woodblock-A-menu-board-1440-light.webp","option":"A","kind":"scene","scene":"menu-board","width":1440,"theme":"light","w":1376,"h":570},{"file":"r3-woodblock-A-menu-board-1440-dark.webp","option":"A","kind":"scene","scene":"menu-board","width":1440,"theme":"dark","w":1376,"h":570},{"file":"r3-woodblock-A-menu-board-375-light.webp","option":"A","kind":"scene","scene":"menu-board","width":375,"theme":"light","w":343,"h":833},{"file":"r3-woodblock-A-menu-board-375-dark.webp","option":"A","kind":"scene","scene":"menu-board","width":375,"theme":"dark","w":343,"h":833},{"file":"r3-woodblock-A-hero-display-1440-light.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r3-woodblock-A-hero-display-1440-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r3-woodblock-A-hero-display-375-light.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":680},{"file":"r3-woodblock-A-hero-display-375-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":680},{"file":"r3-woodblock-B-menu-board-1440-light.webp","option":"B","kind":"scene","scene":"menu-board","width":1440,"theme":"light","w":1376,"h":570},{"file":"r3-woodblock-B-menu-board-1440-dark.webp","option":"B","kind":"scene","scene":"menu-board","width":1440,"theme":"dark","w":1376,"h":570},{"file":"r3-woodblock-B-menu-board-375-light.webp","option":"B","kind":"scene","scene":"menu-board","width":375,"theme":"light","w":343,"h":832},{"file":"r3-woodblock-B-menu-board-375-dark.webp","option":"B","kind":"scene","scene":"menu-board","width":375,"theme":"dark","w":343,"h":832},{"file":"r3-woodblock-B-hero-display-1440-light.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r3-woodblock-B-hero-display-1440-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r3-woodblock-B-hero-display-375-light.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":680},{"file":"r3-woodblock-B-hero-display-375-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":680},{"file":"r3-woodblock-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2656},{"file":"r3-woodblock-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2656},{"file":"r3-woodblock-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":3991},{"file":"r3-woodblock-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":3991}]},{"id":"r4-evidence","name":"근거 대화","mood":["근거","차분","대화"],"axes":{"button":"B3","input":"I1","surface":"C1","table":"T2","header":"H1","radius":"R2","shadow":"S1"},"motion":"M1","colorLogic":"K1","defaultTheme":"light","dynamics":["clip-reveal"],"fonts":{"display":"Noto Sans KR","body":"Noto Sans KR","mono":"IBM Plex Mono","prose":"Noto Serif KR"},"archetypes":["saas","dashboard"],"archetypeConditions":{},"aiTell":12,"signature":["ledger","doc-page"],"themes":["light","dark"],"alt":{"note":"근거 듀오톤 — 짙은 청 잉크·주 버튼(primary, C 0.1 · 245°)과 호박색 면(field-1 — 근거 카드·계산표 머리)이 면적을 나눠 갖는다. 「강조색 하나」를 푼다","axes":{"colorLogic":{"A":"K1 단일 액센트·중립 우세","B":"K7 듀오톤"},"dynamics":{"A":"clip-path 리빌","B":"clip-path 리빌 · SVG 선 그리기"}}},"bAxes":["colorLogic","dynamics"],"combos":[{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":true},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r4-evidence","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r4-evidence","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"dynamics":{"id":"r4-evidence","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r4-evidence","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false}},"shots":[{"file":"r4-evidence-A-ledger-1440-light.webp","option":"A","kind":"scene","scene":"ledger","width":1440,"theme":"light","w":1376,"h":417},{"file":"r4-evidence-A-ledger-1440-dark.webp","option":"A","kind":"scene","scene":"ledger","width":1440,"theme":"dark","w":1376,"h":417},{"file":"r4-evidence-A-ledger-375-light.webp","option":"A","kind":"scene","scene":"ledger","width":375,"theme":"light","w":343,"h":746},{"file":"r4-evidence-A-ledger-375-dark.webp","option":"A","kind":"scene","scene":"ledger","width":375,"theme":"dark","w":343,"h":746},{"file":"r4-evidence-A-doc-page-1440-light.webp","option":"A","kind":"scene","scene":"doc-page","width":1440,"theme":"light","w":1376,"h":867},{"file":"r4-evidence-A-doc-page-1440-dark.webp","option":"A","kind":"scene","scene":"doc-page","width":1440,"theme":"dark","w":1376,"h":867},{"file":"r4-evidence-A-doc-page-375-light.webp","option":"A","kind":"scene","scene":"doc-page","width":375,"theme":"light","w":343,"h":1135},{"file":"r4-evidence-A-doc-page-375-dark.webp","option":"A","kind":"scene","scene":"doc-page","width":375,"theme":"dark","w":343,"h":1135},{"file":"r4-evidence-B-ledger-1440-light.webp","option":"B","kind":"scene","scene":"ledger","width":1440,"theme":"light","w":1376,"h":416},{"file":"r4-evidence-B-ledger-1440-dark.webp","option":"B","kind":"scene","scene":"ledger","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r4-evidence-B-ledger-375-light.webp","option":"B","kind":"scene","scene":"ledger","width":375,"theme":"light","w":343,"h":745},{"file":"r4-evidence-B-ledger-375-dark.webp","option":"B","kind":"scene","scene":"ledger","width":375,"theme":"dark","w":343,"h":745},{"file":"r4-evidence-B-doc-page-1440-light.webp","option":"B","kind":"scene","scene":"doc-page","width":1440,"theme":"light","w":1376,"h":866},{"file":"r4-evidence-B-doc-page-1440-dark.webp","option":"B","kind":"scene","scene":"doc-page","width":1440,"theme":"dark","w":1376,"h":866},{"file":"r4-evidence-B-doc-page-375-light.webp","option":"B","kind":"scene","scene":"doc-page","width":375,"theme":"light","w":343,"h":1135},{"file":"r4-evidence-B-doc-page-375-dark.webp","option":"B","kind":"scene","scene":"doc-page","width":375,"theme":"dark","w":343,"h":1135},{"file":"r4-evidence-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2710},{"file":"r4-evidence-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2710},{"file":"r4-evidence-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4081},{"file":"r4-evidence-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4081}]},{"id":"r5-celadon","name":"청자 고요","mood":["고요","재질","여백"],"axes":{"button":"B2","input":"I2","surface":"C3","table":"T3","header":"H2","radius":"R1","shadow":"S1"},"motion":"M2","colorLogic":"K1","defaultTheme":"light","dynamics":["clip-reveal","variable-axis"],"fonts":{"display":"Jost","body":"Pretendard"},"archetypes":["detail","portfolio"],"archetypeConditions":{},"aiTell":13,"signature":["product-hero","hero-display"],"themes":["light","dark"],"alt":{"note":"청자 면 — 상세페이지 첫 장·구매 포인트 띠를 청자 면(field-1)으로 깔고 한 재질 오브젝트를 3D로 기울인다. 「청자를 큰 면에 깔지 않는다」를 푼다","axes":{"colorLogic":{"A":"K1 단일 액센트·중립 우세","B":"K6 색 면"},"motion":{"A":"M2","B":"M3"},"dynamics":{"A":"clip-path 리빌 · 가변 폰트 축 애니메이션","B":"3D 기울임·원근 · clip-path 리빌 · 가변 폰트 축 애니메이션"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":false},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r5-celadon","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r5-celadon","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r5-celadon","skeleton":true,"bold":false,"dark":false,"m3":true,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r5-celadon","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"dynamics":{"id":"r5-celadon","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r5-celadon","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"motion":{"id":"r5-celadon","skeleton":true,"bold":false,"dark":false,"m3":true,"m0":false,"noDynamics":false},"colorLogic":{"id":"r5-celadon","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false}},"shots":[{"file":"r5-celadon-A-product-hero-1440-light.webp","option":"A","kind":"scene","scene":"product-hero","width":1440,"theme":"light","w":1376,"h":1007},{"file":"r5-celadon-A-product-hero-1440-dark.webp","option":"A","kind":"scene","scene":"product-hero","width":1440,"theme":"dark","w":1376,"h":1007},{"file":"r5-celadon-A-product-hero-375-light.webp","option":"A","kind":"scene","scene":"product-hero","width":375,"theme":"light","w":343,"h":891},{"file":"r5-celadon-A-product-hero-375-dark.webp","option":"A","kind":"scene","scene":"product-hero","width":375,"theme":"dark","w":343,"h":891},{"file":"r5-celadon-A-hero-display-1440-light.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r5-celadon-A-hero-display-1440-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r5-celadon-A-hero-display-375-light.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":652},{"file":"r5-celadon-A-hero-display-375-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":652},{"file":"r5-celadon-B-product-hero-1440-light.webp","option":"B","kind":"scene","scene":"product-hero","width":1440,"theme":"light","w":1376,"h":1007},{"file":"r5-celadon-B-product-hero-1440-dark.webp","option":"B","kind":"scene","scene":"product-hero","width":1440,"theme":"dark","w":1376,"h":1007},{"file":"r5-celadon-B-product-hero-375-light.webp","option":"B","kind":"scene","scene":"product-hero","width":375,"theme":"light","w":343,"h":891},{"file":"r5-celadon-B-product-hero-375-dark.webp","option":"B","kind":"scene","scene":"product-hero","width":375,"theme":"dark","w":343,"h":891},{"file":"r5-celadon-B-hero-display-1440-light.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r5-celadon-B-hero-display-1440-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r5-celadon-B-hero-display-375-light.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":652},{"file":"r5-celadon-B-hero-display-375-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":652},{"file":"r5-celadon-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2749},{"file":"r5-celadon-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2749},{"file":"r5-celadon-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4090},{"file":"r5-celadon-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4090}]},{"id":"r6-civic","name":"공공 신뢰","mood":["공식","명료","신뢰"],"axes":{"button":"B2","input":"I1","surface":"C1","table":"T2","header":"H1","radius":"R2","shadow":"S0"},"motion":"M1","colorLogic":"K1","defaultTheme":"light","dynamics":["view-transition"],"fonts":{"display":"Pretendard GOV","body":"Pretendard GOV"},"archetypes":["public"],"archetypeConditions":{},"aiTell":12,"signature":["notice-list","doc-page"],"themes":["light","dark"],"alt":{"note":"정부 파랑 띠 — 첫 화면 제목·자주 찾는 서비스 띠를 옅은 정부 파랑 면(field-1)에 남색 글자로 올린다(다크에서는 짙은 파랑 면)","axes":{"colorLogic":{"A":"K1 단일 액센트·중립 우세","B":"K6 색 면"},"dynamics":{"A":"View Transitions","B":"View Transitions · SVG 선 그리기"}}},"bAxes":["colorLogic","dynamics"],"combos":[{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":true},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r6-civic","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r6-civic","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"dynamics":{"id":"r6-civic","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r6-civic","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false}},"shots":[{"file":"r6-civic-A-notice-list-1440-light.webp","option":"A","kind":"scene","scene":"notice-list","width":1440,"theme":"light","w":1376,"h":716},{"file":"r6-civic-A-notice-list-1440-dark.webp","option":"A","kind":"scene","scene":"notice-list","width":1440,"theme":"dark","w":1376,"h":716},{"file":"r6-civic-A-notice-list-375-light.webp","option":"A","kind":"scene","scene":"notice-list","width":375,"theme":"light","w":343,"h":1026},{"file":"r6-civic-A-notice-list-375-dark.webp","option":"A","kind":"scene","scene":"notice-list","width":375,"theme":"dark","w":343,"h":1026},{"file":"r6-civic-A-doc-page-1440-light.webp","option":"A","kind":"scene","scene":"doc-page","width":1440,"theme":"light","w":1376,"h":867},{"file":"r6-civic-A-doc-page-1440-dark.webp","option":"A","kind":"scene","scene":"doc-page","width":1440,"theme":"dark","w":1376,"h":867},{"file":"r6-civic-A-doc-page-375-light.webp","option":"A","kind":"scene","scene":"doc-page","width":375,"theme":"light","w":343,"h":1135},{"file":"r6-civic-A-doc-page-375-dark.webp","option":"A","kind":"scene","scene":"doc-page","width":375,"theme":"dark","w":343,"h":1135},{"file":"r6-civic-B-notice-list-1440-light.webp","option":"B","kind":"scene","scene":"notice-list","width":1440,"theme":"light","w":1376,"h":715},{"file":"r6-civic-B-notice-list-1440-dark.webp","option":"B","kind":"scene","scene":"notice-list","width":1440,"theme":"dark","w":1376,"h":715},{"file":"r6-civic-B-notice-list-375-light.webp","option":"B","kind":"scene","scene":"notice-list","width":375,"theme":"light","w":343,"h":1026},{"file":"r6-civic-B-notice-list-375-dark.webp","option":"B","kind":"scene","scene":"notice-list","width":375,"theme":"dark","w":343,"h":1026},{"file":"r6-civic-B-doc-page-1440-light.webp","option":"B","kind":"scene","scene":"doc-page","width":1440,"theme":"light","w":1376,"h":866},{"file":"r6-civic-B-doc-page-1440-dark.webp","option":"B","kind":"scene","scene":"doc-page","width":1440,"theme":"dark","w":1376,"h":866},{"file":"r6-civic-B-doc-page-375-light.webp","option":"B","kind":"scene","scene":"doc-page","width":375,"theme":"light","w":343,"h":1135},{"file":"r6-civic-B-doc-page-375-dark.webp","option":"B","kind":"scene","scene":"doc-page","width":375,"theme":"dark","w":343,"h":1135},{"file":"r6-civic-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2708},{"file":"r6-civic-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2708},{"file":"r6-civic-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4023},{"file":"r6-civic-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4023}]},{"id":"r7-docs","name":"문서 작업대","mood":["문서","조용","정돈"],"axes":{"button":"B2","input":"I2","surface":"C1","table":"T3","header":"H1","radius":"R2","shadow":"S0"},"motion":"M0","colorLogic":"K3","defaultTheme":"light","dynamics":["oversize-crop"],"fonts":{"display":"Gothic A1","body":"Pretendard","mono":"IBM Plex Mono"},"archetypes":["saas","pwa"],"archetypeConditions":{},"aiTell":12,"signature":["doc-page","app-shell"],"themes":["light","dark"],"alt":{"note":"칠판 표지 — 랜딩 표지와 목차 머리 띠를 칠판 청록 짙은 면(field-1)으로 칠하고, 문서 사이 이동은 View Transitions. 「넓은 면에 원색 금지」를 푼다","axes":{"colorLogic":{"A":"K3 문서형 무채색","B":"K6 색 면"},"motion":{"A":"M0","B":"M2"},"dynamics":{"A":"오버사이즈 타입 크롭","B":"View Transitions · 스티키 스태킹 카드"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r7-docs","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":true,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r7-docs","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r7-docs","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r7-docs","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion":{"id":"r7-docs","skeleton":true,"bold":false,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r7-docs","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":true,"noDynamics":false}},"shots":[{"file":"r7-docs-A-doc-page-1440-light.webp","option":"A","kind":"scene","scene":"doc-page","width":1440,"theme":"light","w":1376,"h":867},{"file":"r7-docs-A-doc-page-1440-dark.webp","option":"A","kind":"scene","scene":"doc-page","width":1440,"theme":"dark","w":1376,"h":867},{"file":"r7-docs-A-doc-page-375-light.webp","option":"A","kind":"scene","scene":"doc-page","width":375,"theme":"light","w":343,"h":1135},{"file":"r7-docs-A-doc-page-375-dark.webp","option":"A","kind":"scene","scene":"doc-page","width":375,"theme":"dark","w":343,"h":1135},{"file":"r7-docs-A-app-shell-1440-light.webp","option":"A","kind":"scene","scene":"app-shell","width":1440,"theme":"light","w":1376,"h":851},{"file":"r7-docs-A-app-shell-1440-dark.webp","option":"A","kind":"scene","scene":"app-shell","width":1440,"theme":"dark","w":1376,"h":851},{"file":"r7-docs-A-app-shell-375-light.webp","option":"A","kind":"scene","scene":"app-shell","width":375,"theme":"light","w":343,"h":799},{"file":"r7-docs-A-app-shell-375-dark.webp","option":"A","kind":"scene","scene":"app-shell","width":375,"theme":"dark","w":343,"h":799},{"file":"r7-docs-B-doc-page-1440-light.webp","option":"B","kind":"scene","scene":"doc-page","width":1440,"theme":"light","w":1376,"h":866},{"file":"r7-docs-B-doc-page-1440-dark.webp","option":"B","kind":"scene","scene":"doc-page","width":1440,"theme":"dark","w":1376,"h":866},{"file":"r7-docs-B-doc-page-375-light.webp","option":"B","kind":"scene","scene":"doc-page","width":375,"theme":"light","w":343,"h":1135},{"file":"r7-docs-B-doc-page-375-dark.webp","option":"B","kind":"scene","scene":"doc-page","width":375,"theme":"dark","w":343,"h":1135},{"file":"r7-docs-B-app-shell-1440-light.webp","option":"B","kind":"scene","scene":"app-shell","width":1440,"theme":"light","w":1376,"h":850},{"file":"r7-docs-B-app-shell-1440-dark.webp","option":"B","kind":"scene","scene":"app-shell","width":1440,"theme":"dark","w":1376,"h":850},{"file":"r7-docs-B-app-shell-375-light.webp","option":"B","kind":"scene","scene":"app-shell","width":375,"theme":"light","w":343,"h":798},{"file":"r7-docs-B-app-shell-375-dark.webp","option":"B","kind":"scene","scene":"app-shell","width":375,"theme":"dark","w":343,"h":798},{"file":"r7-docs-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":2764},{"file":"r7-docs-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":2764},{"file":"r7-docs-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4154},{"file":"r7-docs-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4154}]},{"id":"r8-dusk","name":"솔숲 저녁","mood":["저녁","숲","느림"],"axes":{"button":"B3","input":"I1","surface":"C3","table":"T2","header":"H1","radius":"R1","shadow":"S1"},"motion":"M3","colorLogic":"K6","defaultTheme":"light","dynamics":["split-text","clip-reveal","sticky-stack"],"fonts":{"display":"Hahmlet","body":"Nanum Gothic"},"archetypes":["local","brand"],"archetypeConditions":{"local":"헤리티지 업장(한옥 스테이·찻집·수목원·전통 식음)에만 — 병원·일반 카페·미용실은 r3-woodblock","brand":"헤리티지 브랜드(한옥 스테이·찻집·전통 식음 등)에만 — IT·일반 소비재·프리미엄 브랜드에 세리프를 기본으로 쓰지 않는다(§13)"},"aiTell":12,"signature":["hero-display","menu-board"],"themes":["light","dark"],"alt":{"note":"솔과 감 — 솔숲 짙은 면(field-1)과 감물 주 버튼·잉크(primary 42°)가 면적을 나눠 갖는다(두 색 사이 그라디언트 없음). 모션은 M2로 한 단계 내리고, 글자 분할 대신 먹선(svg-draw)을 한 번 긋는다","axes":{"colorLogic":{"A":"K6 색 면","B":"K7 듀오톤"},"motion":{"A":"M3","B":"M2"},"dynamics":{"A":"글자 분할 등장 · clip-path 리빌 · 스티키 스태킹 카드","B":"clip-path 리빌 · SVG 선 그리기"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":false},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"dynamics":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r8-dusk","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false}},"shots":[{"file":"r8-dusk-A-hero-display-1440-light.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r8-dusk-A-hero-display-1440-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r8-dusk-A-hero-display-375-light.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":680},{"file":"r8-dusk-A-hero-display-375-dark.webp","option":"A","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":680},{"file":"r8-dusk-A-menu-board-1440-light.webp","option":"A","kind":"scene","scene":"menu-board","width":1440,"theme":"light","w":1376,"h":570},{"file":"r8-dusk-A-menu-board-1440-dark.webp","option":"A","kind":"scene","scene":"menu-board","width":1440,"theme":"dark","w":1376,"h":570},{"file":"r8-dusk-A-menu-board-375-light.webp","option":"A","kind":"scene","scene":"menu-board","width":375,"theme":"light","w":343,"h":871},{"file":"r8-dusk-A-menu-board-375-dark.webp","option":"A","kind":"scene","scene":"menu-board","width":375,"theme":"dark","w":343,"h":871},{"file":"r8-dusk-B-hero-display-1440-light.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"light","w":1376,"h":416},{"file":"r8-dusk-B-hero-display-1440-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":1440,"theme":"dark","w":1376,"h":416},{"file":"r8-dusk-B-hero-display-375-light.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"light","w":343,"h":680},{"file":"r8-dusk-B-hero-display-375-dark.webp","option":"B","kind":"scene","scene":"hero-display","width":375,"theme":"dark","w":343,"h":680},{"file":"r8-dusk-B-menu-board-1440-light.webp","option":"B","kind":"scene","scene":"menu-board","width":1440,"theme":"light","w":1376,"h":570},{"file":"r8-dusk-B-menu-board-1440-dark.webp","option":"B","kind":"scene","scene":"menu-board","width":1440,"theme":"dark","w":1376,"h":570},{"file":"r8-dusk-B-menu-board-375-light.webp","option":"B","kind":"scene","scene":"menu-board","width":375,"theme":"light","w":343,"h":871},{"file":"r8-dusk-B-menu-board-375-dark.webp","option":"B","kind":"scene","scene":"menu-board","width":375,"theme":"dark","w":343,"h":871},{"file":"r8-dusk-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":3170},{"file":"r8-dusk-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":3170},{"file":"r8-dusk-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4742},{"file":"r8-dusk-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4742}]},{"id":"r9-clay","name":"말랑 점토","mood":["말랑","친근","손끝"],"axes":{"button":"B3","input":"I1","surface":"C3","table":"T3","header":"H1","radius":"R1","shadow":"S3"},"motion":"M3","colorLogic":"K8","defaultTheme":"light","dynamics":["split-text","tilt-3d","clip-reveal"],"fonts":{"display":"Jua","body":"Gothic A1"},"archetypes":["pwa","detail","commerce"],"archetypeConditions":{"pwa":"식품·생활·키즈 브랜드 앱에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(금융·업무 앱은 r7-docs)","detail":"식품·생활·키즈 상품 상세에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(재질 상품은 r5-celadon)","commerce":"식품·생활·키즈 몰에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(동네 가게 몰은 r3-woodblock)"},"aiTell":13,"signature":["bento","app-shell","product-hero"],"themes":["light","dark"],"alt":{"note":"하늘 점토 — 가장 큰 칸(peak)을 노랑에서 하늘 점토(235°)로 옮기고 노랑은 옅은 칸·버튼 글자·선택 칸에만 남긴다. 글자 분할·3D 기울임 없이 M2, 첫 화면 사진 가림막만 한 번 걷는다","axes":{"colorLogic":{"A":"K8 색 블록","B":"K8 색 블록"},"motion":{"A":"M3","B":"M2"},"dynamics":{"A":"글자 분할 등장 · 3D 기울임·원근 · clip-path 리빌","B":"clip-path 리빌"}}},"bAxes":["colorLogic","motion","dynamics"],"combos":[{"key":"colorLogic+motion+dynamics","picks":["colorLogic","motion","dynamics"],"whole":true},{"key":"motion+dynamics","picks":["motion","dynamics"],"whole":false},{"key":"colorLogic+dynamics","picks":["colorLogic","dynamics"],"whole":false},{"key":"dynamics","picks":["dynamics"],"whole":false},{"key":"colorLogic+motion","picks":["colorLogic","motion"],"whole":false},{"key":"motion","picks":["motion"],"whole":false},{"key":"colorLogic","picks":["colorLogic"],"whole":false}],"classes":{"":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"colorLogic+motion+dynamics":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion+dynamics":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic+dynamics":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"dynamics":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false},"colorLogic+motion":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"motion":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":false,"m0":false,"noDynamics":false},"colorLogic":{"id":"r9-clay","skeleton":false,"bold":true,"dark":false,"m3":true,"m0":false,"noDynamics":false}},"shots":[{"file":"r9-clay-A-bento-1440-light.webp","option":"A","kind":"scene","scene":"bento","width":1440,"theme":"light","w":1376,"h":722},{"file":"r9-clay-A-bento-1440-dark.webp","option":"A","kind":"scene","scene":"bento","width":1440,"theme":"dark","w":1376,"h":722},{"file":"r9-clay-A-bento-375-light.webp","option":"A","kind":"scene","scene":"bento","width":375,"theme":"light","w":343,"h":889},{"file":"r9-clay-A-bento-375-dark.webp","option":"A","kind":"scene","scene":"bento","width":375,"theme":"dark","w":343,"h":889},{"file":"r9-clay-A-app-shell-1440-light.webp","option":"A","kind":"scene","scene":"app-shell","width":1440,"theme":"light","w":1376,"h":918},{"file":"r9-clay-A-app-shell-1440-dark.webp","option":"A","kind":"scene","scene":"app-shell","width":1440,"theme":"dark","w":1376,"h":918},{"file":"r9-clay-A-app-shell-375-light.webp","option":"A","kind":"scene","scene":"app-shell","width":375,"theme":"light","w":343,"h":838},{"file":"r9-clay-A-app-shell-375-dark.webp","option":"A","kind":"scene","scene":"app-shell","width":375,"theme":"dark","w":343,"h":838},{"file":"r9-clay-A-product-hero-1440-light.webp","option":"A","kind":"scene","scene":"product-hero","width":1440,"theme":"light","w":1376,"h":1007},{"file":"r9-clay-A-product-hero-1440-dark.webp","option":"A","kind":"scene","scene":"product-hero","width":1440,"theme":"dark","w":1376,"h":1007},{"file":"r9-clay-A-product-hero-375-light.webp","option":"A","kind":"scene","scene":"product-hero","width":375,"theme":"light","w":343,"h":891},{"file":"r9-clay-A-product-hero-375-dark.webp","option":"A","kind":"scene","scene":"product-hero","width":375,"theme":"dark","w":343,"h":891},{"file":"r9-clay-B-bento-1440-light.webp","option":"B","kind":"scene","scene":"bento","width":1440,"theme":"light","w":1376,"h":722},{"file":"r9-clay-B-bento-1440-dark.webp","option":"B","kind":"scene","scene":"bento","width":1440,"theme":"dark","w":1376,"h":722},{"file":"r9-clay-B-bento-375-light.webp","option":"B","kind":"scene","scene":"bento","width":375,"theme":"light","w":343,"h":889},{"file":"r9-clay-B-bento-375-dark.webp","option":"B","kind":"scene","scene":"bento","width":375,"theme":"dark","w":343,"h":889},{"file":"r9-clay-B-app-shell-1440-light.webp","option":"B","kind":"scene","scene":"app-shell","width":1440,"theme":"light","w":1376,"h":918},{"file":"r9-clay-B-app-shell-1440-dark.webp","option":"B","kind":"scene","scene":"app-shell","width":1440,"theme":"dark","w":1376,"h":918},{"file":"r9-clay-B-app-shell-375-light.webp","option":"B","kind":"scene","scene":"app-shell","width":375,"theme":"light","w":343,"h":838},{"file":"r9-clay-B-app-shell-375-dark.webp","option":"B","kind":"scene","scene":"app-shell","width":375,"theme":"dark","w":343,"h":838},{"file":"r9-clay-B-product-hero-1440-light.webp","option":"B","kind":"scene","scene":"product-hero","width":1440,"theme":"light","w":1376,"h":1007},{"file":"r9-clay-B-product-hero-1440-dark.webp","option":"B","kind":"scene","scene":"product-hero","width":1440,"theme":"dark","w":1376,"h":1007},{"file":"r9-clay-B-product-hero-375-light.webp","option":"B","kind":"scene","scene":"product-hero","width":375,"theme":"light","w":343,"h":891},{"file":"r9-clay-B-product-hero-375-dark.webp","option":"B","kind":"scene","scene":"product-hero","width":375,"theme":"dark","w":343,"h":891},{"file":"r9-clay-specimen-1440-light.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"light","w":1376,"h":3223},{"file":"r9-clay-specimen-1440-dark.webp","option":"A","kind":"specimen","scene":null,"width":1440,"theme":"dark","w":1376,"h":3223},{"file":"r9-clay-specimen-375-light.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"light","w":343,"h":4937},{"file":"r9-clay-specimen-375-dark.webp","option":"A","kind":"specimen","scene":null,"width":375,"theme":"dark","w":343,"h":4937}]}]</script>
+<script>
+const TARGET = 10;
+const BASE = {"skeletonMax":5,"boldMin":3,"darkMin":1,"m3Min":2,"m0Max":3};
+function limitsFor(n) {
+  const k = Math.max(1, Math.floor(n / TARGET))
+  const cap = (x) => Math.floor((x * Math.max(n, TARGET)) / TARGET)
+  return { skeletonMax: cap(BASE.skeletonMax), boldMin: BASE.boldMin * k, darkMin: BASE.darkMin * k, m3Min: BASE.m3Min * k, m0Max: cap(BASE.m0Max) }
+}
+function tallyDistribution(entries) {
+  const n = entries.length
+  const L = limitsFor(n)
+  const ids = (k) => entries.filter((e) => e[k]).map((e) => e.id)
+  const skeleton = ids('skeleton'), bold = ids('bold'), dark = ids('dark'), m3 = ids('m3'), m0 = ids('m0'), noDyn = ids('noDynamics')
+  const counts = { total: n, skeleton: skeleton.length, bold: bold.length, darkDefault: dark.length, m3: m3.length, m0: m0.length, noDynamics: noDyn.length }
+  const list = (xs) => (xs.length ? ` (${xs.join(', ')})` : '')
+  const problems = []
+  if (skeleton.length > L.skeletonMax) problems.push(`div-01 skeleton: 거의 흰 바탕 + 잉크 + 강조 한 점 골격 ${skeleton.length}벌 > ${L.skeletonMax}${list(skeleton)} — 색 면(K6)·듀오톤(K7)·색 블록(K8)·다크 기본으로 골격을 나눈다(DESIGN §5-B)`)
+  if (bold.length < L.boldMin) problems.push(`div-01 bold: 유채색 면 레시피(K6·K7·K8) ${bold.length}벌 < ${L.boldMin}${list(bold)}`)
+  if (dark.length < L.darkMin) problems.push(`div-01 dark: 다크 기본 레시피 ${dark.length}벌 < ${L.darkMin}${list(dark)}`)
+  if (m3.length < L.m3Min) problems.push(`div-06 m3: 모션 M3 레시피 ${m3.length}벌 < ${L.m3Min}${list(m3)} — dashboard·public 원형 밖 레시피에서(DESIGN §8-6)`)
+  if (m0.length > L.m0Max) problems.push(`div-06 m0: 모션 M0 레시피 ${m0.length}벌 > ${L.m0Max}${list(m0)}`)
+  if (noDyn.length) problems.push(`div-06 dynamics: 역동 기법(dynamics)을 고르지 않은 레시피 ${noDyn.length}벌${list(noDyn)} — 모든 레시피가 §8-6 표에서 1~3개`)
+  return { counts, limits: L, problems }
+}
+
+const DATA = JSON.parse(document.getElementById('board-data').textContent);
+const LABEL = { skeleton: '골격', bold: 'K6~8', dark: '다크', m3: 'M3', m0: 'M0' };
+const state = Object.fromEntries(DATA.map((r) => [r.id, { verdict: null, combo: '', note: '' }]));
+let db = null;
+const $ = (s, el = document) => el.querySelector(s);
+const cardOf = (id) => document.getElementById('card-' + id);
+const axisPicksOf = (r, key) => Object.fromEntries(r.bAxes.map((k) => [k, key.split('+').includes(k) ? 'B' : 'A']));
+const comboFromPicks = (r, picks) => { const key = r.bAxes.filter((k) => picks && picks[k] === 'B').join('+'); return key === '' || r.classes[key] ? key : null; };
+function entries() {
+  return DATA.filter((r) => state[r.id].verdict !== 'reject').map((r) => ({ ...r.classes[state[r.id].combo] }));
+}
+function renderCounter() {
+  const { counts, limits, problems } = tallyDistribution(entries());
+  const items = [
+    ['skeleton', counts.skeleton, '≤ ' + limits.skeletonMax, counts.skeleton <= limits.skeletonMax],
+    ['bold', counts.bold, '≥ ' + limits.boldMin, counts.bold >= limits.boldMin],
+    ['dark', counts.darkDefault, '≥ ' + limits.darkMin, counts.darkDefault >= limits.darkMin],
+    ['m3', counts.m3, '≥ ' + limits.m3Min, counts.m3 >= limits.m3Min],
+    ['m0', counts.m0, '≤ ' + limits.m0Max, counts.m0 <= limits.m0Max],
+  ];
+  $('#meters').innerHTML = items.map(([k, n, rule, ok]) => '<li class="' + (ok ? 'ok' : 'bad') + '"><span>' + LABEL[k] + '</span><b>' + n + '</b><span class="rule">' + rule + '</span></li>').join('') + '<li><span>센 레시피</span><b>' + counts.total + '</b><span class="rule">반려 제외</span></li>';
+  const ul = $('#problems'); ul.textContent = '';
+  for (const p of problems) { const li = document.createElement('li'); li.textContent = p; ul.appendChild(li); }
+  $('#counter-ok').textContent = problems.length ? '기준을 못 채운 항목 ' + problems.length + '개 — 아래 문장이 무엇이 모자란지 말합니다.' : '지금 고른 값으로 분포 기준을 모두 채웁니다.';
+}
+function renderCard(r) {
+  const c = cardOf(r.id), s = state[r.id];
+  for (const i of c.querySelectorAll('input[data-verdict]')) i.checked = i.value === s.verdict;
+  for (const i of c.querySelectorAll('input[data-combo]')) i.checked = i.value === s.combo;
+  const t = c.querySelector('textarea[data-note]'); if (t && document.activeElement !== t) t.value = s.note;
+  const picks = axisPicksOf(r, s.combo);
+  for (const tr of c.querySelectorAll('tr[data-axis]')) { const b = picks[tr.dataset.axis] === 'B'; tr.classList.toggle('is-b', b); tr.querySelector('.now').textContent = b ? 'B' : 'A'; }
+}
+function setSave(id, text, err) { const p = cardOf(id).querySelector('[data-save]'); p.textContent = text; p.classList.toggle('err', !!err); }
+const writing = {};
+async function save(id) {
+  const r = DATA.find((x) => x.id === id), s = state[id];
+  if (!s.verdict) { setSave(id, '판정(승인·반려·수정)을 고르면 저장합니다.'); return; }
+  if (!db) { setSave(id, '저장할 수 없습니다 — 이 화면에서 db 기능을 쓸 수 없습니다. 선택은 이 창을 닫으면 사라집니다.', true); return; }
+  const doc = { recipe: id, verdict: s.verdict, axisPicks: axisPicksOf(r, s.combo), decidedAt: new Date().toISOString() };
+  if (s.note.trim()) doc.note = s.note.trim();
+  if (writing[id]) { writing[id].again = true; return; }
+  writing[id] = { again: false };
+  setSave(id, '저장하는 중…');
+  try {
+    await db.collection('decisions').doc(id).set(doc);
+    setSave(id, '저장했습니다 · ' + new Date(doc.decidedAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }));
+  } catch (e) {
+    setSave(id, '저장하지 못했습니다(' + (e && e.code ? e.code : '알 수 없음') + ') — 편집 권한이 있는지 확인해 주세요.', true);
+  } finally {
+    const again = writing[id].again; delete writing[id];
+    if (again) save(id);
+  }
+}
+const noteTimers = {};
+document.addEventListener('change', (e) => {
+  const el = e.target, c = el.closest('.card'); if (!c) return;
+  const id = c.dataset.recipe;
+  if (el.matches('input[data-verdict]')) state[id].verdict = el.value;
+  else if (el.matches('input[data-combo]')) state[id].combo = el.value;
+  else return;
+  renderCard(DATA.find((x) => x.id === id)); renderCounter(); save(id);
+});
+document.addEventListener('input', (e) => {
+  const el = e.target; if (!el.matches('textarea[data-note]')) return;
+  const id = el.closest('.card').dataset.recipe; state[id].note = el.value;
+  clearTimeout(noteTimers[id]); noteTimers[id] = setTimeout(() => save(id), 900);
+});
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-view]'); if (!b) return;
+  const c = b.closest('.card'), r = DATA.find((x) => x.id === c.dataset.recipe);
+  for (const x of c.querySelectorAll('button[data-view="' + b.dataset.view + '"]')) x.setAttribute('aria-pressed', String(x === b));
+  const width = Number(c.querySelector('button[data-view="width"][aria-pressed="true"]').dataset.value);
+  const theme = c.querySelector('button[data-view="theme"][aria-pressed="true"]').dataset.value;
+  c.dataset.width = String(width);
+  for (const im of c.querySelectorAll('img[data-kind]')) {
+    const s = r.shots.find((x) => x.kind === im.dataset.kind && x.option === im.dataset.option && (x.scene || '') === im.dataset.scene && x.width === width && x.theme === theme);
+    if (s) { im.src = 'shots/' + s.file; im.width = s.w; im.height = s.h; }
+  }
+});
+function applyDocs(snap) {
+  for (const d of snap.docs) {
+    const r = DATA.find((x) => x.id === d.id); const v = d.data(); if (!r || !v) continue;
+    if (writing[r.id] || noteTimers[r.id] && document.activeElement === cardOf(r.id).querySelector('textarea')) continue;
+    const combo = comboFromPicks(r, v.axisPicks);
+    state[r.id] = { verdict: ['approve', 'reject', 'revise'].includes(v.verdict) ? v.verdict : null, combo: combo ?? '', note: typeof v.note === 'string' ? v.note : '' };
+    renderCard(r);
+    setSave(r.id, '저장된 판정 · ' + (v.decidedAt ? new Date(v.decidedAt).toLocaleString('ko-KR') : ''));
+  }
+  renderCounter();
+}
+DATA.forEach(renderCard); renderCounter();
+(async () => {
+  const use = window.claude && window.claude.use;
+  const found = use ? await window.claude.use('db').catch(() => null) : null;
+  if (!found) { $('#db-status').textContent = '저장 기능을 쓸 수 없는 화면입니다 — 고른 값은 계수기에만 반영되고 저장되지 않습니다.'; return; }
+  db = found;
+  $('#db-status').textContent = '판정을 고르면 바로 저장합니다(decisions).';
+  db.collection('decisions').onSnapshot(applyDocs, (e) => { $('#db-status').textContent = '저장된 판정을 읽지 못했습니다(' + (e && e.code) + '). 새로 고쳐 주세요.'; });
+})();
+
+</script>

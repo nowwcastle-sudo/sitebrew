@@ -1,0 +1,13 @@
+{
+  "kind": "footer",
+  "variant": "stacked-legal",
+  "title": "푸터 — 사업자 정보를 법정 표 모양으로 크게",
+  "layout": "stacked-legal",
+  "density": "spacious",
+  "archetypes": ["public", "detail", "commerce"],
+  "archetypeKinds": ["footer", "korean-business-info"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "제목 h2 → 두 칸 표(항목 이름 칸 · 값 칸, 줄마다 선, 본문 크기) → 정책 링크 줄(개인정보 처리방침 굵게) → 워드마크 · 사이트 링크 · 저작권. 375: 항목 이름이 값 위로"
+}

@@ -1,0 +1,79 @@
+{
+  "status": "draft",
+  "contact": "{{business.email}}",
+  "notice": "Draft. These terms have been checked against the legal sources listed in our review and are waiting for the owner's approval. They are not in force yet.",
+  "clauses": [
+    {
+      "title": "1. About these Terms",
+      "text": "These Terms of Service (\"Terms\") are an agreement between you and {{business.name}} (\"we\", \"us\"). They cover your use of {{product.name}} (the \"Service\").\n\nWe are {{business.name}}, run by {{business.owner}}. Our address is {{business.address}}. Our business registration number is {{business.regNo}}. You can reach us at {{business.email}} or on our Contact page (/contact).\n\nBy creating an account or using the Service, you agree to these Terms, to our Privacy Policy (/privacy) and to our Refund Policy (/refund). If you do not agree, do not use the Service.\n\nThese Terms take effect on {{legal.effectiveDate}}."
+    },
+    {
+      "title": "2. Who can use the Service",
+      "text": "You must be 14 or older. We ask you to confirm this when you sign up. If you are under 14, do not create an account. If we learn that an account belongs to a child under 14, we will close it.\n\nSome countries set a higher age for making contracts. If that applies to you, you may use the Service only with the permission of a parent or guardian.\n\nIf you use the Service for an organisation, you confirm that you may accept these Terms for it."
+    },
+    {
+      "title": "3. Your account",
+      "text": "You can sign up with an email address and a password, or with a Google, Kakao or Naver account. Give us correct details and keep them up to date.\n\nKeep your password and sign-in methods safe. You are responsible for what happens under your account, unless it is our fault. If you think someone else used your account, change your password and tell us at once on our Contact page (/contact)."
+    },
+    {
+      "title": "4. Using the Service",
+      "text": "Use the Service lawfully and fairly. Do not:\n\n- break the law or the rights of others;\n- try to get into accounts, systems or data that are not yours;\n- overload or disrupt the Service, or get around rate limits, bot checks or other security measures;\n- copy, resell or reverse engineer the Service, except where the law allows it;\n- use the Service to send spam or harmful code.\n\nWe may limit or suspend access if you break these rules or put the Service or other people at risk. Where we can, we tell you why and give you a chance to fix the problem first."
+    },
+    {
+      "title": "5. Your content and data",
+      "text": "You keep ownership of what you put into the Service (\"your content\"). You give us a limited licence to store, process and display it only as needed to run the Service for you. The licence ends when your content is deleted, except for copies we must keep by law (see the Privacy Policy).\n\nYou are responsible for your content. You confirm that you have the right to use it. How we handle personal data is explained in the Privacy Policy (/privacy)."
+    },
+    {
+      "title": "6. Plans, prices and payment",
+      "text": "Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns.\n\nThis means that when you buy a paid plan, you buy from Paddle. Paddle charges you, collects and pays the sales tax or VAT that applies, and sends your receipt. Paddle's Checkout Buyer Terms (https://www.paddle.com/legal/checkout-buyer-terms) apply to your purchase. These Terms apply to your use of the Service.\n\nPrices are shown at checkout, with the currency and whether tax is included. We never see or store your full card details.\n\nYou can see your payments and receipts and change your payment method under Account > Billing. That link opens Paddle's customer portal.\n\nIf a payment fails, Paddle may try again and may email you. If it still fails, we may pause or end your paid plan after telling you."
+    },
+    {
+      "title": "7. Free trials and automatic renewal",
+      "text": "Some plans start with a free trial. Before you start, we show you how long the trial is, the date it ends, the price you will pay after it, how often you will be charged, and how to cancel. The trial starts only when you confirm it.\n\n- If you do not cancel before the trial ends, you are charged the price shown on the day it ends.\n- If you cancel during the trial, you are not charged.\n- A paid plan renews automatically every month or every year, on the same day, until you cancel.\n\nPaddle may email you a reminder before a trial ends. Whether you get one depends on Paddle and on where you live, so we cannot promise it. You do not need the reminder to cancel. The end date is always shown under Account > Billing."
+    },
+    {
+      "title": "8. Cancelling",
+      "text": "You can cancel at any time under Account > Billing. You do not need to contact us, and cancelling takes no more steps than signing up. We may offer you one alternative, such as a pause or a cheaper plan. You can decline it and cancel.\n\nWhen you cancel, you choose when it ends. You can end it at the end of the current billing period: you keep the plan until then and you are not charged again. Or you can end it right now: the Refund Policy (/refund) explains what you get back.\n\nCancelling does not give you a refund for a period you have already used, unless the Refund Policy or the law says so. We do not charge a cancellation fee. You can restart later from Billing."
+    },
+    {
+      "title": "9. Price changes",
+      "text": "We may change the price of a plan. We never charge you a higher price for a plan you already have unless you agree to it first.\n\nWe email you up to 30 days before a higher price would apply to you, and we show the change under Account > Billing. The message shows the price now, the price after the change, the date it starts, how you will be charged, and how to cancel. It also gives you a date to answer by. You can accept the new price, or decline and cancel.\n\nIf you do not answer, you are not charged the new price. Your plan ends on the date shown and you are not charged again. Not answering is not agreement.\n\nThe same steps apply when a free trial or a discounted period ends and the price goes up. Lower prices apply without your answer. Changes in tax rates that the law sets are applied by Paddle. They are not price changes by us."
+    },
+    {
+      "title": "10. Refunds and your right to withdraw",
+      "text": "Our Refund Policy (/refund) explains refunds. In short, you can ask for a refund within {{legal.refundWindowDays}} days of a payment. Paddle makes the refund.\n\nIn some places, such as the EU, the UK and Korea, the law gives you a right to cancel an online purchase within a short time. That right stays as the law says. At checkout we tell you when this right ends. For digital content, it can end once delivery starts, if you agree to that and the law allows it. Where the law does not allow it, your right stays."
+    },
+    {
+      "title": "11. Deleting your account",
+      "text": "You can delete your account at any time under Account. You can download your data first. After you ask, we wait {{product.deletionGraceDays}} days. If you sign in again in that time, the deletion is cancelled. When the {{product.deletionGraceDays}} days end, we delete the account for good.\n\nIf you have an active subscription, it ends and you are not charged again. We keep a small number of records that the law requires, for the periods named in the Privacy Policy (/privacy). Deleting your account here does not delete the records Paddle keeps as the Merchant of Record. The Privacy Policy tells you how to ask Paddle."
+    },
+    {
+      "title": "12. Messages from us",
+      "text": "We send service messages. These are sign-in and security emails, notices about your plan and price, changes to these Terms, and replies to your requests. Receipts come from Paddle. You cannot opt out of service messages while you have an account, because they are part of the Service.\n\nWe send marketing emails only if you agreed to them. You choose yes or no when you sign up. This choice is separate from these Terms and does not change how you can use the Service. You can withdraw it at any time with the unsubscribe link in every marketing email, which needs no sign-in, or under Account. We confirm in writing when we record your choice."
+    },
+    {
+      "title": "13. Changes to the Service",
+      "text": "We may improve, change or remove features. If a change would clearly reduce what you paid for, we tell you at least 30 days before it applies where we can, and you may cancel.\n\nIf we close the Service, we give you reasonable notice, let you download your data, and refund the part of any prepaid period that you can no longer use."
+    },
+    {
+      "title": "14. Other companies' services",
+      "text": "The Service works with other companies' services: Paddle for payments, and Google, Kakao or Naver if you sign in with them. They have their own terms and privacy notices. We are not responsible for them, except as the law says."
+    },
+    {
+      "title": "15. Our responsibility",
+      "text": "We provide the Service with reasonable care and skill. We do not promise that it will always run without breaks or errors.\n\nAs far as the law allows, we are not liable for indirect or consequential loss, lost profit or lost data. As far as the law allows, our total liability to you for claims about the Service is limited to the amount you paid for the Service in the 12 months before the claim.\n\nNothing in these Terms limits a liability that the law does not let us limit. This includes liability for death or personal injury caused by negligence, for fraud, and for intentional wrongdoing or gross negligence. It also includes your rights as a consumer."
+    },
+    {
+      "title": "16. Changes to these Terms",
+      "text": "We may update these Terms, for example when the law or the Service changes. For changes that matter, we email you at least 30 days before they apply. The new effective date is shown in these Terms. If you do not agree, you can cancel and delete your account before that date.\n\nA change to these Terms never raises the price you pay without your agreement (see \"Price changes\"). We record which version of the Terms you accepted when you signed up."
+    },
+    {
+      "title": "17. Governing law and disputes",
+      "text": "These Terms are governed by {{legal.governingLaw}}. Disputes about these Terms go to {{legal.venue}}.\n\nIf you are a consumer, this does not take away the protection that the mandatory law of the country where you live gives you. This applies, for example, to consumers in the EU, the EEA and the UK. It also does not take away your right to go to the courts there, or to a consumer-protection authority."
+    },
+    {
+      "title": "18. Rules for your country",
+      "text": "Some laws give you more rights than these Terms. Where they do, the law wins.\n\n- Korea: you can withdraw from an online purchase within 7 days where the Act on Consumer Protection in Electronic Commerce gives you that right. Consumers can also contact the Korea Consumer Agency.\n- EU, EEA and UK: you can withdraw from an online purchase within 14 days where consumer law gives you that right. Your purchase contract is with Paddle (see \"Plans, prices and payment\").\n- California, USA: you can cancel online in the way you signed up, and we tell you about price changes before they apply.\n\nQuestions about your rights: write to us on our Contact page (/contact) or at {{business.email}}."
+    }
+  ]
+}

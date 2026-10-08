@@ -1,0 +1,13 @@
+{
+  "kind": "integrations",
+  "variant": "icon-grid",
+  "title": "연동 — 아이콘 격자",
+  "layout": "logo-grid",
+  "density": "compact",
+  "archetypes": ["saas", "pwa", "dashboard"],
+  "archetypeKinds": ["integrations"],
+  "states": [],
+  "media": ["integration-logo"],
+  "motion": ["rise"],
+  "notes": "연동마다 작은 카드(표지 Avatar + 이름 + 방식 배지), 카드 전체가 안내 링크. 2 → 3 → 4열. 아래 선택 줄 apiNote. 그림 없으면 이름 앞 두 글자"
+}

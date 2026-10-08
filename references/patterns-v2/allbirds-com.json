@@ -1,0 +1,69 @@
+{
+  "id": "allbirds-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.allbirds.com/products/womens-allbirds-flip-flop-dusty-pink",
+  "structure": {
+    "hero": "큰 상품 사진과 둥근 정보 카드, 비활성 CTA, 배송지 모달",
+    "sections": [
+      "검정 공지띠(주문 지연 안내)",
+      "떠 있는 둥근 헤더(로고·내비 4개·검색·가방)",
+      "브레드크럼",
+      "큰 사진 영역(NEW COLOR)",
+      "둥근 정보 카드",
+      "제목·남성 사이즈 링크",
+      "할인가·정가 취소선·할인율",
+      "색상 스와치(SALE 라벨)",
+      "사이즈 탭·격자(품절 사선)",
+      "사이즈 안내 문장",
+      "비활성 SELECT A SIZE 알약",
+      "배송 문구",
+      "질문 말풍선과 AI 알약",
+      "배송 국가 모달"
+    ]
+  },
+  "type": {
+    "display": "손글씨풍 로고, 세리프 제목",
+    "body": "고정폭 대문자 라벨과 산세리프 본문",
+    "scale": "제목 크게, 옵션 라벨 작은 고정폭"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "사이즈 선택 전에는 비활성 「SELECT A SIZE」 CTA",
+    "여성/남성 사이즈 탭",
+    "품절 사이즈 사선",
+    "색상 스와치 SALE 라벨",
+    "「이 샌들 통기성은?」 질문 말풍선과 AI 알약"
+  ],
+  "cta": {
+    "pattern": "사이즈 선택 전 비활성 알약, 선택 후 장바구니",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.88
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "사이즈 선택 전에는 CTA를 비활성으로 두고 다음 행동을 알려준다",
+    "여성/남성 사이즈 탭과 「사이즈는 한 치수 작게」 같은 구체 가이드를 둔다",
+    "AI 질문 말풍선(예: 소재·통기성)이 구매 전 흔한 질문을 대신 던진다",
+    "정보 영역을 둥근 카드로 사진 위에 올려 사진과 정보를 시각적으로 분리",
+    "배송 국가 모달이 첫 화면을 덮는다. 헤더 선택이 낫다"
+  ]
+}

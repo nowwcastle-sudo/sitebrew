@@ -1,0 +1,77 @@
+# 제품용 재사용 워크플로(workflow_call) — 제품 저장소의 호출부(template/.github/workflows/ci-caller.yml.example)가 부른다.
+# 지금 제품은 템플릿이 실어 준 복사본 ci.yml 로 같은 일을 한다. 이 파일은 운영자이 Actions 접근 설정(access_level = user)을 켠 뒤 쓰도록 준비해 둔 것이다.
+# 호출하는 제품 저장소가 체크아웃되고(이 파일이 있는 저장소가 아니다) 제품의 scripts/ci 를 쓴다.
+name: launch-factory product CI (reusable)
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.13.0"
+
+      - name: Install
+        if: hashFiles('package-lock.json') != ''
+        run: npm ci
+
+      - name: Fetch pinned security tools (sha256 verified)
+        run: node scripts/ci/tools.mjs fetch
+
+      # 빌드 스모크(smoke 단계)는 아래 build-smoke 작업이 따로 돈다 — 로컬 ci:verify 는 둘을 한 번에 돈다.
+      - name: ci:verify
+        env:
+          LF_CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: npm run ci:verify -- --skip smoke
+
+  # 빌드 스모크(LFSMOKE) — 제품 복사본 ci.yml(template/.github/workflows/ci.yml)의 build-smoke 와 같은 작업이다. 잠금 파일이 없으면 건너뛴다.
+  build-smoke:
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.13.0"
+
+      - name: Install
+        if: hashFiles('package-lock.json') != ''
+        run: npm ci
+
+      - name: Install browser (Playwright chromium)
+        if: hashFiles('package-lock.json') != ''
+        run: npx playwright install --with-deps chromium
+
+      - name: build-smoke
+        if: hashFiles('package-lock.json') != ''
+        run: npm run ci:verify -- --only smoke
+
+      - name: Upload smoke report and traces
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: smoke-report
+          path: .tmp/smoke
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: ignore

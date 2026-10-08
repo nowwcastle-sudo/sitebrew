@@ -1,0 +1,14 @@
+{
+  "kind": "account",
+  "variant": "billing-manage",
+  "title": "결제 관리 — 요금제·다음 결제일·금액 요약 판 + 요금제 표 + 해지 진입",
+  "layout": "overview-plan-table",
+  "density": "comfortable",
+  "archetypes": [ "saas", "dashboard", "pwa" ],
+  "archetypeKinds": [ "subscription-manage", "billing" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L1", "L3", "L11", "P3", "X1", "M1" ],
+  "notes": "위 요약 dl 세 칸(data-billing=plan·next-date·amount) + 상태 줄(체험·결제 실패·일시정지·해지 예약·예약된 변경) + 결제 수단 바꾸기(updatePaymentMethod → redirectUrl) + 해지 링크(data-billing=cancel). 아래 요금제 table(th scope, 금액 원·VAT) → 고르면 [취소][요금제로 바꾸기] 대등 확인, changePlan when period_end. 포트: subscription·plans·changePlan·updatePaymentMethod·track? P3-6 F02·F03: past_due 는 실패한 갱신일을 「다음 결제일」로 보이지 않는다(labels.retry — 재결제 시도일, notes.pastDue 의 {until} = graceEndsAt). 해지·만료 뒤 copy.restart 가 있으면 「다시 시작」(data-restart — 결제 화면 링크에 요금제 id)과 요금제 표 「시작하기」 링크, 결제 수단 바꾸기·바꾸기 단추는 없다."
+}

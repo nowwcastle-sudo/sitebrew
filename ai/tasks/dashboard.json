@@ -1,0 +1,1257 @@
+{
+  "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
+  "id": "dashboard",
+  "source": "registry/factory/archetypes/dashboard.json",
+  "ref": "v0.1.0",
+  "purpose": "운영자가 오늘 할 조치를 놓치지 않고 그 자리에서 처리하게 한다(§1-A). 분석형이면 원인을 찾게, 관리형이면 레코드를 빨리 찾아 고치게 한다.",
+  "coreTask": "① 경고 1건을 찾아 → 해당 레코드 상세를 열고 → 조치(배정·상태 변경)를 완료한 뒤 → 목록에서 상태가 바뀐 것을 DOM으로 확인한다(클릭 3회 이하). ② 기간을 「지난 7일」로 바꾸고 새로고침 → 같은 조건이 유지되고 모든 수치가 같은 조건인지 확인. ③ 행 3개를 선택해 일괄 작업 실행 → 「3개 선택됨」과 결과 알림(role=\"status\") 확인.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "operational",
+      "route": "/",
+      "required": [
+        {
+          "kind": "page-header",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 제목 줄 — 셸 h1 과 본문",
+            "render": {
+              "as": "facts",
+              "heading": {
+                "ko": "기준",
+                "en": "Status"
+              },
+              "hideHeading": true,
+              "rows": [
+                {
+                  "label": {
+                    "ko": "기준 시각",
+                    "en": "As of"
+                  },
+                  "from": [
+                    "slot:asOf"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "갱신 주기",
+                    "en": "Refresh"
+                  },
+                  "from": [
+                    "decision.refresh"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "filter-bar",
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-toolbar"
+          ]
+        },
+        {
+          "kind": "action-list",
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-action-list"
+          ]
+        },
+        {
+          "kind": "kpi-row",
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-kpi-first"
+          ]
+        }
+      ],
+      "optional": [
+        {
+          "kind": "refresh-control",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "새로 고침·N분 전 갱신 블록이 없다",
+            "register": [
+              "A87"
+            ]
+          }
+        },
+        {
+          "kind": "trend-charts",
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-trend-plus-table"
+          ]
+        },
+        {
+          "kind": "detail-table",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "데이터 표(일괄 작업·옆 패널) 블록이 없다",
+            "register": [
+              "A82",
+              "A83"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "route": "/analytics",
+      "required": [
+        {
+          "kind": "filter-bar",
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-toolbar"
+          ]
+        },
+        {
+          "kind": "kpi-row",
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-kpi-first"
+          ]
+        },
+        {
+          "kind": "main-trend",
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-trend-plus-table"
+          ]
+        }
+      ],
+      "optional": [
+        {
+          "kind": "breakdown-panels",
+          "blockKinds": [
+            "dashboard-panel"
+          ],
+          "allowedVariants": [
+            "block-dashboard-panel-kpi-first"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "admin-list",
+      "route": "/admin",
+      "required": [
+        {
+          "kind": "page-header",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 제목 줄과 주 행동 하나 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "주 행동",
+                "en": "Main action"
+              },
+              "hideHeading": true,
+              "mode": "tiles",
+              "links": [
+                {
+                  "labelFrom": [
+                    "slot:primaryAction"
+                  ],
+                  "from": [
+                    "primaryActionHref"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "search-filter-bar",
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-search-filter"
+          ]
+        },
+        {
+          "kind": "data-table",
+          "blockKinds": [
+            "data-table"
+          ],
+          "allowedVariants": [
+            "block-data-table-admin-list",
+            "block-data-table-compact"
+          ]
+        },
+        {
+          "kind": "pagination",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "쪽 나누기는 목록 표 블록(data-table)이 표 아래에 그린다 — ui pagination 부품",
+            "parts": [
+              "pagination"
+            ],
+            "missing": "목록 표 블록이 쪽 나누기를 함께 그린다 — 표가 그려지지 않은 쪽에는 따로 그릴 것이 없다(대장 A82)"
+          }
+        }
+      ],
+      "optional": [
+        {
+          "kind": "detail-panel",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "레코드 상세·편집 패널 블록이 없다",
+            "register": [
+              "A83"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "app-shell-sidebar",
+      "required": true,
+      "mustContain": [
+        "text-labels",
+        "aria-current",
+        "default-expanded",
+        "collapsed-tooltips"
+      ]
+    },
+    {
+      "kind": "top-bar",
+      "required": true,
+      "mustContain": [
+        "global-search",
+        "notifications",
+        "account"
+      ]
+    },
+    {
+      "kind": "state-screens",
+      "required": true,
+      "mustContain": [
+        "empty",
+        "error",
+        "loading"
+      ]
+    }
+  ],
+  "sectionOrders": [
+    {
+      "id": "V1-operational",
+      "order": [
+        "app-shell",
+        "page-header",
+        "filter-bar",
+        "refresh-control",
+        "action-list",
+        "kpi-row",
+        "trend-charts",
+        "detail-table"
+      ]
+    },
+    {
+      "id": "V2-analytics",
+      "order": [
+        "app-shell",
+        "filter-bar",
+        "kpi-row",
+        "main-trend",
+        "breakdown-panels"
+      ]
+    },
+    {
+      "id": "V3-admin",
+      "order": [
+        "app-shell",
+        "page-header",
+        "search-filter-bar",
+        "data-table",
+        "pagination",
+        "detail-panel"
+      ]
+    }
+  ],
+  "legal": [],
+  "legalPages": {
+    "pages": [
+      "privacy",
+      "terms"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "약관의 규제에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "software",
+    "install": {
+      "seoMetadata": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/seo-meta#v0.1.0 -y -o",
+      "jsonLdFor": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/geo-entity#v0.1.0 -y -o"
+    },
+    "usage": "seoMetadata(content, page) → Next Metadata(generateMetadata) · jsonLdFor(content, page) → <script type=\"application/ld+json\">. titleTemplate 의 {siteName} 은 content.site 이름(없으면 원형의 회사·가게·제품·기관 이름)이고, type 은 원형 기본 종류다."
+  },
+  "conversion": [],
+  "content": {
+    "item": "content-dashboard",
+    "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/content-dashboard#v0.1.0 -y -o"
+  },
+  "recipes": {
+    "candidates": [
+      {
+        "id": "r1-measure",
+        "name": "도면 계측",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure#v0.1.0 -y -o"
+      },
+      {
+        "id": "r10-console",
+        "name": "자홍 콘솔",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r10-console#v0.1.0 -y -o"
+      },
+      {
+        "id": "r12-spectrum",
+        "name": "다차원 지표판",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r12-spectrum#v0.1.0 -y -o",
+        "condition": "여러 지표를 색으로 가르는 분석 화면(차트 계열 3개 이상)일 때. 한 색으로 충분한 단순 현황판은 r1-measure"
+      },
+      {
+        "id": "r4-evidence",
+        "name": "근거 대화",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r4-evidence#v0.1.0 -y -o"
+      }
+    ],
+    "complete": true,
+    "note": "운영자가 레시피 보드(2026-09-27)에서 승인한 레시피 15벌(r1-measure·r10-console·r12-spectrum·r13-folio·r14-concrete·r15-atelier·r16-tonal·r2-signal·r3-woodblock·r4-evidence·r5-celadon·r6-civic·r7-docs·r8-dusk·r9-clay)에서 archetypes 에 이 원형을 적은 것을 모두 뽑았다(결정: factory/board/recipe-decisions.json). condition 이 있는 후보는 그 조건에 맞는 브리프에만 쓴다."
+  },
+  "blocks": {
+    "account": [
+      {
+        "item": "block-account-billing-manage",
+        "variant": "billing-manage",
+        "layout": "overview-plan-table",
+        "density": "comfortable",
+        "sectionKinds": [
+          "subscription-manage",
+          "billing"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-account-billing-manage#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-account-credentials",
+        "variant": "credentials",
+        "layout": "two-forms-stacked",
+        "density": "comfortable",
+        "sectionKinds": [
+          "change-email",
+          "change-password",
+          "account-settings"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-account-credentials#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-account-delete-account",
+        "variant": "delete-account",
+        "layout": "export-retention-decision",
+        "density": "comfortable",
+        "sectionKinds": [
+          "account-deletion",
+          "data-export",
+          "privacy-settings"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-account-delete-account#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-account-profile-settings",
+        "variant": "profile-settings",
+        "layout": "settings-rows",
+        "density": "comfortable",
+        "sectionKinds": [
+          "account-settings",
+          "profile"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-account-profile-settings#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-account-security",
+        "variant": "security",
+        "layout": "devices-and-two-factor",
+        "density": "comfortable",
+        "sectionKinds": [
+          "security-settings",
+          "session-management",
+          "two-factor-setup"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-account-security#v0.1.0 -y -o"
+      }
+    ],
+    "announcement": [
+      {
+        "item": "block-announcement-dismissible-inline",
+        "variant": "dismissible-inline",
+        "layout": "inline-callout",
+        "density": "comfortable",
+        "sectionKinds": [
+          "announcement",
+          "feature-notice"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-dismissible-inline#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-announcement-notice-ticker",
+        "variant": "notice-ticker",
+        "layout": "rolling-line",
+        "density": "compact",
+        "sectionKinds": [
+          "notice-ticker",
+          "announcement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-notice-ticker#v0.1.0 -y -o"
+      }
+    ],
+    "auth": [
+      {
+        "item": "block-auth-new-password",
+        "variant": "new-password",
+        "layout": "single-form-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "new-password",
+          "reset-password"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-auth-new-password#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-auth-password-reset",
+        "variant": "password-reset",
+        "layout": "steps-then-inline-form",
+        "density": "spacious",
+        "sectionKinds": [
+          "password-reset"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-auth-password-reset#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-auth-sign-in",
+        "variant": "sign-in",
+        "layout": "social-first-card",
+        "density": "comfortable",
+        "sectionKinds": [
+          "sign-in",
+          "login"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-auth-sign-in#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-auth-two-factor",
+        "variant": "two-factor",
+        "layout": "intro-code-split",
+        "density": "comfortable",
+        "sectionKinds": [
+          "two-factor"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-auth-two-factor#v0.1.0 -y -o"
+      }
+    ],
+    "confirmation": [
+      {
+        "item": "block-confirmation-upgrade-complete",
+        "variant": "upgrade-complete",
+        "layout": "centered-unlocked-poll",
+        "density": "spacious",
+        "sectionKinds": [
+          "upgrade-confirmation",
+          "payment-return"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-confirmation-upgrade-complete#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-confirmation-verify-email",
+        "variant": "verify-email",
+        "layout": "centered-mail-resend",
+        "density": "spacious",
+        "sectionKinds": [
+          "email-verification",
+          "signup-confirmation"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-confirmation-verify-email#v0.1.0 -y -o"
+      }
+    ],
+    "content": [
+      {
+        "item": "block-content-facts",
+        "variant": "facts",
+        "layout": "definition-list",
+        "density": "compact",
+        "sectionKinds": [
+          "case-meta",
+          "shipping-pickup-info",
+          "origin-info",
+          "page-header"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-facts#v0.1.0 -y -o"
+      }
+    ],
+    "dashboard-panel": [
+      {
+        "item": "block-dashboard-panel-action-list",
+        "variant": "action-list",
+        "layout": "action-rows",
+        "density": "compact",
+        "sectionKinds": [
+          "action-list"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-dashboard-panel-action-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-dashboard-panel-kpi-first",
+        "variant": "kpi-first",
+        "layout": "focus-kpi-row",
+        "density": "comfortable",
+        "sectionKinds": [
+          "kpi-row",
+          "breakdown-panels"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-dashboard-panel-kpi-first#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-dashboard-panel-trend-plus-table",
+        "variant": "trend-plus-table",
+        "layout": "trend-table",
+        "density": "compact",
+        "sectionKinds": [
+          "main-trend",
+          "trend-charts",
+          "data-table",
+          "filter-bar"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-dashboard-panel-trend-plus-table#v0.1.0 -y -o"
+      }
+    ],
+    "data-table": [
+      {
+        "item": "block-data-table-admin-list",
+        "variant": "admin-list",
+        "layout": "toolbar-table-pager",
+        "density": "comfortable",
+        "sectionKinds": [
+          "admin-list",
+          "data-table",
+          "filter-bar"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-data-table-admin-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-data-table-bulk-select",
+        "variant": "bulk-select",
+        "layout": "select-column-action-bar",
+        "density": "comfortable",
+        "sectionKinds": [
+          "admin-list",
+          "bulk-actions",
+          "data-table"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-data-table-bulk-select#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-data-table-compact",
+        "variant": "compact",
+        "layout": "dense-top-list",
+        "density": "compact",
+        "sectionKinds": [
+          "recent-list",
+          "data-table"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-data-table-compact#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-data-table-record-panel",
+        "variant": "record-panel",
+        "layout": "summary-form-danger",
+        "density": "comfortable",
+        "sectionKinds": [
+          "record-detail",
+          "record-edit",
+          "admin-detail"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-data-table-record-panel#v0.1.0 -y -o"
+      }
+    ],
+    "filter-bar": [
+      {
+        "item": "block-filter-bar-search-filter",
+        "variant": "search-filter",
+        "layout": "search-first",
+        "density": "compact",
+        "sectionKinds": [
+          "search-filter-bar",
+          "filter-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-filter-bar-search-filter#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-filter-bar-toolbar",
+        "variant": "toolbar",
+        "layout": "summary-controls",
+        "density": "compact",
+        "sectionKinds": [
+          "list-toolbar",
+          "filter-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-filter-bar-toolbar#v0.1.0 -y -o"
+      }
+    ],
+    "final-cta": [
+      {
+        "item": "block-final-cta-store-badges",
+        "variant": "store-badges",
+        "layout": "store-badge-row",
+        "density": "comfortable",
+        "sectionKinds": [
+          "app-download",
+          "final-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-store-badges#v0.1.0 -y -o"
+      }
+    ],
+    "floating-action": [
+      {
+        "item": "block-floating-action-chat-launcher",
+        "variant": "chat-launcher",
+        "layout": "corner-pill",
+        "density": "comfortable",
+        "sectionKinds": [
+          "chat-widget",
+          "contact-launcher"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-floating-action-quick-menu-rail",
+        "variant": "quick-menu-rail",
+        "layout": "edge-rail",
+        "density": "compact",
+        "sectionKinds": [
+          "quick-menu",
+          "floating-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-quick-menu-rail#v0.1.0 -y -o"
+      }
+    ],
+    "footer": [
+      {
+        "item": "block-footer-product-legal",
+        "variant": "product-legal",
+        "layout": "product-legal",
+        "density": "compact",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-product-legal#v0.1.0 -y -o"
+      }
+    ],
+    "hero": [
+      {
+        "item": "block-hero-baseline-news-app-window",
+        "variant": "baseline-news-app-window",
+        "layout": "baseline-news-app-window",
+        "density": "compact",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-baseline-news-app-window#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-centered-proof-panel",
+        "variant": "centered-proof-panel",
+        "layout": "centered-proof-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-centered-proof-panel#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-crop-marks-typed-title",
+        "variant": "crop-marks-typed-title",
+        "layout": "crop-marks-typed-title",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-crop-marks-typed-title#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-leaking-app-panel",
+        "variant": "leaking-app-panel",
+        "layout": "leaking-app-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-leaking-app-panel#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-map-first",
+        "variant": "map-first",
+        "layout": "map-first",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "map"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-map-first#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-narrow-title-wide-window",
+        "variant": "narrow-title-wide-window",
+        "layout": "narrow-title-wide-window",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-narrow-title-wide-window#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-screenshot-window",
+        "variant": "screenshot-window",
+        "layout": "screenshot-window",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "screenshot"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-screenshot-window#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-step-band-orbit",
+        "variant": "step-band-orbit",
+        "layout": "step-band-orbit",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-step-band-orbit#v0.1.0 -y -o"
+      }
+    ],
+    "integrations": [
+      {
+        "item": "block-integrations-category-tabs",
+        "variant": "category-tabs",
+        "layout": "category-tabs",
+        "density": "comfortable",
+        "sectionKinds": [
+          "integrations"
+        ],
+        "states": [],
+        "media": [
+          "integration-logo"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-integrations-category-tabs#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-integrations-icon-grid",
+        "variant": "icon-grid",
+        "layout": "logo-grid",
+        "density": "compact",
+        "sectionKinds": [
+          "integrations"
+        ],
+        "states": [],
+        "media": [
+          "integration-logo"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-integrations-icon-grid#v0.1.0 -y -o"
+      }
+    ],
+    "nav": [
+      {
+        "item": "block-nav-account-bar",
+        "variant": "account-bar",
+        "layout": "account-bar",
+        "density": "comfortable",
+        "sectionKinds": [
+          "nav",
+          "top-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-account-bar#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-nav-app-bar-tabs",
+        "variant": "app-bar-tabs",
+        "layout": "app-bar-tabs",
+        "density": "compact",
+        "sectionKinds": [
+          "app-bar",
+          "top-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-app-bar-tabs#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-nav-app-sidebar",
+        "variant": "app-sidebar",
+        "layout": "side-rail",
+        "density": "comfortable",
+        "sectionKinds": [
+          "app-shell-sidebar",
+          "sidebar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-app-sidebar#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-nav-top-bar",
+        "variant": "top-bar",
+        "layout": "app-top-bar",
+        "density": "compact",
+        "sectionKinds": [
+          "top-bar",
+          "app-top-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-top-bar#v0.1.0 -y -o"
+      }
+    ],
+    "onboarding": [
+      {
+        "item": "block-onboarding-checklist-panel",
+        "variant": "checklist-panel",
+        "layout": "progress-checklist",
+        "density": "comfortable",
+        "sectionKinds": [
+          "onboarding-checklist",
+          "getting-started"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-onboarding-checklist-panel#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-onboarding-empty-first-action",
+        "variant": "empty-first-action",
+        "layout": "empty-state-single-action",
+        "density": "spacious",
+        "sectionKinds": [
+          "empty-state",
+          "first-run"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-onboarding-empty-first-action#v0.1.0 -y -o"
+      }
+    ],
+    "paywall": [
+      {
+        "item": "block-paywall-limit-meter",
+        "variant": "limit-meter",
+        "layout": "usage-bar-inline-offer",
+        "density": "compact",
+        "sectionKinds": [
+          "usage-limit",
+          "upgrade-prompt"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-paywall-limit-meter#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-paywall-trial-ending",
+        "variant": "trial-ending",
+        "layout": "countdown-band-split",
+        "density": "comfortable",
+        "sectionKinds": [
+          "trial-ending",
+          "upgrade-prompt"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-paywall-trial-ending#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-paywall-upgrade-modal",
+        "variant": "upgrade-modal",
+        "layout": "locked-card-dialog",
+        "density": "comfortable",
+        "sectionKinds": [
+          "upgrade-prompt",
+          "paywall"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-paywall-upgrade-modal#v0.1.0 -y -o"
+      }
+    ],
+    "pricing": [
+      {
+        "item": "block-pricing-feature-matrix",
+        "variant": "feature-matrix",
+        "layout": "feature-matrix",
+        "density": "compact",
+        "sectionKinds": [
+          "pricing-plans",
+          "pricing"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-pricing-feature-matrix#v0.1.0 -y -o"
+      }
+    ],
+    "retention": [
+      {
+        "item": "block-retention-payment-failed-banner",
+        "variant": "payment-failed-banner",
+        "layout": "slim-warning-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "payment-failed",
+          "notice-bar"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-retention-payment-failed-banner#v0.1.0 -y -o"
+      }
+    ],
+    "state-screen": [
+      {
+        "item": "block-state-screen-empty-guide",
+        "variant": "empty-guide",
+        "layout": "empty-guide",
+        "density": "spacious",
+        "sectionKinds": [
+          "state-screens",
+          "empty-state"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-empty-guide#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-state-screen-error-retry",
+        "variant": "error-retry",
+        "layout": "error-retry",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-error-retry#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-state-screen-loading",
+        "variant": "loading",
+        "layout": "loading",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-loading#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-state-screen-not-found",
+        "variant": "not-found",
+        "layout": "not-found",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-not-found#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-state-screen-offline-cached",
+        "variant": "offline-cached",
+        "layout": "offline-cached",
+        "density": "comfortable",
+        "sectionKinds": [
+          "state-screens",
+          "offline-fallback"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-state-screen-offline-cached#v0.1.0 -y -o"
+      }
+    ]
+  },
+  "blocksNote": "블록 메타 archetypes 에 이 원형을 적은 블록만 종류(kind)별로 모았다. 블록은 레시피 base 하나를 먼저 설치한 뒤(recipes.candidates 의 install) 블록 install 을 받는다 — B안 색·서체는 그 다음에 `<레시피>-alt` 를 -o 로 덮는다. 부품이 레시피 모양으로 깔리므로 블록 항목에는 ui 의존이 없다."
+}

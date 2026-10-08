@@ -1,0 +1,49 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "phone",
+      "type": "registry:lib",
+      "title": "phone",
+      "description": "web-factory lib: phone",
+      "files": [
+        {
+          "path": "phone.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "retention-offer",
+      "type": "registry:lib",
+      "title": "retention-offer",
+      "description": "web-factory lib: retention-offer",
+      "files": [
+        {
+          "path": "retention-offer.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "utils",
+      "description": "web-factory lib: utils",
+      "files": [
+        {
+          "path": "utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": []
+    }
+  ]
+}

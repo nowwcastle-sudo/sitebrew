@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — text-overlap-clean.html</title>
+<style>
+  /* 대장 C296 고친 모양: 같은 제목·같은 캡션을 위 칸(흐름 안)과 제목(흐름 안, 글자 크기를 줄이고 줄을 나눈다)으로 쌓는다 — 겹침·잘림이 없어야 한다.
+     행간 0.8 의 마스크 글자·같은 제목 안의 줄끼리 닿는 것은 겹침이 아니다(같은 글 상자). */
+  html, body { margin: 0; padding: 0; font-family: "Malgun Gothic", "Noto Sans CJK KR", "Apple SD Gothic Neo", system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  nav { position: sticky; top: 0; z-index: 5; background: #ffffff; border-bottom: 1px solid #ccc; padding: 12px 16px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .gw { position: relative; overflow: clip; display: flex; flex-direction: column; min-height: 400px; background: #eef6f9; }
+  .top { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 32px; padding: 40px 4%; }
+  .cap { margin: 0; font-size: 21px; line-height: 1.5; color: #1a1a1a; }
+  .word { position: relative; max-width: 100%; box-sizing: border-box; margin: 0; padding: 0 2vw 24px; text-align: center; font-size: 11vw; line-height: 0.8; text-wrap: balance; word-break: keep-all; overflow-wrap: anywhere; text-transform: uppercase; color: #0b4f6c; }
+  .w { display: inline-block; white-space: nowrap; }
+  .mask { display: inline-block; overflow: clip; padding-block: 0.12em; margin-block: -0.12em; vertical-align: bottom; }
+  .ch { display: inline-block; }
+  main > p { margin: 24px 16px; max-width: 640px; }
+</style>
+</head>
+<body>
+  <nav aria-label="fixture nav">text-overlap-clean fixture</nav>
+  <main>
+    <section class="gw" aria-label="첫 화면">
+      <div class="top"><p class="cap">월-금 08:30-18:00 · 토 09:00-13:00 · 일·공휴일 휴무<br />서울특별시 마포구 월드컵로 120, 2층</p></div>
+      <h1 class="word" id="word"><span class="sr-only">마포구 월드컵로의 주야간보호센터</span><span aria-hidden="true" id="split"></span></h1>
+    </section>
+    <p>이 문단은 대비 검사를 위한 본문 텍스트입니다. 히어로 아래에 놓여 겹침 없이 읽혀야 합니다.</p>
+  </main>
+  <script>
+    const title = '마포구 월드컵로의 주야간보호센터'
+    const host = document.getElementById('split')
+    title.split(' ').forEach((w, i) => {
+      if (i) host.append(' ')
+      const word = document.createElement('span'); word.className = 'w'
+      for (const c of w) { const m = document.createElement('span'); m.className = 'mask'; const ch = document.createElement('span'); ch.className = 'ch'; ch.textContent = c; m.append(ch); word.append(m) }
+      host.append(word)
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "id": "sainthonore-com",
+  "archetype": "brand",
+  "sourceGallery": "awwwards",
+  "url": "https://sainthonore.com/",
+  "structure": {
+    "hero": "로고 중앙, 가로 메뉴 아래 컨테이너 폭 영상 박스(검정 여백, 일시정지 버튼)가 첫 화면 대부분",
+    "sections": [
+      "2단 헤더(검색·로고·연락·매장 찾기)",
+      "가로 메뉴 6개",
+      "영상 히어로 박스",
+      "신제품 2단(사진+문구+EXPLORE)",
+      "대표 제품 목록 머리글(Our top picks)",
+      "쿠키 띠(하단 고정)"
+    ]
+  },
+  "type": {
+    "display": "넓은 자간 대문자 산세리프 메뉴 + 파란 세리프풍 로고",
+    "body": "둥근 기하 산세리프, 느슨한 자간",
+    "scale": "메뉴 소형 대문자, 제품명 중형 대문자, 본문 소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "흰 화면에 쿠키 띠가 먼저 뜨고 약 2.5초 뒤 회색 박스를 거쳐 영상이 나타남",
+    "scroll": "스크롤하면 헤더가 상단에 붙은 채 영상이 위로 밀리고 신제품 2단 구획이 올라옴",
+    "hover": null,
+    "transition": "파리 항공 영상이 인물 얼굴 클로즈업으로 하드컷 전환됨",
+    "durationsMs": [
+      500,
+      2250,
+      4000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "4fps 프레임 간격 기준 추정"
+  },
+  "interaction": [
+    "영상 일시정지 버튼",
+    "캐럿 달린 메뉴 5개(드롭다운 추정)",
+    "쿠키 수락 버튼과 정책 링크"
+  ],
+  "cta": {
+    "pattern": "외곽선 EXPLORE 버튼, 제품 소개마다 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.5
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "브랜드 영상을 컨테이너 폭 박스로 넣고 일시정지 버튼을 노출한다",
+    "제품 소개는 데스크톱에서 사진 좌, 문구 우 2단에 외곽선 버튼 하나로 단순하게 가고 모바일은 세로로 쌓는다",
+    "쿠키 띠가 첫 화면 하단 제품 구획을 덮으니 높이를 낮게 잡는다",
+    "첫 2초가 빈 흰 화면이라 포스터 이미지로 메우고 영상 중간에 얼굴 클로즈업으로 하드컷하는 구성을 참고한다"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "dxquare-com",
+  "archetype": "portfolio",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.dxquare.com/",
+  "structure": {
+    "hero": "수상 팝업이 첫 화면을 덮고 배경은 선 터널 3D, 하단 중앙 알약 내비와 빨간 배지",
+    "sections": [
+      "상단 내비(로고·메뉴 5개·빨간 Contact 알약·다운로드)",
+      "수상 소식 팝업 카드(2관왕·영상 2개)",
+      "배경 3D 연출(선 터널·원반)과 큰 영문 제목",
+      "우하단 빨간 원형 폰트 다운로드 배지",
+      "하단 중앙 알약 내비",
+      "모바일 햄버거와 WHO WE ARE 시작"
+    ]
+  },
+  "type": {
+    "display": "굵은 기하 산세리프 영문 대형 + 팝업 한글 고딕 굵게",
+    "body": "한글 고딕 보통 소형",
+    "scale": "배경 제목 대형, 팝업 제목 대형, 메뉴 소형"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": "검은 사각 자리에서 약 0.5초 뒤 팝업이 나타나고 알약 내비와 빨간 배지가 이어서 보임",
+    "scroll": "스크롤하면 배경 3D가 원반·선 터널로 바뀌고 큰 영문 제목이 올라가며 다음 구획이 시작됨",
+    "hover": null,
+    "transition": "배경 3D 오브젝트가 어두운 면, 선 터널, 밝은 회색 면 순으로 약 1~2초마다 바뀜",
+    "durationsMs": [
+      500,
+      1000,
+      2000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "배경 장면 전환은 4fps 프레임 수로 추정"
+  },
+  "interaction": [
+    "팝업 닫기와 오늘 하루 열지 않기",
+    "빨간 Contact 알약",
+    "폰트 다운로드 원형 배지",
+    "하단 알약 내비",
+    "팝업 안 영상 링크 2개"
+  ],
+  "cta": {
+    "pattern": "빨간 Contact 알약과 빨간 원형 폰트 다운로드 배지",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.6
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "배경 3D를 장면마다 바꿔 큰 글자와 겹쳐 쓰는 구성이다",
+    "빨간 한 색을 Contact와 폰트 배지에 일관되게 써서 행동 신호를 만든다",
+    "하단 알약 내비가 스크롤 중에도 메뉴를 열어 둔다",
+    "수상 팝업이 첫 화면을 덮어 첫인상을 가리니 크기를 줄인다"
+  ]
+}

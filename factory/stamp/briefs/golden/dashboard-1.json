@@ -1,0 +1,27 @@
+{
+  "topic": "소규모 물류 창고 재고·출고 현황 운영 대시보드 (가상 사업체 — 예시)",
+  "archetype": "dashboard",
+  "locale": "ko",
+  "facts": {
+    "name": "한결물류 재고판",
+    "email": "hello@example.com",
+    "phone": "02-1234-5678",
+    "address": "인천광역시 서구 예시로 300",
+    "metrics": "오늘 출고 312건 · 재고 부족 품목 7개 · 평균 출고 소요 4.2시간",
+    "charts": "주간 출고량 추이 · 품목별 재고 회전일",
+    "breakdown": "입고 · 보관 · 출고 · 반품 단계별 대기 건수",
+    "usageLimit": "계정 5명까지, 창고 2곳까지",
+    "notice": "금요일 밤 12시에 재고 동기화 점검이 있어요",
+    "refresh": "5분마다 새로 고쳐요",
+    "primaryActionUrl": "https://example.com/shipments/new",
+    "tableColumns": "품목 | 보관 구역 | 재고 수(숫자)",
+    "tableRows": "라벨 프린터 용지 | A구역 | 120 ; 포장 박스 중형 | B구역 | 84 ; 완충재 롤 | B구역 | 36 ; 박스 테이프 | A구역 | 210",
+    "audience": "소규모 물류 창고 운영 담당자",
+    "action": "재고 부족 품목과 오늘 출고 현황 확인하기",
+    "mood": "차분한",
+    "legalName": "한결물류 주식회사",
+    "representative": "배도윤",
+    "bizNo": "123-45-67890"
+  },
+  "seed": 4
+}

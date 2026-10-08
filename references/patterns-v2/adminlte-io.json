@@ -1,0 +1,62 @@
+{
+  "id": "adminlte-io",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://adminlte.io/themes/v4/",
+  "structure": {
+    "hero": "네이비 사이드바 옆 4색 요약 타일, 아래 차트와 지도 카드",
+    "sections": [
+      "사이드바(메뉴 필터 포함)",
+      "상단 바(검색·알림·테마)",
+      "페이지 제목+빵부스러기",
+      "색 요약 타일 4개",
+      "매출 영역 차트",
+      "파란 지도 카드",
+      "다이렉트 채팅 카드"
+    ]
+  },
+  "type": {
+    "display": "산세리프 28px 페이지 제목",
+    "body": "산세리프 14~16px",
+    "scale": "타일 수치 30px, 카드 제목 18px, 본문 14px"
+  },
+  "colorLogic": "K8",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "사이드바 메뉴 접기·펼치기(하위 항목)",
+    "메뉴 필터 입력",
+    "알림 배지",
+    "다크 모드 토글",
+    "전체 화면 토글",
+    "카드 접기·닫기 버튼"
+  ],
+  "cta": {
+    "pattern": "요약 타일 하단 More info 링크 4개",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "빨강·초록·노랑·파랑 큰 색 타일이 위계 맨 위에서 수치 4개를 구분한다",
+    "사이드바를 항목, 하위 항목, 섹션 라벨로 나눠 깊은 메뉴를 정리한다",
+    "375에서는 사이드바가 햄버거로 접히고 타일은 2x2, 차트는 전폭이 된다",
+    "카드마다 제목 줄과 접기·닫기 버튼 도구 줄을 일관되게 둔다"
+  ]
+}

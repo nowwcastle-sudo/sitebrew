@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-moirai-one",
+  "type": "registry:font",
+  "title": "Moirai One",
+  "description": "web-factory 폰트 키트: Moirai One (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Moirai One', sans-serif",
+    "provider": "google",
+    "import": "Moirai_One",
+    "variable": "--font-moirai-one-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/moirai-one"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/moiraione/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Moirai+One",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

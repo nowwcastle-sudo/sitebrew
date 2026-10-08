@@ -1,0 +1,362 @@
+{
+  "email": {
+    "common": {
+      "greeting": "Hi {name},",
+      "greetingNoName": "Hi there,",
+      "footer": "You are receiving this email because you have an account with {productName}.",
+      "vatIncluded": "(tax included)",
+      "vatExcluded": "(plus applicable tax)",
+      "buttonFallback": "If the button doesn't work, copy this link into your browser:",
+      "linkValid": "This link works for {duration}.",
+      "validMinutes": "{n} minutes",
+      "validHour": "1 hour",
+      "validHours": "{n} hours",
+      "validDays": "{n} days"
+    },
+    "welcome": {
+      "subject": "Welcome to {productName}",
+      "preview": "Your {productName} account is ready.",
+      "heading": "Welcome to {productName}",
+      "body": "Your email address is confirmed and your account is ready. You can sign in and get started right away.",
+      "cta": "Open {productName}"
+    },
+    "orderConfirmation": {
+      "subject": "Your {productName} order is confirmed: {planName}",
+      "preview": "Thanks for your order. Here are the details.",
+      "heading": "Your order is confirmed",
+      "body": "Thanks for your order. Here are the details.",
+      "orderIdLabel": "Order number",
+      "planLabel": "Plan",
+      "amountLabel": "Amount",
+      "orderedAtLabel": "Order date",
+      "receiptNote": "Your receipt comes in a separate email from Paddle, our payment provider and reseller.",
+      "cta": "Manage your subscription"
+    },
+    "priceChange": {
+      "subject": "Your {productName} {planName} price changes on {effectiveDate}",
+      "preview": "Please review and respond by {consentBy}.",
+      "heading": "Your price is changing",
+      "bodyPriceIncrease": "The price of your {planName} plan will change from {from} to {to}, starting {effectiveDate}.",
+      "bodyTrialToPaid": "Your free trial of {planName} ends on {effectiveDate}. After that, the plan costs {to}.",
+      "consentDeadline": "To continue at the new price, please accept by {consentBy}.",
+      "noResponse": "If we do not hear from you by then, we will not charge the new price. No response is not consent.",
+      "declineNote": "If you do not want to continue, you can cancel your subscription before {effectiveDate}.",
+      "acceptCta": "Accept the new price",
+      "declineCta": "Cancel my subscription"
+    },
+    "cancellation": {
+      "subject": "Your {productName} subscription is canceled",
+      "preview": "We have canceled your subscription.",
+      "heading": "Your subscription is canceled",
+      "bodyAccessUntil": "You can keep using {productName} until {accessUntil}.",
+      "bodyAccessEnded": "Your access to paid features has ended.",
+      "noFurtherCharges": "You will not be charged again.",
+      "resubscribeCta": "Resubscribe"
+    },
+    "paymentFailed": {
+      "subject": "Your {productName} payment didn't go through",
+      "preview": "Update your payment method to keep your plan.",
+      "heading": "We couldn't take your payment",
+      "body": "Your last payment for {productName} didn't go through, so your plan is now past due.",
+      "retryOn": "Our payment provider will try your card again on {retryDate}.",
+      "retryAuto": "Our payment provider will try your card again automatically over the next few days.",
+      "accessUntil": "You can keep using your paid features until {accessUntil}. After that they pause until a payment goes through.",
+      "fix": "The quickest fix is to update your payment method.",
+      "cta": "Update payment method"
+    },
+    "inquiryNotice": {
+      "subject": "New inquiry {reference} on {productName}",
+      "preview": "Someone sent an inquiry through your site.",
+      "heading": "You have a new inquiry",
+      "body": "Someone sent an inquiry through the {form} form. Reply to them using the contact details below.",
+      "referenceLabel": "Reference",
+      "nameLabel": "Name",
+      "contactLabel": "Contact",
+      "messageLabel": "Message",
+      "receivedAtLabel": "Received",
+      "retentionNote": "This inquiry is deleted automatically on {deleteOn}.",
+      "cta": "Open inquiries",
+      "why": "You are receiving this email because inquiries to {productName} are sent to this address."
+    },
+    "inquiryReceipt": {
+      "subject": "We received your inquiry to {productName}",
+      "preview": "Your inquiry reached us.",
+      "heading": "We received your inquiry",
+      "body": "Thanks for getting in touch. We will reply to the contact details you left.",
+      "referenceLabel": "Reference",
+      "responseNote": "We usually reply within {responseTime}. If you have not heard from us by then, send a new message and quote this reference.",
+      "notYou": "If you did not send this inquiry, you can ignore this email.",
+      "why": "You are receiving this email because you sent an inquiry to {productName}."
+    },
+    "verifyEmail": {
+      "subject": "Confirm your email for {productName}",
+      "preview": "Confirm this email address for your {productName} account.",
+      "heading": "Confirm your email address",
+      "body": "Please confirm that this is your email address. We use it for receipts, password resets and security notices.",
+      "expiryNote": "This link works for {duration}. If it has expired, you can ask for a new one after signing in.",
+      "ignoreNote": "If you did not ask for this, you can ignore this email.",
+      "cta": "Confirm email address",
+      "notMeNote": "Didn't create this account? Use the link below and we will delete it.",
+      "notMeCta": "This wasn't me"
+    },
+    "emailChangeConfirm": {
+      "subject": "Approve your {productName} email change",
+      "preview": "Someone asked to change your sign-in email to {newEmail}.",
+      "heading": "Approve your email change",
+      "body": "We received a request to change the email address of your {productName} account to {newEmail}.",
+      "nextStep": "After you approve, we will send a confirmation link to the new address. The change happens only when that link is used.",
+      "securityNote": "If you did not ask for this, do not use the button and change your password.",
+      "cta": "Approve the change",
+      "expiryNote": "This link works for {duration}, then it stops working."
+    },
+    "emailChanged": {
+      "subject": "Your {productName} email address was changed",
+      "preview": "Your account email is now {newEmail}.",
+      "heading": "Your email address was changed",
+      "body": "The email address of your {productName} account was changed to {newEmail}. We will send account emails there from now on.",
+      "securityNote": "If you did not make this change, reset your password right away and contact us.",
+      "cta": "Secure my account",
+      "contactCta": "Contact us"
+    },
+    "passwordReset": {
+      "subject": "Reset your {productName} password",
+      "preview": "Use this link to choose a new password for your {productName} account.",
+      "heading": "Reset your password",
+      "body": "We received a request to reset the password of your {productName} account. Use the button below to choose a new one.",
+      "expiryNote": "This link works for {duration}. If it has expired, you can ask for a new one from the sign-in page.",
+      "ignoreNote": "If you did not ask for this, you can ignore this email. Your password will not change.",
+      "cta": "Choose a new password"
+    },
+    "passwordChanged": {
+      "subject": "Your {productName} password was changed",
+      "preview": "Your password was changed on {changedAt}.",
+      "heading": "Your password was changed",
+      "body": "The password of your {productName} account was changed on {changedAt}.",
+      "securityNote": "If you did not make this change, reset your password right away and contact us.",
+      "cta": "Secure my account",
+      "contactCta": "Contact us"
+    },
+    "accountDeletionRequested": {
+      "subject": "We received your request to delete your {productName} account",
+      "preview": "We will delete your account on {graceUntil} unless you sign in before then.",
+      "heading": "We received your deletion request",
+      "body": "You asked us to delete your {productName} account. We will delete it on {graceUntil}.",
+      "undo": "To keep your account, sign in before that date. Signing in cancels the deletion.",
+      "kept": "When we delete the account, we remove your profile, sign-in details and notification choices. We keep payment and transaction records only for the period the law requires. These records carry no name or email.",
+      "securityNote": "If you did not ask for this, sign in now to cancel it and then change your password.",
+      "cta": "Sign in to cancel"
+    },
+    "marketingConsentNotice": {
+      "subject": "{senderName} processed your marketing message preferences",
+      "preview": "Here is the result of your opt-in or opt-out request.",
+      "heading": "Result of your marketing message preferences",
+      "intro": "Sender: {senderName} — We processed your marketing message preferences as follows.",
+      "changeLine": "{channel} · {status} · Date of your request: {date}",
+      "channelEmail": "Email",
+      "channelSms": "Text message (SMS)",
+      "channelKakao": "KakaoTalk",
+      "channelPush": "App push",
+      "granted": "Opt-in",
+      "withdrawn": "Opt-out (consent withdrawn)",
+      "resultGranted": "Result: your opt-in has been applied.",
+      "resultWithdrawn": "Result: your opt-out has been applied. We will not send marketing messages through this channel.",
+      "manageNote": "You can change your preferences in your account settings at any time. This is a notice of the result required by law, not an advertisement."
+    },
+    "newDeviceSignIn": {
+      "subject": "New sign-in to your {productName} account",
+      "preview": "A device we haven't seen before signed in to {productName}.",
+      "heading": "New sign-in to your account",
+      "body": "Your {productName} account was just signed in to from a device we haven't seen before.",
+      "deviceLine": "Device: {device}",
+      "timeLine": "Time: {time}",
+      "locationLine": "Approximate location: {location}",
+      "ifYou": "If this was you, you don't need to do anything.",
+      "ifNotYou": "If this wasn't you, secure your account now. Reset your password, and everyone else is signed out.",
+      "cta": "Secure my account"
+    },
+    "marketingReconfirm": {
+      "subject": "{productName}: do you still want our marketing emails?",
+      "preview": "We check every two years that you still want marketing emails.",
+      "heading": "Do you still want our marketing emails?",
+      "intro": "Sender: {senderName} — You agreed to receive marketing emails from us on {consentDate}.",
+      "why": "We check every two years that you still want these emails, as the law requires.",
+      "noResponse": "If you do nothing, nothing changes: you keep getting these emails until you unsubscribe.",
+      "keepCta": "Keep getting these emails",
+      "unsubscribeCta": "Unsubscribe",
+      "unsubscribeNote": "You can unsubscribe at any time with the second button. You don't need to sign in."
+    },
+    "advertising": {
+      "subjectPrefix": "(광고)",
+      "adNotice": "This is an advertisement sent by {senderName} to people who agreed to receive its marketing emails.",
+      "optOutLead": "Don't want these emails? Unsubscribe in one click. You don't need to sign in.",
+      "unsubscribeCta": "Unsubscribe",
+      "senderLabel": "Sender",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "addressLabel": "Address"
+    }
+  },
+  "auth": {
+    "twoFactorDisabled": "Two-factor authentication is not enabled for this app.",
+    "methodUnavailable": "This sign-in method is not available.",
+    "magicLinkSignUp": "Sign up with a password or a social account first.",
+    "required": "Required.",
+    "consentRequired": "You must agree to continue.",
+    "ageOver14Required": "You must be 14 or older to sign up.",
+    "invalidCredentials": "Incorrect email or password.",
+    "invalidCode": "The code is incorrect or has expired.",
+    "invalidResetToken": "This reset link has expired or was already used. Ask for a new one.",
+    "userExists": "An account with this email already exists.",
+    "weakPassword": "Use a longer password.",
+    "invalidEmail": "Enter a valid email address.",
+    "emailNotVerified": "Verify your email address first. We sent you a link.",
+    "signInRequired": "Sign in to continue.",
+    "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
+    "unavailable": "We couldn't reach the sign-in service. Please try again.",
+    "failed": "Something went wrong. Please try again.",
+    "deletionUnavailable": "We can't process account deletion right now. Please try again later.",
+    "subscriptionCancelFailed": "We couldn't cancel your subscription, so your account wasn't deleted. Please try again.",
+    "invalidPassword": "Your current password is incorrect.",
+    "reauthRequired": "For your security, sign in again and then retry.",
+    "noPassword": "This account has no password yet.",
+    "sameEmail": "This is already your email address.",
+    "alreadyVerified": "Your email address is already verified.",
+    "addEmailFirst": "Add your email address first.",
+    "sessionNotFound": "This session has already ended.",
+    "invalidLocale": "Choose a supported language.",
+    "invalidTimeZone": "Choose a valid time zone.",
+    "deviceName": "{browser} on {os}",
+    "unknownDevice": "Unknown device",
+    "accountSuspended": "This account is suspended. Please contact support.",
+    "impersonationBlocked": "This isn't available while you're signed in as another user.",
+    "admin": {
+      "adminRequired": "Only admins can do this.",
+      "twoFactorRequired": "Turn on two-factor authentication to use admin tools.",
+      "notFound": "We couldn't find that user.",
+      "cannotBanSelf": "You can't ban yourself.",
+      "cannotImpersonateAdmin": "You can't sign in as another admin.",
+      "reasonRequired": "Enter a reason.",
+      "notImpersonating": "You're not signed in as another user.",
+      "exportTooLarge": "There are too many rows to export (up to {max}). Narrow the search and try again.",
+      "csv": {
+        "id": "User ID",
+        "email": "Email",
+        "name": "Name",
+        "role": "Role",
+        "banned": "Banned",
+        "banReason": "Ban reason",
+        "twoFactor": "Two-factor",
+        "emailVerified": "Email verified",
+        "createdAt": "Joined (KST)",
+        "yes": "Yes",
+        "no": "No"
+      }
+    }
+  },
+  "consent": {
+    "terms": "I agree to the Terms of Service (required)",
+    "privacy": "I agree to the collection and use of my personal information (required)",
+    "ageOver14": "I am 14 years of age or older (required)",
+    "ageOver14Help": "Children under 14 need the consent of a parent or legal guardian, so they can't sign up on their own.",
+    "marketing": {
+      "title": "Marketing messages (optional)",
+      "email": "Email",
+      "sms": "Text message (SMS)",
+      "kakao": "KakaoTalk",
+      "push": "Push notification",
+      "granted": "Opted in",
+      "withdrawn": "Opted out",
+      "updatedAt": "Last changed on {date}",
+      "resultNotice": "{sender}: your marketing preference for {channel} was set to \"{status}\" on {date}.",
+      "invalid": "Choose on or off for each channel.",
+      "saveFailed": "We couldn't save your preferences. Please try again."
+    }
+  },
+  "checkout": {
+    "withdrawal": {
+      "notice": "This is digital content that is supplied right away. Once you start using it, you lose your 14-day right of withdrawal.",
+      "trial": "You can try it first with the free trial or preview before you pay.",
+      "consentLabel": "I agree that my access starts right after payment, and I acknowledge that I lose my right of withdrawal once it starts.",
+      "consentRequired": "Please read the notice about your right of withdrawal and agree to continue."
+    },
+    "failed": "We couldn't start the payment. Please try again."
+  },
+  "transfer": {
+    "title": "International transfers of personal data",
+    "intro": "To run the service, we entrust the processing of personal data to the companies below, which transfers it outside Korea.",
+    "column": {
+      "recipient": "Recipient (contact)",
+      "country": "Country",
+      "items": "Data transferred",
+      "whenHow": "When and how",
+      "purpose": "Purpose",
+      "retention": "Retention period"
+    },
+    "country": {
+      "US": "United States",
+      "DE": "Germany",
+      "KR": "South Korea"
+    },
+    "whenHow": "Sent over the network whenever you use the service",
+    "items": {
+      "analytics": "Usage events (pages viewed, clicks), device and browser information, internal user ID",
+      "email": "Email address, name (if provided), email content",
+      "errors": "Error reports, internal user ID, device and browser information (IP addresses and cookies are masked)",
+      "hosting": "All data exchanged while using the service, including IP address and access logs",
+      "botCheck": "IP address, browser information (User-Agent, TLS fingerprint)",
+      "database": "Account and service data we store (profile, plan status, messages), kept in the region shown"
+    },
+    "purpose": {
+      "analytics": "Usage analytics and product improvement",
+      "email": "Sending email",
+      "errors": "Finding and fixing errors",
+      "hosting": "Running the service (servers and network)",
+      "botCheck": "Blocking automated abuse on sign-up and inquiry forms",
+      "database": "Storing and serving the service database"
+    },
+    "retention": "Until you delete your account or the service agreement with the company ends",
+    "refuse": "If you object to this transfer, contact {contact}. The service cannot run without these companies, so if you object you won't be able to use it."
+  },
+  "inquiry": {
+    "required": "Please fill this in.",
+    "contactInvalid": "Enter an email address or a phone number.",
+    "tooLong": "Please keep this under {max} characters.",
+    "consentRequired": "Please agree to the collection and use of your personal information.",
+    "received": "We received your inquiry. Reference: {reference}",
+    "failed": "We couldn't send your inquiry. Please try again.",
+    "unavailable": "We're not accepting messages right now."
+  },
+  "protect": {
+    "rateLimited": "Too many requests. Please try again in {seconds} seconds.",
+    "botCheckFailed": "We couldn't confirm you're human. Wait a moment, then try again. If it keeps failing, reload the page.",
+    "botCheckUnavailable": "We can't run the check right now. Please try again shortly.",
+    "inProgress": "Your earlier request is still being processed. Please check again shortly.",
+    "confirmationRequired": "A person needs to review and confirm this before it runs. Nothing was changed.",
+    "confirmEmailMismatch": "Type your email address exactly as shown to confirm. Nothing was changed.",
+    "actionFailed": "That didn't go through. Nothing more was done."
+  },
+  "collection": {
+    "title": "Personal information we collect",
+    "column": {
+      "items": "Items",
+      "purpose": "Purpose",
+      "basis": "Legal basis",
+      "retention": "Retention period"
+    },
+    "items": {
+      "inquiry": "Name (optional), email address or phone number, the content of your inquiry"
+    },
+    "purpose": {
+      "inquiry": "Receiving and answering your inquiry"
+    },
+    "basis": {
+      "request": "Needed to act on your request (Personal Information Protection Act, Article 15(1)4)",
+      "consent": "Your consent (Personal Information Protection Act, Article 15(1)1)"
+    },
+    "retention": {
+      "days": "Deleted {days} days after we receive it. An inquiry that becomes a record of a consumer complaint or dispute is kept for 3 years, then deleted",
+      "dispute": "Kept for 3 years as a record of a consumer complaint or dispute, then deleted"
+    },
+    "refuse": "You can choose not to give this information, but then we can't receive or answer your inquiry."
+  }
+}

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>히트 영역 — 잘린 스크롤 칸 밖(예시)</title>
+<style>
+  body { font: 16px/1.7 sans-serif; padding: 48px; }
+  .bar { display: flex; gap: 12px; align-items: center; margin-bottom: 64px; }
+  /* 가로 스크롤 메뉴: 둘째 링크가 칸 밖으로 삐져나가 옆 버튼 아래에 깔린다 — 칸 밖은 눌리지 않는다 */
+  .scroller { width: 160px; overflow-x: auto; display: flex; scrollbar-width: none; }
+  .scroller a { flex: none; min-height: 44px; min-width: 200px; display: inline-flex; align-items: center; }
+  .go { min-height: 44px; min-width: 120px; }
+</style>
+</head>
+<body>
+  <div class="bar" data-slot="bar">
+    <div class="scroller" data-slot="scroller"><a href="#a">첫째 링크 예시 글</a><a href="#b">둘째 링크 예시 글</a></div>
+    <button class="go" data-slot="button">예약하기</button>
+  </div>
+</body>
+</html>

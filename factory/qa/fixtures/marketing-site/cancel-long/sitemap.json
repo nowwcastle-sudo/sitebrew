@@ -1,0 +1,59 @@
+{
+  "archetype": "saas",
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": []
+    },
+    {
+      "id": "signup",
+      "route": "/signup",
+      "sections": []
+    },
+    {
+      "id": "signup-done",
+      "route": "/signup/done",
+      "sections": []
+    },
+    {
+      "id": "account",
+      "route": "/account",
+      "sections": []
+    },
+    {
+      "id": "cancel-why",
+      "route": "/cancel/why",
+      "sections": []
+    },
+    {
+      "id": "cancel-offer",
+      "route": "/cancel/offer",
+      "sections": []
+    },
+    {
+      "id": "cancel-confirm",
+      "route": "/cancel/confirm",
+      "sections": []
+    },
+    {
+      "id": "cancel-done",
+      "route": "/cancel/done",
+      "sections": []
+    },
+    {
+      "id": "contact",
+      "route": "/contact",
+      "sections": []
+    },
+    {
+      "id": "privacy",
+      "route": "/privacy",
+      "legal": true,
+      "sections": []
+    }
+  ],
+  "globals": [],
+  "excluded": [],
+  "blockers": []
+}

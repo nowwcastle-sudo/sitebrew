@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — bad</title>
+<style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  nav { position: sticky; top: 0; background: #ffffff; border-bottom: 1px solid #ccc; padding: 12px 16px; }
+  main { padding: 16px; max-width: 640px; }
+  p { color: #1a1a1a; }
+  dialog { border: none; border-radius: 8px; padding: 16px; }
+  dialog::backdrop { background: rgba(0,0,0,0.3); }
+  .toast { position: fixed; right: 16px; bottom: 16px; background: #1a1a1a; color: #fff; padding: 12px 16px; border-radius: 8px; }
+  .toast button { margin-left: 8px; }
+  .clip-box { display: inline-block; width: 80px; overflow: hidden; white-space: nowrap; font-size: 14px; }
+</style>
+</head>
+<body>
+  <nav aria-label="fixture nav">bad fixture</nav>
+  <main>
+    <p>이 문단은 대비 검사를 위한 본문 텍스트입니다. 충분히 길게 작성합니다.</p>
+    <span class="clip-box">발주 초안을 확정하면 한빛유업 성동대리점(예시)에 목요일 오전 도착으로 배송 예정입니다</span>
+
+    <button data-qa="confirm-open">발주 확정하기</button>
+    <dialog id="confirm-dialog">
+      <p>확정하면 되돌릴 수 없습니다.</p>
+      <button id="cancel-btn">취소</button>
+      <button id="ok-btn">확인</button>
+    </dialog>
+
+    <button data-qa="toast-trigger">임시 저장하기</button>
+    <div id="toast-host"></div>
+
+    <div id="filter-container">
+      <button data-qa="filter" id="filter-a" aria-pressed="true">흰 우유</button>
+      <button data-qa="filter" id="filter-b" aria-pressed="false">저지방</button>
+    </div>
+  </main>
+
+  <script>
+    window.__orders = 0;
+
+    const dialog = document.getElementById('confirm-dialog');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const okBtn = document.getElementById('ok-btn');
+
+    // 결함 (a): 열 때 [확인]에 포커스를 준다 — Enter 한 번으로 확정될 수 있다.
+    document.querySelector('[data-qa="confirm-open"]').addEventListener('click', () => {
+      dialog.showModal();
+      okBtn.focus();
+    });
+    cancelBtn.addEventListener('click', () => dialog.close());
+    okBtn.addEventListener('click', () => {
+      window.__orders++;
+      dialog.close();
+    });
+
+    // 결함 (b): 만료 시 opacity만 낮추고 DOM·탭 순서에는 남겨 둔다.
+    document.querySelector('[data-qa="toast-trigger"]').addEventListener('click', () => {
+      const host = document.getElementById('toast-host');
+      host.innerHTML = '';
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = '<span>임시 저장했습니다.</span><button type="button">되돌리기</button>';
+      host.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; }, 3000);
+    });
+
+    // 결함 (c): 필터 클릭 때 컨테이너를 innerHTML로 다시 그려 포커스를 잃는다.
+    const filterContainer = document.getElementById('filter-container');
+    filterContainer.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('[data-qa="filter"]');
+      if (!btn) return;
+      const pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', pressed ? 'false' : 'true');
+      filterContainer.innerHTML = filterContainer.innerHTML;
+    });
+  </script>
+</body>
+</html>

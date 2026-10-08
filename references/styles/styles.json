@@ -1,0 +1,5290 @@
+{
+ "$comment": "UI 스타일 사전(P3-2 Task 15m, 접합면 J4). 만드는 곳 factory/scripts/build-styles.mjs, 모양·검사 styles-ref.mjs, 설명 README.md. 판정 allow·allow-with-rules·ban — ban 은 레시피에 쓰지 않는다. proposals 는 구현 안 된 새 축 값 제안이고, implemented 는 Task 16a 에서 구현돼 스타일 axes·recipeFields 로 옮긴 제안이다.",
+ "generatedAt": "2026-09-29",
+ "scorer": {
+  "sns": "sns-crawler/research score.py weights 2026-09-29.1 (rescore_2026-09-29)",
+  "merge": "sns-crawler/research/merge_sources.py — (Σ w·p + 1×0.5) ÷ (Σ w + 1)",
+  "rowWeights": {
+   "opl": 1,
+   "trend": 1,
+   "naver_docs": 0.25,
+   "slp": 0.5
+  }
+ },
+ "counts": {
+  "total": 62,
+  "byVerdict": {
+   "allow": 7,
+   "allow-with-rules": 46,
+   "ban": 9
+  },
+  "byLanes": {
+   "both": 22,
+   "styles": 32,
+   "sns": 8
+  },
+  "proposals": 8,
+  "implemented": 7
+ },
+ "styles": [
+  {
+   "id": "3d-lite",
+   "name": "라이트 3D",
+   "visualRules": [
+    "제품·실물 3D 한 점을 히어로에",
+    "저폴리·정적 렌더 우선, 실시간은 예산 안",
+    "나머지 UI는 평면",
+    "모바일에선 정지 이미지로 대체"
+   ],
+   "axes": {
+    "button": "B3",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M2"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "detail",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "§6-B 성능 예산",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6 SHOULD 제품과 무관한 추상 3D 블롭 금지 · §6-B 3D 성능 예산",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/3d",
+     "signal": 229,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 30,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://elements.envato.com/learn/web-design-trends"
+     ]
+    },
+    {
+     "url": null,
+     "signal": 10,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://dribbble.com/tags/3d",
+     "signal": "Dribbble 태그 「3d」 샷 638,789개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.740138,
+   "rank_parts": {
+    "dribbble": {
+     "value": 638789,
+     "pct": 0.946429,
+     "weight": 0.2
+    },
+    "naver_docs": {
+     "value": 10,
+     "pct": 0.833333,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 229,
+     "pct": 0.689189,
+     "weight": 1
+    },
+    "trend": {
+     "value": 30,
+     "pct": 0.966667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "anti-design-grunge",
+   "name": "안티디자인·그런지",
+   "visualRules": [
+    "일부러 어긋난 정렬·겹친 글자",
+    "거친 스캔·찢긴 종이 질감",
+    "시스템 서체와 손글씨 혼용",
+    "읽기 흐름(본문)은 정돈 유지"
+   ],
+   "axes": {
+    "button": "B1",
+    "input": "I3",
+    "surface": "C2",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0",
+    "texture": "X2"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "public·dashboard·commerce 부적합",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §12 접근성 바닥선(본문 4.5:1·포커스 링) 우선 · §13 MUST 의미 없는 장식 금지",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/grunge",
+     "signal": 77,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 3,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://websitebuildingnow.com/top-2025-web-design-trends-2"
+     ]
+    }
+   ],
+   "rank_score": 0.402603,
+   "rank_parts": {
+    "opl": {
+     "value": 77,
+     "pct": 0.418919,
+     "weight": 1
+    },
+    "trend": {
+     "value": 3,
+     "pct": 0.288889,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "apple-style",
+   "name": "Apple-style product page 애플 스타일",
+   "visualRules": [
+    "거대한 제품 이미지와 짧은 제목",
+    "넓은 여백·검정/흰 교대 섹션",
+    "스크롤에 묶인 제품 연출",
+    "SF Pro 계열 산세리프"
+   ],
+   "axes": {
+    "header": "H1",
+    "radius": "R1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "sns 레인 allow-with-rules: §13 히어로는 실제 대상(제품)으로 여는 것과 일치, 축8 M3·reduced-motion",
+   "evidence": [
+    {
+     "url": "https://www.threads.com/@choi.openai/post/DapqYqCEeZ2",
+     "signal": "threads @choi.openai: likes 574, replies 8, reposts 205, shares 329 (기여 0.871198)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.475,
+   "rank_parts": {
+    "sns": {
+     "value": 0.383333,
+     "pct": 0.45,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "aurora-mesh-gradient",
+   "name": "오로라·메시 그라디언트",
+   "visualRules": [
+    "흐릿한 다색 메시·오로라 번짐 배경",
+    "어두운 바탕 위 발광 블롭",
+    "제목·버튼에 그라디언트",
+    "빈 자리 채우기 장식"
+   ],
+   "axes": {
+    "surface": "C1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "colorLogic": [
+     "K2"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "—",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: §13 표 보라→남색·보라→파랑 그라디언트 · §13 MUST 그라디언트 글자·빛나는 장식 금지 · §6 SHOULD 추상 블롭·메시 그라디언트 금지 · kill-ai-slop #01 · #06 / sns 레인 ban: §13 표 1행 보라→파랑 그라디언트 + kill-ai-slop 「atmospheric gradients」 — 대표 AI 티",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/gradients",
+     "signal": 196,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://gezar.dk/en/blog/web-design-trends-2026",
+     "signal": 2,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://youngmindinteractive.com/graphic-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/mesh-gradient",
+     "signal": 23,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://www.threads.com/@openclaw_ko/post/DVn9hzBEeUl",
+     "signal": "threads @openclaw_ko: likes 41, replies 5, reposts 15, shares 22 (기여 0.69224)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.instagram.com/p/Da6xkjfj1Ca/",
+     "signal": "instagram @hypejackmag: likes 1385, replies 0 (기여 0.450858)",
+     "type": "sns-post:instagram"
+    }
+   ],
+   "rank_score": 0.467926,
+   "rank_parts": {
+    "github": {
+     "value": 23,
+     "pct": 0.152174,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 196,
+     "pct": 0.635135,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.63,
+     "pct": 0.683333,
+     "weight": 1
+    },
+    "trend": {
+     "value": 2,
+     "pct": 0.211111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "bauhaus",
+   "name": "Bauhaus 바우하우스",
+   "visualRules": [
+    "원·사각·삼각 기하 도형",
+    "원색(빨강·파랑·노랑) + 검정",
+    "굵은 기하 산세리프",
+    "도형이 레이아웃 구조를 겸함"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C2",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [
+    "decor-geometric"
+   ],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "sns 레인 allow-with-rules: §13 MUST 구조 장치·장식은 내용 의미에 묶일 때만 — 도형 장식 남발 금지",
+   "evidence": [
+    {
+     "url": "https://www.instagram.com/p/DbRuxjXAego/",
+     "signal": "instagram @avrosh.hq: likes 1354, replies 9 (기여 0.406931, list:6)",
+     "type": "sns-post:instagram"
+    }
+   ],
+   "rank_score": 0.341667,
+   "rank_parts": {
+    "sns": {
+     "value": 0.233333,
+     "pct": 0.183333,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "bento-grid",
+   "name": "벤토 그리드",
+   "visualRules": [
+    "크기가 다른 칸을 4열 격자에 짜 맞춘 기능 요약",
+    "칸 크기로 위계, 한 칸만 가장 강하게",
+    "칸마다 실제 스크린샷·수치·데모",
+    "칸 간격 12~16px, 반경 16~24px"
+   ],
+   "axes": {
+    "button": "B3",
+    "input": "I1",
+    "surface": "C3",
+    "table": "T2",
+    "header": "H1",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "C3×S0 주의(평면화). K8 칸 색은 public 금지·dashboard 주의",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 「아이콘 카드 3장 대신 벤토」 · §6 MUST 칸마다 옅은 그라디언트 금지 · kill-ai-slop #18 icon tiles · #31 cards inside cards / sns 레인 allow-with-rules: §13 「아이콘 카드 3장 대신 벤토」 권장. 단 hover 확대 금지(A73)·스파크라인·빈 사각형 채움 금지(§13 MUST)",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/bento",
+     "signal": 23,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://paulmill.com/en/blog/web-design-trends-2026",
+     "signal": 18,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://gezar.dk/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/bento-grid",
+     "signal": 152,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=벤토그리드",
+     "signal": 342,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": null,
+     "signal": 1,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://saaslandingpage.com/tag/bento-style/",
+     "signal": 12,
+     "type": "gallery-count:saaslandingpage"
+    },
+    {
+     "url": "https://x.com/thisuxhq/status/2097690196095742442",
+     "signal": "x @thisuxhq: likes 1133, replies 18, reposts 63, views 38968 (기여 0.880543, image_only)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/AmirMushich/status/2102466407925485985",
+     "signal": "x @AmirMushich: likes 279, replies 15, reposts 26, views 19487 (기여 0.809676)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://www.threads.com/@rehan.designs/post/DU903SvDOO4",
+     "signal": "threads @rehan.designs: likes 134, replies 2, reposts 16, shares 60 (기여 0.799583)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://x.com/code_kartik/status/1994408080227078536",
+     "signal": "x @code_kartik: likes 152, replies 20, reposts 7, views 9596 (기여 0.75045)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/AetherMaker/status/2095560157295980550",
+     "signal": "x @AetherMaker: likes 288, replies 16, reposts 11, views 11399 (기여 0.741334)",
+     "type": "sns-post:x"
+    }
+   ],
+   "rank_score": 0.517609,
+   "rank_parts": {
+    "github": {
+     "value": 152,
+     "pct": 0.630435,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 342,
+     "pct": 0.208333,
+     "weight": 0.5
+    },
+    "naver_docs": {
+     "value": 1,
+     "pct": 0.083333,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 23,
+     "pct": 0.202703,
+     "weight": 1
+    },
+    "slp": {
+     "value": 12,
+     "pct": 0.166667,
+     "weight": 0.5
+    },
+    "sns": {
+     "value": 0.956667,
+     "pct": 0.983333,
+     "weight": 1
+    },
+    "trend": {
+     "value": 18,
+     "pct": 0.766667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "blueprint-technical",
+   "name": "블루프린트·기술 도면",
+   "visualRules": [
+    "도면 격자·치수선·주석",
+    "청사진 파랑 또는 흑백 선화",
+    "모노 라벨은 실제 측정값에만",
+    "격자 오버레이는 실제 도면 주제에만"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C2",
+    "table": "T4",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K4",
+     "K9"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "선 3:1",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6 MUST 줄무늬·격자 오버레이는 실제 설계도·측정 도구일 때만 · §13 MUST 산업 표지 의미",
+   "evidence": [
+    {
+     "url": "https://kittl.com/blogs/graphic-design-trends-2026",
+     "signal": 2,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://penji.co/graphic-design-trend"
+     ]
+    },
+    {
+     "url": "https://www.inscript.team/en/magazine/detail/design-trends-2026",
+     "signal": "trend article",
+     "type": "reference"
+    }
+   ],
+   "rank_score": 0.355556,
+   "rank_parts": {
+    "trend": {
+     "value": 2,
+     "pct": 0.211111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "broken-grid-asymmetric",
+   "name": "깨진 그리드·비대칭",
+   "visualRules": [
+    "요소가 격자 칸을 넘나들며 겹침",
+    "비대칭 여백과 엇갈린 이미지",
+    "768px 미만은 한 열",
+    "변주(DESIGN_VARIANCE) 7 이상"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M2"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "변주 7 이상 레시피에서만(A17 충돌)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 가운데 정렬 대신 · style_axes 축 11",
+   "evidence": [
+    {
+     "url": "https://elements.envato.com/learn/web-design-trends",
+     "signal": 9,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://proofmatcher.com/blogs/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/unusual-layout",
+     "signal": "siteinspire 분류 「Unusual Layout」 사이트 669곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.576667,
+   "rank_parts": {
+    "curation": {
+     "value": 669,
+     "pct": 0.75,
+     "weight": 0.5
+    },
+    "trend": {
+     "value": 9,
+     "pct": 0.566667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "brutalist-editorial-hybrid",
+   "name": "브루탈리즘(원형·에디토리얼 혼합)",
+   "visualRules": [
+    "시스템 기본에 가까운 날것의 구조, 노출된 격자선",
+    "초대형 글자와 빽빽한 모노 메타의 쌍봉 밀도",
+    "장식 없는 흑백 + 강조 빨강 한 점",
+    "비대칭 칸, 하드 엣지"
+   ],
+   "axes": {
+    "button": "B1",
+    "input": "I3",
+    "surface": "C2",
+    "table": "T4",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K4"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "C2·T4·H3 선 3:1 조건(requiresLineContrast). K4 텔레메트리 형광초록 면·글로우 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 구조 장치는 의미에 묶일 때만(스캔라인·42·커서 금지) · kill-ai-slop #34 tasteful terminal 경계 / sns 레인 allow-with-rules: §13 모노스페이스 장식 라벨·장식 메타 문자열 금지 규칙을 같이 적용",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/brutalism",
+     "signal": 176,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://paulmill.com/en/blog/web-design-trends-2026",
+     "signal": 7,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://gezar.dk/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/brutalism",
+     "signal": 109,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://framerwebsites.com/blog/ui-design-trends-2026",
+     "signal": "trend article: brutalist-editorial hybrid",
+     "type": "reference"
+    },
+    {
+     "url": "https://x.com/HexMethod/status/2094778015956062568",
+     "signal": "x @HexMethod: likes 112, replies 19, reposts 15, views 9552 (기여 0.665349)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/grillitype/status/2103110618626601028",
+     "signal": "x @grillitype: likes 202, replies 2, reposts 16, views 5702 (기여 0.491402)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/thepanshi_/status/2045748213869904269",
+     "signal": "x @thepanshi_: likes 69, replies 1, reposts 1, views 6356 (기여 0.280173)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://dribbble.com/tags/brutalism",
+     "signal": "Dribbble 태그 「brutalism」 샷 5,253개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.549762,
+   "rank_parts": {
+    "dribbble": {
+     "value": 5253,
+     "pct": 0.446429,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 109,
+     "pct": 0.5,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 176,
+     "pct": 0.594595,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.628333,
+     "pct": 0.65,
+     "weight": 1
+    },
+    "trend": {
+     "value": 7,
+     "pct": 0.5,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "card-ui",
+   "name": "Card UI 카드 UI",
+   "visualRules": [
+    "내용 단위를 카드로 분리",
+    "그리드·목록 배치",
+    "카드마다 이미지·제목·행동"
+   ],
+   "axes": {
+    "surface": "C1",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "commerce",
+    "dashboard"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "sns 레인 allow-with-rules: §13 표 6행 「모든 카드에 같은 rounded-2xl + 옅은 그림자」 금지 — 역할별 반경·대부분 여백만",
+   "evidence": [
+    {
+     "url": "https://www.instagram.com/p/DcghmZvmuRe/",
+     "signal": "instagram @tamal215529: likes 694, replies 18 (기여 0.576241)",
+     "type": "sns-post:instagram"
+    }
+   ],
+   "rank_score": 0.391667,
+   "rank_parts": {
+    "sns": {
+     "value": 0.283333,
+     "pct": 0.283333,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "claymorphism",
+   "name": "클레이모피즘",
+   "visualRules": [
+    "점토처럼 부푼 3D 카드: 안쪽+바깥 그림자",
+    "반경 16~24px, 파스텔 면",
+    "두꺼운 선 3~4px의 부드러운 아이콘",
+    "튀는 곡선은 주 연출 하나에만"
+   ],
+   "axes": {
+    "button": "B4",
+    "input": "I4",
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S3"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K6"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "S3는 R1과만(S3×R2 금지, S3×R0 계열 충돌)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: kill-ai-slop #19 max radius · #20 oversized drop shadow · style_axes E12 오버슈트 제한 / sns 레인 allow-with-rules: kill-ai-slop 「파스텔 아이콘 타일」과 겹침 — 아이콘 타일 반복 금지, 채움 색은 주제에서",
+   "evidence": [
+    {
+     "url": "https://gezar.dk/en/blog/web-design-trends-2026",
+     "signal": 1,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    },
+    {
+     "url": "https://github.com/topics/claymorphism",
+     "signal": 29,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=클레이모피즘",
+     "signal": 144,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://www.threads.com/@builder.insight.eric/post/Dakwv-0FoSL",
+     "signal": "threads @builder.insight.eric: likes 147, replies 237, reposts 68, shares 69 (기여 0.67974, list:4)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.instagram.com/p/DbRuxjXAego/",
+     "signal": "instagram @avrosh.hq: likes 1354, replies 9 (기여 0.406931, list:6)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.threads.com/@euiiiii.kim/post/DFiV7-8SZF-",
+     "signal": "threads @euiiiii.kim: likes 15, replies 6, reposts 2, shares 1 (기여 0.283212, list:5)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.361609,
+   "rank_parts": {
+    "github": {
+     "value": 29,
+     "pct": 0.195652,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 144,
+     "pct": 0.041667,
+     "weight": 0.5
+    },
+    "sns": {
+     "value": 0.708333,
+     "pct": 0.716667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 1,
+     "pct": 0.111111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "collage-scrapbook",
+   "name": "콜라주·스크랩북",
+   "visualRules": [
+    "오려 붙인 실사·종이 조각 겹침",
+    "테이프·찢긴 가장자리",
+    "기울기 1~3°",
+    "글자는 겹침 밖에 두어 대비 유지"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0",
+    "texture": "X3"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "§20-5 이미지 출처 정책(실사). 0 계열 대안 세트: B1·R0·S2(오프셋 그림자는 R0에서만)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 사진 위에 태그·알약 겹치기 금지 · §6-A 이미지 전략 하나 / sns 레인 allow-with-rules: §13 MUST 사진 위에 태그·알약 겹치지 않기, 스티커 금지 조항 — 콜라주 재료는 이미지 안에서만",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/collage",
+     "signal": 12,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 13,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://brainy.ink/paper/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://www.threads.com/@untitleddada/post/C97rs7BJZ8K",
+     "signal": "threads @untitleddada: likes 87, replies 11, reposts 14, shares 5 (기여 0.670104)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.39726,
+   "rank_parts": {
+    "opl": {
+     "value": 12,
+     "pct": 0.094595,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.3,
+     "pct": 0.316667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 13,
+     "pct": 0.677778,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "color-block-duotone",
+   "name": "컬러 블록·듀오톤",
+   "visualRules": [
+    "채도 0.1 이상 두 색(90° 이상)이 45·45·10",
+    "또는 칸마다 한 색 블록",
+    "두 색 사이 그라디언트 없음",
+    "칸 크기로 위계"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [
+    {
+     "button": "B3",
+     "surface": "C1",
+     "shadow": "S0"
+    }
+   ],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K7",
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "K8 × public 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §5-B K7·K8 · §13 표 보라 그라디언트 행",
+   "evidence": [
+    {
+     "url": "https://inscript.team/en/magazine/detail/design-trends-2026",
+     "signal": 3,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://kairapatrick.com/post/web-design-trends-for-2025"
+     ]
+    },
+    {
+     "url": "https://madegooddesigns.com/web-design-trends-2026",
+     "signal": "trend article",
+     "type": "reference"
+    }
+   ],
+   "rank_score": 0.394444,
+   "rank_parts": {
+    "trend": {
+     "value": 3,
+     "pct": 0.288889,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "corporate-trust",
+   "name": "코퍼릿·신뢰형",
+   "visualRules": [
+    "정돈된 격자, 인증·사례 중심",
+    "주색 하나와 무채색",
+    "표·수치는 출처와 함께",
+    "과한 모션 없음"
+   ],
+   "axes": {
+    "button": "B2",
+    "input": "I1",
+    "surface": "C1",
+    "table": "T2",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [
+    {
+     "button": "B3",
+     "input": "I1",
+     "surface": "C1",
+     "table": "T2",
+     "header": "H1",
+     "shadow": "S1"
+    }
+   ],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K1"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "detail",
+    "local",
+    "public",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow",
+   "verdictReason": "styles 레인 allow: §13 MUST 가짜 통계 행 금지(kill-ai-slop #29)만 유의",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/corporate",
+     "signal": 8,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://saaslandingpage.com/tag/corporate/",
+     "signal": 19,
+     "type": "gallery-count:saaslandingpage"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/corporate",
+     "signal": "siteinspire 분류 「Corporate」 사이트 204곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.320142,
+   "rank_parts": {
+    "curation": {
+     "value": 204,
+     "pct": 0.285714,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 8,
+     "pct": 0.067568,
+     "weight": 1
+    },
+    "slp": {
+     "value": 19,
+     "pct": 0.5,
+     "weight": 0.5
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "cyberpunk",
+   "name": "Cyberpunk 사이버펑크",
+   "visualRules": [
+    "거의 검정 바탕",
+    "형광 초록·분홍 네온",
+    "글리치·스캔라인"
+   ],
+   "axes": {},
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "ban",
+   "verdictReason": "sns 레인 ban: §13 표 3행 「거의 검정 + 형광 한 점」 + MUST 네온·글로우 + MUST 스캔라인 금지",
+   "evidence": [
+    {
+     "url": "https://www.threads.com/@openclaw_ko/post/DVn9hzBEeUl",
+     "signal": "threads @openclaw_ko: likes 41, replies 5, reposts 15, shares 22 (기여 0.69224)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.441667,
+   "rank_parts": {
+    "sns": {
+     "value": 0.35,
+     "pct": 0.383333,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "dark-mode-first",
+   "name": "다크 모드 우선(테크)",
+   "visualRules": [
+    "기본 테마가 다크, 바탕 L 0.12~0.22에 색조",
+    "제품 스크린샷이 주인공",
+    "액센트 하나, 면적 10% 이하",
+    "밝기 차로 층 구분, 그림자 약하게"
+   ],
+   "axes": {
+    "button": "B3",
+    "input": "I1",
+    "surface": "C1",
+    "table": "T2",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M2",
+    "defaultTheme": "dark",
+    "colorLogic": [
+     "K1"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "dashboard",
+    "portfolio",
+    "pwa",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "defaultTheme dark 1벌 이상(§5-B)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 「거의 검정 + 형광 초록·주홍 한 점」 · §5-B SHOULD 색조 다크 · kill-ai-slop #06 atmosphere glow / sns 레인 allow-with-rules: §13 표 3행 「거의 검정 + 형광 한 점」 회피 — 액센트 채도 낮추기",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/color/dark",
+     "signal": 1468,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 24,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://gezar.dk/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://saaslandingpage.com/tag/dark/",
+     "signal": 28,
+     "type": "gallery-count:saaslandingpage"
+    },
+    {
+     "url": "https://www.threads.com/@daon_k/post/DXFHGmhDcns",
+     "signal": "threads @daon_k: likes 308, replies 28, reposts 157, shares 224 (기여 0.9)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.threads.com/@bibibi.designer/post/DJabf22SO_k",
+     "signal": "threads @bibibi.designer: likes 39, replies 3, reposts 8, shares 18 (기여 0.58401)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.threads.com/@pitchtitan/post/DF10m0_Prnw",
+     "signal": "threads @pitchtitan: likes 22, replies 11, reposts 4, shares 0 (기여 0.514531)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://x.com/doja_dan/status/2091646676989587588",
+     "signal": "x @doja_dan: likes 31, replies 14, reposts 3, views 1271 (기여 0.332008)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://dribbble.com/tags/dark-mode",
+     "signal": "Dribbble 태그 「dark mode」 샷 29,828개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.820064,
+   "rank_parts": {
+    "dribbble": {
+     "value": 29828,
+     "pct": 0.696429,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 1468,
+     "pct": 0.959459,
+     "weight": 1
+    },
+    "slp": {
+     "value": 28,
+     "pct": 0.833333,
+     "weight": 0.5
+    },
+    "sns": {
+     "value": 0.86,
+     "pct": 0.916667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 24,
+     "pct": 0.922222,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "data-dense-dashboard",
+   "name": "데이터 밀집 대시보드",
+   "visualRules": [
+    "12열·간격 8px, 행 36~40px 조밀 표",
+    "숫자 tabular·오른쪽 정렬",
+    "강조색 하나 + 상태색",
+    "차트는 질문에 맞게(막대 일변도 금지)"
+   ],
+   "axes": {
+    "button": "B3",
+    "input": "I1",
+    "surface": "C1",
+    "table": "T1",
+    "header": "H4",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K1"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "dashboard"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "T1은 C1·C2만. H4 dashboard 전용. M3·C5 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 스파크라인·진행 링이 내용 대신 자리 채우기 금지 · kill-ai-slop #35 editorial dashboard · #28 all-caps card grid · §11-B",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/data-visualization",
+     "signal": 18,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://proofmatcher.com/blogs/web-design-trends-2026",
+     "signal": 12,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://framerwebsites.com/blog/ui-design-trends-2026"
+     ]
+    },
+    {
+     "url": null,
+     "signal": 3,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    }
+   ],
+   "rank_score": 0.436336,
+   "rank_parts": {
+    "naver_docs": {
+     "value": 3,
+     "pct": 0.5,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 18,
+     "pct": 0.148649,
+     "weight": 1
+    },
+    "trend": {
+     "value": 12,
+     "pct": 0.644444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "dopamine-colorful",
+   "name": "도파민·고채도 컬러",
+   "visualRules": [
+    "유채색 면이 바탕·섹션을 칠함",
+    "2~4개 색상각, 한 칸만 최고 채도",
+    "면마다 글자 대비 측정",
+    "두 색 사이 그라디언트 없음"
+   ],
+   "axes": {
+    "button": "B3",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [
+    {
+     "button": "B4",
+     "surface": "C1",
+     "radius": "R1",
+     "shadow": "S1"
+    }
+   ],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K6",
+     "K7",
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "K8 × public 금지 · K6/K7 × dashboard 주의",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §5-B K6~K8 · §13 표 보라 그라디언트 행(듀오톤 그라디언트 금지)",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/color/colorful",
+     "signal": 970,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 19,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://elements.envato.com/learn/web-design-trends"
+     ]
+    },
+    {
+     "url": "https://dribbble.com/tags/colorful",
+     "signal": "Dribbble 태그 「colorful」 샷 86,970개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/colourful",
+     "signal": "siteinspire 분류 「Colourful」 사이트 267곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.689662,
+   "rank_parts": {
+    "curation": {
+     "value": 267,
+     "pct": 0.428571,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 86970,
+     "pct": 0.875,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 970,
+     "pct": 0.851351,
+     "weight": 1
+    },
+    "trend": {
+     "value": 19,
+     "pct": 0.811111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "editorial-magazine",
+   "name": "에디토리얼·매거진",
+   "visualRules": [
+    "대형 제목과 여러 단 본문, 드롭캡·풀쿼트",
+    "사진을 크게, 캡션은 사진 밖 아래",
+    "헤어라인으로 단을 나눔, 액센트 <5%",
+    "본문 숫자 oldstyle, 데이터 숫자 tabular"
+   ],
+   "axes": {
+    "button": "B2",
+    "input": "I1",
+    "surface": "C1",
+    "table": "T3",
+    "header": "H5",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K5",
+     "K3"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "local",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "dashboard 금지(kill-ai-slop #35 editorial dashboard)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 세리프 디스플레이는 편집·출판 성격을 한 줄로 설명할 때만 · kill-ai-slop #07 serif-italic · #10 kicker above every heading / sns 레인 allow-with-rules: §13 MUST 세리프 디스플레이는 편집·출판 성격일 때만 — 이 양식은 그 조건을 만족. 제목 이탤릭 전체 금지(SHOULD)",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/editorial",
+     "signal": 31,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://metabole.studio/en/blog/web-design-trends-2026",
+     "signal": 15,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://project-pixel.com/insights/web-design-trends-global-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/editorial-design",
+     "signal": 209,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://www.instagram.com/p/Dbhtr-EmNbE/",
+     "signal": "instagram @frd_tutorial: likes 1643, replies 163 (기여 0.765558)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.instagram.com/p/DYfUH_SDSfS/",
+     "signal": "instagram @grafikcem: likes 1996, replies 296 (기여 0.748543, bait:lexicon)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://dribbble.com/tags/editorial",
+     "signal": "Dribbble 태그 「editorial」 샷 53,300개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/editorial",
+     "signal": "siteinspire 분류 「Editorial」 사이트 267곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.544358,
+   "rank_parts": {
+    "curation": {
+     "value": 267,
+     "pct": 0.428571,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 53300,
+     "pct": 0.839286,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 209,
+     "pct": 0.673913,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 31,
+     "pct": 0.283784,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.616667,
+     "pct": 0.616667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 15,
+     "pct": 0.711111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "flat-design",
+   "name": "플랫 디자인",
+   "visualRules": [
+    "그림자·질감 없는 평면 도형",
+    "명확한 색 면으로 구획",
+    "단순 아이콘 한 패밀리",
+    "색 대비로 위계"
+   ],
+   "axes": {
+    "button": "B3",
+    "input": "I1",
+    "surface": "C1",
+    "table": "T2",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K6"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "commerce",
+    "local",
+    "public",
+    "pwa",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow",
+   "verdictReason": "styles 레인 allow: §13 해당 없음(아이콘 틴트 타일은 kill-ai-slop #18·#25) / sns 레인 allow: §13 해당 없음",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/flat-design",
+     "signal": 802,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://locallylost.com/guides/human-centric-web-design-trends-2026",
+     "signal": 4,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://solveshape.com/blog/ui-ux-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/flat-design",
+     "signal": 88,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": null,
+     "signal": 7,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.threads.com/@euiiiii.kim/post/DFiV7-8SZF-",
+     "signal": "threads @euiiiii.kim: likes 15, replies 6, reposts 2, shares 1 (기여 0.283212, list:5)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://dribbble.com/tags/flat-design",
+     "signal": "Dribbble 태그 「flat design」 샷 39,054개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.470337,
+   "rank_parts": {
+    "dribbble": {
+     "value": 39054,
+     "pct": 0.767857,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 88,
+     "pct": 0.413043,
+     "weight": 0.5
+    },
+    "naver_docs": {
+     "value": 7,
+     "pct": 0.708333,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 802,
+     "pct": 0.824324,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.191667,
+     "pct": 0.1,
+     "weight": 1
+    },
+    "trend": {
+     "value": 4,
+     "pct": 0.366667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "frutiger-aero",
+   "name": "프루티거 에어로",
+   "visualRules": [
+    "광택 버블·물방울·하늘 그라디언트",
+    "렌즈 플레어·유리 반사",
+    "초록·파랑 자연 사진 합성",
+    "2000년대 후반 OS 감성"
+   ],
+   "axes": {
+    "surface": "C5",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [],
+   "archetypesExcluded": [],
+   "compatNote": "—",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: §13 MUST 빛나는 장식(후광·외곽광) 금지 · kill-ai-slop #06 gradients as atmosphere · #19 glassmorphism",
+   "evidence": [
+    {
+     "url": "https://kittl.com/blogs/graphic-design-trends-2026",
+     "signal": 2,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://penji.co/graphic-design-trend"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/frutiger-aero",
+     "signal": 45,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=프루티거 에어로",
+     "signal": 552,
+     "type": "naver-blog-total(coined term)"
+    }
+   ],
+   "rank_score": 0.356904,
+   "rank_parts": {
+    "github": {
+     "value": 45,
+     "pct": 0.26087,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 552,
+     "pct": 0.458333,
+     "weight": 0.5
+    },
+    "trend": {
+     "value": 2,
+     "pct": 0.211111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "glassmorphism",
+   "name": "글래스모피즘",
+   "visualRules": [
+    "반투명 유리 패널 + 배경 블러",
+    "흰 1px 안쪽 테두리",
+    "뒤에 채도 높은 블롭·그라디언트",
+    "카드·내비·모달 전부 유리"
+   ],
+   "axes": {
+    "surface": "C5",
+    "header": "H2",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "C5 × dashboard·public 금지. 스타일 전체로는 등록 안 함 — C5 축 값(고정 크롬·모달 배경 한 곳)만 유지",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: §13 표 「모든 내비·모달에 글래스모피즘 블러」 · kill-ai-slop #19 max radius + glassmorphism · §6 MUST backdrop-filter는 고정 요소·모달 배경만 / sns 레인 allow-with-rules: §13 「모든 내비·모달에 글래스모피즘」 — 의도 있는 한 곳만, C5 조건(대시보드·공공 제외, reduced-transparency 대체) / 판정이 갈려 엄격한 쪽(ban)을 쓴다",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/glassmorphism",
+     "signal": 48,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://elements.envato.com/learn/web-design-trends",
+     "signal": 19,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://paulmill.com/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/glassmorphism",
+     "signal": 2904,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=글래스모피즘",
+     "signal": 1347,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": null,
+     "signal": 3,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.instagram.com/p/DU-9up2lOlB/",
+     "signal": "instagram @websitebrainy: likes 4323, replies 53 (기여 0.806804)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.instagram.com/p/DbRuxjXAego/",
+     "signal": "instagram @avrosh.hq: likes 1354, replies 9 (기여 0.406931, list:6)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.threads.com/@euiiiii.kim/post/DFiV7-8SZF-",
+     "signal": "threads @euiiiii.kim: likes 15, replies 6, reposts 2, shares 1 (기여 0.283212, list:5)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://dribbble.com/tags/glassmorphism",
+     "signal": "Dribbble 태그 「glassmorphism」 샷 10,983개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.641588,
+   "rank_parts": {
+    "dribbble": {
+     "value": 10983,
+     "pct": 0.553571,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 2904,
+     "pct": 0.978261,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 1347,
+     "pct": 0.625,
+     "weight": 0.5
+    },
+    "naver_docs": {
+     "value": 3,
+     "pct": 0.5,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 48,
+     "pct": 0.364865,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.741667,
+     "pct": 0.783333,
+     "weight": 1
+    },
+    "trend": {
+     "value": 19,
+     "pct": 0.811111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "glitch",
+   "name": "글리치",
+   "visualRules": [
+    "RGB 채널 어긋남·데이터 손상 효과",
+    "정지 이미지로 한 곳에만",
+    "깜빡임 3회/초 이하",
+    "본문에는 적용 안 함"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C2",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "—",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 의미 없는 스캔라인 금지 · §8-7 깜빡임·reduced-motion · §12",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/glitch",
+     "signal": 30,
+     "type": "gallery-count:onepagelove"
+    }
+   ],
+   "rank_score": 0.378378,
+   "rank_parts": {
+    "opl": {
+     "value": 30,
+     "pct": 0.256757,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "grain-texture",
+   "name": "그레인·질감",
+   "visualRules": [
+    "필름 그레인·노이즈를 큰 면에 한 겹",
+    "밴딩 제거와 촉감이 목적",
+    "밝은 UI 기본값으로 쓰지 않음",
+    "pointer-events none, 화면 전체 한 번"
+   ],
+   "axes": {
+    "surface": "C1",
+    "shadow": "S0",
+    "texture": "X1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "이미 질감 있는 테마에 중복 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6 SHOULD 그레인은 어두운 큰 면·그라디언트 면에만 한 겹 / sns 레인 allow-with-rules: §8-6 역동 기법의 그레인은 허용, 그라디언트 배경을 정당화하는 데 쓰지 않는다",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/texture",
+     "signal": 1207,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://gezar.dk/en/blog/web-design-trends-2026",
+     "signal": 12,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://project-pixel.com/insights/web-design-trends-global-2026"
+     ]
+    },
+    {
+     "url": "https://www.threads.com/@hmin0o/post/DXb7B2eDxtb",
+     "signal": "threads @hmin0o: likes 99, replies 6, reposts 39, shares 22 (기여 0.80401)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://dribbble.com/tags/grain",
+     "signal": "Dribbble 태그 「grain」 샷 9,858개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.611926,
+   "rank_parts": {
+    "dribbble": {
+     "value": 9858,
+     "pct": 0.517857,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 1207,
+     "pct": 0.905405,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.366667,
+     "pct": 0.416667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 12,
+     "pct": 0.644444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "hand-drawn-doodle",
+   "name": "손그림·두들",
+   "visualRules": [
+    "사람이 그린 선 일러스트·밑줄·동그라미",
+    "선 굵기와 팔레트를 하나로",
+    "정돈된 격자 위에 얹는 포인트",
+    "손글씨 서체는 짧은 주석에만"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "local",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6 MUST 모델이 즉석으로 그린 SVG 금지 · kill-ai-slop #24 AI-drawn SVG icons · #09 decorative strikes & highlights / sns 레인 allow-with-rules: kill-ai-slop 「AI-drawn SVG icons」 — 실제 손그림 스캔·일러스트만",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/hand-drawn",
+     "signal": 17,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 17,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://webflow.com/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": null,
+     "signal": 4,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.threads.com/@cozy_breeze_/post/DcMKlBSj2qc",
+     "signal": "threads @cozy_breeze_: likes 5, replies 6, reposts 4, shares 0 (기여 0.68276)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.threads.com/@bibibi.designer/post/DLqnMcCzhvb",
+     "signal": "threads @bibibi.designer: likes 39, replies 1, reposts 15, shares 24 (기여 0.635156)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.threads.com/@alcohol_fully/post/DUovK0Dk4gC",
+     "signal": "threads @alcohol_fully: likes 13, replies 2, reposts 5, shares 5 (기여 0.437552)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.threads.com/@sadi_build/post/DbUSQ26AcN5",
+     "signal": "threads @sadi_build: likes 10, replies 25, reposts 1, shares 0 (기여 0.3375)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://dribbble.com/tags/doodle",
+     "signal": "Dribbble 태그 「doodle」 샷 30,010개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.543538,
+   "rank_parts": {
+    "dribbble": {
+     "value": 30010,
+     "pct": 0.732143,
+     "weight": 0.2
+    },
+    "naver_docs": {
+     "value": 4,
+     "pct": 0.625,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 17,
+     "pct": 0.121622,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.73,
+     "pct": 0.75,
+     "weight": 1
+    },
+    "trend": {
+     "value": 17,
+     "pct": 0.744444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "handmade-imperfect",
+   "name": "핸드메이드·불완전미",
+   "visualRules": [
+    "사람 손이 닿은 흔적: 손글씨 주석·실제 작업 사진",
+    "살짝 어긋난 정렬",
+    "AI 매끈함의 반대",
+    "가짜 흠집 장식 금지"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0",
+    "texture": "X2"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "local",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §14-C 문구 교정 · §13 MUST 의미 없는 장식 금지 · §6-A 실사 필수 칸",
+   "evidence": [
+    {
+     "url": "https://webflow.com/blog/web-design-trends-2026",
+     "signal": 21,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://metabole.studio/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://locallylost.com/guides/human-centric-web-design-trends-2026",
+     "signal": "trend article",
+     "type": "reference"
+    },
+    {
+     "url": "https://dribbble.com/tags/handmade",
+     "signal": "Dribbble 태그 「handmade」 샷 22,053개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.696429,
+   "rank_parts": {
+    "dribbble": {
+     "value": 22053,
+     "pct": 0.660714,
+     "weight": 0.2
+    },
+    "trend": {
+     "value": 21,
+     "pct": 0.9,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "horizontal-layout",
+   "name": "가로 스크롤 레이아웃",
+   "visualRules": [
+    "섹션이 가로로 이어지는 갤러리형",
+    "세로 스크롤을 가로 이동으로 변환",
+    "키보드·스크롤바 대체 필요",
+    "모바일은 세로 전환"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M3"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "M3 × dashboard·public 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §12 접근성(키보드 이동) · §8-5 스크롤 가로채기 주의",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/horizontal-layout",
+     "signal": 292,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://dribbble.com/tags/horizontal-scroll",
+     "signal": "Dribbble 태그 「horizontal scroll」 샷 326개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/horizontal-layout",
+     "signal": "siteinspire 분류 「Horizontal Layout」 사이트 49곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.494852,
+   "rank_parts": {
+    "curation": {
+     "value": 49,
+     "pct": 0.107143,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 326,
+     "pct": 0.196429,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 292,
+     "pct": 0.743243,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "illustrative",
+   "name": "일러스트 중심",
+   "visualRules": [
+    "커스텀 일러스트가 히어로·섹션의 주 매체",
+    "선·팔레트·원근 한 결",
+    "추상 개념·과정 설명용",
+    "실존 인물·상품은 사진"
+   ],
+   "axes": {
+    "button": "B3",
+    "surface": "C1",
+    "radius": "R1",
+    "shadow": "S0"
+   },
+   "axesVariants": [
+    {
+     "button": "B4",
+     "surface": "C1",
+     "radius": "R1",
+     "shadow": "S0"
+    }
+   ],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "local",
+    "pwa",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6-A 매체는 콘텐츠 성격으로 · kill-ai-slop #24 · §6 MUST AI 즉석 SVG 금지",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/illustrative",
+     "signal": 1659,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://webflow.com/blog/web-design-trends-2026",
+     "signal": 33,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://elements.envato.com/learn/web-design-trends"
+     ]
+    },
+    {
+     "url": null,
+     "signal": 14,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://dribbble.com/tags/illustration",
+     "signal": "Dribbble 태그 「illustration」 샷 3,342,362개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/illustrative",
+     "signal": "siteinspire 분류 「Illustrative」 사이트 204곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.773226,
+   "rank_parts": {
+    "curation": {
+     "value": 204,
+     "pct": 0.285714,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 3342362,
+     "pct": 0.982143,
+     "weight": 0.2
+    },
+    "naver_docs": {
+     "value": 14,
+     "pct": 0.958333,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 1659,
+     "pct": 0.986486,
+     "weight": 1
+    },
+    "trend": {
+     "value": 33,
+     "pct": 0.988889,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "isometric",
+   "name": "아이소메트릭",
+   "visualRules": [
+    "30° 등각 투영 일러스트로 시스템·공간 설명",
+    "제한 팔레트, 일정한 광원",
+    "한 섹션 주인공 그래픽",
+    "UI 컨트롤은 평면"
+   ],
+   "axes": {
+    "button": "B3",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6 MUST AI 즉석 SVG 금지 · §6-A 일러스트 결 통일 / sns 레인 allow-with-rules: §11 성능(LCP·정지 이미지 대체), §13 주제 세계의 실제 대상일 때만",
+   "evidence": [
+    {
+     "url": null,
+     "signal": 0,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    },
+    {
+     "url": "https://github.com/topics/isometric",
+     "signal": 468,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://x.com/MengTo/status/2103491024287084744",
+     "signal": "x @MengTo: likes 819, replies 39, reposts 67, views 45228 (기여 0.926132)",
+     "type": "sns-post:x"
+    }
+   ],
+   "rank_score": 0.405383,
+   "rank_parts": {
+    "github": {
+     "value": 468,
+     "pct": 0.804348,
+     "weight": 0.5
+    },
+    "sns": {
+     "value": 0.4,
+     "pct": 0.483333,
+     "weight": 1
+    },
+    "trend": {
+     "value": 0,
+     "pct": 0.033333,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "kinetic-typography",
+   "name": "키네틱 타이포그래피",
+   "visualRules": [
+    "글자 자체가 움직임의 주인공(가변 굵기·폭 보간, 글자 단위 등장)",
+    "한 장면 하나, 나머지는 정지",
+    "reduced-motion에서 정지 타이포로 대체",
+    "본문은 움직이지 않음"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0",
+    "display": "D3"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M3"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "M3 × dashboard·public 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §8-1 모션 예산·§8-7 reduced-motion · kill-ai-slop #26 springy hover · §13 MUST 빛나는 글자 금지",
+   "evidence": [
+    {
+     "url": "https://elements.envato.com/learn/web-design-trends",
+     "signal": 7,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://gezar.dk/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/kinetic-typography",
+     "signal": 70,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=키네틱 타이포그래피",
+     "signal": 2019,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://dribbble.com/tags/kinetic-typography",
+     "signal": "Dribbble 태그 「kinetic typography」 샷 1,630개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.508354,
+   "rank_parts": {
+    "dribbble": {
+     "value": 1630,
+     "pct": 0.339286,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 70,
+     "pct": 0.326087,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 2019,
+     "pct": 0.791667,
+     "weight": 0.5
+    },
+    "trend": {
+     "value": 7,
+     "pct": 0.5,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "kitsch",
+   "name": "Kitsch / newtro 키치·뉴트로",
+   "visualRules": [
+    "한국 옛 간판·을지로 감성 서체",
+    "촌스러운 원색 조합을 의도적으로",
+    "스티커·도장 요소"
+   ],
+   "axes": {
+    "radius": "R0",
+    "shadow": "S2"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "commerce",
+    "detail",
+    "local"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "sns 레인 allow-with-rules: §13 장식은 의미에 묶일 때만, 알약·스티커 남발 금지",
+   "evidence": [
+    {
+     "url": "https://www.instagram.com/p/DYy4R6_lJak/",
+     "signal": "instagram @clipartkorea_official: likes 472, replies 695 (기여 0.757166, bait:lexicon)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.instagram.com/p/CkFbOFirJSx/",
+     "signal": "instagram @d.hara_official: likes 96, replies 5 (기여 0.44119)",
+     "type": "sns-post:instagram"
+    }
+   ],
+   "rank_score": 0.525,
+   "rank_parts": {
+    "sns": {
+     "value": 0.55,
+     "pct": 0.55,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "krds-public",
+   "name": "KRDS 정부 누리집",
+   "visualRules": [
+    "범정부 디자인 토큰: 주색 하나 체계",
+    "큰 글자·넓은 히트 영역·WCAG 명시",
+    "표준 헤더(정부 상징·검색·메뉴)",
+    "모션 최소"
+   ],
+   "axes": {
+    "button": "B3",
+    "input": "I1",
+    "surface": "C1",
+    "table": "T2",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K1"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "public"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "public 원형 기본값. K8·M3·C5 금지",
+   "verdict": "allow",
+   "verdictReason": "styles 레인 allow: §13 해당 없음 · §21-8 public",
+   "evidence": [
+    {
+     "url": "https://github.com/topics/krds",
+     "signal": 6,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=KRDS",
+     "signal": 502,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://www.krds.go.kr/",
+     "signal": "공식 디자인 시스템",
+     "type": "reference"
+    }
+   ],
+   "rank_score": 0.370924,
+   "rank_parts": {
+    "github": {
+     "value": 6,
+     "pct": 0.108696,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 502,
+     "pct": 0.375,
+     "weight": 0.5
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "liquid-glass",
+   "name": "리퀴드 글래스",
+   "visualRules": [
+    "굴절·렌즈 왜곡이 있는 유리 크롬(Apple iOS 26 계열)",
+    "콘텐츠 위에 떠 있는 탭바·툴바",
+    "움직임에 따라 반사광 변화",
+    "재질 층을 크롬에만 두는 것이 원칙"
+   ],
+   "axes": {
+    "surface": "C5",
+    "header": "H2",
+    "radius": "R1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [
+    "C5-lens"
+   ],
+   "archetypes": [
+    "brand",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "글래스모피즘과 같음 — C5 축 값의 크롬 전용 사용만 허용",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: §13 표 글래스모피즘 행 · kill-ai-slop #19 · §6 MUST reduced-transparency 대체 필요 / sns 레인 allow-with-rules: §13 글래스 규칙과 같음 + §11 성능(SVG displacement 필터는 한 곳), §12 반투명 위 글자 대비 / 판정이 갈려 엄격한 쪽(ban)을 쓴다",
+   "evidence": [
+    {
+     "url": "https://elements.envato.com/learn/web-design-trends",
+     "signal": 4,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://stan.vision/journal/ux-ui-trends-shaping-digital-products"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/liquid-glass",
+     "signal": 828,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=리퀴드 글래스",
+     "signal": 7800,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://www.instagram.com/p/DdTD4xPF-I-/",
+     "signal": "instagram @noahelhadedy: likes 1131, replies 252 (기여 0.682854, bait:lexicon)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://dribbble.com/tags/liquid-glass",
+     "signal": "Dribbble 태그 「liquid glass」 샷 845개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.524333,
+   "rank_parts": {
+    "dribbble": {
+     "value": 845,
+     "pct": 0.303571,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 828,
+     "pct": 0.891304,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 7800,
+     "pct": 0.958333,
+     "weight": 0.5
+    },
+    "sns": {
+     "value": 0.316667,
+     "pct": 0.35,
+     "weight": 1
+    },
+    "trend": {
+     "value": 4,
+     "pct": 0.366667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "material-design",
+   "name": "Material Design / Material You",
+   "visualRules": [
+    "높이(elevation) 단계로 층 구분",
+    "톤 표면(주 색에서 파생한 배경)",
+    "FAB·리플 피드백",
+    "큰 반경 컨테이너"
+   ],
+   "axes": {
+    "button": "B4",
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "dashboard",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "sns 레인 allow-with-rules: §13 SHOULD UI 키트 기본 테마 그대로 납품 금지 — 반경·색·그림자 토큰을 바꾼다",
+   "evidence": [
+    {
+     "url": "https://www.threads.com/@motionsense_ceo/post/DMXuUvzySVG",
+     "signal": "threads @motionsense_ceo: likes 3, replies 1, reposts 0, shares 0 (기여 0.155781)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.258333,
+   "rank_parts": {
+    "sns": {
+     "value": 0.15,
+     "pct": 0.016667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "maximalism",
+   "name": "맥시멀리즘",
+   "visualRules": [
+    "색·패턴·서체를 겹겹이, 빈 곳이 거의 없음",
+    "3~4개 색상각 묶음, 칸 크기로 위계",
+    "겹침과 회전으로 깊이",
+    "그래도 본문 대비 7:1 유지"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C6",
+    "radius": "R0",
+    "shadow": "S2",
+    "texture": "X3"
+   },
+   "axesVariants": [
+    {
+     "button": "B4",
+     "surface": "C3",
+     "radius": "R1",
+     "shadow": "S1",
+     "texture": "X3"
+    }
+   ],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "K8 × public 금지. 반경 계열은 하나만",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 장식은 내용 의미에 묶일 때만 · §5-B K8 무지개 순서 금지",
+   "evidence": [
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 15,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://select-interactive.com/news/web-design-trends-2026-that-survive-performance-and-ai-agents"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/maximalism",
+     "signal": 3,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": null,
+     "signal": 2,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.canva.com/newsroom/news/design-trends-2026",
+     "signal": "trend article",
+     "type": "reference"
+    },
+    {
+     "url": "https://dribbble.com/tags/maximalism",
+     "signal": "Dribbble 태그 「maximalism」 샷 278개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.453529,
+   "rank_parts": {
+    "dribbble": {
+     "value": 278,
+     "pct": 0.160714,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 3,
+     "pct": 0.043478,
+     "weight": 0.5
+    },
+    "naver_docs": {
+     "value": 2,
+     "pct": 0.291667,
+     "weight": 0.25
+    },
+    "trend": {
+     "value": 15,
+     "pct": 0.711111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "memphis",
+   "name": "멤피스",
+   "visualRules": [
+    "기하 도형·지그재그·점무늬 흩뿌림",
+    "원색+파스텔 대비",
+    "굵은 윤곽선",
+    "도형은 가장자리 장식에만"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C6",
+    "radius": "R0",
+    "shadow": "S2"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "변형 벌 {\"button\":\"B4\",\"surface\":\"C6\",\"radius\":\"R1\",\"shadow\":\"S1\"} 버림 — 반경 계열 충돌: zero(C6) × large(B4·R1) — DESIGN §6 각진 것과 둥근 것을 섞지 않는다"
+   ],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "local"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "반경 계열 하나만",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 장식은 의미에 묶일 때만 · kill-ai-slop #15 emoji/confetti 계열",
+   "evidence": [
+    {
+     "url": "https://stan.vision/journal/ux-ui-trends-shaping-digital-products",
+     "signal": 1,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    },
+    {
+     "url": "https://github.com/topics/memphis-design",
+     "signal": 3,
+     "type": "github-topic-repos"
+    }
+   ],
+   "rank_score": 0.25314,
+   "rank_parts": {
+    "github": {
+     "value": 3,
+     "pct": 0.043478,
+     "weight": 0.5
+    },
+    "trend": {
+     "value": 1,
+     "pct": 0.111111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "micro-interaction",
+   "name": "Micro-interactions 마이크로 인터랙션",
+   "visualRules": [
+    "버튼·토글·입력의 작은 피드백 모션",
+    "속성별 길이·이징",
+    "상태 변화를 설명"
+   ],
+   "axes": {},
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "dashboard",
+    "pwa",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow",
+   "verdictReason": "sns 레인 allow: §13 「transition: all 복붙」 대신 속성별 토큰 — 권장 쪽",
+   "evidence": [
+    {
+     "url": "https://www.threads.com/@depaier/post/DNqaNXeT8HP",
+     "signal": "threads @depaier: likes 9, replies 2, reposts 9, shares 6 (기여 0.480885)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.358333,
+   "rank_parts": {
+    "sns": {
+     "value": 0.25,
+     "pct": 0.216667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "minimalism",
+   "name": "미니멀리즘",
+   "visualRules": [
+    "여백이 주 재료, 요소 수 최소",
+    "무채색 + 강조 하나",
+    "헤어라인과 여백으로 구분",
+    "리듬 있는 간격(균일 간격 아님)"
+   ],
+   "axes": {
+    "button": "B2",
+    "input": "I2",
+    "surface": "C1",
+    "table": "T3",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K3"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "local",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "§5-B 거의 흰 바탕 골격 5/10벌 상한",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 가운데 히어로→카드 3장 · §13 표 섹션 간격 균일 · kill-ai-slop #32 one gap everywhere · #33 Inter everywhere / sns 레인 allow: §13 해당 없음(「무채색 1 + 주제 액센트 1」이 §13 대안 그대로). 단 B2·I2(중간 계열)와 R1(큰 계열)은 섞어도 되지만 R은 R1 12px로 고정 / 판정이 갈려 엄격한 쪽(allow-with-rules)을 쓴다",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/minimal",
+     "signal": 1001,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 28,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://webflow.com/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/minimalism",
+     "signal": 431,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": null,
+     "signal": 10,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.instagram.com/p/DUTyPk8CCHI/",
+     "signal": "instagram @the_prodesign: likes 6152, replies 67 (기여 0.896834)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://x.com/AlexCristache/status/2103878684016812422",
+     "signal": "x @AlexCristache: likes 40, replies 4, reposts 7, views 1739 (기여 0.533699)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/HexMethod/status/2097548377747775660",
+     "signal": "x @HexMethod: likes 60, replies 15, reposts 12, views 3339 (기여 0.489112)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://www.instagram.com/p/DY34v4eD1LO/",
+     "signal": "instagram @ux_sometimes: likes 274, replies 13 (기여 0.408191)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://dribbble.com/tags/minimalism",
+     "signal": "Dribbble 태그 「minimalism」 샷 51,437개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/minimal",
+     "signal": "siteinspire 분류 「Minimal」 사이트 838곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.801603,
+   "rank_parts": {
+    "curation": {
+     "value": 838,
+     "pct": 0.892857,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 51437,
+     "pct": 0.803571,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 431,
+     "pct": 0.76087,
+     "weight": 0.5
+    },
+    "naver_docs": {
+     "value": 10,
+     "pct": 0.833333,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 1001,
+     "pct": 0.878378,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.843333,
+     "pct": 0.85,
+     "weight": 1
+    },
+    "trend": {
+     "value": 28,
+     "pct": 0.944444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "modular-line-grid",
+   "name": "모듈러 선 구획",
+   "visualRules": [
+    "1px 선으로 칸을 나눈 모듈 격자",
+    "카드 대신 gap-px 격자",
+    "모노 메타와 큰 제목",
+    "선 대비 3:1"
+   ],
+   "axes": {
+    "button": "B1",
+    "input": "I3",
+    "surface": "C2",
+    "table": "T4",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K3",
+     "K4"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "C2·T4·H3 requiresLineContrast 3 (운영자 판정 2026-09-26)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6 MUST 선 구획 예외 조건 · §20-2 예외",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/modular",
+     "signal": 58,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://inscript.team/en/magazine/detail/design-trends-2026",
+     "signal": 1,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    },
+    {
+     "url": "https://onepagelove.com/style/grid-layout",
+     "signal": "OPL 20",
+     "type": "reference"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/grid-layout",
+     "signal": "siteinspire 분류 「Grid Layout」 사이트 672곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.403919,
+   "rank_parts": {
+    "curation": {
+     "value": 672,
+     "pct": 0.821429,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 58,
+     "pct": 0.391892,
+     "weight": 1
+    },
+    "trend": {
+     "value": 1,
+     "pct": 0.111111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "monochrome",
+   "name": "모노크롬·흑백",
+   "visualRules": [
+    "흑백 또는 한 색상의 명도 단계만",
+    "위계는 크기·굵기·명도",
+    "사진도 흑백 처리",
+    "상태색만 예외"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K9"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "0 계열 대안 세트: B1·I3·C2·H3·R0(선 3:1)",
+   "verdict": "allow",
+   "verdictReason": "styles 레인 allow: §13 해당 없음(형광 한 점 추가 시 §13 표 3행) / sns 레인 allow: §13 해당 없음",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/color/black-and-white",
+     "signal": 169,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://project-pixel.com/insights/web-design-trends-global-2026",
+     "signal": 4,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://kittl.com/blogs/graphic-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://x.com/SherwinWilliams/status/1143138341338136576",
+     "signal": "x @SherwinWilliams: likes 16, replies 1, reposts 5 (기여 0.575208)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/black-and-white",
+     "signal": "siteinspire 분류 「Black & White」 사이트 451곳",
+     "type": "siteinspire-category-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/monochrome",
+     "signal": "siteinspire 분류 「Monochrome」 사이트 100곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.446668,
+   "rank_parts": {
+    "curation": {
+     "value": 551,
+     "pct": 0.678571,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 169,
+     "pct": 0.554054,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.266667,
+     "pct": 0.25,
+     "weight": 1
+    },
+    "trend": {
+     "value": 4,
+     "pct": 0.366667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "narrow-document",
+   "name": "좁은 단 문서형",
+   "visualRules": [
+    "한 열 60~75자 본문 폭",
+    "문서처럼 읽히는 흐름",
+    "장식 최소, 링크·주석 중심",
+    "편지·선언문·블로그형"
+   ],
+   "axes": {
+    "button": "B2",
+    "input": "I2",
+    "surface": "C1",
+    "table": "T3",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K3"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow",
+   "verdictReason": "styles 레인 allow: §13 해당 없음",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/narrow",
+     "signal": 113,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://dribbble.com/tags/minimal-blog",
+     "signal": "Dribbble 태그 「minimal blog」 샷 213개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.474947,
+   "rank_parts": {
+    "dribbble": {
+     "value": 213,
+     "pct": 0.089286,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 113,
+     "pct": 0.527027,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "neo-brutalism",
+   "name": "뉴브루탈리즘 (Neo-brutalism)",
+   "visualRules": [
+    "굵은 잉크 테두리(2~3px)와 블러 0 단색 오프셋 그림자",
+    "고채도 평면 색 블록 2~4개, 그라디언트 없음",
+    "두꺼운 그로테스크 디스플레이, 버튼·카드 모서리 0",
+    "hover 때 그림자 오프셋이 줄며 눌리는 반응"
+   ],
+   "axes": {
+    "button": "B1",
+    "input": "I3",
+    "surface": "C6",
+    "table": "T4",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S2"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "S2는 R0 계열만(운영자 판정 2026-09-26) — 시장 사례의 8~12px 둥근 네오브루탈은 호환표 위반이라 R0로만 등록. dashboard·public 부적합",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 배지·알약·스티커는 실제 상태에만 · kill-ai-slop #23 badge/pill spam · §6 S2 예외(R0만) / sns 레인 allow-with-rules: §13 해당 행 없음. S2는 운영자 판정대로 R0와만 짝, 채움 액센트 3색 이상이면 palette-lib tooManyAccents 경고 — 액센트 2색까지",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/brutalism",
+     "signal": 176,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 2,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://manypixels.co/blog/graphic-design/trends"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/neobrutalism",
+     "signal": 146,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=뉴브루탈리즘",
+     "signal": 473,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://brutalweb.com/",
+     "signal": "gallery, count 확인 안 됨",
+     "type": "reference"
+    },
+    {
+     "url": "https://webflow.com/made-in-webflow/neobrutalism",
+     "signal": "gallery, count 확인 안 됨",
+     "type": "reference"
+    },
+    {
+     "url": "https://x.com/tahiryildiz/status/2041923985185640579",
+     "signal": "x @tahiryildiz: likes 797, replies 10, reposts 44, views 33844 (기여 0.888085)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/AndroidDev/status/2102872746816364560",
+     "signal": "x @AndroidDev: likes 299, replies 6, reposts 24, views 29008 (기여 0.818228)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/JacobAShell/status/2038295400302485855",
+     "signal": "x @JacobAShell: likes 185, replies 23, reposts 7, views 11490 (기여 0.765694)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/code_kartik/status/1994408080227078536",
+     "signal": "x @code_kartik: likes 152, replies 20, reposts 7, views 9596 (기여 0.75045)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://x.com/Capminal/status/2062187190113964205",
+     "signal": "x @Capminal: likes 42, replies 24, reposts 14, views 12805 (기여 0.748253)",
+     "type": "sns-post:x"
+    }
+   ],
+   "rank_score": 0.52567,
+   "rank_parts": {
+    "github": {
+     "value": 146,
+     "pct": 0.586957,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 473,
+     "pct": 0.291667,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 176,
+     "pct": 0.594595,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.853333,
+     "pct": 0.883333,
+     "weight": 1
+    },
+    "trend": {
+     "value": 2,
+     "pct": 0.211111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "neon-glow",
+   "name": "Neon / glow 네온·글로우",
+   "visualRules": [
+    "색 외곽광·후광",
+    "오프셋 0 색 그림자"
+   ],
+   "axes": {},
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [],
+   "archetypes": [
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "ban",
+   "verdictReason": "sns 레인 ban: §13 MUST 빛나는 장식 금지",
+   "evidence": [
+    {
+     "url": "https://www.instagram.com/p/DdJHfP6jv3D/",
+     "signal": "instagram @zbalosch: likes 1676, replies 199 (기여 0.823819)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.threads.com/@croissmouse/post/DahcSclCsve",
+     "signal": "threads @croissmouse: likes 68, replies 6, reposts 34, shares 29 (기여 0.577396)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.threads.com/@yunbara_/post/DVis9z7kcrC",
+     "signal": "threads @yunbara_: likes 14, replies 4, reposts 0, shares 1 (기여 0.408021)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.instagram.com/p/DU-3kSfEb85/",
+     "signal": "instagram @orbix_marketing: likes 423, replies 4 (기여 0.358869)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.threads.com/@team.laka/post/DR_DQo0D5wt",
+     "signal": "threads @team.laka: likes 15, replies 13, reposts 0, shares 0 (기여 0.357135)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.725,
+   "rank_parts": {
+    "sns": {
+     "value": 0.896667,
+     "pct": 0.95,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns"
+   ]
+  },
+  {
+   "id": "neumorphism",
+   "name": "뉴모피즘(소프트 UI)",
+   "visualRules": [
+    "바탕과 같은 색의 돌출·함몰 면",
+    "밝은 쪽·어두운 쪽 이중 그림자",
+    "테두리 없음",
+    "회색 파스텔 단색"
+   ],
+   "axes": {
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S3"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {},
+   "newAxisValues": [
+    "S4"
+   ],
+   "archetypes": [
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "경계 3:1을 구조적으로 못 넘음",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: §13 목록 밖 사유 — DESIGN 바닥선(입력·컨트롤 경계 3:1, §6 MUST 구분 수단) 위반이 정의에 내장 · 컨트롤러 재판정 가능 / sns 레인 allow-with-rules: §12 컨트롤 경계 3:1을 못 맞추는 경우가 대부분 — 장식 표면에만, 컨트롤은 테두리 추가 / 판정이 갈려 엄격한 쪽(ban)을 쓴다",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/neumorphism",
+     "signal": 2,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 5,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://gezar.dk/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/neumorphism",
+     "signal": 505,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=뉴모피즘",
+     "signal": 1305,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://www.instagram.com/p/DbRuxjXAego/",
+     "signal": "instagram @avrosh.hq: likes 1354, replies 9 (기여 0.406931, list:6)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.threads.com/@euiiiii.kim/post/DFiV7-8SZF-",
+     "signal": "threads @euiiiii.kim: likes 15, replies 6, reposts 2, shares 1 (기여 0.283212, list:5)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.433874,
+   "rank_parts": {
+    "github": {
+     "value": 505,
+     "pct": 0.847826,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 1305,
+     "pct": 0.541667,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 2,
+     "pct": 0.013514,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.53,
+     "pct": 0.516667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 5,
+     "pct": 0.444444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "organic-earthy",
+   "name": "오가닉·어스톤",
+   "visualRules": [
+    "흙·식물·돌에서 온 채도 낮은 색 면",
+    "곡선 도형과 자연광 실사",
+    "여유 있는 여백, 둥근 반경",
+    "종이·섬유 질감 한 겹"
+   ],
+   "axes": {
+    "button": "B4",
+    "input": "I2",
+    "surface": "C3",
+    "header": "H1",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [
+    {
+     "button": "B4",
+     "input": "I2",
+     "surface": "C3",
+     "header": "H1",
+     "radius": "R3",
+     "shadow": "S1"
+    }
+   ],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K6"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "K6 밝은 면 C ≥ 0.06(크림 경계 위)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 「따뜻한 크림 배경 + 세리프 디스플레이 + 테라코타」 · kill-ai-slop #03 warm cozy palette · §5-A 오프화이트 C ≤ 0.012",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/color/beige",
+     "signal": 201,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://elements.envato.com/learn/web-design-trends",
+     "signal": 8,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://inscript.team/en/magazine/detail/design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://locallylost.com/guides/human-centric-web-design-trends-2026",
+     "signal": "trend article",
+     "type": "reference"
+    },
+    {
+     "url": "https://dribbble.com/tags/earthy",
+     "signal": "Dribbble 태그 「earthy」 샷 783개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.550056,
+   "rank_parts": {
+    "dribbble": {
+     "value": 783,
+     "pct": 0.267857,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 201,
+     "pct": 0.662162,
+     "weight": 1
+    },
+    "trend": {
+     "value": 8,
+     "pct": 0.544444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "oversized-typographic",
+   "name": "초대형 타이포 중심",
+   "visualRules": [
+    "히어로를 이미지 대신 거대한 제목이 채움(10vw 이상)",
+    "짧은 명사구, 문장 전체를 키우지 않음",
+    "크롭·줄바꿈으로 리듬",
+    "본문과 성격이 다른 디스플레이 서체"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0",
+    "display": "D2"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "local",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: kill-ai-slop #11 full-sentence display headline · §13 MUST 수치 하나로 헤드라인 채우기 금지",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/typographic",
+     "signal": 752,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 20,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://webflow.com/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://dribbble.com/tags/big-typography",
+     "signal": "Dribbble 태그 「big typography」 샷 222개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/big-type",
+     "signal": "siteinspire 분류 「Big Type」 사이트 386곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.664006,
+   "rank_parts": {
+    "curation": {
+     "value": 386,
+     "pct": 0.535714,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 222,
+     "pct": 0.125,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 752,
+     "pct": 0.797297,
+     "weight": 1
+    },
+    "trend": {
+     "value": 20,
+     "pct": 0.866667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "pastel-soft",
+   "name": "파스텔 소프트",
+   "visualRules": [
+    "L 0.85~0.95 옅은 유채색 면",
+    "둥근 반경과 부드러운 그림자",
+    "글자는 짙은 닻색으로 7:1",
+    "파스텔 아이콘 타일 금지"
+   ],
+   "axes": {
+    "button": "B4",
+    "input": "I2",
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K6"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: kill-ai-slop #18 rounded-square icon tiles · #25 icon in a tint of itself · §5-A 역할 배정",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/color/pastel",
+     "signal": 99,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://dribbble.com/tags/pastel",
+     "signal": "Dribbble 태그 「pastel」 샷 12,642개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.495832,
+   "rank_parts": {
+    "dribbble": {
+     "value": 12642,
+     "pct": 0.589286,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 99,
+     "pct": 0.472973,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "pixel-8bit",
+   "name": "픽셀·8비트",
+   "visualRules": [
+    "픽셀 서체는 디스플레이만, 본문은 가독 서체",
+    "도트 일러스트·계단 테두리",
+    "제한 팔레트(8~16색)",
+    "각진 모서리와 단색 오프셋"
+   ],
+   "axes": {
+    "button": "B1",
+    "input": "I3",
+    "surface": "C6",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S2"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "local",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "S2 R0만",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §2 글자 14px 이상·가독성 · §20-3 글꼴 스택 한글 서체 필수 / sns 레인 allow-with-rules: §12 본문은 픽셀 서체 대신 일반 서체(가독성), 픽셀은 제목·장식만",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/pixel-art",
+     "signal": 37,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 2,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://edigitalagency.com.au/graphic-design/top-graphic-design-trends"
+     ]
+    },
+    {
+     "url": "https://x.com/majidmanzarpour/status/2102476499387383834",
+     "signal": "x @majidmanzarpour: likes 574, replies 7, reposts 27, views 36103 (기여 0.757555)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://www.threads.com/@untitleddada/post/C97rs7BJZ8K",
+     "signal": "threads @untitleddada: likes 87, replies 11, reposts 14, shares 5 (기여 0.670104)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://x.com/KanaWorks_AI/status/2102598986393870464",
+     "signal": "x @KanaWorks_AI: likes 70, replies 3, reposts 16, views 7679 (기여 0.33705)",
+     "type": "sns-post:x"
+    }
+   ],
+   "rank_score": 0.459647,
+   "rank_parts": {
+    "opl": {
+     "value": 37,
+     "pct": 0.310811,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.775,
+     "pct": 0.816667,
+     "weight": 1
+    },
+    "trend": {
+     "value": 2,
+     "pct": 0.211111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "quiet-luxury",
+   "name": "콰이어트 럭셔리",
+   "visualRules": [
+    "큰 여백, 얇은 선, 절제된 팔레트",
+    "실사 제품 사진이 주인공",
+    "얇은 아이콘(G2)",
+    "가격·CTA는 조용하게"
+   ],
+   "axes": {
+    "button": "B2",
+    "input": "I2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K5",
+     "K2"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 크리에이티브·프리미엄=세리프 기본 추론 금지 · §13 표 크림+세리프+테라코타",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/luxury",
+     "signal": 27,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/luxury",
+     "signal": "siteinspire 분류 「Luxury」 사이트 93곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.327606,
+   "rank_parts": {
+    "curation": {
+     "value": 93,
+     "pct": 0.178571,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 27,
+     "pct": 0.22973,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "retro-futurism",
+   "name": "레트로퓨처리즘",
+   "visualRules": [
+    "1960~80년대가 상상한 미래: 기하 서체·궤도 도형",
+    "따뜻한 크롬·오렌지·청록 등 시대 팔레트",
+    "굵은 곡선 띠와 원형 프레임",
+    "빛 번짐 없이 평면 도형으로"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K7"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 빛나는 장식·글로우 금지 · §13 표 보라→남색 그라디언트 금지",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/futuristic",
+     "signal": 46,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 4,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://select-interactive.com/news/web-design-trends-2026-that-survive-performance-and-ai-agents"
+     ]
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=레트로퓨처리즘",
+     "signal": 4278,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://dribbble.com/tags/retrofuturism",
+     "signal": "Dribbble 태그 「retrofuturism」 샷 450개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.456333,
+   "rank_parts": {
+    "dribbble": {
+     "value": 450,
+     "pct": 0.232143,
+     "weight": 0.2
+    },
+    "naver": {
+     "value": 4278,
+     "pct": 0.875,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 46,
+     "pct": 0.337838,
+     "weight": 1
+    },
+    "trend": {
+     "value": 4,
+     "pct": 0.366667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "retro-os-desktop",
+   "name": "레트로 OS·데스크톱 은유",
+   "visualRules": [
+    "창·아이콘·작업표시줄로 콘텐츠를 여는 데스크톱 은유",
+    "베벨 테두리와 시스템 서체",
+    "창이 실제 UI일 때만(장식 틀 금지)",
+    "모바일은 목록으로 전환"
+   ],
+   "axes": {
+    "button": "B1",
+    "radius": "R0",
+    "shadow": "S2"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0"
+   },
+   "newAxisValues": [
+    "C9",
+    "H6",
+    "S5"
+   ],
+   "archetypes": [
+    "brand",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "S2 R0만",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 SHOULD 가짜 브라우저 바·코드 창 틀 금지(은유가 실제 조작일 때만 예외) · §13 MUST 구조 장치는 의미에 묶일 때만 / sns 레인 allow-with-rules: §13 SHOULD 가짜 브라우저 바·창 틀을 HTML로 그리지 않는다 — 양식 전체가 창 틀이므로 포트폴리오 한정",
+   "evidence": [
+    {
+     "url": "https://github.com/topics/windows-95",
+     "signal": 113,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://github.com/topics/retro-ui",
+     "signal": "GitHub topic 150",
+     "type": "reference"
+    },
+    {
+     "url": "https://x.com/cv_alphas/status/2104554649990955194",
+     "signal": "x @cv_alphas: likes 108, replies 126, reposts 1, views 3055 (기여 0.404836)",
+     "type": "sns-post:x"
+    },
+    {
+     "url": "https://dribbble.com/tags/windows-95",
+     "signal": "Dribbble 태그 「windows 95」 샷 95개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.342708,
+   "rank_parts": {
+    "dribbble": {
+     "value": 95,
+     "pct": 0.017857,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 113,
+     "pct": 0.543478,
+     "weight": 0.5
+    },
+    "sns": {
+     "value": 0.216667,
+     "pct": 0.15,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "note": "styles 레인 신뢰도 낮음 — 사람이 확인할 것"
+  },
+  {
+   "id": "retro-vintage",
+   "name": "레트로·빈티지",
+   "visualRules": [
+    "시대 서체(슬랩·디스플레이 세리프)와 시대 팔레트",
+    "인쇄 질감·배지형 로고",
+    "사진 톤 보정",
+    "레이아웃은 현대 격자"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0",
+    "texture": "X2"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1",
+    "colorLogic": [
+     "K7"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 크림+세리프+테라코타 · kill-ai-slop #03 · §13 MUST 세리프 디스플레이 조건",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/retro-vintage",
+     "signal": 244,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 19,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://webflow.com/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": null,
+     "signal": 2,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://dribbble.com/tags/retro",
+     "signal": "Dribbble 태그 「retro」 샷 92,676개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/retro-and-vintage",
+     "signal": "siteinspire 분류 「Retro & Vintage」 사이트 28곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.58234,
+   "rank_parts": {
+    "curation": {
+     "value": 28,
+     "pct": 0.035714,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 92676,
+     "pct": 0.910714,
+     "weight": 0.2
+    },
+    "naver_docs": {
+     "value": 2,
+     "pct": 0.291667,
+     "weight": 0.25
+    },
+    "opl": {
+     "value": 244,
+     "pct": 0.716216,
+     "weight": 1
+    },
+    "trend": {
+     "value": 19,
+     "pct": 0.811111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "sci-fi-hud",
+   "name": "사이버·SF HUD",
+   "visualRules": [
+    "검정 바탕 + 형광 시안·마젠타 선",
+    "글로우 외곽선·홀로그램 패널",
+    "스캔라인·계기판 장식",
+    "각진 프레임과 모노 라벨"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C2",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M3",
+    "colorLogic": [
+     "K4"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [],
+   "archetypesExcluded": [],
+   "compatNote": "K4 텔레메트리 × 형광을 면·글로우로 = 금지",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: §13 표 「거의 검정 + 형광 한 점」 · §13 MUST 네온 외곽광·후광 금지 · §13 MUST 의미 없는 스캔라인 금지 · kill-ai-slop #06 gradients as atmosphere · #16 glowing status dot",
+   "evidence": [
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 11,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://stan.vision/journal/ux-ui-trends-shaping-digital-products"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/cyberpunk",
+     "signal": 837,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://webflow.com/blog/web-design-trends-2025",
+     "signal": "trend article: sci-fi gaming UI",
+     "type": "reference"
+    },
+    {
+     "url": "https://dribbble.com/tags/hud",
+     "signal": "Dribbble 태그 「hud」 샷 2,214개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.610939,
+   "rank_parts": {
+    "dribbble": {
+     "value": 2214,
+     "pct": 0.410714,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 837,
+     "pct": 0.934783,
+     "weight": 0.5
+    },
+    "trend": {
+     "value": 11,
+     "pct": 0.6,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "scroll-effects-parallax",
+   "name": "스크롤 효과·패럴랙스",
+   "visualRules": [
+    "스크롤 속도가 다른 층(패럴랙스)",
+    "핀 고정·스크럽 장면",
+    "장면 하나에 집중",
+    "reduced-motion에서 정지"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M3"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "M3 × dashboard·public 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §8-5 · style_axes A70 · §8-7",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/scroll-effects",
+     "signal": 1332,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://paulmill.com/en/blog/web-design-trends-2026",
+     "signal": 5,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://madegooddesigns.com/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://dribbble.com/tags/parallax",
+     "signal": "Dribbble 태그 「parallax」 샷 6,581개",
+     "type": "dribbble-tag-count"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/use-of-animation",
+     "signal": "siteinspire 분류 「Use of Animation」 사이트 457곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.615372,
+   "rank_parts": {
+    "curation": {
+     "value": 457,
+     "pct": 0.607143,
+     "weight": 0.5
+    },
+    "dribbble": {
+     "value": 6581,
+     "pct": 0.482143,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 1332,
+     "pct": 0.932432,
+     "weight": 1
+    },
+    "trend": {
+     "value": 5,
+     "pct": 0.444444,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "scrollytelling",
+   "name": "스크롤리텔링",
+   "visualRules": [
+    "스크롤 위치에 따라 장면·그래픽이 바뀌는 서사",
+    "고정(스티키) 그래픽 + 흐르는 본문",
+    "정성 들인 장면 하나",
+    "reduced-motion에서 정적 단계 목록"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M3"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "M3 × dashboard·public 금지",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §8-5 스크롤 · §13 SHOULD 스크롤 유도 문구 금지 · style_axes A70 모든 섹션 같은 리빌 금지",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/storytelling",
+     "signal": 85,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 11,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://webflow.com/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/scrollytelling",
+     "signal": 361,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=스크롤리텔링",
+     "signal": 164,
+     "type": "naver-blog-total(coined term)"
+    }
+   ],
+   "rank_score": 0.491785,
+   "rank_parts": {
+    "github": {
+     "value": 361,
+     "pct": 0.717391,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 164,
+     "pct": 0.125,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 85,
+     "pct": 0.445946,
+     "weight": 1
+    },
+    "trend": {
+     "value": 11,
+     "pct": 0.6,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "skeuomorphism",
+   "name": "스큐어모피즘 부활",
+   "visualRules": [
+    "실물 재질(금속·가죽·종이)을 흉내 낸 컨트롤",
+    "여러 겹 그림자와 하이라이트",
+    "물리 버튼·다이얼 은유",
+    "한 화면 1~2개 주인공 컨트롤에만"
+   ],
+   "axes": {
+    "button": "B3",
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S1",
+    "texture": "X2"
+   },
+   "axesVariants": [
+    {
+     "button": "B3",
+     "surface": "C4",
+     "radius": "R1",
+     "shadow": "S1",
+     "texture": "X2"
+    }
+   ],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2"
+   },
+   "newAxisValues": [
+    "C7"
+   ],
+   "archetypes": [
+    "brand",
+    "portfolio",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "C4 이중 베젤은 1순위 카드만",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: kill-ai-slop #20 oversized drop shadow · §6 MUST 그림자 5단계·같은 광원 / sns 레인 allow-with-rules: §13 SHOULD 가짜 기기·브라우저 틀 금지와 충돌하지 않게 실제 제품 사진 위주",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/skeuomorphism",
+     "signal": 20,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 4,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://locallylost.com/guides/human-centric-web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/skeuomorphism",
+     "signal": 82,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://openapi.naver.com/v1/search/blog.json?query=스큐어모피즘",
+     "signal": 1650,
+     "type": "naver-blog-total(coined term)"
+    },
+    {
+     "url": "https://www.threads.com/@euiiiii.kim/post/DFiV7-8SZF-",
+     "signal": "threads @euiiiii.kim: likes 15, replies 6, reposts 2, shares 1 (기여 0.283212, list:5)",
+     "type": "sns-post:threads"
+    }
+   ],
+   "rank_score": 0.336258,
+   "rank_parts": {
+    "github": {
+     "value": 82,
+     "pct": 0.369565,
+     "weight": 0.5
+    },
+    "naver": {
+     "value": 1650,
+     "pct": 0.708333,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 20,
+     "pct": 0.175676,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.191667,
+     "pct": 0.1,
+     "weight": 1
+    },
+    "trend": {
+     "value": 4,
+     "pct": 0.366667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "split-screen",
+   "name": "분할 화면",
+   "visualRules": [
+    "화면을 50/50(또는 60/40)으로 나눔",
+    "한쪽 글, 한쪽 이미지·스크롤",
+    "스크롤 시 한쪽 고정",
+    "모바일은 세로로 쌓기"
+   ],
+   "axes": {
+    "button": "B2",
+    "surface": "C1",
+    "header": "H1",
+    "shadow": "S0"
+   },
+   "axesVariants": [
+    {
+     "button": "B3",
+     "surface": "C1",
+     "header": "H1",
+     "shadow": "S0"
+    }
+   ],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2"
+   ],
+   "recipeFields": {
+    "motion": "M1"
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "local",
+    "portfolio",
+    "saas"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "",
+   "verdict": "allow",
+   "verdictReason": "styles 레인 allow: §13 해당 없음(가운데 히어로 대안으로 권장)",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/centrally-divided-layout",
+     "signal": 110,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": null,
+     "signal": 0,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    }
+   ],
+   "rank_score": 0.344444,
+   "rank_parts": {
+    "opl": {
+     "value": 110,
+     "pct": 0.5,
+     "weight": 1
+    },
+    "trend": {
+     "value": 0,
+     "pct": 0.033333,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "sticker-playful",
+   "name": "스티커·플레이풀",
+   "visualRules": [
+    "캐릭터·스티커 그래픽, 기울인 요소",
+    "튀는 hover 반응 한두 곳",
+    "밝은 색 블록",
+    "카피도 가볍게"
+   ],
+   "axes": {
+    "button": "B4",
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K8"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local",
+    "pwa"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "playful 카드 반경 12px 상한(hm-212)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 MUST 스티커·배지는 의미에 묶일 때만 · kill-ai-slop #23 · #26 springy hover",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/style/fun",
+     "signal": 427,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 20,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://webflow.com/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://dribbble.com/tags/stickers",
+     "signal": "Dribbble 태그 「stickers」 샷 16,994개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.706855,
+   "rank_parts": {
+    "dribbble": {
+     "value": 16994,
+     "pct": 0.625,
+     "weight": 0.2
+    },
+    "opl": {
+     "value": 427,
+     "pct": 0.77027,
+     "weight": 1
+    },
+    "trend": {
+     "value": 20,
+     "pct": 0.866667,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "swiss-typographic",
+   "name": "스위스·인터내셔널 타이포그래픽",
+   "visualRules": [
+    "12열 모듈 격자와 왼쪽 정렬 기준선",
+    "산세리프 한 패밀리, 크기·굵기로만 위계",
+    "흑·백·빨강 원색 한 점",
+    "사진은 격자에 맞춰 크롭, 장식 없음"
+   ],
+   "axes": {
+    "button": "B1",
+    "input": "I3",
+    "surface": "C2",
+    "table": "T4",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K4"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "detail",
+    "portfolio",
+    "public"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "선 3:1(requiresLineContrast). 0 계열 전용",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §13 표 「가운데 정렬 대신 왼쪽 기준선」과 부합 · §13 조정 없는 Helvetica 기본값 금지(SHOULD) / sns 레인 allow: §13 「왼쪽 기준선」「비대칭 히어로」 권장과 일치 / 판정이 갈려 엄격한 쪽(allow-with-rules)을 쓴다",
+   "evidence": [
+    {
+     "url": "https://onepagelove.com/tag/swiss",
+     "signal": 5,
+     "type": "gallery-count:onepagelove"
+    },
+    {
+     "url": "https://madegooddesigns.com/graphic-design-trends",
+     "signal": 1,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    },
+    {
+     "url": "https://github.com/topics/swiss-design",
+     "signal": 45,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": "https://www.threads.com/@builder.insight.eric/post/Dakwv-0FoSL",
+     "signal": "threads @builder.insight.eric: likes 147, replies 237, reposts 68, shares 69 (기여 0.67974, list:4)",
+     "type": "sns-post:threads"
+    },
+    {
+     "url": "https://www.instagram.com/p/DbRuxjXAego/",
+     "signal": "instagram @avrosh.hq: likes 1354, replies 9 (기여 0.406931, list:6)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://www.siteinspire.com/websites/category/typographic",
+     "signal": "siteinspire 분류 「Typographic」 사이트 2105곳",
+     "type": "siteinspire-category-count"
+    }
+   ],
+   "rank_score": 0.369513,
+   "rank_parts": {
+    "curation": {
+     "value": 2105,
+     "pct": 0.964286,
+     "weight": 0.5
+    },
+    "github": {
+     "value": 45,
+     "pct": 0.26087,
+     "weight": 0.5
+    },
+    "opl": {
+     "value": 5,
+     "pct": 0.040541,
+     "weight": 1
+    },
+    "sns": {
+     "value": 0.613333,
+     "pct": 0.583333,
+     "weight": 1
+    },
+    "trend": {
+     "value": 1,
+     "pct": 0.111111,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  },
+  {
+   "id": "terminal-mono",
+   "name": "터미널·모노 테크",
+   "visualRules": [
+    "모노스페이스 전면, 거의 검정 바탕",
+    "형광 초록·주황 강조 한 점",
+    "깜빡이는 커서·프롬프트 기호",
+    "코드 창 틀"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C2",
+    "header": "H3",
+    "radius": "R0",
+    "shadow": "S0"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M0",
+    "colorLogic": [
+     "K4"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [],
+   "archetypesExcluded": [],
+   "compatNote": "K4 텔레메트리 × 형광 면·글로우 금지",
+   "verdict": "ban",
+   "verdictReason": "styles 레인 ban: kill-ai-slop #34 the \"tasteful terminal\" · §13 표 거의 검정 + 형광 한 점 · §13 MUST 깜빡이는 커서는 입력 줄 안에만 · §13 SHOULD 코드 창 틀 금지",
+   "evidence": [
+    {
+     "url": null,
+     "signal": 0,
+     "type": "trend-article-mentions:58",
+     "more_urls": []
+    },
+    {
+     "url": "https://github.com/topics/terminal-ui",
+     "signal": "GitHub topic 1812 (TUI 라이브러리 포함, 순위 제외)",
+     "type": "reference"
+    }
+   ],
+   "rank_score": 0.266667,
+   "rank_parts": {
+    "trend": {
+     "value": 0,
+     "pct": 0.033333,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "styles"
+   ]
+  },
+  {
+   "id": "webtoon-panel",
+   "name": "한국 웹툰풍",
+   "visualRules": [
+    "세로 스크롤 컷 연출(웹툰 문법)",
+    "굵은 선 컷 테두리와 말풍선",
+    "밝은 셀 채색 면",
+    "그림은 실제 작가 작업물·라이선스"
+   ],
+   "axes": {
+    "button": "B1",
+    "surface": "C8",
+    "header": "H3",
+    "shadow": "S0"
+   },
+   "axesVariants": [
+    {
+     "button": "B2",
+     "header": "H1",
+     "shadow": "S0"
+    }
+   ],
+   "axesNotes": [
+    "radius: 「mid」(중간 반경) — 반경 축에 중간 값이 없어 그 벌에서 축 값을 두지 않는다(base 반경). 중간 계열 부품(B2·B3·C1·H1 …)과 섞을 수 있는 반경은 R1·R2",
+    "기본 벌: 구현된 C8(zero 계열)가 레인 벌의 button B2·header H1 와 반경 계열로 부딪혀 그 축을 zero 계열 값으로 바꿨다(Task 16a). 레인이 적은 벌은 C8 없이 변형 벌로 남긴다"
+   ],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K6"
+    ]
+   },
+   "newAxisValues": [],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "local"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "말풍선은 실제 인용일 때만. 0 계열 대안 세트: B1·H3·R0·S2(C8은 계열 중립 제안)",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: §6-A AI 생성 이미지 표기·검수 · §6 MUST AI 즉석 SVG 금지 · §13 MUST 구조 장치는 의미에 묶일 때만",
+   "evidence": [
+    {
+     "url": null,
+     "signal": 2,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.figma.com/community/file/1312111236827455402/webtoon-app-ui-free-ui-kit-recreated",
+     "signal": "Figma community (reader UI, 스타일 근거 약함)",
+     "type": "reference"
+    },
+    {
+     "url": "https://dribbble.com/tags/webtoon",
+     "signal": "Dribbble 태그 「webtoon」 샷 203개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.402504,
+   "rank_parts": {
+    "dribbble": {
+     "value": 203,
+     "pct": 0.053571,
+     "weight": 0.2
+    },
+    "naver_docs": {
+     "value": 2,
+     "pct": 0.291667,
+     "weight": 0.25
+    }
+   },
+   "lanes": [
+    "styles"
+   ],
+   "note": "styles 레인 신뢰도 낮음 — 사람이 확인할 것"
+  },
+  {
+   "id": "y2k",
+   "name": "Y2K",
+   "visualRules": [
+    "크롬 금속·버블 도형·픽셀 아이콘",
+    "파스텔·실버·형광 한두 색 듀오톤",
+    "둥근 알약 버튼과 스티커 그래픽",
+    "2000년대 초 웹 레이아웃 인용"
+   ],
+   "axes": {
+    "button": "B4",
+    "surface": "C3",
+    "radius": "R1",
+    "shadow": "S1"
+   },
+   "axesVariants": [],
+   "axesNotes": [],
+   "recipeFields": {
+    "motion": "M2",
+    "colorLogic": [
+     "K7"
+    ]
+   },
+   "newAxisValues": [
+    "decor-chrome"
+   ],
+   "archetypes": [
+    "brand",
+    "commerce",
+    "portfolio"
+   ],
+   "archetypesExcluded": [],
+   "compatNote": "S3/R1 짝 가능",
+   "verdict": "allow-with-rules",
+   "verdictReason": "styles 레인 allow-with-rules: kill-ai-slop #02 gradient headline text · §13 MUST 네온 외곽광·후광 금지 · §5-B K7 두 색 사이 그라디언트 금지 / sns 레인 allow-with-rules: §13 빛나는 장식·보라 그라디언트 금지와 부딪힘 — 크롬은 이미지 재료로만, 글자 그라디언트 금지",
+   "evidence": [
+    {
+     "url": "https://figma.com/resource-library/web-design-trends",
+     "signal": 7,
+     "type": "trend-article-mentions:58",
+     "more_urls": [
+      "https://gezar.dk/en/blog/web-design-trends-2026"
+     ]
+    },
+    {
+     "url": "https://github.com/topics/y2k",
+     "signal": 94,
+     "type": "github-topic-repos"
+    },
+    {
+     "url": null,
+     "signal": 1,
+     "type": "naver-trend-doc-mentions:630 (title+summary)"
+    },
+    {
+     "url": "https://www.instagram.com/p/DJwzHoizFmb/",
+     "signal": "instagram @takepage_: likes 102, replies 0 (기여 0.263678)",
+     "type": "sns-post:instagram"
+    },
+    {
+     "url": "https://dribbble.com/tags/y2k",
+     "signal": "Dribbble 태그 「y2k」 샷 2,066개",
+     "type": "dribbble-tag-count"
+    }
+   ],
+   "rank_score": 0.347872,
+   "rank_parts": {
+    "dribbble": {
+     "value": 2066,
+     "pct": 0.375,
+     "weight": 0.2
+    },
+    "github": {
+     "value": 94,
+     "pct": 0.456522,
+     "weight": 0.5
+    },
+    "naver_docs": {
+     "value": 1,
+     "pct": 0.083333,
+     "weight": 0.25
+    },
+    "sns": {
+     "value": 0.166667,
+     "pct": 0.05,
+     "weight": 1
+    },
+    "trend": {
+     "value": 7,
+     "pct": 0.5,
+     "weight": 1
+    }
+   },
+   "lanes": [
+    "sns",
+    "styles"
+   ]
+  }
+ ],
+ "proposals": [
+  {
+   "id": "C9",
+   "axis": "surface",
+   "name": "창(window) 크롬 카드",
+   "plan": "건너뜀 — 근거가 적다(대표 판단 2026-09-29)",
+   "description": "C9 창(window) 크롬 카드: 제목 막대 + 닫기 버튼이 실제로 동작할 때만",
+   "from": [
+    "retro-os-desktop"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "H6",
+   "axis": "header",
+   "name": "메뉴 막대·작업표시줄 헤더",
+   "plan": "건너뜀 — 근거가 적다(대표 판단 2026-09-29)",
+   "description": "H6 메뉴 막대·작업표시줄 헤더",
+   "from": [
+    "retro-os-desktop"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "S4",
+   "axis": "shadow",
+   "name": "양방향 볼록 그림자(뉴모피즘)",
+   "plan": "건너뜀 — 금지 스타일(뉴모피즘) 전용(대표 판단 2026-09-29)",
+   "description": "S4 양방향 볼록 그림자(좌상 밝음 + 우하 어두움, 바탕 동색)",
+   "from": [
+    "neumorphism"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "S5",
+   "axis": "shadow",
+   "name": "베벨(안쪽 하이라이트 + 1px 그림자)",
+   "plan": "미정 — 대표 판단 목록(2026-09-29 21:58)에 없다",
+   "description": "S5 베벨(안쪽 1px 하이라이트 + 1px 그림자, 블러 0)",
+   "from": [
+    "retro-os-desktop"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "C5-lens",
+   "axis": "surface",
+   "name": "C5 변형 굴절 렌즈",
+   "plan": "건너뜀 — 금지 스타일(리퀴드 글래스) 전용(대표 판단 2026-09-29)",
+   "description": "C5 변형 「굴절 렌즈」(SVG feDisplacementMap) — 기존 C5는 블러만",
+   "from": [
+    "liquid-glass"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "C7",
+   "axis": "surface",
+   "name": "재질 표면(텍스처 배경 + 안쪽 하이라이트)",
+   "plan": "미정 — 브리프 목록 밖(sns 레인 제안)",
+   "description": "C7 재질 표면(텍스처 이미지 배경 + 안쪽 하이라이트)",
+   "from": [
+    "skeuomorphism"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "decor-geometric",
+   "axis": "decor (sns 레인 이름 D1 — 디스플레이 축 D 와 이름이 겹쳐 따로 적는다)",
+   "name": "기하 도형 장식층",
+   "plan": "미정 — 브리프 목록 밖(sns 레인 제안)",
+   "description": "D1 기하 도형 장식층(원·삼각 SVG, 섹션당 1개)",
+   "from": [
+    "bauhaus"
+   ],
+   "lanes": [
+    "sns"
+   ],
+   "status": "not-implemented"
+  },
+  {
+   "id": "decor-chrome",
+   "axis": "decor (sns 레인 이름 D2 — 디스플레이 축 D 와 이름이 겹쳐 따로 적는다)",
+   "name": "크롬 이미지 재료(래스터)",
+   "plan": "미정 — 브리프 목록 밖(sns 레인 제안)",
+   "description": "D2 크롬 이미지 재료(래스터, 글자 효과 아님)",
+   "from": [
+    "y2k"
+   ],
+   "lanes": [
+    "sns",
+    "styles"
+   ],
+   "status": "not-implemented"
+  }
+ ],
+ "implemented": [
+  {
+   "id": "C6",
+   "axis": "surface",
+   "name": "굵은 테두리 색면 카드",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "maximalism",
+    "memphis",
+    "neo-brutalism",
+    "pixel-8bit"
+   ]
+  },
+  {
+   "id": "C8",
+   "axis": "surface",
+   "name": "웹툰 컷(패널) 프레임",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "webtoon-panel"
+   ]
+  },
+  {
+   "id": "H5",
+   "axis": "header",
+   "name": "마스트헤드(제호 + 섹션 레일)",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "editorial-magazine"
+   ]
+  },
+  {
+   "id": "R3",
+   "axis": "radius",
+   "name": "유기 곡선(장식·마스크만)",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "organic-earthy"
+   ]
+  },
+  {
+   "id": "K9",
+   "axis": "colorLogic",
+   "name": "단색 램프",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "blueprint-technical",
+    "monochrome"
+   ]
+  },
+  {
+   "id": "D",
+   "axis": "display (새 축)",
+   "name": "디스플레이 규모 D1 표준 · D2 초대형 · D3 키네틱",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "kinetic-typography",
+    "oversized-typographic"
+   ]
+  },
+  {
+   "id": "X",
+   "axis": "texture (새 축)",
+   "name": "질감 X0 없음 · X1 그레인 · X2 인쇄 · X3 콜라주",
+   "task": "P3-2 Task 16a (2026-09-29)",
+   "usedBy": [
+    "anti-design-grunge",
+    "collage-scrapbook",
+    "grain-texture",
+    "handmade-imperfect",
+    "maximalism",
+    "retro-vintage",
+    "skeuomorphism"
+   ]
+  }
+ ]
+}

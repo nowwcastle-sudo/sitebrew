@@ -1,0 +1,58 @@
+{
+  "id": "withbobbin-com",
+  "archetype": "saas",
+  "sourceGallery": "opl",
+  "url": "https://withbobbin.com/",
+  "structure": {
+    "hero": "책상에서 필기하는 사람 사진 전면 위에 좌측 2행 제목(윗줄 흰색·아랫줄 노랑 세리프)과 설명·버튼 2개, 우측에 진행 상태 카드 목업",
+    "sections": [
+      "상단 노란 공지 띠",
+      "내비(로고·소속·메뉴 5·로그인·체험 시작)",
+      "사진 배경 히어로",
+      "쿠키 동의 모달(배경 흐림)"
+    ]
+  },
+  "type": {
+    "display": "윗줄 산세리프·아랫줄 세리프를 겹쳐 쓴 약 52px 제목, 아랫줄은 노랑",
+    "body": "그로테스크 약 18px",
+    "scale": "H1 약 52px·설명 약 18px·UI 약 15px(1440)"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "쿠키 모달이 첫 화면을 덮고 뒷배경이 흐려져 히어로를 온전히 볼 수 없다. 수집 메타상 영상 2개",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "첫 방문 쿠키 모달(설정·수락)",
+    "상단 공지 띠로 신규 고객군 안내",
+    "우측 카드 목업에 작업 진행 상태 표시"
+  ],
+  "cta": {
+    "pattern": "노란 채움 주 버튼(화살표) + 반투명 보조 버튼, 내비 우측 체험 시작 반복",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.7
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "사람 사진 전면 배경 위에 노란 한 색만 올려 따뜻한 교육 서비스 인상을 만든다",
+    "제목 아랫줄을 노란 세리프로 바꿔 서비스 이름을 강조한다",
+    "우측 카드 목업으로 AI 작업 중이라는 상태를 보여 제품 가치를 압축한다",
+    "상단 공지 띠에 체험 혜택을 둬 첫 방문자의 행동 동기를 더한다",
+    "쿠키 모달이 화면 중앙을 덮어 첫 인상 검증을 어렵게 만드는 점이 아쉽다"
+  ]
+}

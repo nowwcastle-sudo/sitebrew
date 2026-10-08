@@ -1,0 +1,61 @@
+{
+  "name": "feature-billing-paddle",
+  "title": "결제 — Paddle Billing",
+  "description": "Paddle 웹훅 경로(서명 검증·중복 제거·재조회·순서 처리), 결제 Cron, 결제 서버 액션(청약철회 동의 포함), 구독·웹훅 이벤트 표와 마이그레이션.",
+  "npm": [
+    "@launch-factory/billing-paddle",
+    "@launch-factory/consent",
+    "@launch-factory/contract",
+    "@launch-factory/db",
+    "@launch-factory/env",
+    "@launch-factory/i18n",
+    "@launch-factory/security",
+    "drizzle-orm",
+    "postgres"
+  ],
+  "registryDependencies": [
+    "feature-auth-betterauth",
+    "feature-email-resend",
+    "feature-security"
+  ],
+  "envVars": [
+    "LF_MODE",
+    "DATABASE_URL",
+    "PADDLE_API_KEY",
+    "PADDLE_WEBHOOK_SECRET",
+    "CRON_SECRET",
+    "NEXT_PUBLIC_APP_URL",
+    "LF_PAYMENT_FAILED_EMAIL",
+    "LF_EU_SALES"
+  ],
+  "files": [
+    "files/lib/launch/billing.ts",
+    "files/lib/launch/paddle-plans.ts",
+    "files/app/api/webhooks/paddle/route.ts",
+    "files/app/api/cron/billing/route.ts",
+    "files/app/actions/billing.ts",
+    "../_shared/lib/launch/eu-sales.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": [
+    "subscriptions.ts",
+    "webhook-events.ts"
+  ],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(구독 표가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. lib/launch/paddle-plans.ts 에 요금제와 Paddle 가격 id 를 적는다(운영자 할 일 O3 — 샌드박스 가격 만들기). 비어 있으면 결제가 열리지 않는다.",
+    "3. Paddle 알림 설정의 주소: https://<도메인>/api/webhooks/paddle, 엔드포인트 비밀은 PADDLE_WEBHOOK_SECRET. 기본은 샌드박스이고 실결제는 LF_PADDLE_LIVE=1 일 때만 받는다(운영자만 넣는다).",
+    "4. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/billing\", \"schedule\": \"0 * * * *\" }] }. Vercel 이 CRON_SECRET 을 Authorization: Bearer 로 붙인다. 값이 없으면 401 이다.",
+    "5. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.",
+    "6. 결제 실패 안내 메일(F11)은 우리가 보낸다(기본 켜짐). live 에서 Paddle > Retain > Payment recovery 메일을 켰다면 중복이므로 LF_PAYMENT_FAILED_EMAIL=off 로 끈다. 재시도 날짜는 결제 대행사가 알려 주지 않으면 싣지 않는다(「자동으로 다시 시도한다」).",
+    "7. 결제 시작(startCheckout)은 보안 항목의 guardAction(\"checkoutStart\") 이 가장 바깥이다 — 사용자·IP 별 60초 10번(RATE_LIMIT_DEFAULTS). 한도 밖은 code rate_limited·retryAfter 로 막히고 동의 기록도 결제 포트(거래 만들기)도 닿지 않는다(대장 D130). 한도를 바꾸려면 lib/launch/security.ts 의 RATE_RULES.checkoutStart 를 쓴다.",
+    "8. 유료 기능의 서버 쪽 입구마다 @launch-factory/billing-paddle 의 requireEntitlement 를 부른다 — 결제 벽 화면만으로는 서버 액션 직접 호출을 막지 못한다.",
+    "9. 청약철회 동의(D230): 결제 시작은 언제나 철회 제한 동의(withdrawalConsent)를 요구한다 — 체크가 없으면 결제 포트를 부르기 전에 fieldErrors.withdrawalConsent 로 거절한다. 동의를 끄는 설정 값은 없다. web-factory 쪽 legal.withdrawalPolicy 가 full 이라 결제 블록이 고지·체크를 빼는 제품은 이 거절 때문에 결제가 열리지 않으므로, 그런 제품은 결제 블록을 다시 이어 고지·체크를 받아야 한다(대장 D230 — 시험 scripts/test/withdrawal-consent-lock.test.mjs)."
+  ]
+}

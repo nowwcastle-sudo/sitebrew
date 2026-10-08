@@ -1,0 +1,1919 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "font-alegreya",
+      "type": "registry:font",
+      "title": "Alegreya",
+      "description": "web-factory 폰트 키트: Alegreya (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Alegreya Variable', serif",
+        "provider": "google",
+        "import": "Alegreya",
+        "variable": "--font-alegreya-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/alegreya"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/alegreya/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Alegreya",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-antonio",
+      "type": "registry:font",
+      "title": "Antonio",
+      "description": "web-factory 폰트 키트: Antonio (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Antonio Variable', sans-serif",
+        "provider": "google",
+        "import": "Antonio",
+        "variable": "--font-antonio-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/antonio"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/antonio/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Antonio",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-archivo",
+      "type": "registry:font",
+      "title": "Archivo",
+      "description": "web-factory 폰트 키트: Archivo (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Archivo Variable', sans-serif",
+        "provider": "google",
+        "import": "Archivo",
+        "variable": "--font-archivo-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/archivo"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/archivo/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Archivo",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-azeret-mono",
+      "type": "registry:font",
+      "title": "Azeret Mono",
+      "description": "web-factory 폰트 키트: Azeret Mono (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Azeret Mono Variable', monospace",
+        "provider": "google",
+        "import": "Azeret_Mono",
+        "variable": "--font-azeret-mono-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/azeret-mono"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/azeretmono/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Azeret+Mono",
+        "role": [
+          "display",
+          "mono"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-bagel-fat-one",
+      "type": "registry:font",
+      "title": "Bagel Fat One",
+      "description": "web-factory 폰트 키트: Bagel Fat One (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Bagel Fat One', sans-serif",
+        "provider": "google",
+        "import": "Bagel_Fat_One",
+        "variable": "--font-bagel-fat-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/bagel-fat-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bagelfatone/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Bagel+Fat+One",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-besley",
+      "type": "registry:font",
+      "title": "Besley",
+      "description": "web-factory 폰트 키트: Besley (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Besley Variable', serif",
+        "provider": "google",
+        "import": "Besley",
+        "variable": "--font-besley-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/besley"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/besley/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Besley",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-big-shoulders",
+      "type": "registry:font",
+      "title": "Big Shoulders",
+      "description": "web-factory 폰트 키트: Big Shoulders (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Big Shoulders Variable', sans-serif",
+        "provider": "google",
+        "import": "Big_Shoulders",
+        "variable": "--font-big-shoulders-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/big-shoulders"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bigshoulders/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Big+Shoulders",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-black-han-sans",
+      "type": "registry:font",
+      "title": "Black Han Sans",
+      "description": "web-factory 폰트 키트: Black Han Sans (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Black Han Sans', sans-serif",
+        "provider": "google",
+        "import": "Black_Han_Sans",
+        "variable": "--font-black-han-sans-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/black-han-sans"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/blackhansans/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Black+Han+Sans",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-bm-euljiro",
+      "type": "registry:item",
+      "title": "BM Euljiro",
+      "description": "web-factory 폰트 키트: BM Euljiro (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 배민 을지로체. 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.0(jsDelivr @1.0)의 커밋 918ab627023438babbc44544fe9102d54cf09cea 로 고정. 자체 호스팅은 P3-3",
+      "cssVars": {
+        "theme": {
+          "font-bm-euljiro-wf": "\"BM Euljiro\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://www.woowahan.com/fonts/license",
+        "source": "https://github.com/projectnoonnu/noonfonts_twelve/tree/918ab627023438babbc44544fe9102d54cf09cea",
+        "family": "BM Euljiro",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/bm-euljiro.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/bm-euljiro.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/bm-euljiro.css\"": {}
+      }
+    },
+    {
+      "name": "font-bodoni-moda",
+      "type": "registry:font",
+      "title": "Bodoni Moda",
+      "description": "web-factory 폰트 키트: Bodoni Moda (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Bodoni Moda Variable', serif",
+        "provider": "google",
+        "import": "Bodoni_Moda",
+        "variable": "--font-bodoni-moda-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/bodoni-moda"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bodonimoda/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Bodoni+Moda",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-boogaloo",
+      "type": "registry:font",
+      "title": "Boogaloo",
+      "description": "web-factory 폰트 키트: Boogaloo (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+      "font": {
+        "family": "'Boogaloo', sans-serif",
+        "provider": "google",
+        "import": "Boogaloo",
+        "variable": "--font-boogaloo-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/boogaloo"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/boogaloo/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Boogaloo",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-bricolage-grotesque",
+      "type": "registry:font",
+      "title": "Bricolage Grotesque",
+      "description": "web-factory 폰트 키트: Bricolage Grotesque (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Bricolage Grotesque Variable', sans-serif",
+        "provider": "google",
+        "import": "Bricolage_Grotesque",
+        "variable": "--font-bricolage-grotesque-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/bricolage-grotesque"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bricolagegrotesque/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Bricolage+Grotesque",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-cafe24-oneprettynight",
+      "type": "registry:item",
+      "title": "Cafe24Oneprettynight",
+      "description": "web-factory 폰트 키트: 카페24 고운밤 Cafe24Oneprettynight (OFL-1.1, 카페24 폰트 라이선스) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.1 의 커밋 149348bb2c5a9b67e26a9f211c330ef9899038af 로 고정. 자체 호스팅은 P3-3. P3-2 Task 15m",
+      "cssVars": {
+        "theme": {
+          "font-cafe24-oneprettynight-wf": "\"Cafe24Oneprettynight\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://fonts.cafe24.com/",
+        "source": "https://github.com/projectnoonnu/noonfonts_twelve/tree/149348bb2c5a9b67e26a9f211c330ef9899038af",
+        "family": "Cafe24Oneprettynight",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/cafe24-oneprettynight.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/cafe24-oneprettynight.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/cafe24-oneprettynight.css\"": {}
+      }
+    },
+    {
+      "name": "font-cafe24-shiningstar",
+      "type": "registry:item",
+      "title": "Cafe24Shiningstar",
+      "description": "web-factory 폰트 키트: 카페24 빛나는별 Cafe24Shiningstar (OFL-1.1, 카페24 폰트 라이선스) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.1 의 커밋 149348bb2c5a9b67e26a9f211c330ef9899038af 로 고정. 자체 호스팅은 P3-3. P3-2 Task 15m — 와일드각의 1차 라이선스를 확인하지 못해 컨트롤러 판정대로 대신 넣었다",
+      "cssVars": {
+        "theme": {
+          "font-cafe24-shiningstar-wf": "\"Cafe24Shiningstar\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://fonts.cafe24.com/",
+        "source": "https://github.com/projectnoonnu/noonfonts_twelve/tree/149348bb2c5a9b67e26a9f211c330ef9899038af",
+        "family": "Cafe24Shiningstar",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/cafe24-shiningstar.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/cafe24-shiningstar.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/cafe24-shiningstar.css\"": {}
+      }
+    },
+    {
+      "name": "font-cherry-bomb-one",
+      "type": "registry:font",
+      "title": "Cherry Bomb One",
+      "description": "web-factory 폰트 키트: Cherry Bomb One (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+      "font": {
+        "family": "'Cherry Bomb One', sans-serif",
+        "provider": "google",
+        "import": "Cherry_Bomb_One",
+        "variable": "--font-cherry-bomb-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/cherry-bomb-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/cherrybombone/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Cherry+Bomb+One",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-dela-gothic-one",
+      "type": "registry:font",
+      "title": "Dela Gothic One",
+      "description": "web-factory 폰트 키트: Dela Gothic One (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Dela Gothic One', sans-serif",
+        "provider": "google",
+        "import": "Dela_Gothic_One",
+        "variable": "--font-dela-gothic-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/dela-gothic-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/delagothicone/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Dela+Gothic+One",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-diphylleia",
+      "type": "registry:font",
+      "title": "Diphylleia",
+      "description": "web-factory 폰트 키트: Diphylleia (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Diphylleia', serif",
+        "provider": "google",
+        "import": "Diphylleia",
+        "variable": "--font-diphylleia-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/diphylleia"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/diphylleia/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Diphylleia",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-dm-sans",
+      "type": "registry:font",
+      "title": "DM Sans",
+      "description": "web-factory 폰트 키트: DM Sans (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'DM Sans Variable', sans-serif",
+        "provider": "google",
+        "import": "DM_Sans",
+        "variable": "--font-dm-sans-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/dm-sans"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/dmsans/OFL.txt",
+        "source": "https://fonts.google.com/specimen/DM+Sans",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-do-hyeon",
+      "type": "registry:font",
+      "title": "Do Hyeon",
+      "description": "web-factory 폰트 키트: Do Hyeon (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Do Hyeon', sans-serif",
+        "provider": "google",
+        "import": "Do_Hyeon",
+        "variable": "--font-do-hyeon-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/do-hyeon"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/dohyeon/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Do+Hyeon",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-dongle",
+      "type": "registry:font",
+      "title": "Dongle",
+      "description": "web-factory 폰트 키트: Dongle (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Dongle', sans-serif",
+        "provider": "google",
+        "import": "Dongle",
+        "variable": "--font-dongle-wf",
+        "weight": [
+          "300",
+          "400",
+          "700"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/dongle"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/dongle/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Dongle",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-fragment-mono",
+      "type": "registry:font",
+      "title": "Fragment Mono",
+      "description": "web-factory 폰트 키트: Fragment Mono (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Fragment Mono', monospace",
+        "provider": "google",
+        "import": "Fragment_Mono",
+        "variable": "--font-fragment-mono-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/fragment-mono"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/fragmentmono/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Fragment+Mono",
+        "role": [
+          "display",
+          "mono"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-galmuri11",
+      "type": "registry:item",
+      "title": "Galmuri11",
+      "description": "web-factory 폰트 키트: Galmuri11 (OFL-1.1) — Google Fonts 밖이라 1차 CDN 을 css 로 싣는다. 제작자 npm 패키지 galmuri@2.40.3(정확한 버전 고정)의 jsDelivr 스타일시트",
+      "css": {
+        "@import url(\"https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css\")": {}
+      },
+      "cssVars": {
+        "theme": {
+          "font-galmuri11-wf": "\"Galmuri11\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/quiple/galmuri",
+        "source": "https://github.com/quiple/galmuri",
+        "family": "Galmuri11",
+        "weight": [
+          "400",
+          "700"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-gasoek-one",
+      "type": "registry:font",
+      "title": "Gasoek One",
+      "description": "web-factory 폰트 키트: Gasoek One (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Gasoek One', sans-serif",
+        "provider": "google",
+        "import": "Gasoek_One",
+        "variable": "--font-gasoek-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/gasoek-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gasoekone/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Gasoek+One",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-gothic-a1",
+      "type": "registry:font",
+      "title": "Gothic A1",
+      "description": "web-factory 폰트 키트: Gothic A1 (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Gothic A1', sans-serif",
+        "provider": "google",
+        "import": "Gothic_A1",
+        "variable": "--font-gothic-a1-wf",
+        "weight": [
+          "400",
+          "500",
+          "700",
+          "800"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/gothic-a1"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gothica1/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Gothic+A1",
+        "role": [
+          "body",
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-gowun-batang",
+      "type": "registry:font",
+      "title": "Gowun Batang",
+      "description": "web-factory 폰트 키트: Gowun Batang (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Gowun Batang', serif",
+        "provider": "google",
+        "import": "Gowun_Batang",
+        "variable": "--font-gowun-batang-wf",
+        "weight": [
+          "400",
+          "700"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/gowun-batang"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gowunbatang/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Gowun+Batang",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-gowun-dodum",
+      "type": "registry:font",
+      "title": "Gowun Dodum",
+      "description": "web-factory 폰트 키트: Gowun Dodum (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Gowun Dodum', sans-serif",
+        "provider": "google",
+        "import": "Gowun_Dodum",
+        "variable": "--font-gowun-dodum-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/gowun-dodum"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gowundodum/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Gowun+Dodum",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-grandiflora-one",
+      "type": "registry:font",
+      "title": "Grandiflora One",
+      "description": "web-factory 폰트 키트: Grandiflora One (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Grandiflora One', serif",
+        "provider": "google",
+        "import": "Grandiflora_One",
+        "variable": "--font-grandiflora-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/grandiflora-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/grandifloraone/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Grandiflora+One",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-grandstander",
+      "type": "registry:font",
+      "title": "Grandstander",
+      "description": "web-factory 폰트 키트: Grandstander (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Grandstander Variable', sans-serif",
+        "provider": "google",
+        "import": "Grandstander",
+        "variable": "--font-grandstander-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/grandstander"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/grandstander/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Grandstander",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-hahmlet",
+      "type": "registry:font",
+      "title": "Hahmlet",
+      "description": "web-factory 폰트 키트: Hahmlet (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Hahmlet Variable', serif",
+        "provider": "google",
+        "import": "Hahmlet",
+        "variable": "--font-hahmlet-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/hahmlet"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/hahmlet/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Hahmlet",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-hakgyoansim-dunggeunmiso",
+      "type": "registry:item",
+      "title": "HakgyoansimDunggeunmiso",
+      "description": "web-factory 폰트 키트: 학교안심 둥근미소 HakgyoansimDunggeunmiso (OFL-1.1, 교육저작권지원센터 KERIS) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.0 의 커밋 b6287cfe294ed60927aa616a13af781e85a1ddf7 로 고정. 자체 호스팅은 P3-3. P3-2 Task 15m",
+      "cssVars": {
+        "theme": {
+          "font-hakgyoansim-dunggeunmiso-wf": "\"HakgyoansimDunggeunmiso\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://copyright.keris.or.kr/wft/fntDwnldView?fntGrpId=GFT202408200000000000003",
+        "source": "https://github.com/projectnoonnu/2408-5/tree/b6287cfe294ed60927aa616a13af781e85a1ddf7",
+        "family": "HakgyoansimDunggeunmiso",
+        "weight": [
+          "400",
+          "700"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/hakgyoansim-dunggeunmiso.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/hakgyoansim-dunggeunmiso.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/hakgyoansim-dunggeunmiso.css\"": {}
+      }
+    },
+    {
+      "name": "font-ibm-plex-mono",
+      "type": "registry:font",
+      "title": "IBM Plex Mono",
+      "description": "web-factory 폰트 키트: IBM Plex Mono (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'IBM Plex Mono', monospace",
+        "provider": "google",
+        "import": "IBM_Plex_Mono",
+        "variable": "--font-ibm-plex-mono-wf",
+        "weight": [
+          "400",
+          "600"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/ibm-plex-mono"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/ibmplexmono/OFL.txt",
+        "source": "https://fonts.google.com/specimen/IBM+Plex+Mono",
+        "role": [
+          "mono"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-ibm-plex-sans",
+      "type": "registry:font",
+      "title": "IBM Plex Sans",
+      "description": "web-factory 폰트 키트: IBM Plex Sans (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'IBM Plex Sans Variable', sans-serif",
+        "provider": "google",
+        "import": "IBM_Plex_Sans",
+        "variable": "--font-ibm-plex-sans-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/ibm-plex-sans"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/ibmplexsans/OFL.txt",
+        "source": "https://fonts.google.com/specimen/IBM+Plex+Sans",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-ibm-plex-sans-kr",
+      "type": "registry:font",
+      "title": "IBM Plex Sans KR",
+      "description": "web-factory 폰트 키트: IBM Plex Sans KR (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'IBM Plex Sans KR', sans-serif",
+        "provider": "google",
+        "import": "IBM_Plex_Sans_KR",
+        "variable": "--font-ibm-plex-sans-kr-wf",
+        "weight": [
+          "400",
+          "700"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/ibm-plex-sans-kr"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/ibmplexsanskr/OFL.txt",
+        "source": "https://fonts.google.com/specimen/IBM+Plex+Sans+KR",
+        "role": [
+          "body"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-jost",
+      "type": "registry:font",
+      "title": "Jost",
+      "description": "web-factory 폰트 키트: Jost (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Jost Variable', sans-serif",
+        "provider": "google",
+        "import": "Jost",
+        "variable": "--font-jost-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/jost"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/jost/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Jost",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-jua",
+      "type": "registry:font",
+      "title": "Jua",
+      "description": "web-factory 폰트 키트: Jua (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Jua', sans-serif",
+        "provider": "google",
+        "import": "Jua",
+        "variable": "--font-jua-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/jua"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/jua/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Jua",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-libre-caslon-display",
+      "type": "registry:font",
+      "title": "Libre Caslon Display",
+      "description": "web-factory 폰트 키트: Libre Caslon Display (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Libre Caslon Display', serif",
+        "provider": "google",
+        "import": "Libre_Caslon_Display",
+        "variable": "--font-libre-caslon-display-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/libre-caslon-display"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/librecaslondisplay/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Libre+Caslon+Display",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-libre-caslon-text",
+      "type": "registry:font",
+      "title": "Libre Caslon Text",
+      "description": "web-factory 폰트 키트: Libre Caslon Text (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+      "font": {
+        "family": "'Libre Caslon Text', serif",
+        "provider": "google",
+        "import": "Libre_Caslon_Text",
+        "variable": "--font-libre-caslon-text-wf",
+        "weight": [
+          "400",
+          "700"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/libre-caslon-text"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/librecaslontext/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Libre+Caslon+Text",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-londrina-solid",
+      "type": "registry:font",
+      "title": "Londrina Solid",
+      "description": "web-factory 폰트 키트: Londrina Solid (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+      "font": {
+        "family": "'Londrina Solid', sans-serif",
+        "provider": "google",
+        "import": "Londrina_Solid",
+        "variable": "--font-londrina-solid-wf",
+        "weight": [
+          "100",
+          "300",
+          "400",
+          "900"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/londrina-solid"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/londrinasolid/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Londrina+Solid",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-manrope",
+      "type": "registry:font",
+      "title": "Manrope",
+      "description": "web-factory 폰트 키트: Manrope (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Manrope Variable', sans-serif",
+        "provider": "google",
+        "import": "Manrope",
+        "variable": "--font-manrope-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/manrope"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/manrope/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Manrope",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-martian-mono",
+      "type": "registry:font",
+      "title": "Martian Mono",
+      "description": "web-factory 폰트 키트: Martian Mono (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Martian Mono Variable', monospace",
+        "provider": "google",
+        "import": "Martian_Mono",
+        "variable": "--font-martian-mono-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/martian-mono"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/martianmono/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Martian+Mono",
+        "role": [
+          "display",
+          "mono"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-maru-buri",
+      "type": "registry:item",
+      "title": "MaruBuri",
+      "description": "web-factory 폰트 키트: MaruBuri (NAVER Font License (나눔·마루부리·클로바 공통)) — Google Fonts 밖이라 1차 CDN 을 css 로 싣는다. 네이버 한글한글 아름답게 1차 CDN 스타일시트(이 CSS 는 MaruBuri 이름에 Regular 한 면만 등록하고, 다른 굵기는 MaruBuriBold 등 다른 이름이다)",
+      "css": {
+        "@import url(\"https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css\")": {}
+      },
+      "cssVars": {
+        "theme": {
+          "font-maru-buri-wf": "\"MaruBuri\""
+        }
+      },
+      "meta": {
+        "license": "NAVER Font License",
+        "licenseUrl": "https://hangeul.naver.com/font",
+        "source": "https://hangeul.naver.com/font",
+        "family": "MaruBuri",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-moirai-one",
+      "type": "registry:font",
+      "title": "Moirai One",
+      "description": "web-factory 폰트 키트: Moirai One (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Moirai One', sans-serif",
+        "provider": "google",
+        "import": "Moirai_One",
+        "variable": "--font-moirai-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/moirai-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/moiraione/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Moirai+One",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-nanum-brush-script",
+      "type": "registry:font",
+      "title": "Nanum Brush Script",
+      "description": "web-factory 폰트 키트: Nanum Brush Script (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Nanum Brush Script', cursive",
+        "provider": "google",
+        "import": "Nanum_Brush_Script",
+        "variable": "--font-nanum-brush-script-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/nanum-brush-script"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/nanumbrushscript/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Nanum+Brush+Script",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-nanum-gothic",
+      "type": "registry:font",
+      "title": "Nanum Gothic",
+      "description": "web-factory 폰트 키트: Nanum Gothic (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Nanum Gothic', sans-serif",
+        "provider": "google",
+        "import": "Nanum_Gothic",
+        "variable": "--font-nanum-gothic-wf",
+        "weight": [
+          "400",
+          "700",
+          "800"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/nanum-gothic"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/nanumgothic/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Nanum+Gothic",
+        "role": [
+          "body"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-nanum-gothic-coding",
+      "type": "registry:font",
+      "title": "Nanum Gothic Coding",
+      "description": "web-factory 폰트 키트: Nanum Gothic Coding (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Nanum Gothic Coding', monospace",
+        "provider": "google",
+        "import": "Nanum_Gothic_Coding",
+        "variable": "--font-nanum-gothic-coding-wf",
+        "weight": [
+          "400",
+          "700"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/nanum-gothic-coding"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/nanumgothiccoding/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Nanum+Gothic+Coding",
+        "role": [
+          "display",
+          "mono"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-nanum-myeongjo",
+      "type": "registry:font",
+      "title": "Nanum Myeongjo",
+      "description": "web-factory 폰트 키트: Nanum Myeongjo (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Nanum Myeongjo', serif",
+        "provider": "google",
+        "import": "Nanum_Myeongjo",
+        "variable": "--font-nanum-myeongjo-wf",
+        "weight": [
+          "400",
+          "700",
+          "800"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/nanum-myeongjo"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/nanummyeongjo/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Nanum+Myeongjo",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-nanum-square-round",
+      "type": "registry:item",
+      "title": "NanumSquareRound",
+      "description": "web-factory 폰트 키트: NanumSquareRound (NAVER Font License (나눔·마루부리·클로바 공통)) — Google Fonts 밖이라 1차 CDN 을 css 로 싣는다. 네이버 한글한글 아름답게 1차 CDN 스타일시트(NanumSquareRound 이름에는 Regular 한 면, 다른 굵기는 NanumSquareRoundB 등 다른 이름)",
+      "css": {
+        "@import url(\"https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css\")": {}
+      },
+      "cssVars": {
+        "theme": {
+          "font-nanum-square-round-wf": "\"NanumSquareRound\""
+        }
+      },
+      "meta": {
+        "license": "NAVER Font License",
+        "licenseUrl": "https://hangeul.naver.com/font",
+        "source": "https://hangeul.naver.com/font",
+        "family": "NanumSquareRound",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-natural-sans",
+      "type": "registry:item",
+      "title": "NaturalSans",
+      "description": "web-factory 폰트 키트: NaturalSans (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — jayeonsans-medium 대신 커밋 e74c395af7d65481e09bcb9b462b4ad651d39c03 로 고정. 자체 호스팅은 P3-3",
+      "cssVars": {
+        "theme": {
+          "font-natural-sans-wf": "\"NaturalSans\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://notforall.tistory.com/39",
+        "source": "https://github.com/Project-Noonnu/2607201621/tree/e74c395af7d65481e09bcb9b462b4ad651d39c03",
+        "family": "NaturalSans",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/natural-sans.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/natural-sans.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/natural-sans.css\"": {}
+      }
+    },
+    {
+      "name": "font-newsreader",
+      "type": "registry:font",
+      "title": "Newsreader",
+      "description": "web-factory 폰트 키트: Newsreader (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Newsreader Variable', serif",
+        "provider": "google",
+        "import": "Newsreader",
+        "variable": "--font-newsreader-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/newsreader"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/newsreader/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Newsreader",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-noto-sans-kr",
+      "type": "registry:font",
+      "title": "Noto Sans KR",
+      "description": "web-factory 폰트 키트: Noto Sans KR (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Noto Sans KR Variable', sans-serif",
+        "provider": "google",
+        "import": "Noto_Sans_KR",
+        "variable": "--font-noto-sans-kr-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/noto-sans-kr"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/notosanskr/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Noto+Sans+KR",
+        "role": [
+          "body"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-noto-serif-kr",
+      "type": "registry:font",
+      "title": "Noto Serif KR",
+      "description": "web-factory 폰트 키트: Noto Serif KR (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Noto Serif KR Variable', serif",
+        "provider": "google",
+        "import": "Noto_Serif_KR",
+        "variable": "--font-noto-serif-kr-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/noto-serif-kr"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/notoserifkr/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Noto+Serif+KR",
+        "role": [
+          "display",
+          "body"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-orbit",
+      "type": "registry:font",
+      "title": "Orbit",
+      "description": "web-factory 폰트 키트: Orbit (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Orbit', sans-serif",
+        "provider": "google",
+        "import": "Orbit",
+        "variable": "--font-orbit-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/orbit"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/orbit/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Orbit",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-pretendard",
+      "type": "registry:item",
+      "title": "Pretendard",
+      "description": "web-factory 폰트 키트: Pretendard Variable 동적 서브셋(npm pretendard, OFL-1.1) — Google Fonts 밖이라 css @import 로 싣는다(docs/qa/pretendard-install.md)",
+      "dependencies": [
+        "pretendard@^1.3.9"
+      ],
+      "css": {
+        "@import \"pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css\"": {}
+      },
+      "cssVars": {
+        "theme": {
+          "font-pretendard-wf": "\"Pretendard Variable\", Pretendard"
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/orioncactus/pretendard/blob/main/LICENSE",
+        "source": "https://github.com/orioncactus/pretendard",
+        "family": "Pretendard",
+        "role": [
+          "body",
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-pretendard-gov",
+      "type": "registry:item",
+      "title": "Pretendard GOV",
+      "description": "web-factory 폰트 키트: Pretendard GOV 동적 서브셋(npm pretendard-gov, OFL-1.1) — Google Fonts 밖이라 css @import 로 싣는다(docs/qa/pretendard-install.md). Pretendard 와 메트릭 호환 변형(meta.aliasOf)",
+      "dependencies": [
+        "pretendard-gov@^1.3.9"
+      ],
+      "css": {
+        "@import \"pretendard-gov/dist/web/variable/pretendardvariable-gov-dynamic-subset.css\"": {}
+      },
+      "cssVars": {
+        "theme": {
+          "font-pretendard-gov-wf": "\"Pretendard GOV Variable\", \"Pretendard GOV\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/orioncactus/pretendard/blob/main/LICENSE",
+        "source": "https://github.com/orioncactus/pretendard/tree/main/packages/pretendard-gov",
+        "family": "Pretendard GOV",
+        "role": [
+          "body",
+          "display"
+        ],
+        "korean": true,
+        "aliasOf": "font-pretendard"
+      }
+    },
+    {
+      "name": "font-pyeojin-gothic",
+      "type": "registry:item",
+      "title": "PyeojinGothic",
+      "description": "web-factory 폰트 키트: PyeojinGothic (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.0 의 커밋 b05de91c74dd2446ff63c937e2120157b2909518 로 고정, Light 300·Regular 400·Bold 700(fonts.json delivery.mirror 는 Light 파일 하나 — Task 10c fix 1 I3). 자체 호스팅은 P3-3",
+      "cssVars": {
+        "theme": {
+          "font-pyeojin-gothic-wf": "\"PyeojinGothic\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://notforall.tistory.com/m/7",
+        "source": "https://github.com/projectnoonnu/2504-1/tree/b05de91c74dd2446ff63c937e2120157b2909518",
+        "family": "PyeojinGothic",
+        "weight": [
+          "300",
+          "400",
+          "700"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/pyeojin-gothic.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/pyeojin-gothic.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/pyeojin-gothic.css\"": {}
+      }
+    },
+    {
+      "name": "font-sacramento",
+      "type": "registry:font",
+      "title": "Sacramento",
+      "description": "web-factory 폰트 키트: Sacramento (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+      "font": {
+        "family": "'Sacramento', cursive",
+        "provider": "google",
+        "import": "Sacramento",
+        "variable": "--font-sacramento-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/sacramento"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/sacramento/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Sacramento",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-seocho-batang",
+      "type": "registry:item",
+      "title": "SeochoBatang",
+      "description": "web-factory 폰트 키트: SeochoBatang (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 제작자 GitHub 저장소 파일을 jsDelivr 로, main 브랜치 대신 커밋 acdbe07748d6b5b59b74a69c13c2c213cadb445a 로 고정",
+      "cssVars": {
+        "theme": {
+          "font-seocho-batang-wf": "\"SeochoBatang\""
+        }
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/iwantanid/SeochoBatang-Font",
+        "source": "https://github.com/iwantanid/SeochoBatang-Font/tree/acdbe07748d6b5b59b74a69c13c2c213cadb445a",
+        "family": "SeochoBatang",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/seocho-batang.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/seocho-batang.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/seocho-batang.css\"": {}
+      }
+    },
+    {
+      "name": "font-shrikhand",
+      "type": "registry:font",
+      "title": "Shrikhand",
+      "description": "web-factory 폰트 키트: Shrikhand (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Shrikhand', sans-serif",
+        "provider": "google",
+        "import": "Shrikhand",
+        "variable": "--font-shrikhand-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/shrikhand"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/shrikhand/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Shrikhand",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-sirin-stencil",
+      "type": "registry:font",
+      "title": "Sirin Stencil",
+      "description": "web-factory 폰트 키트: Sirin Stencil (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+      "font": {
+        "family": "'Sirin Stencil', sans-serif",
+        "provider": "google",
+        "import": "Sirin_Stencil",
+        "variable": "--font-sirin-stencil-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/sirin-stencil"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/sirinstencil/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Sirin+Stencil",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-song-myung",
+      "type": "registry:font",
+      "title": "Song Myung",
+      "description": "web-factory 폰트 키트: Song Myung (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Song Myung', serif",
+        "provider": "google",
+        "import": "Song_Myung",
+        "variable": "--font-song-myung-wf",
+        "weight": [
+          "400"
+        ],
+        "dependency": "@fontsource/song-myung"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/songmyung/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Song+Myung",
+        "role": [
+          "display"
+        ],
+        "korean": true
+      }
+    },
+    {
+      "name": "font-sora",
+      "type": "registry:font",
+      "title": "Sora",
+      "description": "web-factory 폰트 키트: Sora (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Sora Variable', sans-serif",
+        "provider": "google",
+        "import": "Sora",
+        "variable": "--font-sora-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/sora"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/sora/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Sora",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-spectral",
+      "type": "registry:font",
+      "title": "Spectral",
+      "description": "web-factory 폰트 키트: Spectral (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Spectral', serif",
+        "provider": "google",
+        "import": "Spectral",
+        "variable": "--font-spectral-wf",
+        "weight": [
+          "300",
+          "400",
+          "500",
+          "700"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/spectral"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/spectral/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Spectral",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-tektur",
+      "type": "registry:font",
+      "title": "Tektur",
+      "description": "web-factory 폰트 키트: Tektur (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Tektur Variable', sans-serif",
+        "provider": "google",
+        "import": "Tektur",
+        "variable": "--font-tektur-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/tektur"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/tektur/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Tektur",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-tenor-sans",
+      "type": "registry:font",
+      "title": "Tenor Sans",
+      "description": "web-factory 폰트 키트: Tenor Sans (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Tenor Sans', sans-serif",
+        "provider": "google",
+        "import": "Tenor_Sans",
+        "variable": "--font-tenor-sans-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/tenor-sans"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/tenorsans/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Tenor+Sans",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-titan-one",
+      "type": "registry:font",
+      "title": "Titan One",
+      "description": "web-factory 폰트 키트: Titan One (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Titan One', sans-serif",
+        "provider": "google",
+        "import": "Titan_One",
+        "variable": "--font-titan-one-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/titan-one"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/titanone/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Titan+One",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-unbounded",
+      "type": "registry:font",
+      "title": "Unbounded",
+      "description": "web-factory 폰트 키트: Unbounded (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Unbounded Variable', sans-serif",
+        "provider": "google",
+        "import": "Unbounded",
+        "variable": "--font-unbounded-wf",
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource-variable/unbounded"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/unbounded/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Unbounded",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    },
+    {
+      "name": "font-yangjin",
+      "type": "registry:item",
+      "title": "Yangjin",
+      "description": "web-factory 폰트 키트: 양진체 yangjin (양진체 라이선스 — 상업 무료, 배포 형태 그대로) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 제작자가 「웹폰트로 사용하기」에서 안내하는 제작자 저장소의 jsDelivr 주소만 쓴다 — 파일을 옮기거나 다시 호스팅하지 않는다(라이선스 「배포되는 형태 그대로 사용」). 태그 0.9(=0.8)의 커밋 ccf73414cb70a8108cd85101adf74d3d4aa6a619 로 고정. P3-2 Task 15m",
+      "cssVars": {
+        "theme": {
+          "font-yangjin-wf": "\"yangjin\""
+        }
+      },
+      "meta": {
+        "license": "Yangjin Font License (양진체 — 상업 무료·수정 판매 금지·배포 형태 그대로)",
+        "licenseUrl": "https://github.com/supernovice-lab/font",
+        "source": "https://github.com/supernovice-lab/font/tree/ccf73414cb70a8108cd85101adf74d3d4aa6a619",
+        "family": "yangjin",
+        "weight": [
+          "400"
+        ],
+        "role": [
+          "display"
+        ],
+        "korean": true
+      },
+      "files": [
+        {
+          "path": "faces/yangjin.css",
+          "type": "registry:file",
+          "target": "styles/wf-fonts/yangjin.css"
+        }
+      ],
+      "css": {
+        "@import \"../styles/wf-fonts/yangjin.css\"": {}
+      }
+    },
+    {
+      "name": "font-young-serif",
+      "type": "registry:font",
+      "title": "Young Serif",
+      "description": "web-factory 폰트 키트: Young Serif (Google Fonts, OFL-1.1)",
+      "font": {
+        "family": "'Young Serif', serif",
+        "provider": "google",
+        "import": "Young_Serif",
+        "variable": "--font-young-serif-wf",
+        "weight": [
+          "400"
+        ],
+        "subsets": [
+          "latin"
+        ],
+        "dependency": "@fontsource/young-serif"
+      },
+      "meta": {
+        "license": "OFL-1.1",
+        "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/youngserif/OFL.txt",
+        "source": "https://fonts.google.com/specimen/Young+Serif",
+        "role": [
+          "display"
+        ],
+        "korean": false
+      }
+    }
+  ]
+}

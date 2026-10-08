@@ -1,0 +1,63 @@
+{
+  "id": "everlane-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.everlane.com/products/f-swtr-apc-cdgn-rag-mlw",
+  "structure": {
+    "hero": "품절 안내와 추천 4장이 상세 위에, 아래에 2열 사진",
+    "sections": [
+      "네이비 공지띠(30% 할인)",
+      "2행 헤더(남성/여성·로고·검색·계정·가방 / 카테고리 내비)",
+      "품절 안내와 추천 4장(상품명·가격)",
+      "브레드크럼",
+      "2열 사진 갤러리(NEW 라벨)",
+      "제목·가격 한 줄 배치",
+      "색상 스와치(선택 외곽선)",
+      "사이즈",
+      "접근성 플로팅 버튼"
+    ]
+  },
+  "type": {
+    "display": "넓은 자간 가는 대문자 로고, 같은 산세리프 대문자 제목",
+    "body": "가볍고 넓은 자간 산세리프",
+    "scale": "제목·가격 같은 크기의 작은 대문자"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "품절 상품 시 추천 4장을 상세 위에 노출",
+    "색상 스와치 선택",
+    "2열 사진",
+    "접근성 위젯"
+  ],
+  "cta": {
+    "pattern": "사이즈 선택 뒤 장바구니(첫 화면 아래)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "품절된 색상에서는 상세 위에 대체 추천을 먼저 보여줘 이탈을 줄인다",
+    "제목 왼쪽, 가격 오른쪽의 한 줄 배치로 정보 위계를 단순화",
+    "모든 글자를 작은 대문자·넓은 자간으로 통일해 절제된 패션 톤을 만든다",
+    "추천 카드에 이름과 가격만 둬 군더더기가 없다",
+    "모바일에서 추천을 2열로 줄이고 이후 상세가 이어진다"
+  ]
+}

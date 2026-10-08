@@ -1,0 +1,61 @@
+{
+  "id": "coffeesupreme-com",
+  "archetype": "commerce",
+  "sourceGallery": "httpster",
+  "url": "https://coffeesupreme.com/",
+  "structure": {
+    "hero": "액자처럼 든 영상 히어로(원두 봉투 선반)와 칸막이 2행 헤더",
+    "sections": [
+      "붉은 공지띠",
+      "헤어라인 칸막이 2행 헤더(지역 선택·메뉴 6개·아이콘)",
+      "액자형 영상 히어로",
+      "에스프레소 블렌드 섹션(제목 열+상품 카드 줄)",
+      "신제품 원형 배지"
+    ]
+  },
+  "type": {
+    "display": "굵고 좁은 로고 서체와 세리프 본문 제목",
+    "body": "넓은 자간 작은 대문자 UI와 세리프 설명",
+    "scale": "대문자 라벨은 작게, 섹션 설명은 세리프 중간"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "흐릿한 영상 히어로가 약 0.75초 안에 선명해지고 헤더가 이어서 나타남",
+    "scroll": "스크롤하면 에스프레소 블렌드 제목 열과 상품 카드 줄이 영상 아래에서 올라옴",
+    "hover": null,
+    "transition": "영상은 한 사람이 봉투를 정리하는 장면을 반복",
+    "durationsMs": [
+      750
+    ],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "국가 선택 드롭다운",
+    "2행 칸막이 내비",
+    "상품 카드 가로 배치와 NEW 배지",
+    "모바일 햄버거·국가·계정·장바구니 4칸"
+  ],
+  "cta": {
+    "pattern": "섹션 화살표 링크, 히어로엔 CTA 없음",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "헤어라인으로 칸을 나눈 헤더가 식료품 브랜드의 라벨 감성을 만든다",
+    "영상을 액자처럼 여백 안에 두어 크림 바탕과 대비를 만든다",
+    "섹션 왼쪽에 제목·설명, 오른쪽에 상품 카드를 두는 2열 구조는 재현하기 쉽다",
+    "봉투 라벨의 색(빨강·파랑·보라·주황)이 상품 구분과 색 포인트를 겸한다",
+    "NEW 원형 배지는 작지만 가격 줄보다 눈에 먼저 띈다"
+  ]
+}

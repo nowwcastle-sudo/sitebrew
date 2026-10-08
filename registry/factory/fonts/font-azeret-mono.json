@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-azeret-mono",
+  "type": "registry:font",
+  "title": "Azeret Mono",
+  "description": "web-factory 폰트 키트: Azeret Mono (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Azeret Mono Variable', monospace",
+    "provider": "google",
+    "import": "Azeret_Mono",
+    "variable": "--font-azeret-mono-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/azeret-mono"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/azeretmono/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Azeret+Mono",
+    "role": [
+      "display",
+      "mono"
+    ],
+    "korean": false
+  }
+}

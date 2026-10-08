@@ -1,0 +1,13 @@
+{
+  "kind": "nav",
+  "variant": "top-bar",
+  "title": "앱 상단 바 — 쪽 이름 · 전역 검색 · 알림 · 계정 메뉴",
+  "layout": "app-top-bar",
+  "density": "compact",
+  "archetypes": ["dashboard"],
+  "archetypeKinds": ["top-bar", "app-top-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "서버 컴포넌트. 한 줄: 쪽 이름(선택, 글) · 전역 검색(role=search, 눈에 안 보이는 라벨 + 자리 글, method=get 으로 search.action 에 q) · 알림 링크(읽지 않은 수는 숫자 배지 + 읽는 글 countLabel) · 계정 메뉴(<details> 라 JS 없이 열고 닫힘, 링크들 + [로그아웃] POST 폼은 signOutAction 이 있을 때만). 모든 폭에서 위에 붙는다(data-sticky-nav). 좁은 화면에서는 검색이 둘째 줄로 내려간다. 누름 대상 44px. 검색·알림은 선택(FV1 Task 5.18) — 갈 곳이 없으면 칸을 안 주고 그 자리만 빠진다. 등장 모션 없음"
+}

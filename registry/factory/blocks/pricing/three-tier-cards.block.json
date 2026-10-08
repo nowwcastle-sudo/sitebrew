@@ -1,0 +1,13 @@
+{
+  "kind": "pricing",
+  "variant": "three-tier-cards",
+  "title": "요금 — 요금제 카드 3개(추천 강조)",
+  "layout": "tier-cards",
+  "density": "comfortable",
+  "archetypes": ["saas", "pwa", "landing"],
+  "archetypeKinds": ["pricing-plans", "pricing"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "요금제마다 카드(이름 h3·월 금액 data-numeric tabular-nums·포함 기능·버튼), 추천은 배지 + 테두리 강조 + 채운 버튼. 3열(4개면 넓은 화면 4열), 375 한 열. 문의형(null)은 문의 문구 P3-6 E01: 행동 버튼은 로그인 상태를 따른다 — copy.planIds(요금제 id)·signedInHref(기본 /upgrade?plan={plan})·props signedIn·currentPlanId. 로그아웃은 가입 주소에 ?plan=<id>, 로그인은 결제 주소, 지금 요금제는 비활성 표지(data-current-plan), 문의형·무료는 원래 행동."
+}

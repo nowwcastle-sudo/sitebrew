@@ -1,0 +1,58 @@
+{
+  "id": "una-europa-eu",
+  "archetype": "public",
+  "sourceGallery": "httpster",
+  "url": "https://www.una-europa.eu/",
+  "structure": {
+    "hero": "큰 세리프 소개문 뒤에 파스텔 원이 겹치고, 위에 둥근 검색창과 박스형 내비를 둔 대학 연합 홈",
+    "sections": [
+      "원형 로고·둥근 검색창·박스 내비 5개·언어",
+      "색 원 장식(주황·노랑·연보라·초록·회색)",
+      "큰 세리프 소개문(점선 밑줄)",
+      "쿠키 동의 상자"
+    ]
+  },
+  "type": {
+    "display": "대형 세리프 소개문(점선 밑줄 강조)",
+    "body": "그로테스크 산세리프 UI",
+    "scale": "소개문 약 80px, 내비 약 18px"
+  },
+  "colorLogic": "K8",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "둥근 검색창",
+    "내비 5개와 언어 드롭다운",
+    "쿠키 수락·거절 버튼",
+    "모바일 햄버거와 검색 상자"
+  ],
+  "cta": {
+    "pattern": "내비의 참여·학업 링크(전용 버튼 없음)",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "소개문 한 문장을 화면 가득 키우고 단어마다 점선 밑줄로 링크를 표시한다.",
+    "색 원이 글자와 겹치도록 두어 장식과 위계를 한 겹으로 만든다.",
+    "검색창을 로고 옆 가장 긴 상자로 둔다.",
+    "쿠키 동의는 오른쪽 아래 사각 상자로 소개문과 조금 겹친다. 모바일은 하단 전체 폭이다.",
+    "정지 화면 기준이라 원의 움직임은 판단하지 않았다."
+  ]
+}

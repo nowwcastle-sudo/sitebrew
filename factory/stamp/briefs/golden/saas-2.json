@@ -1,0 +1,28 @@
+{
+  "topic": "Late-invoice reminders that get freelancers paid without awkward emails (fictional business — example)",
+  "archetype": "saas",
+  "locale": "en",
+  "facts": {
+    "name": "Payloop",
+    "legalName": "Payloop Labs Ltd.",
+    "representative": "Jordan Lee",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "price": "Free for 3 clients; Pro $12 per month for unlimited clients; VAT not included",
+    "trial": "14-day Pro trial, no card required",
+    "claim": "Sends polite payment reminders on the schedule you choose and stops the moment an invoice is marked paid",
+    "howItWorks": "Connect your invoicing tool, pick a reminder schedule, watch paid status update automatically",
+    "address": "12 Example Street, Seoul",
+    "phone": "+82-2-1234-5678",
+    "productUrl": "https://payloop.example.com",
+    "audience": "Freelancers and small agencies chasing late invoices",
+    "action": "Start the free plan and connect your invoicing tool",
+    "mood": "friendly",
+    "changelog": "2026-09-18 Reminders pause when a client replies https://example.com/changelog/pause-on-reply ; 2026-08-25 Choose a quiet-hours window https://example.com/changelog/quiet-hours ; 2026-07-28 Export reminder history as CSV https://example.com/changelog/csv-export",
+    "usageLimit": "Free plan: up to 3 clients. Pro plan: unlimited clients",
+    "integrations": "Calendar | https://example.com/integrations/calendar | native ; Messenger | https://example.com/integrations/messenger | webhook ; Accounting | https://example.com/integrations/accounting | api",
+    "testimonials": "Mina Park | Freelance illustrator | Studio Mina | Late invoices dropped from five a month to one after I turned on the reminders ; Daniel Cho | Founder | Cho Design Lab | I stopped writing awkward follow-up emails because the reminders go out on their own",
+    "faq": "Can I try it for free? | Yes, the free plan covers 3 clients and Pro has a 14-day trial without a card ; Will clients get rude emails? | No, every reminder is polite and you choose the schedule ; What happens when an invoice is paid? | Reminders stop right away"
+  },
+  "seed": 22
+}

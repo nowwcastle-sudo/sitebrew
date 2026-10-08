@@ -1,0 +1,234 @@
+{
+  "$comment": "히트 영역 44px 예외의 유일한 원천. factory/qa/hit-area.mjs 가 읽어 판정하고, factory/qa/exceptions-doc.mjs 가 docs/qa/hit-area-exceptions.md 의 표를 만든다(qa.test.mjs 가 둘이 같은지 확인). 규칙: slot(정규식)이 맞고, within(조상 선택자)이 있으면 그 안이며, notMatches(선택자)에 걸리지 않을 때만 예외. 예외는 24 이상이면 통과, 나머지는 44 이상. pointer(fine|coarse)가 있으면 그 포인터 방식에서만 선다 — hit-area.mjs --pointer coarse 는 fine 전용 예외를 빼고 44 로 잰다. overlaps: 옆 타깃의 확장이 이 타깃의 보이는 자리를 가져가는 겹침 가운데 받아들인 것(victim·thief 슬롯 정규식, within) — 나머지 겹침은 hit-area.mjs 가 실패로 판정한다.",
+  "categories": {
+    "dense": "조밀 — 한 줄·칸이 곧 타깃이고 이웃과 붙어 있어 넓히면 이웃을 덮는다",
+    "replaced": "대체 요소 — ::after 가 안 되고, 바닥을 두면 지금 밀도가 바뀐다(계획 2 판정 대기)",
+    "hookFloor": "훅 바닥 — 대체 요소인데 인라인 바닥이 twMerge 로 훅의 min-h 를 지워 기본 모양을 바꾼다",
+    "consumer": "소비자 — 부품이 클래스를 주지 않는 트리거. 크기는 소비자가 render 로 준 요소가 정한다(Button 을 주면 예외가 아니다)",
+    "edgeClipped": "가장자리 잘림 — 식은 있으나 잘라내는 칸(overflow-hidden)의 가장자리에 붙으면 바깥 절반이 잘린다(여백 훅을 0으로 줄인 스타일에서만)"
+  },
+  "exceptions": [
+    {
+      "id": "menu-items",
+      "category": "dense",
+      "slot": "^(dropdown-menu|context-menu|menubar)-(item|checkbox-item|radio-item|sub-trigger)$",
+      "component": "menu · context-menu · dropdown-menu · menubar 항목(체크·라디오·하위 트리거)",
+      "size": "폭 × 28",
+      "reason": "세로로 붙은 목록 줄. 바닥 min-h-[24px](규칙)로 여백 훅을 0으로 줄여도 24.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "list-items",
+      "category": "dense",
+      "slot": "^(select|combobox|command)-item$",
+      "component": "select · combobox · command 항목",
+      "size": "폭 × 28 (command 32)",
+      "reason": "세로 목록 줄. 바닥 min-h-[24px](규칙)로 여백 훅을 0으로 줄여도 24.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "item-rows",
+      "category": "dense",
+      "slot": "^item$",
+      "component": "item(a·button 으로 그릴 때)",
+      "size": "여백 크기(xs 약 42)",
+      "reason": "목록 줄(item-group). 컨트롤러 판정 c3.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "sidebar-menu",
+      "category": "dense",
+      "slot": "^sidebar-menu-(button|sub-button)$",
+      "component": "sidebar 메뉴 버튼 · 하위 버튼",
+      "size": "238×32",
+      "reason": "세로 목록 줄(dashboard 조밀 목록). 바닥 min-h-[24px](규칙)로 여백 훅을 0으로 줄여도 24.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "dashboard-dense-actions",
+      "category": "dense",
+      "slot": "^sidebar-(group|menu)-action$",
+      "within": "[data-archetype=dashboard]",
+      "component": "sidebar 묶음·메뉴 동작 버튼(dashboard 원형 안에서만)",
+      "size": "20×20 → 24×24 — 터치 44×44",
+      "reason": "dashboard 조밀 목록 줄 끝의 작은 동작 버튼(20px). SiteShell 이 단 data-archetype=dashboard 안에서 in-data-[archetype=dashboard]:pointer-fine:after:inset-*-[…24px…] 로 확장을 24까지만 넓혀 옆 메뉴 버튼을 덜 덮는다. (pointer: coarse)와 dashboard 밖에서는 식 그대로 44. 견본 /qa/base sidebar 칸의 data-qa=sidebar-dashboard.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) dashboard 조밀 표 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표, 결정 기록 3)"
+    },
+    {
+      "id": "nav-content-links",
+      "category": "dense",
+      "slot": "^navigation-menu-link$",
+      "within": "[data-slot=navigation-menu-content]",
+      "component": "navigation-menu 내용 안 링크",
+      "size": "폭 × 36 이상",
+      "reason": "내용 패널 안 목록 줄. 패널(viewport)이 overflow-hidden 이라 ::after 식이 가장자리에서 잘린다. 바닥 min-h-[24px](규칙)로 여백 훅을 0으로 줄여도 24. 목록 밖 링크는 44 식.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "accordion",
+      "category": "dense",
+      "slot": "^accordion-trigger$",
+      "component": "accordion 트리거",
+      "size": "448×42",
+      "reason": "폭 전체 줄이 위아래로 붙어 있다. 높이는 여백·글줄이 정한다. 바닥 min-h-[24px](규칙)로 여백 훅을 0으로 줄여도 24.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "tabs",
+      "category": "dense",
+      "slot": "^tabs-trigger$",
+      "component": "tabs 트리거",
+      "size": "56×25",
+      "reason": "가로로 붙은 탭 줄. ::after 는 선택 표시선이라 ::before 에 24 식을 둔다.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "menubar-trigger",
+      "category": "dense",
+      "slot": "^menubar-trigger$",
+      "component": "menubar 트리거",
+      "size": "38×24",
+      "reason": "가로로 붙은 메뉴 막대. 바닥 min-h-[24px](규칙)로 여백 훅을 0으로 줄여도 24.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "calendar-day",
+      "category": "dense",
+      "slot": "^calendar-day-button$",
+      "component": "calendar 날짜",
+      "size": "28×28",
+      "reason": "틈 없는 칸 격자. Button 의 식을 after:inset-0 으로 끈다. 크기는 --cell-size 변수(크기 훅 밖).",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "radio-in-group",
+      "category": "dense",
+      "slot": "^radio-group-item$",
+      "within": "[data-slot=radio-group]",
+      "component": "radio-group 항목(묶음 안에서만)",
+      "size": "44×24",
+      "reason": "줄 간격 8px, 위아래 24까지만(묶음 규칙). 묶음 밖 radio 는 44.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "resizable",
+      "category": "dense",
+      "slot": "^resizable-handle$",
+      "component": "resizable 손잡이",
+      "size": "25 × 패널 높이 — 터치 45 × 패널 높이(/qa/base 견본 45 × 27.2)",
+      "reason": "패널 사이 경계선. 폭은 before:-inset-x-3 로 25, 터치에서는 pointer-coarse:before:-inset-x-[22px] 로 45. 높이는 패널 묶음의 높이(소비자가 정한다)라 부품이 늘릴 수 없다 — 측정: /qa/base 견본 묶음이 27.2px 이라 손잡이도 27.2. 터치에서도 24 이상이면 통과로 둔다(운영자 확인 대상).",
+      "rule": "DESIGN.md §7(274행) 터치 44 — 높이는 소비자 배치, 판정 대기"
+    },
+    {
+      "id": "replaced-inputs",
+      "category": "replaced",
+      "slot": "^(command-input|native-select|input-otp|combobox-chip-input)$",
+      "component": "command 입력 · native-select · input-otp · combobox 칩 입력",
+      "size": "24~32",
+      "reason": "대체 요소. 24 최소는 지킨다.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "textarea",
+      "category": "hookFloor",
+      "slot": "^textarea$",
+      "component": "textarea",
+      "size": "448×64",
+      "reason": "바닥은 훅 값(min-h-16)에 있다. 기본 스타일은 hooks-audit.test.mjs 가 min-h ≥ 11 을 확인하고, 레시피는 Task 6 lint 가 본다.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "consumer-triggers",
+      "category": "consumer",
+      "slot": "^(alert-dialog|dialog|sheet|drawer|popover|tooltip|hover-card|dropdown-menu|context-menu|collapsible)-trigger$",
+      "notMatches": "[class~=\"group/button\"]",
+      "component": "클래스를 주지 않는 트리거(dialog·sheet·drawer·popover·tooltip·hover-card·dropdown-menu·context-menu·collapsible·alert-dialog)",
+      "size": "소비자 요소 크기",
+      "reason": "Button 으로 그린 트리거는 예외가 아니다(식으로 44). /qa/base 의 hover-card 는 인라인 링크(107×27). 부품이 이 요소를 그리지 않아(render 로 받은 소비자 요소) 터치 바닥을 걸 수 없다 — 두 포인터 모두 예외(운영자 확인 대상)."
+    },
+    {
+      "id": "drawer-footer-edge",
+      "category": "edgeClipped",
+      "slot": "^drawer-close$",
+      "within": "[data-slot=drawer-footer]",
+      "component": "drawer 바닥글의 닫기(Button)",
+      "size": "폭 × 44 (줄인 스타일 34)",
+      "reason": "drawer-content 가 overflow-hidden 이라, 바닥글 여백이 0 이면 식의 아래 11px 가 잘린다. 아래 drawer 는 그 가장자리가 화면 끝이다. 레시피 lint(Task 6)가 drawer·sheet 바닥글 여백 훅을 (44 − 버튼 높이)/2 이상으로 지켜야 한다.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 기본 44·터치 44 — 마우스(pointer: fine)에서만 24 이상(2026-09-26 대표)"
+    },
+    {
+      "id": "grouped-vertical",
+      "category": "dense",
+      "slot": "^(button|toggle-group-item)$",
+      "within": "[data-slot=button-group][data-orientation=vertical], [data-slot=toggle-group][data-orientation=vertical]",
+      "component": "세로 ButtonGroup · ToggleGroup 항목",
+      "size": "버튼 폭 × 36 · 토글 폭 × 32 (줄인 스타일 24) — 터치 44",
+      "reason": "위아래로 붙은 묶음. in-[[data-slot=…][data-orientation=vertical]]:after:inset-y-0 으로 위아래 확장을 끈다(좌우는 식). (pointer: fine)에서만 24 이상, (pointer: coarse)에서는 바닥 pointer-coarse:…:min-h-11 로 44.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 묶음 안 타깃 예외(2026-09-26 대표)"
+    },
+    {
+      "id": "pagination-row",
+      "category": "dense",
+      "slot": "^pagination-link$",
+      "within": "[data-slot=pagination-content]",
+      "component": "pagination 링크(이전·쪽 번호·다음)",
+      "size": "44 × 44 (줄인 스타일 24 × 44) — 터치 44 × 44",
+      "reason": "가로로 붙은 쪽 번호 줄(T4-M3). in-data-[slot=pagination-content]:after:inset-x-0 으로 좌우 확장을 끈다 — 줄인 스타일에서 다음 링크가 앞 링크의 보이는 오른쪽을 가져가던 겹침. (pointer: coarse)에서는 바닥 min-w-11 로 44.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 묶음 안 타깃 예외(2026-09-26 대표)"
+    },
+    {
+      "id": "input-group-buttons",
+      "category": "dense",
+      "slot": "^(button|input-group-button)$",
+      "within": "[data-slot=input-group]",
+      "component": "input-group 안 버튼(지우기·combobox 트리거 등)",
+      "size": "24 × 44 — 터치 44 × 44",
+      "reason": "입력칸과 붙은 묶음. in-data-[slot=input-group]:after:inset-x-0 으로 좌우 확장을 끈다 — 입력칸 가장자리를 누르면 버튼이 눌리던 겹침. 높이는 그룹 바닥 min-h-[44px]. (pointer: coarse)에서는 바닥 min-w-11 로 44.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 묶음 안 타깃 예외(2026-09-26 대표)"
+    },
+    {
+      "id": "checkbox-in-label",
+      "category": "dense",
+      "slot": "^checkbox$",
+      "within": "[data-slot=label]",
+      "component": "label 안 checkbox(체크 목록)",
+      "size": "label 폭 × 24 — 터치 label 폭 × 44",
+      "reason": "label 줄 전체가 타깃이다(label 을 누르면 체크). (pointer: fine)에서 pointer-fine:in-data-[slot=label]:after:inset-y-[…24px…] 로 위아래를 24까지만 넓혀 8px 간격 목록에서 겹치지 않는다. (pointer: coarse)에서는 label 바닥 pointer-coarse:has-data-[slot=checkbox]:min-h-11 로 줄이 44. label 없는 checkbox 는 44.",
+      "pointer": "fine",
+      "rule": "DESIGN.md §7(274행) 묶음 안 타깃 예외(2026-09-26 대표)"
+    }
+  ],
+  "overlaps": [
+    {
+      "id": "slider-thumbs",
+      "component": "두 손잡이 slider",
+      "victim": "^slider-thumb$",
+      "thief": "^slider-thumb$",
+      "reason": "두 값이 가까우면 손잡이가 겹칠 수밖에 없다(값이 곧 위치). 트랙을 누르면 Base UI 가 가까운 손잡이를 옮기고, 키보드로는 손잡이마다 따로 움직인다."
+    },
+    {
+      "id": "sidebar-row-action",
+      "component": "sidebar 메뉴 줄 끝 동작 버튼",
+      "victim": "^sidebar-menu-button$",
+      "thief": "^sidebar-menu-action$",
+      "reason": "동작 버튼은 메뉴 버튼 줄 끝(버튼이 비워 둔 오른쪽 여백 pr-8) 위에 놓이는 부속 타깃이다(shadcn 구조). 44 확장(터치, dashboard 밖)은 줄 끝 약 44px 띠를 가져가고 메뉴 버튼은 나머지 폭을 그대로 가진다 — /qa/base 견본 coarse 에서 238×44 줄의 오른쪽 끝 2점. dashboard + 마우스(24 확장)에서는 겹치지 않는다. 줄 높이를 44 로 두고 동작을 줄 밖으로 빼는 배치는 부품 모양 변경이라 하지 않았다(최종 수정 I2, 운영자 확인 대상)."
+    }
+  ]
+}

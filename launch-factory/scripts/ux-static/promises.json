@@ -1,0 +1,145 @@
+{
+  "$comment": "check:ux-static 설정. promises = 글이 한 약속과 그것을 받치는 코드(probe). emailLinks = 메일이 가리키는 경로가 적힌 곳. 쓰는 법은 docs/qa/ux-static.md",
+  "emailLinks": [
+    { "file": "template/lib/launch/config.ts", "object": "ROUTES" },
+    { "file": "template/lib/launch/auth.ts", "const": "EMAIL_VERIFIED_PATH" },
+    { "file": "template/lib/launch/auth.ts", "regex": "resetPasswordPath:\\s*\"(/[^\"]*)\"" },
+    { "file": "packages/consent/src/marketing.ts", "object": "MARKETING_LINK_PATHS" },
+    { "file": "registry/feature-auth-betterauth/files/lib/launch/auth.ts", "regex": "(/api/account/not-me)" }
+  ],
+  "promises": [
+    {
+      "id": "signup-name-later",
+      "item": "D02",
+      "copy": { "file": "template/content/copy.en.ts", "match": "You can add your name later" },
+      "probe": { "type": "route", "routes": ["/account", "/account/profile", "/account/settings", "/settings"] }
+    },
+    {
+      "id": "turn-off-in-settings",
+      "item": "D07",
+      "copy": { "file": "template/content/copy.en.ts", "match": "turn it off any time in settings" },
+      "probe": { "type": "symbol-called", "symbols": ["setMarketingConsents"] }
+    },
+    {
+      "id": "contact-us-route",
+      "item": "K05",
+      "copy": { "file": "template/content/copy.en.ts", "match": "Contact us" },
+      "probe": { "type": "route", "routes": ["/contact", "/help", "/support"] }
+    },
+    {
+      "id": "contact-us-inquiry-wired",
+      "item": "G01",
+      "copy": { "file": "template/content/copy.en.ts", "match": "Contact us" },
+      "probe": { "type": "symbol-called", "symbols": ["createInquiryService"], "in": ["template/app", "template/lib"] }
+    },
+    {
+      "id": "security-notice-contact-us",
+      "item": "C02",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.passwordChanged.securityNote" },
+      "probe": { "type": "route", "routes": ["/contact", "/help", "/support"] }
+    },
+    {
+      "id": "marketing-manage-in-settings",
+      "item": "D07",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.marketingConsentNotice.manageNote" },
+      "probe": { "type": "symbol-called", "symbols": ["setMarketingConsents"] }
+    },
+    {
+      "id": "verify-resend-after-sign-in",
+      "item": "A10",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.verifyEmail.expiryNote" },
+      "probe": { "type": "symbol-called", "symbols": ["sendVerificationEmail"], "in": ["template/app/(product)/account"] }
+    },
+    {
+      "id": "signup-marketing-result-notice",
+      "item": "A06",
+      "note": "가입 화면의 마케팅 동의도 설정 화면과 같이 결과 통지 메일(marketingResult)을 보낸다 — 가입 경로(auth)에서 부르는 곳이 있어야 한다. D210 부터 가입 경로는 lib/launch/notices.ts(발신함·재시도)를 거쳐 부른다",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.marketingConsentNotice.resultGranted" },
+      "probe": { "type": "symbol-called", "symbols": ["marketingResult"], "in": ["packages/auth/src", "template/lib/launch/auth.ts", "template/lib/launch/notices.ts"] }
+    },
+    {
+      "id": "change-plans-any-time",
+      "copy": { "file": "template/content/copy.en.ts", "match": "change plans any time" },
+      "probe": { "type": "symbol-called", "symbols": ["changePlan"] }
+    },
+    {
+      "id": "cancel-any-time-account",
+      "copy": { "file": "template/content/copy.en.ts", "match": "Cancel any time from your account" },
+      "probe": { "type": "route", "routes": ["/account/cancel"] }
+    },
+    {
+      "id": "restart-any-time-billing",
+      "copy": { "file": "template/content/copy.en.ts", "match": "you can restart any time from Billing" },
+      "probe": { "type": "route", "routes": ["/account/billing"] }
+    },
+    {
+      "id": "reset-link-email",
+      "copy": { "file": "template/content/copy.en.ts", "match": "we'll send you a reset link" },
+      "probe": { "type": "email-sent", "templates": ["passwordReset"] }
+    },
+    {
+      "id": "confirmation-email-sent",
+      "copy": { "file": "template/content/copy.en.ts", "match": "Open the link in the email we sent to finish signing up" },
+      "probe": { "type": "email-sent", "templates": ["verifyEmail"] }
+    },
+    {
+      "id": "reset-ask-new-link",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.passwordReset.expiryNote" },
+      "probe": { "type": "route", "routes": ["/forgot-password"] }
+    },
+    {
+      "id": "price-change-consent-email",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.priceChange.noResponse" },
+      "probe": { "type": "email-sent", "templates": ["priceChange"] }
+    },
+    {
+      "id": "unsubscribe-confirmation-email",
+      "item": "G03",
+      "note": "수신거부 결과 화면의 「확인 메일이 간다」는 글 — 철회가 일어나면 처리 결과 통지 메일(sendResultNotice)을 보낸다",
+      "copy": { "file": "template/content/copy.en.ts", "match": "You'll get a short confirmation email" },
+      "probe": { "type": "symbol-called", "symbols": ["sendResultNotice"], "in": ["template/app/api/marketing"] }
+    },
+    {
+      "id": "ad-unsubscribe-no-sign-in",
+      "item": "G03",
+      "note": "광고 메일 바닥글의 「로그인 없이 한 번에 수신거부」 — 그 링크가 닿는 경로가 있다",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.advertising.optOutLead" },
+      "probe": { "type": "route", "routes": ["/api/marketing/unsubscribe"] }
+    },
+    {
+      "id": "reconfirm-unsubscribe-no-sign-in",
+      "item": "A16",
+      "note": "2년 재확인 메일의 「로그인하지 않아도 수신거부」",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.marketingReconfirm.unsubscribeNote" },
+      "probe": { "type": "route", "routes": ["/api/marketing/unsubscribe"] }
+    },
+    {
+      "id": "reconfirm-email-sent",
+      "item": "A16",
+      "note": "재확인 메일이 실제로 나가는 곳이 있다(Cron 이 부르는 consentEmails.marketingReconfirm)",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.marketingReconfirm.why" },
+      "probe": { "type": "email-sent", "templates": ["marketingReconfirm"] }
+    },
+    {
+      "id": "verify-not-me-link",
+      "item": "A13",
+      "note": "확인 메일의 「링크를 누르면 계정을 지운다」 — 그 경로가 있다",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.verifyEmail.notMeNote" },
+      "probe": { "type": "route", "routes": ["/api/account/not-me"] }
+    },
+    {
+      "id": "new-device-alert-sent",
+      "item": "C06",
+      "note": "새 기기 로그인 알림이 실제로 나가는 곳이 있다(authEmails.newDeviceSignIn)",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.newDeviceSignIn.body" },
+      "probe": { "type": "email-sent", "templates": ["newDeviceSignIn"] }
+    },
+    {
+      "id": "welcome-email-sent",
+      "item": "G05",
+      "note": "확인 뒤 환영 메일이 실제로 나가는 곳이 있다(authEmails.welcome)",
+      "copy": { "file": "packages/i18n/messages/en.json", "key": "email.welcome.body" },
+      "probe": { "type": "email-sent", "templates": ["welcome"] }
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "suwon-go-kr",
+  "archetype": "public",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.suwon.go.kr/",
+  "structure": {
+    "hero": "행사 배너 띠와 날씨 줄 아래 정책 아이콘 줄·검색창·배너 슬라이드·사진 카드가 두 열로 놓인 시청 홈",
+    "sections": [
+      "행사 배너와 오늘 하루 닫기",
+      "공식 누리집 안내",
+      "의회·조직·민원·관광 링크와 인구",
+      "날씨·로그인·언어·화면 크기",
+      "로고·메인 내비 6개·검색",
+      "새빛정책 아이콘 줄",
+      "검색창과 추천 검색어",
+      "배너 슬라이드(01-06)",
+      "사진 뉴스 카드와 바로가기"
+    ]
+  },
+  "type": {
+    "display": "한글 고딕 굵게",
+    "body": "한글 고딕",
+    "scale": "메인 내비 약 17px, 배너 제목 약 40px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "배너 이전·정지·다음·목록",
+    "정책 아이콘 좌우 이동",
+    "검색과 추천 검색어",
+    "날씨·인구 한 줄 정보",
+    "언어·화면 크기 조절",
+    "모바일 하단 퀵메뉴"
+  ],
+  "cta": {
+    "pattern": "검색창과 새빛시장실 바로가기",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "맨 위에 지역 행사 배너를 크게 두고 오늘 하루 닫기를 단다.",
+    "날씨·미세먼지·인구를 헤더 줄에 한 번에 보여 준다.",
+    "정책 이름이 붙은 아이콘 줄이 주요 시책의 입구다.",
+    "배너 슬라이드에 번호·정지·이전·다음·목록 버튼을 모두 둔다.",
+    "모바일은 하단 가운데 퀵메뉴 원과 민원신청·맞춤복지 두 버튼이 고정된다."
+  ]
+}

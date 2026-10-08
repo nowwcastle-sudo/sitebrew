@@ -1,0 +1,61 @@
+{
+  "id": "irs-gov",
+  "archetype": "public",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.irs.gov/",
+  "structure": {
+    "hero": "두 줄 파란 헤더와 베이지 알림 띠 아래, 굵은 큰 제목·체크 목록·일러스트와 오른쪽 앱 안내 카드가 놓인 첫 화면",
+    "sections": [
+      "정부 사이트 안내 띠",
+      "로고·도움·뉴스·언어·세무사·로그인",
+      "메인 내비 6개와 검색",
+      "알림 배너(외부 링크)",
+      "제목·체크 목록·계정 만들기 버튼",
+      "일러스트와 앱 안내 카드"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 큰 제목",
+    "body": "같은 산세리프 가는 본문",
+    "scale": "제목 약 56px, 본문 약 24px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "내비 6개",
+    "검색 상자",
+    "계정 만들기 버튼",
+    "앱 받기 외곽선 버튼",
+    "도움·뉴스·언어·로그인 링크"
+  ],
+  "cta": {
+    "pattern": "파란 채움 계정 만들기 버튼과 앱 받기 외곽선 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "내비를 파일·납부·환급처럼 과업 동사로 쓴다.",
+    "핵심 기능 네 가지를 체크 아이콘 목록으로 줄인다.",
+    "앱 안내 카드를 오른쪽에 두어 데스크톱에서도 앱 유입을 노린다.",
+    "알림 배너는 연한 베이지 바탕에 외부 링크 아이콘을 붙인다.",
+    "모바일은 검색·로그인·메뉴가 글자 라벨 세 개로 접힌다."
+  ]
+}

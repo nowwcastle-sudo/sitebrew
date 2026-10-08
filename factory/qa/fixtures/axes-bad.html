@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>축 실측 fixture(예시) — 실패</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; font: 16px/1.7 sans-serif; background: rgb(255 255 255); color: rgb(17 17 17); }
+  table { border-collapse: collapse; }
+  td { padding: 0; border: 0; }
+  button { box-sizing: border-box; display: block; margin: 0; }
+  [data-slot=card] { margin: 12px; padding: 8px; }
+  [data-slot=avatar], [data-slot=checkbox], [data-slot=badge] { display: inline-block; }
+  [data-slot=display-title] { margin: 0; line-height: 1.2; }
+  [data-slot=texture] { position: relative; overflow: hidden; isolation: isolate; }
+  [data-slot=texture] > p { position: relative; margin: 0; }
+  [data-qa=k9] { background: rgb(255 255 255); }
+  [data-qa=k9] p { margin: 0; }
+  [aria-label^="D3 "] [data-slot=display-title] { transition: letter-spacing 0.6s ease; }
+  [aria-label^="D3 "] [data-slot=display-title].still { transition: none; }
+  [aria-label^="X0 "] [data-slot=texture]::before { content: ""; display: block; position: absolute; inset: 0; opacity: 0.04; background: rgb(0 0 0); }
+  [aria-label^="X0 "] [data-slot=texture]::after { display: none; }
+  [aria-label^="X1 "] [data-slot=texture]::before { content: ""; display: block; position: absolute; inset: 0; opacity: 0.2; mix-blend-mode: multiply; background: rgb(0 0 0); }
+  [aria-label^="X2 "] [data-slot=texture]::before { content: ""; display: block; position: absolute; inset: 0; opacity: 0.2; background: rgb(0 0 0); }
+  [aria-label^="X3 "] [data-slot=texture]::before { content: ""; display: block; position: absolute; inset: 0; opacity: 0.5; background: rgb(0 0 0); }
+  /* P3-6 사진 질감 X4~X8: 무늬 층 둘(표시) + 질감 × 레시피 3벌 대비 칸(33칸) — 질감 층은 투명, 글자는 흰 바탕 위 */
+  [aria-label^="X4 "] [data-slot=texture]::before, [aria-label^="X4 "] [data-slot=texture]::after,
+  [aria-label^="X5 "] [data-slot=texture]::before, [aria-label^="X5 "] [data-slot=texture]::after,
+  [aria-label^="X6 "] [data-slot=texture]::before, [aria-label^="X6 "] [data-slot=texture]::after,
+  [aria-label^="X7 "] [data-slot=texture]::before, [aria-label^="X7 "] [data-slot=texture]::after,
+  [aria-label^="X8 "] [data-slot=texture]::before, [aria-label^="X8 "] [data-slot=texture]::after,
+  [data-tc-cell] [data-slot=texture]::before, [data-tc-cell] [data-slot=texture]::after { content: ""; display: block; position: absolute; inset: 0; pointer-events: none; }
+  [data-tc-cell] { padding: 4px; background: rgb(255 255 255); }
+  [data-tc-cell] [data-slot=texture] { --wf-texture-a-wash: 100; }
+  [data-tc-cell] [data-slot=texture] > * { position: relative; margin: 0; }
+  [data-tc-cell] [data-slot=texture][data-overlay] { --wf-texture-a-wash: 95; }
+  [data-tc-cell^="X7|"] [data-slot=texture][data-overlay]::after, [data-tc-cell^="X8|"] [data-slot=texture][data-overlay]::after { backdrop-filter: blur(12px); }
+  @media (prefers-reduced-transparency: reduce) {
+    [data-tc-cell] [data-slot=texture][data-overlay] { --wf-texture-a-wash: 100; }
+    [data-tc-cell] [data-slot=texture][data-overlay]::after { backdrop-filter: none; }
+  }
+</style>
+</head>
+<body>
+<!-- axes-measure.mjs fixture: 검사마다 결함 하나 — T2 행 44 · T3 표 없음 · 레일 200 · 메뉴 36 · 흐르는 칸에 블러 · C5 반투명 · 설명 행간 1.4
+     · C6 테두리 1px · C8 테두리 2px · R3 아바타가 원(블롭 아님)·R3 체크박스가 R1 과 다르다
+     · D1 제목이 잘린다·D1 제목 30px · D2 8vw · D3 전이 없음 · X0 무늬가 있다·X1 불투명도 0.2·X2 불투명도 0.2·X3 종이 층 없음 · K9 보조 글자 대비 낮음 · 문서가 1600px -->
+<table aria-label="T1 조밀(예시)"><tbody><tr style="height: 36px"><td>예시 행</td></tr></tbody></table>
+<table aria-label="T2 표준(예시)"><tbody><tr style="height: 44px"><td>예시 행</td></tr></tbody></table>
+<table aria-label="T4 괘선(예시)"><tbody><tr style="height: 40px"><td>예시 행</td></tr></tbody></table>
+<nav aria-label="H4 사이드 레일" style="width: 200px">
+  <button data-slot="sidebar-menu-button" style="height: 36px; width: 100%">발주</button>
+</nav>
+<div data-slot="flow-panel" style="backdrop-filter: blur(8px)">흐르는 칸(예시)</div>
+<section aria-label="C5 유리(예시)"><div data-slot="card" style="background: rgb(255 255 255 / 0.5)">예시 카드</div></section>
+<section aria-label="C6 굵은 테두리 색면(예시)"><div data-slot="card" style="border: 1px solid rgb(0 0 0); border-radius: 0; background: rgb(255 255 255); box-shadow: 4px 4px 0 rgb(0 0 0)">예시 카드</div></section>
+<section aria-label="C8 웹툰 컷(예시)"><div data-slot="card" style="border: 2px solid rgb(0 0 0); border-radius: 0; background: rgb(255 255 255)">예시 카드</div></section>
+<section aria-label="R1 반경(예시)"><span data-slot="checkbox" style="width: 16px; height: 16px; border-radius: 4px; background: rgb(0 0 0)"></span> <span data-slot="badge" style="border-radius: 9999px; padding: 0 8px">예시</span></section>
+<section aria-label="R3 블롭(예시)"><span data-slot="avatar" style="width: 40px; height: 40px; border-radius: 50%; background: rgb(0 0 0)"></span> <span data-slot="checkbox" style="width: 16px; height: 16px; border-radius: 8px; background: rgb(0 0 0)"></span> <span data-slot="badge" style="border-radius: 9999px; padding: 0 8px">예시</span></section>
+<section aria-label="D1 표준(예시)"><h2 data-slot="display-title" style="font-size: 40px; width: 100px; overflow: hidden; white-space: nowrap">예시 제목이 칸보다 길다</h2><h2 data-slot="display-title" style="font-size: 30px">예시</h2></section>
+<section aria-label="D2 초대형(예시)"><h2 data-slot="display-title" style="font-size: 8vw">예시</h2><h2 data-slot="display-title" style="font-size: 14vw">예시</h2></section>
+<section aria-label="D3 키네틱(예시)"><h2 data-slot="display-title" class="still" style="font-size: 48px">예시</h2><h2 data-slot="display-title" style="font-size: 52px">예시</h2></section>
+<section aria-label="X0 질감 없음(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X1 그레인(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X2 망점(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X3 콜라주(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X4 골판지 A(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X5 골판지 B(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X6 골판지 C(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X7 간유리 A(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<section aria-label="X8 간유리 B(예시)"><div data-slot="texture"><p>예시 본문 문단입니다.</p></div></section>
+<div data-qa="texture-sweep">
+<div data-tc-cell="X4|r1-measure|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X4|r5-celadon|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X4|r8-dusk|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X5|r1-measure|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X5|r5-celadon|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X5|r8-dusk|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X6|r1-measure|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X6|r5-celadon|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X6|r8-dusk|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r1-measure|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r1-measure|glass-a"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r1-measure|glass-b"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r1-measure|worst"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r5-celadon|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r5-celadon|glass-a"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r5-celadon|glass-b"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r5-celadon|worst"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r8-dusk|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r8-dusk|glass-a"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r8-dusk|glass-b"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X7|r8-dusk|worst"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r1-measure|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r1-measure|glass-a"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r1-measure|glass-b"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r1-measure|worst"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r5-celadon|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r5-celadon|glass-a"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r5-celadon|glass-b"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r5-celadon|worst"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r8-dusk|own"><div data-slot="texture"><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r8-dusk|glass-a"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r8-dusk|glass-b"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+<div data-tc-cell="X8|r8-dusk|worst"><div data-slot="texture" data-overlay><p data-tc="title" style="font-size: 28px; font-weight: 700">예시 제목</p><p data-tc="body">예시 본문</p><p data-tc="muted" style="font-size: 14px">예시 보조</p><button type="button" data-tc="button" style="min-height: 44px; background: rgb(255 255 255); color: rgb(17 17 17); border: 0">예시 단추</button></div></div>
+</div>
+<section data-qa="k9"><p>예시 본문 글자</p><p style="color: rgb(153 153 153)">예시 보조 글자</p></section>
+<div style="width: 1600px; height: 1px"></div>
+<p data-slot="card-description" style="font-size: 16px; line-height: 1.4">예시 설명 문단입니다.</p>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "id": "md-kbs-co-kr",
+  "archetype": "dashboard",
+  "sourceGallery": "webaward-kr",
+  "url": "https://d.kbs.co.kr/index",
+  "structure": {
+    "hero": "재난 속보 띠 아래 안전지도·CCTV 카드, 그 밑에 제보 목록+지도 2열",
+    "sections": [
+      "방송사 글로벌 바",
+      "로고+주 메뉴",
+      "재난 속보 띠",
+      "안전지도·CCTV 카드",
+      "제보TV/우리지역/날씨영상 탭",
+      "제보 목록+지도",
+      "재난 종류 아이콘 줄",
+      "날씨·재난문자",
+      "영상 콘텐츠 카드"
+    ]
+  },
+  "type": {
+    "display": "굵은 고딕 큰 제목(메뉴 20px대)",
+    "body": "고딕 14~16px 본문",
+    "scale": "메뉴·카드 제목 20~28px, 본문 14~16px의 3단"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "탭 3개로 제보 목록과 지도 전환",
+    "날짜 범위 검색",
+    "지도 마커 클릭으로 영상 제보 재생",
+    "속보 띠 펼침 화살표",
+    "CCTV 캐러셀 점 표시"
+  ],
+  "cta": {
+    "pattern": "상단 우측 제보 버튼 + 지도 위 검색 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard",
+      "public"
+    ],
+    "score": 0.7
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "속보 띠를 헤더 아래 한 줄로 두어 긴급 상태를 먼저 보인다",
+    "목록(좌)과 지도(우)를 한 틀에 붙이고 탭으로 데이터 종류만 바꾼다",
+    "375에서도 같은 구성을 세로로 쌓고 재난 12종 아이콘은 가로 줄이 된다",
+    "날짜·지역 필터가 지도 위에 떠 있어 지도 면적을 잃지 않는다"
+  ]
+}

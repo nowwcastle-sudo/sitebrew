@@ -1,0 +1,65 @@
+{
+  "id": "bellroy-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://bellroy.com/products/laneway-tote",
+  "structure": {
+    "hero": "회색 바탕 큰 가방 컷과 중앙 정렬 제목·가격·주황 버튼",
+    "sections": [
+      "유틸리티 줄(무료배송·도움)",
+      "헤더(로고·내비 7개·매장·메일·검색·장바구니)",
+      "브레드크럼",
+      "큰 상품 사진(모바일은 썸네일 줄 포함)",
+      "제목+신상 배지·가격(세금 포함 표기)",
+      "사이즈 드롭다운",
+      "색상 썸네일(이름 표기)",
+      "주황 장바구니 버튼",
+      "배송 일수 안내",
+      "제품 설명 문장",
+      "쿠키 하단 바"
+    ]
+  },
+  "type": {
+    "display": "둥근 기하학 산세리프 굵은 제목",
+    "body": "같은 산세리프 계열 본문",
+    "scale": "제목 크게 가운데, 라벨은 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "색상 썸네일 4개(이름 아래 표기)",
+    "사이즈 드롭다운",
+    "썸네일 줄에 라이프스타일·내부 사진 포함",
+    "쿠키 확인"
+  ],
+  "cta": {
+    "pattern": "전폭 주황 장바구니 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "가격 아래 「관세 및 세금 포함」 표기로 불안을 줄인다",
+    "색상을 가방 축소 사진으로 보여주고 이름을 아래에 적는다",
+    "주황 버튼 하나만 강조색으로 써서 눈이 CTA로 간다",
+    "배송을 「근무일 기준 2일」처럼 구체적인 숫자로 안내한다",
+    "모바일은 썸네일 줄에 사용 장면 사진을 섞어 크기와 수납을 전달"
+  ]
+}

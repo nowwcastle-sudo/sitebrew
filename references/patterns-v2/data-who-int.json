@@ -1,0 +1,60 @@
+{
+  "id": "data-who-int",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://data.who.int/dashboards/covid19",
+  "structure": {
+    "hero": "진남색 제목 띠, 탭 줄, 긴 안내 문단으로 시작하는 보고서형 화면",
+    "sections": [
+      "글로벌 링크+로고+주 메뉴",
+      "진남색 제목 띠",
+      "탭 줄(요약·확산·사례·사망)",
+      "목적 안내 문단",
+      "확산 요약 본문",
+      "업데이트·뉴스 사이드 목록"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 24px 제목",
+    "body": "산세리프 16px 본문",
+    "scale": "띠 제목 24px, 섹션 제목 22px, 본문 16px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "탭으로 지표 영역 전환",
+    "더보기 메뉴",
+    "내비게이션 숨기기 토글",
+    "언어 전환"
+  ],
+  "cta": {
+    "pattern": "탭 줄의 섹션 이동 링크",
+    "count": 6
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard",
+      "public"
+    ],
+    "score": 0.5
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "대시보드 첫 화면이 차트가 아니라 해석 문단이라 보고서 문서에 가깝다",
+    "밑줄 강조 탭 줄을 제목 띠 아래 둬 영역 전환을 알린다",
+    "375에서는 탭 줄이 가로 스크롤이 되고 우측이 흐려져 이어짐을 알린다",
+    "사이드 목록(업데이트·뉴스)이 본문 옆에 붙어 근거 링크를 곁에 둔다"
+  ]
+}

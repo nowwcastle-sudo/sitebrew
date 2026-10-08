@@ -1,0 +1,59 @@
+{
+  "id": "isdongseo-co-kr",
+  "archetype": "brand",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.isdongseo.co.kr/",
+  "structure": {
+    "hero": "석양 바다의 인물 영상 전면 위 중앙 한 줄 슬로건과 우측 공지 배너",
+    "sections": [
+      "투명 헤더(로고·메뉴 7개·검색·EN·전체 메뉴 격자)",
+      "영상 히어로 + 중앙 슬로건",
+      "우측 공지 팝업 배너(오늘 하루만 보기·닫기)",
+      "우측 세로 탭 2개",
+      "하단 사업 분야 3칸 띠(건설·환경·콘크리트)"
+    ]
+  },
+  "type": {
+    "display": "한글 고딕 중간 굵기 제목",
+    "body": "한글 고딕 보통 소형",
+    "scale": "슬로건 대형 한 단계, 메뉴 소형, 사업 라벨 소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "영상 8초 동안 UI가 그대로이고 배경 영상만 미세하게 움직임, 모바일은 슬라이드형 확인"
+  },
+  "interaction": [
+    "공지 팝업 닫기와 오늘 하루 보지 않기 체크",
+    "우측 세로 탭 링크",
+    "검색·언어·전체 메뉴 격자",
+    "모바일 슬라이드 점 3개와 더하기 버튼"
+  ],
+  "cta": {
+    "pattern": "공지 배너 자세히 보기 버튼과 하단 사업 3칸",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.5
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "짧은 슬로건 한 줄을 영상 중앙에 두어 기업 이미지를 단순하게 전달한다",
+    "하단 3칸 띠로 핵심 사업을 첫 화면 끝에서 바로 안내한다",
+    "우측 세로 탭은 보조 링크를 화면 가장자리로 밀어 본 화면을 비운다",
+    "모바일은 공지 배너가 화면 상단 3분의 1을 덮으니 닫기 위치를 크게 둔다"
+  ]
+}

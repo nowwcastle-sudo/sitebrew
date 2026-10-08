@@ -1,0 +1,7 @@
+/* 시험용: drawer 바닥글 여백 0 + 작은 버튼 32px → 닫기 버튼 히트 영역이 가장자리에서 잘린다(T4r1-c2). */
+.cn-drawer-footer {
+  @apply gap-2 p-0;
+}
+.cn-button-size-sm {
+  @apply h-8 gap-1 rounded-none px-3 text-sm;
+}

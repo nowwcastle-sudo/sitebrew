@@ -1,0 +1,64 @@
+{
+  "id": "vaultedworth-com",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://vaultedworth.com/",
+  "structure": {
+    "hero": "다크 대시보드 위 환영 모달, 뒤에 순자산 카드와 빠른 작업 목록",
+    "sections": [
+      "앱 제목+테마 전환",
+      "순자산 카드(자산·부채)",
+      "빠른 작업 목록",
+      "순자산 추이 차트(빈 상태)",
+      "자산 구성 차트(빈 상태)",
+      "하단 탭 바(대시보드·자산·기록·설정)",
+      "떠 있는 추가 버튼",
+      "환영 모달"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 48px 앱 제목과 수치",
+    "body": "산세리프 16px",
+    "scale": "수치 48px, 모달 제목 32px, 라벨 12px 대문자"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "환영 모달 시작 버튼",
+    "하단 탭 4개 전환",
+    "떠 있는 추가 버튼",
+    "자산·부채 추가",
+    "월 스냅샷 저장",
+    "라이트·다크 전환"
+  ],
+  "cta": {
+    "pattern": "모달 시작 버튼 + 추가 버튼 + 빠른 작업 버튼",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "하단 탭 바, 추가 버튼, 빈 상태 카드는 모바일 앱 패턴이다",
+    "모달에서 데이터 위치(100% 로컬)·입력 방식·주기를 칩 3개로 요약한다",
+    "375에서는 모달이 화면 아래 시트처럼 올라오고 칩이 세로로 쌓인다",
+    "초록 하나만 강조로 쓰고 나머지는 검정·회색으로 정리한다",
+    "계정 없이 시작한다는 약속을 제목 바로 아래 한 문장으로 먼저 말한다"
+  ]
+}

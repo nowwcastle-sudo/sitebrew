@@ -1,0 +1,13 @@
+{
+  "kind": "state-screen",
+  "variant": "loading",
+  "title": "상태 화면 — 앱 전체 읽는 중 뼈대",
+  "layout": "loading",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas", "pwa", "commerce", "public"],
+  "archetypeKinds": ["state-screens"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "앱 전체 loading 으로 쓴다: 제목 줄·본문 줄·카드 둘의 뼈대(aria-hidden) + 읽는 도구가 읽는 「불러오는 중」(role=status, 뿌리 aria-busy). slow 를 켜면 「응답이 늦어요」 + 다시 불러오기 링크. header 칸. 서버 컴포넌트·스타일 속성 없음(엄격 CSP 안전)"
+}

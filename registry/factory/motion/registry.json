@@ -1,0 +1,188 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "motion-core",
+      "type": "registry:item",
+      "title": "모션 키트",
+      "description": "web-factory 모션: 이징 5·길이 5 토큰(@theme), 프리셋 wf-fade-rise·wf-sheet-in·wf-breathe, 동작 줄이기에서 끔, 화면 밖·탭 숨김 정지 훅",
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/use-pause-offscreen#v0.1.0",
+        "nowwcastle-sudo/sitebrew/use-recipe-motion#v0.1.0",
+        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.1.0"
+      ],
+      "cssVars": {
+        "theme": {
+          "ease-standard": "cubic-bezier(0.23, 1, 0.32, 1)",
+          "ease-emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+          "ease-in-screen": "cubic-bezier(0.77, 0, 0.175, 1)",
+          "ease-exit": "cubic-bezier(0.4, 0, 1, 1)",
+          "ease-sheet": "cubic-bezier(0.32, 0.72, 0, 1)",
+          "duration-press": "120ms",
+          "duration-hover": "200ms",
+          "duration-popover": "160ms",
+          "duration-enter": "500ms",
+          "duration-sheet": "320ms"
+        }
+      },
+      "css": {
+        "@keyframes wf-fade-rise": {
+          "from": {
+            "opacity": "0",
+            "transform": "translateY(8px)"
+          },
+          "to": {
+            "opacity": "1",
+            "transform": "none"
+          }
+        },
+        "@keyframes wf-sheet-in": {
+          "from": {
+            "transform": "translateY(100%)"
+          },
+          "to": {
+            "transform": "none"
+          }
+        },
+        "@keyframes wf-breathe": {
+          "0%, 100%": {
+            "transform": "scale(1)"
+          },
+          "50%": {
+            "transform": "scale(1.02)"
+          }
+        },
+        ".wf-fade-rise": {
+          "animation": "wf-fade-rise var(--duration-enter, 500ms) var(--ease-standard, cubic-bezier(0.23, 1, 0.32, 1)) both"
+        },
+        ".wf-sheet-in": {
+          "animation": "wf-sheet-in var(--duration-sheet, 320ms) var(--ease-sheet, cubic-bezier(0.32, 0.72, 0, 1)) both"
+        },
+        ".wf-breathe": {
+          "animation": "wf-breathe 4s ease-in-out infinite"
+        },
+        "[data-paused]": {
+          "animation-play-state": "paused"
+        },
+        "[data-paused] *": {
+          "animation-play-state": "paused"
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          ".wf-fade-rise": {
+            "animation": "none"
+          },
+          ".wf-sheet-in": {
+            "animation": "none"
+          },
+          ".wf-breathe": {
+            "animation": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "use-pause-offscreen",
+      "type": "registry:hook",
+      "title": "use-pause-offscreen",
+      "description": "web-factory motion: use-pause-offscreen",
+      "files": [
+        {
+          "path": "use-pause-offscreen.ts",
+          "type": "registry:hook",
+          "target": "@components/motion/use-pause-offscreen.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "use-recipe-motion",
+      "type": "registry:hook",
+      "title": "use-recipe-motion",
+      "description": "web-factory motion: use-recipe-motion",
+      "files": [
+        {
+          "path": "use-recipe-motion.ts",
+          "type": "registry:hook",
+          "target": "@components/motion/use-recipe-motion.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "use-reduced-motion",
+      "type": "registry:hook",
+      "title": "use-reduced-motion",
+      "description": "web-factory motion: use-reduced-motion",
+      "files": [
+        {
+          "path": "use-reduced-motion.ts",
+          "type": "registry:hook",
+          "target": "@components/motion/use-reduced-motion.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "motion-gsap",
+      "type": "registry:lib",
+      "title": "GSAP 모션 장면",
+      "description": "web-factory 모션: GSAP 장면 훅(useGsapScene — 동작 줄이기·M0 정지 갈래, 화면 밖·숨은 탭 정지, 되돌리기, 등장 끝 신호 data-wf-entered·wf:entered, 포인터 겹) + 서버 렌더 첫 칠 가림 MotionBoot(<head> — 장면 시작 전까지 [data-enter] 숨김, 1.5초 안전장치) + §8-6 기법 도우미(split-text·clip-reveal·svg-draw·oversize-crop·sticky-stack·marquee·tilt-3d·magnetic-cta·variable-axis·ambient drift·view-transition·parallax·pointer depth·count-up). 길이·곡선은 레시피 모션 토큰, 거리·연쇄는 강도(M1~M3) 배율",
+      "files": [
+        {
+          "path": "motion-scale.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/motion-scale.ts"
+        },
+        {
+          "path": "use-gsap-scene.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/use-gsap-scene.ts"
+        },
+        {
+          "path": "gsap-techniques.ts",
+          "type": "registry:lib",
+          "target": "@components/motion/gsap-techniques.ts"
+        },
+        {
+          "path": "split-source.tsx",
+          "type": "registry:lib",
+          "target": "@components/motion/split-source.tsx"
+        },
+        {
+          "path": "motion-boot.tsx",
+          "type": "registry:lib",
+          "target": "@components/motion/motion-boot.tsx"
+        }
+      ],
+      "dependencies": [
+        "gsap@3.15.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/motion-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "motion-lottie",
+      "type": "registry:lib",
+      "title": "Lottie 재생(선택)",
+      "description": "web-factory 모션(선택 설치): dotLottie 재생 컴포넌트 LottiePlayback — 재생기는 동적 import, 동작 줄이기면 첫 프레임 정지, 화면 밖·숨은 탭·사용자 정지에서 멈춤, 무한 반복·5초 넘는 재생이면 멈춤 단추가 필요하다고 알림(onNeedsPause), wasm 은 같은 출처 주소 선택(wasmUrl)",
+      "files": [
+        {
+          "path": "motion-lottie.tsx",
+          "type": "registry:lib",
+          "target": "@components/motion/motion-lottie.tsx"
+        }
+      ],
+      "dependencies": [
+        "@lottiefiles/dotlottie-web@0.80.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/motion-core#v0.1.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.0"
+      ]
+    }
+  ]
+}

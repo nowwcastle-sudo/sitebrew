@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "timeline",
+  "title": "연혁 — 연도별 <ol>, 큰 연도 칸 + 사건 글, 세로 선 하나",
+  "layout": "year-list",
+  "density": "comfortable",
+  "archetypes": [ "brand" ],
+  "archetypeKinds": [ "history" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content 섹션 렌더러(대장 C70). factory-rules.md §21-2 — 연혁은 JS 없이 전부 보이는 <ol>, 가로 스크롤 타임라인이 아니다. 연도는 data-numeric."
+}

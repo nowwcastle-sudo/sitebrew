@@ -1,0 +1,13 @@
+{
+  "kind": "menu-price",
+  "variant": "photo-rows",
+  "title": "메뉴·가격표 — 사진 + 이름 + 가격 행",
+  "layout": "photo-rows",
+  "density": "comfortable",
+  "archetypes": ["local", "commerce"],
+  "archetypeKinds": ["menu-price"],
+  "states": [],
+  "media": ["menu-photo"],
+  "motion": ["rise"],
+  "notes": "줄마다 1:1 사진(없으면 비율을 지킨 빈 자리) · 이름 h3 + 표지 배지 · 설명 · 오른쪽 가격. 넓으면 두 열. 사진은 local menu-photo 칸(실사 필수)"
+}

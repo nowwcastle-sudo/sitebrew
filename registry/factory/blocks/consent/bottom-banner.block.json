@@ -1,0 +1,14 @@
+{
+  "kind": "consent",
+  "variant": "bottom-banner",
+  "title": "쿠키 동의 아래 띠 — 가림막 없는 한 줄 띠·거부/허용 대등",
+  "layout": "fixed-bottom-strip",
+  "density": "compact",
+  "archetypes": [ "brand", "commerce", "local", "saas", "detail", "portfolio", "public", "landing" ],
+  "archetypeKinds": [ "cookie-consent", "consent-banner" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L3", "X3", "M1" ],
+  "notes": "화면 아래에 붙는 띠(가림막 없음, 높이 첫 화면 30% 미만 — 넘치면 띠 안 스크롤): 제목 · 무엇을 왜 묻나 · 처리방침 링크 · [모두 거부하기][모두 허용하기] 대등 · 항목별로 고르기 링크. consent().decidedAt 이 없을 때만 보이고 setConsent 로 저장한 뒤 사라진다. 포트: consent·setConsent·track?"
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-pretendard",
+  "type": "registry:item",
+  "title": "Pretendard",
+  "description": "web-factory 폰트 키트: Pretendard Variable 동적 서브셋(npm pretendard, OFL-1.1) — Google Fonts 밖이라 css @import 로 싣는다(docs/qa/pretendard-install.md)",
+  "dependencies": [
+    "pretendard"
+  ],
+  "css": {
+    "@import \"pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css\"": {}
+  },
+  "cssVars": {
+    "theme": {
+      "font-pretendard-wf": "\"Pretendard Variable\", Pretendard"
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/orioncactus/pretendard/blob/main/LICENSE",
+    "source": "https://github.com/orioncactus/pretendard",
+    "family": "Pretendard",
+    "role": [
+      "body",
+      "display"
+    ],
+    "korean": true
+  }
+}

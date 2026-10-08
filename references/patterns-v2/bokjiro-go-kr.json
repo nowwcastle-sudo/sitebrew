@@ -1,0 +1,64 @@
+{
+  "id": "bokjiro-go-kr",
+  "archetype": "public",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.bokjiro.go.kr/ssis-tbu/",
+  "structure": {
+    "hero": "중앙의 둥근 큰 검색창 아래 공지·인기검색 한 줄과 자주 찾는 서비스 아이콘 줄이 놓인 복지 포털",
+    "sections": [
+      "공식 누리집 안내 띠",
+      "로고·핵심 내비 5개·로그인·글자 크기",
+      "중앙 검색창",
+      "공지사항·검색순위 롤링 줄",
+      "자주 찾는 서비스 아이콘(6개)",
+      "탭 목록",
+      "오른쪽 고정 원형 버튼 4개",
+      "모바일 하단 탭"
+    ]
+  },
+  "type": {
+    "display": "한글 고딕 굵은 내비",
+    "body": "한글 고딕",
+    "scale": "내비 약 22px, 아이콘 라벨 약 16px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "검색 후 결과",
+    "공지·검색순위 롤링 이전·다음·정지",
+    "서비스 아이콘 좌우 이동",
+    "챗봇·맨 위·맨 아래 원형 버튼",
+    "글자 크기 조절",
+    "모바일 하단 탭 4개"
+  ],
+  "cta": {
+    "pattern": "검색창과 자주 찾는 서비스 아이콘",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "검색을 화면 한가운데 가장 큰 요소로 둔다.",
+    "공지와 인기 검색어를 한 줄 롤링으로 두고 정지 버튼을 단다.",
+    "자주 찾는 서비스를 아이콘 여섯 개와 좌우 화살표로 보여 준다.",
+    "오른쪽에 이력·챗봇·맨 위·맨 아래 원형 버튼을 고정한다.",
+    "모바일은 하단 탭 네 개(맞춤급여·복지지갑·복지서비스·서비스신청)가 첫 행동이다."
+  ]
+}

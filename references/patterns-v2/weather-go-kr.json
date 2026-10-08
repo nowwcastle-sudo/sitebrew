@@ -1,0 +1,63 @@
+{
+  "id": "weather-go-kr",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://www.weather.go.kr/w/index.do",
+  "structure": {
+    "hero": "안내 모달 뒤로 현재 기온 큰 숫자와 관측 지도가 보이는 화면",
+    "sections": [
+      "기관 문구 바",
+      "로고+주 메뉴",
+      "날씨·전국·태풍 탭",
+      "지역 검색",
+      "관측 지도(마커 카드)",
+      "현재 기온·습도·바람",
+      "특보 안내",
+      "대기질 원형 게이지"
+    ]
+  },
+  "type": {
+    "display": "굵은 고딕 72px 현재 기온 숫자",
+    "body": "고딕 14~16px",
+    "scale": "기온 숫자 72px, 모달 제목 32px, 보조 14px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "모달 닫기·24시간 숨김 체크",
+    "지도 레이어 버튼(1시간관측·예보)",
+    "지역명 검색 입력",
+    "지도 확대·축소 버튼",
+    "실황·국값 전환 탭"
+  ],
+  "cta": {
+    "pattern": "모달의 새 지도 바로가기 버튼",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard",
+      "public"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "현재 기온을 큰 숫자 하나로 올리고 습도·바람·강수는 한 줄로 둔다",
+    "진입 모달이 데스크톱과 375 모두에서 실제 데이터를 가린다",
+    "대기질 3종을 원형 게이지와 등급 라벨로 나란히 보인다",
+    "375에서는 지도 위에 탭 6개가 가로로 이어지고 지도가 접이식이 된다"
+  ]
+}

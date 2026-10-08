@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-fragment-mono",
+  "type": "registry:font",
+  "title": "Fragment Mono",
+  "description": "web-factory 폰트 키트: Fragment Mono (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Fragment Mono', monospace",
+    "provider": "google",
+    "import": "Fragment_Mono",
+    "variable": "--font-fragment-mono-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/fragment-mono"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/fragmentmono/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Fragment+Mono",
+    "role": [
+      "display",
+      "mono"
+    ],
+    "korean": false
+  }
+}

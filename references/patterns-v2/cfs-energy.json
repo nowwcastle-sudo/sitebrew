@@ -1,0 +1,58 @@
+{
+  "id": "cfs-energy",
+  "archetype": "brand",
+  "sourceGallery": "httpster",
+  "url": "https://cfs.energy/",
+  "structure": {
+    "hero": "금속 부품 근접 사진 전면에 박스형 내비와 큰 선언 문장, 아래 세 열 요약",
+    "sections": [
+      "선 테두리 상자형 내비(로고·메뉴 5개)",
+      "전면 사진 + 대형 선언 문장",
+      "세 열 요약(점 표시 + 모노 라벨 + 설명)",
+      "개인정보 안내 카드(우하단)"
+    ]
+  },
+  "type": {
+    "display": "가는 기하 산세리프 대형 제목 + 모노스페이스 라벨",
+    "body": "같은 산세리프 소형 본문",
+    "scale": "제목 대형, 라벨 모노 소형, 본문 소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "메뉴 5개 탭 칸",
+    "쿠키 수락·거부",
+    "모바일 햄버거"
+  ],
+  "cta": {
+    "pattern": "주황 면 Accept 쿠키 버튼 외 CTA 없음",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.7
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "내비를 얇은 선 상자와 칸 구분선으로 만들어 계측 장비 같은 인상을 준다",
+    "모노스페이스를 라벨과 내비에만 쓰고 제목은 산세리프로 나눈다",
+    "세 열 요약은 채움·빈 원 점으로 순서를 암시해 문구를 줄인다",
+    "구리빛 주황 하나를 포인트로 삼고 나머지 색은 사진에 맡긴다",
+    "모바일은 세 열을 세로로 쌓고 개인정보 카드가 하단 5분의 1을 덮는다"
+  ]
+}

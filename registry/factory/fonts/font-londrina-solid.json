@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-londrina-solid",
+  "type": "registry:font",
+  "title": "Londrina Solid",
+  "description": "web-factory 폰트 키트: Londrina Solid (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+  "font": {
+    "family": "'Londrina Solid', sans-serif",
+    "provider": "google",
+    "import": "Londrina_Solid",
+    "variable": "--font-londrina-solid-wf",
+    "weight": [
+      "100",
+      "300",
+      "400",
+      "900"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/londrina-solid"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/londrinasolid/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Londrina+Solid",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

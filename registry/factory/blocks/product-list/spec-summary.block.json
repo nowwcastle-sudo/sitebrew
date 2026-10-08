@@ -1,0 +1,13 @@
+{
+  "kind": "product-list",
+  "variant": "spec-summary",
+  "title": "상품 목록 — 상세페이지 요약(사진·구매 영역·사양 표)",
+  "layout": "spec-purchase",
+  "density": "spacious",
+  "archetypes": ["commerce", "detail"],
+  "archetypeKinds": ["spec-table", "product-lineup"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": ["thumb", "second-shot"],
+  "motion": ["rise"],
+  "notes": "목록 첫 상품 하나: 왼쪽 큰 사진 + 작은 사진 줄, 오른쪽 가격·옵션 버튼(품절 글자·비활성)·배송 한 줄·구매 둘, 아래 사양 dl. 375: 한 단. loading 같은 두 단 뼈대"
+}

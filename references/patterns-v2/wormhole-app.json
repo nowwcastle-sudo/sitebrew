@@ -1,0 +1,62 @@
+{
+  "id": "wormhole-app",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://wormhole.app/",
+  "structure": {
+    "hero": "성운 사진 배경 위 어두운 카드 안 점선 업로드 칸과 설명",
+    "sections": [
+      "로고+앱 받기·소식 버튼",
+      "업로드 카드(점선 드롭존)",
+      "분홍 그라디언트 제목+설명",
+      "보안 제공자 로고",
+      "하단 링크 줄+언어 선택"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 36px 그라디언트 제목",
+    "body": "산세리프 16~18px",
+    "scale": "제목 36px, 설명 18px, 링크 14px"
+  },
+  "colorLogic": "K7",
+  "motion": {
+    "entrance": "짙은 슬레이트 바탕에 카드 틀만 보이다 성운 배경과 제목이 한꺼번에 나타난다",
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [
+      500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "첫 0.25~0.5초 배경 없는 상태 후 이미지 표시, 이후 정지"
+  },
+  "interaction": [
+    "파일 선택 버튼과 드래그 앤 드롭",
+    "앱 받기 버튼",
+    "소식 구독 버튼",
+    "언어 선택",
+    "하단 링크 7개"
+  ],
+  "cta": {
+    "pattern": "파일 선택 버튼 + 앱 받기 + 업데이트 받기",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "화면 전체를 성운 사진으로 채우고 도구 카드만 어둡게 눌러 집중을 만든다",
+    "점선 드롭존을 카드 절반에 크게 두어 핵심 행동이 한눈에 보인다",
+    "375에서는 설명이 위, 업로드 버튼이 아래에 오고 iOS 앱 버튼이 나온다",
+    "분홍에서 보라로 가는 그라디언트 제목이 배경 색과 이어진다"
+  ]
+}

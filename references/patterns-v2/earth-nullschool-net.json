@@ -1,0 +1,57 @@
+{
+  "id": "earth-nullschool-net",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://earth.nullschool.net/",
+  "structure": {
+    "hero": "검은 바탕 전면에 바람 흐름 지구본 하나, 구석에 메뉴와 앱 안내만",
+    "sections": [
+      "전면 지구본 캔버스",
+      "좌하단 로고+메뉴 토글",
+      "우하단 앱 설치 안내"
+    ]
+  },
+  "type": {
+    "display": "소문자 가벼운 산세리프 로고 22px",
+    "body": "산세리프 14~16px 보조 글",
+    "scale": "로고 22px, 안내 16px의 2단"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "바람 입자 흐름으로 보이나 정지 화면만으로 속도는 잴 수 없음"
+  },
+  "interaction": [
+    "지구본 끌어 돌리기와 확대",
+    "좌하단 메뉴 열기",
+    "앱 안내 닫기 버튼"
+  ],
+  "cta": {
+    "pattern": "우하단 앱 안내 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa",
+      "dashboard"
+    ],
+    "score": 0.65
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "화면 전체를 데이터 캔버스로 쓰고 UI는 두 모서리 한 줄만 남긴다",
+    "파랑-초록-붉은 점 순서의 색 척도가 풍속 크기를 직접 읽게 한다",
+    "375에서도 같은 구도로 구가 세로 가운데 놓이고 위아래는 검게 비운다",
+    "패널·표 없이 지도 한 장으로 끝나는 실험적 구성이라 대시보드와 다르다"
+  ]
+}

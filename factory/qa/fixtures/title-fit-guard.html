@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — title-fit-guard.html</title>
+<style>
+  /* 대장 C296 안전망 시험: 한 낱말 히어로 제목 칸(gw-word)을 블록 훅과 같은 규칙으로 그린다 — 크기는 min(17.8vw, --gw-size), 좌우 2vw 여유, 글자 쪼개기 낱말 칸(inline-block nowrap).
+     자간 0.3em 을 줘서 어림(titleFit 의 낱자 폭)이 실제보다 좁게 나오게 한다 — 서체와 상관없이 「어림이 모자란」 경우를 만든다. */
+  html, body { margin: 0; padding: 0; font-family: "Malgun Gothic", "Noto Sans CJK KR", "Apple SD Gothic Neo", system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .gw { position: relative; overflow: clip; display: flex; flex-direction: column; min-height: 300px; background: #eef6f9; }
+  .gw-word { position: relative; max-width: 100%; box-sizing: border-box; margin: 0; padding: 0 2vw 24px; text-align: center; font-size: min(17.8vw, var(--gw-size, 17.8vw)); line-height: 0.8; letter-spacing: 0.3em; text-wrap: balance; word-break: keep-all; overflow-wrap: anywhere; text-transform: uppercase; color: #0b4f6c; }
+  .w { display: inline-block; white-space: nowrap; }
+  .mask { display: inline-block; overflow: clip; padding-block: 0.12em; margin-block: -0.12em; vertical-align: bottom; }
+  .ch { display: inline-block; }
+  p { margin: 24px 16px; max-width: 640px; }
+</style>
+</head>
+<body>
+  <main>
+    <section class="gw" aria-label="첫 화면">
+      <h1 class="gw-word" id="word"><span class="sr-only" id="sr"></span><span aria-hidden="true" id="split"></span></h1>
+    </section>
+    <p>이 문단은 시험 페이지의 본문입니다. 제목 칸 아래에 놓여 있어요.</p>
+  </main>
+  <script>
+    const title = decodeURIComponent(location.hash.slice(1)) || 'WWWWWW'
+    document.getElementById('sr').textContent = title
+    const host = document.getElementById('split')
+    title.split(' ').forEach((w, i) => {
+      if (i) host.append(' ')
+      const word = document.createElement('span'); word.className = 'w inline-block'
+      for (const c of w) { const m = document.createElement('span'); m.className = 'mask'; const ch = document.createElement('span'); ch.className = 'ch'; ch.textContent = c; m.append(ch); word.append(m) }
+      host.append(word)
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "id": "fentybeauty-com",
+  "archetype": "commerce",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://fentybeauty.com/en-kr",
+  "structure": {
+    "hero": "마젠타 색면 분할 히어로: 왼쪽 제목·CTA, 오른쪽 제품 박스 더미",
+    "sections": [
+      "검정 공지띠(좌우 화살표)",
+      "로고 중앙 헤더(국가·계정·검색·찜·장바구니)",
+      "카테고리 내비+Ask AI 알약",
+      "마젠타 히어로 캐러셀",
+      "캐러셀 이전·다음 컨트롤",
+      "프로모 타일+제품 카드 줄(할인·베스트셀러 배지)"
+    ]
+  },
+  "type": {
+    "display": "넓은 자간 대문자 로고, 굵은 대문자 제목",
+    "body": "기하학 산세리프 본문",
+    "scale": "제목 크게, 카테고리·UI는 작은 중간 크기"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": "왼쪽 마젠타 패널이 먼저, 제품 이미지는 약 2초 뒤 등장",
+    "scroll": "내려가면 프로모 타일과 제품 카드 줄이 이어진다",
+    "hover": null,
+    "transition": "히어로 캐러셀이 약 3초 간격으로 다음 슬라이드로 넘어감",
+    "durationsMs": [
+      750,
+      3000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "이미지 지연은 로딩 영향일 수 있고 전환 간격은 어림한 값"
+  },
+  "interaction": [
+    "공지 캐러셀 화살표",
+    "히어로 캐러셀 이전·다음",
+    "Ask AI 알약",
+    "제품 카드 할인·베스트셀러·별점·정가/할인가",
+    "쿠키 하단 바"
+  ],
+  "cta": {
+    "pattern": "외곽선 사각 CTA SHOP HOLIDAY + 카드 클릭",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.86
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "마젠타 색면 한 장이 첫 화면 톤을 정한다(K6 참고)",
+    "제품 카드에 할인율·베스트셀러 배지·별점·정가 취소선을 한 카드에 쌓는다",
+    "프로모 타일을 카드 줄 맨 앞에 둬 이벤트와 상품을 잇는다",
+    "모바일은 이미지가 위, 글이 아래로 쌓이며 CTA가 접힘선 근처에 걸린다",
+    "Ask AI 알약을 내비 줄에 넣어 검색 대안을 눈에 띄게 제공"
+  ]
+}

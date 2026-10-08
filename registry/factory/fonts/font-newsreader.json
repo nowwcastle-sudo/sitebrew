@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-newsreader",
+  "type": "registry:font",
+  "title": "Newsreader",
+  "description": "web-factory 폰트 키트: Newsreader (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Newsreader Variable', serif",
+    "provider": "google",
+    "import": "Newsreader",
+    "variable": "--font-newsreader-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/newsreader"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/newsreader/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Newsreader",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "playground-tensorflow-org",
+  "archetype": "pwa",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://playground.tensorflow.org/",
+  "structure": {
+    "hero": "청록 머리띠의 안내 한 줄 아래 재생 버튼과 변수 선택 줄, 데이터·특징·은닉층·출력 네 열의 신경망 도식",
+    "sections": [
+      "청록 머리띠와 안내 문장",
+      "재생·초기화·학습률·활성화·정규화 선택 줄",
+      "데이터 열",
+      "특징 열",
+      "은닉층 열(층·뉴런 증감)",
+      "출력 산점도와 손실 값",
+      "아래 설명 글"
+    ]
+  },
+  "type": {
+    "display": "얇은 산세리프 머리띠 문장",
+    "body": "산세리프 11~12px",
+    "scale": "머리띠 문장 약 20px, 컨트롤 라벨 약 11px, 도식 숫자 약 10px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "재생·일시정지 버튼",
+    "초기화 버튼",
+    "학습률·활성화·정규화 선택 상자",
+    "데이터 모양 선택 타일",
+    "특징 타일 켜고 끄기",
+    "은닉층 추가와 뉴런 수 조절",
+    "훈련 비율 슬라이더"
+  ],
+  "cta": {
+    "pattern": "재생 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "머리띠 한 줄 안내 바로 아래에 실행 도구를 붙이고 설명 글은 화면 밖 아래로 미룬다.",
+    "주황과 파랑 두 색이 데이터·가중치·출력을 읽는 하나의 색 언어다.",
+    "데이터에서 특징, 층, 출력으로 가는 네 열 배치가 신경망 구조를 화면 구조로 옮긴다.",
+    "375에서는 도식이 아주 작게 줄어 읽기 어렵다."
+  ]
+}

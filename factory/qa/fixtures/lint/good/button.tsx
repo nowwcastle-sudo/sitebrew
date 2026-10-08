@@ -1,0 +1,10 @@
+// lint-ui good fixture: the fixed forms of every bad line. Not compiled.
+const a = "focus-visible:ring-3 focus-visible:ring-ring"
+const b = "focus-visible:ring-3 focus-visible:ring-destructive"
+const c = "focus-visible:ring-3 focus-visible:ring-ring aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:focus-visible:ring-ring dark:aria-invalid:ring-destructive/40 dark:aria-invalid:focus-visible:ring-ring"
+const d = "h-6 text-sm max-w-xs"
+const e = "text-base md:text-sm"
+const f = "transition-[color,box-shadow]"
+const g = "relative h-6 after:absolute after:-inset-2.5 in-data-[slot=button-group]:rounded-lg in-data-[slot=button-group]:after:inset-x-0"
+const h = "data-open:animate-in motion-reduce:animate-none fade-in-0"
+const i = "ring-1 ring-foreground/10"

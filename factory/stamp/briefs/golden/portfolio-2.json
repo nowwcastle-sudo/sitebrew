@@ -1,0 +1,23 @@
+{
+  "topic": "Freelance product designer portfolio — two case studies and a contact form (fictional business — example)",
+  "archetype": "portfolio",
+  "locale": "en",
+  "facts": {
+    "name": "Mina Park Design",
+    "representative": "Mina Park",
+    "email": "hello@example.com",
+    "address": "Seoul, Korea (remote)",
+    "story": "I design calm interfaces for tools people use every day",
+    "clients": "Example Health App, Example Budget Tool, Example Library Network",
+    "awards": "Example Design Awards 2025 shortlist",
+    "items": "Redesigning a pill reminder app · A budgeting tool for couples",
+    "booking": "Open for freelance projects from November; write with a short brief",
+    "works": "redesigning-pill-reminder | Redesigning a pill reminder app | Example Health App | 2025 | Interface design, User research ; budget-tool-for-couples | A budgeting tool for couples | Example Budget Tool | 2024 | Interface design",
+    "caseStudies": "slug redesigning-pill-reminder ; client Example Health App ; services Interface design, User research ; year 2025 ; role Lead designer ; challenge People skipped doses because reminders were easy to dismiss ; collaboration Worked with one engineer and one pharmacist ; process Interviewed patients about their morning routine / Mapped when reminders get ignored / Dropped the streak counter after testing ; solution A calm daily card that stays on screen until the dose is logged ; results Shortlisted for Example Design Awards 2025 ; next budget-tool-for-couples",
+    "phone": "+82-2-1234-5678",
+    "audience": "Founders and product teams who need calm, usable interfaces",
+    "action": "Send a short project brief by email",
+    "mood": "calm"
+  },
+  "seed": 2
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "review-list",
+  "variant": "summary-near-price",
+  "title": "가격 곁 리뷰 요약 — 이름·평점·총액·구매 버튼·배송 한 줄 + 먼저 읽을 리뷰(비판 리뷰 포함)",
+  "layout": "price-adjacent-summary",
+  "density": "compact",
+  "archetypes": [ "detail", "commerce" ],
+  "archetypeKinds": [ "product-summary", "reviews" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A12", "T2", "T5", "L1", "X4", "X1", "M1" ],
+  "notes": "왼쪽 구매 칸(data-buy-box): 상품 이름 h2 · 평점 줄(리뷰 수·기준일, 모든 리뷰로 가는 링크) · 필수 총액(data-price=billed, VAT·배송비 포함) · 구매 버튼 · 버튼 바로 아래 배송·반품 한 줄(data-shipping-line — A12). 오른쪽 먼저 읽을 리뷰: 높은 별점 최신 2개 + 가장 낮은 별점 1개(3점 이하면 「비판 리뷰」 표지 — data-critical, T5 부정 리뷰 숨기지 않음) + 모두 보기. JSON-LD Product+Offer+AggregateRating 은 같은 props(X4). 계측(선택): cta_click"
+}

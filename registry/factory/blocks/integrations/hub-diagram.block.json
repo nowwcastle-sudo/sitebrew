@@ -1,0 +1,13 @@
+{
+  "kind": "integrations",
+  "variant": "hub-diagram",
+  "title": "연동 — 가운데 제품 + 둘레 연동(SVG 선)",
+  "layout": "hub-spoke",
+  "density": "spacious",
+  "archetypes": ["saas", "brand"],
+  "archetypeKinds": ["integrations"],
+  "states": [],
+  "media": ["integration-logo"],
+  "motion": ["rise", "svg-draw"],
+  "notes": "정사각 그림(장식, aria-hidden): 가운데 제품 표지에서 둘레 표지(최대 12)로 SVG 선을 긋는다(svg-draw, 동작 줄이기·M0 은 다 그은 선). 곁 목록이 같은 내용을 글자로. 375: 그림 위·목록 아래"
+}

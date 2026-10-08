@@ -1,0 +1,33 @@
+{
+  "name": "@launch-factory/analytics-posthog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PostHog AnalyticsPort 어댑터 — 동의 우선(동의 전 0건·쌓지 않음), 출처 태그 wf_*, 리퍼러 분류, 개인정보 거부, 실험 스위치, 지역·호스트.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./server": "./src/server.ts",
+    "./referrer": "./src/referrer.ts",
+    "./experiments": "./src/experiments.ts",
+    "./region": "./src/region.ts",
+    "./erase": "./src/erase.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/security": "0.0.0",
+    "posthog-js": "1.434.18",
+    "posthog-node": "5.54.1"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0",
+    "@types/react": "19.3.0",
+    "react": "19.3.0"
+  }
+}

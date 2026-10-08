@@ -1,0 +1,13 @@
+{
+  "kind": "faq",
+  "variant": "grouped-by-topic",
+  "title": "FAQ — 주제 머리글별 묶음",
+  "layout": "topic-groups",
+  "density": "compact",
+  "archetypes": ["public", "detail", "commerce", "local", "landing"],
+  "archetypeKinds": ["faq", "qna"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "주제 칸(머리글 h3 + 질문 수 + 질문·답 dl)을 넓은 화면에서 2~3열로 나란히. 답은 접지 않고 모두 보인다. 375: 칸을 한 열로 쌓는다"
+}

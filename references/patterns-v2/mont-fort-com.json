@@ -1,0 +1,61 @@
+{
+  "id": "mont-fort-com",
+  "archetype": "brand",
+  "sourceGallery": "awwwards",
+  "url": "https://mont-fort.com/",
+  "structure": {
+    "hero": "옅은 안개 속 설산 전면 이미지 위 간격 넓은 워드마크와 점 로고",
+    "sections": [
+      "얇은 상단 메뉴(계열사 5개·NEWS 배지·MENU)",
+      "설산 히어로 + 점 로고와 워드마크",
+      "SCROLL DOWN TO DISCOVER 안내",
+      "메뉴 줄 뒤에 잠깐 나타나는 흰 알약"
+    ]
+  },
+  "type": {
+    "display": "가는 기하 산세리프 대문자, 자간 매우 넓음",
+    "body": "같은 산세리프 소형 대문자",
+    "scale": "워드마크만 크고 나머지 극소형 단일 스케일"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": "약 3.75초 동안 메뉴만 보이는 빈 흰 화면 뒤 안개 낀 설산이 나타남",
+    "scroll": null,
+    "hover": null,
+    "transition": "구름이 흐르며 봉우리 구도가 바뀌고 로고가 약 1.25초 사라졌다 다시 선명해지며 흰 알약 배경이 약 0.75초 비침",
+    "durationsMs": [
+      3750,
+      1250,
+      750
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "로딩이 길어 첫 3.75초는 메뉴 외에 빈 흰 화면"
+  },
+  "interaction": [
+    "NEWS 배지(숫자)와 MENU 토글",
+    "계열사 메뉴 5개",
+    "스크롤 안내 문구"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, 스크롤 안내만",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.7
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "푸른 회색 한 색상 계열 램프만으로 차분한 대기업 분위기를 만든다",
+    "워드마크의 넓은 자간과 가는 획이 고급감을 주는 단순한 수단이 된다",
+    "모바일은 점 로고를 워드마크 위에 쌓고 산을 세로 구도로 바꾼다",
+    "긴 빈 흰 로딩이 첫 칠을 늦추니 포스터 이미지가 필요하다"
+  ]
+}

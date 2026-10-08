@@ -1,0 +1,30 @@
+{
+  "topic": "보건지소 누리집 — 진료 시간과 예방접종 안내 (가상 사업체 — 예시)",
+  "archetype": "public",
+  "locale": "ko",
+  "facts": {
+    "name": "우리동네 보건지소 (예시)",
+    "legalName": "푸른군",
+    "email": "hello@example.com",
+    "hours": "월-금 09:00-18:00, 토·일·공휴일 휴무",
+    "transit": "가까운 버스 정류장에서 걸어서 3분",
+    "parking": "청사 앞 주차 공간이 있어요",
+    "naverMapUrl": "https://example.com/maps/naver/village-clinic",
+    "kakaoMapUrl": "https://example.com/maps/kakao/village-clinic",
+    "guide": "진료 시간은 평일 낮에 운영해요 ; 예방접종은 보건지소를 직접 찾아와 맞아요 ; 방문건강관리는 보건지소에 신청해요",
+    "departments": "진료실 · 예방접종실 · 방문건강관리",
+    "notice": "독감 예방접종은 10월 첫째 주부터 시작해요",
+    "quickLinks": "진료 시간 안내 /guide ; 예방접종 안내 /guide ; 방문건강관리 신청 https://example.com/visit",
+    "notices": "2026-09-18 | 예방접종 | 독감 예방접종 시작 안내 | 예방접종실 | https://example.com/notices/flu-shot ; 2026-09-02 | 휴진 | 추석 연휴 진료 안내 | 진료실 | https://example.com/notices/chuseok-hours ; 2026-08-20 | 방문건강관리 | 방문건강관리 대상자를 모집해요 | 방문건강관리팀 | https://example.com/notices/visit-care",
+    "representative": "소장 최민호",
+    "phone": "031-123-4567",
+    "address": "경기도 푸른군 푸른면 예시로 21",
+    "audience": "군 안 주민과 어르신",
+    "action": "진료 시간을 확인하고 예방접종 안내 보기",
+    "mood": "차분한",
+    "phoneNote": "평일 09:00-18:00에 받아요. 점심시간에는 연결이 늦을 수 있어요",
+    "copyright": "© 2026 우리동네 보건지소. 모든 권리를 가지고 있어요",
+    "policyCards": "독감 예방접종 | 접종 대상과 일정은 보건지소에 문의해 주세요 | 10월 첫째 주부터"
+  },
+  "seed": 1
+}

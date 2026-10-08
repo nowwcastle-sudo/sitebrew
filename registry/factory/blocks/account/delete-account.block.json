@@ -1,0 +1,14 @@
+{
+  "kind": "account",
+  "variant": "delete-account",
+  "title": "탈퇴·내 데이터 — 내 데이터 받기·지워지는 것과 남는 것·유예·대등한 확인",
+  "layout": "export-retention-decision",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard", "pwa", "commerce"],
+  "archetypeKinds": ["account-deletion", "data-export", "privacy-settings"],
+  "states": ["loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["L3", "X1"],
+  "notes": "위에서 아래로: 내 데이터 받기(JSON 파일 저장, exportMyData 없으면 없음) → 지워지는 것 | 법에 따라 남는 것(보존 기간 4종 6개월·5년·5년·3년 + 근거 문장) → 구독 안내(살아 있으면 지우기 요청 때 기간 끝 해지 — 막는 문 아님) → 유예 기간(다시 로그인하면 취소) → [취소][계정 지우기] 대등. 미리 켜 둔 체크 없음. 지우면 유예 끝 날짜를 role=status 로 알린다. 포트: session·subscription?·exportMyData?·deleteAccount"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "feature-account-lifecycle",
+  "title": "탈퇴·파기 — 셀프 탈퇴·유예·파기 Cron·내 정보 내려받기",
+  "description": "셀프 탈퇴 서버 액션(구독 먼저 해지 → 유예 → 세션 끊기)과 내려받기, 유예가 지난 계정을 지우고 거래기록은 가명 참조로 분리 보존하는 파기 Cron. 결제는 Paddle 기본이고 account-billing.ts 한 파일로 바꾼다.",
+  "npm": ["@launch-factory/account-lifecycle", "@launch-factory/analytics-posthog", "@launch-factory/auth", "@launch-factory/contract", "@launch-factory/db", "@launch-factory/email", "@launch-factory/env", "drizzle-orm"],
+  "registryDependencies": ["feature-auth-betterauth", "feature-billing-paddle", "feature-email-resend"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "SUBJECT_REF_KEY", "POSTHOG_PERSONAL_API_KEY", "POSTHOG_PROJECT_ID", "POSTHOG_HOST", "CRON_SECRET"],
+  "files": [
+    "files/lib/launch/account.ts",
+    "files/lib/launch/account-billing.ts",
+    "files/app/actions/account.ts",
+    "files/app/api/cron/purge/route.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts"
+  ],
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증·결제(Paddle) 항목이 함께 설치된다(탈퇴 표·보존 표·트리거는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. SUBJECT_REF_KEY(32자 이상 무작위 비밀)를 정한다. 거래기록의 가명 참조(HMAC)를 만드는 키라, 바꾸면 이미 남긴 기록을 이메일로 찾을 수 없고 잃으면 되살릴 수 없다 — 백업한다(운영자 할 일). 없으면 파기 Cron 이 500 으로 멈춘다(조용히 성공하지 않는다).",
+    "3. live 는 PostHog 사람·이벤트·녹화도 지운다: POSTHOG_PERSONAL_API_KEY(개인 API 키, person:write)·POSTHOG_PROJECT_ID(숫자)·POSTHOG_HOST. 없으면 파기 Cron 이 계측 단계에서 멈춘다. mock 은 계측을 지우지 않는다.",
+    "4. Paddle 이 아닌 결제를 쓰면 lib/launch/account-billing.ts 만 그 결제 포트로 바꾼다(대장 D200). 결제가 없으면 구독이 없다고 답하는 포트를 돌려주고, Paddle 항목은 설치하지 않는 쪽이 맞다 — 그때는 registryDependencies 에서 빼고 설치한다.",
+    "5. 서버 액션: deleteAccount()·exportMyData(). 탈퇴 화면은 유예 안내(graceUntil)를 보이고, 유예 중 다시 로그인하면 탈퇴가 취소된다(구독은 자동으로 되살리지 않는다). 탈퇴를 접수하면 접수 메일(accountDeletionRequested — 지워지는 날·취소하는 법)이 나간다(D09) — 메일 실패는 탈퇴를 막지 않는다.",
+    "6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/purge\", \"schedule\": \"0 5 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.",
+    "7. 개인 식별 칸이 있는 새 표를 제품이 만들면 파기 트랜잭션에 지우는 함수(runPurge 의 purgers)를 더해야 한다 — lib/launch/account.ts 의 purge() 에 넘긴다. 안 더하면 탈퇴한 사람의 정보가 그 표에 남는다.",
+    "8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

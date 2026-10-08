@@ -1,0 +1,14 @@
+{
+  "kind": "announcement",
+  "variant": "top-bar",
+  "title": "맨 위 공지 띠 — 메시지 하나·링크 하나·닫기(기억), 기간 끝나면 사라짐",
+  "layout": "slim-top-bar",
+  "density": "compact",
+  "archetypes": [ "commerce", "brand", "local", "saas", "detail", "public" ],
+  "archetypeKinds": [ "announcement-bar", "notice" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A8", "L8", "X1", "M1" ],
+  "notes": "흐름 안 가는 띠(고정·스티키 아님): 보이지 않는 h2 + 메시지 하나 · 선택 링크 · 닫기(aria-label, 공지 id 로 이 브라우저에 기억). endsAt 필수 — 지나면(startsAt 전에도) hidden. 남은 날은 showCountdown 일 때만 endsAt 으로(data-countdown·data-ends-at — L8). 계측(선택): cta_click"
+}

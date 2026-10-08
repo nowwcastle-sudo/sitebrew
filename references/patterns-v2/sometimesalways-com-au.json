@@ -1,0 +1,60 @@
+{
+  "id": "sometimesalways-com-au",
+  "archetype": "commerce",
+  "sourceGallery": "httpster",
+  "url": "https://sometimesalways.com.au/",
+  "structure": {
+    "hero": "버터 노랑 바탕, 둥근 사진 프레임에 큰 레트로 로고",
+    "sections": [
+      "버터 노랑 헤더(로고·내비 12개·검색·찜·주황 별 카트)",
+      "연두 공지띠(믹스 6팩)",
+      "둥근 사진 히어로",
+      "브랜드 선언 문단(굵게·이탤릭 혼용)",
+      "2열 병 카드(제목·상품명·가격·태그)",
+      "플로팅 채팅"
+    ]
+  },
+  "type": {
+    "display": "굵은 레트로 쿠퍼풍 로고 서체",
+    "body": "현대 산세리프 본문과 이탤릭 세리프 강조",
+    "scale": "선언 문단 크게, 카드 라벨은 대문자 중간"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "검색·찜·카트(별 아이콘) 칸 구분선",
+    "카드 안 하트 찜",
+    "상품 태그 칩",
+    "모바일은 Menu 글자 버튼"
+  ],
+  "cta": {
+    "pattern": "공지띠 링크, 병 카드 클릭",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "버터 노랑·주황·연두의 레트로 3색 팔레트가 와인 숍에 흔치 않은 개성을 만든다",
+    "선언 문단에서 굵은 글씨와 이탤릭을 섞어 한 줄 안에서 강약을 준다",
+    "카드와 헤더 칸을 얇은 선으로 나누는 그리드는 구조가 명확하고 모바일에서도 유지",
+    "카드에 상품명·가격·유형 태그가 첫 화면에 바로 보이는 상품 정보 밀도",
+    "별 모양 카트 아이콘처럼 작은 요소에 브랜드 모티프를 반복한다"
+  ]
+}

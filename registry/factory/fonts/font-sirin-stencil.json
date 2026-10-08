@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-sirin-stencil",
+  "type": "registry:font",
+  "title": "Sirin Stencil",
+  "description": "web-factory 폰트 키트: Sirin Stencil (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+  "font": {
+    "family": "'Sirin Stencil', sans-serif",
+    "provider": "google",
+    "import": "Sirin_Stencil",
+    "variable": "--font-sirin-stencil-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/sirin-stencil"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/sirinstencil/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Sirin+Stencil",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

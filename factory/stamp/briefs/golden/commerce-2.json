@@ -1,0 +1,35 @@
+{
+  "topic": "수공예 도자 「담요소」 온라인 상점 — 그릇·화분·선물 (가상 사업체 — 예시)",
+  "archetype": "commerce",
+  "locale": "ko",
+  "facts": {
+    "name": "담요소",
+    "legalName": "담요소 공방",
+    "representative": "정하린",
+    "bizNo": "123-45-67890",
+    "mailOrderNo": "2026-경기이천-0789",
+    "address": "경기도 이천시 예시로 77",
+    "phone": "031-123-4567",
+    "email": "hello@example.com",
+    "shipping": "주문 후 3~5일 안에 포장해서 보내요. 깨지지 않게 이중 포장, 배송비 4,000원, 7만원 이상 무료",
+    "shippingFee": "4,000원",
+    "returns": "받은 날부터 7일 안에 반품할 수 있어요. 수공예 특성상 미세한 유약 차이는 불량이 아니에요",
+    "bestsellers": "청자 밥그릇 18,000원 · 손잡이 머그 24,000원 · 작은 화분 22,000원",
+    "products": "그릇 · 머그 · 화분",
+    "price": "18,000원부터(부가세 포함)",
+    "audience": "손으로 빚은 그릇을 일상에 쓰고 싶은 30~50대",
+    "action": "그릇이나 머그를 장바구니에 담기",
+    "mood": "소박한",
+    "escrow": "에스크로 업체(구매안전서비스 가입)",
+    "origin": "경기도 이천 공방에서 직접 빚고 가마에서 구워요",
+    "courier": "택배 협력사"
+  },
+  "brand": {
+    "colors": [
+      "#0F5C6E",
+      "#F5F1E8"
+    ],
+    "logo": "assets/damyoso-mark.svg"
+  },
+  "seed": 1
+}

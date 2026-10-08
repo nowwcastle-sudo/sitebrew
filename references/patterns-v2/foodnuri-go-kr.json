@@ -1,0 +1,63 @@
+{
+  "id": "foodnuri-go-kr",
+  "archetype": "public",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.foodnuri.go.kr/",
+  "structure": {
+    "hero": "연노랑 바탕에 일러스트 슬라이드를 왼쪽에, 제목과 초록 부제를 오른쪽에 놓고 아래에 트렌드 탭 목록을 둔 농식품 포털",
+    "sections": [
+      "로고·메인 내비 6개·로그인·SNS·햄버거",
+      "슬라이드 히어로(일러스트·제목·부제)",
+      "정지·이전·다음과 번호",
+      "회전 원형 문구",
+      "트렌드 탭 7개",
+      "카드 목록"
+    ]
+  },
+  "type": {
+    "display": "한글 고딕(제목은 가는 굵기)",
+    "body": "한글 고딕",
+    "scale": "제목 약 44px, 내비 약 16px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "슬라이드 정지·이전·다음",
+    "탭 7개 전환",
+    "SNS 바로가기 드롭다운",
+    "로그인",
+    "햄버거 메뉴",
+    "카드 링크"
+  ],
+  "cta": {
+    "pattern": "슬라이드 안 제목 링크와 탭",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "일러스트 슬라이드가 연노랑 면 위에 놓여 정부 사이트답지 않게 따뜻하다.",
+    "제목 위에 작은 라벨(PICK)과 초록 부제를 둔다.",
+    "슬라이드에 정지·이전·다음과 번호를 모두 둔다.",
+    "회전하는 원형 문구가 오른쪽 가장자리를 장식한다.",
+    "모바일은 그림이 위, 제목이 아래로 쌓이고 탭 목록이 가로 스크롤이다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

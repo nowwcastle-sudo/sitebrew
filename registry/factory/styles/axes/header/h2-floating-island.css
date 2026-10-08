@@ -1,0 +1,38 @@
+/* H2 떠 있는 섬 — 큰 반경 계열. 내용 폭(max-w-max) 알약 48px, 1px 링. 링크도 알약. 반투명 바탕 + 블러 12px(20px 이하)는 셸이 섬을 띄우는 자리에서만.
+ * 데스크톱은 링크를 펼쳐 둔다. 고정 위치(fixed top-6)는 셸이 정한다 — 블러는 고정·스티키 자리에서만 뜻이 있다(DESIGN §6). 그래서 반투명·블러는
+ * 셸 안쪽 줄이 fixed 가 되는 768px 이상(md:)에서만 켜고, NavigationMenu 부품 자체는 불투명 바탕이다(흐르는 자리에 블러 금지 — H1 과 같은 수정,
+ * Task 5 재검토 새 결함 1·ai-tell G033). 브루탈 값(C2·I3·H3)과는 호환표가 막는다.
+ * prefers-reduced-transparency·prefers-contrast: more 에서 불투명(반투명이 걸리는 md: 구간에서 이기도록 같은 접두). 원천 style_axes.md 축 5. */
+.cn-navigation-menu {
+  @apply mx-auto h-12 max-w-max gap-2 rounded-full bg-background px-2 ring-1 ring-foreground/10;
+}
+.cn-navigation-menu-list {
+  @apply gap-0.5;
+}
+.cn-navigation-menu-trigger-style {
+  @apply h-10 rounded-full px-4 py-2 text-sm font-medium;
+}
+.cn-navigation-menu-link {
+  @apply gap-2 rounded-full px-4 py-2 text-sm in-data-[slot=navigation-menu-content]:rounded-[14px] [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-navigation-menu-popup {
+  @apply rounded-[20px] ring-1;
+}
+.cn-navigation-menu-content {
+  @apply p-2 group-data-[viewport=false]/navigation-menu:rounded-[20px] group-data-[viewport=false]/navigation-menu:ring-1;
+}
+/* 셸(SiteShell): 768px 이상 안쪽 줄이 위 24px 에 뜬 48px 알약 섬(fixed) — 반투명·블러 12px 도 그 구간에서만. 바깥 헤더는 흐름 안 자리(72px)만 잡아
+ * 첫 내용이 섬에 가리지 않는다. 좁은 화면은 스티키 한 줄 바(부품 기본값 sticky·불투명 --background, 블러 없음 — P3-2 D4).
+ * 반투명·블러는 셸이 스티키일 때(바깥 헤더의 data-sticky-nav 안)만 — sticky={false} 면 섬이 흐름 안에 머물러 불투명(Task 6 리뷰 M1). */
+.cn-site-shell-header {
+  @apply border-b md:h-[4.5rem] md:border-b-0 md:[--site-shell-bg:transparent] md:[--site-shell-position:static];
+}
+.cn-site-shell-header-inner {
+  @apply min-h-14 gap-x-2 px-4 py-2 md:[--site-shell-inner-position:fixed] md:min-h-0 md:inset-x-0 md:top-6 md:z-40 md:mx-auto md:h-12 md:w-max md:max-w-[calc(100%-3rem)] md:rounded-full md:bg-background md:px-2 md:py-0 md:ring-1 md:ring-foreground/10 md:in-data-sticky-nav:bg-background/75 md:in-data-sticky-nav:backdrop-blur-md md:in-data-sticky-nav:contrast-more:bg-background md:in-data-sticky-nav:contrast-more:backdrop-blur-none md:in-data-sticky-nav:[@media(prefers-reduced-transparency:reduce)]:bg-background md:in-data-sticky-nav:[@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none;
+}
+.cn-site-shell-nav-list {
+  @apply gap-0.5 md:py-1;
+}
+.cn-site-shell-nav-link {
+  @apply min-h-10 rounded-full px-4 text-sm font-medium aria-[current=page]:bg-muted aria-[current=page]:font-semibold [--site-shell-current-line:none];
+}

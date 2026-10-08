@@ -1,0 +1,45 @@
+{
+  "measuredAt": "2026-09-30",
+  "method": "leave-one-out",
+  "predictionsFile": "factory/board/prescreen-loo-20261001.json",
+  "note": "하나 빼기 16쌍(레시피 보드 1판 10·2판 2·3판 4, 모두 라이브러리×라이브러리 — 생성·브랜드 예시 0, 결선 기록 pairs.jsonl 없음). 예측은 쌍마다 새 서브에이전트(PRESCREEN.md + 그 쌍의 묶음만, 정답 파일 격리). 한계: 세션 문맥에 주입된 docs/agents/agent-guide.md 에 3판 결과(r2·r6·r8·r10 B 승격) 문장이 있어 3판 4쌍은 오염 가능 — 그 4쌍을 빼면 9/12=75.0%. 항상 B 로 찍으면 11/16=68.8%. 4판(doc.v4)은 저장소에 없어 제외. 표본이 작아 꺼진 채가 정상.",
+  "total": 16,
+  "answered": 16,
+  "correct": 13,
+  "abstained": 0,
+  "coverage": 1,
+  "overall": 0.8125,
+  "enabled": false,
+  "thresholdPct": 85,
+  "minAnswered": 20,
+  "bySource": {
+    "library": 0.8125,
+    "generated": null,
+    "brand": null
+  },
+  "bySourceDetail": {
+    "library": {
+      "total": 16,
+      "answered": 16,
+      "correct": 13,
+      "label": "13/16"
+    },
+    "generated": {
+      "total": 0,
+      "answered": 0,
+      "correct": 0,
+      "label": "예측 안 함"
+    },
+    "brand": {
+      "total": 0,
+      "answered": 0,
+      "correct": 0,
+      "label": "예측 안 함"
+    }
+  },
+  "sourceEnabled": {
+    "library": false,
+    "generated": false,
+    "brand": false
+  }
+}

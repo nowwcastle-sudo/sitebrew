@@ -1,0 +1,59 @@
+{
+  "id": "calculator-net",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://www.calculator.net/",
+  "structure": {
+    "hero": "남색 머리띠 아래 계산기와 검색창, 그 아래 4열 계산기 목록",
+    "sections": [
+      "머리띠(로고·로그인)",
+      "계산기 위젯",
+      "제목+검색",
+      "분류 4열(금융·건강·수학·기타)",
+      "분류별 계산기 링크 목록"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 28px 제목",
+    "body": "산세리프 16px 링크",
+    "scale": "제목 28px, 분류 24px, 링크 16px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "계산기 버튼 입력",
+    "도·라디안 전환",
+    "검색 입력",
+    "분류 링크 이동",
+    "모바일 기본·공학 탭"
+  ],
+  "cta": {
+    "pattern": "검색 버튼 + 계산기 링크 30개 안팎",
+    "count": 30
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.7
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "첫 화면에서 바로 쓸 수 있는 계산기 위젯을 가장 위에 둔다",
+    "분류마다 원형 사진과 링크 목록으로 4열 디렉터리를 만든다",
+    "375에서는 기본·공학 탭이 생기고 분류가 한 열 목록으로 바뀐다",
+    "도구 레이아웃은 구식이지만 계산기 버튼 크기가 모바일에서 충분히 크다"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-unbounded",
+  "type": "registry:font",
+  "title": "Unbounded",
+  "description": "web-factory 폰트 키트: Unbounded (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Unbounded Variable', sans-serif",
+    "provider": "google",
+    "import": "Unbounded",
+    "variable": "--font-unbounded-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/unbounded"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/unbounded/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Unbounded",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

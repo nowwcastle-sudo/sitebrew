@@ -1,0 +1,14 @@
+{
+  "kind": "data-table",
+  "variant": "admin-list",
+  "title": "데이터 표 — 관리자 목록(검색·거르기·정렬·쪽 이동)",
+  "layout": "toolbar-table-pager",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas", "pwa"],
+  "archetypeKinds": ["admin-list", "data-table", "filter-bar"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["O7", "X1"],
+  "notes": "위 검색 칸(라벨 늘 보임) + 열 거르기(native select) + 결과 수 role=status + [필터 초기화]. 표: 첫 열 행 머리·상세 링크, 정렬 가능한 열 머리는 버튼 + aria-sort, 숫자 열 data-numeric·오른쪽, 상태 열 글자 배지, 덜 중요한 열은 md 미만에서 숨김. 아래 쪽 이동 「1–10 / 전체 N건」. 읽기 4상태 + 거른 결과 0건은 「결과 없음 + 필터 초기화」(처음부터 비어 있는 empty 와 다르다). 서버 쪽 이동은 onQueryChange"
+}

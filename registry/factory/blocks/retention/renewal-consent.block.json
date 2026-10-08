@@ -1,0 +1,14 @@
+{
+  "kind": "retention",
+  "variant": "renewal-consent",
+  "title": "가격 변경 동의 — 전후 요금표·적용일·동의 기한 + 해지/동의 대등",
+  "layout": "price-change-card",
+  "density": "comfortable",
+  "archetypes": [ "saas", "pwa", "commerce" ],
+  "archetypeKinds": [ "price-change-consent", "subscription-manage" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L3", "L6", "A6", "X1", "M1" ],
+  "notes": "pendingPriceChange 가 있을 때만 보이는 판(페이지 안, 첫 화면 가림 모달 아님): 제목(가격 인상·체험→유료) · 전후 요금 table(원·VAT, data-price=before/after) · 적용일 · 동의 기한(data-consent-by) · 동의하지 않으면(오른 요금으로 결제되지 않고 멈춘다) · [해지하기][새 요금에 동의하기] 대등. 닫기(×, data-close)는 접기만 — acceptPriceChange 를 부르지 않는다. 포트: subscription·acceptPriceChange·cancel·track? P3-6 F04: standalone 이면 메일 링크가 곧장 닿는 쪽 — 동의할 것이 없거나 읽는 중·실패도 안내(copy.empty·loading·error), props change 로 전후 가격·적용일을 직접 준다, 결제 방법·해지 방법 고지(copy.paymentMethod·howToCancel)가 버튼 위. 동의·거절은 대등한 두 버튼."
+}

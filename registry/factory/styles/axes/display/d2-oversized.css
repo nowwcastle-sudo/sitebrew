@@ -1,0 +1,6 @@
+/* D2 초대형 디스플레이 — 제목이 화면 폭의 14vw(1440px 에서 약 202px, 명세 10~20vw), 가장 작아도 44px(375px 에서 52px), 가장 커도 288px. 행간 0.88, 자간 -0.035em.
+ * 뜻 있는 낱말은 자르지 않는다 — 부품 규칙(max-w-full · overflow-wrap:anywhere)이 칸을 넘는 낱말을 줄바꿈하고, 이 값은 overflow·clip 을 쓰지 않는다.
+ * 호환(compat.json): dashboard·public 원형 제외(매일 쓰는 화면·공공 누리집에 초대형 제목을 두지 않는다). P3-2 Task 16a, 원천 styles.json proposals D(oversized-typographic). */
+.cn-display-title {
+  @apply text-[clamp(2.75rem,14vw,18rem)] leading-[0.88] tracking-[-0.035em];
+}

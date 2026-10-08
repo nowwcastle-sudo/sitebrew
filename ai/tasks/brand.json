@@ -1,0 +1,1331 @@
+{
+  "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
+  "id": "brand",
+  "source": "registry/factory/archetypes/brand.json",
+  "ref": "v0.1.0",
+  "purpose": "고객·구직자·투자자·기자가 회사가 무엇을 하는지 알고 알맞은 곳(제품·채용·소식·IR)으로 가게 한다.",
+  "coreTask": "브라우저 에이전트가 ① 「이 회사는 무엇을 하나」를 H1이나 첫 문단에서 한 문장으로 답하고 ② 채용 공고 목록 페이지에 닿고 ③ 가장 최근 보도자료의 제목과 날짜를 읽고 ④ 대표 연락처(전화 또는 이메일 + 주소)를 돌려준다. 모두 로그인 없이 3클릭 안.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "required": [
+        {
+          "kind": "hero",
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-banded-full-bleed",
+            "block-hero-baseline-split",
+            "block-hero-cropped-title-list",
+            "block-hero-framed-card-outline-title",
+            "block-hero-grid-lines-baseline-word",
+            "block-hero-inline-chip-title",
+            "block-hero-layered-landscape-logotype",
+            "block-hero-staggered-oval-frame",
+            "block-hero-stepped-crop-figure",
+            "block-hero-twin-panels",
+            "block-hero-vertical-title-slides",
+            "block-hero-kinetic-type-video",
+            "block-hero-ken-burns-stills",
+            "block-hero-punch-in-statement",
+            "block-hero-video-montage"
+          ]
+        },
+        {
+          "kind": "business-scope",
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-bento-grid"
+          ]
+        },
+        {
+          "kind": "news",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "날짜 붙은 소식 목록 — 본문 목록(전용 블록 없음)",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "소식",
+                "en": "News"
+              },
+              "from": [
+                "news"
+              ],
+              "sort": "-date",
+              "limit": 5,
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date"
+                ],
+                "href": "url",
+                "image": "thumb"
+              }
+            }
+          }
+        },
+        {
+          "kind": "careers",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "채용 안내 링크 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "채용",
+                "en": "Careers"
+              },
+              "links": [
+                {
+                  "label": {
+                    "ko": "채용 공고 보기",
+                    "en": "See open roles"
+                  },
+                  "from": [
+                    "careersUrl"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "optional": [
+        {
+          "kind": "mission",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "미션 한 문장 — 본문 글",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "미션",
+                "en": "Mission"
+              },
+              "from": [
+                "slot:mission"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "product-lineup",
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-grid-cards"
+          ]
+        },
+        {
+          "kind": "key-facts",
+          "blockKinds": [
+            "trust"
+          ],
+          "allowedVariants": [
+            "block-trust-brand-fact-sheet"
+          ]
+        },
+        {
+          "kind": "recognition",
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-logo-rail"
+          ]
+        },
+        {
+          "kind": "sustainability",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "수치와 보고서 링크 — 본문 글",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "지속가능성",
+                "en": "Sustainability"
+              },
+              "from": [
+                "reports"
+              ],
+              "sort": "-year",
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "year:year",
+                  "pages:pages",
+                  "size"
+                ],
+                "href": "pdfUrl"
+              },
+              "lead": [
+                "slot:claim"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "store-locator",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "hours-location/branch-list 가 brand 를 archetypes 에 적지 않았다",
+            "register": [
+              "C71"
+            ]
+          }
+        },
+        {
+          "kind": "faq",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "faq 블록 어느 것도 brand 를 archetypes 에 적지 않았다",
+            "register": [
+              "C71"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "route": "/about",
+      "required": [
+        {
+          "kind": "summary",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "맨 위 1~2문단 회사 요약 — 본문 글",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "회사 요약",
+                "en": "Company summary"
+              },
+              "hideHeading": true,
+              "from": [
+                "slot:summary"
+              ]
+            }
+          }
+        }
+      ],
+      "optional": [
+        {
+          "kind": "mission",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "미션 — 본문 글",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "미션",
+                "en": "Mission"
+              },
+              "from": [
+                "slot:mission/mission"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "history",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "연도 목록·표(JS 없이 전부 보임) — 본문",
+            "render": {
+              "as": "timeline",
+              "heading": {
+                "ko": "연혁",
+                "en": "History"
+              },
+              "from": [
+                "history"
+              ],
+              "sort": "year",
+              "fields": {
+                "when": "year:year",
+                "text": "event"
+              }
+            }
+          }
+        },
+        {
+          "kind": "leadership",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "이름·직함·약력 카드 — 본문",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "리더십",
+                "en": "Leadership"
+              },
+              "from": [
+                "leaders"
+              ],
+              "fields": {
+                "title": "name",
+                "meta": [
+                  "title"
+                ],
+                "summary": "bio",
+                "image": "portrait"
+              }
+            }
+          }
+        },
+        {
+          "kind": "sustainability",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "지속가능성 — 본문 글",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "지속가능성",
+                "en": "Sustainability"
+              },
+              "from": [
+                "reports"
+              ],
+              "sort": "-year",
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "year:year",
+                  "pages:pages",
+                  "size"
+                ],
+                "href": "pdfUrl"
+              },
+              "lead": [
+                "slot:sustainability/claim"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "news",
+      "route": "/news",
+      "required": [
+        {
+          "kind": "press-list",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "보도자료 목록 — 본문 목록",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "보도자료",
+                "en": "Press releases"
+              },
+              "from": [
+                "news"
+              ],
+              "sort": "-date",
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date"
+                ],
+                "href": "url",
+                "image": "thumb"
+              }
+            }
+          }
+        }
+      ],
+      "optional": []
+    },
+    {
+      "id": "careers",
+      "route": "/careers",
+      "required": [
+        {
+          "kind": "job-list",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "채용 공고 목록 — 본문 목록",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "채용 공고",
+                "en": "Open roles"
+              },
+              "links": [
+                {
+                  "label": {
+                    "ko": "채용 공고 전체 보기",
+                    "en": "See all open roles"
+                  },
+                  "from": [
+                    "careersUrl"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "optional": []
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "about",
+        "news",
+        "careers",
+        "ir(상장사)",
+        "sustainability(주장 시)",
+        "language-switch(해외 방문자)"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "sitemap",
+        "about-link",
+        "contact(전화·주소·이메일 중 복수)",
+        "korean-business-info"
+      ]
+    }
+  ],
+  "sectionOrders": [
+    {
+      "id": "corporate",
+      "order": [
+        "header",
+        "hero",
+        "mission",
+        "business-scope",
+        "key-facts",
+        "sustainability",
+        "news",
+        "careers",
+        "footer"
+      ]
+    },
+    {
+      "id": "product-brand",
+      "order": [
+        "header",
+        "hero",
+        "product-lineup",
+        "business-scope",
+        "recognition",
+        "store-locator",
+        "mission",
+        "footer"
+      ]
+    },
+    {
+      "id": "editorial",
+      "order": [
+        "header",
+        "hero",
+        "mission",
+        "news",
+        "faq",
+        "footer"
+      ]
+    }
+  ],
+  "legal": [
+    {
+      "basis": "DESIGN §9 한국 영리 사이트 푸터",
+      "appliesWhen": "한국 영리 법인",
+      "requirement": "상호·대표자·주소·사업자등록번호·전화, 통신판매를 하면 통신판매업 신고번호, 개인정보 처리방침 상시 링크",
+      "source": "DESIGN.md §9"
+    }
+  ],
+  "legalPages": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website",
+    "install": {
+      "seoMetadata": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/seo-meta#v0.1.0 -y -o",
+      "jsonLdFor": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/geo-entity#v0.1.0 -y -o"
+    },
+    "usage": "seoMetadata(content, page) → Next Metadata(generateMetadata) · jsonLdFor(content, page) → <script type=\"application/ld+json\">. titleTemplate 의 {siteName} 은 content.site 이름(없으면 원형의 회사·가게·제품·기관 이름)이고, type 은 원형 기본 종류다."
+  },
+  "conversion": [
+    {
+      "event": "form_submit",
+      "match": {
+        "form": "contact"
+      }
+    }
+  ],
+  "content": {
+    "item": "content-brand",
+    "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/content-brand#v0.1.0 -y -o"
+  },
+  "recipes": {
+    "candidates": [
+      {
+        "id": "r15-atelier",
+        "name": "아틀리에 지면",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier#v0.1.0 -y -o",
+        "condition": "사진·글의 결을 파는 브랜드(공방·갤러리·고급 식품·식음)일 때. 기업 홍보 누리집에는 r6-civic 이나 r4-evidence"
+      },
+      {
+        "id": "r16-tonal",
+        "name": "단색 음영",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r16-tonal#v0.1.0 -y -o",
+        "condition": "제품 하나를 크게 보이는 브랜드 소개 쪽에서 쓴다. 여러 색이 이야기를 하는 브랜드에는 r8-dusk 나 r9-clay"
+      },
+      {
+        "id": "r2-signal",
+        "name": "흑백 신호",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r2-signal#v0.1.0 -y -o"
+      },
+      {
+        "id": "r8-dusk",
+        "name": "솔숲 저녁",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r8-dusk#v0.1.0 -y -o",
+        "condition": "헤리티지 브랜드(한옥 스테이·찻집·전통 식음 등)에만 — IT·일반 소비재·프리미엄 브랜드에 세리프를 기본으로 쓰지 않는다(§13)"
+      }
+    ],
+    "complete": true,
+    "note": "운영자가 레시피 보드(2026-09-27)에서 승인한 레시피 15벌(r1-measure·r10-console·r12-spectrum·r13-folio·r14-concrete·r15-atelier·r16-tonal·r2-signal·r3-woodblock·r4-evidence·r5-celadon·r6-civic·r7-docs·r8-dusk·r9-clay)에서 archetypes 에 이 원형을 적은 것을 모두 뽑았다(결정: factory/board/recipe-decisions.json). condition 이 있는 후보는 그 조건에 맞는 브리프에만 쓴다."
+  },
+  "blocks": {
+    "announcement": [
+      {
+        "item": "block-announcement-launch-banner",
+        "variant": "launch-banner",
+        "layout": "launch-hero-band",
+        "density": "spacious",
+        "sectionKinds": [
+          "launch",
+          "announcement",
+          "event-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-launch-banner#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-announcement-popup-today",
+        "variant": "popup-today",
+        "layout": "corner-window",
+        "density": "comfortable",
+        "sectionKinds": [
+          "popup",
+          "announcement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-popup-today#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-announcement-top-bar",
+        "variant": "top-bar",
+        "layout": "slim-top-bar",
+        "density": "compact",
+        "sectionKinds": [
+          "announcement-bar",
+          "notice"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-top-bar#v0.1.0 -y -o"
+      }
+    ],
+    "confirmation": [
+      {
+        "item": "block-confirmation-booking-complete",
+        "variant": "booking-complete",
+        "layout": "ticket-plus-steps",
+        "density": "comfortable",
+        "sectionKinds": [
+          "booking-confirmation",
+          "inquiry-confirmation"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-confirmation-booking-complete#v0.1.0 -y -o"
+      }
+    ],
+    "consent": [
+      {
+        "item": "block-consent-bottom-banner",
+        "variant": "bottom-banner",
+        "layout": "fixed-bottom-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "cookie-consent",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-bottom-banner#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-consent-inline-notice",
+        "variant": "inline-notice",
+        "layout": "placeholder-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "consent-placeholder",
+          "directions"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-inline-notice#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-consent-preference-dialog",
+        "variant": "preference-dialog",
+        "layout": "summary-then-dialog",
+        "density": "comfortable",
+        "sectionKinds": [
+          "cookie-settings",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-preference-dialog#v0.1.0 -y -o"
+      }
+    ],
+    "contact-form": [
+      {
+        "item": "block-contact-form-channel-first",
+        "variant": "channel-first",
+        "layout": "channels-then-form",
+        "density": "comfortable",
+        "sectionKinds": [
+          "contact-cta",
+          "bulk-order-inquiry"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-contact-form-channel-first#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-contact-form-inline-short",
+        "variant": "inline-short",
+        "layout": "intro-form-split",
+        "density": "comfortable",
+        "sectionKinds": [
+          "contact-cta",
+          "bulk-order-inquiry"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-contact-form-inline-short#v0.1.0 -y -o"
+      }
+    ],
+    "content": [
+      {
+        "item": "block-content-cards",
+        "variant": "cards",
+        "layout": "card-grid",
+        "density": "comfortable",
+        "sectionKinds": [
+          "leadership",
+          "work-grid",
+          "doctors",
+          "policy-cards"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-cards#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-links",
+        "variant": "links",
+        "layout": "link-tiles",
+        "density": "comfortable",
+        "sectionKinds": [
+          "quick-links",
+          "careers",
+          "job-list",
+          "utility-links",
+          "next-work",
+          "side-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-links#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-list",
+        "variant": "list",
+        "layout": "dated-rows",
+        "density": "comfortable",
+        "sectionKinds": [
+          "news",
+          "press-list",
+          "sustainability",
+          "news-tabs",
+          "changelog",
+          "departments"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-prose",
+        "variant": "prose",
+        "layout": "split-prose",
+        "density": "comfortable",
+        "sectionKinds": [
+          "mission",
+          "summary",
+          "challenge",
+          "role-collaboration",
+          "process",
+          "solution",
+          "results"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-prose#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-content-timeline",
+        "variant": "timeline",
+        "layout": "year-list",
+        "density": "comfortable",
+        "sectionKinds": [
+          "history"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-timeline#v0.1.0 -y -o"
+      }
+    ],
+    "features": [
+      {
+        "item": "block-features-bento-grid",
+        "variant": "bento-grid",
+        "layout": "bento",
+        "density": "spacious",
+        "sectionKinds": [
+          "workflow-features",
+          "key-points",
+          "services"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-features-bento-grid#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-features-stagger-cards",
+        "variant": "stagger-cards",
+        "layout": "stagger-cards",
+        "density": "comfortable",
+        "sectionKinds": [
+          "workflow-features",
+          "key-points",
+          "how-it-works"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-features-stagger-cards#v0.1.0 -y -o"
+      }
+    ],
+    "final-cta": [
+      {
+        "item": "block-final-cta-full-band",
+        "variant": "full-band",
+        "layout": "full-band",
+        "density": "spacious",
+        "sectionKinds": [
+          "final-cta",
+          "booking-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-full-band#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-final-cta-kinetic-band",
+        "variant": "kinetic-band",
+        "layout": "kinetic-band",
+        "density": "spacious",
+        "sectionKinds": [
+          "final-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-kinetic-band#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-final-cta-quiet-link-row",
+        "variant": "quiet-link-row",
+        "layout": "quiet-link-row",
+        "density": "compact",
+        "sectionKinds": [
+          "final-cta",
+          "contact-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-quiet-link-row#v0.1.0 -y -o"
+      }
+    ],
+    "floating-action": [
+      {
+        "item": "block-floating-action-call-bar",
+        "variant": "call-bar",
+        "layout": "bottom-bar",
+        "density": "comfortable",
+        "sectionKinds": [
+          "call-bar",
+          "floating-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-call-bar#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-floating-action-chat-launcher",
+        "variant": "chat-launcher",
+        "layout": "corner-pill",
+        "density": "comfortable",
+        "sectionKinds": [
+          "chat-widget",
+          "contact-launcher"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-floating-action-quick-menu-rail",
+        "variant": "quick-menu-rail",
+        "layout": "edge-rail",
+        "density": "compact",
+        "sectionKinds": [
+          "quick-menu",
+          "floating-menu"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-quick-menu-rail#v0.1.0 -y -o"
+      }
+    ],
+    "footer": [
+      {
+        "item": "block-footer-columns-business",
+        "variant": "columns-business",
+        "layout": "columns-business",
+        "density": "comfortable",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-columns-business#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-footer-compact-strip",
+        "variant": "compact-strip",
+        "layout": "compact-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-compact-strip#v0.1.0 -y -o"
+      }
+    ],
+    "hero": [
+      {
+        "item": "block-hero-banded-full-bleed",
+        "variant": "banded-full-bleed",
+        "layout": "banded-full-bleed",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "band"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-banded-full-bleed#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-baseline-split",
+        "variant": "baseline-split",
+        "layout": "baseline-split",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "field"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-baseline-split#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-cropped-title-list",
+        "variant": "cropped-title-list",
+        "layout": "cropped-title-list",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-cropped-title-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-framed-card-outline-title",
+        "variant": "framed-card-outline-title",
+        "layout": "framed-card-outline-title",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "purchase-area"
+        ],
+        "states": [],
+        "media": [
+          "still"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-framed-card-outline-title#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-grid-lines-baseline-word",
+        "variant": "grid-lines-baseline-word",
+        "layout": "grid-lines-baseline-word",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "hero-visit-info",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "grid"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-grid-lines-baseline-word#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-inline-chip-title",
+        "variant": "inline-chip-title",
+        "layout": "inline-chip-title",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "chip"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-inline-chip-title#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-ken-burns-stills",
+        "variant": "ken-burns-stills",
+        "layout": "ken-burns-stills",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "stills"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-ken-burns-stills#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-kinetic-type-video",
+        "variant": "kinetic-type-video",
+        "layout": "kinetic-type-video",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "video"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-kinetic-type-video#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-layered-landscape-logotype",
+        "variant": "layered-landscape-logotype",
+        "layout": "layered-landscape-logotype",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-layered-landscape-logotype#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-punch-in-statement",
+        "variant": "punch-in-statement",
+        "layout": "punch-in-statement",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "punch"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-punch-in-statement#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-staggered-oval-frame",
+        "variant": "staggered-oval-frame",
+        "layout": "staggered-oval-frame",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "oval"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-staggered-oval-frame#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-stepped-crop-figure",
+        "variant": "stepped-crop-figure",
+        "layout": "stepped-crop-figure",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-stepped-crop-figure#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-twin-panels",
+        "variant": "twin-panels",
+        "layout": "twin-panels",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "purchase-area"
+        ],
+        "states": [],
+        "media": [
+          "panel-left",
+          "panel-right"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-twin-panels#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-vertical-title-slides",
+        "variant": "vertical-title-slides",
+        "layout": "vertical-title-slides",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "hero-visit-info"
+        ],
+        "states": [],
+        "media": [
+          "slide-0",
+          "slide-1",
+          "slide-2"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-vertical-title-slides#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-video-montage",
+        "variant": "video-montage",
+        "layout": "video-montage",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "clips"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-video-montage#v0.1.0 -y -o"
+      }
+    ],
+    "integrations": [
+      {
+        "item": "block-integrations-hub-diagram",
+        "variant": "hub-diagram",
+        "layout": "hub-spoke",
+        "density": "spacious",
+        "sectionKinds": [
+          "integrations"
+        ],
+        "states": [],
+        "media": [
+          "integration-logo"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-integrations-hub-diagram#v0.1.0 -y -o"
+      }
+    ],
+    "lead-capture": [
+      {
+        "item": "block-lead-capture-inline-newsletter",
+        "variant": "inline-newsletter",
+        "layout": "one-line-subscribe",
+        "density": "compact",
+        "sectionKinds": [
+          "newsletter",
+          "lead-capture"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-lead-capture-inline-newsletter#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-lead-capture-magnet-preview",
+        "variant": "magnet-preview",
+        "layout": "preview-plus-email",
+        "density": "comfortable",
+        "sectionKinds": [
+          "lead-magnet",
+          "lead-capture"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [
+          "magnet-cover"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-lead-capture-magnet-preview#v0.1.0 -y -o"
+      }
+    ],
+    "nav": [
+      {
+        "item": "block-nav-centered-mark",
+        "variant": "centered-mark",
+        "layout": "centered-mark",
+        "density": "spacious",
+        "sectionKinds": [
+          "header"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-centered-mark#v0.1.0 -y -o"
+      }
+    ],
+    "product-list": [
+      {
+        "item": "block-product-list-grid-cards",
+        "variant": "grid-cards",
+        "layout": "card-grid",
+        "density": "comfortable",
+        "sectionKinds": [
+          "product-grid",
+          "categories",
+          "new-arrivals",
+          "curated"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [
+          "product-thumb"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-product-list-grid-cards#v0.1.0 -y -o"
+      }
+    ],
+    "referral": [
+      {
+        "item": "block-referral-share-sheet",
+        "variant": "share-sheet",
+        "layout": "channel-sheet",
+        "density": "compact",
+        "sectionKinds": [
+          "share",
+          "referral"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-referral-share-sheet#v0.1.0 -y -o"
+      }
+    ],
+    "social-proof": [
+      {
+        "item": "block-social-proof-logo-rail",
+        "variant": "logo-rail",
+        "layout": "logo-rail",
+        "density": "compact",
+        "sectionKinds": [
+          "social-proof",
+          "client-roster",
+          "recognition"
+        ],
+        "states": [],
+        "media": [
+          "customer-logo"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-social-proof-logo-rail#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-social-proof-quote-wall",
+        "variant": "quote-wall",
+        "layout": "masonry-quotes",
+        "density": "comfortable",
+        "sectionKinds": [
+          "testimonials",
+          "reviews",
+          "social-proof"
+        ],
+        "states": [],
+        "media": [
+          "person"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-social-proof-quote-wall#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-social-proof-whip-quotes",
+        "variant": "whip-quotes",
+        "layout": "whip-quotes",
+        "density": "spacious",
+        "sectionKinds": [
+          "testimonials",
+          "social-proof"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-social-proof-whip-quotes#v0.1.0 -y -o"
+      }
+    ],
+    "trust": [
+      {
+        "item": "block-trust-author-byline",
+        "variant": "author-byline",
+        "layout": "byline-dl",
+        "density": "compact",
+        "sectionKinds": [
+          "byline",
+          "author-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-author-byline#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-trust-brand-fact-sheet",
+        "variant": "brand-fact-sheet",
+        "layout": "fact-sheet-dl",
+        "density": "spacious",
+        "sectionKinds": [
+          "about",
+          "brand-facts",
+          "company-profile"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-brand-fact-sheet#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-trust-verified-business-strip",
+        "variant": "verified-business-strip",
+        "layout": "business-facts-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "business-info",
+          "trust-strip"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-verified-business-strip#v0.1.0 -y -o"
+      }
+    ]
+  },
+  "blocksNote": "블록 메타 archetypes 에 이 원형을 적은 블록만 종류(kind)별로 모았다. 블록은 레시피 base 하나를 먼저 설치한 뒤(recipes.candidates 의 install) 블록 install 을 받는다 — B안 색·서체는 그 다음에 `<레시피>-alt` 를 -o 로 덮는다. 부품이 레시피 모양으로 깔리므로 블록 항목에는 ui 의존이 없다."
+}

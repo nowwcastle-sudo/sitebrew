@@ -1,0 +1,31 @@
+{
+  "topic": "A habit tracker app for shift workers — log a habit in two taps, works offline (fictional business — example)",
+  "archetype": "pwa",
+  "locale": "en",
+  "facts": {
+    "name": "Tallyday",
+    "legalName": "Tallyday Studio Ltd.",
+    "representative": "Noah Kim",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "address": "30 Example Street, Seoul",
+    "phone": "+82-2-1234-5678",
+    "claim": "Log a habit in two taps, even on a night shift with no signal",
+    "howItWorks": "Pick habits, tap to log, see your streak sync when you are back online",
+    "homeItems": "Log a habit | Tap once to mark it done ; Weekly view | See which days you kept the habit ; Reminders | Pick a time that suits your shift",
+    "detailBody": "Tap a habit to see its history and notes ; Entries you add offline stay on your device until you are back online",
+    "resultBody": "Your habit is logged ; It will sync when you are back online",
+    "price": "Free; Plus $3 per month, VAT included",
+    "trial": "14-day Plus trial",
+    "audience": "Shift workers who want to build habits around irregular schedules",
+    "action": "Log your first habit in two taps",
+    "mood": "friendly"
+  },
+  "brand": {
+    "colors": [
+      "#3B5BDB",
+      "#FFFFFF"
+    ]
+  },
+  "seed": 1
+}

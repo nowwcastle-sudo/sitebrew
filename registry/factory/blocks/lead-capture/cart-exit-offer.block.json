@@ -1,0 +1,14 @@
+{
+  "kind": "lead-capture",
+  "variant": "cart-exit-offer",
+  "title": "장바구니 이탈 제안 — 장바구니·결제에서만, 방문당 한 번, 거절·7일간 보지 않기",
+  "layout": "exit-intent-dialog",
+  "density": "comfortable",
+  "archetypes": [ "commerce", "detail" ],
+  "archetypeKinds": [ "exit-intent", "cart-offer" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A5", "A6", "L3", "L7", "L8", "X1", "M1" ],
+  "notes": "context 가 cart·checkout 일 때만, 마우스가 창 위 끝을 벗어날 때(이탈 의도) 한 번 연다 — 페이지를 열 때는 뜨지 않는다(A6), 방문당 한 번(sessionStorage — A5, 합성 C-11). 대화상자: 제목·설명 · 쿠폰 금액(원화)·조건 · 남은 날(endsAt 이 있고 아직 안 끝났을 때만 — L8, 끝났으면 띄우지 않는다) · [쿠폰 없이 계속 보기][할인받고 결제하기] 대등(L3) · 7일간 보지 않기(data-snooze — L7) · 닫기 버튼·바깥 클릭·Esc·포커스 가둠(대화상자 부품). 구역은 hidden(대화상자는 body 로 포털). 계측(선택): cta_click"
+}

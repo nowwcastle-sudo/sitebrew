@@ -1,0 +1,82 @@
+{
+  "_comment": "서버 액션 인증 정적 검사(scripts/test/server-action-auth.test.mjs)의 허용 목록. 강한 가드(session()·actor()·runAdmin() 등)에 닿지 않는 export 는 여기에 이유와 함께 올라 있어야 통과한다. 이름은 'app/actions/<파일>#<export>' — 템플릿 사본과 레지스트리 번들 사본에 같이 적용된다. class=public: 로그인 없이 부르는 것이 설계다. class=port-delegated: 인증은 포트 어댑터가 하고(앱 쪽엔 가드 호출이 없다), proof 의 시험·원천이 그것을 보인다(파일이 있고 includes 글이 들어 있어야 한다). 목록은 줄이기만 한다: 가드가 생겼거나 export 가 사라진 항목이 남아 있으면 시험이 실패한다.",
+  "groups": [
+    {
+      "class": "public",
+      "reason": "공개 입구 — 로그인 전에 불러야 한다. 입력 모양은 authActions(zod)가 먼저 검사하고 요청 제한·봇 확인은 포트가 한다. verifyTwoFactor 는 2단계 반쪽 로그인 쿠키가 있어야 포트가 받는다. plans·methods 는 공개 정보 읽기다.",
+      "targets": [
+        "app/actions/auth.ts#signIn",
+        "app/actions/auth.ts#signUp",
+        "app/actions/auth.ts#resetPassword",
+        "app/actions/auth.ts#verifyTwoFactor",
+        "app/actions/product.ts#signIn",
+        "app/actions/product.ts#signUp",
+        "app/actions/product.ts#resetPassword",
+        "app/actions/product.ts#requestPasswordReset",
+        "app/actions/product.ts#methods",
+        "app/actions/product.ts#plans"
+      ]
+    },
+    {
+      "class": "public",
+      "reason": "로그아웃: 로그아웃 상태에서 불러도 쿠키를 지울 뿐이라 해가 없다(멱등).",
+      "targets": ["app/actions/auth.ts#signOut", "app/actions/product.ts#signOut", "app/actions/shell.ts#signOutFromHeader"]
+    },
+    {
+      "class": "public",
+      "reason": "문의 접수는 로그인 없는 공개 창구(K05). 요청 제한(IP)과 입력 검사는 inquiry 서비스가 한다.",
+      "targets": ["app/actions/inquiry.ts#submitInquiry"]
+    },
+    {
+      "class": "port-delegated",
+      "reason": "로그인 필요 계정 편의. 앱 쪽 액션은 얇게 authActions 로 넘기고 쿠키 세션은 authAdapter 가 읽는다. 쿠키 없는 브라우저로 이 메서드를 모두 불러 실행되지 않음을 보이는 시험이 증거다.",
+      "proof": { "file": "packages/auth/test/anon-guard.test.mjs", "includes": "NEEDS_SESSION" },
+      "targets": [
+        "app/actions/auth.ts#changePassword",
+        "app/actions/auth.ts#changeEmail",
+        "app/actions/auth.ts#sendVerificationEmail",
+        "app/actions/auth.ts#listSessions",
+        "app/actions/auth.ts#revokeSession",
+        "app/actions/auth.ts#revokeOtherSessions",
+        "app/actions/auth.ts#updatePreferences",
+        "app/actions/auth.ts#updateProfile"
+      ]
+    },
+    {
+      "class": "port-delegated",
+      "reason": "탈퇴·내려받기: 세션은 계정 생명주기를 합친 포트(authActions → authAdapter 의 account)가 읽는다. 로그인 없이 부르면 sign_in_required 를 돌려주는 시험이 증거다.",
+      "proof": { "file": "packages/auth/test/deletion.test.mjs", "includes": "assert.deepEqual(await port.deleteAccount(), SIGN_IN)" },
+      "targets": ["app/actions/account.ts#deleteAccount", "app/actions/account.ts#exportMyData"]
+    },
+    {
+      "class": "port-delegated",
+      "reason": "수신 동의 읽기·바꾸기: userId 는 notifyPort 가 세션에서 읽는다(currentUserId). 로그아웃 상태에서 signInRequired 를 돌려주는 시험이 증거다.",
+      "proof": { "file": "packages/consent/test/consent.test.mjs", "includes": "signedOut.setConsents" },
+      "targets": ["app/actions/consents.ts#getMarketingConsents", "app/actions/consents.ts#setMarketingConsents"]
+    },
+    {
+      "class": "port-delegated",
+      "reason": "본인 동의 이력: myConsentHistory() 가 세션에서 사용자를 읽고 없으면 null 을 돌려 로그인 요구로 바뀐다(원천이 증거).",
+      "proof": { "file": "template/lib/launch/consents.ts", "includes": "if (!userId) return null" },
+      "targets": ["app/actions/consents.ts#getMyConsentHistory"]
+    },
+    {
+      "class": "port-delegated",
+      "reason": "블록이 부르는 결제 포트 묶음(mock 과 live 가 같은 모양). live 포트는 세션이 없으면 매 메서드가 signInRequired() 로 끝난다(원천이 증거). 승인 행동은 그 앞에 사람 확인(gated)도 있다.",
+      "proof": { "file": "template/lib/ports.live.ts", "includes": "?? signInRequired()" },
+      "targets": [
+        "app/actions/product.ts#checkout",
+        "app/actions/product.ts#subscription",
+        "app/actions/product.ts#resume",
+        "app/actions/product.ts#updatePaymentMethod",
+        "app/actions/product.ts#portal",
+        "app/actions/product.ts#syncCheckout",
+        "app/actions/product.ts#changePlan",
+        "app/actions/product.ts#acceptPriceChange",
+        "app/actions/product.ts#cancel",
+        "app/actions/product.ts#applyRetentionOffer",
+        "app/actions/product.ts#sendVerificationEmail"
+      ]
+    }
+  ]
+}

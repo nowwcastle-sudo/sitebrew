@@ -1,0 +1,13 @@
+{
+  "kind": "announcement",
+  "variant": "notice-ticker",
+  "title": "굴러가는 공지 줄 — 5초마다 하나씩 바뀌고 정지 단추·동작 줄이기 목록",
+  "layout": "rolling-line",
+  "density": "compact",
+  "archetypes": ["dashboard", "public", "commerce", "local", "portfolio", "saas"],
+  "archetypeKinds": ["notice-ticker", "announcement"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "공지 여럿이 한 줄 자리에 겹쳐 쌓이고(grid 한 칸 — 가장 긴 공지에 높이가 맞아 흔들리지 않는다) 활성 하나만 보인다. 5초 이상 간격(intervalMs 최소 5000)으로 넘어가고, 스스로 움직이는 정보라 정지 단추(_shared/loop-pause, aria-pressed)와 마우스 올림·초점 들어옴 정지가 있다(WCAG 2.2.2). 동작 줄이기(reducedMotion)에서는 굴리지 않고 공지를 모두 목록으로 보인다(CSS motion-safe 에서만 겹쳐 쌓으므로 서버 렌더·JS 없는 화면도 같다). 굴리는 동안 활성이 아닌 공지는 inert, 줄은 aria-live=off. 공지 하나면 굴리지 않고 정지 단추도 없다. 선택: 날짜·링크·「전체 보기」. 계측(선택): cta_click"
+}

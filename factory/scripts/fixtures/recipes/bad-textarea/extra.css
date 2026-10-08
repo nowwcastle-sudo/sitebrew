@@ -1,0 +1,4 @@
+/* 시험용: 합성 뒤 textarea 최소 높이가 32px — 44px 바닥 아래(T4-c1). */
+.cn-textarea {
+  @apply min-h-8 rounded-none border-2 bg-transparent px-3 py-1 text-base;
+}

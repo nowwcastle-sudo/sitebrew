@@ -1,0 +1,14 @@
+{
+  "kind": "review-list",
+  "variant": "photo-gallery",
+  "title": "사진 리뷰 갤러리 — 사진 격자를 텍스트 리뷰 위에, 적립 조건 먼저",
+  "layout": "photo-grid-over-text",
+  "density": "comfortable",
+  "archetypes": [ "commerce", "detail", "local" ],
+  "archetypeKinds": [ "reviews", "photo-reviews" ],
+  "states": [],
+  "media": [ "review-photo" ],
+  "motion": [ "rise" ],
+  "rules": [ "T2", "T6", "T7", "T9", "X1", "M1" ],
+  "notes": "머리: h2 + 평점 줄(평균·리뷰 수·기준일). 사진 격자(data-photo-gallery — 사진 리뷰만, 최대 maxPhotos, 칸을 누르면 그 리뷰로 — 목록을 넓혀 아직 안 그린 리뷰도 닿는다)가 텍스트 목록 위에 있고, 적립 조건(쓴 뒤 지급)을 격자 위에 먼저 적는다. 아래 모든 리뷰(날짜순, 인증 구매 표지·판매자 답변 판, 더 보기). 사진 없으면 비율을 지킨 빈 자리 + 대체 글. 리뷰 0개면 첫 리뷰 청하기(별점 기본값 없음). 계측(선택): cta_click"
+}

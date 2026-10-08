@@ -1,0 +1,14 @@
+{
+  "kind": "trust",
+  "variant": "payment-trust-panel",
+  "title": "결제 신뢰 판 — 색 판·자물쇠·결제대행 표지 · 필수 총액 · 에스크로 안내",
+  "layout": "tinted-lock-panel",
+  "density": "comfortable",
+  "archetypes": [ "commerce", "detail", "local" ],
+  "archetypeKinds": [ "checkout-payment", "payment-trust" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "T1", "T4", "L1", "L10", "X1", "M1" ],
+  "notes": "결제 입력부 전체를 색 판(data-trust-panel)으로 감싼다: 자물쇠 + 안전 결제 한 줄 + 결제대행 표지 1~2개(글자, data-pg-mark — 그림 씰 없음) · 주문 금액 줄과 필수 총액(data-price=billed, VAT 포함 표기, 가장 크게 — L1) · 결제 수단 라디오(고른 것 없이 시작) · 에스크로 되는 수단 바로 아래 결제대금예치 안내(data-escrow — L10) · 결제 버튼 「{금액} 결제하기」. 폼 블록: submit({ method }) → redirectUrl 이면 이동. 계측(선택): checkout_start"
+}

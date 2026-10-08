@@ -1,0 +1,17 @@
+{
+  "synthetic": "빈 결과 — totalCnt 0(실측 응답 모양에서 law 를 비움)",
+  "url": "https://www.law.go.kr/DRF/lawSearch.do?OC=***&target=law&type=JSON&query=%EC%97%86%EB%8A%94%20%EB%B2%95",
+  "status": 200,
+  "body": {
+    "LawSearch": {
+      "resultMsg": "success",
+      "키워드": "없는 법",
+      "page": "1",
+      "resultCode": "00",
+      "target": "law",
+      "totalCnt": "0",
+      "section": "lawNm",
+      "numOfRows": "0"
+    }
+  }
+}

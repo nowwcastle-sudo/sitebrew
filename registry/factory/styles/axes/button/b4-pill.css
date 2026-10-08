@@ -1,0 +1,44 @@
+/* B4 알약 + 안쪽 원 아이콘 — 큰 반경 계열. 기본 h-12, 끝 아이콘(data-icon=inline-end)은 지름 32px 원 안에 두고
+ * hover 때 원만 옆으로 민다(버튼 전체 확대 금지 — A73). 보조 버튼도 같은 반경의 외곽선형. 원천 style_axes.md 축 1. */
+.cn-button {
+  @apply rounded-full border text-sm font-medium [&_svg:not([class*='size-'])]:size-4 [&_svg[data-icon=inline-end]]:size-8! [&_svg[data-icon=inline-end]]:rounded-full [&_svg[data-icon=inline-end]]:bg-current/10 [&_svg[data-icon=inline-end]]:p-2 [&_svg[data-icon=inline-end]]:transition-transform hover:[&_svg[data-icon=inline-end]]:translate-x-1 hover:[&_svg[data-icon=inline-end]]:-translate-y-px hover:[&_svg[data-icon=inline-end]]:scale-105;
+}
+.cn-button-variant-outline {
+  @apply dark:bg-input/30 dark:hover:bg-input/50;
+}
+.cn-button-size-default {
+  @apply h-12 gap-3 px-6 text-base has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-4;
+}
+.cn-button-size-xs {
+  @apply h-7 gap-1 rounded-full px-3 text-sm has-data-[icon=inline-end]:pe-1 has-data-[icon=inline-start]:ps-2 [&_svg:not([class*='size-'])]:size-3.5 [&_svg[data-icon=inline-end]]:size-5! [&_svg[data-icon=inline-end]]:p-1;
+}
+.cn-button-size-sm {
+  @apply h-10 gap-2 rounded-full px-4 text-sm has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-3 [&_svg[data-icon=inline-end]]:size-7! [&_svg[data-icon=inline-end]]:p-1.5;
+}
+.cn-button-size-lg {
+  @apply h-14 gap-3 px-8 text-base has-data-[icon=inline-end]:pe-3 has-data-[icon=inline-start]:ps-6 [&_svg[data-icon=inline-end]]:size-9!;
+}
+.cn-button-size-icon {
+  @apply size-12;
+}
+.cn-button-size-icon-xs {
+  @apply size-7 rounded-full [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-icon-sm {
+  @apply size-10 rounded-full;
+}
+.cn-button-size-icon-lg {
+  @apply size-14;
+}
+.cn-button-group {
+  @apply has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-full;
+}
+.cn-button-group-orientation-horizontal {
+  @apply *:data-slot:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-full! [&>[data-slot]~[data-slot]]:rounded-l-none [&>[data-slot]~[data-slot]]:border-l-0;
+}
+.cn-button-group-orientation-vertical {
+  @apply *:data-slot:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-[24px]! *:data-slot:first:rounded-t-[24px] [&>[data-slot]~[data-slot]]:rounded-t-none [&>[data-slot]~[data-slot]]:border-t-0;
+}
+.cn-button-group-text {
+  @apply gap-2 rounded-full border px-4 text-sm font-medium [&_svg:not([class*='size-'])]:size-4;
+}

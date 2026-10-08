@@ -1,0 +1,64 @@
+{
+  "id": "wtfnotebooks-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://wtfnotebooks.com/products/my-list-of-all-the-idiots-i-know",
+  "structure": {
+    "hero": "둥근 사진(커스텀 노트)과 「종류·표지 색·내지」 선택, 묶음 가격표",
+    "sections": [
+      "붉은 공지띠(묶음 할인)",
+      "검정 헤더(둘러보기 알약·로고·찜·장바구니)",
+      "상품 사진",
+      "맞춤 선택 패널(종류 드롭다운)",
+      "표지 색 16개 스와치",
+      "내지 드롭다운(미선택 상태 안내)",
+      "묶음 가격표(수량별 단가)",
+      "큰 제목과 설명",
+      "도움말 플로팅 버튼"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 로고와 제목, 붉은 슬래시 강조",
+    "body": "같은 산세리프 계열 본문",
+    "scale": "큰 제목 크게, 선택 라벨은 중간"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "노트 종류 드롭다운(아이콘·사양 표기)",
+    "색 16개 원형 스와치 2행",
+    "내지 드롭다운 「선택 없음」 안내 상태",
+    "묶음 가격 행 강조",
+    "도움말 아이콘 ?"
+  ],
+  "cta": {
+    "pattern": "맞춤 선택 뒤 장바구니(첫 화면 아래)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.88
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "맞춤 상품은 종류·색·내지 순서를 단계 라벨로 밝힌다",
+    "색 스와치를 원형 16개 격자로 한 번에 보여준다",
+    "선택 안 한 항목은 「선택 없음. 고르세요」 안내로 상태를 보여준다",
+    "수량별 묶음 단가표에서 현재 해당 행을 노란 띠로 강조",
+    "모바일은 사진, 제목, 「미국에서 인쇄」 알약, 맞춤 선택 순서"
+  ]
+}

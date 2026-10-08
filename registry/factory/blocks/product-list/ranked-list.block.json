@@ -1,0 +1,13 @@
+{
+  "kind": "product-list",
+  "variant": "ranked-list",
+  "title": "상품 목록 — 순위 목록(베스트)",
+  "layout": "ranked-list",
+  "density": "compact",
+  "archetypes": ["commerce", "local"],
+  "archetypeKinds": ["best", "product-grid"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": ["product-thumb"],
+  "motion": ["rise"],
+  "notes": "ol 한 줄씩: 순위 큰 숫자(1~3위 더 크게) · 작은 사진 · 상품명 링크 · 가격. 넓은 화면 두 단. 기준 한 줄. loading 같은 줄 높이 뼈대, empty·error 상태 칸"
+}

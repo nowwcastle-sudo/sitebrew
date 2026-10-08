@@ -1,0 +1,14 @@
+{
+  "kind": "retention",
+  "variant": "cancel-flow",
+  "title": "해지 흐름 — 사유(선택)·해지 방식 → 대안 하나 → 완료(종료일)",
+  "layout": "stepped-cancel",
+  "density": "comfortable",
+  "archetypes": [ "saas", "pwa", "commerce" ],
+  "archetypeKinds": [ "cancel-flow", "subscription-manage" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L3", "L4", "L5", "R2", "X1", "M1" ],
+  "notes": "단계 줄 ①해지 방식 ②다른 방법 ③완료(data-flow=cancel data-step·data-steps=3 ≤ 가입 3). ① 사유 라디오 하나(선택) + 약관에 중도해지가 있으면 일반·중도 둘 다(data-cancel-when=both), [해지 계속하기(decline)][계속 쓰기(primary)]. ② 대안 하나(pickRetentionOffer — 일시정지→다운그레이드→할인, 할인은 금액) [해지하기][대안 받기] 또는 대안이 없으면 해지 확인. ③ 완료 — 이용이 끝나는 날(data-end-date). 혜택 반복·만류 질문 없음. 포트: subscription·plans·cancel·applyRetentionOffer·track? P3-6 F05·F12·F13: 대안이 없으면 확인 장 없이 ① 에서 바로 해지(data-steps=2), 이미 해지가 예약됐으면 흐름 대신 상태와 [계속 쓰기](data-cancel-scheduled, copy.scheduled·props resume), 완료 화면에 「다음 결제 없음」(data-no-charge)·종료일·다른 경로 해지 안내(data-other-channels)."
+}

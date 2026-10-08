@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "skeleton",
+  "title": "첫 화면 로딩 뼈대 — 레시피 skeleton 부품을 목록 줄 모양으로, aria-busy",
+  "layout": "loading-rows",
+  "density": "comfortable",
+  "archetypes": [ "pwa" ],
+  "archetypeKinds": [ "skeleton" ],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "원형 noBlock part(skeleton) 렌더러(대장 C70). 앱 고유 데이터가 붙기 전 자리(factory-rules.md §21-9). 뼈대는 aria-hidden, 섹션은 aria-busy + sr-only 이름."
+}

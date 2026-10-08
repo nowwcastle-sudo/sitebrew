@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "identity-strip-banner",
+  "title": "히어로 — 둥근 배너 카드 + 자주 찾는 서비스",
+  "layout": "identity-strip-banner",
+  "density": "comfortable",
+  "archetypes": ["public", "local"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["split-text", "rise", "clip-reveal", "svg-draw", "parallax", "tilt-3d", "view-transition"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "layout",
+  "notes": "폭 1200px 안쪽 둥근 배너 한 장(faces[0], 없으면 짙은 바탕): 맨 위 전폭 줄에 고정폭 머리 줄 · 두 줄 제목 h1(titleWidth full — D2·D3 DisplayTitle 을 받는다, 배치로 대담 · boldMode layout, FV1 Task 5.17), 그 아래 왼쪽 부제 · 높이 64px 버튼, 오른쪽 직접 그린 아이소메트릭 서류 더미와 확인 도장(1024 이상). 배너 바로 아래 「자주 찾는 서비스」 칸(누르는 칸은 첫 프레임부터 보인다). 식별 띠·두 줄 머리는 header 칸. 기본 기법 view-transition·svg-draw. P3-1 r6-civic 머리 구성(반경 6·8px → sm·md)"
+}

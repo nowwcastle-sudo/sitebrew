@@ -1,0 +1,60 @@
+{
+  "id": "app-usefathom-com",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://app.usefathom.com/share/deasaicp/hilarious+platypus?range=last_7_days",
+  "structure": {
+    "hero": "기간 줄 아래 검정 지표 띠에 얇은 큰 숫자 6개",
+    "sections": [
+      "사이트 이름+옵션",
+      "기간·비교·필터 줄",
+      "검정 KPI 띠(6개)",
+      "방문 추이 영역 차트",
+      "페이지 표",
+      "유입 경로 표"
+    ]
+  },
+  "type": {
+    "display": "얇은 산세리프 48px KPI 숫자",
+    "body": "산세리프 14px",
+    "scale": "KPI 48px, 사이트명 28px, 표 14px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "기간 선택(최근 7일)",
+    "비교 추가",
+    "봇 필터·필터 버튼",
+    "차트 종류·간격 전환",
+    "표 탭(페이지·진입·이탈)"
+  ],
+  "cta": {
+    "pattern": "상단 옵션 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "KPI 6개를 검정 띠 하나에 몰아 밀도와 대비를 키운다",
+    "보라 한 색을 선·면과 지표 점에 쓰고 나머지는 회색으로 둔다",
+    "375에서는 KPI 띠가 6행 목록으로 바뀌어 한 열로 읽는다",
+    "표 행 뒤 막대 배경으로 비율을 숨은 막대처럼 보인다"
+  ]
+}

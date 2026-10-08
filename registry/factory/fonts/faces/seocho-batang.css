@@ -1,0 +1,3 @@
+/* 생성물 — factory/scripts/gen-fonts.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* web-factory 폰트 키트 font-seocho-batang: SeochoBatang (OFL-1.1, https://github.com/iwantanid/SeochoBatang-Font) — 원천 https://github.com/iwantanid/SeochoBatang-Font/tree/acdbe07748d6b5b59b74a69c13c2c213cadb445a */
+@font-face { font-family: "SeochoBatang"; src: url("https://cdn.jsdelivr.net/gh/iwantanid/SeochoBatang-Font@acdbe07748d6b5b59b74a69c13c2c213cadb445a/fonts/SeochoBatang-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }

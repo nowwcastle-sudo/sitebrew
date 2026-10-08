@@ -1,0 +1,232 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "content-brand",
+      "type": "registry:lib",
+      "title": "content-brand",
+      "description": "web-factory content: content-brand",
+      "files": [
+        {
+          "path": "schemas/brand.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/brand.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-commerce",
+      "type": "registry:lib",
+      "title": "content-commerce",
+      "description": "web-factory content: content-commerce",
+      "files": [
+        {
+          "path": "schemas/commerce.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/commerce.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-core",
+      "type": "registry:lib",
+      "title": "content-core",
+      "description": "web-factory content: content-core",
+      "files": [
+        {
+          "path": "content-core.ts",
+          "type": "registry:lib",
+          "target": "@components/content/content-core.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/phone#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-dashboard",
+      "type": "registry:lib",
+      "title": "content-dashboard",
+      "description": "web-factory content: content-dashboard",
+      "files": [
+        {
+          "path": "schemas/dashboard.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/dashboard.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-detail",
+      "type": "registry:lib",
+      "title": "content-detail",
+      "description": "web-factory content: content-detail",
+      "files": [
+        {
+          "path": "schemas/detail.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/detail.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-landing",
+      "type": "registry:lib",
+      "title": "content-landing",
+      "description": "web-factory content: content-landing",
+      "files": [
+        {
+          "path": "schemas/landing.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/landing.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-local",
+      "type": "registry:lib",
+      "title": "content-local",
+      "description": "web-factory content: content-local",
+      "files": [
+        {
+          "path": "schemas/local.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/local.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-portfolio",
+      "type": "registry:lib",
+      "title": "content-portfolio",
+      "description": "web-factory content: content-portfolio",
+      "files": [
+        {
+          "path": "schemas/portfolio.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/portfolio.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-public",
+      "type": "registry:lib",
+      "title": "content-public",
+      "description": "web-factory content: content-public",
+      "files": [
+        {
+          "path": "schemas/public.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/public.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-pwa",
+      "type": "registry:lib",
+      "title": "content-pwa",
+      "description": "web-factory content: content-pwa",
+      "files": [
+        {
+          "path": "schemas/pwa.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/pwa.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-saas",
+      "type": "registry:lib",
+      "title": "content-saas",
+      "description": "web-factory content: content-saas",
+      "files": [
+        {
+          "path": "schemas/saas.ts",
+          "type": "registry:lib",
+          "target": "@components/content/schemas/saas.ts"
+        }
+      ],
+      "dependencies": [
+        "zod@^4.6.5"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+      ]
+    },
+    {
+      "name": "content-to-jsonld",
+      "type": "registry:lib",
+      "title": "content-to-jsonld",
+      "description": "web-factory content: content-to-jsonld",
+      "files": [
+        {
+          "path": "content-to-jsonld.ts",
+          "type": "registry:lib",
+          "target": "@components/content/content-to-jsonld.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0",
+        "nowwcastle-sudo/sitebrew/content-local#v0.1.0"
+      ]
+    }
+  ]
+}

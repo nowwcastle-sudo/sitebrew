@@ -1,0 +1,93 @@
+// registry:install 시험 전용 스크래치 경로(레지스트리 항목이 아니다 — 시험이 빈 앱의 app/api/scratch-9b/route.ts 로 복사한다).
+// 진짜 경로(관리자 CSV·Cron)는 그대로 HTTP 로 부르고, 로그인·서버 액션·DB 상태 확인처럼 브라우저 없이 부르기 어려운 것만 여기서 한다.
+// 쿠키는 authIO 가 cookies().set 으로 내보낸다 — 시험 쪽 쿠키 통이 그것을 다음 요청에 실어 보낸다.
+import { count, eq } from "drizzle-orm"
+import { accountDeletions, adminActions, consentRecords, rateLimits, user, idempotencyKeys } from "@launch-factory/db"
+import { deleteAccount, exportMyData } from "@/app/actions/account"
+import { getMarketingConsents, getMyConsentHistory, setMarketingConsents } from "@/app/actions/consents"
+import { impersonate, stopImpersonating } from "@/app/actions/admin"
+import { authPort } from "@/lib/launch/auth"
+import { database } from "@/lib/launch/db"
+import { AUTH_FEATURES } from "@/lib/launch/features"
+import { guardRequest, once } from "@/lib/launch/security"
+
+export const dynamic = "force-dynamic"
+
+const PASSWORD = "correct horse battery staple"
+const consents = { terms: true, privacy: true, ageOver14: true } as const
+
+export async function POST(request: Request) {
+  const body = (await request.json()) as Record<string, string | boolean | object | undefined>
+  const email = String(body.email ?? "")
+  if (body.op === "features") {
+    // features.ts 를 고치는 것과 같다(같은 객체) — 인증 조립(getAuth)이 처음 만들어지기 전에 불러야 하므로 아래 authPort() 보다 앞이다
+    AUTH_FEATURES.twoFactor = true
+    AUTH_FEATURES.admin = true
+    return Response.json({ ok: true })
+  }
+  const db = await database()
+  const port = await authPort()
+  switch (body.op) {
+    case "signup":
+      return Response.json(await port.signUp({ method: "password", email, password: PASSWORD, name: "Scratch", consents: (body.consents as typeof consents | undefined) ?? consents }))
+    case "signin":
+      return Response.json(await port.signIn({ method: "password", email, password: PASSWORD }))
+    case "session":
+      return Response.json(await port.session())
+    case "promote": {
+      // 첫 관리자는 DB 에서 만든다(docs) — role 만 주거나(2단계 없음), 2단계 켠 것까지 주거나
+      await db.update(user).set({ role: "admin", ...(body.twoFactor ? { twoFactorEnabled: true } : {}) }).where(eq(user.email, email))
+      return Response.json({ ok: true })
+    }
+    case "impersonate": {
+      const [target] = await db.select({ id: user.id }).from(user).where(eq(user.email, String(body.target ?? "")))
+      return Response.json(await impersonate({ userId: target?.id ?? "", reason: body.reason }))
+    }
+    case "stop":
+      return Response.json(await stopImpersonating())
+    case "consents-get":
+      return Response.json(await getMarketingConsents())
+    case "consents-set":
+      return Response.json(await setMarketingConsents({ ...(body.input as object), confirmed: true } as never))
+    case "consents-history":
+      return Response.json(await getMyConsentHistory())
+    case "delete":
+      return Response.json(await deleteAccount({ confirmed: true, confirmEmail: String(body.confirmEmail ?? "") }))
+    case "export":
+      return Response.json(await exportMyData({ confirmed: true }))
+    case "backdate": {
+      await db.update(accountDeletions).set({ graceUntil: new Date(Date.now() - 3600_000) }).where(eq(accountDeletions.status, "pending"))
+      return Response.json({ ok: true })
+    }
+    case "limit": {
+      const blocked = await guardRequest(request, "signUp")
+      return blocked ?? Response.json({ ok: true })
+    }
+    case "once": {
+      let runs = 0
+      const first = await once("scratch", String(body.key), async () => ({ ok: true, n: ++runs }))
+      const second = await once("scratch", String(body.key), async () => ({ ok: true, n: ++runs }))
+      return Response.json({ first, second, runs })
+    }
+    case "state": {
+      const [users] = await db.select({ n: count() }).from(user).where(eq(user.email, email))
+      const [admin] = await db.select({ n: count() }).from(adminActions)
+      const [consent] = await db.select({ n: count() }).from(consentRecords)
+      const [limits] = await db.select({ n: count() }).from(rateLimits)
+      const [keys] = await db.select({ n: count() }).from(idempotencyKeys)
+      const deletions = await db.select({ status: accountDeletions.status, userIdSet: accountDeletions.userId }).from(accountDeletions)
+      const actions = await db.select({ action: adminActions.action }).from(adminActions)
+      return Response.json({
+        userExists: (users?.n ?? 0) > 0,
+        adminActions: admin?.n ?? 0,
+        adminActionNames: actions.map((a) => a.action),
+        consentRecords: consent?.n ?? 0,
+        rateLimits: limits?.n ?? 0,
+        idempotencyKeys: keys?.n ?? 0,
+        deletions: deletions.map((d) => ({ status: d.status, hasUser: d.userIdSet !== null })),
+      })
+    }
+    default:
+      return Response.json({ error: "unknown op" }, { status: 400 })
+  }
+}

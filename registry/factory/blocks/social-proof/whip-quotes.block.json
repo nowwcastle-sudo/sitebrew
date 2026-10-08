@@ -1,0 +1,13 @@
+{
+  "kind": "social-proof",
+  "variant": "whip-quotes",
+  "title": "사회적 증거 — 휩 팬으로 넘기는 큰 후기 한 장",
+  "layout": "whip-quotes",
+  "density": "spacious",
+  "archetypes": ["saas", "brand", "commerce", "local", "landing"],
+  "archetypeKinds": ["testimonials", "social-proof"],
+  "states": [],
+  "media": [],
+  "motion": ["play-on-view", "whip-in", "whip-pan", "lower-third"],
+  "notes": "큰 후기 한 장 + 결과 한 줄 + 이름표 띠(이름·직함·소속), 이전·다음·점 단추(자동 회전 없음). 넘길 때 지금 판은 반대쪽으로 휙, 새 판은 가로로만 흐린 채 들어와 착지(휩 팬 240~400ms, M3 550ms). 구획이 들어올 때 휩 등장. saas testimonials 칸. MOTKIT(P3-5)"
+}

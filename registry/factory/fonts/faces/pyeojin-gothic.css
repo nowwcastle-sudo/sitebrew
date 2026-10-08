@@ -1,0 +1,5 @@
+/* 생성물 — factory/scripts/gen-fonts.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* web-factory 폰트 키트 font-pyeojin-gothic: PyeojinGothic (OFL-1.1, https://notforall.tistory.com/m/7) — 원천 https://github.com/projectnoonnu/2504-1/tree/b05de91c74dd2446ff63c937e2120157b2909518 */
+@font-face { font-family: "PyeojinGothic"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@b05de91c74dd2446ff63c937e2120157b2909518/PyeojinGothic-Light.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "PyeojinGothic"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@b05de91c74dd2446ff63c937e2120157b2909518/PyeojinGothic-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "PyeojinGothic"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2504-1@b05de91c74dd2446ff63c937e2120157b2909518/PyeojinGothic-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feature-email-resend",
+  "type": "registry:item",
+  "title": "메일 — Resend + React Email",
+  "description": "Resend 전송기(live)와 콘솔 출력(mock). 가입 환영·주문 확인·가격 변경 안내·해지 확인·계정 보안 메일 서식은 @launch-factory/email 이 갖는다.",
+  "dependencies": [
+    "@launch-factory/email@0.0.0",
+    "@launch-factory/env@0.0.0"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/feature-email-resend/files/lib/launch/mailer.ts",
+      "type": "registry:file",
+      "target": "lib/launch/mailer.ts",
+      "content": "// launch-factory: 메일 전송기. live 는 Resend(RESEND_API_KEY + 인증한 발신 도메인 EMAIL_FROM), mock 은 콘솔 출력이다.\n// 서버 전용이다. 공개 서버 액션으로 열지 않는다 — 누구나 부르면 우리 도메인으로 아무에게나 메일을 보낼 수 있다.\n// 광고성 메일(G03)의 전송자 표시(상호·이메일·전화·주소)는 제품 설정 LF_BUSINESS_NAME·LF_BUSINESS_EMAIL·LF_BUSINESS_PHONE·LF_BUSINESS_ADDRESS 에서 온다 —\n// 값이 비면 광고성 메일은 보내지 않고 던진다(정보통신망법 시행령 별표 6). 거래 메일에는 영향이 없다.\nimport { createMailer, type Mailer } from \"@launch-factory/email\"\nimport { businessInfo } from \"@launch-factory/env\"\nimport { env, required } from \"@/lib/launch/env\"\n\nlet cached: Mailer | undefined\n\nexport function mailer(): Mailer {\n  const b = businessInfo()\n  const marketing = { business: { name: b.name, email: b.email, phone: b.phone, address: b.address } }\n  return (cached ??= env().LF_MODE === \"live\" ? createMailer({ mode: \"live\", apiKey: required(\"RESEND_API_KEY\"), from: required(\"EMAIL_FROM\"), marketing }) : createMailer({ mode: \"mock\", marketing }))\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/env.ts",
+      "type": "registry:file",
+      "target": "lib/launch/env.ts",
+      "content": "// launch-factory: 환경 읽기. 이름만 다루고 값은 어디에도 남기지 않는다.\n// LF_MODE 는 항상 필수다 — 없으면 켜지지 않는다(조용히 mock 으로 가지 않는다). live 에서는 공급자 키가 모두 필수다.\nimport { loadAppEnv, type AppEnv } from \"@launch-factory/env\"\n\nlet cached: AppEnv | undefined\n\n/** 처음 부를 때 한 번 검사한다. 빠진 이름은 모두 모아 한 번에 알린다(값은 싣지 않는다). */\nexport function env(): AppEnv {\n  return (cached ??= loadAppEnv())\n}\n\n/** 설정값·비밀값 하나를 읽는다. 없으면 이름만 담아 던진다. */\nexport function required(name: string): string {\n  const value = (env() as Record<string, string | undefined>)[name] ?? process.env[name]\n  if (!value) throw new Error(`${name} is not set (see .env.example)`)\n  return value\n}\n\n/** 없어도 되는 설정값. */\nexport function optional(name: string): string | undefined {\n  return process.env[name] || undefined\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/config.ts",
+      "type": "registry:file",
+      "target": "lib/launch/config.ts",
+      "content": "// launch-factory: 제품마다 고치는 값. 이 파일은 제품 것이다 — 레지스트리를 다시 받으면 덮어쓸지 묻는다.\nimport type { Locale } from \"@launch-factory/email\"\nimport { env, required } from \"@/lib/launch/env\"\n\nexport const PRODUCT_NAME = \"My Product\"\n/** 사용자 칸(user.locale)이 비었을 때 메일·오류 문구의 언어 */\nexport const DEFAULT_LOCALE: Locale = \"en\"\n/** 가입 때 동의 기록에 남길 약관·개인정보 처리방침의 판. 문서를 고치면 올린다 */\nexport const CONSENT_VERSIONS = { terms: \"2026-09-30\", privacy: \"2026-09-30\" }\n/** 결제 메일이 가리키는 화면 경로 */\nexport const ROUTES = { billing: \"/account/billing\", acceptPriceChange: \"/account/billing/price-change\", decline: \"/account/billing/cancel\", security: \"/forgot-password\", contact: \"/contact\" }\n\n/** 앱 주소. mock 에서는 로컬 주소로 켜지고, live 에서는 NEXT_PUBLIC_APP_URL 이 필수다 */\nexport function appUrl(): string {\n  // 빈 문자열은 없는 것으로 본다 — shadcn CLI 가 envVars 이름을 `NAME=`(빈 값)으로 .env.local 에 적는다\n  return process.env.NEXT_PUBLIC_APP_URL || (env().LF_MODE === \"mock\" ? \"http://localhost:3000\" : required(\"NEXT_PUBLIC_APP_URL\"))\n}\n"
+    }
+  ],
+  "envVars": {
+    "LF_MODE": "",
+    "RESEND_API_KEY": "",
+    "EMAIL_FROM": "",
+    "NEXT_PUBLIC_APP_URL": "",
+    "LF_BUSINESS_NAME": "",
+    "LF_BUSINESS_EMAIL": "",
+    "LF_BUSINESS_PHONE": "",
+    "LF_BUSINESS_ADDRESS": ""
+  },
+  "docs": "설치 뒤 할 일\n0. 설치 전에 앱 폴더 .npmrc 에 save-exact=true 를 적는다 — shadcn CLI 가 npm install 로 의존을 넣으므로 이 설정이 없으면 package.json 에 ^ 범위로 적혀 고정한 판에서 벗어난다.\n1. @launch-factory/* 는 아직 npm 에 게시하지 않은 비공개 패키지다(게시는 운영자 몫). 설치가 실패하면 저장소의 packages/ 를 로컬 경로(file:)로 잇는다.\n2. @launch-factory/* 는 TypeScript 원본을 내보낸다 — next.config.ts 의 transpilePackages 에 쓰는 패키지를 모두 적는다.\n3. .env.local 에 이름이 추가됐다. 값은 Windows 사용자 환경 변수 또는 배포 환경에 넣는다. live 는 RESEND_API_KEY 와 Resend 에서 DNS 인증한 도메인의 EMAIL_FROM 이 필수다(운영자 할 일 O4). mock 은 키 없이 콘솔에 찍힌다.\n4. lib/launch/config.ts 의 PRODUCT_NAME·DEFAULT_LOCALE 을 제품에 맞게 고친다.\n5. 광고성 메일(G03): 광고성 템플릿(marketingAnnouncement)은 LF_BUSINESS_NAME·EMAIL·PHONE·ADDRESS 가 모두 있어야 보낸다(없으면 MarketingComplianceError — 법정 표시 없는 광고 메일은 보내지 않는다). 거래 메일은 영향이 없다. List-Unsubscribe 헤더가 DKIM 서명 대상(h=)에 들어가는지는 Resend 설정으로 확인한다(문서 확인 안 됨).\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/contract\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"].",
+  "meta": {
+    "launch": {
+      "tables": [],
+      "schema": [],
+      "migrations": [],
+      "routes": [],
+      "actions": [],
+      "noEntrypointReason": "서버 전용 전송기다. 공개 서버 액션·경로로 열면 우리 도메인으로 아무에게나 메일을 보낼 수 있다. 다른 항목(인증·결제·문의)이 부른다.",
+      "setup": {
+        "npmrc": [
+          "save-exact=true"
+        ],
+        "transpilePackages": [
+          "@launch-factory/contract",
+          "@launch-factory/email",
+          "@launch-factory/env",
+          "@launch-factory/i18n",
+          "@launch-factory/security"
+        ],
+        "serverExternalPackages": []
+      }
+    }
+  }
+}

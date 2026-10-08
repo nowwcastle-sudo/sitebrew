@@ -1,0 +1,60 @@
+{
+  "id": "mosshotel-com-au",
+  "archetype": "local",
+  "sourceGallery": "httpster",
+  "url": "https://mosshotel.com.au/",
+  "structure": {
+    "hero": "객실 사진을 어둡게 눌러 놓고 넓은 자간 대문자 제목·소개 문단·배지 셋·버튼 둘을 왼쪽에 쌓은 호텔 홈",
+    "sections": [
+      "어두운 상단 바(로고·객실·소개·연락·전화·문의 버튼)",
+      "주소 라벨",
+      "대문자 제목",
+      "소개 문단",
+      "배지 3개(부티크·평점 순위·문화재 건물)",
+      "버튼 2개(객실 보기·문의)"
+    ]
+  },
+  "type": {
+    "display": "가는 기하학 산세리프 대문자(넓은 자간)와 고전 세리프 로고",
+    "body": "같은 산세리프 가는 굵기",
+    "scale": "제목 약 44px, 소개 약 22px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "상단 전화번호 링크",
+    "문의 버튼(상단·히어로)",
+    "객실 보기 버튼",
+    "모바일 햄버거 메뉴"
+  ],
+  "cta": {
+    "pattern": "녹색 채움 버튼(객실)과 외곽선 버튼(문의), 상단 문의 버튼",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "local"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "전화번호를 상단 바에 글자와 아이콘으로 두고 바로 옆에 문의 버튼을 붙인다.",
+    "거리 주소를 제목 위 작은 라벨로 먼저 말한다.",
+    "평점 4.5와 지역 순위, 문화재 건물을 알약 배지 셋으로 줄인다.",
+    "사진 위 어두운 오버레이가 긴 소개 문단의 대비를 지킨다.",
+    "모바일은 전화번호를 숨기고 문의 버튼만 남기며 배지가 세로로 쌓인다."
+  ]
+}

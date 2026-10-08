@@ -1,0 +1,13 @@
+{
+  "kind": "contact-form",
+  "variant": "inline-short",
+  "title": "문의 폼 — 이름·연락처·내용 짧은 폼",
+  "layout": "intro-form-split",
+  "density": "comfortable",
+  "archetypes": ["local", "saas", "portfolio", "brand"],
+  "archetypeKinds": ["contact-cta", "bulk-order-inquiry"],
+  "states": ["submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "두 단: 제목·답변 안내 | 폼 칸(이름·연락처 한 줄, 내용, 개인정보 동의). 제출 흐름 _shared/form-flow — 필드 오류 aria-describedby + 첫 오류 칸 포커스, 서버 오류 폼 위 알림 + 입력 보존, 보내는 중 aria-busy·버튼 비활성, 성공은 폼 자리 접수 결과. agent-form-attrs(자동 제출 없음)"
+}

@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "video-montage",
+  "title": "히어로 — 영상 몽타주(하드 컷) + 소리 켜기 단추",
+  "layout": "video-montage",
+  "density": "spacious",
+  "archetypes": ["brand", "portfolio", "landing", "local", "saas"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["clips"],
+  "motion": ["kinetic-type", "rise", "scrub-timeline"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "motion",
+  "notes": "첫 화면 위 78% 무대에서 짧은 컷(영상 클립·사진, 합 ≤ 3 MB)이 3.2초 간격 하드 컷으로 이어지고 그 위 막 위에 큰 제목. 첫 칠(LCP)은 첫 컷 포스터 하나(다음 컷은 한 컷 앞에서 포스터를 받고, 영상은 켜진 컷만 preload). 영상은 늘 음소거로 시작하고 copy.soundLabel 이 있으면 소리 켜기 단추(_shared/sound-toggle)가 붙어 누른 뒤에만 켜진 컷의 소리가 난다. 컷 전환이 5초 넘게 돌므로 정지 단추 상시. 동작 줄이기·M0 은 첫 컷 포스터만(영상·전환·소리 단추 없음). 05-media 의 단일 칸(media)은 한 컷 몽타주로 읽는다. FV1 Task 5.7"
+}

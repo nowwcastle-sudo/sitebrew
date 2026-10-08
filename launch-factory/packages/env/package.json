@@ -1,0 +1,19 @@
+{
+  "name": "@launch-factory/env",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "환경 검증(zod, 빠진 이름을 한 번에)과 비밀값 읽기·가림.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0"
+  }
+}

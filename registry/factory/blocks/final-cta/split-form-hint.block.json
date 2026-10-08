@@ -1,0 +1,13 @@
+{
+  "kind": "final-cta",
+  "variant": "split-form-hint",
+  "title": "마지막 행동 유도 — 왼쪽 문구 · 오른쪽 연락 채널 목록",
+  "layout": "split-form-hint",
+  "density": "comfortable",
+  "archetypes": ["local", "detail", "saas", "public", "landing"],
+  "archetypeKinds": ["contact-cta", "final-cta"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "넓은 화면: 왼쪽 5칸 제목 h2·머리말, 오른쪽 7칸 채널 줄 목록(아이콘 · 채널 이름 · 전화번호·메일 주소(링크형 채널은 안내 한 줄) · 화살표 — 줄 전체가 링크, tel:·mailto:·https). 375: 문구 아래 목록"
+}

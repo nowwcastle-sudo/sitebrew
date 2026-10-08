@@ -1,0 +1,14 @@
+{
+  "kind": "account",
+  "variant": "profile-settings",
+  "title": "계정 설정 — 항목 줄 목록·로그아웃 확인·계정 지우기",
+  "layout": "settings-rows",
+  "density": "comfortable",
+  "archetypes": [ "saas", "dashboard", "pwa", "commerce" ],
+  "archetypeKinds": [ "account-settings", "profile" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L3", "X1", "M1" ],
+  "notes": "줄 목록(항목 | 지금 값 | 바꾸기 링크): 이름·이메일·비밀번호·2단계 인증. 로그아웃은 그 자리 [취소][로그아웃하기] 대등 확인(choice-pair), 계정 지우기 링크. session() 읽기 4상태(빈 값은 로그인 안내), signOut 쓰기 결과. 포트: session·signOut·track?"
+}

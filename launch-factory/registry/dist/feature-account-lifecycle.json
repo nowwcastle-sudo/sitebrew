@@ -1,0 +1,117 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feature-account-lifecycle",
+  "type": "registry:item",
+  "title": "탈퇴·파기 — 셀프 탈퇴·유예·파기 Cron·내 정보 내려받기",
+  "description": "셀프 탈퇴 서버 액션(구독 먼저 해지 → 유예 → 세션 끊기)과 내려받기, 유예가 지난 계정을 지우고 거래기록은 가명 참조로 분리 보존하는 파기 Cron. 결제는 Paddle 기본이고 account-billing.ts 한 파일로 바꾼다.",
+  "dependencies": [
+    "@launch-factory/account-lifecycle@0.0.0",
+    "@launch-factory/analytics-posthog@0.0.0",
+    "@launch-factory/auth@0.0.0",
+    "@launch-factory/contract@0.0.0",
+    "@launch-factory/db@0.0.0",
+    "@launch-factory/email@0.0.0",
+    "@launch-factory/env@0.0.0",
+    "drizzle-orm@0.45.3"
+  ],
+  "registryDependencies": [
+    "@launch-factory/feature-auth-betterauth",
+    "@launch-factory/feature-billing-paddle",
+    "@launch-factory/feature-email-resend"
+  ],
+  "files": [
+    {
+      "path": "registry/feature-account-lifecycle/files/lib/launch/account.ts",
+      "type": "registry:file",
+      "target": "lib/launch/account.ts",
+      "content": "// launch-factory: 셀프 탈퇴·내 정보 내려받기·파기 조립. 흐름은 @launch-factory/account-lifecycle 이 갖는다:\n//   탈퇴 요청 = 살아 있는 구독을 먼저 기간 끝 해지 → 유예(기본 7일) 기록 → 세션 전부 끊기. 유예 중 다시 로그인하면 취소된다(인증 항목의 로그인 훅).\n//   파기 Cron = 유예가 지난 요청을 잡아 구독 즉시 해지 → 개인 식별 정보 삭제(거래기록은 가명 참조로 분리 보존) → 계측 삭제.\nimport { authAdapter, isPlaceholderEmail, type LaunchAuthPort } from \"@launch-factory/auth\"\nimport { exportMyData, NO_ANALYTICS_ERASER, requestAccountDeletion, runPurge, type AnalyticsEraser, type PurgeReport } from \"@launch-factory/account-lifecycle\"\nimport { postHogEraser } from \"@launch-factory/analytics-posthog/erase\"\nimport { user } from \"@launch-factory/db\"\nimport { authEmails } from \"@launch-factory/email\"\nimport { eq } from \"drizzle-orm\"\nimport { authIO, getAuth } from \"@/lib/launch/auth\"\nimport { billingPorts } from \"@/lib/launch/account-billing\"\nimport { appUrl, DEFAULT_LOCALE, PRODUCT_NAME } from \"@/lib/launch/config\"\nimport { database } from \"@/lib/launch/db\"\nimport { env, optional, required } from \"@/lib/launch/env\"\nimport { mailer } from \"@/lib/launch/mailer\"\n\n/**\n * 탈퇴 접수 메일(D09). 새 요청일 때만 보낸다(두 번 눌러도 한 통). 메일이 실패해도 탈퇴는 이미 기록됐다 — 던지지 않고 이름만 로그로 남긴다(주소가 섞일 수 있어 메시지는 싣지 않는다).\n * 대체 주소(카카오 이메일 없는 계정)로는 보낼 수 없어 건너뛴다.\n */\nasync function sendDeletionReceipt(userId: string, graceUntil: string): Promise<void> {\n  try {\n    const [u] = await (await database()).select({ email: user.email, name: user.name, locale: user.locale, timeZone: user.timeZone }).from(user).where(eq(user.id, userId)).limit(1)\n    if (!u || isPlaceholderEmail(u.email)) return\n    await authEmails(mailer(), { productName: PRODUCT_NAME, defaultLocale: DEFAULT_LOCALE }).accountDeletionRequested(\n      u.email,\n      { graceUntil, signInUrl: `${appUrl()}/sign-in` },\n      { name: u.name, locale: u.locale, timeZone: u.timeZone },\n    )\n  } catch (e) {\n    console.error(`[account] deletion receipt email failed: ${e instanceof Error ? e.name : \"unknown\"}`)\n  }\n}\n\n/** 탈퇴·내려받기가 켜진 인증 포트(서버 액션용). 결제 포트는 탈퇴를 요청할 때 처음 만든다 — 내려받기는 결제 키 없이도 된다 */\nexport async function accountPort(): Promise<LaunchAuthPort> {\n  const db = await database()\n  return authAdapter(await getAuth(), await authIO(), {\n    callbackURL: \"/\",\n    locale: DEFAULT_LOCALE,\n    account: {\n      requestDeletion: async (userId) => {\n        const r = await requestAccountDeletion({ db, billingFor: await billingPorts() }, userId)\n        if (r.ok && !r.alreadyRequested) await sendDeletionReceipt(userId, r.graceUntil)\n        return r\n      },\n      exportData: (userId) => exportMyData(db, userId),\n    },\n  })\n}\n\n/**\n * live 는 PostHog 사람·이벤트·녹화를 지운다(개인 API 키). mock 은 지우지 않는다(계측 공급자가 없다).\n * 분석은 선택이다(LFOBS): POSTHOG_HOST·지움 키가 모두 없으면 분석을 켠 적이 없다 — PostHog 에 쌓인 것이 없어 지울 것이 없다(DB 파기는 그대로 돈다).\n * 일부만 있으면 지울 수 없는 상태다 — 던져서 파기 Cron 전체를 멈추지 않고, 지움 단계가 「분석 지움 실패」로 남아 계속 다시 시도하게 한다(빠진 이름만 알린다).\n */\nexport function analyticsEraser(): AnalyticsEraser {\n  if (env().LF_MODE !== \"live\") return NO_ANALYTICS_ERASER\n  const host = optional(\"POSTHOG_HOST\")\n  const personalApiKey = optional(\"POSTHOG_PERSONAL_API_KEY\")\n  const projectId = optional(\"POSTHOG_PROJECT_ID\")\n  if (!host && !personalApiKey && !projectId) return NO_ANALYTICS_ERASER\n  const missing = Object.entries({ POSTHOG_HOST: host, POSTHOG_PERSONAL_API_KEY: personalApiKey, POSTHOG_PROJECT_ID: projectId }).filter(([, v]) => !v).map(([n]) => n)\n  if (missing.length) {\n    return {\n      erase: async () => {\n        throw Object.assign(new Error(`PostHog erase is not configured: ${missing.join(\", \")} is not set (see .env.example)`), { code: \"not_configured\" })\n      },\n    }\n  }\n  return postHogEraser({ personalApiKey: required(\"POSTHOG_PERSONAL_API_KEY\"), projectId: required(\"POSTHOG_PROJECT_ID\"), host: required(\"POSTHOG_HOST\") })\n}\n\n/** 파기 Cron 본체. SUBJECT_REF_KEY(32자 이상)로 거래기록의 가명 참조를 만든다 — 바꾸면 이미 남긴 기록을 이메일로 찾을 수 없다 */\nexport async function purge(): Promise<PurgeReport> {\n  return runPurge({ db: await database(), billingFor: await billingPorts(), subjectKey: required(\"SUBJECT_REF_KEY\"), analytics: analyticsEraser() })\n}\n"
+    },
+    {
+      "path": "registry/feature-account-lifecycle/files/lib/launch/account-billing.ts",
+      "type": "registry:file",
+      "target": "lib/launch/account-billing.ts",
+      "content": "// launch-factory: 탈퇴·파기가 구독을 해지할 때 쓰는 결제 포트를 고르는 자리. 이 파일은 제품 것이다 — 레지스트리를 다시 받으면 덮어쓸지 묻는다.\n// 기본은 Paddle 이다. 다른 결제(Gumroad 등)를 쓰면 이 파일만 그 포트로 바꾼다: 사용자 id 하나로 그 사용자의 BillingPort 를 돌려주면 된다.\n// 결제가 없는 제품은 구독이 없다고 답하는 포트를 돌려준다(빠뜨려서 조용히 건너뛰지 않도록 일부러 여기서 고른다).\nimport type { BillingPort } from \"@launch-factory/contract\"\nimport { billing } from \"@/lib/launch/billing\"\n\nexport async function billingPorts(): Promise<(userId: string) => BillingPort> {\n  const paddle = await billing()\n  return (userId) => paddle.port({ userId })\n}\n"
+    },
+    {
+      "path": "registry/feature-account-lifecycle/files/app/actions/account.ts",
+      "type": "registry:file",
+      "target": "app/actions/account.ts",
+      "content": "\"use server\"\n// launch-factory: 탈퇴·내려받기 서버 액션. 로그인한 본인에게만 작용한다(세션에서 읽는다 — 사용자 id 를 입력으로 받지 않는다).\n// deleteAccount 는 구독 해지가 실패하면 탈퇴를 기록하지 않는다(요금이 계속 나가는 채로 계정만 지우지 않는다). 성공하면 세션이 모두 끊기고 유예 끝(graceUntil)을 알려 준다.\n// 두 액션 모두 사람의 확인 입력(`confirmed: true`) 없이는 실행하지 않는다(LFAX M03). 탈퇴는 화면이 받는 이메일 주소 입력(`confirmEmail`)도 서버가 다시 본다.\nimport { authActions } from \"@launch-factory/auth\"\nimport { DEFAULT_LOCALE } from \"@/lib/launch/config\"\nimport { accountPort } from \"@/lib/launch/account\"\n\nconst actions = async () => authActions(await accountPort(), { locale: DEFAULT_LOCALE })\n\n/** 입력: { confirmed: true, confirmEmail: <지금 로그인한 이메일 주소 그대로> } — 이메일이 없는 계정은 confirmed 만 */\nexport async function deleteAccount(input?: { confirmed?: true; confirmEmail?: string }) {\n  // 타입은 블록 props 모양(계약 포트 입력 — 확인 칸 선택). 확인 칸 검사는 런타임(authActions → requireConfirmation)이 한다\n  return (await actions()).deleteAccount(input)\n}\n\n/** 내 정보 내려받기(프로필·로그인 방법·세션·구독·동의 이력·마케팅 수신·조직 멤버십·진행 중 탈퇴). 비밀번호 해시·세션 토큰·2단계 비밀은 싣지 않는다. 입력: { confirmed: true } */\nexport async function exportMyData(input?: { confirmed?: true }) {\n  return (await actions()).exportMyData(input)\n}\n"
+    },
+    {
+      "path": "registry/feature-account-lifecycle/files/app/api/cron/purge/route.ts",
+      "type": "registry:file",
+      "target": "app/api/cron/purge/route.ts",
+      "content": "// launch-factory: 탈퇴 파기 Cron(하루 한 번 권장). 유예가 지난 탈퇴 요청을 파기하고, 기간이 지난 보존 거래기록·접속기록을 정리한다.\n// vercel.json 에 `{ \"crons\": [{ \"path\": \"/api/cron/purge\", \"schedule\": \"0 5 * * *\" }] }` 를 더한다. CRON_SECRET 이 없으면 401 이다.\n// 두 번 와도 안전하다(같은 요청을 한 번만 잡는다 — Vercel 은 같은 실행을 두 번 보낼 수 있다). 실패한 단계는 다음 Cron 이 이어서 한다.\nimport { purge } from \"@/lib/launch/account\"\nimport { cronAuthorized, unauthorized } from \"@/lib/launch/cron\"\n\nexport const runtime = \"nodejs\"\nexport const dynamic = \"force-dynamic\"\n\nexport async function GET(request: Request) {\n  if (!cronAuthorized(request)) return unauthorized()\n  return Response.json(await purge())\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/db.ts",
+      "type": "registry:file",
+      "target": "lib/launch/db.ts",
+      "content": "// launch-factory: DB 연결. mock 은 메모리 PGlite(키 없이 켜진다), live 는 DATABASE_URL(Supabase 풀러 6543 — prepared statement 끔은 패키지가 한다).\n// mock 의 마이그레이션은 이 앱에 설치된 db/migrations 를 쓴다(번들 안에서는 패키지 폴더를 찾을 수 없다).\nimport { join } from \"node:path\"\nimport { db, type Database } from \"@launch-factory/db\"\nimport { env, required } from \"@/lib/launch/env\"\n\nlet cached: Promise<Database> | undefined\n\nexport function database(): Promise<Database> {\n  return (cached ??= env().LF_MODE === \"mock\" ? db.local({ migrationsFolder: join(process.cwd(), \"db\", \"migrations\") }) : Promise.resolve(db(required(\"DATABASE_URL\"))))\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/env.ts",
+      "type": "registry:file",
+      "target": "lib/launch/env.ts",
+      "content": "// launch-factory: 환경 읽기. 이름만 다루고 값은 어디에도 남기지 않는다.\n// LF_MODE 는 항상 필수다 — 없으면 켜지지 않는다(조용히 mock 으로 가지 않는다). live 에서는 공급자 키가 모두 필수다.\nimport { loadAppEnv, type AppEnv } from \"@launch-factory/env\"\n\nlet cached: AppEnv | undefined\n\n/** 처음 부를 때 한 번 검사한다. 빠진 이름은 모두 모아 한 번에 알린다(값은 싣지 않는다). */\nexport function env(): AppEnv {\n  return (cached ??= loadAppEnv())\n}\n\n/** 설정값·비밀값 하나를 읽는다. 없으면 이름만 담아 던진다. */\nexport function required(name: string): string {\n  const value = (env() as Record<string, string | undefined>)[name] ?? process.env[name]\n  if (!value) throw new Error(`${name} is not set (see .env.example)`)\n  return value\n}\n\n/** 없어도 되는 설정값. */\nexport function optional(name: string): string | undefined {\n  return process.env[name] || undefined\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/config.ts",
+      "type": "registry:file",
+      "target": "lib/launch/config.ts",
+      "content": "// launch-factory: 제품마다 고치는 값. 이 파일은 제품 것이다 — 레지스트리를 다시 받으면 덮어쓸지 묻는다.\nimport type { Locale } from \"@launch-factory/email\"\nimport { env, required } from \"@/lib/launch/env\"\n\nexport const PRODUCT_NAME = \"My Product\"\n/** 사용자 칸(user.locale)이 비었을 때 메일·오류 문구의 언어 */\nexport const DEFAULT_LOCALE: Locale = \"en\"\n/** 가입 때 동의 기록에 남길 약관·개인정보 처리방침의 판. 문서를 고치면 올린다 */\nexport const CONSENT_VERSIONS = { terms: \"2026-09-30\", privacy: \"2026-09-30\" }\n/** 결제 메일이 가리키는 화면 경로 */\nexport const ROUTES = { billing: \"/account/billing\", acceptPriceChange: \"/account/billing/price-change\", decline: \"/account/billing/cancel\", security: \"/forgot-password\", contact: \"/contact\" }\n\n/** 앱 주소. mock 에서는 로컬 주소로 켜지고, live 에서는 NEXT_PUBLIC_APP_URL 이 필수다 */\nexport function appUrl(): string {\n  // 빈 문자열은 없는 것으로 본다 — shadcn CLI 가 envVars 이름을 `NAME=`(빈 값)으로 .env.local 에 적는다\n  return process.env.NEXT_PUBLIC_APP_URL || (env().LF_MODE === \"mock\" ? \"http://localhost:3000\" : required(\"NEXT_PUBLIC_APP_URL\"))\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/cron.ts",
+      "type": "registry:file",
+      "target": "lib/launch/cron.ts",
+      "content": "// launch-factory: Cron 경로 인증. Vercel Cron 은 CRON_SECRET 이 있으면 `Authorization: Bearer <값>` 을 붙여 부른다\n// (https://vercel.com/docs/cron-jobs/manage-cron-jobs#securing-cron-jobs). 값이 없거나 다르면 거절한다 — 비밀이 없으면 열어 두지 않는다.\nimport { timingSafeEqual } from \"node:crypto\"\n\nexport function cronAuthorized(request: Request): boolean {\n  const secret = process.env.CRON_SECRET\n  if (!secret) return false\n  const given = request.headers.get(\"authorization\") ?? \"\"\n  const want = `Bearer ${secret}`\n  return given.length === want.length && timingSafeEqual(Buffer.from(given), Buffer.from(want))\n}\n\nexport const unauthorized = () => Response.json({ error: \"unauthorized\" }, { status: 401 })\n"
+    }
+  ],
+  "envVars": {
+    "LF_MODE": "",
+    "DATABASE_URL": "",
+    "SUBJECT_REF_KEY": "",
+    "POSTHOG_PERSONAL_API_KEY": "",
+    "POSTHOG_PROJECT_ID": "",
+    "POSTHOG_HOST": "",
+    "CRON_SECRET": ""
+  },
+  "docs": "설치 뒤 할 일\n1. 인증·결제(Paddle) 항목이 함께 설치된다(탈퇴 표·보존 표·트리거는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. SUBJECT_REF_KEY(32자 이상 무작위 비밀)를 정한다. 거래기록의 가명 참조(HMAC)를 만드는 키라, 바꾸면 이미 남긴 기록을 이메일로 찾을 수 없고 잃으면 되살릴 수 없다 — 백업한다(운영자 할 일). 없으면 파기 Cron 이 500 으로 멈춘다(조용히 성공하지 않는다).\n3. live 는 PostHog 사람·이벤트·녹화도 지운다: POSTHOG_PERSONAL_API_KEY(개인 API 키, person:write)·POSTHOG_PROJECT_ID(숫자)·POSTHOG_HOST. 없으면 파기 Cron 이 계측 단계에서 멈춘다. mock 은 계측을 지우지 않는다.\n4. Paddle 이 아닌 결제를 쓰면 lib/launch/account-billing.ts 만 그 결제 포트로 바꾼다(대장 D200). 결제가 없으면 구독이 없다고 답하는 포트를 돌려주고, Paddle 항목은 설치하지 않는 쪽이 맞다 — 그때는 registryDependencies 에서 빼고 설치한다.\n5. 서버 액션: deleteAccount()·exportMyData(). 탈퇴 화면은 유예 안내(graceUntil)를 보이고, 유예 중 다시 로그인하면 탈퇴가 취소된다(구독은 자동으로 되살리지 않는다). 탈퇴를 접수하면 접수 메일(accountDeletionRequested — 지워지는 날·취소하는 법)이 나간다(D09) — 메일 실패는 탈퇴를 막지 않는다.\n6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/purge\", \"schedule\": \"0 5 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.\n7. 개인 식별 칸이 있는 새 표를 제품이 만들면 파기 트랜잭션에 지우는 함수(runPurge 의 purgers)를 더해야 한다 — lib/launch/account.ts 의 purge() 에 넘긴다. 안 더하면 탈퇴한 사람의 정보가 그 표에 남는다.\n8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/billing-paddle\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+  "meta": {
+    "launch": {
+      "tables": [],
+      "schema": [],
+      "migrations": [],
+      "routes": [
+        "app/api/cron/purge/route.ts"
+      ],
+      "actions": [
+        "app/actions/account.ts"
+      ],
+      "noEntrypointReason": null,
+      "setup": {
+        "npmrc": [
+          "save-exact=true"
+        ],
+        "transpilePackages": [
+          "@launch-factory/account-lifecycle",
+          "@launch-factory/analytics-posthog",
+          "@launch-factory/auth",
+          "@launch-factory/billing-paddle",
+          "@launch-factory/consent",
+          "@launch-factory/contract",
+          "@launch-factory/db",
+          "@launch-factory/email",
+          "@launch-factory/env",
+          "@launch-factory/i18n",
+          "@launch-factory/security"
+        ],
+        "serverExternalPackages": [
+          "@electric-sql/pglite"
+        ]
+      }
+    }
+  }
+}

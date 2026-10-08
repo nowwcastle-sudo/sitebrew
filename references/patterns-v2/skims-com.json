@@ -1,0 +1,59 @@
+{
+  "id": "skims-com",
+  "archetype": "commerce",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://skims.com/",
+  "structure": {
+    "hero": "전폭 패션 사진, 좌하단 대문자 제목과 밑줄 CTA, 투명 헤더",
+    "sections": [
+      "얇은 이메일/SMS 가입 띠(일시정지 버튼)",
+      "투명 헤더(로고·내비 9개·검색 알약·아이콘)",
+      "전폭 에디토리얼 히어로",
+      "카테고리 타일 4개",
+      "위치 확인 모달",
+      "쿠키 하단 바"
+    ]
+  },
+  "type": {
+    "display": "굵고 좁은 대문자 산세리프 제목, 특이한 비누방울형 로고",
+    "body": "중성 산세리프 본문",
+    "scale": "제목 크게, 내비·링크는 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "자동재생 일시정지 버튼",
+    "검색 알약 입력",
+    "위치 확인 모달(미국·한국)",
+    "카테고리 타일 4열"
+  ],
+  "cta": {
+    "pattern": "밑줄 텍스트 링크 Shop Now",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.74
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "헤더 투명 오버레이와 내비 9개로 카테고리가 많은 패션 몰의 구조",
+    "카테고리 타일 4개를 히어로 바로 아래 두어 탐색 경로를 빠르게 제공",
+    "자동재생 영상에 일시정지 버튼을 노출하는 접근성 배려",
+    "위치·쿠키 모달이 동시에 떠 첫 화면이 가려진다. 순차 노출이 낫다"
+  ]
+}

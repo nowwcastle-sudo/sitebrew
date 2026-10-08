@@ -1,0 +1,14 @@
+{
+  "kind": "product-info",
+  "variant": "notice-table",
+  "title": "상품정보제공고시 표 — 고시 항목을 caption·th scope 가 있는 실제 표 한 장으로",
+  "layout": "full-width-notice-table",
+  "density": "comfortable",
+  "archetypes": [ "detail", "commerce" ],
+  "archetypeKinds": [ "notice-table" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "X1", "X2" ],
+  "notes": "제목 h2 + 머리말 + 실제 <table>(caption = 고시 품목, thead th scope=col 「항목|내용」, 행마다 th scope=row + td). 값이 없으면 「확인 필요」(NEEDS_CHECK, data-needs-check), 제공할 수 없는 항목은 사유(data-unavailable — 고시 Ⅱ.3), A/S 전화는 tel: 링크. 표 아래 기준일(time). 항목 이름은 콘텐츠(notice.rows[].label)가 준다. 전자상거래법 제13조 제2항·공정위 고시, factory-rules.md §21-6."
+}

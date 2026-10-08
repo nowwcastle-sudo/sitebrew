@@ -1,0 +1,13 @@
+{
+  "kind": "features",
+  "variant": "bento-grid",
+  "title": "기능 — 크기가 다른 칸 3~4개(벤토, K8 칸 색)",
+  "layout": "bento",
+  "density": "spacious",
+  "archetypes": ["saas", "brand", "portfolio", "landing"],
+  "archetypeKinds": ["workflow-features", "key-points", "services"],
+  "states": [],
+  "media": [],
+  "motion": ["rise", "count-up"],
+  "notes": "6열 격자: 첫 칸 4×2(대표 기능 + 큰 수치), 작은 칸 2×1, 넓은 칸 6×1. 칸마다 data-face=block-1…4 — K8 은 블록 색과 짝 글자, 그 밖은 --card. 375: 한 열"
+}

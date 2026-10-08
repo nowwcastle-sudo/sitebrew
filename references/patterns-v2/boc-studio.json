@@ -1,0 +1,63 @@
+{
+  "id": "boc-studio",
+  "archetype": "portfolio",
+  "sourceGallery": "awwwards",
+  "url": "https://boc.studio/",
+  "structure": {
+    "hero": "회색 면 위 유리 고리 3D 오브젝트를 가로지르는 주황 띠에 상호·소개·좌표가 흐르는 마르키",
+    "sections": [
+      "주황 로딩 화면(상호가 줄어들며 사라짐)",
+      "풀화면 3D 오브젝트(푸른 천 리본 → 유리 고리)",
+      "가운데 가로 주황 띠 마르키(상호·한 줄 소개·좌표·도시)",
+      "우하단 쿠키 없음 안내 알약",
+      "스크롤 뒤 어두운 면 위 작업 격자(Work·All·Filter)"
+    ]
+  },
+  "type": {
+    "display": "가는 기하 산세리프 로고(자간 좁음), 굵은 라벨, 중간 굵기 설명",
+    "body": "같은 산세리프 극소형",
+    "scale": "로고 큰 한 단계, 설명 소형 두 단계"
+  },
+  "colorLogic": "K7",
+  "motion": {
+    "entrance": "주황 면에 상호가 약 2초 줄어든 뒤 약 0.5초 만에 푸른 3D 장면으로 컷 전환됨",
+    "scroll": "스크롤하면 어두운 면 위에 작업 썸네일 격자가 올라오고 주황 띠가 따라 올라옴",
+    "hover": null,
+    "transition": "푸른 리본 장면이 회색 유리 고리 장면으로 약 1초 만에 바뀜",
+    "durationsMs": [
+      2000,
+      500,
+      1000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "장면 전환 시간은 4fps 프레임 수로 추정"
+  },
+  "interaction": [
+    "마르키 자동 흐름",
+    "쿠키 안내 알약(확인·정보 아이콘)",
+    "작업 격자 필터(All·Filter+)",
+    "작업 카드 클릭"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, 쿠키 안내 확인 아이콘",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "주황 띠 하나가 화면을 가로로 가르며 흘러 로고·소개·좌표를 간판처럼 반복 노출한다",
+    "3D 오브젝트 풀화면 배경과 단색 띠의 대비가 시선을 한곳에 모은다",
+    "쿠키 배너 자리를 쓰지 않는다는 문구 알약으로 바꿔 브랜드 어조를 보인다",
+    "모바일은 3D 장면을 세로 캔버스로 바꾸고 띠는 같은 폭으로 이어 간다"
+  ]
+}

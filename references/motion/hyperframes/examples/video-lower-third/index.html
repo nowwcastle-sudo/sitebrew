@@ -1,0 +1,54 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"store_name","type":"string","label":"가게 이름","default":"달빛 베이커리","maxLength":14},
+    {"id":"tagline","type":"string","label":"한 줄 소개","default":"매일 새벽 구운 빵","maxLength":22},
+    {"id":"accent","type":"color","label":"포인트 색","default":"#f2b84b"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>wf video + lower third</title>
+    <link rel="stylesheet" href="assets/noto-sans-kr-700.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Noto Sans KR", sans-serif; font-weight: 700; color: #fbf6ee; }
+      #bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,8,6,0.78) 0%, rgba(10,8,6,0.0) 55%); }
+      #lower { position: absolute; left: 120px; bottom: 110px; display: flex; flex-direction: column; gap: 12px; }
+      #name { font-size: 120px; letter-spacing: -0.04em; line-height: 1.05; }
+      #rule { height: 8px; width: 420px; background: var(--accent, #f2b84b); }
+      #tag { font-size: 52px; color: var(--accent, #f2b84b); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <video id="bg" class="clip" src="assets/bg.mp4" data-start="0" data-duration="8" data-track-index="0" muted playsinline></video>
+      <div id="scrim" class="clip" data-start="0" data-duration="8" data-track-index="1"></div>
+      <div id="lower" class="clip" data-start="0" data-duration="8" data-track-index="2">
+        <div id="name"></div>
+        <div id="rule"></div>
+        <div id="tag"></div>
+      </div>
+    </div>
+    <script>
+      const v = window.__hyperframes.getVariables();
+      document.documentElement.style.setProperty("--accent", v.accent);
+      document.getElementById("name").textContent = v.store_name;
+      document.getElementById("tag").textContent = v.tagline;
+      document.fonts.load('700 100px "Noto Sans KR"', v.store_name + v.tagline).then(() => document.fonts.ready).then(() => {
+        const tl = gsap.timeline({ paused: true });
+        // poster-first: t=0 composed. Lower third exits at 4.6s and re-enters at 5.4s, ending in the t=0 pose.
+        tl.to("#name, #rule, #tag", { x: -80, opacity: 0, duration: 0.5, ease: "power2.in", stagger: 0.06 }, 4.6);
+        tl.fromTo("#name", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", immediateRender: false }, 5.4);
+        tl.fromTo("#rule", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", immediateRender: false }, 5.55);
+        tl.fromTo("#tag", { x: -80, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", immediateRender: false }, 5.7);
+        window.__timelines["main"] = tl;
+      });
+    </script>
+  </body>
+</html>

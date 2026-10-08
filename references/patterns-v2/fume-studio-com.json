@@ -1,0 +1,59 @@
+{
+  "id": "fume-studio-com",
+  "archetype": "commerce",
+  "sourceGallery": "siteinspire",
+  "url": "https://fume-studio.com/",
+  "structure": {
+    "hero": "전폭 사진 히어로 위에 슬로건·문장·흰 알약 CTA를 가로선 한 줄로",
+    "sections": [
+      "공지띠(사은품 안내)",
+      "투명 헤더(로고·내비·통화·장바구니)",
+      "전폭 사진 히어로",
+      "제품 라인 섹션 헤더(라벨+VIEW ALL)",
+      "뉴스레터 팝업(10% 할인)"
+    ]
+  },
+  "type": {
+    "display": "세리프 워드마크 로고",
+    "body": "둥근 기하학 산세리프 대문자 UI",
+    "scale": "작은 대문자 UI, 히어로 문구도 작게 절제"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지띠 닫기",
+    "통화 선택 드롭다운",
+    "우하단 이메일 팝업 닫기",
+    "모바일은 장바구니 수와 햄버거만 남김"
+  ],
+  "cta": {
+    "pattern": "히어로 흰 알약 버튼 하나 + 섹션 VIEW ALL 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.78
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "사진이 전부인 히어로에서 글을 한 줄에 3분할해 시선을 가로로 흘리는 배치",
+    "CTA는 흰 알약 버튼 하나로 사진 위에서도 대비를 확보",
+    "섹션 머리말을 점 아이콘+대문자 라벨+VIEW ALL로 간결하게 처리",
+    "10% 할인 팝업을 우하단 작은 카드로 둬 화면을 가리지 않는다",
+    "모바일에서 로고·장바구니·햄버거만 남기는 절제된 헤더"
+  ]
+}

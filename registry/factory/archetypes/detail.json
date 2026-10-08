@@ -1,0 +1,555 @@
+{
+  "id": "detail",
+  "purpose": "모바일 상세 한 장에서 구매 판단에 필요한 정보(가격·배송·반품·고시·리뷰)를 글자로 주고, 구매 바에서 바로 옵션을 고르게 한다.",
+  "coreTask": "390×844 화면에서 상세를 열고 ① 배송비와 무료배송 기준 ② 반품 배송비 부담 주체 ③ 제조국 ④ A/S 연락처를 찾아 DOM 텍스트로 답한다(이미지 OCR 금지). ⑤ 하단 고정 구매 바를 눌러 옵션 시트를 열고 옵션 하나를 고른다(결제는 누르지 않는다). 합격: 네 답이 모두 텍스트 노드에서 나오고 ⑤가 DOM 상태 변화로 확인된다.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "product-detail",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "purchase-area",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-spec-summary"
+          ],
+          "copySlots": [
+            {
+              "id": "name",
+              "role": "상품명",
+              "maxChars": null
+            },
+            {
+              "id": "rating",
+              "role": "별점 평균·리뷰 수(상품명 아래, 스크롤 없이)",
+              "maxChars": null
+            },
+            {
+              "id": "price",
+              "role": "가격·세금 포함 여부",
+              "maxChars": null
+            },
+            {
+              "id": "shipping",
+              "role": "배송비·무료배송 기준",
+              "maxChars": null
+            },
+            {
+              "id": "returnsSummary",
+              "role": "반품 배송비 부담 주체·7일 청약철회",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "gallery-main",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "sticky-toc",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 안 목차 — 본문 앵커",
+            "missing": "쪽 안 목차 — 그려진 섹션의 앵커·이름을 모으는 배선이 없다(06 이 섹션 id 를 모으지 않는다)"
+          },
+          "copySlots": [
+            {
+              "id": "labels",
+              "role": "상세정보·상품정보·리뷰·문의 앵커(스크롤 5회 넘으면 필수)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "key-points",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-compare-table"
+          ],
+          "copySlots": [
+            {
+              "id": "point",
+              "role": "핵심 구매 포인트(HTML)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "point-slice",
+              "aspect": "860x1000-1200",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "story",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "문제→해결→근거 서술 — 본문",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "상세 설명",
+                "en": "Details"
+              },
+              "from": [
+                "slices",
+                "images:slice"
+              ],
+              "mode": "stack",
+              "imageSource": "real-required",
+              "fields": {
+                "src": "src",
+                "alt": "altText",
+                "width": "width",
+                "height": "height"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "imageTextLine",
+              "role": "이미지 속 글자 한 줄(피할 수 없을 때만, alt에 같은 문구)",
+              "maxChars": 15
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "slice",
+              "aspect": "860x1000-1200",
+              "source": "real-required"
+            },
+            {
+              "id": "diagram",
+              "aspect": null,
+              "source": "generated-ok"
+            }
+          ]
+        },
+        {
+          "kind": "usage-scenes",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사용 장면 — 본문과 실사",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "사용 장면",
+                "en": "In use"
+              },
+              "from": [
+                "images:scene"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "scene",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "scale-and-model",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "크기 비교·모델 컷 — 본문과 실사",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "크기와 착용",
+                "en": "Size and fit"
+              },
+              "from": [
+                "images:in-scale",
+                "images:model",
+                "images:closeup"
+              ],
+              "caption": [
+                "slot:caption"
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "caption",
+              "role": "HTML 캡션·지시선(기능 콜아웃)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "in-scale",
+              "aspect": null,
+              "source": "real-required"
+            },
+            {
+              "id": "model",
+              "aspect": null,
+              "source": "real-required"
+            },
+            {
+              "id": "closeup",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "spec-table",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "product-info"
+          ],
+          "allowedVariants": [
+            "block-product-info-spec-and-notice"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "notice-table",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "product-info"
+          ],
+          "allowedVariants": [
+            "block-product-info-key-facts-first",
+            "block-product-info-notice-table",
+            "block-product-info-spec-and-notice"
+          ],
+          "copySlots": [
+            {
+              "id": "rows",
+              "role": "상품정보제공 고시 품목별 항목: 제조자·수입자, 제조국, 품질보증기준, A/S 책임자와 전화, KC 인증(대상이면)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "shipping-returns",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "shipping-returns"
+          ],
+          "allowedVariants": [
+            "block-shipping-returns-at-a-glance-cards",
+            "block-shipping-returns-policy-tables",
+            "block-shipping-returns-return-steps"
+          ],
+          "copySlots": [
+            {
+              "id": "policy",
+              "role": "배송비·반품 배송비 부담·7일 청약철회·불가 사유(구매 근처 + 여기)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "trust",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "trust"
+          ],
+          "allowedVariants": [
+            "block-trust-guarantee-strip",
+            "block-trust-verified-business-strip"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "review-list",
+          "legacyKind": "reviews",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "review-list"
+          ],
+          "allowedVariants": [
+            "block-review-list-summary-near-price"
+          ],
+          "copySlots": [
+            {
+              "id": "sellerReply",
+              "role": "낮은 별점 판매자 답글 + 날짜",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "review-photo",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "qna",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-grouped-by-topic",
+            "block-faq-two-column-index"
+          ],
+          "register": [
+            "A62"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "related",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "product-list 블록 중 detail 을 적은 것은 spec-summary 뿐이라 관련 상품 목록에 맞는 것이 없다",
+            "register": [
+              "C71"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "faq",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-grouped-by-topic",
+            "block-faq-two-column-index"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "D-A-korean-standard",
+      "order": [
+        "purchase-area",
+        "sticky-toc",
+        "key-points",
+        "story",
+        "usage-scenes",
+        "scale-and-model",
+        "spec-table",
+        "notice-table",
+        "shipping-returns",
+        "review-list",
+        "qna",
+        "related"
+      ],
+      "evidence": [
+        "1분상세·SellPage·GENCY·식스샵(후킹 → 설득 → 신뢰)",
+        "관찰 성심당몰·마르헨제이·포인트오브뷰",
+        "Baymard(고정 목차, 반품 정책 링크)",
+        "상품정보제공 고시"
+      ]
+    },
+    {
+      "id": "D-B-short-consumable",
+      "order": [
+        "purchase-area",
+        "key-points",
+        "review-list",
+        "spec-table",
+        "notice-table",
+        "shipping-returns"
+      ],
+      "evidence": [
+        "SellPage 모바일 5단계(핵심 혜택 → 대표 이미지 → 사회적 증거 → 상세 → 교환/반품/배송)",
+        "Baymard 단위가격"
+      ]
+    },
+    {
+      "id": "D-C-text-first",
+      "order": [
+        "purchase-area",
+        "key-points",
+        "spec-table",
+        "review-list",
+        "faq",
+        "shipping-returns"
+      ],
+      "evidence": [
+        "관찰 Brightland(Shipping 15px → Review 576px → Detail 882px → Ingredients 1,047px → FAQ)"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "sticky-buy-bar",
+      "required": true,
+      "mustContain": [
+        "buy-now",
+        "add-to-cart",
+        "opens-option-sheet"
+      ],
+      "evidence": [
+        "t-detail-005",
+        "관찰 4곳"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "상호",
+        "대표자",
+        "주소",
+        "전화",
+        "이메일",
+        "사업자등록번호",
+        "통신판매업 신고번호",
+        "이용약관",
+        "개인정보 처리방침"
+      ],
+      "evidence": [
+        "전자상거래법 제10조·시행규칙 제7조 — 통신판매 상품 상세도 사업자 정보를 표시한다(commerce 푸터와 같은 항목)",
+        "P3-4 법률 검토 C356 — 골든 detail-1·2 에 사업자 정보가 안 그려졌다"
+      ]
+    },
+    {
+      "kind": "kakao-channel-button",
+      "required": false,
+      "mustContain": [],
+      "evidence": [
+        "DESIGN §17 — 구매 바와 겹치지 않게"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "productShots": "real-required — 실물 촬영만(색·질감·크기가 실제와 같게, 판정 2026-09-26)",
+    "diagramsIcons": "illustration — 제작 가능",
+    "backgroundMood": "generated-ok — 제품이 없는 배경·분위기 조각에만, 표기",
+    "reviewPhotos": "real-required — 작성자 동의 범위 안에서만 재사용",
+    "column": "콘텐츠 열 860px, 조각 860×(1,000~1,200)px(2배면 1,720px 폭), 조각당 200KB 이하 WebP, 대표 이미지 1:1 ≥1,000px",
+    "textInImages": "860px 원본에서 본문 36px·제목 54px 이상(§2 16px 역산값), 한 줄 15자 이내. 스펙·고시·배송 문구는 HTML"
+  },
+  "contentSchemaHints": [
+    "product: { name, rating{avg,count}, price, taxIncluded, shipping{fee,freeThreshold,courier,leadDays}, returns{feePayer,withdrawalDays:7,exclusions[]}, options[] }",
+    "notice: { category(고시 품목), rows[{label,value}] } — 고시 품목표의 항목 이름 그대로",
+    "slices[]: { src, width:860, height(1000~1200), altText } — 글자가 든 조각은 altText 필수",
+    "reviews[]: { rating, text, photos[], date, sellerReply? }"
+  ],
+  "references": [
+    {
+      "url": "https://www.sungsimdangmall.co.kr/shop/product/product_view?product_cd=6002880",
+      "why": "한국 표준 4칸 고정 목차(상세정보·판매정보·후기·문의)와 하단 고정 「구매하기」(상세 텍스트 243자는 따르지 않음)"
+    },
+    {
+      "url": "https://marhenj.com/product/voyage-square/1442/category/311/display/2/",
+      "why": "고정 목차 + 하단 고정 CART/BUY NOW, 배송 정보가 구매 영역 근처(1200×22823 통이미지는 따르지 않음)"
+    },
+    {
+      "url": "https://www.pointofview.kr/product/%ED%94%8C%EB%9E%98%EB%84%88-%EC%BB%A4%EB%B2%84-planner-cover-a6-yoshie-watanabe-petit-bloom/9605/category/24/display/1/",
+      "why": "870px 폭 이미지(860 관행), 교환·환불을 구매 영역 근처에, 배송·반품 → FAQ → 문의 순서(리뷰 수가 구매 영역에 없음)"
+    },
+    {
+      "url": "https://brightland.co/products/the-mediterranean-duo",
+      "why": "텍스트 상세(7,678자), 리뷰 수 576px, FAQ 하단, 하단 고정 Add to Bag — D-C 표본"
+    },
+    {
+      "url": "https://www.onionkr.com/product/detail.html?product_no=88&cate_no=50&display_group=1",
+      "why": "반례 기준선: 1100×11022 통이미지, 페이지 텍스트 755자, 리뷰가 맨 아래"
+    }
+  ],
+  "legalRequirements": [
+    {
+      "basis": "상품정보제공 고시(공정위)",
+      "appliesWhen": "통신판매 상품 상세(항상)",
+      "requirement": "품목별 항목(제조자·수입자, 제조국, 품질보증기준, A/S 책임자와 전화번호, KC 인증 대상이면 인증정보)을 HTML 표로",
+      "source": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2000000026532"
+    },
+    {
+      "basis": "전자상거래법(청약철회 7일) · DESIGN §9·§15",
+      "appliesWhen": "통신판매 상품 상세(항상)",
+      "requirement": "배송·교환·반품 요약(배송비, 반품 배송비 부담 주체, 7일 청약철회, 불가 사유)을 구매 영역 근처와 하단 양쪽에",
+      "source": "DESIGN.md §9 v3 추가 줄·§15"
+    }
+  ],
+  "legal": {
+    "pages": [
+      "privacy",
+      "terms",
+      "refund",
+      "withdrawal"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "전자상거래 등에서의 소비자보호에 관한 법률",
+        "약관의 규제에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "product"
+  },
+  "conversion": [
+    {
+      "event": "cta_click",
+      "match": {
+        "id": "purchase"
+      }
+    }
+  ]
+}

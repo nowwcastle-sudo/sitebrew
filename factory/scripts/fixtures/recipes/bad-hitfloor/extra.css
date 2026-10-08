@@ -1,0 +1,4 @@
+/* 시험용: sm 이상에서 min-h-0 이 부품의 min-h-[44px] 바닥을 덮는다(T4 리뷰 1번과 같은 결함). */
+.cn-input {
+  @apply h-11 rounded-none border-2 bg-transparent px-3 py-1 text-base sm:min-h-0;
+}

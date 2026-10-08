@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+dist/
+.env
+.env.*
+!.env.example
+.vercel/
+*.log
+.tmp/
+.superpowers/
+AGENTS.md
+!registry/dist/
+next-env.d.ts
+*.tsbuildinfo

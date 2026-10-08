@@ -1,0 +1,44 @@
+<!doctype html>
+<!--
+  글자 없는 켄 번스 몽타주(히어로 배경용) — 사진 4장, 8초, 1920×1080.
+  사진은 래퍼가 assets/s1.jpg … s4.jpg 로 복사한다. GSAP 도 assets/gsap.min.js 로 복사한다(렌더가 인터넷을 요구하지 않게).
+  규칙(GUIDE S5): 0초 프레임 = 완성 포즈(첫 장면에는 입장 트윈이 없다) · 늦게 시작하는 fromTo 는 immediateRender:false ·
+  움직임은 타임라인 요소 안쪽 img 에만 건다(.clip 래퍼에는 opacity 만).
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>wf ken burns stills</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+      .scene { position: absolute; inset: 0; overflow: hidden; }
+      .scene img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 50%; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <div id="sc1" class="scene clip" data-start="0" data-duration="2.3" data-track-index="0"><img id="im1" src="assets/s1.jpg" alt="" /></div>
+      <div id="sc2" class="scene clip" data-start="1.9" data-duration="2.3" data-track-index="1"><img id="im2" src="assets/s2.jpg" alt="" /></div>
+      <div id="sc3" class="scene clip" data-start="3.8" data-duration="2.3" data-track-index="2"><img id="im3" src="assets/s3.jpg" alt="" /></div>
+      <div id="sc4" class="scene clip" data-start="5.7" data-duration="2.3" data-track-index="3"><img id="im4" src="assets/s4.jpg" alt="" /></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // 느린 밀기·당기기·흐르기 — 장면마다 방향이 다르다.
+      tl.fromTo("#im1", { scale: 1.0, x: 0 }, { scale: 1.12, x: -30, duration: 2.3, ease: "none", immediateRender: false }, 0);
+      tl.fromTo("#im2", { scale: 1.14, x: 30 }, { scale: 1.0, x: 0, duration: 2.3, ease: "none", immediateRender: false }, 1.9);
+      tl.fromTo("#im3", { scale: 1.0, y: 0 }, { scale: 1.1, y: -24, duration: 2.3, ease: "none", immediateRender: false }, 3.8);
+      tl.fromTo("#im4", { scale: 1.12, x: -20 }, { scale: 1.0, x: 0, duration: 2.3, ease: "none", immediateRender: false }, 5.7);
+      // 0.4초 교차: 나중 장면이 앞 장면 위로 나타난다(래퍼에는 opacity 만).
+      tl.fromTo("#sc2", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none", immediateRender: false }, 1.9);
+      tl.fromTo("#sc3", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none", immediateRender: false }, 3.8);
+      tl.fromTo("#sc4", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none", immediateRender: false }, 5.7);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

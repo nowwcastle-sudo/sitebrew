@@ -1,0 +1,60 @@
+{
+  "id": "petfinn-com",
+  "archetype": "commerce",
+  "sourceGallery": "httpster",
+  "url": "https://petfinn.com/",
+  "structure": {
+    "hero": "분홍 색면 히어로, 큰 둥근 제목, 남색 알약 CTA 둘",
+    "sections": [
+      "남색 공지띠(무료배송 조건)",
+      "헤더(SHOP 알약·퀴즈·로고·계정·장바구니)",
+      "분홍 색면 히어로",
+      "언론 로고 흐름 띠(연한 파랑)",
+      "제품 사진+수상 배지 분할 섹션",
+      "접근성 위젯"
+    ]
+  },
+  "type": {
+    "display": "둥글고 굵은 기하학 산세리프 제목",
+    "body": "같은 계열 산세리프",
+    "scale": "제목 매우 크게, UI는 중간"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "언론 로고 가로 흐름(마퀴)",
+    "손그림 화살표가 두 번째 CTA를 가리킴",
+    "접근성 위젯 플로팅",
+    "모바일 Shop with AI 알약"
+  ],
+  "cta": {
+    "pattern": "남색 알약 CTA 2개(Shop Now·Take Quiz)",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.74
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "분홍 색면과 남색 잉크로 반려동물 영양제를 친근하게 표현",
+    "두 번째 CTA(퀴즈)를 손그림 화살표로 지목해 선택 경로를 안내",
+    "언론 로고 띠를 히어로 바로 아래 둬 신뢰를 이른 시점에 보여준다",
+    "접근성 위젯을 상시 노출하는 점이 눈에 띈다",
+    "모바일에서 CTA 둘을 한 줄 반반으로 나눠 엄지 영역에 둔다"
+  ]
+}

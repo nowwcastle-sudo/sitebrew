@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>복사 예시 — 정상</title></head>
+<body>
+<!-- 실제 블록의 복사 컨트롤과 같은 표지: [data-copy-link] + 읽기 전용 입력(LinkCopy), [data-copy-button] + <address>(CopyButton), data-copy-text 선언 -->
+<main>
+<section data-block="referral-invite-panel">
+  <div class="cn-block-share-copy">
+    <input id="a-link" readonly value="https://example.com/r/abc123">
+    <button type="button" data-copy-link onclick="navigator.clipboard.writeText(document.getElementById('a-link').value).then(()=>{document.getElementById('a-st').textContent='복사했어요'})">링크 복사</button>
+    <p id="a-st" role="status"></p>
+  </div>
+</section>
+<section data-block="hours-location-hours-table-map-link">
+  <address id="addr">서울시 예시구 예시로 12, 3층 (예시)</address>
+  <button type="button" data-copy-button onclick="navigator.clipboard.writeText(document.getElementById('addr').textContent)">주소 복사</button>
+</section>
+<section data-block="declared">
+  <button type="button" data-copy-button data-copy-text="ABCD-1234-EFGH" onclick="navigator.clipboard.writeText('ABCD-1234-EFGH')">백업 코드 복사</button>
+</section>
+</main>
+</body></html>

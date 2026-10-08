@@ -1,0 +1,21 @@
+{
+  "name": "@launch-factory/consent",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "동의 백엔드 — NotifyPort(채널별 마케팅 수신 동의·updatedAt), 결제 직전 청약철회 제한 동의 검사, 개인정보 국외 이전 고지 표 데이터.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/analytics-posthog": "0.0.0",
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/security": "0.0.0",
+    "zod": "4.6.5"
+  }
+}

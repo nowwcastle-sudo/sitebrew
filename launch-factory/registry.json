@@ -1,0 +1,1459 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "launch-factory",
+  "homepage": "https://github.com/nowwcastle-sudo/sitebrew",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-email-resend",
+      "type": "registry:item",
+      "title": "메일 — Resend + React Email",
+      "description": "Resend 전송기(live)와 콘솔 출력(mock). 가입 환영·주문 확인·가격 변경 안내·해지 확인·계정 보안 메일 서식은 @launch-factory/email 이 갖는다.",
+      "dependencies": [
+        "@launch-factory/email@0.0.0",
+        "@launch-factory/env@0.0.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/feature-email-resend/files/lib/launch/mailer.ts",
+          "type": "registry:file",
+          "target": "lib/launch/mailer.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "RESEND_API_KEY": "",
+        "EMAIL_FROM": "",
+        "NEXT_PUBLIC_APP_URL": "",
+        "LF_BUSINESS_NAME": "",
+        "LF_BUSINESS_EMAIL": "",
+        "LF_BUSINESS_PHONE": "",
+        "LF_BUSINESS_ADDRESS": ""
+      },
+      "docs": "설치 뒤 할 일\n0. 설치 전에 앱 폴더 .npmrc 에 save-exact=true 를 적는다 — shadcn CLI 가 npm install 로 의존을 넣으므로 이 설정이 없으면 package.json 에 ^ 범위로 적혀 고정한 판에서 벗어난다.\n1. @launch-factory/* 는 아직 npm 에 게시하지 않은 비공개 패키지다(게시는 운영자 몫). 설치가 실패하면 저장소의 packages/ 를 로컬 경로(file:)로 잇는다.\n2. @launch-factory/* 는 TypeScript 원본을 내보낸다 — next.config.ts 의 transpilePackages 에 쓰는 패키지를 모두 적는다.\n3. .env.local 에 이름이 추가됐다. 값은 Windows 사용자 환경 변수 또는 배포 환경에 넣는다. live 는 RESEND_API_KEY 와 Resend 에서 DNS 인증한 도메인의 EMAIL_FROM 이 필수다(운영자 할 일 O4). mock 은 키 없이 콘솔에 찍힌다.\n4. lib/launch/config.ts 의 PRODUCT_NAME·DEFAULT_LOCALE 을 제품에 맞게 고친다.\n5. 광고성 메일(G03): 광고성 템플릿(marketingAnnouncement)은 LF_BUSINESS_NAME·EMAIL·PHONE·ADDRESS 가 모두 있어야 보낸다(없으면 MarketingComplianceError — 법정 표시 없는 광고 메일은 보내지 않는다). 거래 메일은 영향이 없다. List-Unsubscribe 헤더가 DKIM 서명 대상(h=)에 들어가는지는 Resend 설정으로 확인한다(문서 확인 안 됨).\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/contract\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"].",
+      "meta": {
+        "launch": {
+          "tables": [],
+          "schema": [],
+          "migrations": [],
+          "routes": [],
+          "actions": [],
+          "noEntrypointReason": "서버 전용 전송기다. 공개 서버 액션·경로로 열면 우리 도메인으로 아무에게나 메일을 보낼 수 있다. 다른 항목(인증·결제·문의)이 부른다.",
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/contract",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": []
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-analytics-posthog",
+      "type": "registry:item",
+      "title": "계측 — PostHog",
+      "description": "동의가 먼저인 PostHog AnalyticsPort(브라우저 Provider + 서버 어댑터). 출처 태그·리퍼러 분류·개인정보 모양 props 거부는 @launch-factory/analytics-posthog 가 갖는다.",
+      "dependencies": [
+        "@launch-factory/analytics-posthog@0.0.0",
+        "@launch-factory/env@0.0.0"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/feature-analytics-posthog/files/lib/launch/analytics.ts",
+          "type": "registry:file",
+          "target": "lib/launch/analytics.ts"
+        },
+        {
+          "path": "registry/feature-analytics-posthog/files/components/launch/analytics-provider.tsx",
+          "type": "registry:file",
+          "target": "components/launch/analytics-provider.tsx"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "POSTHOG_PROJECT_KEY": "",
+        "POSTHOG_HOST": ""
+      },
+      "docs": "설치 뒤 할 일\n0. 설치 전에 앱 폴더 .npmrc 에 save-exact=true 를 적는다 — shadcn CLI 가 npm install 로 의존을 넣으므로 이 설정이 없으면 package.json 에 ^ 범위로 적혀 고정한 판에서 벗어난다.\n1. @launch-factory/* 는 아직 npm 에 게시하지 않은 비공개 패키지다(게시는 운영자 몫). next.config.ts 의 transpilePackages 에 쓰는 패키지를 모두 적는다.\n2. 서버 레이아웃이 POSTHOG_PROJECT_KEY(공개 프로젝트 키 phc_…)와 POSTHOG_HOST(us 또는 eu 호스트, 운영자 할 일 O5)를 읽어 <AnalyticsProvider projectKey host consent onConsentChange> 로 넘긴다. 두 이름은 선택이다 — 하나라도 없으면 분석이 꺼진 것이다(Provider 를 올리지 않고 서버 계측은 아무 일도 하지 않는다). 동의(consent.analytics)가 true 가 되기 전에는 아무것도 보내지 않는다.\n3. 서버 이벤트는 analytics().forRequest({ distinctId: <내부 사용자 id>, consent }) 로 만든 포트의 track 을 쓰고, 응답 전에 flush() 를 기다린다.\n4. 국외 이전 고지·CSP 값은 @launch-factory/analytics-posthog 의 resolvePostHog·POSTHOG_CSP 가 같은 호스트로 정한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/analytics-posthog\",\"@launch-factory/contract\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"].",
+      "meta": {
+        "launch": {
+          "tables": [],
+          "schema": [],
+          "migrations": [],
+          "routes": [],
+          "actions": [],
+          "noEntrypointReason": "경로·서버 액션이 없다. 브라우저는 Provider 가, 서버는 analytics().forRequest() 가 입구다. PostHog 는 웹훅을 보내지 않는다.",
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/contract",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": []
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-auth-betterauth",
+      "type": "registry:item",
+      "title": "인증 — Better Auth + AuthPort",
+      "description": "Better Auth 요청 처리기, 계약 AuthPort 어댑터, 인증 서버 액션(로그인·가입·2단계·비밀번호·이메일 변경·기기 목록·언어 설정), 사용자·세션·동의 표와 마이그레이션.",
+      "dependencies": [
+        "@launch-factory/auth@0.0.0",
+        "@launch-factory/consent@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/email@0.0.0",
+        "@launch-factory/env@0.0.0",
+        "@launch-factory/security@0.0.0",
+        "drizzle-orm@0.45.3",
+        "postgres@3.4.9"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-email-resend"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-auth-betterauth/files/lib/launch/auth.ts",
+          "type": "registry:file",
+          "target": "lib/launch/auth.ts"
+        },
+        {
+          "path": "registry/feature-auth-betterauth/files/lib/launch/features.ts",
+          "type": "registry:file",
+          "target": "lib/launch/features.ts"
+        },
+        {
+          "path": "registry/feature-auth-betterauth/files/app/api/auth/[...all]/route.ts",
+          "type": "registry:file",
+          "target": "app/api/auth/[...all]/route.ts"
+        },
+        {
+          "path": "registry/feature-auth-betterauth/files/app/actions/auth.ts",
+          "type": "registry:file",
+          "target": "app/actions/auth.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/_shared/db/migrate.mjs",
+          "type": "registry:file",
+          "target": "db/migrate.mjs"
+        },
+        {
+          "path": "registry/feature-auth-betterauth/files/app/api/account/not-me/route.ts",
+          "type": "registry:file",
+          "target": "app/api/account/not-me/route.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/link-secret.ts",
+          "type": "registry:file",
+          "target": "lib/launch/link-secret.ts"
+        },
+        {
+          "path": "registry/feature-auth-betterauth/files/lib/launch/notices.ts",
+          "type": "registry:file",
+          "target": "lib/launch/notices.ts"
+        },
+        {
+          "path": "registry/feature-auth-betterauth/files/app/api/cron/notices/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/notices/route.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        },
+        {
+          "path": "packages/db/src/schema/auth-base.ts",
+          "type": "registry:file",
+          "target": "db/schema/auth-base.ts"
+        },
+        {
+          "path": "packages/db/src/schema/consents.ts",
+          "type": "registry:file",
+          "target": "db/schema/consents.ts"
+        },
+        {
+          "path": "packages/db/src/schema/mail.ts",
+          "type": "registry:file",
+          "target": "db/schema/mail.ts"
+        },
+        {
+          "path": "packages/db/src/schema/rate-limits.ts",
+          "type": "registry:file",
+          "target": "db/schema/rate-limits.ts"
+        },
+        {
+          "path": "packages/db/migrations/0000_init.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0000_init.sql"
+        },
+        {
+          "path": "packages/db/migrations/0001_access_logs_append_only.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0001_access_logs_append_only.sql"
+        },
+        {
+          "path": "packages/db/migrations/0002_better_auth_plugins.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0002_better_auth_plugins.sql"
+        },
+        {
+          "path": "packages/db/migrations/0003_consents.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0003_consents.sql"
+        },
+        {
+          "path": "packages/db/migrations/0004_account_lifecycle.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0004_account_lifecycle.sql"
+        },
+        {
+          "path": "packages/db/migrations/0005_evidence_guards.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0005_evidence_guards.sql"
+        },
+        {
+          "path": "packages/db/migrations/0006_account_prefs_past_due.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0006_account_prefs_past_due.sql"
+        },
+        {
+          "path": "packages/db/migrations/0007_inquiries_idempotency.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0007_inquiries_idempotency.sql"
+        },
+        {
+          "path": "packages/db/migrations/0008_inquiry_kind.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0008_inquiry_kind.sql"
+        },
+        {
+          "path": "packages/db/migrations/0009_admin_plugin.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0009_admin_plugin.sql"
+        },
+        {
+          "path": "packages/db/migrations/0010_explicit_rls.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0010_explicit_rls.sql"
+        },
+        {
+          "path": "packages/db/migrations/0011_mail_marketing.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0011_mail_marketing.sql"
+        },
+        {
+          "path": "packages/db/migrations/0012_notice_outbox.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0012_notice_outbox.sql"
+        },
+        {
+          "path": "packages/db/migrations/meta/_journal.json",
+          "type": "registry:file",
+          "target": "db/migrations/meta/_journal.json"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "BETTER_AUTH_SECRET": "",
+        "TURNSTILE_SECRET_KEY": "",
+        "NEXT_PUBLIC_APP_URL": "",
+        "CRON_SECRET": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 마이그레이션 적용(CLI 는 스크립트를 돌리지 않는다): DATABASE_URL=<직접 연결 5432> node db/migrate.mjs — 풀러(6543)로는 적용하지 않는다. db/migrations 는 packages/db 의 순서 있는 한 줄기 전체다(0000 이 모든 표를 만든다). 이미 적용한 파일은 건너뛴다.\n2. db/schema/*.ts 는 제품의 drizzle-kit 이 읽는 참고 원본이다. 고치지 않는다 — 패키지 판을 올릴 때 레지스트리를 다시 받는다.\n3. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다(mock 모드 메모리 DB).\n4. 가입 폼에 Turnstile 위젯을 그리고 토큰 칸 이름은 cf-turnstile-response 로 둔다(운영자 할 일 O7). 약관·개인정보 판은 lib/launch/config.ts 의 CONSENT_VERSIONS.\n5. 비밀번호 재설정 메일은 나간다(서식 passwordReset, ko·en — 대장 D180). 링크가 돌아오는 재설정 화면(새 비밀번호 입력)은 제품이 만든다. 링크의 유효 시간은 Better Auth 설정(기본값)을 따른다.\n6. 환경 검사는 @launch-factory/env 의 loadAppEnv 가 한다: live 는 공급자 이름이 모두 필수이고 빠진 이름을 한 번에 알린다.\n7. 관리자·탈퇴·보안 보호·동의는 별도 항목이다: feature-admin · feature-account-lifecycle · feature-security · feature-consents. 관리자는 lib/launch/features.ts 의 AUTH_FEATURES 를 { twoFactor: true, admin: true } 로 바꿔야 열린다.\n8. 소셜 로그인(선택): GOOGLE·KAKAO·NAVER 의 <P>_CLIENT_ID·<P>_CLIENT_SECRET 을 둘 다 넣은 공급자만 켜진다(하나만 있으면 켜지 않는다 — 콘솔에 경고). 공급자 콘솔의 승인된 리디렉션 URI 는 https://<도메인>/api/auth/callback/<공급자>. 소셜 가입도 약관·개인정보·만 14세 확인을 거쳐야 계정이 생긴다(가입 없이 소셜로 로그인하면 /sign-in?error=signup_disabled 로 돌아온다 — 그 화면이 안내를 보인다).\n9. 가입·확인 성공 안내(UXOK): 확인 메일 링크는 lib/launch/auth.ts 의 EMAIL_VERIFIED_PATH(`/?welcome=verified`)로 닿는다. 그 표지(`welcome=signup|signin|verified`)를 읽어 도착 화면에 한 번 「됐어요」를 보이는 조각(components/product/welcome-notice.tsx)은 제품이 만든다. 만들지 않았으면 EMAIL_VERIFIED_PATH 를 \"/\" 로 바꾼다.\n10. 계정 메일(LFMAIL): 이메일 확인 뒤 환영 메일이 한 번 나가고(G05, mail_ledger), 처음 보는 기기(브라우저·OS)로 로그인하면 알림이 한 번 나간다(C06, known_devices — 원문 UA·IP 는 저장하지 않고 위치는 호스팅이 주는 x-vercel-ip-city·country 머리가 있을 때만). 확인·재설정 링크 유효 시간은 LINK_EXPIRES_SECONDS(1시간)로 설정에 명시돼 메일 문구와 같다(A12).\n11. 확인 메일의 「제가 가입한 게 아니에요」(A13): 서명 링크 → /email 확인 화면(app/(product)/email/page.tsx — 제품이 만든다) → POST /api/account/not-me 가 아직 확인 안 됐고 결제 기록이 없는 그 계정만 지운다. 서명 비밀은 BETTER_AUTH_SECRET 에서 파생한다(lib/launch/link-secret.ts).\n12. 마케팅 수신 처리 결과 통지(D210 — 정보통신망법 제50조제7항·시행령 제62조의2, 의사를 표시한 날부터 14일 안): 가입 때 마케팅에 동의하면 lib/launch/notices.ts 의 sendMarketingNotice 가 통지 메일을 보낸다. 보내기가 실패하면 marketing_notice_outbox(발신함 — 사용자 id·채널·동의 여부·의사 표시 시각·시도 횟수·다음 시각·마지막 오류 코드만, 메일 주소·본문은 두지 않는다)에 남고 /api/cron/notices 가 다시 보낸다: 1·3·12·24·48·72·96시간 간격으로 처음 한 번 + 7번, 마지막 시도가 첫 실패 약 10.7일 뒤다. 한 통은 한 번만 나간다(먼저 잡은 실행만 보내고, 보낸 행은 다시 뽑히지 않으며, 메일에는 같은 멱등 키 notice:<id> 가 간다). 시도를 다 쓰면 exhausted 로 멈추고 로그 한 줄(`[notice-outbox] exhausted …`)이 남는다 — 14일 기한 전에 사람이 보내거나 처리해야 한다. 응답은 { due, sent, skipped, failed, exhausted, raced } 건수다.\n13. vercel.json 에 Cron 을 더한다: { \"path\": \"/api/cron/notices\", \"schedule\": \"10 * * * *\" }(한 시간 주기 — 재시도 간격의 가장 작은 단위). CRON_SECRET 이 없으면 401 이다. 이메일이 없는 대체 주소(카카오) 계정은 통지 메일을 보낼 수 없어 건너뛴다(로그 한 줄) — 그런 계정에 마케팅을 켜기 전에 다른 통지 수단을 정한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [
+            "account",
+            "consent_records",
+            "invitation",
+            "known_devices",
+            "mail_ledger",
+            "marketing_consents",
+            "marketing_notice_outbox",
+            "member",
+            "organization",
+            "rate_limit",
+            "rate_limits",
+            "session",
+            "two_factor",
+            "user",
+            "verification"
+          ],
+          "schema": [
+            "db/schema/auth-base.ts",
+            "db/schema/consents.ts",
+            "db/schema/mail.ts",
+            "db/schema/rate-limits.ts"
+          ],
+          "migrations": [
+            "db/migrations/0000_init.sql",
+            "db/migrations/0001_access_logs_append_only.sql",
+            "db/migrations/0002_better_auth_plugins.sql",
+            "db/migrations/0003_consents.sql",
+            "db/migrations/0004_account_lifecycle.sql",
+            "db/migrations/0005_evidence_guards.sql",
+            "db/migrations/0006_account_prefs_past_due.sql",
+            "db/migrations/0007_inquiries_idempotency.sql",
+            "db/migrations/0008_inquiry_kind.sql",
+            "db/migrations/0009_admin_plugin.sql",
+            "db/migrations/0010_explicit_rls.sql",
+            "db/migrations/0011_mail_marketing.sql",
+            "db/migrations/0012_notice_outbox.sql"
+          ],
+          "routes": [
+            "app/api/auth/[...all]/route.ts",
+            "app/api/account/not-me/route.ts",
+            "app/api/cron/notices/route.ts"
+          ],
+          "actions": [
+            "app/actions/auth.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-security",
+      "type": "registry:item",
+      "title": "보안 보호 — 요청 제한·Turnstile·멱등 키",
+      "description": "경로·서버 액션이 부르는 보호 도우미(요청 제한 → 봇 방어 순, 429 + Retry-After, 폼 멱등 키)와 지난 제한 창·멱등 키를 지우는 Cron. 제한 저장소는 DB 라 서버리스에서도 함께 센다.",
+      "dependencies": [
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/env@0.0.0",
+        "@launch-factory/security@0.0.0"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-security/files/lib/launch/security.ts",
+          "type": "registry:file",
+          "target": "lib/launch/security.ts"
+        },
+        {
+          "path": "registry/feature-security/files/app/api/cron/security/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/security/route.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "TURNSTILE_SECRET_KEY": "",
+        "TURNSTILE_SITE_KEY": "",
+        "CRON_SECRET": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다(rate_limits·idempotency_keys 표는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. 경로 처리기 첫 줄에서 부른다: const blocked = await guardRequest(request, \"signUp\"); if (blocked) return blocked. 공개 폼은 봇 확인도 한다: guardRequest(request, \"inquiry\", { bot: { token: form.get(\"cf-turnstile-response\") } }). 서버 액션은 guardAction(route, { headers: await headers() }) 이고 막히면 code·retryAfter 가 든 실패를 돌려준다.\n3. 기본 경로 이름: signUp·signIn·passwordReset·inquiry·checkoutStart. 새 경로는 lib/launch/security.ts 의 RATE_RULES 에 { max, windowSec } 를 더한다 — 규칙 없는 이름은 던진다(한도 없이 통과하지 않는다).\n4. 같은 폼을 두 번 보내도 한 번만 처리하려면 once(scope, key, run) 를 쓴다(키는 폼을 열 때 만든 UUID, 성공 결과만 24시간 저장). 이미 처리 중이면 { inProgress: true }.\n5. Turnstile: mock 은 통과, live 는 TURNSTILE_SECRET_KEY 가 필수다(없으면 던진다 — 운영자 할 일 O7). 위젯은 TURNSTILE_SITE_KEY 로 그리고 CSP 에 @launch-factory/security/turnstile 의 TURNSTILE_CSP 를 더한다.\n6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/security\", \"schedule\": \"30 4 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.\n7. 요청 제한은 요청 머리의 IP 로 센다. 어느 머리를 믿을지는 환경이 정하고(ipAddressFromEnv — 인증·문의 항목과 같은 함수) 기본은 어떤 머리도 믿지 않는다(x-forwarded-for 를 속여 한도를 피하지 못한다. 못 찾으면 경로별 공용 통 하나로 세고 로그에 한 번 알린다). Vercel 에서는 VERCEL=1 로 자동 감지해 x-vercel-forwarded-for → x-forwarded-for 를 믿는다(Vercel 이 덮어쓴다). 그 밖의 호스트는 LF_TRUSTED_PROXY(vercel|none)·LF_CLIENT_IP_HEADER(앞단이 덮어쓰는 머리 하나, 예: cf-connecting-ip)·LF_TRUSTED_PROXY_CIDRS(프록시 주소, 쉼표) 중 하나를 사용자 환경 변수에 둔다. 잘못된 값은 켤 때 던진다.\n8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [],
+          "schema": [],
+          "migrations": [],
+          "routes": [
+            "app/api/cron/security/route.ts"
+          ],
+          "actions": [],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-billing-paddle",
+      "type": "registry:item",
+      "title": "결제 — Paddle Billing",
+      "description": "Paddle 웹훅 경로(서명 검증·중복 제거·재조회·순서 처리), 결제 Cron, 결제 서버 액션(청약철회 동의 포함), 구독·웹훅 이벤트 표와 마이그레이션.",
+      "dependencies": [
+        "@launch-factory/billing-paddle@0.0.0",
+        "@launch-factory/consent@0.0.0",
+        "@launch-factory/contract@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/env@0.0.0",
+        "@launch-factory/i18n@0.0.0",
+        "@launch-factory/security@0.0.0",
+        "drizzle-orm@0.45.3",
+        "postgres@3.4.9"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth",
+        "@launch-factory/feature-email-resend",
+        "@launch-factory/feature-security"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-billing-paddle/files/lib/launch/billing.ts",
+          "type": "registry:file",
+          "target": "lib/launch/billing.ts"
+        },
+        {
+          "path": "registry/feature-billing-paddle/files/lib/launch/paddle-plans.ts",
+          "type": "registry:file",
+          "target": "lib/launch/paddle-plans.ts"
+        },
+        {
+          "path": "registry/feature-billing-paddle/files/app/api/webhooks/paddle/route.ts",
+          "type": "registry:file",
+          "target": "app/api/webhooks/paddle/route.ts"
+        },
+        {
+          "path": "registry/feature-billing-paddle/files/app/api/cron/billing/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/billing/route.ts"
+        },
+        {
+          "path": "registry/feature-billing-paddle/files/app/actions/billing.ts",
+          "type": "registry:file",
+          "target": "app/actions/billing.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/eu-sales.ts",
+          "type": "registry:file",
+          "target": "lib/launch/eu-sales.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        },
+        {
+          "path": "registry/_shared/db/migrate.mjs",
+          "type": "registry:file",
+          "target": "db/migrate.mjs"
+        },
+        {
+          "path": "packages/db/src/schema/subscriptions.ts",
+          "type": "registry:file",
+          "target": "db/schema/subscriptions.ts"
+        },
+        {
+          "path": "packages/db/src/schema/webhook-events.ts",
+          "type": "registry:file",
+          "target": "db/schema/webhook-events.ts"
+        },
+        {
+          "path": "packages/db/migrations/0000_init.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0000_init.sql"
+        },
+        {
+          "path": "packages/db/migrations/0001_access_logs_append_only.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0001_access_logs_append_only.sql"
+        },
+        {
+          "path": "packages/db/migrations/0002_better_auth_plugins.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0002_better_auth_plugins.sql"
+        },
+        {
+          "path": "packages/db/migrations/0003_consents.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0003_consents.sql"
+        },
+        {
+          "path": "packages/db/migrations/0004_account_lifecycle.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0004_account_lifecycle.sql"
+        },
+        {
+          "path": "packages/db/migrations/0005_evidence_guards.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0005_evidence_guards.sql"
+        },
+        {
+          "path": "packages/db/migrations/0006_account_prefs_past_due.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0006_account_prefs_past_due.sql"
+        },
+        {
+          "path": "packages/db/migrations/0007_inquiries_idempotency.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0007_inquiries_idempotency.sql"
+        },
+        {
+          "path": "packages/db/migrations/0008_inquiry_kind.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0008_inquiry_kind.sql"
+        },
+        {
+          "path": "packages/db/migrations/0009_admin_plugin.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0009_admin_plugin.sql"
+        },
+        {
+          "path": "packages/db/migrations/0010_explicit_rls.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0010_explicit_rls.sql"
+        },
+        {
+          "path": "packages/db/migrations/0011_mail_marketing.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0011_mail_marketing.sql"
+        },
+        {
+          "path": "packages/db/migrations/0012_notice_outbox.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0012_notice_outbox.sql"
+        },
+        {
+          "path": "packages/db/migrations/meta/_journal.json",
+          "type": "registry:file",
+          "target": "db/migrations/meta/_journal.json"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "PADDLE_API_KEY": "",
+        "PADDLE_WEBHOOK_SECRET": "",
+        "CRON_SECRET": "",
+        "NEXT_PUBLIC_APP_URL": "",
+        "LF_PAYMENT_FAILED_EMAIL": "",
+        "LF_EU_SALES": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다(구독 표가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. lib/launch/paddle-plans.ts 에 요금제와 Paddle 가격 id 를 적는다(운영자 할 일 O3 — 샌드박스 가격 만들기). 비어 있으면 결제가 열리지 않는다.\n3. Paddle 알림 설정의 주소: https://<도메인>/api/webhooks/paddle, 엔드포인트 비밀은 PADDLE_WEBHOOK_SECRET. 기본은 샌드박스이고 실결제는 LF_PADDLE_LIVE=1 일 때만 받는다(운영자만 넣는다).\n4. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/billing\", \"schedule\": \"0 * * * *\" }] }. Vercel 이 CRON_SECRET 을 Authorization: Bearer 로 붙인다. 값이 없으면 401 이다.\n5. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n6. 결제 실패 안내 메일(F11)은 우리가 보낸다(기본 켜짐). live 에서 Paddle > Retain > Payment recovery 메일을 켰다면 중복이므로 LF_PAYMENT_FAILED_EMAIL=off 로 끈다. 재시도 날짜는 결제 대행사가 알려 주지 않으면 싣지 않는다(「자동으로 다시 시도한다」).\n7. 결제 시작(startCheckout)은 보안 항목의 guardAction(\"checkoutStart\") 이 가장 바깥이다 — 사용자·IP 별 60초 10번(RATE_LIMIT_DEFAULTS). 한도 밖은 code rate_limited·retryAfter 로 막히고 동의 기록도 결제 포트(거래 만들기)도 닿지 않는다(대장 D130). 한도를 바꾸려면 lib/launch/security.ts 의 RATE_RULES.checkoutStart 를 쓴다.\n8. 유료 기능의 서버 쪽 입구마다 @launch-factory/billing-paddle 의 requireEntitlement 를 부른다 — 결제 벽 화면만으로는 서버 액션 직접 호출을 막지 못한다.\n9. 청약철회 동의(D230): 결제 시작은 언제나 철회 제한 동의(withdrawalConsent)를 요구한다 — 체크가 없으면 결제 포트를 부르기 전에 fieldErrors.withdrawalConsent 로 거절한다. 동의를 끄는 설정 값은 없다. web-factory 쪽 legal.withdrawalPolicy 가 full 이라 결제 블록이 고지·체크를 빼는 제품은 이 거절 때문에 결제가 열리지 않으므로, 그런 제품은 결제 블록을 다시 이어 고지·체크를 받아야 한다(대장 D230 — 시험 scripts/test/withdrawal-consent-lock.test.mjs).\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/billing-paddle\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [
+            "subscriptions",
+            "webhook_events"
+          ],
+          "schema": [
+            "db/schema/subscriptions.ts",
+            "db/schema/webhook-events.ts"
+          ],
+          "migrations": [
+            "db/migrations/0000_init.sql",
+            "db/migrations/0001_access_logs_append_only.sql",
+            "db/migrations/0002_better_auth_plugins.sql",
+            "db/migrations/0003_consents.sql",
+            "db/migrations/0004_account_lifecycle.sql",
+            "db/migrations/0005_evidence_guards.sql",
+            "db/migrations/0006_account_prefs_past_due.sql",
+            "db/migrations/0007_inquiries_idempotency.sql",
+            "db/migrations/0008_inquiry_kind.sql",
+            "db/migrations/0009_admin_plugin.sql",
+            "db/migrations/0010_explicit_rls.sql",
+            "db/migrations/0011_mail_marketing.sql",
+            "db/migrations/0012_notice_outbox.sql"
+          ],
+          "routes": [
+            "app/api/webhooks/paddle/route.ts",
+            "app/api/cron/billing/route.ts"
+          ],
+          "actions": [
+            "app/actions/billing.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/billing-paddle",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-billing-gumroad",
+      "type": "registry:item",
+      "title": "결제 — Gumroad 대비",
+      "description": "Paddle 승인 전 대비. Gumroad 판매 알림(ping) 경로(공유 비밀 + API 재조회), 재확인 Cron, 결제 서버 액션. 해지·등급 변경·결제수단 변경은 Gumroad 화면의 일이라 provider_unsupported 로 끝난다.",
+      "dependencies": [
+        "@launch-factory/billing-gumroad@0.0.0",
+        "@launch-factory/consent@0.0.0",
+        "@launch-factory/contract@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/env@0.0.0",
+        "@launch-factory/i18n@0.0.0",
+        "@launch-factory/security@0.0.0",
+        "drizzle-orm@0.45.3",
+        "postgres@3.4.9"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth",
+        "@launch-factory/feature-email-resend",
+        "@launch-factory/feature-security"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-billing-gumroad/files/lib/launch/gumroad.ts",
+          "type": "registry:file",
+          "target": "lib/launch/gumroad.ts"
+        },
+        {
+          "path": "registry/feature-billing-gumroad/files/lib/launch/gumroad-plans.ts",
+          "type": "registry:file",
+          "target": "lib/launch/gumroad-plans.ts"
+        },
+        {
+          "path": "registry/feature-billing-gumroad/files/app/api/webhooks/gumroad/route.ts",
+          "type": "registry:file",
+          "target": "app/api/webhooks/gumroad/route.ts"
+        },
+        {
+          "path": "registry/feature-billing-gumroad/files/app/api/cron/gumroad/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/gumroad/route.ts"
+        },
+        {
+          "path": "registry/feature-billing-gumroad/files/app/actions/gumroad-billing.ts",
+          "type": "registry:file",
+          "target": "app/actions/gumroad-billing.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/eu-sales.ts",
+          "type": "registry:file",
+          "target": "lib/launch/eu-sales.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        },
+        {
+          "path": "registry/_shared/db/migrate.mjs",
+          "type": "registry:file",
+          "target": "db/migrate.mjs"
+        },
+        {
+          "path": "packages/db/src/schema/subscriptions.ts",
+          "type": "registry:file",
+          "target": "db/schema/subscriptions.ts"
+        },
+        {
+          "path": "packages/db/src/schema/webhook-events.ts",
+          "type": "registry:file",
+          "target": "db/schema/webhook-events.ts"
+        },
+        {
+          "path": "packages/db/migrations/0000_init.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0000_init.sql"
+        },
+        {
+          "path": "packages/db/migrations/0001_access_logs_append_only.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0001_access_logs_append_only.sql"
+        },
+        {
+          "path": "packages/db/migrations/0002_better_auth_plugins.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0002_better_auth_plugins.sql"
+        },
+        {
+          "path": "packages/db/migrations/0003_consents.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0003_consents.sql"
+        },
+        {
+          "path": "packages/db/migrations/0004_account_lifecycle.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0004_account_lifecycle.sql"
+        },
+        {
+          "path": "packages/db/migrations/0005_evidence_guards.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0005_evidence_guards.sql"
+        },
+        {
+          "path": "packages/db/migrations/0006_account_prefs_past_due.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0006_account_prefs_past_due.sql"
+        },
+        {
+          "path": "packages/db/migrations/0007_inquiries_idempotency.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0007_inquiries_idempotency.sql"
+        },
+        {
+          "path": "packages/db/migrations/0008_inquiry_kind.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0008_inquiry_kind.sql"
+        },
+        {
+          "path": "packages/db/migrations/0009_admin_plugin.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0009_admin_plugin.sql"
+        },
+        {
+          "path": "packages/db/migrations/0010_explicit_rls.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0010_explicit_rls.sql"
+        },
+        {
+          "path": "packages/db/migrations/0011_mail_marketing.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0011_mail_marketing.sql"
+        },
+        {
+          "path": "packages/db/migrations/0012_notice_outbox.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0012_notice_outbox.sql"
+        },
+        {
+          "path": "packages/db/migrations/meta/_journal.json",
+          "type": "registry:file",
+          "target": "db/migrations/meta/_journal.json"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "GUMROAD_ACCESS_TOKEN": "",
+        "GUMROAD_PING_SECRET": "",
+        "CRON_SECRET": "",
+        "NEXT_PUBLIC_APP_URL": "",
+        "LF_EU_SALES": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다. 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. lib/launch/gumroad-plans.ts 에 멤버십 상품 id·상품 링크를 적는다. 체험은 상품 설정이라 7일 또는 1개월(30)만 되고, 체험용 상품이 따로 있어야 한다.\n3. Gumroad 설정 → Advanced 의 Ping 주소: https://<도메인>/api/webhooks/gumroad?key=<GUMROAD_PING_SECRET>. Gumroad 알림에는 서명이 없다 — 공유 비밀 + API 재조회로 처리한다.\n4. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/gumroad\", \"schedule\": \"0 3 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.\n5. 가격 인상은 Gumroad 가 기존 손님에게 7일 전 안내만 보낸다 — 한국 30일 동의 규칙보다 짧다(대장 D164). 한국 판매 전에 법률 검토가 필요하다.\n6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n7. 청약철회 동의(D230): 결제 시작은 언제나 철회 제한 동의(withdrawalConsent)를 요구한다 — 체크가 없으면 결제 포트를 부르기 전에 fieldErrors.withdrawalConsent 로 거절한다. 동의를 끄는 설정 값은 없다. web-factory 쪽 legal.withdrawalPolicy 가 full 이라 결제 블록이 고지·체크를 빼는 제품은 이 거절 때문에 결제가 열리지 않으므로, 그런 제품은 결제 블록을 다시 이어 고지·체크를 받아야 한다(대장 D230 — 시험 scripts/test/withdrawal-consent-lock.test.mjs).\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/billing-gumroad\",\"@launch-factory/billing-paddle\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [
+            "subscriptions",
+            "webhook_events"
+          ],
+          "schema": [
+            "db/schema/subscriptions.ts",
+            "db/schema/webhook-events.ts"
+          ],
+          "migrations": [
+            "db/migrations/0000_init.sql",
+            "db/migrations/0001_access_logs_append_only.sql",
+            "db/migrations/0002_better_auth_plugins.sql",
+            "db/migrations/0003_consents.sql",
+            "db/migrations/0004_account_lifecycle.sql",
+            "db/migrations/0005_evidence_guards.sql",
+            "db/migrations/0006_account_prefs_past_due.sql",
+            "db/migrations/0007_inquiries_idempotency.sql",
+            "db/migrations/0008_inquiry_kind.sql",
+            "db/migrations/0009_admin_plugin.sql",
+            "db/migrations/0010_explicit_rls.sql",
+            "db/migrations/0011_mail_marketing.sql",
+            "db/migrations/0012_notice_outbox.sql"
+          ],
+          "routes": [
+            "app/api/webhooks/gumroad/route.ts",
+            "app/api/cron/gumroad/route.ts"
+          ],
+          "actions": [
+            "app/actions/gumroad-billing.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/billing-gumroad",
+              "@launch-factory/billing-paddle",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-inquiry",
+      "type": "registry:item",
+      "title": "문의 접수",
+      "description": "문의 폼 서버: 요청 제한(DB) → 멱등 키 → 입력 검사 → Turnstile → 저장 → 운영자 알림. 일반 30일·불만/분쟁 3년 보유 후 Cron 이 파기한다. contact-form 블록의 submit 포트 모양의 서버 액션 포함.",
+      "dependencies": [
+        "@launch-factory/inquiry@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/env@0.0.0",
+        "@launch-factory/i18n@0.0.0",
+        "@launch-factory/security@0.0.0",
+        "drizzle-orm@0.45.3",
+        "postgres@3.4.9"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth",
+        "@launch-factory/feature-email-resend"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-inquiry/files/lib/launch/inquiry.ts",
+          "type": "registry:file",
+          "target": "lib/launch/inquiry.ts"
+        },
+        {
+          "path": "registry/feature-inquiry/files/lib/launch/support.ts",
+          "type": "registry:file",
+          "target": "lib/launch/support.ts"
+        },
+        {
+          "path": "registry/feature-inquiry/files/app/api/inquiry/route.ts",
+          "type": "registry:file",
+          "target": "app/api/inquiry/route.ts"
+        },
+        {
+          "path": "registry/feature-inquiry/files/app/api/cron/inquiry/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/inquiry/route.ts"
+        },
+        {
+          "path": "registry/feature-inquiry/files/app/actions/inquiry.ts",
+          "type": "registry:file",
+          "target": "app/actions/inquiry.ts"
+        },
+        {
+          "path": "registry/feature-inquiry/files/app/actions/inquiry-admin.ts",
+          "type": "registry:file",
+          "target": "app/actions/inquiry-admin.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        },
+        {
+          "path": "registry/_shared/db/migrate.mjs",
+          "type": "registry:file",
+          "target": "db/migrate.mjs"
+        },
+        {
+          "path": "packages/db/src/schema/inquiries.ts",
+          "type": "registry:file",
+          "target": "db/schema/inquiries.ts"
+        },
+        {
+          "path": "packages/db/migrations/0000_init.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0000_init.sql"
+        },
+        {
+          "path": "packages/db/migrations/0001_access_logs_append_only.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0001_access_logs_append_only.sql"
+        },
+        {
+          "path": "packages/db/migrations/0002_better_auth_plugins.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0002_better_auth_plugins.sql"
+        },
+        {
+          "path": "packages/db/migrations/0003_consents.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0003_consents.sql"
+        },
+        {
+          "path": "packages/db/migrations/0004_account_lifecycle.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0004_account_lifecycle.sql"
+        },
+        {
+          "path": "packages/db/migrations/0005_evidence_guards.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0005_evidence_guards.sql"
+        },
+        {
+          "path": "packages/db/migrations/0006_account_prefs_past_due.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0006_account_prefs_past_due.sql"
+        },
+        {
+          "path": "packages/db/migrations/0007_inquiries_idempotency.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0007_inquiries_idempotency.sql"
+        },
+        {
+          "path": "packages/db/migrations/0008_inquiry_kind.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0008_inquiry_kind.sql"
+        },
+        {
+          "path": "packages/db/migrations/0009_admin_plugin.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0009_admin_plugin.sql"
+        },
+        {
+          "path": "packages/db/migrations/0010_explicit_rls.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0010_explicit_rls.sql"
+        },
+        {
+          "path": "packages/db/migrations/0011_mail_marketing.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0011_mail_marketing.sql"
+        },
+        {
+          "path": "packages/db/migrations/0012_notice_outbox.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0012_notice_outbox.sql"
+        },
+        {
+          "path": "packages/db/migrations/meta/_journal.json",
+          "type": "registry:file",
+          "target": "db/migrations/meta/_journal.json"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "INQUIRY_OWNER_EMAIL": "",
+        "TURNSTILE_SECRET_KEY": "",
+        "TURNSTILE_SITE_KEY": "",
+        "CRON_SECRET": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다(문의 표가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. 폼에 숨은 입력 둘을 더한다: Turnstile 토큰 cf-turnstile-response(사이트 키 TURNSTILE_SITE_KEY, 운영자 할 일 O7), 폼을 열 때 만든 idempotencyKey. INQUIRY_OWNER_EMAIL 은 운영자 메일이다(개인정보 — 저장소에 적지 않는다).\n3. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/inquiry\", \"schedule\": \"0 4 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.\n4. lib/launch/support.ts(제품 것)에서 첫 응답 약속(responseTime)·접수 확인 메일(receipt)·사람이 읽는 문의 메일 주소(email)를 정한다. 접수 확인 메일은 방문자가 적은 주소로 나가므로 요청 제한·Turnstile 이 남용을 막는 유일한 장치다. 지킬 수 있는 응답 시간만 적는다(없으면 null). mock 에서는 INQUIRY_OWNER_EMAIL 이 없어도 가짜 주소로 켜진다. live 에서 없으면 **사이트는 켜지고 문의 창구만 꺼진다**(2026-10-05 운영자 결정): inquiryEnabled() 가 false 라 쪽이 폼 대신 안내를 그리고, 접수는 code provider_unavailable·retryable false 로 거절된다(받은 척 저장하지 않는다). 값이 있는데 이메일 형식이 아니면 켜질 때 멈춘다. 쪽은 data-inquiry=\"disabled\"|\"enabled\" 표지를 단다(배포 확인이 경고를 낸다). LF_BUSINESS_EMAIL 로 대신하지 않는다 — 그것은 바닥글에 공개하는 표시 주소다.\n5. 문의 종류 바꾸기: 서버 액션 reclassifyInquiry({ reference, to, reason? })·markInquiryAsComplaint({ reference, reason? })(app/actions/inquiry-admin.ts). 누가 바꾸는지는 세션의 사용자 행으로 정한다 — 소유자 = 확인된 이메일이 INQUIRY_OWNER_EMAIL 과 같은 사람, 관리자 = user.role 에 admin. 입력의 isOwner·role 은 읽지 않고, 대리 로그인 세션·정지된 사람은 막힌다. 불만·분쟁 등급을 넘나드는 변경은 관리자만이다. INQUIRY_OWNER_EMAIL 이 없으면 소유자가 없고 관리자만 바꾼다(문의 창구가 꺼져도 이미 받은 문의의 보유 기간은 지켜야 한다). 이 액션을 부르는 관리 화면은 제품(대장 D137)이 만든다.\n6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/inquiry\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [
+            "idempotency_keys",
+            "inquiries"
+          ],
+          "schema": [
+            "db/schema/inquiries.ts"
+          ],
+          "migrations": [
+            "db/migrations/0000_init.sql",
+            "db/migrations/0001_access_logs_append_only.sql",
+            "db/migrations/0002_better_auth_plugins.sql",
+            "db/migrations/0003_consents.sql",
+            "db/migrations/0004_account_lifecycle.sql",
+            "db/migrations/0005_evidence_guards.sql",
+            "db/migrations/0006_account_prefs_past_due.sql",
+            "db/migrations/0007_inquiries_idempotency.sql",
+            "db/migrations/0008_inquiry_kind.sql",
+            "db/migrations/0009_admin_plugin.sql",
+            "db/migrations/0010_explicit_rls.sql",
+            "db/migrations/0011_mail_marketing.sql",
+            "db/migrations/0012_notice_outbox.sql"
+          ],
+          "routes": [
+            "app/api/inquiry/route.ts",
+            "app/api/cron/inquiry/route.ts"
+          ],
+          "actions": [
+            "app/actions/inquiry.ts",
+            "app/actions/inquiry-admin.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/inquiry",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-consents",
+      "type": "registry:item",
+      "title": "동의 — 마케팅 수신·동의 이력",
+      "description": "채널별 마케팅 수신 동의(NotifyPort — 기본 거부·바꿀 때마다 이력)와 본인 동의 이력 읽기 서버 액션. 가입 때의 약관·개인정보·만 14세 동의 기록은 인증 항목이 남기고, 이 항목은 그 이력을 이어 쓴다.",
+      "dependencies": [
+        "@launch-factory/consent@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/email@0.0.0",
+        "@launch-factory/i18n@0.0.0",
+        "drizzle-orm@0.45.3",
+        "@launch-factory/auth@0.0.0",
+        "@launch-factory/security@0.0.0"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth",
+        "@launch-factory/feature-email-resend"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-consents/files/lib/launch/consents.ts",
+          "type": "registry:file",
+          "target": "lib/launch/consents.ts"
+        },
+        {
+          "path": "registry/feature-consents/files/app/actions/consents.ts",
+          "type": "registry:file",
+          "target": "app/actions/consents.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/feature-consents/files/lib/launch/marketing.ts",
+          "type": "registry:file",
+          "target": "lib/launch/marketing.ts"
+        },
+        {
+          "path": "registry/feature-consents/files/app/api/marketing/unsubscribe/route.ts",
+          "type": "registry:file",
+          "target": "app/api/marketing/unsubscribe/route.ts"
+        },
+        {
+          "path": "registry/feature-consents/files/app/api/marketing/keep/route.ts",
+          "type": "registry:file",
+          "target": "app/api/marketing/keep/route.ts"
+        },
+        {
+          "path": "registry/feature-consents/files/app/api/cron/consents/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/consents/route.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/link-secret.ts",
+          "type": "registry:file",
+          "target": "lib/launch/link-secret.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "BETTER_AUTH_SECRET": "",
+        "CRON_SECRET": "",
+        "LF_MARKETING_NIGHT_GUARD": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다(consent_records·marketing_consents 표는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. 만 14세 확인은 가입 때 인증 항목이 요구한다(기본 켬 — 개인정보 보호법 제22조의2제1항). 끄려면 createAuth 의 requireAgeOver14 를 제품이 정한다. 동의 기록은 UPDATE·TRUNCATE 가 DB 트리거로 막혀 있다(증빙 무결성).\n3. 설정 화면은 getMarketingConsents() 로 현재 값을 읽고 setMarketingConsents({ email: true, confirmed: true }) 로 바꾼다(confirmed: true 는 사람이 확인했다는 입력 — 없으면 아무것도 바꾸지 않고 code confirmation_required). 준 채널만 바뀐다. 모르는 채널 이름·boolean 아닌 값은 fieldErrors 로 돌려준다.\n4. 처리 결과 통지(정보통신망법 제50조제7항·시행령 제62조의2 — 의사를 표시한 날부터 14일 안에 전송자 명칭·의사 표시 사실과 날짜·처리 결과)는 이 항목이 보낸다: setMarketingConsents 로 동의·거부·철회를 표시할 때마다(같은 값을 다시 표시해도) 그 사람의 메일로 marketingConsentNotice 메일이 나간다. 전송자 명칭은 config.ts 의 PRODUCT_NAME 이다 — 법적 상호로 바꾼다. 보내기가 실패해도 설정 저장은 되돌리지 않는다 — 실패한 통지는 발신함(marketing_notice_outbox)에 남고 인증 항목의 /api/cron/notices 가 늘어나는 간격으로 다시 보낸다(한 통은 한 번만 나가고, 시도를 다 쓰면 멈추고 로그로 알린다. 대장 D210). 카카오처럼 이메일이 없는 계정은 통지 메일을 보낼 수 없으니 그런 계정에 마케팅을 켜기 전에 다른 통지 수단을 정한다. 메일 발송은 이메일 항목(RESEND_API_KEY·EMAIL_FROM)이 필요하다.\n5. 결제 직전 청약철회 제한 동의는 결제 항목의 startCheckout 이 같은 이력에 남긴다. 개인정보 수집·국외 이전 고지 표의 데이터는 @launch-factory/consent 의 privacyCollections·overseasTransfers 로 만든다(화면은 제품이 그린다).\n6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n7. 광고성 메일(LFMAIL — G03·G07): 광고성 메일은 lib/launch/marketing.ts 의 sendMarketingEmail(userId, { subject, heading, paragraphs, cta }) 로만 보낸다. 동의·2년 재확인·야간(한국 21~08시) 점검을 거치고, 메일러가 제목 「(광고)」·전송자 명칭·이메일·전화·주소·한글·영문 수신거부 안내·로그인 없는 수신거부 링크·List-Unsubscribe 헤더(RFC 8058)를 단다. 사업자 값은 LF_BUSINESS_NAME·EMAIL·PHONE·ADDRESS 에서만 온다 — 비어 있으면 던진다. 야간 점검은 LF_MARKETING_NIGHT_GUARD=off 로 끈다(전자우편은 법상 야간 동의 대상이 아니다).\n8. 수신거부·재확인 링크: /api/marketing/unsubscribe(GET 즉시 철회 · POST 한 번에 수신거부)·/api/marketing/keep(GET 은 /email 확인 화면으로, POST 가 동의 갱신). 결과·확인 화면 app/(product)/email/page.tsx 는 제품이 만든다(템플릿에 있다). 서명 비밀은 BETTER_AUTH_SECRET 에서 파생한다.\n9. 2년 재확인(A16 — 정보통신망법 제50조제8항·시행령 제62조의3): vercel.json 에 { \"path\": \"/api/cron/consents\", \"schedule\": \"20 5 * * *\" } 를 더한다. 동의한 지 2년이 지난 이메일 수신자에게 전송자·동의 사실과 날짜·계속 받기/수신거부 링크를 담은 메일을 한 통씩 보내고 mail_ledger 에 기록한다. 답이 없는 사람에게는 계속 보낸다(규칙에 끊는다는 문구가 없다 — 법무 확인 필요). 재확인 메일을 아직 못 보낸 2년 넘은 동의에는 보내지 않는다(canSendMarketing).\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [],
+          "schema": [],
+          "migrations": [],
+          "routes": [
+            "app/api/marketing/unsubscribe/route.ts",
+            "app/api/marketing/keep/route.ts",
+            "app/api/cron/consents/route.ts"
+          ],
+          "actions": [
+            "app/actions/consents.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-admin",
+      "type": "registry:item",
+      "title": "관리자 — 벽·대리 로그인 기록·CSV",
+      "description": "관리자 서버 액션(목록·상세·정지·해제·일괄·대리 로그인 시작/종료)과 사용자 CSV 경로. 모든 입구가 관리자 벽(관리자 + 2단계 인증 + 대리 세션 아님)을 먼저 지나고, 읽기·쓰기가 admin_actions 에 남는다.",
+      "dependencies": [
+        "@launch-factory/auth@0.0.0"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-admin/files/lib/launch/admin.ts",
+          "type": "registry:file",
+          "target": "lib/launch/admin.ts"
+        },
+        {
+          "path": "registry/feature-admin/files/app/actions/admin.ts",
+          "type": "registry:file",
+          "target": "app/actions/admin.ts"
+        },
+        {
+          "path": "registry/feature-admin/files/app/api/admin/users/export/route.ts",
+          "type": "registry:file",
+          "target": "app/api/admin/users/export/route.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "BETTER_AUTH_SECRET": "",
+        "NEXT_PUBLIC_APP_URL": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다(표·마이그레이션은 인증 항목의 db/ 한 줄기가 갖는다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. lib/launch/features.ts 의 AUTH_FEATURES 를 { twoFactor: true, admin: true } 로 바꾼다. 꺼져 있으면 모든 관리자 입구가 503 으로 닫혀 있다(열려 있지 않다).\n3. 관리자는 role=admin 이고 2단계 인증을 켠 사람뿐이다. 첫 관리자는 DB 에서 user.role 을 'admin' 으로 바꿔 만든다(화면·API 로는 만들지 않는다) — 운영자 할 일. 그 사람이 2단계 인증을 켜기 전에는 403 이다.\n4. 대리 로그인은 사유가 필수이고 시작·종료가 admin_actions 에 남는다. 대리 세션에서는 Better Auth 경로의 민감 작업(비밀번호·이메일 변경 등)이 막힌다. 결제 서버 액션은 이 항목이 막지 않는다 — 결제 포트를 blockWhileImpersonating 으로 감싸는 일은 제품이 한다(대장 D204).\n5. 사용자 CSV: GET /api/admin/users/export?q=&banned=&role=&sort=&dir= (BOM·수식 무력화). 화면(표·상세)은 web-factory 블록으로 짠다.\n6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [],
+          "schema": [],
+          "migrations": [],
+          "routes": [
+            "app/api/admin/users/export/route.ts"
+          ],
+          "actions": [
+            "app/actions/admin.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-account-lifecycle",
+      "type": "registry:item",
+      "title": "탈퇴·파기 — 셀프 탈퇴·유예·파기 Cron·내 정보 내려받기",
+      "description": "셀프 탈퇴 서버 액션(구독 먼저 해지 → 유예 → 세션 끊기)과 내려받기, 유예가 지난 계정을 지우고 거래기록은 가명 참조로 분리 보존하는 파기 Cron. 결제는 Paddle 기본이고 account-billing.ts 한 파일로 바꾼다.",
+      "dependencies": [
+        "@launch-factory/account-lifecycle@0.0.0",
+        "@launch-factory/analytics-posthog@0.0.0",
+        "@launch-factory/auth@0.0.0",
+        "@launch-factory/contract@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/email@0.0.0",
+        "@launch-factory/env@0.0.0",
+        "drizzle-orm@0.45.3"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth",
+        "@launch-factory/feature-billing-paddle",
+        "@launch-factory/feature-email-resend"
+      ],
+      "files": [
+        {
+          "path": "registry/feature-account-lifecycle/files/lib/launch/account.ts",
+          "type": "registry:file",
+          "target": "lib/launch/account.ts"
+        },
+        {
+          "path": "registry/feature-account-lifecycle/files/lib/launch/account-billing.ts",
+          "type": "registry:file",
+          "target": "lib/launch/account-billing.ts"
+        },
+        {
+          "path": "registry/feature-account-lifecycle/files/app/actions/account.ts",
+          "type": "registry:file",
+          "target": "app/actions/account.ts"
+        },
+        {
+          "path": "registry/feature-account-lifecycle/files/app/api/cron/purge/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/purge/route.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/db.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/env.ts",
+          "type": "registry:file",
+          "target": "lib/launch/env.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/config.ts",
+          "type": "registry:file",
+          "target": "lib/launch/config.ts"
+        },
+        {
+          "path": "registry/_shared/lib/launch/cron.ts",
+          "type": "registry:file",
+          "target": "lib/launch/cron.ts"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "DATABASE_URL": "",
+        "SUBJECT_REF_KEY": "",
+        "POSTHOG_PERSONAL_API_KEY": "",
+        "POSTHOG_PROJECT_ID": "",
+        "POSTHOG_HOST": "",
+        "CRON_SECRET": ""
+      },
+      "docs": "설치 뒤 할 일\n1. 인증·결제(Paddle) 항목이 함께 설치된다(탈퇴 표·보존 표·트리거는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. SUBJECT_REF_KEY(32자 이상 무작위 비밀)를 정한다. 거래기록의 가명 참조(HMAC)를 만드는 키라, 바꾸면 이미 남긴 기록을 이메일로 찾을 수 없고 잃으면 되살릴 수 없다 — 백업한다(운영자 할 일). 없으면 파기 Cron 이 500 으로 멈춘다(조용히 성공하지 않는다).\n3. live 는 PostHog 사람·이벤트·녹화도 지운다: POSTHOG_PERSONAL_API_KEY(개인 API 키, person:write)·POSTHOG_PROJECT_ID(숫자)·POSTHOG_HOST. 없으면 파기 Cron 이 계측 단계에서 멈춘다. mock 은 계측을 지우지 않는다.\n4. Paddle 이 아닌 결제를 쓰면 lib/launch/account-billing.ts 만 그 결제 포트로 바꾼다(대장 D200). 결제가 없으면 구독이 없다고 답하는 포트를 돌려주고, Paddle 항목은 설치하지 않는 쪽이 맞다 — 그때는 registryDependencies 에서 빼고 설치한다.\n5. 서버 액션: deleteAccount()·exportMyData(). 탈퇴 화면은 유예 안내(graceUntil)를 보이고, 유예 중 다시 로그인하면 탈퇴가 취소된다(구독은 자동으로 되살리지 않는다). 탈퇴를 접수하면 접수 메일(accountDeletionRequested — 지워지는 날·취소하는 법)이 나간다(D09) — 메일 실패는 탈퇴를 막지 않는다.\n6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/purge\", \"schedule\": \"0 5 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.\n7. 개인 식별 칸이 있는 새 표를 제품이 만들면 파기 트랜잭션에 지우는 함수(runPurge 의 purgers)를 더해야 한다 — lib/launch/account.ts 의 purge() 에 넘긴다. 안 더하면 탈퇴한 사람의 정보가 그 표에 남는다.\n8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/billing-paddle\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [],
+          "schema": [],
+          "migrations": [],
+          "routes": [
+            "app/api/cron/purge/route.ts"
+          ],
+          "actions": [
+            "app/actions/account.ts"
+          ],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/billing-paddle",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

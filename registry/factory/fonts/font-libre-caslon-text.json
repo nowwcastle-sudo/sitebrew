@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-libre-caslon-text",
+  "type": "registry:font",
+  "title": "Libre Caslon Text",
+  "description": "web-factory 폰트 키트: Libre Caslon Text (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+  "font": {
+    "family": "'Libre Caslon Text', serif",
+    "provider": "google",
+    "import": "Libre_Caslon_Text",
+    "variable": "--font-libre-caslon-text-wf",
+    "weight": [
+      "400",
+      "700"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/libre-caslon-text"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/librecaslontext/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Libre+Caslon+Text",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

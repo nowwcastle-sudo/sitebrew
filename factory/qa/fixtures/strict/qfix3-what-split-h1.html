@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QFIX3 — 쪼갠 글자 H1 (접근 이름 + 시각 복제)</title>
+<style>
+  html, body { margin: 0; font-family: system-ui, sans-serif; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  main { padding: 24px; min-height: 300vh; }
+</style>
+</head>
+<body>
+  <nav aria-label="주 메뉴"><a href="/">홈</a></nav>
+  <main>
+    <!-- 운동 효과용 글자 쪼개기 모양: 읽기 도구용 한 벌(sr-only) + 눈에 보이는 한 벌(aria-hidden). textContent 로 읽으면 글자가 두 배가 된다. -->
+    <h1><span class="sr-only">독립 출판사 40곳의 신간을 먼저 만나요</span><span aria-hidden="true"><span>독립 출판사 </span><span>40곳의 신간을 먼저 만나요</span></span></h1>
+    <p>이 문단은 길어서 「무엇을 하는지」 한 문장이 아니에요, 사전 등록하면 입장 시간을 미리 정해 줄을 서지 않아요.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "id": "lxlcreative-co-uk",
+  "archetype": "portfolio",
+  "sourceGallery": "awwwards",
+  "url": "https://www.lxlcreative.co.uk/",
+  "structure": {
+    "hero": "짙은 갈색 바탕 왼쪽에 둥근 모서리 세로 인물 사진이 크게 서고, 거대한 워드마크가 사진 경계를 넘어 겹침. 오른쪽 여백 중앙에 세 줄 슬로건",
+    "sections": [
+      "오른쪽 위 내비 다섯",
+      "세로 인물 사진",
+      "거대한 소문자 워드마크(주황 손글씨 로고와 크림 글자)",
+      "세 줄 슬로건(가운데 줄 필기체)"
+    ]
+  },
+  "type": {
+    "display": "확장 굵은 산세리프 대문자 크림색 슬로건 약 28px, 거대한 소문자 산세리프 워드마크 약 190px, 주황 필기체 로고",
+    "body": "소형 산세리프 크림색 내비 약 16px",
+    "scale": "워드마크 약 190px·슬로건 약 28px·내비 약 16px(1440)"
+  },
+  "colorLogic": "K4",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "영상 없이 정지 화면 두 장만 봄. 움직임·호버는 판단하지 않았다."
+  },
+  "interaction": [
+    "내비 링크 다섯(작업·서비스·스튜디오·소개·연락)",
+    "모바일 원형 햄버거 버튼"
+  ],
+  "cta": {
+    "pattern": "버튼 없이 내비 링크, 끝에 Contact",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.75
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "짙은 바탕에 인물 사진 한 장을 크게 세우고 오른쪽을 비워 사진이 첫 화면의 주인공이 되게 한다",
+    "거대한 워드마크를 사진 경계 위로 겹쳐 얹어 이미지와 글자를 한 덩어리 구도로 묶는다",
+    "손글씨 주황 로고와 크림색 매끈한 산세리프를 한 단어에 섞어 사람 손맛과 업무 정돈을 함께 보인다",
+    "세 줄 슬로건의 가운데 줄만 주황 필기체로 겹쳐 굵은 대문자 사이에 리듬을 만든다",
+    "모바일은 겹침 구도를 버리고 사진을 둥근 카드로, 워드마크는 헤더 로고로 옮기되 색과 위계는 유지한다"
+  ]
+}

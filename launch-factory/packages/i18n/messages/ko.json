@@ -1,0 +1,362 @@
+{
+  "email": {
+    "common": {
+      "greeting": "{name}님, 안녕하세요.",
+      "greetingNoName": "안녕하세요.",
+      "footer": "{productName} 계정이 있어서 보내 드리는 메일이에요.",
+      "vatIncluded": "(부가세 포함)",
+      "vatExcluded": "(부가세 별도)",
+      "buttonFallback": "버튼이 열리지 않으면 아래 링크를 브라우저에 붙여 넣어 주세요:",
+      "linkValid": "이 링크는 {duration} 동안만 쓸 수 있어요.",
+      "validMinutes": "{n}분",
+      "validHour": "1시간",
+      "validHours": "{n}시간",
+      "validDays": "{n}일"
+    },
+    "welcome": {
+      "subject": "{productName} 가입을 환영해요",
+      "preview": "{productName} 계정이 준비됐어요.",
+      "heading": "{productName} 가입을 환영해요",
+      "body": "이메일 주소를 확인했고 계정이 준비됐어요. 지금 바로 로그인해서 시작할 수 있어요.",
+      "cta": "{productName} 열기"
+    },
+    "orderConfirmation": {
+      "subject": "{productName} 주문이 확인됐어요: {planName}",
+      "preview": "주문해 주셔서 고마워요. 주문 내용을 알려 드려요.",
+      "heading": "주문이 확인됐어요",
+      "body": "주문해 주셔서 고마워요. 주문 내용을 알려 드려요.",
+      "orderIdLabel": "주문 번호",
+      "planLabel": "요금제",
+      "amountLabel": "금액",
+      "orderedAtLabel": "주문일",
+      "receiptNote": "영수증은 결제 대행·판매사인 Paddle이 따로 메일로 보내 드려요.",
+      "cta": "구독 관리하기"
+    },
+    "priceChange": {
+      "subject": "{productName} {planName} 요금이 {effectiveDate}부터 바뀌어요",
+      "preview": "{consentBy}까지 확인하고 응답해 주세요.",
+      "heading": "요금이 바뀌어요",
+      "bodyPriceIncrease": "{effectiveDate}부터 {planName} 요금제 가격이 바뀌어요: {from} → {to}",
+      "bodyTrialToPaid": "{planName} 무료 체험이 {effectiveDate}에 끝나요. 그 뒤로는 {to} 요금으로 청구돼요.",
+      "consentDeadline": "새 가격으로 계속 이용하려면 {consentBy}까지 동의해 주세요.",
+      "noResponse": "그때까지 응답이 없으면 새 가격으로 청구하지 않아요. 응답하지 않은 것은 동의가 아니에요.",
+      "declineNote": "계속 이용하지 않으려면 {effectiveDate} 전에 언제든 구독을 해지할 수 있어요.",
+      "acceptCta": "새 가격에 동의하기",
+      "declineCta": "구독 해지하기"
+    },
+    "cancellation": {
+      "subject": "{productName} 구독이 해지됐어요",
+      "preview": "구독을 해지했어요.",
+      "heading": "구독이 해지됐어요",
+      "bodyAccessUntil": "{accessUntil}까지는 {productName} 서비스를 계속 이용할 수 있어요.",
+      "bodyAccessEnded": "유료 기능 이용이 끝났어요.",
+      "noFurtherCharges": "앞으로 더 청구되지 않아요.",
+      "resubscribeCta": "다시 구독하기"
+    },
+    "paymentFailed": {
+      "subject": "{productName} 결제가 완료되지 않았어요",
+      "preview": "구독을 유지하려면 결제 수단을 확인해 주세요.",
+      "heading": "결제가 완료되지 않았어요",
+      "body": "{productName}의 최근 결제가 완료되지 않아 구독이 결제 지연 상태가 됐어요.",
+      "retryOn": "결제 대행사가 {retryDate}에 카드를 다시 시도해요.",
+      "retryAuto": "결제 대행사가 앞으로 며칠 동안 카드를 자동으로 다시 시도해요.",
+      "accessUntil": "{accessUntil}까지는 유료 기능을 계속 쓸 수 있어요. 그 뒤에는 결제가 완료될 때까지 멈춰요.",
+      "fix": "가장 빠른 방법은 결제 수단을 바꾸는 거예요.",
+      "cta": "결제 수단 변경하기"
+    },
+    "inquiryNotice": {
+      "subject": "{productName} 새 문의 {reference}",
+      "preview": "사이트로 문의가 들어왔어요.",
+      "heading": "새 문의가 들어왔어요",
+      "body": "{form} 폼으로 문의가 들어왔어요. 아래 연락처로 답해 주세요.",
+      "referenceLabel": "접수 번호",
+      "nameLabel": "이름",
+      "contactLabel": "연락처",
+      "messageLabel": "문의 내용",
+      "receivedAtLabel": "받은 때",
+      "retentionNote": "이 문의는 {deleteOn}에 자동으로 지워져요.",
+      "cta": "문의 보기",
+      "why": "{productName} 문의가 이 주소로 전달되도록 설정돼 있어서 받는 메일이에요."
+    },
+    "inquiryReceipt": {
+      "subject": "{productName} 문의를 받았어요",
+      "preview": "보내 주신 문의가 잘 도착했어요.",
+      "heading": "문의를 받았어요",
+      "body": "문의해 주셔서 고마워요. 남겨 주신 연락처로 답해 드릴게요.",
+      "referenceLabel": "접수 번호",
+      "responseNote": "보통 {responseTime} 안에 답해 드려요. 그때까지 답이 없으면 접수 번호를 적어 새로 보내 주세요.",
+      "notYou": "직접 보낸 문의가 아니면 이 메일은 무시해도 돼요.",
+      "why": "{productName}에 문의를 보내서 받는 메일이에요."
+    },
+    "verifyEmail": {
+      "subject": "{productName} 이메일 주소를 확인해 주세요",
+      "preview": "{productName} 계정의 이메일 주소를 확인해 주세요.",
+      "heading": "이메일 주소를 확인해 주세요",
+      "body": "이 이메일 주소가 맞는지 확인해 주세요. 영수증, 비밀번호 재설정, 보안 알림을 이 주소로 보내 드려요.",
+      "expiryNote": "이 링크는 {duration} 동안만 쓸 수 있어요. 시간이 지났다면 로그인한 뒤 다시 요청할 수 있어요.",
+      "ignoreNote": "요청한 적이 없다면 이 메일은 무시해도 돼요.",
+      "cta": "이메일 주소 확인하기",
+      "notMeNote": "이 계정을 만든 적이 없나요? 아래 링크를 누르면 계정을 지워 드려요.",
+      "notMeCta": "제가 가입한 게 아니에요"
+    },
+    "emailChangeConfirm": {
+      "subject": "{productName} 이메일 변경을 승인해 주세요",
+      "preview": "로그인 이메일을 {newEmail}(으)로 바꾸려는 요청이 있었어요.",
+      "heading": "이메일 변경을 승인해 주세요",
+      "body": "{productName} 계정의 이메일 주소를 {newEmail}(으)로 바꾸려는 요청을 받았어요.",
+      "nextStep": "승인하면 새 주소로 확인 링크를 보내 드려요. 그 링크를 눌러야 실제로 바뀌어요.",
+      "securityNote": "직접 요청하지 않았다면 버튼을 누르지 말고 비밀번호를 바꿔 주세요.",
+      "cta": "변경 승인하기",
+      "expiryNote": "이 링크는 {duration} 동안만 쓸 수 있고, 그 뒤에는 열리지 않아요."
+    },
+    "emailChanged": {
+      "subject": "{productName} 이메일 주소가 바뀌었어요",
+      "preview": "계정 이메일이 {newEmail}(으)로 바뀌었어요.",
+      "heading": "이메일 주소가 바뀌었어요",
+      "body": "{productName} 계정의 이메일 주소가 {newEmail}(으)로 바뀌었어요. 앞으로 계정 메일은 그 주소로 보내 드려요.",
+      "securityNote": "직접 바꾸지 않았다면 바로 비밀번호를 재설정하고 저희에게 알려 주세요.",
+      "cta": "계정 보호하기",
+      "contactCta": "문의하기"
+    },
+    "passwordReset": {
+      "subject": "{productName} 비밀번호를 재설정해 주세요",
+      "preview": "{productName} 계정의 새 비밀번호를 정하는 링크예요.",
+      "heading": "비밀번호를 재설정해 주세요",
+      "body": "{productName} 계정의 비밀번호를 재설정해 달라는 요청을 받았어요. 아래 버튼을 눌러 새 비밀번호를 정해 주세요.",
+      "expiryNote": "이 링크는 {duration} 동안만 쓸 수 있어요. 시간이 지났다면 로그인 화면에서 다시 요청해 주세요.",
+      "ignoreNote": "요청한 적이 없다면 이 메일은 무시해도 돼요. 비밀번호는 바뀌지 않아요.",
+      "cta": "새 비밀번호 정하기"
+    },
+    "passwordChanged": {
+      "subject": "{productName} 비밀번호가 바뀌었어요",
+      "preview": "{changedAt}에 비밀번호가 바뀌었어요.",
+      "heading": "비밀번호가 바뀌었어요",
+      "body": "{productName} 계정의 비밀번호가 {changedAt}에 바뀌었어요.",
+      "securityNote": "직접 바꾸지 않았다면 바로 비밀번호를 재설정하고 저희에게 알려 주세요.",
+      "cta": "계정 보호하기",
+      "contactCta": "문의하기"
+    },
+    "accountDeletionRequested": {
+      "subject": "{productName} 계정 삭제 요청을 받았어요",
+      "preview": "{graceUntil}까지 로그인하지 않으면 그날 계정을 삭제해요.",
+      "heading": "계정 삭제 요청을 받았어요",
+      "body": "{productName} 계정을 삭제해 달라는 요청을 받았어요. {graceUntil}에 계정을 삭제해요.",
+      "undo": "계정을 지키려면 그날 전에 로그인해 주세요. 로그인하면 삭제가 취소돼요.",
+      "kept": "계정을 삭제하면 프로필·로그인 정보·알림 설정을 지워요. 결제와 거래 기록은 법에서 정한 기간 동안만 남겨요. 이 기록에는 이름과 이메일이 들어 있지 않아요.",
+      "securityNote": "직접 요청하지 않았다면 바로 로그인해서 삭제를 취소하고 비밀번호를 바꿔 주세요.",
+      "cta": "로그인해서 취소하기"
+    },
+    "marketingConsentNotice": {
+      "subject": "{senderName} 광고성 정보 수신 설정을 처리했어요",
+      "preview": "수신 동의나 거부 의사를 처리한 결과를 알려 드려요.",
+      "heading": "광고성 정보 수신 설정 처리 결과",
+      "intro": "전송자: {senderName} — 남기신 광고성 정보 수신 의사를 아래와 같이 처리했어요.",
+      "changeLine": "{channel} · {status} · 의사를 표시한 날: {date}",
+      "channelEmail": "이메일",
+      "channelSms": "문자(SMS)",
+      "channelKakao": "카카오톡",
+      "channelPush": "앱 푸시",
+      "granted": "수신 동의",
+      "withdrawn": "수신 거부(동의 철회)",
+      "resultGranted": "처리 결과: 수신 동의를 반영했어요.",
+      "resultWithdrawn": "처리 결과: 수신 거부를 반영했어요. 이 채널로 광고성 정보를 보내지 않아요.",
+      "manageNote": "수신 설정은 계정 설정에서 언제든 바꿀 수 있어요. 이 메일은 법에 따라 보내는 처리 결과 안내이며 광고가 아니에요."
+    },
+    "newDeviceSignIn": {
+      "subject": "{productName} 계정에 새 기기로 로그인했어요",
+      "preview": "처음 보는 기기에서 {productName}에 로그인했어요.",
+      "heading": "새 기기로 로그인했어요",
+      "body": "{productName} 계정에 처음 보는 기기로 방금 로그인했어요.",
+      "deviceLine": "기기: {device}",
+      "timeLine": "시각: {time}",
+      "locationLine": "대략적인 위치: {location}",
+      "ifYou": "직접 로그인했다면 아무것도 하지 않아도 돼요.",
+      "ifNotYou": "직접 로그인한 게 아니라면 지금 계정을 보호해 주세요. 비밀번호를 재설정하면 다른 기기는 모두 로그아웃돼요.",
+      "cta": "계정 보호하기"
+    },
+    "marketingReconfirm": {
+      "subject": "{productName} 광고성 메일을 계속 받을지 확인해 주세요",
+      "preview": "광고성 메일을 계속 받고 싶은지 2년마다 확인해요.",
+      "heading": "광고성 메일을 계속 받을까요?",
+      "intro": "전송자: {senderName} — {consentDate}에 광고성 메일 수신에 동의하셨어요.",
+      "why": "법에 따라 2년마다 계속 받고 싶은지 확인해요.",
+      "noResponse": "아무것도 하지 않으면 그대로 계속 받게 돼요. 수신거부하기 전까지 메일이 가요.",
+      "keepCta": "계속 받기",
+      "unsubscribeCta": "수신거부",
+      "unsubscribeNote": "두 번째 버튼으로 언제든 수신거부할 수 있어요. 로그인하지 않아도 돼요."
+    },
+    "advertising": {
+      "subjectPrefix": "(광고)",
+      "adNotice": "광고 메일이에요. {senderName}의 광고성 메일 수신에 동의하셔서 보내 드려요.",
+      "optOutLead": "이 메일을 더 받고 싶지 않다면 한 번에 수신거부할 수 있어요. 로그인하지 않아도 돼요.",
+      "unsubscribeCta": "수신거부",
+      "senderLabel": "전송자",
+      "emailLabel": "이메일",
+      "phoneLabel": "전화",
+      "addressLabel": "주소"
+    }
+  },
+  "auth": {
+    "twoFactorDisabled": "이 앱에서는 2단계 인증을 쓰지 않아요.",
+    "methodUnavailable": "이 로그인 방법은 쓸 수 없어요.",
+    "magicLinkSignUp": "먼저 비밀번호나 소셜 계정으로 가입해 주세요.",
+    "required": "꼭 입력해 주세요.",
+    "consentRequired": "계속하려면 동의해 주세요.",
+    "ageOver14Required": "만 14세 이상만 가입할 수 있어요.",
+    "invalidCredentials": "이메일이나 비밀번호가 맞지 않아요.",
+    "invalidCode": "코드가 틀렸거나 만료됐어요.",
+    "invalidResetToken": "재설정 링크가 만료됐거나 이미 썼어요. 새 링크를 받아 주세요.",
+    "userExists": "이미 가입된 이메일이에요.",
+    "weakPassword": "비밀번호를 더 길게 만들어 주세요.",
+    "invalidEmail": "올바른 이메일 주소를 입력해 주세요.",
+    "emailNotVerified": "먼저 이메일 인증을 마쳐 주세요. 인증 링크를 보내 드렸어요.",
+    "signInRequired": "로그인하고 계속해 주세요.",
+    "tooManyRequests": "시도가 너무 많아요. 잠시 뒤에 다시 해 주세요.",
+    "unavailable": "로그인 서비스에 연결하지 못했어요. 다시 시도해 주세요.",
+    "failed": "문제가 생겼어요. 다시 시도해 주세요.",
+    "deletionUnavailable": "지금은 탈퇴를 처리할 수 없어요. 잠시 뒤에 다시 해 주세요.",
+    "subscriptionCancelFailed": "구독을 해지하지 못해서 탈퇴하지 않았어요. 다시 시도해 주세요.",
+    "invalidPassword": "지금 비밀번호가 맞지 않아요.",
+    "reauthRequired": "안전을 위해 다시 로그인한 뒤 해 주세요.",
+    "noPassword": "이 계정에는 아직 비밀번호가 없어요.",
+    "sameEmail": "지금 쓰고 있는 이메일 주소예요.",
+    "alreadyVerified": "이메일 주소가 이미 확인됐어요.",
+    "addEmailFirst": "먼저 이메일 주소를 넣어 주세요.",
+    "sessionNotFound": "이미 끝난 로그인이에요.",
+    "invalidLocale": "지원하는 언어를 골라 주세요.",
+    "invalidTimeZone": "올바른 시간대를 골라 주세요.",
+    "deviceName": "{os} · {browser}",
+    "unknownDevice": "알 수 없는 기기",
+    "accountSuspended": "이용이 정지된 계정이에요. 고객 지원에 문의해 주세요.",
+    "impersonationBlocked": "대리 로그인 중에는 할 수 없어요.",
+    "admin": {
+      "adminRequired": "관리자만 할 수 있어요.",
+      "twoFactorRequired": "관리자 기능을 쓰려면 2단계 인증을 켜 주세요.",
+      "notFound": "사용자를 찾지 못했어요.",
+      "cannotBanSelf": "자기 자신은 정지할 수 없어요.",
+      "cannotImpersonateAdmin": "다른 관리자로는 대리 로그인할 수 없어요.",
+      "reasonRequired": "사유를 입력해 주세요.",
+      "notImpersonating": "대리 로그인 중이 아니에요.",
+      "exportTooLarge": "내보낼 행이 너무 많아요(최대 {max}행). 검색 조건을 좁혀 다시 해 주세요.",
+      "csv": {
+        "id": "사용자 ID",
+        "email": "이메일",
+        "name": "이름",
+        "role": "역할",
+        "banned": "정지",
+        "banReason": "정지 사유",
+        "twoFactor": "2단계 인증",
+        "emailVerified": "이메일 인증",
+        "createdAt": "가입 시각(한국 시간)",
+        "yes": "예",
+        "no": "아니요"
+      }
+    }
+  },
+  "consent": {
+    "terms": "이용약관에 동의해요 (필수)",
+    "privacy": "개인정보 수집·이용에 동의해요 (필수)",
+    "ageOver14": "만 14세 이상이에요 (필수)",
+    "ageOver14Help": "만 14세 미만은 법정대리인의 동의가 필요해서 혼자 가입할 수 없어요.",
+    "marketing": {
+      "title": "광고성 정보 받기 (선택)",
+      "email": "이메일",
+      "sms": "문자(SMS)",
+      "kakao": "카카오톡",
+      "push": "앱 푸시",
+      "granted": "수신 동의",
+      "withdrawn": "수신 거부",
+      "updatedAt": "마지막 변경: {date}",
+      "resultNotice": "{sender} 광고성 정보 수신 설정을 처리했어요. {channel}: {status} (처리한 날: {date})",
+      "invalid": "채널마다 받기 또는 받지 않기를 골라 주세요.",
+      "saveFailed": "설정을 저장하지 못했어요. 다시 시도해 주세요."
+    }
+  },
+  "checkout": {
+    "withdrawal": {
+      "notice": "이 상품은 디지털콘텐츠라서 이용을 시작하면 청약철회가 제한될 수 있어요.",
+      "trial": "결제하기 전에 무료 체험이나 미리보기로 먼저 써 볼 수 있어요.",
+      "consentLabel": "위 내용을 확인했고, 결제하면 바로 이용이 시작되는 데 동의해요.",
+      "consentRequired": "청약철회 제한 안내를 확인하고 동의해 주세요."
+    },
+    "failed": "결제를 시작하지 못했어요. 다시 시도해 주세요."
+  },
+  "transfer": {
+    "title": "개인정보 국외 이전",
+    "intro": "서비스를 운영하려고 아래 업체에 개인정보 처리를 맡기고 있어요. 이 과정에서 개인정보가 국외로 옮겨져요.",
+    "column": {
+      "recipient": "받는 자(연락처)",
+      "country": "이전되는 나라",
+      "items": "이전 항목",
+      "whenHow": "이전 시기·방법",
+      "purpose": "이용 목적",
+      "retention": "보유·이용 기간"
+    },
+    "country": {
+      "US": "미국",
+      "DE": "독일",
+      "KR": "대한민국"
+    },
+    "whenHow": "서비스를 이용할 때마다 네트워크로 보내요",
+    "items": {
+      "analytics": "이용 기록(본 페이지·누른 버튼), 기기·브라우저 정보, 내부 회원 번호",
+      "email": "이메일 주소, 이름(입력한 경우), 메일 내용",
+      "errors": "오류 기록, 내부 회원 번호, 기기·브라우저 정보(IP 주소·쿠키는 가려요)",
+      "hosting": "서비스를 이용하며 주고받는 모든 정보(IP 주소·접속 기록 포함)",
+      "botCheck": "IP 주소, 브라우저 정보(User-Agent·TLS 지문)",
+      "database": "서비스가 저장하는 계정·서비스 데이터(프로필·요금제 상태·문의), 표시된 지역에 보관"
+    },
+    "purpose": {
+      "analytics": "이용 통계와 서비스 개선",
+      "email": "메일 보내기",
+      "errors": "오류 찾기와 고치기",
+      "hosting": "서비스 운영(서버·네트워크)",
+      "botCheck": "가입·문의 폼의 자동화된 악용 막기",
+      "database": "서비스 데이터베이스 보관·제공"
+    },
+    "retention": "회원 탈퇴 또는 업체와의 위탁 계약이 끝날 때까지",
+    "refuse": "국외 이전을 원하지 않으면 이 연락처로 알려 주세요: {contact}. 이 업체들 없이는 서비스를 운영할 수 없어서, 거부하면 서비스를 이용할 수 없어요."
+  },
+  "inquiry": {
+    "required": "꼭 입력해 주세요.",
+    "contactInvalid": "이메일 주소나 전화번호를 입력해 주세요.",
+    "tooLong": "{max}자 이하로 써 주세요.",
+    "consentRequired": "개인정보 수집·이용에 동의해 주세요.",
+    "received": "문의를 받았어요. 접수 번호: {reference}",
+    "failed": "문의를 보내지 못했어요. 다시 시도해 주세요.",
+    "unavailable": "지금은 문의를 받지 않아요."
+  },
+  "protect": {
+    "rateLimited": "요청이 너무 많아요. {seconds}초 뒤에 다시 해 주세요.",
+    "botCheckFailed": "사람인지 확인하지 못했어요. 잠시 기다렸다가 다시 시도해 주세요. 계속 안 되면 페이지를 새로고침해 주세요.",
+    "botCheckUnavailable": "지금은 확인을 할 수 없어요. 잠시 뒤에 다시 시도해 주세요.",
+    "inProgress": "앞서 보낸 요청을 아직 처리하고 있어요. 잠시 뒤에 다시 확인해 주세요.",
+    "confirmationRequired": "사람이 내용을 보고 확인해야 실행돼요. 아무것도 바뀌지 않았어요.",
+    "confirmEmailMismatch": "보이는 그대로 이메일 주소를 입력해 확인해 주세요. 아무것도 바뀌지 않았어요.",
+    "actionFailed": "요청이 처리되지 않았어요. 더 진행된 것은 없어요."
+  },
+  "collection": {
+    "title": "수집하는 개인정보",
+    "column": {
+      "items": "수집 항목",
+      "purpose": "이용 목적",
+      "basis": "처리 근거",
+      "retention": "보유·이용 기간"
+    },
+    "items": {
+      "inquiry": "이름(선택), 이메일 주소나 전화번호, 문의 내용"
+    },
+    "purpose": {
+      "inquiry": "문의 접수와 답변"
+    },
+    "basis": {
+      "request": "요청하신 조치를 이행하는 데 필요해요(개인정보 보호법 제15조제1항제4호)",
+      "consent": "동의(개인정보 보호법 제15조제1항제1호)"
+    },
+    "retention": {
+      "days": "받은 날부터 {days}일 뒤 지워요. 소비자 불만·분쟁 처리 기록이 된 문의는 3년 동안 보관한 뒤 지워요",
+      "dispute": "소비자 불만·분쟁 처리 기록으로 3년 동안 보관한 뒤 지워요"
+    },
+    "refuse": "입력하지 않을 수 있지만, 그러면 문의를 받거나 답해 드릴 수 없어요."
+  }
+}

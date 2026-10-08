@@ -1,0 +1,13 @@
+{
+  "kind": "contact-form",
+  "variant": "channel-first",
+  "title": "문의 — 카카오톡 채널·전화 먼저 + 보조 폼",
+  "layout": "channels-then-form",
+  "density": "comfortable",
+  "archetypes": ["local", "commerce", "brand"],
+  "archetypeKinds": ["contact-cta", "bulk-order-inquiry"],
+  "states": ["submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "큰 채널 칸 둘(카카오톡 채널 포트 · tel 링크 결과) → 「또는 메일로 남기기」 보조 폼. 채널·제출 포트는 모두 props(블록은 어댑터를 부르지 않는다 — 예시가 adapter-static telLink·kakaoChannelSubmit·mailtoSubmit 연결을 보인다)"
+}

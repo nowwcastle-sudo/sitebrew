@@ -1,0 +1,14 @@
+{
+  "kind": "auth",
+  "variant": "sign-up-consents",
+  "title": "가입 — 계정 정보·필수/선택 동의 분리 단계 흐름",
+  "layout": "stepped-consents",
+  "density": "comfortable",
+  "archetypes": ["saas", "commerce", "pwa"],
+  "archetypeKinds": ["sign-up", "consents"],
+  "states": ["loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["O1", "O2", "O4", "L2", "L12", "X1", "M1"],
+  "notes": "단계 줄 ①계정 ②동의 ③완료(data-flow=signup data-step·data-steps=3 — 해지 흐름 단계 수의 기준). ① 소셜 위·이메일·비밀번호 두 칸만. ② 필수(약관·개인정보) 한 칸씩 data-consent=required, 선택 마케팅(이메일·문자·카카오톡·앱 알림) fieldset data-consent=optional 모두 해제로 시작, 전체 동의 없음. 포트 칸 오류(email·password)면 ①로 돌아가 그 칸 포커스. 포트: methods·signUp·track? Task 10d: 필수 체크 셋째 「만 14세 이상」(copy.ageOver14, 개인정보 보호법 제22조의2 — 미리 켜지 않음, 체크해야 consents.ageOver14: true). 폼 제출 보호(copy.notices). P3-6: 이미 있는 이메일(code email_exists)이면 ①로 돌아가 칸 오류 + 로그인·비밀번호 찾기 알림(data-account-exists, copy.exists, A02) · isWeakPassword(copy.errors.passwordWeak) · 약관·개인정보 보기는 새 탭(target=_blank rel=noopener, copy.newTab, A04) · 마케팅 채널은 copy.marketing.channels 에 문구 있는 것만(+prop channels, A05) · copy.required 가 있으면 필수 동의도 fieldset(data-consent-group=required)으로 선택 묶음(점선)과 갈린다(K09)."
+}

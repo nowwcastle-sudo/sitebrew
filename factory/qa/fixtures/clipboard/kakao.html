@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>카카오 채널 예시</title></head>
+<body>
+<!-- kakaoChannelSubmit 을 끼운 channel-first 블록의 모양: 폼 글을 클립보드로 옮기고 채널 채팅 주소를 연다. ?mode= 로 고장 낸다(nocopy·noopen·missingfield) -->
+<main>
+<section data-block="contact-form-channel-first">
+  <ul class="cn-block-channel-list"><li><button type="button" id="k" class="cn-block-channel-button">카카오톡 채널로 상담</button></li></ul>
+  <form>
+    <input name="name"><input name="contact" type="email"><textarea name="message"></textarea>
+  </form>
+</section>
+</main>
+<script>
+const mode = new URLSearchParams(location.search).get('mode') || 'good'
+document.getElementById('k').addEventListener('click', () => {
+  const f = (n) => document.querySelector('[name="' + n + '"]').value
+  let text = ['이름: ' + f('name'), '연락처: ' + f('contact'), f('message')].join('\n')
+  if (mode === 'missingfield') text = '이름: ' + f('name') + '\n' + f('message')
+  if (mode !== 'nocopy') navigator.clipboard.writeText(text)
+  if (mode !== 'noopen') window.open('https://pf.kakao.com/_WfExample/chat', '_blank', 'noopener,noreferrer')
+})
+</script>
+</body></html>

@@ -1,0 +1,13 @@
+{
+  "kind": "pricing",
+  "variant": "feature-matrix",
+  "title": "요금 — 기능 × 요금제 표",
+  "layout": "feature-matrix",
+  "density": "compact",
+  "archetypes": ["saas", "dashboard", "landing"],
+  "archetypeKinds": ["pricing-plans", "pricing"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "열 = 요금제(머리에 이름·월 금액), 행 = 기능(th scope=row), 칸 = 있음·없음 아이콘 + sr-only, 아래 줄 요금제별 버튼. 추천 열 muted. 375: 표 안에서만 가로 밀림, 기능 열 붙음 P3-6 E01: 행동 버튼은 로그인 상태를 따른다 — three-tier-cards 와 같은 약속(planIds·signedInHref·signedIn·currentPlanId)."
+}

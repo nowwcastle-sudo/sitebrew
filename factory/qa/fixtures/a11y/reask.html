@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>접근성 시험 쪽</title>
+<style>
+body{margin:0;font:16px/1.6 sans-serif;color:#111;background:#fff}
+a{color:#0047b3}
+@media (prefers-color-scheme: dark){body{color:#f2f2f2;background:#111}a{color:#9cf}}
+main{padding:24px;max-width:640px}
+label{display:block;margin:12px 0 4px}
+input{min-height:32px;min-width:240px;font:inherit}
+button{min-height:44px;min-width:88px;font:inherit}
+
+</style></head><body><main>
+<h1>앞에서 넣은 값을 다시 묻는 폼</h1>
+<form id="wizard"><div id="s1"><label for="em">이메일</label><input id="em" name="email" type="email" autocomplete="email"><p><button type="button" id="n1">다음</button></p></div>
+<div id="s2" hidden><label for="ad">주소</label><input id="ad" name="address" autocomplete="street-address">
+<label for="em2">이메일을 한 번 더 입력하세요</label><input id="em2" name="email" type="email" autocomplete="email"><p><button type="submit">보내기</button></p></div></form>
+<script>
+document.getElementById('n1').addEventListener('click',()=>{document.getElementById('s1').hidden=true;document.getElementById('s2').hidden=false});
+document.getElementById('wizard').addEventListener('submit',e=>e.preventDefault());
+</script>
+</main></body></html>

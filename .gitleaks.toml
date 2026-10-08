@@ -1,0 +1,24 @@
+# gitleaks 설정(P3-8) — 기본 규칙 묶음 위에 이 저장소 허용 목록만 더한다. 오탐은 [[allowlists]] 로 더하고 항목마다 경로·사유를 적는다.
+# 허용은 「규칙 하나 × 파일 둘」처럼 좁게 건다 — 파일 통째로 빼지 않는다.
+title = "web-factory gitleaks"
+
+[extend]
+useDefault = true
+
+# 2026-10-07 첫 실행 오탐 2건(전체 이력 592커밋 · 둘 다 시험 안의 가짜 값이다 — 값은 읽어 확인했고 실제 키가 아니다).
+#   media-pipeline.test.mjs: redact() 가 메시지에서 키 글자를 지우는지 보는 시험 상수.
+#   stamp-export.test.mjs: 가짜 VERCEL_TOKEN 이 자식 환경 변수로만 가고 인자에는 없는지 보는 시험 상수.
+[[allowlists]]
+description = "시험 안의 가짜 토큰·키 상수(generic-api-key 오탐)"
+targetRules = ["generic-api-key"]
+paths = [
+  '''factory/scripts/media-pipeline\.test\.mjs''',
+  '''factory/scripts/stamp-export\.test\.mjs''',
+]
+
+# Sitebrew: the launch-factory/ folder is scanned on its own with launch-factory/.gitleaks.toml (its allow list is written for its own paths); see .github/workflows/security.yml.
+[[allowlists]]
+description = "launch-factory/ is scanned separately with its own config"
+paths = [
+  '''^launch-factory/''',
+]

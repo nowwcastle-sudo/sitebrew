@@ -1,0 +1,26 @@
+/* T4 괘선 격자(브루탈) ★운영자 판정(2026-09-26) — 0 계열. 모든 셀에 1px 잉크 실선, 바깥 2px, 행 40px. 숫자는 표 전체가 tabular, 고정폭 글꼴은 data-numeric 을 단 셀에만 — 한글 머리·이름·캡션은 본문 서체(T7-I1).
+ * 선은 border-foreground(불투명) — 배경 대비 3:1 이상(contrast.mjs --pair 로 기록). DESIGN §6 예외 값. 원천 style_axes.md 축 4. */
+.cn-table {
+  @apply border-collapse border-2 border-foreground text-base tabular-nums;
+}
+.cn-table-header {
+  @apply [&_tr]:border-b-2 [&_tr]:border-foreground;
+}
+.cn-table-body {
+  @apply [&_tr:last-child]:border-b-0;
+}
+.cn-table-footer {
+  @apply border-t-2 border-foreground font-bold [&>tr]:last:border-b-0;
+}
+.cn-table-row {
+  @apply border-b border-foreground;
+}
+.cn-table-head {
+  @apply h-10 border-r border-foreground px-3 text-sm font-bold last:border-r-0 [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-cell {
+  @apply h-10 border-r border-foreground px-3 py-0 last:border-r-0 data-numeric:font-mono [&:has([role=checkbox])]:pe-0;
+}
+.cn-table-caption {
+  @apply [--table-caption-gap:0.75rem] text-left text-sm;
+}

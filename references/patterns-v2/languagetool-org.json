@@ -1,0 +1,63 @@
+{
+  "id": "languagetool-org",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://languagetool.org/",
+  "structure": {
+    "hero": "제목과 할인 카운트다운 띠 아래 큰 입력 칸과 교정 결과 패널",
+    "sections": [
+      "로고+주 메뉴+가입·크롬 추가",
+      "제목+설명+크롬 버튼",
+      "할인 카운트다운 띠",
+      "언어 선택+입력 칸",
+      "교정·바꿔쓰기 탭 패널",
+      "예시 문장·문서 확인 버튼",
+      "깐깐한 모드 스위치"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 32px 제목",
+    "body": "산세리프 16~18px",
+    "scale": "제목 32px, 본문 18px, 버튼 14px 굵게"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "언어 선택 드롭다운",
+    "직접 입력과 붙여넣기",
+    "예시 문장 넣기 버튼",
+    "워드 문서 확인 버튼",
+    "교정·바꿔쓰기 탭 전환",
+    "깐깐한 모드 스위치"
+  ],
+  "cta": {
+    "pattern": "크롬 추가 버튼 2개 + 가입 + 할인 받기",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa",
+      "saas"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "입력 칸은 왼쪽에 크게, 결과 패널은 오른쪽에 둔 2열 도구다",
+    "결과 패널의 빈 상태에 일러스트와 한 줄 안내를 둔다",
+    "375에서는 입력 칸이 전폭이 되고 예시·클립보드 버튼이 하단에 크게 놓인다",
+    "카운트다운 할인 띠가 도구 바로 위에 있어 첫 사용 시선을 끈다"
+  ]
+}

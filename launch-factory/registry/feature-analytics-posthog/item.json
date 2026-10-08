@@ -1,0 +1,26 @@
+{
+  "name": "feature-analytics-posthog",
+  "title": "계측 — PostHog",
+  "description": "동의가 먼저인 PostHog AnalyticsPort(브라우저 Provider + 서버 어댑터). 출처 태그·리퍼러 분류·개인정보 모양 props 거부는 @launch-factory/analytics-posthog 가 갖는다.",
+  "npm": ["@launch-factory/analytics-posthog", "@launch-factory/env"],
+  "registryDependencies": [],
+  "envVars": [
+    "LF_MODE",
+    "POSTHOG_PROJECT_KEY",
+    "POSTHOG_HOST"
+  ],
+  "files": [
+    "files/lib/launch/analytics.ts",
+    "files/components/launch/analytics-provider.tsx",
+    "../_shared/lib/launch/env.ts"
+  ],
+  "noEntrypointReason": "경로·서버 액션이 없다. 브라우저는 Provider 가, 서버는 analytics().forRequest() 가 입구다. PostHog 는 웹훅을 보내지 않는다.",
+  "docs": [
+    "설치 뒤 할 일",
+    "0. 설치 전에 앱 폴더 .npmrc 에 save-exact=true 를 적는다 — shadcn CLI 가 npm install 로 의존을 넣으므로 이 설정이 없으면 package.json 에 ^ 범위로 적혀 고정한 판에서 벗어난다.",
+    "1. @launch-factory/* 는 아직 npm 에 게시하지 않은 비공개 패키지다(게시는 운영자 몫). next.config.ts 의 transpilePackages 에 쓰는 패키지를 모두 적는다.",
+    "2. 서버 레이아웃이 POSTHOG_PROJECT_KEY(공개 프로젝트 키 phc_…)와 POSTHOG_HOST(us 또는 eu 호스트, 운영자 할 일 O5)를 읽어 <AnalyticsProvider projectKey host consent onConsentChange> 로 넘긴다. 두 이름은 선택이다 — 하나라도 없으면 분석이 꺼진 것이다(Provider 를 올리지 않고 서버 계측은 아무 일도 하지 않는다). 동의(consent.analytics)가 true 가 되기 전에는 아무것도 보내지 않는다.",
+    "3. 서버 이벤트는 analytics().forRequest({ distinctId: <내부 사용자 id>, consent }) 로 만든 포트의 track 을 쓰고, 응답 전에 flush() 를 기다린다.",
+    "4. 국외 이전 고지·CSP 값은 @launch-factory/analytics-posthog 의 resolvePostHog·POSTHOG_CSP 가 같은 호스트로 정한다."
+  ]
+}

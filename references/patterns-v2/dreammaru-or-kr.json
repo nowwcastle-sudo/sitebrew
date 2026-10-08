@@ -1,0 +1,61 @@
+{
+  "id": "dreammaru-or-kr",
+  "archetype": "public",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.dreammaru.or.kr/www/index.do",
+  "structure": {
+    "hero": "복숭아색 바탕 가운데 손글씨 로고와 원형 아이콘 여섯 개를 두고, 오른쪽에 색 배지가 붙은 경기도 지도를 놓은 플랫폼 홈",
+    "sections": [
+      "협력 기관 로고 줄",
+      "로고·태그라인·카카오 채널·로그인·회원가입·이용가이드",
+      "메인 내비 6개와 햄버거",
+      "로고 타이틀과 원형 아이콘 6개",
+      "경기도 지도(시별 색 배지)",
+      "카카오 챗봇 버튼"
+    ]
+  },
+  "type": {
+    "display": "손글씨 로고 서체",
+    "body": "한글 고딕 보통",
+    "scale": "로고 약 64px, 아이콘 라벨 약 17px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "원형 아이콘 6개(창업교육·상담·공간·정보·입주·FAQ)",
+    "지도 위 시 배지 클릭",
+    "카카오 채널·챗봇",
+    "로그인·회원가입",
+    "햄버거 메뉴"
+  ],
+  "cta": {
+    "pattern": "원형 아이콘 6개와 카카오 채널 링크",
+    "count": 7
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "대상자(예비 창업 여성) 한 문장을 로고 옆 파란 글씨로 알린다.",
+    "핵심 서비스 여섯 개를 흰 원 아이콘으로 묶어 중앙에 둔다.",
+    "지역별 센터를 지도 위 색 배지로 보여 준다.",
+    "카카오 채널과 챗봇이 두 곳이라 전화 외 문의 경로가 풍부하다.",
+    "모바일은 아이콘이 3열 두 줄로 쌓이고 지도가 아래로 내려간다."
+  ]
+}

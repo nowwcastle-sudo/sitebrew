@@ -1,0 +1,13 @@
+{
+  "kind": "trust",
+  "variant": "author-byline",
+  "title": "글 서명(E-E-A-T) — 작성자·검수자·경력 한 줄·갱신일·참고 자료(+ WebPage JSON-LD)",
+  "layout": "byline-dl",
+  "density": "compact",
+  "archetypes": ["brand", "public", "detail", "portfolio", "local"],
+  "archetypeKinds": ["byline", "author-info"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "h2 + <dl> 작성자·검수자(이름·직함·경력 한 줄·프로필 링크 rel=author) + 갱신일(<UpdatedAt> — 같은 날짜가 JSON-LD dateModified·sitemap lastmod) + 참고한 자료 <ol> 링크. 서버 컴포넌트(상태·모션 없음). jsonLd(기본 켬)는 같은 props 로 WebPage author·reviewedBy(Person)·dateModified·citation 을 싣고 화면에 없는 값은 싣지 않는다(X4). 별점 마크업 없음. 사람 이름·경력은 사실이라 지어내지 않는다 — 예시는 가상 인물"
+}

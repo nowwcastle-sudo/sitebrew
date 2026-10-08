@@ -1,0 +1,67 @@
+{
+  "id": "glossier-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.glossier.com/en-kr/products/mini-you-wardrobe-set",
+  "structure": {
+    "hero": "왼쪽 정보 열(제목·장바구니·설명), 오른쪽 사진 2장 갤러리와 썸네일",
+    "sections": [
+      "검정 공지띠(이전·다음·일시정지)",
+      "헤더(손글씨 로고·내비 9개·검색·지역·매장·로그인·가방)",
+      "상품 정보 열(제목·부제·NEW 칩)",
+      "가격이 들어간 Add to bag 버튼",
+      "설명(더 보기)·속성 목록",
+      "ADD ON 접이식 행(+)",
+      "2장 나란히 갤러리와 진행 선",
+      "썸네일 줄(10장)",
+      "쿠키 패널·뉴스레터 모달"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 제목과 손글씨 로고",
+    "body": "기하학 산세리프 본문",
+    "scale": "제목 크게, 라벨 작은 대문자"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "흰 화면에서 약 0.75초 안에 제목·사진·썸네일이 한꺼번에 나타남",
+    "scroll": null,
+    "hover": null,
+    "transition": "약 1.5초에 쿠키 패널이 우하단에 올라오고 약 7.5초에 뉴스레터 모달이 뜸",
+    "durationsMs": [
+      750,
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "갤러리 진행 선과 썸네일 선택",
+    "설명 더 보기",
+    "ADD ON 행 펼치기(+)",
+    "모바일 「Now mini! 1/10」 캡션",
+    "쿠키 패널·뉴스레터 모달"
+  ],
+  "cta": {
+    "pattern": "가격이 들어간 Add to bag 버튼(제목 아래 왼쪽 열)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "버튼 안에 가격을 넣어 가격 줄과 CTA를 하나로 합친다",
+    "정보 열은 왼쪽, 사진 2장은 오른쪽인 비대칭 구성이 에디토리얼 느낌",
+    "추가 상품을 접이식 행(+)으로 둬 업셀을 장바구니 근처에서 제안한다",
+    "모바일은 이미지 위 캡션과 번호(1/10)로 갤러리 위치를 알린다",
+    "쿠키·뉴스레터가 순서대로 뜨지만 다른 요소를 크게 가리지 않는다"
+  ]
+}

@@ -1,0 +1,607 @@
+{
+  "id": "portfolio",
+  "purpose": "의뢰인이 실제 작업을 보고 역량을 판단해 프로젝트를 문의하게 한다.",
+  "coreTask": "브라우저 에이전트가 ① 특정 분야(예: 브랜드 아이덴티티) 작업 3개의 제목과 의뢰인을 나열하고(JS를 끈 상태에서도) ② 그중 하나의 사례 페이지를 고유 URL로 열어 결과를 두 문장으로 요약하며 ③ 새 프로젝트 문의 이메일 주소를 돌려준다.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "statement",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-cropped-title-list",
+            "block-hero-grid-lines-baseline-word",
+            "block-hero-inline-chip-title",
+            "block-hero-object-3d-orbit",
+            "block-hero-illustration-scene",
+            "block-hero-video-montage",
+            "block-hero-banded-full-bleed"
+          ],
+          "copySlots": [
+            {
+              "id": "h1",
+              "role": "누구·무엇(분야)·어디 한 문장, 한 화면 안에서 끝남",
+              "maxChars": 28
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "work-grid",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "작업 격자 — 본문(작업마다 링크, 전용 블록 없음)",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "작업",
+                "en": "Work"
+              },
+              "from": [
+                "works"
+              ],
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "client",
+                  "year:year"
+                ],
+                "tags": "disciplines",
+                "image": "thumb",
+                "href": "@case-link"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "workTitle",
+              "role": "작업 제목",
+              "maxChars": null
+            },
+            {
+              "id": "client",
+              "role": "의뢰인",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "work-thumb",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "client-roster",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-logo-rail"
+          ],
+          "copySlots": [
+            {
+              "id": "client",
+              "role": "고객 이름(글자)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "services",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-bento-grid"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "recognition",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-logo-rail"
+          ],
+          "copySlots": [
+            {
+              "id": "award",
+              "role": "수상·언론 이름 + 연도(배지 이미지만 두지 않음)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "about",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "trust"
+          ],
+          "allowedVariants": [
+            "block-trust-brand-fact-sheet"
+          ],
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "team",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "news",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "소식 목록 — 본문 목록",
+            "missing": "소식 목록 칸이 콘텐츠 스키마에 없다"
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "contact-cta",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "contact-form",
+            "final-cta"
+          ],
+          "allowedVariants": [
+            "block-contact-form-inline-short"
+          ],
+          "copySlots": [
+            {
+              "id": "cta",
+              "role": "협업 제안(「프로젝트 문의」)",
+              "maxChars": null
+            },
+            {
+              "id": "email",
+              "role": "mailto: 링크 글자가 주소 자체",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "case-study",
+      "route": "/work",
+      "sections": [
+        {
+          "kind": "case-meta",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 메타 dl — 본문",
+            "render": {
+              "as": "facts",
+              "heading": {
+                "ko": "사례 정보",
+                "en": "Project details"
+              },
+              "rows": [
+                {
+                  "label": {
+                    "ko": "의뢰인",
+                    "en": "Client"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.client",
+                    "slot:client"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "제공 서비스",
+                    "en": "Services"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.services",
+                    "slot:services"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "연도",
+                    "en": "Year"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.year",
+                    "slot:year"
+                  ],
+                  "format": "year"
+                },
+                {
+                  "label": {
+                    "ko": "역할",
+                    "en": "Role"
+                  },
+                  "from": [
+                    "caseStudies.0.meta.role",
+                    "slot:role"
+                  ]
+                }
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "client",
+              "role": "의뢰인",
+              "maxChars": null
+            },
+            {
+              "id": "services",
+              "role": "제공 서비스",
+              "maxChars": null
+            },
+            {
+              "id": "year",
+              "role": "연도",
+              "maxChars": null
+            },
+            {
+              "id": "role",
+              "role": "역할",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "case-hero",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "challenge",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "과제",
+                "en": "Challenge"
+              },
+              "from": [
+                "caseStudies.0.challenge"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "role-collaboration",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "역할과 협업",
+                "en": "Role and collaboration"
+              },
+              "from": [
+                "caseStudies.0.role"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "process",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문(버린 선택지 포함)",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "과정",
+                "en": "Process"
+              },
+              "from": [
+                "caseStudies.0.process",
+                "slot:body"
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "body",
+              "role": "짧은 글 덩어리(약 150단어·한글 약 400자마다 figure)",
+              "maxChars": 400
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "process",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "solution",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "해결",
+                "en": "Solution"
+              },
+              "from": [
+                "caseStudies.0.solution"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "deliverable",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "results",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사례 본문(측정 결과)",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "결과",
+                "en": "Results"
+              },
+              "from": [
+                "caseStudies.0.results",
+                "slot:result"
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "result",
+              "role": "수치·수상·의뢰인 말",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "next-work",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "다음 작업 링크 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "다음 작업",
+                "en": "Next work"
+              },
+              "links": [
+                {
+                  "label": {
+                    "ko": "다른 작업 보기",
+                    "en": "See more work"
+                  },
+                  "from": [
+                    "@route:home#work-grid"
+                  ]
+                }
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "grid-first",
+      "order": [
+        "header",
+        "work-grid",
+        "news",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 pentagram(첫 카드 @60px, 분야별 묶음 5개)"
+      ]
+    },
+    {
+      "id": "statement-curated",
+      "order": [
+        "header",
+        "statement",
+        "work-grid",
+        "client-roster",
+        "services",
+        "recognition",
+        "about",
+        "news",
+        "contact-cta",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 instrument·locomotive·collins 순서",
+        "NN/g 「대표작 3~5개를 깊게」"
+      ]
+    },
+    {
+      "id": "case-study",
+      "order": [
+        "case-meta",
+        "challenge",
+        "role-collaboration",
+        "process",
+        "solution",
+        "results",
+        "next-work"
+      ],
+      "evidence": [
+        "NN/g ux-design-portfolios 5단계",
+        "OBP 사례 개편",
+        "Liberty Design 사례 틀"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "work",
+        "about",
+        "contact"
+      ],
+      "maxItems": 5,
+      "evidence": [
+        "1b-p-005",
+        "관찰 5/5"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "email-as-text"
+      ],
+      "evidence": [
+        "1b-p-006"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "work": "real-required — 납품 결과·현장 사진·과정 스케치. 생성 이미지·기기 목업만으로 작업을 대신하지 않음",
+    "confidentialWork": "real-required — 과정 자료(흑백 와이어·스케치)로",
+    "video": "음소거 반복 <video>, GIF 금지(§6-A)",
+    "thumbAspect": "사이트 전체에서 비율 하나(예: 4:3 또는 16:10)"
+  },
+  "contentSchemaHints": [
+    "works[]: { slug(/work/<slug>), title, client, disciplines[], year, thumb } — 캔버스 갤러리여도 DOM <a href> 목록을 같은 객체에서",
+    "caseStudy: { meta{client,services,year,role}, challenge, role, process[], solution, results[], next }",
+    "contact: { email, inquiryUrl? }"
+  ],
+  "references": [
+    {
+      "url": "https://www.pentagram.com",
+      "why": "첫 작업 카드가 첫 화면 맨 위, 분야별 최신 작업 묶음, 작은 UI 글자로 작업 이미지가 위계를 맡음, 이메일 글자(H1이 로고인 점은 따르지 않음)"
+    },
+    {
+      "url": "https://locomotive.ca/en",
+      "why": "선언 H1 → 대표작 → 전체 보기 → 글·문화 → Let's talk의 짧은 순서(캔버스 의존·H1 이모지는 따르지 않음)"
+    },
+    {
+      "url": "https://www.instrument.com",
+      "why": "대표작 → 고객 명단 → 서비스 → 수상 → 목적 → 소식 → 프로젝트 문의(H1 없음·12px 라벨은 따르지 않음)"
+    },
+    {
+      "url": "https://www.wearecollins.com",
+      "why": "한 문장 선언(세리프 72px) 뒤 섹션 셋과 Work with us로 끝나는 절제"
+    },
+    {
+      "url": "https://www.studiofreight.com",
+      "why": "내비 Work·Info·News·Contact와 짧은 선언 H1의 최소 구성(가상 스크롤 추정 — §8-5 확인 필요)"
+    }
+  ],
+  "legalRequirements": [],
+  "legal": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website"
+  },
+  "conversion": [
+    {
+      "event": "form_submit",
+      "match": {
+        "form": "contact"
+      }
+    }
+  ]
+}

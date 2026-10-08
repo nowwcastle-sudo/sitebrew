@@ -1,0 +1,14 @@
+{
+  "kind": "trust",
+  "variant": "brand-fact-sheet",
+  "title": "브랜드 사실표 — 한 줄 정의·수치 차별점·대표 실명·핵심 사실 dl(+ Organization JSON-LD)",
+  "layout": "fact-sheet-dl",
+  "density": "spacious",
+  "archetypes": [ "brand", "local", "saas", "commerce", "portfolio" ],
+  "archetypeKinds": [ "about", "brand-facts", "company-profile" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "X11", "X7", "X4", "X2", "T2" ],
+  "notes": "머리: h2 + 한 줄 정의(data-definition). 왼쪽 차별점 3~5개(큰 숫자·단위·설명·출처와 기준일 — data-source), 오른쪽 대표(실명·역할·선택 한마디) + 핵심 사실 dl(설립 연월·위치·대표자·사업자등록번호·통신판매업 신고번호·전화·공식 채널·웹사이트 — 값이 있는 것만). 아래 자주 묻는 질문 dl(선택). 모두 서버가 그린 글자. jsonLd 를 켜면 같은 props 로 Organization(taxID·founder·foundingDate·sameAs) — 화면에 없는 칸(법인명·메일·로고)은 빼고, 별점 마크업은 없다(X4)"
+}

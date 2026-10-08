@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-ibm-plex-mono",
+  "type": "registry:font",
+  "title": "IBM Plex Mono",
+  "description": "web-factory 폰트 키트: IBM Plex Mono (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'IBM Plex Mono', monospace",
+    "provider": "google",
+    "import": "IBM_Plex_Mono",
+    "variable": "--font-ibm-plex-mono-wf",
+    "weight": [
+      "400",
+      "600"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/ibm-plex-mono"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/ibmplexmono/OFL.txt",
+    "source": "https://fonts.google.com/specimen/IBM+Plex+Mono",
+    "role": [
+      "mono"
+    ],
+    "korean": false
+  }
+}

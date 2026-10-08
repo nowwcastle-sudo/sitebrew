@@ -1,0 +1,14 @@
+{
+  "kind": "account",
+  "variant": "notification-consents",
+  "title": "알림 수신 동의 — 채널별 스위치 줄·변경 결과 알림",
+  "layout": "channel-switches",
+  "density": "comfortable",
+  "archetypes": [ "saas", "commerce", "pwa", "local" ],
+  "archetypeKinds": [ "notification-settings", "marketing-consents" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L12", "X1" ],
+  "notes": "채널(이메일·문자·카카오톡·앱 알림)마다 한 줄: 아이콘 · 이름(선택)·무엇을 보내나 · 받기/안 받기 스위치(data-consent=optional). 처음 값은 consents()(새 사용자 모두 꺼짐), 바꾸면 그 채널만 setConsents 로 저장하고 결과(날짜·채널·상태)를 role=status 줄에 적는다(정보통신망법 §50), 실패면 되돌림. 포트: consents·setConsents"
+}

@@ -1,0 +1,63 @@
+{
+  "id": "arko-or-kr",
+  "archetype": "public",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.arko.or.kr/",
+  "structure": {
+    "hero": "연보라·하늘색 그라디언트 위에 남색·노랑 잎 모양 큰 카드 둘과 위쪽 긴 검색창을 둔 기관 홈",
+    "sections": [
+      "로고와 둥근 검색창",
+      "슬로건 한 줄",
+      "잎 모양 카드 2개(통합플랫폼·소개)",
+      "중앙 원형 로고",
+      "하단 운영시설 링크 줄",
+      "스크롤 안내"
+    ]
+  },
+  "type": {
+    "display": "굵은 한글 고딕 큰 제목",
+    "body": "한글 고딕 가는 굵기",
+    "scale": "카드 제목 약 52px, 시설 링크 약 14px"
+  },
+  "colorLogic": "K7",
+  "motion": {
+    "entrance": "로딩 없이 첫 프레임부터 카드와 글이 보이고 배경 그라디언트만 계속 움직임",
+    "scroll": null,
+    "hover": null,
+    "transition": "배경 색이 복숭아, 분홍, 하늘색, 연보라 순으로 약 2초 단위로 서서히 바뀜",
+    "durationsMs": [
+      2000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "8초 영상에서 읽은 값. 카드와 글은 고정이고 배경 색만 흐름."
+  },
+  "interaction": [
+    "검색 입력과 검색 버튼",
+    "카드 바로가기 버튼 2개",
+    "운영시설 링크 7개",
+    "스크롤 안내 아이콘"
+  ],
+  "cta": {
+    "pattern": "바로가기 외곽선 버튼 2개와 검색 버튼",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "큰 잎 모양 카드 두 장으로 기관의 두 입구를 나눈다.",
+    "남색과 노랑 면이 서로 반대색이라 두 입구가 한눈에 구분된다.",
+    "검색창을 화면 맨 위에 길게 두고 분홍 버튼으로 눈에 띄게 한다.",
+    "배경 그라디언트가 천천히 변해 정적인 카드에 움직임을 준다.",
+    "모바일은 카드 둘이 세로로 쌓이고 원형 로고가 사이에 겹친다."
+  ]
+}

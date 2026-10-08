@@ -1,0 +1,61 @@
+{
+  "id": "stereoscopecoffee-com",
+  "archetype": "commerce",
+  "sourceGallery": "siteinspire",
+  "url": "https://www.stereoscopecoffee.com/",
+  "structure": {
+    "hero": "회색 바탕 중앙에서 회전하는 3D 종이 봉투와 오디오 플레이어",
+    "sections": [
+      "박스형 헤더(좌 SHOP·CONNECT·WHOLESALE / 우 SIGN IN·BAG)",
+      "3D 제품 회전 히어로",
+      "하단 오디오 플레이어",
+      "쿠키 패널",
+      "스크롤하면 흰 철학 띠"
+    ]
+  },
+  "type": {
+    "display": "가는 반기하 산세리프 대문자 워드마크",
+    "body": "같은 산세리프 대문자와 소문자 혼용",
+    "scale": "작은 UI, 철학 문구만 중간 크기"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": "빈 회색 화면에서 약 1.5초 안에 종이 봉투가 나타나 회전하기 시작",
+    "scroll": "스크롤하면 봉투가 위로 밀려나가고 흰 철학 띠가 아래에서 올라온다",
+    "hover": "WHOLESALE 메뉴에 올리면 작은 미리보기 카드가 왼쪽에 뜬다",
+    "transition": "봉투 라벨(산지 정보)이 다음 상품으로 바뀐다",
+    "durationsMs": [
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "3D 봉투 회전 및 상품 교체",
+    "오디오 재생·볼륨 위젯",
+    "내비 호버 미리보기 카드",
+    "쿠키 패널 두 버튼"
+  ],
+  "cta": {
+    "pattern": "헤더 텍스트 링크 위주, 히어로 별도 CTA 없음",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.6
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "제품을 3D 오브제로 세우는 실험적 히어로. 패키지가 자산인 브랜드용",
+    "회색 바탕에 봉투 라벨만 정보로 둬 상품 정보를 가볍게 전달",
+    "내비 호버 미리보기 카드로 B2B 진입을 눈에 띄지 않게 안내",
+    "오디오 플레이어는 브랜드 분위기를 위한 장치. 성능·접근성 비용이 크다",
+    "구매 CTA가 약하다. 우리 공장에서는 3D 대신 정지 이미지 폴백이 필요"
+  ]
+}

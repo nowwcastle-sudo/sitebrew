@@ -1,0 +1,13 @@
+{
+  "kind": "state-screen",
+  "variant": "error-retry",
+  "title": "상태 화면 — 오류 + 다시 시도 + 도움말",
+  "layout": "error-retry",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas", "pwa", "commerce", "public"],
+  "archetypeKinds": ["state-screens"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "왼쪽 정렬 한 판: 큰 오류 번호(data-numeric) · 제목 h2 · 무엇이 안 됐고 입력은 어떻게 됐는지 · [다시 시도](onRetry 를 줄 때, 누르면 role=status 로 알림) + 처음으로 · 도움말 링크 목록 · 접힌 자세히(오류 번호·시각)"
+}

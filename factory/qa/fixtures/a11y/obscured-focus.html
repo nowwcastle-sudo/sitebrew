@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>접근성 시험 쪽</title>
+<style>
+body{margin:0;font:16px/1.6 sans-serif;color:#111;background:#fff}
+a{color:#0047b3}
+@media (prefers-color-scheme: dark){body{color:#f2f2f2;background:#111}a{color:#9cf}}
+main{padding:24px;max-width:640px}
+label{display:block;margin:12px 0 4px}
+input{min-height:32px;min-width:240px;font:inherit}
+button{min-height:44px;min-width:88px;font:inherit}
+
+html,body{height:100%}
+footer{position:fixed;left:0;right:0;bottom:0;height:64px;background:#222;color:#fff;padding:0 24px;line-height:64px}
+#low{position:absolute;bottom:8px;left:24px;display:inline-block;min-height:44px;line-height:44px}
+</style></head><body><main>
+<h1>고정 바닥이 초점을 가린다</h1>
+<p>아래 링크는 고정 바닥 막대 뒤에 있어 Tab 으로 초점을 받아도 통째로 가려진다. 스크롤할 자리가 없다.</p>
+<a href="#top" style="display:inline-block;min-height:44px;line-height:44px">위쪽 링크</a>
+</main><a id="low" href="#low">가려진 링크</a><footer>고정 바닥 막대</footer></body></html>

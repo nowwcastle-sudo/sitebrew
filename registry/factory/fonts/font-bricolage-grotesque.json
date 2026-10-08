@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-bricolage-grotesque",
+  "type": "registry:font",
+  "title": "Bricolage Grotesque",
+  "description": "web-factory 폰트 키트: Bricolage Grotesque (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Bricolage Grotesque Variable', sans-serif",
+    "provider": "google",
+    "import": "Bricolage_Grotesque",
+    "variable": "--font-bricolage-grotesque-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/bricolage-grotesque"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bricolagegrotesque/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Bricolage+Grotesque",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

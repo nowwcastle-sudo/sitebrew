@@ -1,0 +1,321 @@
+/* 생성물 — factory/scripts/gen-radius-axis.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* R1 · 전부 부드럽게 12~16px — 작은 것·중간 12·lg 14·큰 면 16px, 원은 원래 원이던 것만(체크박스는 네모 의미로 6px). 원천: base.css 의 반경 계열 훅(axes.mjs axisOfHook = radius). */
+
+.cn-accordion-trigger {
+  @apply rounded-[14px] border py-2.5 text-base font-medium **:data-[slot=accordion-trigger-icon]:size-4;
+}
+.cn-alert {
+  @apply gap-0.5 rounded-[14px] border px-2.5 py-2 text-sm has-data-[slot=alert-action]:pe-18 has-[>svg]:gap-x-2 *:[svg:not([class*='size-'])]:size-4;
+}
+.cn-alert-dialog-content {
+  @apply gap-4 rounded-[16px] p-4 ring-1;
+}
+.cn-alert-dialog-footer {
+  @apply gap-2 rounded-b-[16px] border-t p-4;
+}
+.cn-alert-dialog-media {
+  @apply size-10 rounded-[12px] *:[svg:not([class*='size-'])]:size-6;
+}
+.cn-attachment {
+  @apply rounded-[16px] border;
+}
+.cn-attachment-size-xs {
+  @apply gap-1.5 rounded-[14px] text-sm has-data-[slot=attachment-content]:px-1.5 has-data-[slot=attachment-content]:py-1 has-data-[slot=attachment-media]:p-1;
+}
+.cn-attachment-media {
+  @apply rounded-[14px] group-data-[size=xs]/attachment:rounded-[12px] group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:size-6! [&_svg:not([class*='size-'])]:size-4 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-avatar {
+  @apply size-8 rounded-full data-[size=lg]:size-10 data-[size=sm]:size-6;
+}
+.cn-avatar-image {
+  @apply rounded-full;
+}
+.cn-avatar-fallback {
+  @apply rounded-full text-sm;
+}
+.cn-avatar-badge {
+  @apply rounded-full ring-2 group-data-[size=sm]/avatar:size-2 group-data-[size=default]/avatar:size-2.5 group-data-[size=default]/avatar:[&>svg]:size-2 group-data-[size=lg]/avatar:size-3 group-data-[size=lg]/avatar:[&>svg]:size-2;
+}
+.cn-avatar-group-count {
+  @apply size-8 rounded-full text-sm ring-2 group-has-data-[size=lg]/avatar-group:size-10 group-has-data-[size=sm]/avatar-group:size-6 [&>svg]:size-4 group-has-data-[size=lg]/avatar-group:[&>svg]:size-5 group-has-data-[size=sm]/avatar-group:[&>svg]:size-3;
+}
+.cn-badge {
+  @apply h-6 gap-1 rounded-[16px] border px-2 py-0.5 text-sm font-medium has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&>svg]:size-3!;
+}
+.cn-bubble-variant-ghost {
+  @apply *:data-[slot=bubble-content]:rounded-none *:data-[slot=bubble-content]:bg-transparent *:data-[slot=bubble-content]:p-0;
+}
+.cn-bubble-content {
+  @apply rounded-[16px] border px-3 py-2 text-sm leading-relaxed;
+}
+.cn-bubble-reactions {
+  @apply gap-1 rounded-full px-1.5 py-0.5 text-sm ring-3 has-[button]:p-0;
+}
+.cn-calendar-dropdown-root {
+  @apply rounded-(--cell-radius);
+}
+.cn-calendar-weekday {
+  @apply rounded-(--cell-radius) text-sm font-normal;
+}
+.cn-calendar-range-start {
+  @apply rounded-l-(--cell-radius);
+}
+.cn-calendar-range-middle {
+  @apply rounded-none;
+}
+.cn-calendar-range-end {
+  @apply rounded-r-(--cell-radius);
+}
+.cn-calendar-today {
+  @apply rounded-(--cell-radius) data-[selected=true]:rounded-none;
+}
+.cn-calendar-caption-label-layout-dropdown {
+  @apply gap-1 rounded-(--cell-radius) text-sm [&>svg]:size-3.5;
+}
+.cn-calendar-day {
+  @apply rounded-(--cell-radius) p-0 [&:last-child[data-selected=true]_button]:rounded-r-(--cell-radius);
+}
+.cn-calendar-day-week-number-true {
+  @apply [&:nth-child(2)[data-selected=true]_button]:rounded-l-(--cell-radius);
+}
+.cn-calendar-day-week-number-false {
+  @apply [&:first-child[data-selected=true]_button]:rounded-l-(--cell-radius);
+}
+.cn-calendar {
+  @apply p-2 in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent [--cell-radius:12px] [--cell-size:--spacing(7)];
+}
+.cn-calendar-day-button {
+  @apply gap-1 border-0 leading-none font-normal data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) [&>span]:text-sm;
+}
+.cn-carousel-previous {
+  @apply rounded-full;
+}
+.cn-carousel-next {
+  @apply rounded-full;
+}
+.cn-chart-tooltip-content {
+  @apply gap-1.5 rounded-[14px] border px-2.5 py-1.5 text-sm;
+}
+.cn-chart-tooltip-indicator {
+  @apply rounded-[12px];
+}
+.cn-chart-legend-indicator {
+  @apply h-2 rounded-[12px];
+}
+.cn-checkbox {
+  @apply size-4 rounded-[6px] border dark:bg-input/30;
+}
+.cn-combobox-content {
+  @apply rounded-[14px] ring-1 *:data-[slot=input-group]:h-8 *:data-[slot=input-group]:bg-input/30 *:data-[slot=input-group]:shadow-none;
+}
+.cn-combobox-item {
+  @apply gap-2 rounded-[12px] py-1 pe-8 ps-1.5 text-sm [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-combobox-chips {
+  @apply min-h-8 gap-1 rounded-[14px] border bg-transparent px-2.5 py-1 text-sm has-data-[slot=combobox-chip]:px-1 dark:bg-input/30;
+}
+.cn-combobox-chip {
+  @apply gap-1 rounded-[12px] px-1.5 text-sm font-medium has-data-[slot=combobox-chip-remove]:pe-0;
+}
+.cn-command {
+  @apply rounded-[16px]! p-1;
+}
+.cn-command-dialog-content {
+  @apply rounded-[16px]! p-0;
+}
+.cn-command-input-group {
+  @apply h-8! rounded-[14px]! bg-input/30 shadow-none! *:data-[slot=input-group-addon]:ps-2!;
+}
+.cn-command-item {
+  @apply gap-2 rounded-[12px] px-2 py-1.5 text-sm in-data-[slot=dialog-content]:rounded-[14px]! [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-context-menu-content {
+  @apply rounded-[14px] p-1 ring-1;
+}
+.cn-context-menu-item {
+  @apply gap-1.5 rounded-[12px] px-1.5 py-1 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-context-menu-sub-trigger {
+  @apply gap-1.5 rounded-[12px] px-1.5 py-1 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-context-menu-checkbox-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-8 ps-1.5 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-context-menu-radio-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-8 ps-1.5 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-dialog-content {
+  @apply gap-4 rounded-[16px] p-4 text-base ring-1;
+}
+.cn-dialog-footer {
+  @apply gap-2 rounded-b-[16px] border-t p-4;
+}
+.cn-drawer-popup {
+  @apply text-sm data-[swipe-direction=down]:rounded-t-[16px] data-[swipe-direction=down]:border-t data-[swipe-direction=left]:rounded-r-[16px] data-[swipe-direction=left]:border-r data-[swipe-direction=right]:rounded-l-[16px] data-[swipe-direction=right]:border-l data-[swipe-direction=up]:rounded-b-[16px] data-[swipe-direction=up]:border-b;
+}
+.cn-drawer-content {
+  @apply rounded-[12px];
+}
+.cn-dropdown-menu-content {
+  @apply rounded-[14px] p-1 ring-1;
+}
+.cn-dropdown-menu-item {
+  @apply gap-1.5 rounded-[12px] px-1.5 py-1 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-dropdown-menu-sub-trigger {
+  @apply gap-1.5 rounded-[12px] px-1.5 py-1 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-dropdown-menu-sub-content {
+  @apply rounded-[14px] p-1 ring-1;
+}
+.cn-dropdown-menu-checkbox-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-8 ps-1.5 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-dropdown-menu-radio-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-8 ps-1.5 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-empty {
+  @apply gap-4 rounded-[16px] p-6;
+}
+.cn-empty-media-variant-icon {
+  @apply size-8 rounded-[14px] [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-field-label {
+  @apply gap-2 leading-snug has-[>[data-slot=field]]:rounded-[14px] has-[>[data-slot=field]]:border *:data-[slot=field]:p-2.5;
+}
+.cn-hover-card-content {
+  @apply rounded-[14px] p-2.5 text-sm ring-1;
+}
+.cn-input-otp-group {
+  @apply rounded-[14px];
+}
+.cn-input-otp-slot {
+  @apply size-8 border-y border-r text-sm first:rounded-l-[14px] first:border-l last:rounded-r-[14px] data-[active=true]:ring-3 dark:bg-input/30;
+}
+.cn-item {
+  @apply rounded-[14px] border text-sm;
+}
+.cn-item-media-variant-image {
+  @apply size-10 rounded-[12px] group-data-[size=sm]/item:size-8 group-data-[size=xs]/item:size-6;
+}
+.cn-kbd {
+  @apply h-6 gap-1 rounded-[12px] px-1 text-sm font-medium [&_svg:not([class*='size-'])]:size-3;
+}
+.cn-menubar {
+  @apply h-8 gap-0.5 rounded-[14px] border p-[3px];
+}
+.cn-menubar-trigger {
+  @apply rounded-[12px] px-1.5 py-[2px] text-sm font-medium;
+}
+.cn-menubar-content {
+  @apply rounded-[14px] p-1 ring-1;
+}
+.cn-menubar-item {
+  @apply gap-1.5 rounded-[12px] px-1.5 py-1 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-menubar-checkbox-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-1.5 ps-7 text-sm data-inset:ps-7;
+}
+.cn-menubar-radio-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-1.5 ps-7 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-menubar-sub-trigger {
+  @apply gap-1.5 rounded-[12px] px-1.5 py-1 text-sm data-inset:ps-7 [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-menubar-sub-content {
+  @apply rounded-[14px] p-1 ring-1;
+}
+.cn-message-avatar {
+  @apply rounded-full;
+}
+.cn-popover-content {
+  @apply gap-2.5 rounded-[14px] p-2.5 text-sm ring-1;
+}
+.cn-progress-track {
+  @apply h-1 rounded-full;
+}
+.cn-questionnaire-choice {
+  @apply min-h-11 gap-2.5 rounded-[14px] border bg-transparent px-3 py-2.5 text-sm dark:bg-input/20;
+}
+.cn-questionnaire-choice-indicator {
+  @apply size-4 rounded-[12px] border group-data-[type=radio]/questionnaire-choice:rounded-full dark:bg-input/30;
+}
+.cn-questionnaire-choice-indicator-dot {
+  @apply size-2 rounded-full;
+}
+.cn-questionnaire-choice-shortcut {
+  @apply size-5 rounded-[12px] border text-sm leading-none font-medium;
+}
+.cn-questionnaire-input {
+  @apply h-8 rounded-[14px] border bg-transparent px-2.5 py-1 text-base md:text-sm dark:bg-input/30;
+}
+.cn-radio-group-item {
+  @apply size-4 rounded-full border dark:bg-input/30;
+}
+.cn-radio-group-indicator-dot {
+  @apply size-2 rounded-full;
+}
+.cn-resizable-handle-grip {
+  @apply h-6 rounded-[14px];
+}
+.cn-scroll-area-viewport {
+  @apply rounded-[12px];
+}
+.cn-scroll-area-thumb {
+  @apply rounded-full;
+}
+.cn-select-content {
+  @apply rounded-[14px] ring-1;
+}
+.cn-select-item {
+  @apply gap-1.5 rounded-[12px] py-1 pe-8 ps-1.5 text-sm [&_svg:not([class*='size-'])]:size-4 *:[span]:last:gap-2;
+}
+.cn-site-shell-skip-link {
+  @apply rounded-[12px] px-4 py-3 text-base font-medium;
+}
+.cn-site-shell-menu-button {
+  @apply min-h-10 gap-2 rounded-[12px] px-3 text-sm font-medium [&_svg]:size-5;
+}
+.cn-skeleton {
+  @apply rounded-[12px];
+}
+.cn-slider-track {
+  @apply rounded-full data-horizontal:h-1;
+}
+.cn-slider-thumb {
+  @apply size-3 rounded-full border hover:ring-3 active:ring-3;
+}
+.cn-switch {
+  @apply rounded-full border data-[size=default]:h-[18.4px] data-[size=sm]:h-[14px] dark:data-unchecked:bg-input/80;
+}
+.cn-switch-thumb {
+  @apply rounded-full ring-0 group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3;
+}
+.cn-tabs-list {
+  @apply rounded-[14px] p-[3px] group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none;
+}
+.cn-tabs-trigger {
+  @apply gap-1.5 rounded-[12px] border px-1.5 py-0.5 text-sm font-medium has-data-[icon=inline-end]:pe-1 has-data-[icon=inline-start]:ps-1 group-data-[variant=line]/tabs-list:data-active:shadow-none [&_svg:not([class*='size-'])]:size-4 group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-transparent dark:data-active:bg-input/30;
+}
+.cn-toast {
+  @apply rounded-[16px] border;
+}
+.cn-toggle {
+  @apply gap-1 rounded-[14px] text-sm font-medium [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-toggle-size-sm {
+  @apply h-7 rounded-[12px] px-2.5 text-sm has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-toggle-group {
+  @apply gap-[--spacing(var(--gap))] rounded-[14px] data-[size=sm]:rounded-[12px];
+}
+.cn-toggle-group-item {
+  @apply group-data-[spacing=0]/toggle-group:rounded-none group-data-[spacing=0]/toggle-group:px-2 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pe-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:ps-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-[14px] group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-[14px] group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-[14px] group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-[14px] group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t;
+}
+.cn-tooltip-content {
+  @apply gap-1.5 rounded-[12px] px-3 py-1.5 text-sm has-data-[slot=kbd]:pe-1.5 **:data-[slot=kbd]:rounded-[12px];
+}
+.cn-tooltip-arrow {
+  @apply size-2.5 rounded-[12px];
+}

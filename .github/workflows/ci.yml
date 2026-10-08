@@ -1,0 +1,98 @@
+name: ci
+
+# P3-8 — web-factory CI. 병합 관문은 로컬(컨트롤러가 병합 전에 같은 `npm run ci:verify` 를 돌린다)이고, 이 워크플로는 main 푸시 뒤의 이중 확인이다.
+# 문서만·생성물만 바뀐 푸시는 건너뛴다(paths-ignore) — 생성물 손편집은 로컬 ci:verify 의 check:regen 이 잡는다(분 절약: 비공개 저장소 월 무료 분 한도).
+# 수동 실행(workflow_dispatch)은 분·메모리 실측용이다. 시각 회귀(blocks:visual)·Chrome 시험은 여기서 돌리지 않는다(로컬·릴리스·야간).
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'launch-factory/**'
+      - 'plugins/**'
+      - 'packages/**'
+      - 'install.ps1'
+      - '.claude-plugin/**'
+      - '.agents/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.superpowers/**'
+      - 'public/media/**'
+      - 'ai/**'
+      - 'registry/factory/r/**'
+      - 'registry/factory/ui/**'
+      - 'registry/factory/blocks/_compiled/**'
+      - 'registry/factory/*/registry.json'
+      - 'references/styles/presets.json'
+      - 'references/palettes/recipe-derived.json'
+      - 'references/fonts/pairs.json'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - 'launch-factory/**'
+      - 'plugins/**'
+      - 'packages/**'
+      - 'install.ps1'
+      - '.claude-plugin/**'
+      - '.agents/**'
+      - 'docs/**'
+      - '**/*.md'
+      - '.superpowers/**'
+      - 'public/media/**'
+      - 'ai/**'
+      - 'registry/factory/r/**'
+      - 'registry/factory/ui/**'
+      - 'registry/factory/blocks/_compiled/**'
+      - 'registry/factory/*/registry.json'
+      - 'references/styles/presets.json'
+      - 'references/palettes/recipe-derived.json'
+      - 'references/fonts/pairs.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_OPTIONS: --max-old-space-size=4096
+  CI_TEST_CONCURRENCY: '2'
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # 기준 커밋(92813f4·fdf8a09·c5b0ea3)과 출력을 대조하는 시험이 얕은 복제에서는 건너뛰어진다(첫 실행에서 12건 건너뜀 — 이식성 점검)
+      - name: single version (every place that names the release, one number)
+        run: node ci/check-single-version.mjs
+      - name: node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: install
+        run: npm ci --no-audit --no-fund
+      - name: memory sampler (start)
+        run: bash ci/mem-sampler.sh start
+      - name: ci:verify
+        run: npm run ci:verify
+      - name: memory peak
+        if: ${{ !cancelled() }}
+        run: bash ci/mem-sampler.sh report
+      - name: upload logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ci-verify-logs
+          path: |
+            .tmp/ci/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: ignore

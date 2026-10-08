@@ -1,0 +1,59 @@
+{
+  "id": "illumiel-co-kr",
+  "archetype": "commerce",
+  "sourceGallery": "webaward-kr",
+  "url": "https://illumiel.co.kr/",
+  "structure": {
+    "hero": "제품 사진 전폭 히어로, 좌하단 흰 제품명, 하단 진행 막대",
+    "sections": [
+      "녹색 공지띠(가입 쿠폰)",
+      "2행 헤더(로고·내비·강조 링크·검색·계정·장바구니)",
+      "전폭 사진 히어로+진행 막대",
+      "Best Sellers 섹션 머리",
+      "우하단 스크롤 유도 타일"
+    ]
+  },
+  "type": {
+    "display": "굵은 한글 고딕 제품명",
+    "body": "한글 고딕 본문, 영문은 둥근 산세리프",
+    "scale": "제품명 크게, 영문 라벨 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "히어로 자동재생 진행 막대",
+    "내비의 첫구매 가격 강조",
+    "우하단 브랜드 스크롤 유도 타일",
+    "공지띠 닫기"
+  ],
+  "cta": {
+    "pattern": "히어로 텍스트 블록 전체가 링크, 내비 강조 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "제품 용기 색(초록)을 공지띠·진행 막대·타일에 되풀이해 브랜드 색 하나로 통일",
+    "진행 막대로 캐러셀 자동재생 상태를 보이게 한다",
+    "내비 안에 「첫구매 6,900원~」를 넣어 가격 훅을 상시 노출",
+    "모바일에서도 제품 사진이 화면 대부분을 차지해 몰입도를 만든다",
+    "우하단 스크롤 유도 타일이 베스트셀러 섹션 진입을 돕는다"
+  ]
+}

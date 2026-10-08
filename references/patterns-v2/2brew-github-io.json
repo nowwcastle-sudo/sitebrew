@@ -1,0 +1,55 @@
+{
+  "id": "2brew-github-io",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://2brew.github.io/",
+  "structure": {
+    "hero": "짙은 갈색 바탕에 베이지 아이콘 타일 4개(추출 도구)가 격자로 놓인 홈",
+    "sections": [
+      "추출 도구 타일 격자",
+      "레시피 제안·기여 안내 문구",
+      "좌하단 언어 전환 버튼"
+    ]
+  },
+  "type": {
+    "display": "로보토 계열 20px 타일 라벨",
+    "body": "로보토 16px",
+    "scale": "타일 라벨 20px, 안내 16px의 2단"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "도구 타일 선택으로 레시피 이동",
+    "언어 전환 둥근 버튼",
+    "이슈·저장소 링크"
+  ],
+  "cta": {
+    "pattern": "도구 타일 4개",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "홈이 곧 선택 메뉴라 설명 없이 아이콘 타일만으로 시작 행동을 만든다",
+    "짙은 갈색과 베이지 두 톤만 써 커피 주제를 색으로 전달한다",
+    "375에서는 타일 3개가 한 줄을 채우고 타일이 세로로 길어진다",
+    "언어 전환을 좌하단 둥근 버튼으로 두어 엄지 영역에 놓는다"
+  ]
+}

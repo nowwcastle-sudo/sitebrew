@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+/* 테마 값(:root·.dark)의 유일한 자리. 테마를 바꾸려면 이 줄의 파일만 바꾼다. */
+@import "../registry/factory/themes/factory-default.css";
+/* DESIGN.md 바닥 규칙(한국어 조판·본문 16px/1.7·포커스 외곽선·동작 줄이기)의 유일한 자리. 소비자에게는 factory-base 항목으로 간다. */
+@import "../registry/factory/base/factory-base.css";
+
+/* /qa/shrunk 검수대(factory/qa/shrunk.mjs 생성물)는 gitignore 라 자동 탐색에서 빠진다 — 없으면 아무것도 더하지 않는다. */
+@source "./qa/shrunk";
+/* /qa/axes 검수대의 축 값 컴파일본(factory/scripts/gen-axes-gallery.mjs 생성물, .tmp 는 gitignore) — 없으면 아무것도 더하지 않는다. */
+@source "../.tmp/axes";
+/* /qa/blocks 검수대의 블록 × 레시피 사본(factory/scripts/gen-blocks-gallery.mjs 생성물, .tmp 는 gitignore) — 없으면 아무것도 더하지 않는다. */
+@source "../.tmp/blocks";
+/* /qa/presets 접촉 시트의 프리셋 × 부품 컴파일본(factory/scripts/gen-presets-gallery.mjs 생성물, P3-2 Task 16a) — 없으면 아무것도 더하지 않는다. */
+@source "../.tmp/presets";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    /* 한글 제목 스택(레시피 cssVars.theme font-heading-ko, Task 14c) — 레시피 칸(.tmp/recipes/recipes.css)이 칸 안에서 레시피 값으로 다시 잇는다. */
+    --font-heading-ko: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    /* 레시피 상태색(T7-M13) — 레시피 cssVars.theme 과 같은 연결. 기본 테마에는 값이 없어 레시피 칸 안에서만 칠해진다. */
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    /* 색 논리 K6·K7 면(field)·K8 칸(block) — 레시피 cssVars.theme(recipe.mjs colorTheme)과 같은 연결. 그 키를 가진 레시피 칸 안에서만 칠해진다(Task 6b). */
+    --color-field-1: var(--field-1);
+    --color-field-1-foreground: var(--field-1-foreground);
+    --color-field-2: var(--field-2);
+    --color-field-2-foreground: var(--field-2-foreground);
+    --color-block-1: var(--block-1);
+    --color-block-1-foreground: var(--block-1-foreground);
+    --color-block-2: var(--block-2);
+    --color-block-2-foreground: var(--block-2-foreground);
+    --color-block-3: var(--block-3);
+    --color-block-3-foreground: var(--block-3-foreground);
+    --color-block-4: var(--block-4);
+    --color-block-4-foreground: var(--block-4-foreground);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}

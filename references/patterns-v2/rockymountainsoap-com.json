@@ -1,0 +1,63 @@
+{
+  "id": "rockymountainsoap-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.rockymountainsoap.com/products/essential-everything-duo-essential-face-cream-everything-balm",
+  "structure": {
+    "hero": "왼쪽 큰 상품 사진에 세리프 로고를 겹치고, 오른쪽에 정보 열",
+    "sections": [
+      "헤더(내비·통화·검색·계정·장바구니)",
+      "갤러리(이전·다음·썸네일 5개)",
+      "상품 정보(NEW 태그·제목·가격·별점)",
+      "설명(더 보기)",
+      "옵션 행(스타일·적합 피부·수량)",
+      "전체 폭 장바구니 버튼",
+      "보증·무료배송 밑줄 링크",
+      "아코디언(성분·사용법·매장 찾기)"
+    ]
+  },
+  "type": {
+    "display": "굵은 세리프 로고, 가벼운 세리프 제목",
+    "body": "세리프 본문, 옵션 라벨은 작은 대문자",
+    "scale": "제목 중간, 라벨 작은 대문자"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "갤러리 좌우 화살표와 썸네일 선택",
+    "설명 더 보기",
+    "수량 +/- 스테퍼",
+    "아코디언 3개",
+    "플로팅 채팅"
+  ],
+  "cta": {
+    "pattern": "전체 폭 진녹색 Add to cart 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "옵션을 라벨-값 행으로 만들고 가는 선으로 구분해 읽기 쉽다",
+    "장바구니 버튼 바로 아래에 보증·무료배송 링크 두 개를 둬 망설임을 줄인다",
+    "성분·사용법·매장 찾기를 아코디언으로 접어 구매 영역을 짧게 유지",
+    "사진 위에 브랜드 로고를 크게 겹치는 방식으로 상품 사진에 개성을 준다",
+    "모바일은 사진 → 태그·제목·가격·별점 순으로 단순하게 쌓는다"
+  ]
+}

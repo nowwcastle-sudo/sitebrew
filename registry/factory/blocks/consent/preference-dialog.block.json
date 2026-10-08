@@ -1,0 +1,14 @@
+{
+  "kind": "consent",
+  "variant": "preference-dialog",
+  "title": "쿠키 설정 — 요약 판 + 항목별 스위치 대화상자",
+  "layout": "summary-then-dialog",
+  "density": "comfortable",
+  "archetypes": [ "brand", "commerce", "local", "saas", "detail", "public", "landing" ],
+  "archetypeKinds": [ "cookie-settings", "consent-banner" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L2", "L3", "A6", "X3", "M1" ],
+  "notes": "페이지 안 요약 판(분석·마케팅 허용/거부·결정한 날·[쿠키 설정 바꾸기]) → 대화상자(사용자가 연다): 필수(늘 켜짐, 글로) · 분석·마케팅 스위치(data-consent=optional, 결정 전 꺼짐) · [선택한 대로 저장하기] · [모두 거부하기][모두 허용하기] 대등. 닫기·Esc 는 저장하지 않는다. 포트: consent·setConsent·track?"
+}

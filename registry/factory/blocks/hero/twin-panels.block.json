@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "twin-panels",
+  "title": "히어로 — 나란한 큰 칸 두 장 + 칸 밑 캡션",
+  "layout": "twin-panels",
+  "density": "comfortable",
+  "archetypes": ["commerce", "brand", "portfolio"],
+  "archetypeKinds": ["hero", "purchase-area"],
+  "states": [],
+  "media": ["panel-left", "panel-right"],
+  "motion": ["clip-reveal", "rise", "parallax", "tilt-3d", "grain"],
+  "titleWidth": "column",
+  "notes": "전체 폭 두 칸(각 6칸, 넓은 화면 78vh · 좁은 화면 44vh, 반경 0) — 왼쪽 faces[2]·오른쪽 faces[1] 색 면 위에 상품 사진(media 두 장, 선택)이 종이처럼 딱딱한 그림자와 함께 앉는다. 칸 밑 캡션, 오른쪽 끝 알약 버튼. 제목 h1 은 sr-only. 기본 기법 grain·clip-reveal. P3-1 r3-woodblock B 구성"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@launch-factory/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Drizzle 스키마(인증·구독·웹훅 이벤트·접속 기록·탈퇴·보존 거래·관리자 기록·요청 제한·문의·멱등 키), 마이그레이션, 연결(풀러 6543 prepare:false), 로컬·테스트 PGlite.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./backup": "./src/backup.ts",
+    "./seed": "./src/seed.ts"
+  },
+  "files": [
+    "src",
+    "migrations",
+    "drizzle.config.ts"
+  ],
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "node src/seed.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@launch-factory/contract": "0.0.0",
+    "drizzle-orm": "0.45.3",
+    "postgres": "3.4.9"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite-tools": "0.4.8",
+    "@types/node": "24.19.0",
+    "drizzle-kit": "0.31.11"
+  }
+}

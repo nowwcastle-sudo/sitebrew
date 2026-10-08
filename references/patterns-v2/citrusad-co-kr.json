@@ -1,0 +1,63 @@
+{
+  "id": "citrusad-co-kr",
+  "archetype": "portfolio",
+  "sourceGallery": "webaward-kr",
+  "url": "https://citrusad.co.kr/",
+  "structure": {
+    "hero": "산호색 바탕 위 주황 덩어리가 떠다니고 중앙에 흰 세리프 로고와 외곽선 버튼",
+    "sections": [
+      "투명 헤더(로고·메뉴 4개·햄버거)",
+      "중앙 로고 + View more 알약",
+      "좌하단 원형 아이콘 버튼 2개(자료 받기·글쓰기)",
+      "하단 scroll 안내",
+      "스크롤 시 다음 섹션이 아래에서 올라옴"
+    ]
+  },
+  "type": {
+    "display": "장식적 하이콘트라스트 세리프 로고 대형, 보조는 둥근 산세리프",
+    "body": "굵은 산세리프 소형 메뉴",
+    "scale": "로고 대형, 메뉴 소형, 버튼 소형"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": "주황 덩어리와 버튼이 먼저 보이고 약 0.5초부터 약 0.5초 동안 로고가 투명에서 선명해짐",
+    "scroll": "스크롤하면 로고와 버튼이 위로 밀려 올라가고 Fresh 문구가 있는 다음 섹션이 올라옴",
+    "hover": "버튼에 닿으면 외곽선 알약이 흰 면으로 채워짐",
+    "transition": "주황 덩어리가 약 1초 단위로 크기와 위치를 바꾸며 부드럽게 떠다님",
+    "durationsMs": [
+      500,
+      500,
+      1000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "덩어리 이동 주기는 4fps 프레임 수로 추정"
+  },
+  "interaction": [
+    "View more 외곽선 버튼",
+    "햄버거 메뉴",
+    "원형 보조 버튼 2개",
+    "스크롤 안내"
+  ],
+  "cta": {
+    "pattern": "외곽선 View more 알약 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.6
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "단색 면 위 흐린 덩어리를 움직여 이미지 없이 생동감을 만든다",
+    "중앙 로고와 알약 버튼 하나로 첫 화면 행동을 단순하게 둔다",
+    "좌하단 원형 버튼 둘로 자료 받기와 문의를 늘 열어 둔다",
+    "모바일은 덩어리가 화면 아래쪽으로 퍼진 큰 주황 면으로 바뀌고 메뉴는 햄버거로 접는다"
+  ]
+}

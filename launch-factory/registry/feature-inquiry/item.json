@@ -1,0 +1,32 @@
+{
+  "name": "feature-inquiry",
+  "title": "문의 접수",
+  "description": "문의 폼 서버: 요청 제한(DB) → 멱등 키 → 입력 검사 → Turnstile → 저장 → 운영자 알림. 일반 30일·불만/분쟁 3년 보유 후 Cron 이 파기한다. contact-form 블록의 submit 포트 모양의 서버 액션 포함.",
+  "npm": ["@launch-factory/inquiry", "@launch-factory/db", "@launch-factory/env", "@launch-factory/i18n", "@launch-factory/security", "drizzle-orm", "postgres"],
+  "registryDependencies": ["feature-auth-betterauth", "feature-email-resend"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "INQUIRY_OWNER_EMAIL", "TURNSTILE_SECRET_KEY", "TURNSTILE_SITE_KEY", "CRON_SECRET"],
+  "files": [
+    "files/lib/launch/inquiry.ts",
+    "files/lib/launch/support.ts",
+    "files/app/api/inquiry/route.ts",
+    "files/app/api/cron/inquiry/route.ts",
+    "files/app/actions/inquiry.ts",
+    "files/app/actions/inquiry-admin.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": ["inquiries.ts"],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(문의 표가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. 폼에 숨은 입력 둘을 더한다: Turnstile 토큰 cf-turnstile-response(사이트 키 TURNSTILE_SITE_KEY, 운영자 할 일 O7), 폼을 열 때 만든 idempotencyKey. INQUIRY_OWNER_EMAIL 은 운영자 메일이다(개인정보 — 저장소에 적지 않는다).",
+    "3. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/inquiry\", \"schedule\": \"0 4 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.",
+    "4. lib/launch/support.ts(제품 것)에서 첫 응답 약속(responseTime)·접수 확인 메일(receipt)·사람이 읽는 문의 메일 주소(email)를 정한다. 접수 확인 메일은 방문자가 적은 주소로 나가므로 요청 제한·Turnstile 이 남용을 막는 유일한 장치다. 지킬 수 있는 응답 시간만 적는다(없으면 null). mock 에서는 INQUIRY_OWNER_EMAIL 이 없어도 가짜 주소로 켜진다. live 에서 없으면 **사이트는 켜지고 문의 창구만 꺼진다**(2026-10-05 운영자 결정): inquiryEnabled() 가 false 라 쪽이 폼 대신 안내를 그리고, 접수는 code provider_unavailable·retryable false 로 거절된다(받은 척 저장하지 않는다). 값이 있는데 이메일 형식이 아니면 켜질 때 멈춘다. 쪽은 data-inquiry=\"disabled\"|\"enabled\" 표지를 단다(배포 확인이 경고를 낸다). LF_BUSINESS_EMAIL 로 대신하지 않는다 — 그것은 바닥글에 공개하는 표시 주소다.",
+    "5. 문의 종류 바꾸기: 서버 액션 reclassifyInquiry({ reference, to, reason? })·markInquiryAsComplaint({ reference, reason? })(app/actions/inquiry-admin.ts). 누가 바꾸는지는 세션의 사용자 행으로 정한다 — 소유자 = 확인된 이메일이 INQUIRY_OWNER_EMAIL 과 같은 사람, 관리자 = user.role 에 admin. 입력의 isOwner·role 은 읽지 않고, 대리 로그인 세션·정지된 사람은 막힌다. 불만·분쟁 등급을 넘나드는 변경은 관리자만이다. INQUIRY_OWNER_EMAIL 이 없으면 소유자가 없고 관리자만 바꾼다(문의 창구가 꺼져도 이미 받은 문의의 보유 기간은 지켜야 한다). 이 액션을 부르는 관리 화면은 제품(대장 D137)이 만든다.",
+    "6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

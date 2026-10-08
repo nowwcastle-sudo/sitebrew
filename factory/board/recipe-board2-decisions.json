@@ -1,0 +1,111 @@
+{
+  "appliedAt": "2026-09-27T20:28:01.733Z",
+  "r1-measure": {
+    "aspects": {
+      "A": {
+        "color": "like",
+        "layout": "like",
+        "motion": "dislike",
+        "type": "like"
+      }
+    },
+    "decidedAt": "2026-09-27T20:08:18.269Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    },
+    "notes": {
+      "A": "너무 모션 그래픽이 단순해."
+    }
+  },
+  "r10-console": {
+    "decidedAt": "2026-09-27T20:12:08.988Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r2-signal": {
+    "aspects": {
+      "A": {
+        "color": "like",
+        "layout": "dislike",
+        "motion": "dislike",
+        "type": "like"
+      }
+    },
+    "decidedAt": "2026-09-27T20:09:32.239Z",
+    "likes": {
+      "A": "dislike",
+      "B": "like"
+    },
+    "notes": {
+      "A": "움직임이 너무 단순하고, 글자만 가득 채워져 있는게 좀 보기 안 좋음"
+    },
+    "pick": "B"
+  },
+  "r3-woodblock": {
+    "decidedAt": "2026-09-27T20:10:01.671Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    },
+    "notes": {
+      "B": "역시나 모션 그래픽이 너무 단순함"
+    }
+  },
+  "r4-evidence": {
+    "decidedAt": "2026-09-27T20:10:30.656Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r5-celadon": {
+    "aspects": {
+      "B": {
+        "color": "like",
+        "layout": "dislike",
+        "motion": "dislike",
+        "type": "like"
+      }
+    },
+    "decidedAt": "2026-09-27T20:11:13.887Z",
+    "likes": {
+      "A": "like"
+    },
+    "notes": {
+      "B": "배치가 너무 빈 공간이 많아보임. 모션 그래픽도 단순하고."
+    },
+    "pick": "A"
+  },
+  "r6-civic": {
+    "decidedAt": "2026-09-27T20:11:29.175Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r7-docs": {
+    "decidedAt": "2026-09-27T20:11:47.423Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r8-dusk": {
+    "decidedAt": "2026-09-27T20:11:55.594Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r9-clay": {
+    "decidedAt": "2026-09-27T20:12:00.671Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "source": "https://claude.ai/artifact/138xBisSWmr8RZY6EheoSg (likes)"
+}

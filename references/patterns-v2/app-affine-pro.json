@@ -1,0 +1,63 @@
+{
+  "id": "app-affine-pro",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://app.affine.pro/",
+  "structure": {
+    "hero": "좌측 작업공간 사이드바와 문서 본문이 나란한 노트 앱 편집 화면",
+    "sections": [
+      "사이드바(작업공간·검색·문서·메모·설정)",
+      "즐겨찾기·정리·태그 그룹",
+      "앱 다운로드 버튼",
+      "상단 문서 바(보기 전환·공유)",
+      "저장 위치 경고 띠",
+      "문서 제목+본문 블록",
+      "우측 목차 점선",
+      "AI 떠 있는 버튼"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 40px 문서 제목",
+    "body": "산세리프 15px",
+    "scale": "제목 40px, 본문 15px, 사이드바 14px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "사이드바 항목과 그룹 접기",
+    "문서 안 슬래시·@ 입력 안내",
+    "체크리스트 토글",
+    "공유 버튼",
+    "다운로드 앱 버튼",
+    "AI 떠 있는 버튼"
+  ],
+  "cta": {
+    "pattern": "공유 버튼 + 로그인 후 동기화 버튼 + 다운로드",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "로그인 없이 첫 문서가 열린 편집기라 설치형 노트 앱의 기준이다",
+    "브라우저에만 저장된다는 경고를 분홍 띠로 먼저 알리고 동기화 행동을 붙인다",
+    "375에서는 사이드바 대신 문서 목록이 첫 화면이고 탭으로 컬렉션·태그를 나눈다",
+    "비어 있는 즐겨찾기에 아이콘과 한 줄 안내를 둬 빈 상태를 처리한다"
+  ]
+}

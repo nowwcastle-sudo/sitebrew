@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-spectral",
+  "type": "registry:font",
+  "title": "Spectral",
+  "description": "web-factory 폰트 키트: Spectral (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Spectral', serif",
+    "provider": "google",
+    "import": "Spectral",
+    "variable": "--font-spectral-wf",
+    "weight": [
+      "300",
+      "400",
+      "500",
+      "700"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/spectral"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/spectral/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Spectral",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "auth",
+  "variant": "sign-in",
+  "title": "로그인 — 소셜 먼저·이메일 폼 가운데 카드",
+  "layout": "social-first-card",
+  "density": "comfortable",
+  "archetypes": ["saas", "commerce", "pwa", "dashboard"],
+  "archetypeKinds": ["sign-in", "login"],
+  "states": ["loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["O2", "O4", "X1", "M1"],
+  "notes": "가운데 좁은 카드: 제목 · 소셜(카카오·네이버·구글 §17 규격, methods() 에 있는 것만 — 읽기 4상태) · 또는 줄 · 이메일·비밀번호(라벨·필수 표시·떠날 때 검사) · 비밀번호 찾기 · [로그인하기] · 가입 링크. signIn 결과: redirectUrl 이동 · needsTwoFactor 안내 · emailSent 안내 · 완료(h3 포커스). 필드 오류는 첫 오류 칸, 서버 오류는 폼 위 알림 포커스, 보내는 중 aria-busy·aria-disabled. 포트: methods·signIn·track? Task 10d: 「로그인 유지」 체크(copy.rememberMe, 해제로 시작 → signIn rememberMe true·false) · 「최근 사용」(copy.lastUsed + lastMethod). 폼 제출 보호(copy.notices): 15초 시간 초과·요청 제한 남은 초."
+}

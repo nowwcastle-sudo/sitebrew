@@ -1,0 +1,13 @@
+{
+  "kind": "features",
+  "variant": "stagger-cards",
+  "title": "기능 — 2차원 물결로 내려앉는 번호 카드",
+  "layout": "stagger-cards",
+  "density": "comfortable",
+  "archetypes": ["saas", "brand", "commerce", "landing"],
+  "archetypeKinds": ["workflow-features", "key-points", "how-it-works"],
+  "states": [],
+  "media": [],
+  "motion": ["play-on-view", "kinetic-type", "stagger-in"],
+  "notes": "큰 번호·막대·단계 이름 h3·한두 문장 카드 3~6장 격자(넓은 화면 3열). 구획이 화면에 들어올 때 한 번: 제목 낱말 → 카드가 왼쪽 위부터 2차원 물결(형제 60ms, 전체 1.2s 이내) → 막대가 펼쳐진다. saas workflowSteps 칸. MOTKIT(P3-5)"
+}

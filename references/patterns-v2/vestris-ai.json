@@ -1,0 +1,58 @@
+{
+  "id": "vestris-ai",
+  "archetype": "saas",
+  "sourceGallery": "opl",
+  "url": "https://vestris.ai/",
+  "structure": {
+    "hero": "중앙 정렬 대형 세리프 헤드라인(둘째 어절 이탤릭)을 괄호 장식이 감싸고, 투자사 배지·설명·버튼 하나, 그 아래 수채 풍경 위에 앱 화면 목업",
+    "sections": [
+      "내비(로고·제품·가격·비전·로그인·데모)",
+      "투자사 배지",
+      "괄호 장식 헤드라인·설명·버튼",
+      "풍경 배경 위 제품 화면 목업"
+    ]
+  },
+  "type": {
+    "display": "압축형 세리프 약 80px에 이탤릭 어절 혼용",
+    "body": "그로테스크 본문 약 18px",
+    "scale": "H1 약 80px·본문 약 18px·UI 약 15px(1440)"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면만으로는 알 수 없다. 수집 메타상 lenis 스크롤 사용",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "내비 최소 구성",
+    "목업 안 문서 체크리스트가 실제 제품 화면을 보여 줌",
+    "모바일은 목업이 카드 한 장으로 변형"
+  ],
+  "cta": {
+    "pattern": "올리브색 채움 단일 주 버튼 + 우상단 데모",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "세리프 헤드라인에 이탤릭 어절을 섞고 괄호 장식으로 감싸 편집 디자인 인상을 만든다",
+    "크림 바탕과 올리브 버튼으로 B2B 자동화 제품에 차분한 신뢰를 입힌다",
+    "수채화 풍경을 제품 화면 뒤에 깔아 소프트웨어를 사람 손길 있는 물건처럼 보이게 한다",
+    "투자사 이름 배지를 헤드라인 위에 둬 신뢰를 바로 주는 대신 로고 줄은 생략한다",
+    "모바일에서는 목업이 단일 카드로 줄어 스크롤 첫 읽기 흐름을 유지한다"
+  ]
+}

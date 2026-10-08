@@ -1,0 +1,13 @@
+{
+  "kind": "footer",
+  "variant": "product-legal",
+  "title": "제품 푸터 — 법정 링크 + 쿠키 설정 + 선택 사업자 정보",
+  "layout": "product-legal",
+  "density": "compact",
+  "archetypes": ["saas", "pwa", "dashboard", "public", "commerce", "landing"],
+  "archetypeKinds": ["footer", "korean-business-info"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "위 띠: 제품 이름 · 이용약관·개인정보·환불·문의 링크(있는 것만) · 「쿠키 설정」(data-consent-open — 같은 쪽 쿠키 블록이 선택을 다시 연다, href 는 대체 길). 아래: 사업자 정보 8칸(상호·대표자·주소·전화·메일·사업자등록번호·통신판매업 신고번호·호스팅 업체)은 전부 선택이고 값이 있는 칸만 그린다 — 값은 제품 설정에서 읽어 business 로 넘긴다(블록·예시에 실제 값 없음). 서버 컴포넌트"
+}

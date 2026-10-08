@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-jua",
+  "type": "registry:font",
+  "title": "Jua",
+  "description": "web-factory 폰트 키트: Jua (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Jua', sans-serif",
+    "provider": "google",
+    "import": "Jua",
+    "variable": "--font-jua-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/jua"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/jua/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Jua",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

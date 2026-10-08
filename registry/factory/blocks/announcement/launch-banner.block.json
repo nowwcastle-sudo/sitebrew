@@ -1,0 +1,15 @@
+{
+  "kind": "announcement",
+  "variant": "launch-banner",
+  "title": "출시·행사 띠 배너 — 넓은 띠 한 메시지·실제 기간·행동 하나·닫기",
+  "layout": "launch-hero-band",
+  "density": "spacious",
+  "archetypes": [ "brand", "commerce", "local", "saas", "detail" ],
+  "archetypeKinds": [ "launch", "announcement", "event-banner" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A8", "L8", "X1", "M1" ],
+  "titleWidth": "column",
+  "notes": "넓은 두 칸 띠(좁으면 쌓임): 왼쪽 머리말·h2·한 줄, 오른쪽 기간(시작·끝 실제 날짜 — data-period) · 남은 날(showCountdown 일 때만 endsAt 으로 — data-countdown·data-ends-at, L8) · 행동 하나. 오른쪽 위 닫기(공지 id 로 기억). endsAt 필수 — 지나면(startsAt 전에도) hidden. 계측(선택): cta_click"
+}

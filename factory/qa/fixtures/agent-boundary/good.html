@@ -1,0 +1,6 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>agent-boundary fixture</title><style>body{font:16px/1.6 sans-serif;padding:16px}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style></head><body><main>
+<h1>양성 대조 — 어김 없음</h1>
+<form toolname="send-inquiry" tooldescription="이름과 문의 내용을 채워요. 보내기는 사람이 눌러요."><label>이름 <input name="name"></label><label>내용 <textarea name="message"></textarea></label><button type="submit">문의 보내기</button></form>
+<section><h2>탈퇴</h2><p id="h-del" data-human-hint>직접 확인하고 눌러 주세요</p><button type="button" data-requires-human="delete-account" aria-describedby="h-del">계정 지우기</button></section>
+<section><h2>결제</h2><p id="h-pay" data-human-hint>You'll confirm this yourself</p><button type="submit" data-requires-human="checkout" aria-describedby="h-pay">결제하기</button></section>
+</main></body></html>

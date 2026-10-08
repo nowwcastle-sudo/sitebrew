@@ -1,0 +1,67 @@
+{
+  "id": "masterdynamic-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.masterdynamic.com/products/mw50-wireless-on-and-over-ear-headphones",
+  "structure": {
+    "hero": "왼쪽 큰 상품 사진, 오른쪽 제목+재출시 태그·가격+품절 배지·스와치·비활성 버튼·사양 6개",
+    "sections": [
+      "검정 공지띠(무료배송)",
+      "헤더(로고·내비 5개·검색·계정·가방·지역·Support 버튼)",
+      "브레드크럼",
+      "상품 갤러리(화살표)",
+      "제목·재출시 태그·부제",
+      "가격과 품절 배지",
+      "색상 스와치",
+      "비활성 SOLD OUT 버튼",
+      "보호 플랜 안내",
+      "사양 아이콘 6개 2열",
+      "비교 링크",
+      "가입 플로팅 원"
+    ]
+  },
+  "type": {
+    "display": "넓은 기하학 산세리프 로고와 제목",
+    "body": "얇은 산세리프 본문",
+    "scale": "제목 중간 크기, 사양 라벨 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "색상 스와치 2개",
+    "갤러리 이전·다음",
+    "사양 아이콘 줄(소음 차단·배터리·소재 등)",
+    "비교 링크",
+    "가입 플로팅 원 버튼"
+  ],
+  "cta": {
+    "pattern": "비활성 SOLD OUT 회색 버튼(품절)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "품절을 가격 옆 배지와 비활성 버튼으로 이중 표시해 오해가 없다",
+    "사양을 아이콘+한 줄 6개로 2열 배치해 스크롤 없이 훑게 한다",
+    "버튼 아래에 보호 플랜(추가 보증)을 한 줄 제안",
+    "모바일은 썸네일 줄에 착용 사진을 섞어 사용 장면을 보여준다",
+    "「재출시」 태그로 한정 판매 맥락을 알린다"
+  ]
+}

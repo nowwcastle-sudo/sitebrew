@@ -1,0 +1,61 @@
+{
+  "id": "getaskai-com",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://getaskai.com/",
+  "structure": {
+    "hero": "중앙 제목과 AI 첫 인사 말풍선 카드, 하단에 고정된 큰 입력창",
+    "sections": [
+      "로고+메뉴+언어",
+      "제목+부제",
+      "AI 첫 인사 카드",
+      "특징 점 목록",
+      "사람 확인 위젯",
+      "하단 입력창(첨부·도구·음성·전송)",
+      "면책 문구"
+    ]
+  },
+  "type": {
+    "display": "세리프+이탤릭 강조 48px 제목",
+    "body": "산세리프 16~18px",
+    "scale": "제목 48px, 인사 18px, 특징 13px"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "하단 입력창과 전송 버튼",
+    "첨부 더하기와 도구 칩",
+    "음성 입력 버튼",
+    "언어 선택",
+    "사람 확인 체크"
+  ],
+  "cta": {
+    "pattern": "입력창 전송 버튼",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "로그인 없이 바로 질문하게 하는 빈 대화 화면이 곧 첫 화면이다",
+    "입력창을 하단에 붙여 모바일 채팅 앱과 같은 위치에 둔다",
+    "375에서는 한국어로 자동 전환되고 제목이 줄바꿈 중 잘리는 문제가 있다",
+    "사람 확인 위젯이 입력창 위에 놓여 첫 사용 마찰을 만든다"
+  ]
+}

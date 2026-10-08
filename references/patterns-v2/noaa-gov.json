@@ -1,0 +1,63 @@
+{
+  "id": "noaa-gov",
+  "archetype": "public",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.noaa.gov/",
+  "structure": {
+    "hero": "왼쪽 파란 아이콘 레일과 파도 사진 위 흰 제목, 아래 흰 바탕의 탐색 링크 목록을 둔 기상청 홈",
+    "sections": [
+      "정부 사이트 안내 띠",
+      "날씨 찾기·뉴스·데이터·도구·소개 바",
+      "로고와 검색",
+      "파도 사진 히어로 제목",
+      "왼쪽 주제 아이콘 레일(10개)",
+      "탐색 링크 목록",
+      "피드백 버튼"
+    ]
+  },
+  "type": {
+    "display": "굵은 라운드 산세리프(제목은 좁은 자간)",
+    "body": "같은 산세리프",
+    "scale": "제목 약 56px, 링크 약 20px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "지역 날씨 찾기",
+    "검색 상자",
+    "왼쪽 주제 아이콘 10개",
+    "더 보기 링크",
+    "피드백 파란 버튼"
+  ],
+  "cta": {
+    "pattern": "파란 피드백 버튼과 히어로 제목 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "맨 위 바에 지역 날씨 찾기를 두어 흔한 질문에 바로 답한다.",
+    "파란 아이콘 레일이 주제 열 개를 세로로 늘 보여 준다.",
+    "히어로 제목이 긴급 소식(허리케인) 링크를 겸한다.",
+    "아래 링크 목록은 제목만 파란 글씨로 나열한다.",
+    "피드백 버튼이 오른쪽 아래 고정이고 모바일에서는 전체 폭 막대다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "data-table",
+  "variant": "record-panel",
+  "title": "데이터 표 짝 — 레코드 상세·편집 패널(요약·편집 폼·위험한 작업)",
+  "layout": "summary-form-danger",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas"],
+  "archetypeKinds": ["record-detail", "record-edit", "admin-detail"],
+  "states": ["loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["L3", "O2", "O7", "X1"],
+  "notes": "왼쪽 요약 dl(상태는 글자 배지) + 이 기록에 하는 작업 버튼(정지·대리 로그인 — 결과 role=status). 오른쪽 편집 폼(form-flow: 비제어·(필수)/(선택)·필드 오류는 그 칸에·서버 오류는 위 알림) + 위험한 작업: [지우기]를 누르면 그 자리에 [취소][지우기] 대등 확인. 저장 안 한 변경이 있으면 beforeunload(A49). 포트: 없음 — 저장·작업·지우기는 조립하는 쪽 서버 액션(submit·act·remove)"
+}

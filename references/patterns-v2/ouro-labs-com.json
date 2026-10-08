@@ -1,0 +1,63 @@
+{
+  "id": "ouro-labs-com",
+  "archetype": "portfolio",
+  "sourceGallery": "opl",
+  "url": "https://ouro-labs.com/",
+  "structure": {
+    "hero": "밝은 회색 면에 폭 가득 초대형 대문자 선언, 마지막 단어만 붉은색",
+    "sections": [
+      "상단 헤더(터미널 아이콘·로고·STUDIO·PROJECTS)",
+      "초대형 대문자 선언 문장 세 줄",
+      "우측 W 수상 후보 탭(세로 라벨)",
+      "좌하단 CSSDA 수상 배지",
+      "모바일 햄버거"
+    ]
+  },
+  "type": {
+    "display": "넓은 폭 네오그로테스크 대문자 초대형 + 둥근 굵은 로고체",
+    "body": "모노스페이스 소형 대문자 메뉴",
+    "scale": "선언 초대형, 메뉴 극소형 두 단계"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "글자가 줄마다 파도치듯 흔들리며 위에서 내려와 약 1.5초에 제 위치로 정렬됨",
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [
+      500,
+      1500,
+      250
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "정렬 후 약 2초 이후로는 움직임이 없음"
+  },
+  "interaction": [
+    "STUDIO·PROJECTS 링크",
+    "터미널 아이콘 토글",
+    "수상 배지·탭",
+    "모바일 햄버거"
+  ],
+  "cta": {
+    "pattern": "CTA 없음, 메뉴 링크 2개",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "초대형 선언을 글자 단위 물결 등장으로 첫 2초에 연출한다",
+    "무채색 바탕에 마지막 단어 하나만 붉은색으로 칠해 강조 한 점을 만든다",
+    "수상 배지와 탭을 화면 가장자리에 모아 신뢰 신호를 본문과 분리한다",
+    "모바일은 네 줄로 쌓고 우측 탭이 첫 줄 끝 글자를 가리니 위치를 낮춰야 한다"
+  ]
+}

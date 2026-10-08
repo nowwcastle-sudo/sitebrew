@@ -1,0 +1,13 @@
+{
+  "kind": "filter-bar",
+  "variant": "chips",
+  "title": "분류 칩 줄 — 눌림 상태가 보이는 버튼 칩, 전체 칩이 거르기를 푼다",
+  "layout": "chip-row",
+  "density": "compact",
+  "archetypes": ["commerce"],
+  "archetypeKinds": ["filter-chips", "filter-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "칩은 진짜 버튼이고 눌림은 aria-pressed(single: 하나만·다시 누르면 풀림 / multi: 여럿, 쉼표로 이어 한 쿼리 칸). 첫 칩 「전체」. 묶음 이름은 보이는 라벨(role=group aria-labelledby), 결과 수는 role=status. 거른 상태는 주소 쿼리(?category=…)에 있어 새로고침·공유에서 남는다(_shared/filter-query). target 셀렉터를 주면 같은 문서의 목록 항목을 data-filter-<param> 속성(없으면 항목 글)으로 직접 거른다 — 서버가 거르는 목록은 onChange 로 다시 읽는다. 칩 높이 44px. 등장 모션 없음"
+}

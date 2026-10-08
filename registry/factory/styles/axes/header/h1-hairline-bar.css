@@ -1,0 +1,30 @@
+/* H1 전폭 헤어라인 바 — 중간 계열. 내비 뭉치가 폭 전체를 채우는 64px 바, 아래 1px 헤어라인, 반투명 바탕 + 블러 8px 이하.
+ * 스티키 위치는 셸(SiteShell, Task 11)이 정한다 — 블러는 고정·스티키 자리에서만 뜻이 있다(DESIGN §6). 그래서 반투명·블러는 셸 헤더가
+ * 스티키가 되는 768px 이상(md:)에서만 켜고, NavigationMenu 부품 자체는 불투명 바탕이다(흐르는 자리에 블러 금지 — Task 5 리뷰 M2, ai-tell G033).
+ * prefers-reduced-transparency·prefers-contrast: more 에서 불투명. 원천 style_axes.md 축 5. */
+.cn-navigation-menu {
+  @apply h-16 max-w-none gap-6 border-b bg-background px-6;
+}
+.cn-navigation-menu-list {
+  @apply gap-1;
+}
+.cn-navigation-menu-trigger-style {
+  @apply h-10 rounded-[8px] px-3 py-2 text-sm font-medium;
+}
+.cn-navigation-menu-link {
+  @apply gap-2 rounded-[8px] px-3 py-2 text-sm in-data-[slot=navigation-menu-content]:rounded-[6px] [&_svg:not([class*='size-'])]:size-4;
+}
+/* 셸(SiteShell): 768px 이상 스티키 64px 헤어라인 바 — 반투명·블러도 그 구간에서만(768px 미만은 static 이라 부품 기본값 불투명 --background).
+ * 반투명·블러는 셸이 스티키일 때(헤더의 data-sticky-nav)만 건다 — sticky={false} 면 768px 이상도 흐르는 헤더라 불투명(Task 6 리뷰 M1). */
+.cn-site-shell-header {
+  @apply border-b md:data-sticky-nav:[--site-shell-bg:color-mix(in_oklab,var(--background)_85%,transparent)] md:data-sticky-nav:backdrop-blur-sm md:data-sticky-nav:contrast-more:[--site-shell-bg:var(--background)] md:data-sticky-nav:contrast-more:backdrop-blur-none md:data-sticky-nav:[@media(prefers-reduced-transparency:reduce)]:[--site-shell-bg:var(--background)] md:data-sticky-nav:[@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none md:[--site-shell-position:sticky];
+}
+.cn-site-shell-header-inner {
+  @apply min-h-16 gap-x-2 px-4 py-2 md:h-16 md:gap-x-6 md:px-6 md:py-0;
+}
+.cn-site-shell-nav-list {
+  @apply gap-1 md:py-1;
+}
+.cn-site-shell-nav-link {
+  @apply min-h-10 rounded-[8px] px-3 text-sm font-medium [--site-shell-current-line:underline];
+}

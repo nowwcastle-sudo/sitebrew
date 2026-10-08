@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "narrow-title-wide-window",
+  "title": "히어로 — 4칸 두꺼운 제목 + 8칸 앱 창 + 창 위 공지 알약",
+  "layout": "narrow-title-wide-window",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["split-text", "rise", "parallax", "tilt-3d", "sticky-stack"],
+  "titleWidth": "column",
+  "notes": "첫 화면 = 면(faces[0]). 왼쪽 4칸 네 줄 제목 h1 · 설명 · 버튼 둘, 오른쪽 8칸 공지 알약(링크) 아래 앱 창(카드 값 — 목록 나무(768 이상) · 점 격자 판 위 자료 카드 넷 · 점선 · 도구 줄). 기본 기법 view-transition·sticky-stack. P3-1 r7-docs B 구성(반경 4·6·8·10·16px → sm·sm·md·lg·xl)"
+}

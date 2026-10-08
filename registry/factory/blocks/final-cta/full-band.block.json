@@ -1,0 +1,13 @@
+{
+  "kind": "final-cta",
+  "variant": "full-band",
+  "title": "마지막 행동 유도 — 화면 폭 가득한 반전 띠 + 버튼 둘",
+  "layout": "full-band",
+  "density": "spacious",
+  "archetypes": ["saas", "brand", "commerce", "local", "landing"],
+  "archetypeKinds": ["final-cta", "booking-cta"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "화면 폭 반전 띠(바탕 = 전경색, 글자 = 바탕색 — 레시피 본문 짝의 대비 그대로): 짧은 머리말(20자 안, 선택) · 큰 제목 h2 · 버튼 둘(주: 바탕색 채움, 보조: 테두리). 띠 안 포커스 링은 바탕색. 긴 본문은 띠에 두지 않는다. 375: 버튼이 한 칸씩 쌓인다"
+}

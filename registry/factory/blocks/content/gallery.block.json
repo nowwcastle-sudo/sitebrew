@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "gallery",
+  "title": "사진 모음 — 비율 고정 격자(grid) 또는 상세 조각 세로 잇기(stack)",
+  "layout": "photo-grid",
+  "density": "comfortable",
+  "archetypes": [ "local", "detail" ],
+  "archetypeKinds": [ "gallery", "story", "usage-scenes", "scale-and-model" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content 섹션 렌더러(대장 C70). images 는 콘텐츠 이미지 칸 $ref(ImageSlot·상세 조각 src·altText·width·height). src 가 없으면 비율을 지킨 「실제 사진 필요」 틀 — 실사 필수 칸은 06 이 공개 불가 사유(실제 사진 필요)로 남긴다."
+}

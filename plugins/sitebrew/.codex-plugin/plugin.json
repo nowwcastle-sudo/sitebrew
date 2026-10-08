@@ -1,0 +1,21 @@
+{
+  "name": "sitebrew",
+  "version": "0.1.0",
+  "description": "Make a website from a short conversation: Sitebrew turns a few answers into three site candidates to compare, then revises and delivers the one you pick. Works without any API key in preview mode.",
+  "author": { "name": "Sitebrew maintainers" },
+  "license": "MIT",
+  "keywords": ["sitebrew", "website", "shadcn", "nextjs"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Sitebrew",
+    "shortDescription": "Make a website from a short conversation",
+    "longDescription": "Answer a few questions and Sitebrew builds three site candidates to compare, then revises and delivers the one you pick. It works without any API key in preview mode.",
+    "developerName": "Sitebrew maintainers",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Use the sitebrew new skill to make me a website",
+      "Run the sitebrew doctor skill to check my setup"
+    ]
+  }
+}

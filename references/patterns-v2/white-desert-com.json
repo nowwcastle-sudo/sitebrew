@@ -1,0 +1,64 @@
+{
+  "id": "white-desert-com",
+  "archetype": "brand",
+  "sourceGallery": "awwwards",
+  "url": "https://white-desert.com/",
+  "structure": {
+    "hero": "전면 영상 위 초대형 압축 대문자 지명 제목과 이탤릭 세리프 한 줄",
+    "sections": [
+      "유리 질감 버튼 메뉴(좌 3개·우 Rates·Enquire)",
+      "중앙 상단 로고",
+      "전면 영상 + 초대형 지명 제목",
+      "좌측 이탤릭 세리프 한 줄 문구",
+      "우측 Watch Film 링크",
+      "쿠키 카드(우하단)"
+    ]
+  },
+  "type": {
+    "display": "압축형 대문자 산세리프 초대형 + 이탤릭 세리프 보조",
+    "body": "중립 산세리프 소형",
+    "scale": "제목이 화면 폭 대부분을 차지하고 나머지는 소형"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": "회색 로딩 면에서 약 0.5초 뒤 제목이 흐리게 올라오고 약 0.75초에 영상으로 전환됨",
+    "scroll": null,
+    "hover": null,
+    "transition": "비행기 창 영상에서 약 3초에 펭귄으로, 약 6.25초에 빙벽 탐험 장면으로 컷 전환되고 제목이 장면마다 흐려졌다 선명해지며 Watch Film 칸에 다음 영상 썸네일이 뜸",
+    "durationsMs": [
+      750,
+      2250,
+      3250,
+      1000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "영상 장면 3개(비행기 창·펭귄·빙벽 탐험), 4fps 추정"
+  },
+  "interaction": [
+    "Watch Film 링크",
+    "유리 질감 메뉴 버튼",
+    "쿠키 수락·거부"
+  ],
+  "cta": {
+    "pattern": "상단 Rates·Enquire 유리 버튼과 Watch Film 링크",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "압축 대문자 제목을 영상 아래쪽에 크게 깔아 영상이 얼굴이 되게 한다",
+    "이탤릭 세리프 한 줄로 고급 어조를 만들고 산세리프는 기능 글자에만 쓴다",
+    "모바일은 Menu와 주황 Enquire 버튼만 남겨 전환 경로를 하나로 모은다",
+    "모바일 쿠키 카드가 제목 글자를 덮으니 높이를 줄여야 한다"
+  ]
+}

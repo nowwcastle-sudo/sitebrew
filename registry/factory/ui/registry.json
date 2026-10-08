@@ -1,0 +1,1344 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "accordion",
+      "description": "web-factory ui: accordion",
+      "files": [
+        {
+          "path": "accordion.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "alert",
+      "description": "web-factory ui: alert",
+      "files": [
+        {
+          "path": "alert.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "alert-dialog",
+      "description": "web-factory ui: alert-dialog",
+      "files": [
+        {
+          "path": "alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "aspect-ratio",
+      "description": "web-factory ui: aspect-ratio",
+      "files": [
+        {
+          "path": "aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "attachment",
+      "description": "web-factory ui: attachment",
+      "files": [
+        {
+          "path": "attachment.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "avatar",
+      "description": "web-factory ui: avatar",
+      "files": [
+        {
+          "path": "avatar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "badge",
+      "description": "web-factory ui: badge",
+      "files": [
+        {
+          "path": "badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "breadcrumb",
+      "description": "web-factory ui: breadcrumb",
+      "files": [
+        {
+          "path": "breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "bubble",
+      "type": "registry:ui",
+      "title": "bubble",
+      "description": "web-factory ui: bubble",
+      "files": [
+        {
+          "path": "bubble.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "button",
+      "description": "web-factory ui: button",
+      "files": [
+        {
+          "path": "button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "button-group",
+      "description": "web-factory ui: button-group",
+      "files": [
+        {
+          "path": "button-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/separator#v0.1.0"
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "calendar",
+      "description": "web-factory ui: calendar",
+      "files": [
+        {
+          "path": "calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "react-day-picker@^10.0.1"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "card",
+      "description": "web-factory ui: card",
+      "files": [
+        {
+          "path": "card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "carousel",
+      "description": "web-factory ui: carousel",
+      "files": [
+        {
+          "path": "carousel.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "embla-carousel-react@^8.6.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "chart",
+      "description": "web-factory ui: chart",
+      "files": [
+        {
+          "path": "chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "recharts@^3.8.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "checkbox",
+      "description": "web-factory ui: checkbox",
+      "files": [
+        {
+          "path": "checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "collapsible",
+      "description": "web-factory ui: collapsible",
+      "files": [
+        {
+          "path": "collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "combobox",
+      "description": "web-factory ui: combobox",
+      "files": [
+        {
+          "path": "combobox.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/input-group#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "command",
+      "description": "web-factory ui: command",
+      "files": [
+        {
+          "path": "command.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cmdk@^1.1.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/dialog#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/input-group#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "context-menu",
+      "description": "web-factory ui: context-menu",
+      "files": [
+        {
+          "path": "context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "dialog",
+      "description": "web-factory ui: dialog",
+      "files": [
+        {
+          "path": "dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "direction",
+      "type": "registry:ui",
+      "title": "direction",
+      "description": "web-factory ui: direction",
+      "files": [
+        {
+          "path": "direction.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "display",
+      "type": "registry:ui",
+      "title": "display",
+      "description": "web-factory ui: display",
+      "files": [
+        {
+          "path": "display.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "drawer",
+      "description": "web-factory ui: drawer",
+      "files": [
+        {
+          "path": "drawer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "dropdown-menu",
+      "description": "web-factory ui: dropdown-menu",
+      "files": [
+        {
+          "path": "dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "empty",
+      "description": "web-factory ui: empty",
+      "files": [
+        {
+          "path": "empty.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "field",
+      "description": "web-factory ui: field",
+      "files": [
+        {
+          "path": "field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/label#v0.1.0",
+        "nowwcastle-sudo/sitebrew/separator#v0.1.0"
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "hover-card",
+      "description": "web-factory ui: hover-card",
+      "files": [
+        {
+          "path": "hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "title": "icon-button",
+      "description": "web-factory ui: icon-button",
+      "files": [
+        {
+          "path": "icon-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "input",
+      "description": "web-factory ui: input",
+      "files": [
+        {
+          "path": "input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "input-group",
+      "description": "web-factory ui: input-group",
+      "files": [
+        {
+          "path": "input-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/input#v0.1.0",
+        "nowwcastle-sudo/sitebrew/textarea#v0.1.0"
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "input-otp",
+      "description": "web-factory ui: input-otp",
+      "files": [
+        {
+          "path": "input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0",
+        "input-otp@^1.5.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "item",
+      "description": "web-factory ui: item",
+      "files": [
+        {
+          "path": "item.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/separator#v0.1.0"
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "kbd",
+      "description": "web-factory ui: kbd",
+      "files": [
+        {
+          "path": "kbd.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "label",
+      "description": "web-factory ui: label",
+      "files": [
+        {
+          "path": "label.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "locale-labels",
+      "type": "registry:ui",
+      "title": "locale-labels",
+      "description": "web-factory ui: locale-labels",
+      "files": [
+        {
+          "path": "locale-labels.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "marker",
+      "description": "web-factory ui: marker",
+      "files": [
+        {
+          "path": "marker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "menubar",
+      "description": "web-factory ui: menubar",
+      "files": [
+        {
+          "path": "menubar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/dropdown-menu#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "message",
+      "description": "web-factory ui: message",
+      "files": [
+        {
+          "path": "message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "message-scroller",
+      "description": "web-factory ui: message-scroller",
+      "files": [
+        {
+          "path": "message-scroller.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@shadcn/react@^0.3.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "native-select",
+      "description": "web-factory ui: native-select",
+      "files": [
+        {
+          "path": "native-select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "navigation-menu",
+      "description": "web-factory ui: navigation-menu",
+      "files": [
+        {
+          "path": "navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "pagination",
+      "description": "web-factory ui: pagination",
+      "files": [
+        {
+          "path": "pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "popover",
+      "description": "web-factory ui: popover",
+      "files": [
+        {
+          "path": "popover.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "progress",
+      "description": "web-factory ui: progress",
+      "files": [
+        {
+          "path": "progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "questionnaire",
+      "description": "web-factory ui: questionnaire",
+      "files": [
+        {
+          "path": "questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@shadcn/react@^0.3.1",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "radio-group",
+      "description": "web-factory ui: radio-group",
+      "files": [
+        {
+          "path": "radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "resizable",
+      "description": "web-factory ui: resizable",
+      "files": [
+        {
+          "path": "resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0",
+        "react-resizable-panels@^4.13.3"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "scroll-area",
+      "description": "web-factory ui: scroll-area",
+      "files": [
+        {
+          "path": "scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "select",
+      "description": "web-factory ui: select",
+      "files": [
+        {
+          "path": "select.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "separator",
+      "description": "web-factory ui: separator",
+      "files": [
+        {
+          "path": "separator.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "sheet",
+      "description": "web-factory ui: sheet",
+      "files": [
+        {
+          "path": "sheet.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "sidebar",
+      "description": "web-factory ui: sidebar",
+      "files": [
+        {
+          "path": "sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/input#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0",
+        "nowwcastle-sudo/sitebrew/separator#v0.1.0",
+        "nowwcastle-sudo/sitebrew/sheet#v0.1.0",
+        "nowwcastle-sudo/sitebrew/skeleton#v0.1.0",
+        "nowwcastle-sudo/sitebrew/tooltip#v0.1.0",
+        "nowwcastle-sudo/sitebrew/use-mobile#v0.1.0"
+      ]
+    },
+    {
+      "name": "site-shell",
+      "type": "registry:ui",
+      "title": "site-shell",
+      "description": "web-factory ui: site-shell",
+      "files": [
+        {
+          "path": "site-shell.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.1.0",
+        "nowwcastle-sudo/sitebrew/site-shell-nav#v0.1.0"
+      ]
+    },
+    {
+      "name": "site-shell-nav",
+      "type": "registry:ui",
+      "title": "site-shell-nav",
+      "description": "web-factory ui: site-shell-nav",
+      "files": [
+        {
+          "path": "site-shell-nav.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "skeleton",
+      "description": "web-factory ui: skeleton",
+      "files": [
+        {
+          "path": "skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "slider",
+      "description": "web-factory ui: slider",
+      "files": [
+        {
+          "path": "slider.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "spinner",
+      "description": "web-factory ui: spinner",
+      "files": [
+        {
+          "path": "spinner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "switch",
+      "description": "web-factory ui: switch",
+      "files": [
+        {
+          "path": "switch.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "table",
+      "description": "web-factory ui: table",
+      "files": [
+        {
+          "path": "table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "tabs",
+      "description": "web-factory ui: tabs",
+      "files": [
+        {
+          "path": "tabs.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "textarea",
+      "description": "web-factory ui: textarea",
+      "files": [
+        {
+          "path": "textarea.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "texture",
+      "type": "registry:ui",
+      "title": "texture",
+      "description": "web-factory ui: texture",
+      "files": [
+        {
+          "path": "texture.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "toast",
+      "description": "web-factory ui: toast",
+      "files": [
+        {
+          "path": "toast.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/button#v0.1.0",
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/icons-lucide#v0.1.0",
+        "nowwcastle-sudo/sitebrew/locale-labels#v0.1.0"
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "toggle",
+      "description": "web-factory ui: toggle",
+      "files": [
+        {
+          "path": "toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "toggle-group",
+      "description": "web-factory ui: toggle-group",
+      "files": [
+        {
+          "path": "toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "class-variance-authority@^0.7.1",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0",
+        "nowwcastle-sudo/sitebrew/toggle#v0.1.0"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "tooltip",
+      "description": "web-factory ui: tooltip",
+      "files": [
+        {
+          "path": "tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "dependencies": [
+        "@base-ui/react@^1.8.0",
+        "cn@^0.4.0"
+      ],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/factory-base#v0.1.0"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "softle-app",
+  "archetype": "landing",
+  "sourceGallery": "opl",
+  "url": "https://softle.app/",
+  "structure": {
+    "hero": "흰 화면 중앙에 디자인 도구 선택 상자(파랑 모서리 핸들)로 감싼 주황색 윤곽 말랑 글자 6개와 준비 중 라벨",
+    "sections": [
+      "중앙 선택 상자 안 윤곽 글자 로고",
+      "준비 중 안내 라벨(눈 아이콘 버튼)"
+    ]
+  },
+  "type": {
+    "display": "부풀린 말랑 느낌 윤곽선 글자, 주황",
+    "body": "UI 라벨은 작은 산세리프 흰 글자",
+    "scale": "글자 약 130px 6개 격자·라벨 약 13px(1440)"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면만으로는 알 수 없다. 수집 메타상 캔버스 1개로 말랑 글자가 상호작용할 가능성이 있다",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "눈 모양 버튼(미리보기 모드로 보임)",
+    "캔버스 위 글자와의 상호작용 가능성"
+  ],
+  "cta": {
+    "pattern": "행동 요소 없이 곧 출시 라벨과 눈 아이콘 버튼 하나",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing"
+    ],
+    "score": 0.6
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "웹 페이지 자체를 디자인 도구의 캔버스처럼 보이게 연출해 제품 정체를 한 장면으로 말한다",
+    "파랑 선택 핸들과 주황 윤곽 글자 두 색만 써 UI 느낌과 브랜드 색을 분리한다",
+    "글자를 부풀려 격자 6칸으로 배치해 물리 기반 도구라는 성격을 형태로 보여 준다",
+    "첫 화면에 곧 출시 안내만 있어 행동 유도 없이 호기심만 자극하는 구성이다",
+    "모바일에서도 같은 선택 상자 연출이 그대로 확대된다"
+  ]
+}

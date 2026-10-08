@@ -1,0 +1,1915 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>레시피 보드 3판</title>
+<meta name="description" content="레시피 10벌의 안을 모션·실사를 반영한 움직이는 첫 화면으로 크게 보고, 2판 답을 곁에 두고 다시 고르는 보드">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<style>
+:root { --bg: #f4f5f7; --panel: #ffffff; --ink: #16181d; --muted: #545a66; --line: #d6d9df; --line-strong: #767c87; --chip: #eceef2; --accent: #1f5f8b; --like: #1d6b3a; --dislike: #9b2c22; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #121417; --panel: #1a1d22; --ink: #eceef2; --muted: #a9afba; --line: #343a44; --line-strong: #7d8592; --chip: #242830; --accent: #7fb6dd; --like: #74cf92; --dislike: #ff9387; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #121417; --panel: #1a1d22; --ink: #eceef2; --muted: #a9afba; --line: #343a44; --line-strong: #7d8592; --chip: #242830; --accent: #7fb6dd; --like: #74cf92; --dislike: #ff9387; color-scheme: dark; }
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+body { background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 16px; line-height: 1.6; margin: 0; padding-inline: 16px; padding-block: 0 48px; }
+h1, h2, h3, h4 { text-wrap: balance; line-height: 1.25; margin: 0; }
+code { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 0.85em; }
+button, input, textarea { font: inherit; }
+.wrap { max-width: 1360px; margin-inline: auto; display: flex; flex-direction: column; gap: 28px; }
+main { display: flex; flex-direction: column; gap: 28px; }
+.intro { display: flex; flex-direction: column; gap: 8px; padding-block: 32px 0; }
+.intro h1 { font-size: 1.75rem; }
+.intro p { margin: 0; max-width: 66ch; }
+.intro .sub { color: var(--muted); font-size: 0.9375rem; }
+.toc ul { display: flex; flex-wrap: wrap; gap: 0 4px; margin: 0; padding: 0; list-style: none; font-size: 0.9375rem; }
+.toc a { color: var(--ink); display: inline-flex; min-height: 44px; align-items: center; padding-inline: 8px; }
+.toc a[data-done="true"]::after { content: " ✓"; color: var(--like); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--panel); border: 1px solid var(--line); padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; }
+.bar .count { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bar .count span { font-size: 1.25rem; }
+.bar .status { margin: 0; color: var(--muted); font-size: 0.875rem; }
+.bar .status.err { color: var(--dislike); }
+.card { background: var(--panel); border: 1px solid var(--line); padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.card-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+.card-head .no { margin: 0; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.9375rem; }
+.card-head h2 { font-size: 1.625rem; }
+.mood { margin: 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.changes { margin: 0; flex-basis: 100%; font-size: 0.9375rem; }
+.edition { margin: 0; align-self: flex-start; padding: 4px 12px; border: 1px solid var(--line-strong); font-weight: 600; font-size: 0.9375rem; }
+.prev { margin: 0; color: var(--muted); font-size: 0.875rem; overflow-wrap: anywhere; }
+.prev[hidden] { display: none; }
+.opt { display: flex; flex-direction: column; gap: 14px; padding-block-start: 20px; border-top: 1px solid var(--line); min-width: 0; }
+.opt-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.opt-tag { font-size: 1.375rem; }
+.opt-head .fonts { margin: 0; color: var(--muted); font-size: 0.9375rem; flex: 1 1 16rem; }
+.big, .v-btn { min-height: 44px; padding: 0 18px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); font-weight: 600; cursor: pointer; }
+figure { margin: 0; min-width: 0; }
+.desk { position: relative; }
+.desk video { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 900; background: var(--chip); border: 1px solid var(--line); object-fit: cover; }
+.play { position: absolute; inset-inline-end: 10px; inset-block-end: 10px; min-height: 44px; min-width: 44px; padding: 0 14px; border: 0; background: color-mix(in srgb, var(--ink) 82%, transparent); color: var(--panel); font-size: 0.875rem; cursor: pointer; }
+.detail { display: grid; gap: 20px 28px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 900px) { .detail { grid-template-columns: 375px minmax(0, 1fr); } }
+.phone { display: flex; flex-direction: column; gap: 4px; }
+.phone img { display: block; width: min(375px, 100%); height: auto; aspect-ratio: 375 / 812; border: 1px solid var(--line); background: var(--chip); }
+.phone figcaption { font-size: 0.875rem; color: var(--muted); }
+.feedback { display: flex; flex-direction: column; gap: 18px; min-width: 0; max-width: 40rem; }
+.rate { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rate .q { grid-column: 1 / -1; margin: 0; font-weight: 700; }
+.like { min-height: 52px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); font-weight: 600; font-size: 1.0625rem; cursor: pointer; }
+.like[value="like"][aria-pressed="true"], .mark[value="like"][aria-pressed="true"] { background: var(--like); border-color: var(--like); color: var(--panel); }
+.like[value="dislike"][aria-pressed="true"], .mark[value="dislike"][aria-pressed="true"] { background: var(--dislike); border-color: var(--dislike); color: var(--panel); }
+fieldset { border: 1px solid var(--line); margin: 0; padding: 10px 14px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+legend { font-weight: 600; padding-inline: 4px; }
+.aspect { display: grid; grid-template-columns: 5.5em 1fr 1fr; gap: 8px; align-items: center; }
+.a-name { font-weight: 600; }
+.mark { min-height: 44px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); cursor: pointer; }
+.answer { display: grid; gap: 12px 24px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: start; padding-block-start: 20px; border-top: 1px solid var(--line); }
+.radios { display: flex; flex-wrap: wrap; gap: 8px; }
+.radio { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line-strong); cursor: pointer; }
+.radio input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+.radio:has(input:checked) { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.memo { display: flex; flex-direction: column; gap: 4px; font-size: 0.9375rem; color: var(--muted); }
+textarea { color: var(--ink); background: var(--panel); border: 1px solid var(--line-strong); padding: 8px 10px; min-height: 64px; width: 100%; }
+.save { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.save.err { color: var(--dislike); }
+.tech summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--muted); font-size: 0.9375rem; }
+.tech-body { display: flex; flex-direction: column; gap: 12px; padding-block: 8px 0; font-size: 0.875rem; }
+.tech-meta { margin: 0; color: var(--muted); }
+.tech-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.tech-opt { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.tech-opt h4 { font-size: 0.9375rem; }
+.tech-opt dl { margin: 0; display: grid; gap: 2px; }
+.tech-opt dl div { display: flex; gap: 8px; }
+.tech-opt dt { color: var(--muted); min-width: 6em; }
+.tech-opt dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.swatches { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 12px; }
+.swatches li { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 18px; height: 18px; border: 1px solid var(--line); display: inline-block; }
+.role { color: var(--muted); }
+.steps { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.step { display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 1px solid var(--line-strong); color: var(--ink); text-decoration: none; font-weight: 600; }
+.step.next { margin-inline-start: auto; }
+.foot { margin: 0; font-size: 0.875rem; color: var(--muted); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+dialog.viewer { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--bg); color: var(--ink); }
+dialog.viewer[open] { display: flex; flex-direction: column; }
+dialog.viewer::backdrop { background: color-mix(in srgb, var(--ink) 60%, transparent); }
+.v-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.v-head h2 { font-size: 1.125rem; margin-inline-end: auto; }
+.seg { display: inline-flex; }
+.seg .v-btn + .v-btn { border-inline-start: 0; }
+.v-btn[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.v-close { font-weight: 700; }
+.v-stage { flex: 1; overflow: auto; padding: 16px; }
+.v-video { display: block; width: 1440px; height: 900px; max-width: none; background: var(--chip); }
+.v-phone { display: block; width: 375px; height: auto; max-width: none; }
+.v-stage [hidden] { display: none; }
+@media (max-width: 560px) {
+  .card { padding: 16px; }
+  .v-stage { padding: 0; }
+  .aspect { grid-template-columns: 4.5em 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } .play { background: var(--ink); } }
+</style>
+</head>
+<body>
+<div class="wrap" id="board-top">
+  <header class="intro">
+    <p class="edition">3판 — 모션 강화·실사 사진/영상 반영</p>
+    <h1>레시피 보드 3판</h1>
+    <p>각 레시피의 안을 보고 마음에 드는지 골라 주세요. 움직임은 영상으로 보이고, 「크게 보기」를 누르면 실제 크기로 볼 수 있습니다.</p>
+    <p class="sub">안마다 「좋다」나 「별로」를 누르면 됩니다. 2판에서 남긴 답은 안마다 작은 글씨로 보이니, 그것과 견주어 다시 골라 주세요. 색감·글씨체·배치·움직임을 따로 고르거나 메모를 남기는 것은 하고 싶을 때만 합니다. 카드 아래 「다음 레시피」로 한 벌씩 넘어갈 수 있습니다.</p>
+    <nav class="toc" aria-label="레시피 바로 가기"><ul><li><a href="#card-r1-measure" data-done="false">1. 도면 계측</a></li><li><a href="#card-r2-signal" data-done="false">2. 흑백 신호</a></li><li><a href="#card-r3-woodblock" data-done="false">3. 네도수 목판</a></li><li><a href="#card-r4-evidence" data-done="false">4. 근거 대화</a></li><li><a href="#card-r5-celadon" data-done="false">5. 청자 고요</a></li><li><a href="#card-r6-civic" data-done="false">6. 공공 신뢰</a></li><li><a href="#card-r7-docs" data-done="false">7. 문서 작업대</a></li><li><a href="#card-r8-dusk" data-done="false">8. 솔숲 저녁</a></li><li><a href="#card-r9-clay" data-done="false">9. 말랑 점토</a></li><li><a href="#card-r10-console" data-done="false">10. 자홍 콘솔</a></li></ul></nav>
+  </header>
+  <div class="bar">
+    <p class="count" aria-live="polite"><span id="progress">0</span>/10 레시피 판정</p>
+    <p class="status" id="db-status" role="status">저장 기능을 확인하는 중입니다.</p>
+  </div>
+  <main>
+  <article class="card" id="card-r1-measure" data-recipe="r1-measure" aria-labelledby="t-r1-measure">
+    <header class="card-head">
+      <p class="no">1 / 10</p>
+      <h2 id="t-r1-measure">도면 계측</h2>
+      <p class="mood" title="계측 · 차분 · 정확">계측 · 차분 · 정확</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터) · B안 실사 사진</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r1-measure-A">
+        <div class="opt-head">
+          <h3 id="o-r1-measure-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Martian Mono · 한글 나눔고딕코딩</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r1-measure-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="도면 계측 A안 첫 화면 영상 8초">
+            <source src="video/r1-measure-A.mp4" type="video/mp4">
+            <source src="video/r1-measure-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="도면 계측 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r1-measure-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="도면 계측 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="도면 계측 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r1-measure-A">A안 메모(선택) <textarea id="note-r1-measure-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r1-measure-B">
+        <div class="opt-head">
+          <h3 id="o-r1-measure-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Tektur · 한글 펴진고딕</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r1-measure-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="도면 계측 B안 첫 화면 영상 8초">
+            <source src="video/r1-measure-B.mp4" type="video/mp4">
+            <source src="video/r1-measure-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="도면 계측 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r1-measure-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="도면 계측 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="도면 계측 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r1-measure-B">B안 메모(선택) <textarea id="note-r1-measure-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r1-measure" id="pick-r1-measure-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r1-measure" id="pick-r1-measure-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r1-measure" id="pick-r1-measure-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r1-measure">레시피 전체 메모(선택) <textarea id="note-r1-measure" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r1-measure.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K1 단일 액센트·중립 우세</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>step-band-orbit</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국제 웹 어워드 선정작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#f1f2ef"></span><code>#f1f2ef</code> <span class="role">background</span></li><li><span class="sw" style="background:#071629"></span><code>#071629</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#17345c"></span><code>#17345c</code> <span class="role">primary</span></li><li><span class="sw" style="background:#dde6f1"></span><code>#dde6f1</code> <span class="role">accent</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K1 단일 액센트·중립 우세</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>baseline-split</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국제 웹 어워드 후보·수상작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#e0e1dc"></span><code>#e0e1dc</code> <span class="role">background</span></li><li><span class="sw" style="background:#0f1b2b"></span><code>#0f1b2b</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#1b2731"></span><code>#1b2731</code> <span class="role">primary</span></li><li><span class="sw" style="background:#cdd3d6"></span><code>#cdd3d6</code> <span class="role">accent</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <span></span>
+      <a class="step next" href="#card-r2-signal" data-step="next">다음 레시피 · 흑백 신호 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r2-signal" data-recipe="r2-signal" aria-labelledby="t-r2-signal">
+    <header class="card-head">
+      <p class="no">2 / 10</p>
+      <h2 id="t-r2-signal">흑백 신호</h2>
+      <p class="mood" title="단정 · 대담 · 신호">단정 · 대담 · 신호</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터) · A안 실사 사진 · A안 = 2판 B안 · B안 = 2판 A안</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r2-signal-A">
+        <div class="opt-head">
+          <h3 id="o-r2-signal-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Dela Gothic One · 한글 모이라이 원</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r2-signal-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="흑백 신호 A안 첫 화면 영상 8초">
+            <source src="video/r2-signal-A.mp4" type="video/mp4">
+            <source src="video/r2-signal-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="흑백 신호 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r2-signal-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="흑백 신호 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="흑백 신호 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r2-signal-A">A안 메모(선택) <textarea id="note-r2-signal-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r2-signal-B">
+        <div class="opt-head">
+          <h3 id="o-r2-signal-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Bricolage Grotesque · 한글 도현</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r2-signal-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="흑백 신호 B안 첫 화면 영상 8초">
+            <source src="video/r2-signal-B.mp4" type="video/mp4">
+            <source src="video/r2-signal-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="흑백 신호 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r2-signal-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="흑백 신호 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="흑백 신호 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r2-signal-B">B안 메모(선택) <textarea id="note-r2-signal-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r2-signal" id="pick-r2-signal-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r2-signal" id="pick-r2-signal-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r2-signal" id="pick-r2-signal-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r2-signal">레시피 전체 메모(선택) <textarea id="note-r2-signal" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r2-signal.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K7 듀오톤</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>글자 분할 등장 · 오버사이즈 타입 크롭</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>inline-chip-title</code></dd></div>
+            <div><dt>출처 분류</dt><dd>웹 디자인 큐레이션 선정작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#e6e8f0"></span><code>#e6e8f0</code> <span class="role">background</span></li><li><span class="sw" style="background:#1e1e1e"></span><code>#1e1e1e</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#6629a8"></span><code>#6629a8</code> <span class="role">primary</span></li><li><span class="sw" style="background:#dcd6ee"></span><code>#dcd6ee</code> <span class="role">accent</span></li><li><span class="sw" style="background:#38e6a2"></span><code>#38e6a2</code> <span class="role">field-1</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K7 듀오톤</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>글자 분할 등장 · 오버사이즈 타입 크롭</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>cropped-title-list</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국제 웹 어워드 선정작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#fcfcfd"></span><code>#fcfcfd</code> <span class="role">background</span></li><li><span class="sw" style="background:#0e0e0e"></span><code>#0e0e0e</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#1a0df0"></span><code>#1a0df0</code> <span class="role">primary</span></li><li><span class="sw" style="background:#e9eaf3"></span><code>#e9eaf3</code> <span class="role">accent</span></li><li><span class="sw" style="background:#ae0000"></span><code>#ae0000</code> <span class="role">field-1</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r1-measure" data-step="prev">← 이전 레시피 · 도면 계측</a>
+      <a class="step next" href="#card-r3-woodblock" data-step="next">다음 레시피 · 네도수 목판 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r3-woodblock" data-recipe="r3-woodblock" aria-labelledby="t-r3-woodblock">
+    <header class="card-head">
+      <p class="no">3 / 10</p>
+      <h2 id="t-r3-woodblock">네도수 목판</h2>
+      <p class="mood" title="손맛 · 인쇄 · 장터">손맛 · 인쇄 · 장터</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터) · A안 실사 영상 · B안 실사 사진</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r3-woodblock-A">
+        <div class="opt-head">
+          <h3 id="o-r3-woodblock-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Young Serif · 한글 송명</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r3-woodblock-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="네도수 목판 A안 첫 화면 영상 8초">
+            <source src="video/r3-woodblock-A.mp4" type="video/mp4">
+            <source src="video/r3-woodblock-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="네도수 목판 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r3-woodblock-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="네도수 목판 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="네도수 목판 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r3-woodblock-A">A안 메모(선택) <textarea id="note-r3-woodblock-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r3-woodblock-B">
+        <div class="opt-head">
+          <h3 id="o-r3-woodblock-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Shrikhand · 한글 을지로체</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r3-woodblock-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="네도수 목판 B안 첫 화면 영상 8초">
+            <source src="video/r3-woodblock-B.mp4" type="video/mp4">
+            <source src="video/r3-woodblock-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="네도수 목판 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r3-woodblock-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="네도수 목판 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="네도수 목판 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r3-woodblock-B">B안 메모(선택) <textarea id="note-r3-woodblock-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r3-woodblock" id="pick-r3-woodblock-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r3-woodblock" id="pick-r3-woodblock-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r3-woodblock" id="pick-r3-woodblock-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r3-woodblock">레시피 전체 메모(선택) <textarea id="note-r3-woodblock" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r3-woodblock.md</code> · AI 티 16점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K8 색 블록</dd></div>
+            <div><dt>모션</dt><dd>M2</dd></div>
+            <div><dt>역동 기법</dt><dd>그레인(feTurbulence) · clip-path 리빌</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>staggered-oval-frame</code></dd></div>
+            <div><dt>출처 분류</dt><dd>한 장 사이트 큐레이션 선정작 · 식당</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#f1f2e8"></span><code>#f1f2e8</code> <span class="role">background</span></li><li><span class="sw" style="background:#2e2910"></span><code>#2e2910</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#2c5745"></span><code>#2c5745</code> <span class="role">primary</span></li><li><span class="sw" style="background:#e2e9d8"></span><code>#e2e9d8</code> <span class="role">accent</span></li><li><span class="sw" style="background:#215339"></span><code>#215339</code> <span class="role">block-1</span></li><li><span class="sw" style="background:#eb7d00"></span><code>#eb7d00</code> <span class="role">block-2</span></li><li><span class="sw" style="background:#77b6d1"></span><code>#77b6d1</code> <span class="role">block-3</span></li><li><span class="sw" style="background:#a54d47"></span><code>#a54d47</code> <span class="role">block-4</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K8 색 블록</dd></div>
+            <div><dt>모션</dt><dd>M2</dd></div>
+            <div><dt>역동 기법</dt><dd>그레인(feTurbulence) · clip-path 리빌</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>twin-panels</code></dd></div>
+            <div><dt>출처 분류</dt><dd>웹 디자인 큐레이션 선정작 · 쇼핑몰</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#f4f4f2"></span><code>#f4f4f2</code> <span class="role">background</span></li><li><span class="sw" style="background:#1c1c1c"></span><code>#1c1c1c</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#1a305d"></span><code>#1a305d</code> <span class="role">primary</span></li><li><span class="sw" style="background:#e4e8f0"></span><code>#e4e8f0</code> <span class="role">accent</span></li><li><span class="sw" style="background:#f5ce80"></span><code>#f5ce80</code> <span class="role">block-1</span></li><li><span class="sw" style="background:#f2916d"></span><code>#f2916d</code> <span class="role">block-2</span></li><li><span class="sw" style="background:#82b4ca"></span><code>#82b4ca</code> <span class="role">block-3</span></li><li><span class="sw" style="background:#ae7eac"></span><code>#ae7eac</code> <span class="role">block-4</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r2-signal" data-step="prev">← 이전 레시피 · 흑백 신호</a>
+      <a class="step next" href="#card-r4-evidence" data-step="next">다음 레시피 · 근거 대화 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r4-evidence" data-recipe="r4-evidence" aria-labelledby="t-r4-evidence">
+    <header class="card-head">
+      <p class="no">4 / 10</p>
+      <h2 id="t-r4-evidence">근거 대화</h2>
+      <p class="mood" title="근거 · 차분 · 대화">근거 · 차분 · 대화</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터)</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r4-evidence-A">
+        <div class="opt-head">
+          <h3 id="o-r4-evidence-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Newsreader · 한글 마루 부리</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r4-evidence-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="근거 대화 A안 첫 화면 영상 8초">
+            <source src="video/r4-evidence-A.mp4" type="video/mp4">
+            <source src="video/r4-evidence-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="근거 대화 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r4-evidence-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="근거 대화 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="근거 대화 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r4-evidence-A">A안 메모(선택) <textarea id="note-r4-evidence-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r4-evidence-B">
+        <div class="opt-head">
+          <h3 id="o-r4-evidence-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Spectral · 한글 SeochoBatang</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r4-evidence-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="근거 대화 B안 첫 화면 영상 8초">
+            <source src="video/r4-evidence-B.mp4" type="video/mp4">
+            <source src="video/r4-evidence-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="근거 대화 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r4-evidence-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="근거 대화 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="근거 대화 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r4-evidence-B">B안 메모(선택) <textarea id="note-r4-evidence-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r4-evidence" id="pick-r4-evidence-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r4-evidence" id="pick-r4-evidence-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r4-evidence" id="pick-r4-evidence-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r4-evidence">레시피 전체 메모(선택) <textarea id="note-r4-evidence" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r4-evidence.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K7 듀오톤</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>clip-path 리빌 · SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>stepped-crop-figure</code></dd></div>
+            <div><dt>출처 분류</dt><dd>랜딩 페이지 큐레이션 선정작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#fbfcfd"></span><code>#fbfcfd</code> <span class="role">background</span></li><li><span class="sw" style="background:#0b1220"></span><code>#0b1220</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#1d4e89"></span><code>#1d4e89</code> <span class="role">primary</span></li><li><span class="sw" style="background:#edf1f7"></span><code>#edf1f7</code> <span class="role">accent</span></li><li><span class="sw" style="background:#fca311"></span><code>#fca311</code> <span class="role">field-1</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K7 듀오톤</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>clip-path 리빌 · SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>centered-proof-panel</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국제 웹 어워드 후보·수상작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#f3f3f8"></span><code>#f3f3f8</code> <span class="role">background</span></li><li><span class="sw" style="background:#110930"></span><code>#110930</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#6e4bdf"></span><code>#6e4bdf</code> <span class="role">primary</span></li><li><span class="sw" style="background:#ece8fb"></span><code>#ece8fb</code> <span class="role">accent</span></li><li><span class="sw" style="background:#d9ee93"></span><code>#d9ee93</code> <span class="role">field-1</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r3-woodblock" data-step="prev">← 이전 레시피 · 네도수 목판</a>
+      <a class="step next" href="#card-r5-celadon" data-step="next">다음 레시피 · 청자 고요 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r5-celadon" data-recipe="r5-celadon" aria-labelledby="t-r5-celadon">
+    <header class="card-head">
+      <p class="no">5 / 10</p>
+      <h2 id="t-r5-celadon">청자 고요</h2>
+      <p class="mood" title="고요 · 재질 · 여백">고요 · 재질 · 여백</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터) · A안 실사 영상 · 2판 B안은 뺐다(2판 판정)</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r5-celadon-A">
+        <div class="opt-head">
+          <h3 id="o-r5-celadon-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Bodoni Moda · 한글 Diphylleia</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r5-celadon-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="청자 고요 A안 첫 화면 영상 8초">
+            <source src="video/r5-celadon-A.mp4" type="video/mp4">
+            <source src="video/r5-celadon-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="청자 고요 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r5-celadon-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="청자 고요 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="청자 고요 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r5-celadon-A">A안 메모(선택) <textarea id="note-r5-celadon-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안으로 정할까요</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r5-celadon" id="pick-r5-celadon-A" value="A" data-pick> <span>A안으로 정한다</span></label><label class="radio"><input type="radio" name="pick-r5-celadon" id="pick-r5-celadon-none" value="" data-pick> <span>정하지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r5-celadon">레시피 전체 메모(선택) <textarea id="note-r5-celadon" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r5-celadon.md</code> · AI 티 13점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M3</dd></div>
+            <div><dt>역동 기법</dt><dd>3D 기울임·원근 · clip-path 리빌 · 가변 폰트 축 애니메이션</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>banded-full-bleed</code></dd></div>
+            <div><dt>출처 분류</dt><dd>웹 디자인 큐레이션 선정작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#f2f4f3"></span><code>#f2f4f3</code> <span class="role">background</span></li><li><span class="sw" style="background:#1a1a18"></span><code>#1a1a18</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#32292f"></span><code>#32292f</code> <span class="role">primary</span></li><li><span class="sw" style="background:#e1efec"></span><code>#e1efec</code> <span class="role">accent</span></li><li><span class="sw" style="background:#99e1d9"></span><code>#99e1d9</code> <span class="role">field-1</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r4-evidence" data-step="prev">← 이전 레시피 · 근거 대화</a>
+      <a class="step next" href="#card-r6-civic" data-step="next">다음 레시피 · 공공 신뢰 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r6-civic" data-recipe="r6-civic" aria-labelledby="t-r6-civic">
+    <header class="card-head">
+      <p class="no">6 / 10</p>
+      <h2 id="t-r6-civic">공공 신뢰</h2>
+      <p class="mood" title="공식 · 명료 · 신뢰">공식 · 명료 · 신뢰</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터)</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r6-civic-A">
+        <div class="opt-head">
+          <h3 id="o-r6-civic-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Unbounded · 한글 프리텐다드 GOV(본문 서체)</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r6-civic-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="공공 신뢰 A안 첫 화면 영상 8초">
+            <source src="video/r6-civic-A.mp4" type="video/mp4">
+            <source src="video/r6-civic-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="공공 신뢰 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r6-civic-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="공공 신뢰 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="공공 신뢰 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r6-civic-A">A안 메모(선택) <textarea id="note-r6-civic-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r6-civic-B">
+        <div class="opt-head">
+          <h3 id="o-r6-civic-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Fragment Mono · 한글 프리텐다드 GOV(본문 서체)</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r6-civic-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="공공 신뢰 B안 첫 화면 영상 8초">
+            <source src="video/r6-civic-B.mp4" type="video/mp4">
+            <source src="video/r6-civic-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="공공 신뢰 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r6-civic-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="공공 신뢰 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="공공 신뢰 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r6-civic-B">B안 메모(선택) <textarea id="note-r6-civic-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r6-civic" id="pick-r6-civic-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r6-civic" id="pick-r6-civic-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r6-civic" id="pick-r6-civic-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r6-civic">레시피 전체 메모(선택) <textarea id="note-r6-civic" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r6-civic.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>View Transitions · SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>crosshair-quadrants</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국제 웹 어워드 후보·수상작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#ffffff"></span><code>#ffffff</code> <span class="role">background</span></li><li><span class="sw" style="background:#11171e"></span><code>#11171e</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#1f57f5"></span><code>#1f57f5</code> <span class="role">primary</span></li><li><span class="sw" style="background:#e2e6fb"></span><code>#e2e6fb</code> <span class="role">accent</span></li><li><span class="sw" style="background:#1a3d95"></span><code>#1a3d95</code> <span class="role">field-1</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>View Transitions · SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>identity-strip-banner</code></dd></div>
+            <div><dt>출처 분류</dt><dd>정부 디자인 시스템 정본</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#fefefe"></span><code>#fefefe</code> <span class="role">background</span></li><li><span class="sw" style="background:#1e2124"></span><code>#1e2124</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#1d5fdb"></span><code>#1d5fdb</code> <span class="role">primary</span></li><li><span class="sw" style="background:#c7ddeb"></span><code>#c7ddeb</code> <span class="role">accent</span></li><li><span class="sw" style="background:#142f5b"></span><code>#142f5b</code> <span class="role">field-1</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r5-celadon" data-step="prev">← 이전 레시피 · 청자 고요</a>
+      <a class="step next" href="#card-r7-docs" data-step="next">다음 레시피 · 문서 작업대 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r7-docs" data-recipe="r7-docs" aria-labelledby="t-r7-docs">
+    <header class="card-head">
+      <p class="no">7 / 10</p>
+      <h2 id="t-r7-docs">문서 작업대</h2>
+      <p class="mood" title="문서 · 조용 · 정돈">문서 · 조용 · 정돈</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터)</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r7-docs-A">
+        <div class="opt-head">
+          <h3 id="o-r7-docs-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Besley · 한글 나눔스퀘어라운드</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r7-docs-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="문서 작업대 A안 첫 화면 영상 8초">
+            <source src="video/r7-docs-A.mp4" type="video/mp4">
+            <source src="video/r7-docs-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="문서 작업대 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r7-docs-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="문서 작업대 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="문서 작업대 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r7-docs-A">A안 메모(선택) <textarea id="note-r7-docs-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r7-docs-B">
+        <div class="opt-head">
+          <h3 id="o-r7-docs-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Libre Caslon Display · 한글 NaturalSans</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r7-docs-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="문서 작업대 B안 첫 화면 영상 8초">
+            <source src="video/r7-docs-B.mp4" type="video/mp4">
+            <source src="video/r7-docs-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="문서 작업대 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r7-docs-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="문서 작업대 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="문서 작업대 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r7-docs-B">B안 메모(선택) <textarea id="note-r7-docs-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r7-docs" id="pick-r7-docs-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r7-docs" id="pick-r7-docs-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r7-docs" id="pick-r7-docs-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r7-docs">레시피 전체 메모(선택) <textarea id="note-r7-docs" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r7-docs.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M2</dd></div>
+            <div><dt>역동 기법</dt><dd>View Transitions · 스티키 스태킹 카드</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>leaking-app-panel</code></dd></div>
+            <div><dt>출처 분류</dt><dd>랜딩 페이지 큐레이션 선정작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#f6f8f6"></span><code>#f6f8f6</code> <span class="role">background</span></li><li><span class="sw" style="background:#051f20"></span><code>#051f20</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#235347"></span><code>#235347</code> <span class="role">primary</span></li><li><span class="sw" style="background:#daf1de"></span><code>#daf1de</code> <span class="role">accent</span></li><li><span class="sw" style="background:#baedc6"></span><code>#baedc6</code> <span class="role">field-1</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M2</dd></div>
+            <div><dt>역동 기법</dt><dd>View Transitions · 스티키 스태킹 카드</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>narrow-title-wide-window</code></dd></div>
+            <div><dt>출처 분류</dt><dd>SaaS 랜딩 모음 수록작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#fbfaf8"></span><code>#fbfaf8</code> <span class="role">background</span></li><li><span class="sw" style="background:#251d1a"></span><code>#251d1a</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#203c3d"></span><code>#203c3d</code> <span class="role">primary</span></li><li><span class="sw" style="background:#fedab8"></span><code>#fedab8</code> <span class="role">accent</span></li><li><span class="sw" style="background:#fec07d"></span><code>#fec07d</code> <span class="role">field-1</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r6-civic" data-step="prev">← 이전 레시피 · 공공 신뢰</a>
+      <a class="step next" href="#card-r8-dusk" data-step="next">다음 레시피 · 솔숲 저녁 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r8-dusk" data-recipe="r8-dusk" aria-labelledby="t-r8-dusk">
+    <header class="card-head">
+      <p class="no">8 / 10</p>
+      <h2 id="t-r8-dusk">솔숲 저녁</h2>
+      <p class="mood" title="저녁 · 숲 · 느림">저녁 · 숲 · 느림</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터) · A안 실사 영상 · B안 실사 영상·사진</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r8-dusk-A">
+        <div class="opt-head">
+          <h3 id="o-r8-dusk-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Big Shoulders · 한글 고운바탕</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r8-dusk-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="솔숲 저녁 A안 첫 화면 영상 8초">
+            <source src="video/r8-dusk-A.mp4" type="video/mp4">
+            <source src="video/r8-dusk-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="솔숲 저녁 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r8-dusk-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="솔숲 저녁 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="솔숲 저녁 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r8-dusk-A">A안 메모(선택) <textarea id="note-r8-dusk-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r8-dusk-B">
+        <div class="opt-head">
+          <h3 id="o-r8-dusk-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Alegreya · 한글 나눔손글씨 붓</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r8-dusk-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="솔숲 저녁 B안 첫 화면 영상 8초">
+            <source src="video/r8-dusk-B.mp4" type="video/mp4">
+            <source src="video/r8-dusk-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="솔숲 저녁 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r8-dusk-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="솔숲 저녁 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="솔숲 저녁 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r8-dusk-B">B안 메모(선택) <textarea id="note-r8-dusk-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r8-dusk" id="pick-r8-dusk-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r8-dusk" id="pick-r8-dusk-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r8-dusk" id="pick-r8-dusk-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r8-dusk">레시피 전체 메모(선택) <textarea id="note-r8-dusk" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r8-dusk.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M3</dd></div>
+            <div><dt>역동 기법</dt><dd>글자 분할 등장 · clip-path 리빌 · 스티키 스태킹 카드</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>grid-lines-baseline-word</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국제 웹 어워드 후보·수상작</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#eef0f1"></span><code>#eef0f1</code> <span class="role">background</span></li><li><span class="sw" style="background:#0d281c"></span><code>#0d281c</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#004c37"></span><code>#004c37</code> <span class="role">primary</span></li><li><span class="sw" style="background:#dde3dc"></span><code>#dde3dc</code> <span class="role">accent</span></li><li><span class="sw" style="background:#00563e"></span><code>#00563e</code> <span class="role">field-1</span></li><li><span class="sw" style="background:#274f84"></span><code>#274f84</code> <span class="role">field-2</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M3</dd></div>
+            <div><dt>역동 기법</dt><dd>글자 분할 등장 · clip-path 리빌 · 스티키 스태킹 카드</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>vertical-title-slides</code></dd></div>
+            <div><dt>출처 분류</dt><dd>국내 제작 사례 · 숙박·여행</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#f4f4f3"></span><code>#f4f4f3</code> <span class="role">background</span></li><li><span class="sw" style="background:#1c1712"></span><code>#1c1712</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#345c66"></span><code>#345c66</code> <span class="role">primary</span></li><li><span class="sw" style="background:#fef3b1"></span><code>#fef3b1</code> <span class="role">accent</span></li><li><span class="sw" style="background:#a8cff7"></span><code>#a8cff7</code> <span class="role">field-1</span></li><li><span class="sw" style="background:#6a3913"></span><code>#6a3913</code> <span class="role">field-2</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r7-docs" data-step="prev">← 이전 레시피 · 문서 작업대</a>
+      <a class="step next" href="#card-r9-clay" data-step="next">다음 레시피 · 말랑 점토 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r9-clay" data-recipe="r9-clay" aria-labelledby="t-r9-clay">
+    <header class="card-head">
+      <p class="no">9 / 10</p>
+      <h2 id="t-r9-clay">말랑 점토</h2>
+      <p class="mood" title="말랑 · 친근 · 손끝">말랑 · 친근 · 손끝</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터) · A안 실사 영상</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r9-clay-A">
+        <div class="opt-head">
+          <h3 id="o-r9-clay-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Grandstander · 한글 베이글 팻 원</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r9-clay-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="말랑 점토 A안 첫 화면 영상 8초">
+            <source src="video/r9-clay-A.mp4" type="video/mp4">
+            <source src="video/r9-clay-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="말랑 점토 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r9-clay-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="말랑 점토 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="말랑 점토 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r9-clay-A">A안 메모(선택) <textarea id="note-r9-clay-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r9-clay-B">
+        <div class="opt-head">
+          <h3 id="o-r9-clay-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Titan One · 한글 동글</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r9-clay-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="말랑 점토 B안 첫 화면 영상 8초">
+            <source src="video/r9-clay-B.mp4" type="video/mp4">
+            <source src="video/r9-clay-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="말랑 점토 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r9-clay-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="말랑 점토 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="말랑 점토 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r9-clay-B">B안 메모(선택) <textarea id="note-r9-clay-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r9-clay" id="pick-r9-clay-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r9-clay" id="pick-r9-clay-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r9-clay" id="pick-r9-clay-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r9-clay">레시피 전체 메모(선택) <textarea id="note-r9-clay" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r9-clay.md</code> · AI 티 13점(기준 r1 12) · 기본 테마 라이트</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K8 색 블록</dd></div>
+            <div><dt>모션</dt><dd>M2</dd></div>
+            <div><dt>역동 기법</dt><dd>글자 분할 등장 · 3D 기울임·원근 · clip-path 리빌</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>framed-card-outline-title</code></dd></div>
+            <div><dt>출처 분류</dt><dd>한 장 사이트 큐레이션 선정작 · 식당</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(라이트)"><li><span class="sw" style="background:#f7f8fb"></span><code>#f7f8fb</code> <span class="role">background</span></li><li><span class="sw" style="background:#192a56"></span><code>#192a56</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#192a56"></span><code>#192a56</code> <span class="role">primary</span></li><li><span class="sw" style="background:#ffe6f4"></span><code>#ffe6f4</code> <span class="role">accent</span></li><li><span class="sw" style="background:#ff8fcf"></span><code>#ff8fcf</code> <span class="role">block-1</span></li><li><span class="sw" style="background:#f7d794"></span><code>#f7d794</code> <span class="role">block-2</span></li><li><span class="sw" style="background:#9fd9c4"></span><code>#9fd9c4</code> <span class="role">block-3</span></li><li><span class="sw" style="background:#eda8a3"></span><code>#eda8a3</code> <span class="role">block-4</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K8 색 블록</dd></div>
+            <div><dt>모션</dt><dd>M2</dd></div>
+            <div><dt>역동 기법</dt><dd>글자 분할 등장 · 3D 기울임·원근 · clip-path 리빌</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>layered-landscape-logotype</code></dd></div>
+            <div><dt>출처 분류</dt><dd>한 장 사이트 큐레이션 선정작 · 숙박</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(라이트)"><li><span class="sw" style="background:#f4f7f8"></span><code>#f4f7f8</code> <span class="role">background</span></li><li><span class="sw" style="background:#152017"></span><code>#152017</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#8c3715"></span><code>#8c3715</code> <span class="role">primary</span></li><li><span class="sw" style="background:#dce9ec"></span><code>#dce9ec</code> <span class="role">accent</span></li><li><span class="sw" style="background:#a9d8f5"></span><code>#a9d8f5</code> <span class="role">block-1</span></li><li><span class="sw" style="background:#8dc5b5"></span><code>#8dc5b5</code> <span class="role">block-2</span></li><li><span class="sw" style="background:#8b320b"></span><code>#8b320b</code> <span class="role">block-3</span></li><li><span class="sw" style="background:#315646"></span><code>#315646</code> <span class="role">block-4</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r8-dusk" data-step="prev">← 이전 레시피 · 솔숲 저녁</a>
+      <a class="step next" href="#card-r10-console" data-step="next">다음 레시피 · 자홍 콘솔 →</a>
+    </div>
+  </article>
+  <article class="card" id="card-r10-console" data-recipe="r10-console" aria-labelledby="t-r10-console">
+    <header class="card-head">
+      <p class="no">10 / 10</p>
+      <h2 id="t-r10-console">자홍 콘솔</h2>
+      <p class="mood" title="조밀 · 즉답 · 절제">조밀 · 즉답 · 절제</p>
+      <p class="changes">2판 뒤 바뀐 점: 움직임 3겹(등장·스크롤·포인터)</p>
+    </header>
+    <div class="opt" data-option="A" role="group" aria-labelledby="o-r10-console-A">
+        <div class="opt-head">
+          <h3 id="o-r10-console-A" class="opt-tag">A안</h3>
+          <p class="fonts">영문 Antonio · 한글 오르빗</p>
+          <button type="button" class="big" data-big="A" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="A" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r10-console-A-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="자홍 콘솔 A안 첫 화면 영상 8초">
+            <source src="video/r10-console-A.mp4" type="video/mp4">
+            <source src="video/r10-console-A.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="자홍 콘솔 A안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r10-console-A-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="자홍 콘솔 A안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="자홍 콘솔 A안 전체가 마음에 드나요">
+              <p class="q">A안 전체</p>
+              <button type="button" class="like" data-like="A" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="A" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="A안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="A안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="A" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r10-console-A">A안 메모(선택) <textarea id="note-r10-console-A" data-note-opt="A" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="opt" data-option="B" role="group" aria-labelledby="o-r10-console-B">
+        <div class="opt-head">
+          <h3 id="o-r10-console-B" class="opt-tag">B안</h3>
+          <p class="fonts">영문 Azeret Mono · 한글 갈무리11</p>
+          <button type="button" class="big" data-big="B" aria-haspopup="dialog">크게 보기</button>
+        </div>
+        <p class="prev" data-prev="B" hidden></p>
+        <figure class="desk">
+          <video poster="shots/r10-console-B-1440.webp" width="1440" height="900" autoplay muted loop playsinline preload="metadata" aria-label="자홍 콘솔 B안 첫 화면 영상 8초">
+            <source src="video/r10-console-B.mp4" type="video/mp4">
+            <source src="video/r10-console-B.webm" type="video/webm">
+          </video>
+          <button type="button" class="play" data-play aria-label="자홍 콘솔 B안 영상 일시정지">일시정지</button>
+        </figure>
+        <div class="detail">
+          <figure class="phone">
+            <img src="shots/r10-console-B-375.webp" width="375" height="812" loading="lazy" decoding="async" alt="자홍 콘솔 B안 휴대폰 첫 화면">
+            <figcaption>휴대폰 화면(375)</figcaption>
+          </figure>
+          <div class="feedback">
+            <div class="rate" role="group" aria-label="자홍 콘솔 B안 전체가 마음에 드나요">
+              <p class="q">B안 전체</p>
+              <button type="button" class="like" data-like="B" value="like" aria-pressed="false">좋다</button>
+              <button type="button" class="like" data-like="B" value="dislike" aria-pressed="false">별로</button>
+            </div>
+            <fieldset class="aspects">
+              <legend>부분별로(고르고 싶을 때만)</legend>
+              <div class="aspect" role="group" aria-label="B안 색감">
+                <span class="a-name">색감</span>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="color" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 글씨체">
+                <span class="a-name">글씨체</span>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="type" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 배치">
+                <span class="a-name">배치</span>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="layout" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+              <div class="aspect" role="group" aria-label="B안 움직임">
+                <span class="a-name">움직임</span>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="like" aria-pressed="false">좋다</button>
+                <button type="button" class="mark" data-aspect="motion" data-opt="B" value="dislike" aria-pressed="false">별로</button>
+              </div>
+            </fieldset>
+            <label class="memo" for="note-r10-console-B">B안 메모(선택) <textarea id="note-r10-console-B" data-note-opt="B" rows="3" placeholder="이 안에서 마음에 드는 점이나 걸리는 점"></textarea></label>
+          </div>
+        </div>
+      </div>
+    <div class="answer">
+      <fieldset class="pick">
+        <legend>이 안이 가장 좋다</legend>
+        <div class="radios"><label class="radio"><input type="radio" name="pick-r10-console" id="pick-r10-console-A" value="A" data-pick> <span>A안</span></label><label class="radio"><input type="radio" name="pick-r10-console" id="pick-r10-console-B" value="B" data-pick> <span>B안</span></label><label class="radio"><input type="radio" name="pick-r10-console" id="pick-r10-console-none" value="" data-pick> <span>고르지 않음</span></label></div>
+      </fieldset>
+      <p class="prev" data-prev-recipe hidden></p>
+      <label class="memo" for="note-r10-console">레시피 전체 메모(선택) <textarea id="note-r10-console" data-note rows="2" placeholder="두 안을 함께 보고 떠오른 점"></textarea></label>
+    </div>
+    <p class="save" role="status" data-save>아직 고르지 않았습니다.</p>
+    <details class="tech">
+      <summary>기술 정보</summary>
+      <div class="tech-body">
+        <p class="tech-meta">DNA 카드 <code>docs/recipes/dna/r10-console.md</code> · AI 티 12점(기준 r1 12) · 기본 테마 다크</p>
+        <div class="tech-grid">
+        <div class="tech-opt">
+          <h4>A안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>View Transitions · SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>baseline-news-app-window</code></dd></div>
+            <div><dt>출처 분류</dt><dd>SaaS 랜딩 모음 수록작 · 랜딩</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="A안 팔레트(다크)"><li><span class="sw" style="background:#17121c"></span><code>#17121c</code> <span class="role">background</span></li><li><span class="sw" style="background:#eeeaf2"></span><code>#eeeaf2</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#e07bf5"></span><code>#e07bf5</code> <span class="role">primary</span></li><li><span class="sw" style="background:#2a2033"></span><code>#2a2033</code> <span class="role">accent</span></li><li><span class="sw" style="background:#6e1a7d"></span><code>#6e1a7d</code> <span class="role">field-1</span></li></ul>
+        </div>
+        <div class="tech-opt">
+          <h4>B안</h4>
+          <dl>
+            <div><dt>색 논리</dt><dd>K6 색 면</dd></div>
+            <div><dt>모션</dt><dd>M1</dd></div>
+            <div><dt>역동 기법</dt><dd>View Transitions · SVG 선 그리기</dd></div>
+            <div><dt>첫 화면 구성</dt><dd><code>crop-marks-typed-title</code></dd></div>
+            <div><dt>출처 분류</dt><dd>SaaS 랜딩 모음 수록작 · 랜딩</dd></div>
+          </dl>
+          <ul class="swatches" aria-label="B안 팔레트(다크)"><li><span class="sw" style="background:#171216"></span><code>#171216</code> <span class="role">background</span></li><li><span class="sw" style="background:#e6e5de"></span><code>#e6e5de</code> <span class="role">foreground</span></li><li><span class="sw" style="background:#f2c0dd"></span><code>#f2c0dd</code> <span class="role">primary</span></li><li><span class="sw" style="background:#2f212d"></span><code>#2f212d</code> <span class="role">accent</span></li><li><span class="sw" style="background:#501e4d"></span><code>#501e4d</code> <span class="role">field-1</span></li></ul>
+        </div>
+        </div>
+      </div>
+    </details>
+    <div class="steps">
+      <a class="step" href="#card-r9-clay" data-step="prev">← 이전 레시피 · 말랑 점토</a>
+      <a class="step next" href="#board-top" data-step="top">처음으로 ↑</a>
+    </div>
+  </article>
+  </main>
+  <p class="foot">영상·화면 2026-09-28T08:45:50.863Z 촬영 · 문구는 모두 예시입니다. 실사 사진·영상은 운영자 계정 생성물과 상업 사용이 허락된 사진 자료이고, 출처는 저장소의 출처 목록에 있습니다. 레시피의 안을 모두 「좋다·별로」로 고르면 판정으로 셉니다.</p>
+</div>
+<dialog class="viewer" id="viewer" aria-labelledby="viewer-title">
+  <div class="v-head">
+    <h2 id="viewer-title">크게 보기</h2>
+    <div class="seg" role="group" aria-label="안 바꾸기"><button type="button" class="v-btn" data-v-opt="A" aria-pressed="true">A안</button><button type="button" class="v-btn" data-v-opt="B" aria-pressed="false">B안</button></div>
+    <div class="seg" role="group" aria-label="화면 바꾸기"><button type="button" class="v-btn" data-v-view="desk" aria-pressed="true">컴퓨터 1440</button><button type="button" class="v-btn" data-v-view="phone" aria-pressed="false">휴대폰 375</button></div>
+    <button type="button" class="v-btn" data-v-play>일시정지</button>
+    <button type="button" class="v-btn v-close" data-v-close>닫기</button>
+  </div>
+  <div class="v-stage" tabindex="0" aria-label="크게 보는 화면 — 화면보다 크면 스크롤합니다">
+    <video class="v-video" width="1440" height="900" muted loop playsinline preload="auto" aria-label="크게 보는 첫 화면 영상"></video>
+    <img class="v-phone" width="375" height="812" alt="" hidden>
+  </div>
+</dialog>
+<script type="application/json" id="board-data">[{"id":"r1-measure","name":"도면 계측","options":[{"key":"A","v2Key":"A","mp4":"r1-measure-A.mp4","webm":"r1-measure-A.webm","poster":"r1-measure-A-1440.webp","phone":"r1-measure-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r1-measure-B.mp4","webm":"r1-measure-B.webm","poster":"r1-measure-B-1440.webp","phone":"r1-measure-B-375.webp"}]},{"id":"r2-signal","name":"흑백 신호","options":[{"key":"A","v2Key":"B","mp4":"r2-signal-A.mp4","webm":"r2-signal-A.webm","poster":"r2-signal-A-1440.webp","phone":"r2-signal-A-375.webp"},{"key":"B","v2Key":"A","mp4":"r2-signal-B.mp4","webm":"r2-signal-B.webm","poster":"r2-signal-B-1440.webp","phone":"r2-signal-B-375.webp"}]},{"id":"r3-woodblock","name":"네도수 목판","options":[{"key":"A","v2Key":"A","mp4":"r3-woodblock-A.mp4","webm":"r3-woodblock-A.webm","poster":"r3-woodblock-A-1440.webp","phone":"r3-woodblock-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r3-woodblock-B.mp4","webm":"r3-woodblock-B.webm","poster":"r3-woodblock-B-1440.webp","phone":"r3-woodblock-B-375.webp"}]},{"id":"r4-evidence","name":"근거 대화","options":[{"key":"A","v2Key":"A","mp4":"r4-evidence-A.mp4","webm":"r4-evidence-A.webm","poster":"r4-evidence-A-1440.webp","phone":"r4-evidence-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r4-evidence-B.mp4","webm":"r4-evidence-B.webm","poster":"r4-evidence-B-1440.webp","phone":"r4-evidence-B-375.webp"}]},{"id":"r5-celadon","name":"청자 고요","options":[{"key":"A","v2Key":"A","mp4":"r5-celadon-A.mp4","webm":"r5-celadon-A.webm","poster":"r5-celadon-A-1440.webp","phone":"r5-celadon-A-375.webp"}]},{"id":"r6-civic","name":"공공 신뢰","options":[{"key":"A","v2Key":"A","mp4":"r6-civic-A.mp4","webm":"r6-civic-A.webm","poster":"r6-civic-A-1440.webp","phone":"r6-civic-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r6-civic-B.mp4","webm":"r6-civic-B.webm","poster":"r6-civic-B-1440.webp","phone":"r6-civic-B-375.webp"}]},{"id":"r7-docs","name":"문서 작업대","options":[{"key":"A","v2Key":"A","mp4":"r7-docs-A.mp4","webm":"r7-docs-A.webm","poster":"r7-docs-A-1440.webp","phone":"r7-docs-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r7-docs-B.mp4","webm":"r7-docs-B.webm","poster":"r7-docs-B-1440.webp","phone":"r7-docs-B-375.webp"}]},{"id":"r8-dusk","name":"솔숲 저녁","options":[{"key":"A","v2Key":"A","mp4":"r8-dusk-A.mp4","webm":"r8-dusk-A.webm","poster":"r8-dusk-A-1440.webp","phone":"r8-dusk-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r8-dusk-B.mp4","webm":"r8-dusk-B.webm","poster":"r8-dusk-B-1440.webp","phone":"r8-dusk-B-375.webp"}]},{"id":"r9-clay","name":"말랑 점토","options":[{"key":"A","v2Key":"A","mp4":"r9-clay-A.mp4","webm":"r9-clay-A.webm","poster":"r9-clay-A-1440.webp","phone":"r9-clay-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r9-clay-B.mp4","webm":"r9-clay-B.webm","poster":"r9-clay-B-1440.webp","phone":"r9-clay-B-375.webp"}]},{"id":"r10-console","name":"자홍 콘솔","options":[{"key":"A","v2Key":"A","mp4":"r10-console-A.mp4","webm":"r10-console-A.webm","poster":"r10-console-A-1440.webp","phone":"r10-console-A-375.webp"},{"key":"B","v2Key":"B","mp4":"r10-console-B.mp4","webm":"r10-console-B.webm","poster":"r10-console-B-1440.webp","phone":"r10-console-B-375.webp"}]}]</script>
+<script>
+
+const DATA = JSON.parse(document.getElementById('board-data').textContent);
+const COLLECTION = "likes";
+const KEYS = ['A', 'B'];
+const LIKE = ['like', 'dislike'];
+const ASPECTS = [["color","색감"],["type","글씨체"],["layout","배치"],["motion","움직임"]];
+const ASPECT_KEYS = ASPECTS.map(([k]) => k);
+const answers = () => ({ likes: {}, aspects: { A: {}, B: {} }, notes: { A: '', B: '' }, note: '', pick: null });
+// prior: 2판 답 원본(2판 글자 그대로 — 3판 쓰기 때 v2 로 그대로 싣는다). 없으면 null.
+const blank = () => ({ ...answers(), prior: null });
+const state = Object.fromEntries(DATA.map((r) => [r.id, blank()]));
+const $ = (s, el = document) => el.querySelector(s);
+const cardOf = (id) => document.getElementById('card-' + id);
+const clone = (x) => JSON.parse(JSON.stringify(x));
+
+// ── 답 읽기: 옛 모양({likes,pick?,note?})과 aspects·notes 를 더한 모양을 모두 읽는다. 모르는 값은 버린다. ──
+function parse(v) {
+  const s = answers();
+  if (!v || typeof v !== 'object') return s;
+  for (const k of KEYS) if (v.likes && LIKE.includes(v.likes[k])) s.likes[k] = v.likes[k];
+  for (const k of KEYS) for (const a of ASPECT_KEYS) { const x = v.aspects && v.aspects[k] && v.aspects[k][a]; if (LIKE.includes(x)) s.aspects[k][a] = x; }
+  for (const k of KEYS) if (v.notes && typeof v.notes[k] === 'string') s.notes[k] = v.notes[k];
+  if (typeof v.note === 'string') s.note = v.note;
+  if (KEYS.includes(v.pick)) s.pick = v.pick;
+  return s;
+}
+// ── 문서 모양(3판): { recipe, board: 3, likes, aspects?, notes?, note?, pick?, decidedAt, v2? } — v2 는 2판 문서 원본(2판 글자)이다.
+//   board 3 문서: 3판 답 = 본문, 2판 답 = v2. 그 밖(2판·옛 모양): 문서 전체가 2판 답이고 3판 답은 빈 채로 시작한다(운영자가 2판 답을 보며 다시 고른다).
+//   3판 쓰기는 v2 를 그대로 다시 싣는다 — 2판 답을 지우지 않는다. 2판 페이지가 3판 문서를 읽어도 likes·aspects·notes 모양이 같아 깨지지 않는다.
+function normalize(v) {
+  if (!v || typeof v !== 'object') return blank();
+  if (v.board === 3) return { ...parse(v), prior: v.v2 && typeof v.v2 === 'object' ? clone(v.v2) : null };
+  return { ...answers(), prior: clone(v) };
+}
+function bodyOf(id, s) {
+  const d = { recipe: id, board: 3, likes: { ...s.likes } };
+  const asp = {}; for (const k of KEYS) if (Object.keys(s.aspects[k]).length) asp[k] = { ...s.aspects[k] };
+  if (Object.keys(asp).length) d.aspects = asp;
+  const notes = {}; for (const k of KEYS) if (s.notes[k].trim()) notes[k] = s.notes[k].trim();
+  if (Object.keys(notes).length) d.notes = notes;
+  if (s.note.trim()) d.note = s.note.trim();
+  if (s.pick) d.pick = s.pick;
+  if (s.prior) d.v2 = s.prior;
+  return d;
+}
+// 고친 칸의 경로(likes.A · aspects.A.color · notes.A · note · pick) — 저장된 답과 합칠 때 이 칸만 내 값으로 덮는다.
+function getPath(s, p) { const [a, b, c] = p.split('.'); return c ? s[a][b][c] : b ? s[a][b] : s[a]; }
+function setPath(s, p, v) {
+  const [a, b, c] = p.split('.');
+  if (c) { if (v == null) delete s[a][b][c]; else s[a][b][c] = v; }
+  else if (b) { if (a === 'likes') { if (v == null) delete s.likes[b]; else s.likes[b] = v; } else s[a][b] = v || ''; }
+  else s[a] = a === 'pick' ? (v || null) : (v || '');
+}
+
+// ── 영상: 동작 줄이기면 포스터를 보이고 멈춘다(재생 버튼으로만 튼다). 화면 밖 영상과 크게 보기가 열린 동안의 카드 영상은 쉰다. ──
+const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+const videos = [...document.querySelectorAll('.desk video')];
+const held = new WeakSet(); // 사람이 멈춘 영상
+const visible = new WeakSet();
+let viewerOpen = false;
+function label(v) {
+  const b = v.parentElement.querySelector('[data-play]'); const name = v.getAttribute('aria-label').replace(' 첫 화면 영상 8초', '');
+  const on = !v.paused;
+  b.textContent = on ? '일시정지' : '재생';
+  b.setAttribute('aria-label', name + ' 영상 ' + (on ? '일시정지' : '재생'));
+}
+function want(v) { return !reduce.matches && !held.has(v) && visible.has(v) && !viewerOpen; }
+function sync(v) { if (want(v)) v.play().catch(() => {}); else v.pause(); label(v); }
+function applyMotion() {
+  for (const v of videos) {
+    if (reduce.matches) { v.autoplay = false; v.pause(); }
+    sync(v);
+  }
+}
+for (const v of videos) { v.addEventListener('play', () => label(v)); v.addEventListener('pause', () => label(v)); }
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((es) => { for (const e of es) { if (e.isIntersecting) visible.add(e.target); else visible.delete(e.target); sync(e.target); } }, { rootMargin: '200px 0px' });
+  for (const v of videos) io.observe(v);
+} else for (const v of videos) visible.add(v);
+reduce.addEventListener('change', () => { applyMotion(); renderViewer(); });
+applyMotion();
+
+// ── 크게 보기: 페이지 안 <dialog>. 영상은 1440px 원래 크기(넘치면 스크롤), 휴대폰은 375px. A↔B 는 같은 요소의 파일만 바꿔 같은 크기·같은 자리. ──
+const viewer = document.getElementById('viewer');
+const vVideo = $('.v-video', viewer), vPhone = $('.v-phone', viewer), vStage = $('.v-stage', viewer), vPlay = $('[data-v-play]', viewer);
+const vs = { id: null, opt: 'A', view: 'desk', opener: null, vheld: false };
+const pickSrc = (o) => (vVideo.canPlayType('video/mp4') ? 'video/' + o.mp4 : 'video/' + o.webm);
+function renderViewer() {
+  if (!vs.id) return;
+  const r = DATA.find((x) => x.id === vs.id); const o = r.options.find((x) => x.key === vs.opt) || r.options[0];
+  $('#viewer-title').textContent = r.name + ' · ' + o.key + '안 · ' + (vs.view === 'desk' ? '컴퓨터 화면 1440' : '휴대폰 화면 375');
+  for (const b of viewer.querySelectorAll('[data-v-opt]')) { b.setAttribute('aria-pressed', String(b.dataset.vOpt === o.key)); b.hidden = !r.options.some((x) => x.key === b.dataset.vOpt); }
+  for (const b of viewer.querySelectorAll('[data-v-view]')) b.setAttribute('aria-pressed', String(b.dataset.vView === vs.view));
+  const src = pickSrc(o);
+  if (vVideo.dataset.src !== src) {
+    const t = vVideo.currentTime || 0;
+    vVideo.poster = 'shots/' + o.poster; vVideo.src = src; vVideo.dataset.src = src;
+    vVideo.addEventListener('loadedmetadata', () => { try { vVideo.currentTime = Math.min(t, (vVideo.duration || 6) - 0.05); } catch (e) {} }, { once: true });
+  }
+  vPhone.src = 'shots/' + o.phone; vPhone.alt = r.name + ' ' + o.key + '안 휴대폰 첫 화면';
+  vVideo.hidden = vs.view !== 'desk'; vPlay.hidden = vs.view !== 'desk'; vPhone.hidden = vs.view !== 'phone';
+  const play = viewerOpen && vs.view === 'desk' && !reduce.matches && !vs.vheld;
+  if (play) vVideo.play().catch(() => {}); else vVideo.pause();
+  vPlay.textContent = vVideo.paused && !play ? '재생' : '일시정지';
+}
+function openViewer(id, opt, opener) {
+  Object.assign(vs, { id, opt, view: 'desk', opener, vheld: false });
+  viewerOpen = true; for (const v of videos) sync(v);
+  viewer.showModal();
+  renderViewer();
+  vStage.scrollTo(0, 0);
+}
+viewer.addEventListener('close', () => {
+  viewerOpen = false; vVideo.pause();
+  for (const v of videos) sync(v);
+  if (vs.opener) vs.opener.focus();
+});
+viewer.addEventListener('click', (e) => {
+  const o = e.target.closest('[data-v-opt]'); if (o) { vs.opt = o.dataset.vOpt; renderViewer(); return; }
+  const w = e.target.closest('[data-v-view]'); if (w) { vs.view = w.dataset.vView; renderViewer(); return; }
+  if (e.target.closest('[data-v-close]')) { viewer.close(); return; }
+  if (e.target.closest('[data-v-play]')) { if (vVideo.paused) { vs.vheld = false; vVideo.play().catch(() => {}); } else { vs.vheld = true; vVideo.pause(); } vPlay.textContent = vVideo.paused ? '재생' : '일시정지'; }
+});
+vVideo.addEventListener('play', () => { vPlay.textContent = '일시정지'; });
+vVideo.addEventListener('pause', () => { vPlay.textContent = '재생'; });
+
+// ── 판정 상태 → 화면 ──
+function progress() {
+  let n = 0;
+  for (const r of DATA) {
+    const s = state[r.id]; const done = r.options.every((o) => !!s.likes[o.key]);
+    if (done) n++;
+    const a = document.querySelector('.toc a[href="#card-' + r.id + '"]'); if (a) a.dataset.done = String(done);
+  }
+  $('#progress').textContent = String(n);
+}
+function renderCard(id) {
+  const c = cardOf(id), s = state[id];
+  for (const b of c.querySelectorAll('[data-like]')) b.setAttribute('aria-pressed', String(s.likes[b.dataset.like] === b.value));
+  for (const b of c.querySelectorAll('[data-aspect]')) b.setAttribute('aria-pressed', String(s.aspects[b.dataset.opt][b.dataset.aspect] === b.value));
+  for (const i of c.querySelectorAll('input[data-pick]')) i.checked = i.value === (s.pick || '');
+  const t = c.querySelector('textarea[data-note]'); if (t && document.activeElement !== t) t.value = s.note;
+  for (const x of c.querySelectorAll('textarea[data-note-opt]')) if (document.activeElement !== x) x.value = s.notes[x.dataset.noteOpt];
+  renderPrior(id);
+}
+// 2판 답(작은 흐린 줄): 선택지마다 그 안의 2판 글자(v2Key — r2 는 뒤바뀜)로 읽는다. 문서가 없으면 숨긴다.
+const word = (x) => (x === 'like' ? '좋다' : '별로');
+function renderPrior(id) {
+  const c = cardOf(id), r = DATA.find((x) => x.id === id), raw = state[id].prior, p = raw ? parse(raw) : null;
+  for (const o of r.options) {
+    const el = c.querySelector('[data-prev="' + o.key + '"]'); if (!el) continue;
+    if (!p) { el.hidden = true; el.textContent = ''; continue; }
+    const k = o.v2Key, parts = [];
+    if (k && p.likes[k]) parts.push(word(p.likes[k]));
+    if (k) for (const [a, name] of ASPECTS) if (p.aspects[k][a]) parts.push(name + ' ' + word(p.aspects[k][a]));
+    let t = '2판 답: ' + (parts.length ? parts.join(' · ') : '없음');
+    if (k && k !== o.key) t += ' (2판 ' + k + '안)';
+    if (k && p.notes[k]) t += ' · 2판 메모 「' + p.notes[k] + '」';
+    el.textContent = t; el.hidden = false;
+  }
+  const rp = c.querySelector('[data-prev-recipe]'), bits = [];
+  if (p && p.pick) { const now = r.options.find((o) => o.v2Key === p.pick); bits.push('2판에서 고른 안: ' + (now ? '지금의 ' + now.key + '안' : '2판 ' + p.pick + '안(3판에서 뺐다)')); }
+  if (p && p.note) bits.push('2판 전체 메모 「' + p.note + '」');
+  rp.textContent = bits.join(' · '); rp.hidden = !bits.length;
+}
+function setSave(id, text, err) { const p = cardOf(id).querySelector('[data-save]'); p.textContent = text; p.classList.toggle('err', !!err); }
+function setStatus(text, err) { const p = $('#db-status'); p.textContent = text; p.classList.toggle('err', !!err); }
+const clock = (iso) => new Date(iso).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+// ── 저장: db 준비 전에는 고친 칸(dirty)을 쌓아 두고, 준비되면 저장된 답 위에 합쳐 쓴다. 문서마다 한 번에 한 쓰기, 같은 본문은 다시 쓰지 않는다. ──
+let db = null;
+let dbState = 'pending'; // pending → merging → ready | none | readonly
+const dirty = {}, lastBody = {}, writing = {}, noteTimers = {};
+function touch(id, path) { (dirty[id] || (dirty[id] = new Set())).add(path); }
+function requestSave(id) {
+  clearTimeout(noteTimers[id]); delete noteTimers[id];
+  if (dbState === 'pending' || dbState === 'merging') { setSave(id, '저장 기능을 확인하는 중입니다. 준비되면 바로 저장합니다.'); return; }
+  if (dbState === 'none') { setSave(id, '저장되지 않습니다 — 이 화면에서는 저장 기능을 쓸 수 없습니다.', true); return; }
+  if (dbState === 'readonly') { setSave(id, '읽기 전용 화면이라 저장하지 않습니다.', true); return; }
+  write(id);
+}
+function enterReadOnly() {
+  if (dbState === 'readonly') return;
+  dbState = 'readonly';
+  setStatus('읽기 전용 화면입니다. 볼 수는 있지만 고른 것은 저장되지 않습니다.', true);
+}
+async function write(id) {
+  if (writing[id]) { writing[id].again = true; return; }
+  const body = bodyOf(id, state[id]); const key = JSON.stringify(body);
+  if (lastBody[id] === key) { if (dirty[id]) dirty[id].clear(); return; }
+  writing[id] = { again: false };
+  setSave(id, '저장하는 중…');
+  const doc = { ...body, decidedAt: new Date().toISOString() };
+  try {
+    await db.collection(COLLECTION).doc(id).set(doc);
+    lastBody[id] = key; if (dirty[id]) dirty[id].clear();
+    setSave(id, '저장했습니다 · ' + clock(doc.decidedAt));
+  } catch (e) {
+    const code = e && e.code;
+    if (code === 'invalid_argument') { enterReadOnly(); setSave(id, '읽기 전용 화면이라 저장하지 않았습니다.', true); }
+    else setSave(id, '저장하지 못했습니다(' + (code || '알 수 없음') + '). 잠시 뒤 다시 눌러 주세요.', true);
+  } finally {
+    const again = writing[id].again; delete writing[id];
+    if (again && dbState === 'ready') write(id);
+  }
+}
+function change(id, path, value) {
+  setPath(state[id], path, value); touch(id, path);
+  renderCard(id); progress();
+}
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-like]');
+  if (b) { const id = b.closest('.card').dataset.recipe, k = b.dataset.like; change(id, 'likes.' + k, state[id].likes[k] === b.value ? null : b.value); requestSave(id); return; }
+  const m = e.target.closest('[data-aspect]');
+  if (m) { const id = m.closest('.card').dataset.recipe, p = 'aspects.' + m.dataset.opt + '.' + m.dataset.aspect; change(id, p, getPath(state[id], p) === m.value ? null : m.value); requestSave(id); return; }
+  const g = e.target.closest('[data-big]');
+  if (g) { openViewer(g.closest('.card').dataset.recipe, g.dataset.big, g); return; }
+  const p = e.target.closest('[data-play]');
+  if (p) { const v = p.parentElement.querySelector('video'); if (v.paused) { held.delete(v); v.play().catch(() => {}); } else { held.add(v); v.pause(); } }
+});
+document.addEventListener('change', (e) => {
+  const el = e.target; if (!el.matches('input[data-pick]')) return;
+  const id = el.closest('.card').dataset.recipe; change(id, 'pick', el.value || null); requestSave(id);
+});
+document.addEventListener('input', (e) => {
+  const el = e.target; if (!el.matches('textarea[data-note], textarea[data-note-opt]')) return;
+  const id = el.closest('.card').dataset.recipe;
+  setPath(state[id], el.dataset.noteOpt ? 'notes.' + el.dataset.noteOpt : 'note', el.value); touch(id, el.dataset.noteOpt ? 'notes.' + el.dataset.noteOpt : 'note');
+  clearTimeout(noteTimers[id]); noteTimers[id] = setTimeout(() => requestSave(id), 900);
+});
+function applyDocs(snap) {
+  for (const d of snap.docs) {
+    const r = DATA.find((x) => x.id === d.id); const v = d.data(); if (!r || !v) continue;
+    // 아직 쓰지 않은 내 변경(쓰는 중·고친 칸·메모 입력 중)이 있으면 덮지 않는다.
+    if (writing[r.id] || (dirty[r.id] && dirty[r.id].size) || noteTimers[r.id]) continue;
+    state[r.id] = normalize(v); lastBody[r.id] = JSON.stringify(bodyOf(r.id, state[r.id]));
+    renderCard(r.id);
+    setSave(r.id, '저장된 답 · ' + (v.decidedAt ? new Date(v.decidedAt).toLocaleString('ko-KR') : ''));
+  }
+  progress();
+}
+async function mergeRemote(id) {
+  try {
+    const snap = await db.collection(COLLECTION).doc(id).get();
+    if (!snap.exists) return;
+    const remote = normalize(snap.data());
+    lastBody[id] = JSON.stringify(bodyOf(id, remote));
+    for (const p of dirty[id]) setPath(remote, p, getPath(state[id], p));
+    state[id] = remote; renderCard(id); progress();
+  } catch (e) { /* 읽지 못하면 내 값만 쓴다 */ }
+}
+DATA.forEach((r) => renderCard(r.id)); progress();
+(async () => {
+  const use = window.claude && window.claude.use;
+  const found = use ? await Promise.resolve().then(() => window.claude.use('db')).catch(() => null) : null;
+  if (!found) {
+    dbState = 'none';
+    setStatus('저장 기능을 쓸 수 없는 화면입니다. 고른 것은 저장되지 않습니다.', true);
+    for (const id of Object.keys(dirty)) if (dirty[id].size) setSave(id, '저장되지 않습니다 — 이 화면에서는 저장 기능을 쓸 수 없습니다.', true);
+    return;
+  }
+  db = found;
+  dbState = 'merging';
+  setStatus('저장 기능을 확인했습니다. 앞서 고른 것을 저장하는 중입니다.');
+  const merged = new Set();
+  for (;;) {
+    const ids = Object.keys(dirty).filter((id) => dirty[id].size && !merged.has(id));
+    if (!ids.length) break;
+    for (const id of ids) { merged.add(id); await mergeRemote(id); }
+  }
+  dbState = 'ready';
+  setStatus('고르면 바로 저장합니다.');
+  for (const id of merged) write(id);
+  db.collection(COLLECTION).onSnapshot(applyDocs, (e) => { setStatus('저장된 답을 읽지 못했습니다(' + (e && e.code) + '). 새로 고쳐 주세요.', true); });
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-dm-sans",
+  "type": "registry:font",
+  "title": "DM Sans",
+  "description": "web-factory 폰트 키트: DM Sans (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'DM Sans Variable', sans-serif",
+    "provider": "google",
+    "import": "DM_Sans",
+    "variable": "--font-dm-sans-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/dm-sans"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/dmsans/OFL.txt",
+    "source": "https://fonts.google.com/specimen/DM+Sans",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

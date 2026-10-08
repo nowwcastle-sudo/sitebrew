@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — no markers</title>
+<style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  main { padding: 16px; max-width: 640px; }
+  p { font-size: 16px; }
+</style>
+</head>
+<body>
+  <!-- No data-qa markers at all: behavior.mjs records every check as 'n/a'.
+       Without --strict that is not a failure (exit 0); with --strict each
+       missing marker is a failure (exit 3, one "--strict:" line per check). -->
+  <main>
+    <p>이 문단은 검사 표식이 하나도 없는 대조군 본문입니다.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+# gitleaks 설정(v8.30.1). 기본 규칙 전체를 쓰고, 허용 목록은 필요한 만큼만 좁게(경로 AND 줄 모양) 단다 — 항목마다 이유를 적는다.
+# 허용은 「파일 하나 + 그 줄의 모양」이 둘 다 맞을 때만 듣는다(condition = "AND"). 같은 파일에 진짜 비밀이 새로 들어오면 모양이 달라 잡힌다.
+# 문서: https://github.com/gitleaks/gitleaks/blob/v8.30.1/README.md#configuration (2026-10-05 확인)
+# 첫 CI 실행(2026-10-07)이 트리에서 찾은 2건을 근거로 적었다. 예전 .env.example 은 빈 값뿐이라 허용이 필요 없었다(허용 목록에 넣지 않는다).
+title = "launch-factory gitleaks"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Gumroad 판매 응답 견본(fixtures)의 license_key — 공개 문서 모양을 본뜬 가짜 값이다. 이 파일은 시험 입력일 뿐 실제 판매와 무관하다"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)packages/billing-gumroad/fixtures/gumroad-examples\.mjs$''']
+regexTarget = "line"
+regexes = ['''^\s*license_key:\s*"[A-Za-z0-9-]+",\s*$''']
+
+[[allowlists]]
+description = "Turnstile 시험의 idempotencyKey — 요청마다 만든 무작위 문자열(UUID 모양)이라 비밀이 아니다. 시험 입력"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)packages/security/test/turnstile\.test\.mjs$''']
+regexTarget = "line"
+regexes = ['''^\s*const key = "[A-Za-z0-9-]+"\s*$''']

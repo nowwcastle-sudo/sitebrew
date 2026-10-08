@@ -1,0 +1,14 @@
+{
+  "kind": "referral",
+  "variant": "success-moment-prompt",
+  "title": "성공 순간 뒤 초대 권유 — 성공 한 줄 + 초대 한 줄 + 대등한 두 선택지",
+  "layout": "inline-after-success",
+  "density": "compact",
+  "archetypes": [ "saas", "pwa" ],
+  "archetypeKinds": [ "referral", "success-moment" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "V1", "V2", "V4", "L3", "X1", "M1" ],
+  "notes": "moment(방금 이룬 일)가 있을 때만 그린다 — 없으면 hidden 구역(V4: 성공 전·온보딩 중·페이월 앞에서는 묻지 않는다). 판: 성공 한 줄(data-success-moment) · h2 초대 권유 + 양쪽 보상(제품 가치) · [나중에][초대 링크 보내기] 대등(L3 — choice-pair) · 결과 알림. 초대 = 카카오톡(규격 + SDK) 아니면 링크 복사. 나중에 = 이 방문 동안 다시 묻지 않는다(sessionStorage). 계측(선택): referral_share·cta_click"
+}

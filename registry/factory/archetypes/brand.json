@@ -1,0 +1,755 @@
+{
+  "id": "brand",
+  "purpose": "고객·구직자·투자자·기자가 회사가 무엇을 하는지 알고 알맞은 곳(제품·채용·소식·IR)으로 가게 한다.",
+  "coreTask": "브라우저 에이전트가 ① 「이 회사는 무엇을 하나」를 H1이나 첫 문단에서 한 문장으로 답하고 ② 채용 공고 목록 페이지에 닿고 ③ 가장 최근 보도자료의 제목과 날짜를 읽고 ④ 대표 연락처(전화 또는 이메일 + 주소)를 돌려준다. 모두 로그인 없이 3클릭 안.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "hero",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-banded-full-bleed",
+            "block-hero-baseline-split",
+            "block-hero-cropped-title-list",
+            "block-hero-framed-card-outline-title",
+            "block-hero-grid-lines-baseline-word",
+            "block-hero-inline-chip-title",
+            "block-hero-layered-landscape-logotype",
+            "block-hero-staggered-oval-frame",
+            "block-hero-stepped-crop-figure",
+            "block-hero-twin-panels",
+            "block-hero-vertical-title-slides",
+            "block-hero-kinetic-type-video",
+            "block-hero-ken-burns-stills",
+            "block-hero-punch-in-statement",
+            "block-hero-video-montage"
+          ],
+          "copySlots": [
+            {
+              "id": "tagline",
+              "role": "회사가 무엇을 하는지 말하는 H1(로고 아님)",
+              "maxChars": 28
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "hero-media",
+              "aspect": "16:9",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "mission",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "미션 한 문장 — 본문 글",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "미션",
+                "en": "Mission"
+              },
+              "from": [
+                "slot:mission"
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "mission",
+              "role": "짧고 구체적인 미션 한 문장(다른 회사 이름 대입 검사)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "business-scope",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-bento-grid"
+          ],
+          "copySlots": [
+            {
+              "id": "tileTitle",
+              "role": "사업·서비스 이름",
+              "maxChars": null
+            },
+            {
+              "id": "tileBody",
+              "role": "한 줄 설명",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "tile-image",
+              "aspect": "4:3",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "product-lineup",
+          "required": false,
+          "importance": 1,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-grid-cards"
+          ],
+          "copySlots": [
+            {
+              "id": "productName",
+              "role": "모델·서비스 이름",
+              "maxChars": null
+            },
+            {
+              "id": "oneLiner",
+              "role": "한 줄 설명",
+              "maxChars": null
+            },
+            {
+              "id": "action",
+              "role": "체험 예약·자세히",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "product",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "key-facts",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "trust"
+          ],
+          "allowedVariants": [
+            "block-trust-brand-fact-sheet"
+          ],
+          "copySlots": [
+            {
+              "id": "fact",
+              "role": "설립·규모·거점 수치(기준일 표기)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "recognition",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-logo-rail"
+          ],
+          "copySlots": [
+            {
+              "id": "award",
+              "role": "발급 기관·연도가 붙은 수상·인증",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "sustainability",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "수치와 보고서 링크 — 본문 글",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "지속가능성",
+                "en": "Sustainability"
+              },
+              "from": [
+                "reports"
+              ],
+              "sort": "-year",
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "year:year",
+                  "pages:pages",
+                  "size"
+                ],
+                "href": "pdfUrl"
+              },
+              "lead": [
+                "slot:claim"
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "claim",
+              "role": "수치 + 연도 붙은 보고서 링크(친환경·ESG를 주장하면 필수)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "site-photo",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "news",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "날짜 붙은 소식 목록 — 본문 목록(전용 블록 없음)",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "소식",
+                "en": "News"
+              },
+              "from": [
+                "news"
+              ],
+              "sort": "-date",
+              "limit": 5,
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date"
+                ],
+                "href": "url",
+                "image": "thumb"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "headline",
+              "role": "날짜 붙은 소식 제목",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "news-thumb",
+              "aspect": "16:9",
+              "source": "stock-ok"
+            }
+          ]
+        },
+        {
+          "kind": "careers",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "채용 안내 링크 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "채용",
+                "en": "Careers"
+              },
+              "links": [
+                {
+                  "label": {
+                    "ko": "채용 공고 보기",
+                    "en": "See open roles"
+                  },
+                  "from": [
+                    "careersUrl"
+                  ]
+                }
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "store-locator",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "hours-location/branch-list 가 brand 를 archetypes 에 적지 않았다",
+            "register": [
+              "C71"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "faq",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "faq 블록 어느 것도 brand 를 archetypes 에 적지 않았다",
+            "register": [
+              "C71"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "route": "/about",
+      "sections": [
+        {
+          "kind": "summary",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "맨 위 1~2문단 회사 요약 — 본문 글",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "회사 요약",
+                "en": "Company summary"
+              },
+              "hideHeading": true,
+              "from": [
+                "slot:summary"
+              ]
+            }
+          },
+          "copySlots": [
+            {
+              "id": "summary",
+              "role": "맨 위 1~2문단: 공식 회사명·하는 일·차별점·주요 성과",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "mission",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "미션 — 본문 글",
+            "render": {
+              "as": "prose",
+              "heading": {
+                "ko": "미션",
+                "en": "Mission"
+              },
+              "from": [
+                "slot:mission/mission"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "history",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "연도 목록·표(JS 없이 전부 보임) — 본문",
+            "render": {
+              "as": "timeline",
+              "heading": {
+                "ko": "연혁",
+                "en": "History"
+              },
+              "from": [
+                "history"
+              ],
+              "sort": "year",
+              "fields": {
+                "when": "year:year",
+                "text": "event"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "entry",
+              "role": "연도 + 사건(<ol>·<table>, JS 없이 전부 보임)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "leadership",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "이름·직함·약력 카드 — 본문",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "리더십",
+                "en": "Leadership"
+              },
+              "from": [
+                "leaders"
+              ],
+              "fields": {
+                "title": "name",
+                "meta": [
+                  "title"
+                ],
+                "summary": "bio",
+                "image": "portrait"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "person",
+              "role": "이름·직함·약력",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "portrait",
+              "aspect": "4:5",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "sustainability",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "지속가능성 — 본문 글",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "지속가능성",
+                "en": "Sustainability"
+              },
+              "from": [
+                "reports"
+              ],
+              "sort": "-year",
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "year:year",
+                  "pages:pages",
+                  "size"
+                ],
+                "href": "pdfUrl"
+              },
+              "lead": [
+                "slot:sustainability/claim"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "news",
+      "route": "/news",
+      "sections": [
+        {
+          "kind": "press-list",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "보도자료 목록 — 본문 목록",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "보도자료",
+                "en": "Press releases"
+              },
+              "from": [
+                "news"
+              ],
+              "sort": "-date",
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date"
+                ],
+                "href": "url",
+                "image": "thumb"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "title",
+              "role": "보도자료 제목 + 날짜",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "news-thumb",
+              "aspect": "16:9",
+              "source": "stock-ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "careers",
+      "route": "/careers",
+      "sections": [
+        {
+          "kind": "job-list",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "채용 공고 목록 — 본문 목록",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "채용 공고",
+                "en": "Open roles"
+              },
+              "links": [
+                {
+                  "label": {
+                    "ko": "채용 공고 전체 보기",
+                    "en": "See all open roles"
+                  },
+                  "from": [
+                    "careersUrl"
+                  ]
+                }
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "corporate",
+      "order": [
+        "header",
+        "hero",
+        "mission",
+        "business-scope",
+        "key-facts",
+        "sustainability",
+        "news",
+        "careers",
+        "footer"
+      ],
+      "evidence": [
+        "NN/g About Us 4단 구조",
+        "관찰 kakaocorp·lgcorp·oatly 내비"
+      ]
+    },
+    {
+      "id": "product-brand",
+      "order": [
+        "header",
+        "hero",
+        "product-lineup",
+        "business-scope",
+        "recognition",
+        "store-locator",
+        "mission",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 rivian·toss 순서"
+      ]
+    },
+    {
+      "id": "editorial",
+      "order": [
+        "header",
+        "hero",
+        "mission",
+        "news",
+        "faq",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 oatly"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "about",
+        "news",
+        "careers",
+        "ir(상장사)",
+        "sustainability(주장 시)",
+        "language-switch(해외 방문자)"
+      ],
+      "evidence": [
+        "1b-b-002",
+        "DESIGN §12-B"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "sitemap",
+        "about-link",
+        "contact(전화·주소·이메일 중 복수)",
+        "korean-business-info"
+      ],
+      "evidence": [
+        "1b-b-003",
+        "DESIGN §9"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "peoplePlacesProducts": "real-required — 직원·현장·제품 실제 촬영물. NN/g 연구에서 스톡은 불신 요인",
+    "leadership": "real-required — 같은 조명·배경의 초상(1:1 또는 4:5)",
+    "fallback": "실사가 없으면 사진 슬롯을 줄이고 타이포·색 면으로 구성한다(생성 이미지로 대신하지 않음)"
+  },
+  "contentSchemaHints": [
+    "organization: { legalName, name, logo, url, sameAs[], address, telephone } → Organization JSON-LD와 푸터를 같은 객체에서",
+    "news[]: { date(ISO), title, url, thumb }",
+    "history[]: { year, event }",
+    "leaders[]: { name, title, bio, portrait }",
+    "reports[]: { year, title, pdfUrl, pages, size }"
+  ],
+  "references": [
+    {
+      "url": "https://www.oatly.com",
+      "why": "H1 회사 정의 바로 아래 미션, 내비·푸터에 지속가능성·채용·투자자·접근성 선언, 연도 붙은 지속가능성 보고서"
+    },
+    {
+      "url": "https://www.kakaocorp.com",
+      "why": "소개·기술과 서비스·지속가능성·소식·투자정보·검색·영어·다크모드가 주 내비에 다 있다(H1이 로고인 점은 따르지 않음)"
+    },
+    {
+      "url": "https://toss.im",
+      "why": "서비스별 한 섹션씩 사업 범위, 회사소개·뉴스룸·채용 내비(H1 없음·57화면 길이는 따르지 않음)"
+    },
+    {
+      "url": "https://rivian.com",
+      "why": "제품 브랜드형: 라인업 → 가치 → 수상 안전성 → 매장 → 미션 순서, 헤더 체험 예약(자동 넘김 슬라이드는 따르지 않음)"
+    },
+    {
+      "url": "https://stripe.com",
+      "why": "회사 홈 관점에서 제품·해법·개발자·요금·소식과 규모 수치를 한 홈에"
+    }
+  ],
+  "legalRequirements": [
+    {
+      "basis": "DESIGN §9 한국 영리 사이트 푸터",
+      "appliesWhen": "한국 영리 법인",
+      "requirement": "상호·대표자·주소·사업자등록번호·전화, 통신판매를 하면 통신판매업 신고번호, 개인정보 처리방침 상시 링크",
+      "source": "DESIGN.md §9"
+    }
+  ],
+  "legal": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website"
+  },
+  "conversion": [
+    {
+      "event": "form_submit",
+      "match": {
+        "form": "contact"
+      }
+    }
+  ]
+}

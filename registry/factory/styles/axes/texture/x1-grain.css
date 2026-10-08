@@ -1,0 +1,6 @@
+/* X1 그레인 한 겹 — feTurbulence 노이즈 SVG(160px 타일, 부품이 싣는 --wf-texture-noise) 한 장을 불투명도 0.05(명세 0.03~0.06)로 내용 뒤에 곱하기로 깐다.
+ * 다크에서는 노이즈를 뒤집어(흰 점) 스크린으로 — 어두운 면에서도 보인다. 필터·애니메이션 없음(GPU 부담은 합성 한 겹). 글자 대비는 무늬가 가장 짙은 점 위에서 잰다
+ * (lint texture-contrast — 곱하기 최대 4.5%). 호환(compat.json): dashboard 원형 제외. P3-2 Task 16a, 원천 styles.json proposals X(grain-texture). */
+.cn-texture {
+  @apply [--wf-texture-b-display:block] [--wf-texture-b-bg:var(--wf-texture-noise)] [--wf-texture-b-opacity:0.05] [--wf-texture-b-blend:multiply] dark:[--wf-texture-b-blend:screen] dark:[--wf-texture-b-filter:invert(1)];
+}

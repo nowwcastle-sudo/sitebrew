@@ -1,0 +1,56 @@
+{
+  "id": "eleveight-studio",
+  "archetype": "portfolio",
+  "sourceGallery": "opl",
+  "url": "https://www.eleveight.studio/",
+  "structure": {
+    "hero": "굵은 산세리프 문장, 회색 부제, 알약 버튼 둘, 아래 시안 카드 가로 줄",
+    "sections": [
+      "소형 로고 마크",
+      "대형 선언 문장 + 부제",
+      "알약 버튼 2개(Let's talk·Pricing)",
+      "시안 카드 가로 줄(웹사이트 미리보기)",
+      "Benefits 구획 시작(모바일)"
+    ]
+  },
+  "type": {
+    "display": "좁은 자간 중간 굵기 기하 산세리프, 제목 대형",
+    "body": "같은 산세리프 회색 부제",
+    "scale": "제목 대형, 부제 중형, 버튼 소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "시안 카드 가로 스크롤(카드가 화면 밖으로 이어짐)",
+    "알약 버튼 2개"
+  ],
+  "cta": {
+    "pattern": "흰 알약 Let's talk와 검정 알약 Pricing",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.55
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "제안 문장 아래 시안 카드를 늘어놓아 작업물이 먼저 보인다",
+    "흰 알약과 검정 알약 쌍으로 문의와 가격 두 경로를 명확히 나눈다",
+    "카드가 화면 밖으로 이어져 가로 스크롤 단서가 된다"
+  ]
+}

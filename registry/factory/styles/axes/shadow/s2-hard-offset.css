@@ -1,0 +1,67 @@
+/* S2 단색 오프셋 ★운영자 판정(2026-09-26) — 블러 0 의 잉크색 오프셋(4·6·8px). 0 계열(브루탈) 전용 — 호환표 families.zero. DESIGN §6 그림자 MUST 의 예외(E5). 원천 style_axes.md 축 7. */
+.cn-card-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-sidebar-inset-shadow {
+  @apply md:peer-data-[variant=inset]:shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-tabs-trigger-shadow {
+  @apply group-data-[variant=default]/tabs-list:data-active:shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-chart-tooltip-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-combobox-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-context-menu-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-dropdown-menu-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-hover-card-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-menubar-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-navigation-menu-popup-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-popover-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-select-content-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-navigation-menu-content-shadow {
+  @apply group-data-[viewport=false]/navigation-menu:shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-navigation-menu-indicator-arrow-shadow {
+  @apply shadow-[4px_4px_0_0_var(--foreground)];
+}
+.cn-context-menu-sub-content-shadow {
+  @apply shadow-[6px_6px_0_0_var(--foreground)];
+}
+.cn-dropdown-menu-sub-content-shadow {
+  @apply shadow-[6px_6px_0_0_var(--foreground)];
+}
+.cn-menubar-sub-content-shadow {
+  @apply shadow-[6px_6px_0_0_var(--foreground)];
+}
+.cn-sidebar-inner-shadow {
+  @apply group-data-[variant=floating]:shadow-[6px_6px_0_0_var(--foreground)];
+}
+.cn-sheet-content-shadow {
+  @apply shadow-[6px_6px_0_0_var(--foreground)];
+}
+.cn-toast-shadow {
+  @apply shadow-[6px_6px_0_0_var(--foreground)];
+}
+.cn-dialog-content-shadow {
+  @apply shadow-[8px_8px_0_0_var(--foreground)];
+}
+.cn-alert-dialog-content-shadow {
+  @apply shadow-[8px_8px_0_0_var(--foreground)];
+}

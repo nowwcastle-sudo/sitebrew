@@ -1,0 +1,62 @@
+{
+  "id": "getuni-co",
+  "archetype": "landing",
+  "sourceGallery": "opl",
+  "url": "https://www.getuni.co/",
+  "structure": {
+    "hero": "흰 여백 위 둥근 모서리 큰 카드에 분홍·주황·하늘색 번짐 배경, 중앙 상단 검은 알약, 손글씨 한 줄과 큰 헤드라인, 흰 다운로드 알약 둘",
+    "sections": [
+      "검은 알약 모양 노치(로고 포함)",
+      "손글씨 대문자 한 줄",
+      "헤드라인 두 줄",
+      "다운로드 버튼 둘(macOS·Windows)",
+      "무료 체험·가격·구매 링크 작은 줄",
+      "노트북 프레임 속 노치 입력창",
+      "기능 탭 알약(모바일 하단)"
+    ]
+  },
+  "type": {
+    "display": "단정한 기하학 산세리프 중간 굵기, 자간을 조여 두 줄로 쌓음. 위에 손글씨 대문자 한 줄",
+    "body": "밝은 회색 작은 산세리프, 버튼은 중간 굵기",
+    "scale": "헤드라인 약 54px·손글씨 약 26px·버튼 약 16px·안내 줄 약 13px(1440)"
+  },
+  "colorLogic": "K7",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "영상 없이 정지 화면 두 장만 봄. 움직임·호버는 판단하지 않았다. 노치 입력창에 커서가 보임."
+  },
+  "interaction": [
+    "macOS·Windows 다운로드 버튼",
+    "구매하기 밑줄 링크",
+    "노치 입력창 데모 장면",
+    "모바일 하단 Ask·Actions·Transcribe 탭 알약"
+  ],
+  "cta": {
+    "pattern": "흰 알약 다운로드 버튼 둘과 작은 구매 링크 하나",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "번지는 파스텔 그라디언트를 둥근 큰 카드에 가두고 흰 여백으로 둘러 색 면이 떠 있는 포스터처럼 보이게 한다",
+    "제품 자체인 검은 알약(노치)을 맨 위 중앙에 크게 두어 설명 전에 무엇인지 보여준다",
+    "정돈된 산세리프 헤드라인 위에 손글씨 한 줄을 얹어 차분함과 친근함을 한 화면에 섞는다",
+    "행동은 다운로드 하나로 모으고, 버튼 밑 작은 회색 줄에 무료 체험·카드 불필요·가격을 붙여 망설임을 줄인다",
+    "모바일은 버튼을 전폭 두 줄로 쌓고 첫 화면 바로 아래에 기능 탭 알약을 둬 스크롤할 이유를 만든다"
+  ]
+}

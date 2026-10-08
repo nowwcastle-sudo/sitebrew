@@ -1,0 +1,58 @@
+{
+  "id": "cityxofxangels-com",
+  "archetype": "landing",
+  "sourceGallery": "opl",
+  "url": "https://cityxofxangels.com/",
+  "structure": {
+    "hero": "연하늘 바탕에 하늘색 초대형 대문자 제목이 세로로 긴 인물 사진 위를 가로질러 겹치고, 좌하단에 책 소개 문단, 우하단에 검은 별 아이콘",
+    "sections": [
+      "저자 이름 상단 중앙 표기와 메뉴 아이콘",
+      "사진과 겹친 초대형 제목",
+      "책 소개 문단",
+      "별 아이콘(주 행동 추정)"
+    ]
+  },
+  "type": {
+    "display": "굵은 네오 그로테스크 대문자 약 130px, 하늘색",
+    "body": "같은 계열 약 17px 검정, 책 제목 어절만 하늘색",
+    "scale": "H1 약 130px·소개 약 17px·이름 약 16px(1440)"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면만으로는 알 수 없다. 수집 메타상 lenis 스크롤 사용",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "햄버거 메뉴",
+    "우하단 별 아이콘(구매 또는 다음 구획 진입으로 보임)",
+    "모바일은 제목이 두 줄로 쪼개져 사진 위에 걸침"
+  ],
+  "cta": {
+    "pattern": "버튼 없이 별 아이콘 하나, 소개 문단의 책 제목 강조",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "책 제목을 화면 폭 전체 초대형 글자로 키워 사진 위를 가로질러 겹치는 배치로 시선을 끈다",
+    "하늘색 한 색의 글자와 연한 같은 계열 바탕으로 단색 램프를 만든다",
+    "인물 사진은 세로로 긴 한 장만 가운데 놓아 책 표지처럼 보이게 한다",
+    "소개 문단은 좌하단 작은 칼럼으로 밀어 제목과 사진의 대비를 키운다",
+    "모바일에서는 제목을 두 줄로 쪼개 사진 상단에 걸쳐 같은 겹침 효과를 유지한다"
+  ]
+}

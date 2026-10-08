@@ -1,0 +1,29 @@
+{
+  "topic": "프리랜서를 위한 견적서 보내기·승인 상태 한눈에 보기 서비스 (가상 사업체 — 예시)",
+  "archetype": "saas",
+  "locale": "ko",
+  "facts": {
+    "name": "견적노트",
+    "legalName": "주식회사 견적노트랩",
+    "representative": "김하늘",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "price": "월 9,900원(부가세 포함), 첫 14일 무료",
+    "trial": "첫 14일 무료, 카드 등록 없이 시작",
+    "claim": "견적서를 링크로 보내고 고객이 열어 봤는지, 승인했는지를 한 화면에서 확인해요",
+    "howItWorks": "견적서를 만들고, 링크를 보내고, 승인 알림을 받아요",
+    "address": "서울특별시 마포구 예시로 120, 3층",
+    "phone": "02-1234-5678",
+    "productUrl": "https://gyeonjeok.example.com",
+    "audience": "견적서를 자주 보내는 프리랜서와 1인 사업자",
+    "action": "무료로 시작해 첫 견적서 보내기",
+    "mood": "단정한",
+    "mailOrderNo": "2026-서울마포-0321",
+    "changelog": "2026-09-15 고객이 견적서를 열면 알림을 받아요 https://example.com/changelog/open-alert ; 2026-08-20 승인 상태로 견적서를 걸러 봐요 https://example.com/changelog/status-filter ; 2026-07-30 견적서를 PDF 로 내려받아요 https://example.com/changelog/pdf-export",
+    "usageLimit": "한 계정에 사용자 1명, 견적서는 한 달에 100건까지 보낼 수 있어요",
+    "integrations": "캘린더 | https://example.com/integrations/calendar | native ; 메신저 | https://example.com/integrations/messenger | webhook ; 전자서명 | https://example.com/integrations/e-sign | api",
+    "testimonials": "이도윤 | 프리랜서 번역가 | 도윤 번역소 | 견적서를 보내고 승인까지 기다리는 시간이 하루에서 반나절로 줄었어요 ; 정서아 | 1인 사진 스튜디오 대표 | 서아 스튜디오 | 고객이 견적서를 열어 봤는지 바로 알 수 있어 연락 시점을 잡기 쉬워요",
+    "faq": "무료로 써 볼 수 있나요? | 첫 14일은 무료이고 카드 등록 없이 시작해요 ; 견적서는 어떻게 보내나요? | 링크를 만들어 이메일로 보내요 ; 고객이 승인하면 알려 주나요? | 네, 승인하면 알림을 받아요"
+  },
+  "seed": 1
+}

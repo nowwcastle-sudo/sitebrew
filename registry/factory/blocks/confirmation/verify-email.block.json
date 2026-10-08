@@ -1,0 +1,14 @@
+{
+  "kind": "confirmation",
+  "variant": "verify-email",
+  "title": "이메일 확인 안내 — 보낸 주소·다음 두 걸음·다시 보내기(대기 타이머)",
+  "layout": "centered-mail-resend",
+  "density": "spacious",
+  "archetypes": ["saas", "pwa", "commerce", "dashboard"],
+  "archetypeKinds": ["email-verification", "signup-confirmation"],
+  "states": ["loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["X1"],
+  "notes": "가운데 한 판: 메일 표지 · h2 · 보낸 주소 · 걸음 두 개(ol) · 스팸함 안내 · [인증 메일 다시 보내기](보낸 뒤 resendAfter 초 잠금 — role=timer 줄이 남은 초를 센다, 요청 제한 code 는 그 초로) · 「주소가 잘못됐나요? 이메일 바꾸기」 링크. 이미 확인한 계정(emailVerified)은 「확인했어요」와 다음 행동. 포트: session·sendVerificationEmail? P3-6: 제목이 확인 먼저(문구는 copy)·보낸 주소는 굵게(data-address) 따로 보인다(A01·A14). 세션 없음이면 다음 행동은 로그인(copy.empty, A08)."
+}

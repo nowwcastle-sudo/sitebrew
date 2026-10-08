@@ -1,0 +1,56 @@
+{
+  "id": "siha-com-au",
+  "archetype": "commerce",
+  "sourceGallery": "siteinspire",
+  "url": "https://siha.com.au/",
+  "structure": {
+    "hero": "전폭 사진 위 좌하단 헤드라인과 밑줄 CTA, 우하단 이메일 카드",
+    "sections": [
+      "투명 헤더(로고+한 줄 태그·내비 6개·아이콘)",
+      "전폭 사진 히어로",
+      "이메일 가입 혜택 카드(녹슨 붉은색 입력줄)",
+      "아래 본문 섹션 시작"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 헤드라인, 로고는 특이한 세리프 워드마크",
+    "body": "중성적인 산세리프 본문",
+    "scale": "헤드라인 중간 크기, 설명은 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "밑줄 텍스트 링크 CTA",
+    "이메일 JOIN 입력줄",
+    "헤더 하단 1px 구분선"
+  ],
+  "cta": {
+    "pattern": "밑줄 텍스트 링크 + 이메일 JOIN",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.7
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "큰 인물 사진 하나에 글을 좌하단으로 몰아 에디토리얼 느낌을 만든다",
+    "CTA를 버튼이 아니라 밑줄 링크로 절제해 사진을 가리지 않는다",
+    "이메일 혜택 카드는 붉은 입력줄 하나만 강조색으로 쓴다",
+    "모바일은 사진 위 글자 대비가 약해진다. 하단 그라디언트나 박스가 필요"
+  ]
+}

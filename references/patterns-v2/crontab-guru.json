@@ -1,0 +1,61 @@
+{
+  "id": "crontab-guru",
+  "archetype": "pwa",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://crontab.guru/",
+  "structure": {
+    "hero": "검은 바탕 가운데 노란 모노 제목, 큰 이탤릭 풀이 문장과 노란 테두리 크론 식 입력창",
+    "sections": [
+      "우상단 모니터링 버튼",
+      "제목과 한 줄 소개",
+      "풀이 문장과 다음 실행 시각",
+      "크론 식 입력창(복사·랜덤 버튼)",
+      "필드 이름 링크 5개",
+      "기호 설명표",
+      "하단 제품 소개 글"
+    ]
+  },
+  "type": {
+    "display": "모노스페이스 굵은 노랑 제목",
+    "body": "모노스페이스 12~14px",
+    "scale": "제목 약 24px, 풀이 문장 이탤릭 약 28px, 입력 글자 약 24px, 표 12px"
+  },
+  "colorLogic": "K4",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "크론 식 직접 입력",
+    "복사 버튼",
+    "랜덤 버튼",
+    "필드 이름 링크(분·시·일·월·요일)",
+    "기호 설명표 읽기"
+  ],
+  "cta": {
+    "pattern": "노란 외곽선 모니터링 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.8
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "풀이 문장을 입력창 위에 크게 두어 입력과 결과가 한 화면에서 이어진다.",
+    "노랑 하나만 강조색으로 쓰고 입력창을 발광 테두리로 띄운다.",
+    "도구 아래에 제작사 제품 소개를 이어 붙이되 첫 화면은 도구가 차지한다.",
+    "375에서도 입력창과 풀이 문장이 그대로 폭만 줄어 남는다."
+  ]
+}

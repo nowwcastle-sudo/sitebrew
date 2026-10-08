@@ -1,0 +1,31 @@
+{
+  "name": "create-sitebrew",
+  "version": "0.1.0",
+  "description": "Download Sitebrew at its release tag and print the next steps.",
+  "type": "module",
+  "bin": {
+    "create-sitebrew": "bin/create-sitebrew.mjs"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "engines": {
+    "node": ">=24.13.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nowwcastle-sudo/sitebrew.git",
+    "directory": "packages/create-sitebrew"
+  },
+  "keywords": [
+    "sitebrew",
+    "create",
+    "scaffold",
+    "installer"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

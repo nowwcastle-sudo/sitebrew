@@ -1,0 +1,584 @@
+{
+  "id": "local",
+  "purpose": "손님이 「지금 여는가·어디인가·어떻게 예약하나」를 바로 알고 예약·전화·방문하게 한다.",
+  "coreTask": "390×844 화면에서 홈을 열고 스크롤 없이 오늘 영업시간과 주소를 읽어 답한 뒤, 예약(또는 전화) 버튼을 눌러 예약 채널 URL(또는 tel:)에 도달한다. 이어서 두 화면 안에서 네이버 지도나 카카오맵 링크를 찾는다. 합격: 세 단계 성공, 시간·주소 답이 JSON-LD와 일치.",
+  "completion": "site",
+  "locales": [
+    "ko"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "hero-visit-info",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-grid-lines-baseline-word",
+            "block-hero-vertical-title-slides",
+            "block-hero-map-first",
+            "block-hero-video-montage"
+          ],
+          "copySlots": [
+            {
+              "id": "tagline",
+              "role": "무엇을 파는 곳인지(§10-A)",
+              "maxChars": 28
+            },
+            {
+              "id": "todayHours",
+              "role": "오늘 영업(진료)시간 또는 「오늘 휴무」",
+              "maxChars": null
+            },
+            {
+              "id": "addressLine",
+              "role": "주소 한 줄",
+              "maxChars": null
+            },
+            {
+              "id": "primaryCta",
+              "role": "실제 받는 예약 채널 하나 또는 전화",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "hero",
+              "aspect": "16:9",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "notice",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "announcement"
+          ],
+          "allowedVariants": [
+            "block-announcement-top-bar"
+          ],
+          "copySlots": [
+            {
+              "id": "notice",
+              "role": "날짜 붙은 한 줄 공지(임시 휴무·브레이크타임·품절·신메뉴) — 팝업 아님",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "hours-table",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "hours-location"
+          ],
+          "allowedVariants": [
+            "block-hours-location-today-highlight"
+          ],
+          "copySlots": [
+            {
+              "id": "hours",
+              "role": "진료시간표: 점심·야간·주말·휴진일(의료 변형)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "menu-price",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "menu-price"
+          ],
+          "allowedVariants": [
+            "block-menu-price-board-columns",
+            "block-menu-price-category-tabs",
+            "block-menu-price-photo-rows"
+          ],
+          "copySlots": [
+            {
+              "id": "item",
+              "role": "메뉴·시술·진료 이름 + 가격(HTML 텍스트)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "menu-photo",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "departments",
+          "required": false,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "진료과·서비스 카드 — 본문",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "진료과목",
+                "en": "Departments"
+              },
+              "from": [
+                "departments"
+              ],
+              "fields": {
+                "title": "."
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "department",
+              "role": "진료과목(의료 변형)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "doctors",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "의료진 소개 — 본문",
+            "render": {
+              "as": "cards",
+              "heading": {
+                "ko": "의료진",
+                "en": "Our doctors"
+              },
+              "from": [
+                "doctors"
+              ],
+              "fields": {
+                "title": "name",
+                "meta": [
+                  "license",
+                  "gender"
+                ],
+                "points": "career",
+                "image": "portrait"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "doctor",
+              "role": "의료인 성명·성별·면허 종류·약력(의료 변형)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "portrait",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "gallery",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "공간·음식 사진 모음 — 본문과 실사",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "공간",
+                "en": "Our space"
+              },
+              "from": [
+                "gallery",
+                "images:space"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "space",
+              "aspect": "3:2",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "directions",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "hours-location"
+          ],
+          "allowedVariants": [
+            "block-hours-location-hours-table-map-link"
+          ],
+          "copySlots": [
+            {
+              "id": "address",
+              "role": "복사 가능한 텍스트 주소",
+              "maxChars": null
+            },
+            {
+              "id": "transit",
+              "role": "대중교통 한 줄",
+              "maxChars": null
+            },
+            {
+              "id": "parking",
+              "role": "주차 여부",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "branches",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "hours-location"
+          ],
+          "allowedVariants": [
+            "block-hours-location-branch-list"
+          ],
+          "copySlots": [
+            {
+              "id": "branch",
+              "role": "지점명·주소·오늘 시간·전화·지도 링크(2곳 이상이면 필수)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "external-reviews",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-rating-summary"
+          ],
+          "copySlots": [
+            {
+              "id": "link",
+              "role": "네이버 플레이스 등 외부 후기 링크 — 의료 변형에서는 끔",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "faq",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-grouped-by-topic",
+            "block-faq-single-accordion",
+            "block-faq-two-column-index"
+          ],
+          "copySlots": [
+            {
+              "id": "qa",
+              "role": "혜택·취소 정책(예약 상품형)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "contact-form",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "contact-form"
+          ],
+          "allowedVariants": [
+            "block-contact-form-channel-first",
+            "block-contact-form-inline-short"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "product-detail",
+      "route": "/services",
+      "sections": [
+        {
+          "kind": "bookable-item",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "contact-form"
+          ],
+          "allowedVariants": [
+            "block-contact-form-stepped-booking"
+          ],
+          "copySlots": [
+            {
+              "id": "price",
+              "role": "가격·후기(비의료)·취소 정책",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "item-photo",
+              "aspect": "3:2",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "booking-cta",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "final-cta",
+            "bottom-tab"
+          ],
+          "allowedVariants": [
+            "block-bottom-tab-split-booking-bar"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "booking-complete",
+      "route": "/booking/complete",
+      "sections": [
+        {
+          "kind": "confirmation",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "confirmation"
+          ],
+          "allowedVariants": [
+            "block-confirmation-booking-complete"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "L-A-find-fast",
+      "order": [
+        "header",
+        "hero-visit-info",
+        "notice",
+        "menu-price",
+        "gallery",
+        "directions",
+        "external-reviews",
+        "footer"
+      ],
+      "evidence": [
+        "muntin(NN/g·Google 소상공인 연구 정리, 2차)",
+        "MeasuringU 식당 6곳(주문 69%·메뉴 51%·위치 23%)",
+        "Black Oak(메뉴가 스크롤 없이, 하단 예약 바)",
+        "DESIGN §10-A"
+      ]
+    },
+    {
+      "id": "L-B-clinic",
+      "order": [
+        "header",
+        "hero-visit-info",
+        "departments",
+        "doctors",
+        "hours-table",
+        "gallery",
+        "directions",
+        "notice",
+        "footer"
+      ],
+      "evidence": [
+        "의료법 제56·57조(치료경험담 금지, 심의 제외 사실 항목)",
+        "아임웹 젠리치과·이로운치과 포트폴리오",
+        "make24 병원 템플릿"
+      ]
+    },
+    {
+      "id": "L-C-bookable",
+      "order": [
+        "header",
+        "hero-visit-info",
+        "menu-price",
+        "directions",
+        "faq",
+        "footer"
+      ],
+      "evidence": [
+        "아임웹 블로그 idx=178(모든 객실 상세에 예약 버튼, 예약 전에 가격·후기 상세)"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "logo",
+        "menu",
+        "booking-cta"
+      ],
+      "evidence": [
+        "L-A 템플릿"
+      ]
+    },
+    {
+      "kind": "sticky-booking-bar",
+      "required": true,
+      "mustContain": [
+        "primary-booking-or-tel"
+      ],
+      "evidence": [
+        "t-local-004",
+        "Black Oak 4/5"
+      ]
+    },
+    {
+      "kind": "kakao-channel-button",
+      "required": false,
+      "mustContain": [],
+      "evidence": [
+        "DESIGN §17 — 하단 고정 CTA와 겹치지 않게"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "korean-business-info",
+        "tel-link"
+      ],
+      "evidence": [
+        "DESIGN §9",
+        "t-local-013"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "soldItemsSpacesStaff": "real-required — 사장님이 준 실사만(판정 2026-09-26, §6-A 단서). 없으면 비율 고정 빈 슬롯(「매장 사진 자리」)으로 납품",
+    "mood": "generated-ok — 판매 대상이 아닌 분위기 컷에만, 표기",
+    "stock": "금지",
+    "clinic": "전후 사진·수술 장면 금지",
+    "map": "이미지 아님 — 지도 링크 버튼"
+  },
+  "contentSchemaHints": [
+    "business: { name, subtype(Bakery|CafeOrCoffeeShop|Restaurant|Dentist|MedicalClinic|HairSalon…), address, telephone(+82), geo(소수점 5자리 이상), url, openingHoursSpecification[] } → 화면·LocalBusiness 하위 유형 JSON-LD를 한 객체에서",
+    "menu[]: { name, price, photo? } — 음식점은 JSON-LD menu·servesCuisine",
+    "notices[]: { date, text }",
+    "branches[]: { name, url, address, todayHours, telephone, naverMapUrl, kakaoMapUrl }",
+    "booking: { primaryChannel: naver|catchtable|kakao|tel, url, secondary[] }",
+    "variant: store|clinic — clinic이면 후기 칸 0"
+  ],
+  "references": [
+    {
+      "url": "https://jungsik.kr",
+      "why": "예약 채널을 캐치테이블 하나로 정하고 tel:을 곁에, 한 화면 분량(1,340px)에 방문 정보, 한·영 전환(네이버·카카오 지도가 없는 점은 따르지 않음)"
+    },
+    {
+      "url": "https://www.sungsimdang.co.kr",
+      "why": "지점 6곳을 같은 형식으로 나열, 대표 빵으로 무엇을 파는 곳인지, 푸터 사업자 정보(지도 링크 0·팝업 공지는 따르지 않음)"
+    },
+    {
+      "url": "https://tabkitchenbakery.com",
+      "why": "고정 헤더에 지점명, 지도 링크 한 번에(영업시간 텍스트 없음은 따르지 않음)"
+    },
+    {
+      "url": "https://www.onionkr.com",
+      "why": "푸터에 사업자·통신판매 번호를 초기 화면에, 온라인 판매는 스마트스토어로 분리(홈에 영업시간·지도 없음은 따르지 않음)"
+    },
+    {
+      "url": "https://www.imweb.me/expert/portfolio-detail/p20240906c5a6116e13ca5",
+      "why": "「동네 치과」 슬로건 + 진료과목 카드 구조(라이브 URL 확인 안 됨, 설명문만 근거)"
+    }
+  ],
+  "legalRequirements": [
+    {
+      "basis": "의료법 제56조②2(치료경험담), ②4·8·14, 시행령 제23조",
+      "appliesWhen": "의료 변형(병원·의원·치과·한의원)",
+      "requirement": "치료경험담 후기·전후 사진·다른 의료기관과의 비교·근거 없는 인증/수상 배지·심의 안 받은 광고 문구를 싣지 않는다. 후기 칸(external-reviews 포함)을 끈다(운영자 판정 2026-09-26)",
+      "source": "https://www.law.go.kr/LSW/lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=1000916681"
+    },
+    {
+      "basis": "의료법 제57조(심의 제외 항목)",
+      "appliesWhen": "의료 변형",
+      "requirement": "명칭·소재지·전화·진료과목·의료인 성명·성별·면허 종류·진료시간 같은 사실 정보로 홈을 채운다",
+      "source": "https://www.admedical.org/guide/regulations.do"
+    },
+    {
+      "basis": "전자상거래법 제10조",
+      "appliesWhen": "온라인 주문·선물을 받을 때",
+      "requirement": "통신판매업 신고번호를 포함한 초기 화면 사업자 정보",
+      "source": "https://www.law.go.kr/LSW/lsLinkCommonInfo.do?lsJoLnkSeq=1022342373"
+    }
+  ],
+  "legal": {
+    "pages": [
+      "privacy"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "local"
+  },
+  "conversion": [
+    {
+      "event": "cta_click",
+      "match": {
+        "id": [
+          "booking",
+          "tel",
+          "channel"
+        ]
+      }
+    }
+  ]
+}

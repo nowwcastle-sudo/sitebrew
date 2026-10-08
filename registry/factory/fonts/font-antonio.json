@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-antonio",
+  "type": "registry:font",
+  "title": "Antonio",
+  "description": "web-factory 폰트 키트: Antonio (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Antonio Variable', sans-serif",
+    "provider": "google",
+    "import": "Antonio",
+    "variable": "--font-antonio-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/antonio"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/antonio/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Antonio",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

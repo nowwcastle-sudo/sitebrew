@@ -1,0 +1,13 @@
+{
+  "kind": "filter-bar",
+  "variant": "toolbar",
+  "title": "도구 줄 — 결과 수 + 정렬·기간 select(+ 비교 체크·기준 시각)",
+  "layout": "summary-controls",
+  "density": "compact",
+  "archetypes": ["commerce", "dashboard"],
+  "archetypeKinds": ["list-toolbar", "filter-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "왼쪽 결과 수 문장(role=status, {shown}·{total}) · 오른쪽 select 여럿(정렬·기간…, 모두 보이는 라벨 + native select) + 비교 체크(선택) + [초기화](바뀐 때만). 아래 「기준 시각」 줄(선택, <time>). 고른 값은 주소 쿼리(?sort=…&period=…&compare=1)에 있다(_shared/filter-query) — 값으로 목록·차트를 다시 그리는 일은 조립하는 쪽(onChange). target + filterParams 를 주면 같은 문서 항목을 직접 거르고(정렬·기간은 항목을 숨기지 않는다), sortTarget 을 주면 항목의 data-sort-<키>(숫자)를 읽어 CSS order 로 순서만 바꾼다(?sort=price-asc — 요소를 옮기지 않아 React 목록이 깨지지 않는다). 결과 수 문장·기준 줄은 없을 수 있다(select 가 없어도 기준 시각 줄만 그릴 수 있다). 등장 모션 없음"
+}

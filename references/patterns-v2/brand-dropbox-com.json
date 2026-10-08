@@ -1,0 +1,57 @@
+{
+  "id": "brand-dropbox-com",
+  "archetype": "brand",
+  "sourceGallery": "awwwards",
+  "url": "https://brand.dropbox.com/",
+  "structure": {
+    "hero": "옅은 파란 격자선 위 가운데 열 좌상단에 굵은 파랑 선언 문장",
+    "sections": [
+      "격자선 배경 첫 화면(가운데 흰 열)",
+      "파랑 선언 제목",
+      "아래 이동 이중 화살표",
+      "쿠키 카드(좌하단)",
+      "모바일 로고 마크(열 좌하단)"
+    ]
+  },
+  "type": {
+    "display": "굵은 기하 산세리프, 단일 파랑",
+    "body": "같은 산세리프 소형(쿠키 문구)",
+    "scale": "제목 대형 하나와 소형 본문의 두 단계"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "아래로 이동 화살표",
+    "쿠키 수락·거부·설정"
+  ],
+  "cta": {
+    "pattern": "스크롤 유도 화살표만, 문구 CTA 없음",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.6
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "옅은 격자선을 장식이 아니라 레이아웃 뼈대로 드러내 가이드라인 성격을 보인다",
+    "단색 파랑 굵은 제목 하나로 첫 화면을 비우고 위계를 단순하게 둔다",
+    "모바일은 제목 칸을 가운데로 내리고 로고 마크를 칸 하단에 붙인다",
+    "쿠키 카드가 첫 화면 하단을 차지하니 크기를 줄이는 편이 좋다"
+  ]
+}

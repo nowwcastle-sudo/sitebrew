@@ -1,0 +1,618 @@
+{
+  "id": "commerce",
+  "purpose": "손님이 상품을 찾아 옵션을 고르고 배송비를 포함한 합계를 확인한 뒤 산다.",
+  "coreTask": "홈 → 카테고리 → 상품 하나 → 옵션 선택 → 장바구니 담기 → 장바구니에서 배송비를 포함한 합계를 읽는다(결제는 누르지 않는다). 이어서 푸터에서 사업자등록번호와 통신판매업 신고번호를 읽고 공정위 조회 링크가 열리는지 확인한다. 합격: 담기 후 보이는 확인과 DOM 상태 변화, 합계 숫자 읽기, 두 번호를 텍스트로 찾음.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "notice-bar",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "announcement"
+          ],
+          "allowedVariants": [
+            "block-announcement-top-bar",
+            "block-announcement-dismissible-inline"
+          ],
+          "copySlots": [
+            {
+              "id": "text",
+              "role": "배송 기준·첫 구매 혜택(모달 아님, 구매 영역에도 반복)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "hero",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-banded-full-bleed",
+            "block-hero-framed-card-outline-title",
+            "block-hero-layered-landscape-logotype",
+            "block-hero-staggered-oval-frame",
+            "block-hero-twin-panels",
+            "block-hero-kinetic-type-video",
+            "block-hero-ken-burns-stills",
+            "block-hero-punch-in-statement",
+            "block-hero-object-3d-orbit"
+          ],
+          "copySlots": [
+            {
+              "id": "headline",
+              "role": "기획전 1개 또는 단일 상품 + 가격",
+              "maxChars": 28
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "hero",
+              "aspect": "16:9",
+              "source": "real-required"
+            },
+            {
+              "id": "hero-mobile",
+              "aspect": "4:5",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "categories",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-grid-cards"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "best",
+          "required": false,
+          "importance": 1,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-ranked-list"
+          ],
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "product-thumb",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "new-arrivals",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-grid-cards"
+          ],
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "product-thumb",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "curated",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-grid-cards"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "social-proof",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-quote-wall",
+            "block-social-proof-rating-summary",
+            "block-social-proof-whip-quotes"
+          ],
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "customer-photo",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "shipping-pickup-info",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "배송·수령 안내 — 본문",
+            "render": {
+              "as": "facts",
+              "heading": {
+                "ko": "배송 안내",
+                "en": "Shipping"
+              },
+              "currency": "KRW",
+              "rows": [
+                {
+                  "label": {
+                    "ko": "배송비",
+                    "en": "Shipping fee"
+                  },
+                  "from": [
+                    "shipping.fee"
+                  ],
+                  "format": "money"
+                },
+                {
+                  "label": {
+                    "ko": "무료배송 기준",
+                    "en": "Free shipping from"
+                  },
+                  "from": [
+                    "shipping.freeThreshold"
+                  ],
+                  "format": "money"
+                },
+                {
+                  "label": {
+                    "ko": "택배사",
+                    "en": "Carrier"
+                  },
+                  "from": [
+                    "shipping.courier"
+                  ]
+                },
+                {
+                  "label": {
+                    "ko": "출고",
+                    "en": "Ships within"
+                  },
+                  "from": [
+                    "shipping.leadDays"
+                  ],
+                  "format": "days"
+                }
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "origin-info",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "원산지 안내(식품) — 본문",
+            "render": {
+              "as": "facts",
+              "heading": {
+                "ko": "원산지",
+                "en": "Origin"
+              },
+              "lead": [
+                "slot:origin"
+              ],
+              "from": [
+                "products"
+              ],
+              "fields": {
+                "label": "name",
+                "value": "origin"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "origin",
+              "role": "원산지 안내(식품이면 필수)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "bulk-order-inquiry",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "contact-form"
+          ],
+          "allowedVariants": [
+            "block-contact-form-channel-first"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "brand-story",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "브랜드 이야기 — 본문",
+            "missing": "브랜드 이야기 글 칸이 콘텐츠 스키마에 없다(이미지 칸 story 만 있다)"
+          },
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "story",
+              "aspect": null,
+              "source": "stock-ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "category-list",
+      "route": "/products",
+      "sections": [
+        {
+          "kind": "list-toolbar",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-toolbar"
+          ],
+          "copySlots": [
+            {
+              "id": "resultCount",
+              "role": "실시간 결과 수(「128개 상품」)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "filter-chips",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "filter-bar"
+          ],
+          "allowedVariants": [
+            "block-filter-bar-chips"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "product-grid",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-grid-cards",
+            "block-product-list-ranked-list"
+          ],
+          "copySlots": [
+            {
+              "id": "name",
+              "role": "상품명",
+              "maxChars": null
+            },
+            {
+              "id": "price",
+              "role": "정가(취소선)+할인가, 단위 가격(용량 상품), 품절",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "thumb",
+              "aspect": "1:1",
+              "source": "real-required"
+            },
+            {
+              "id": "second-shot",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cart",
+      "route": "/cart",
+      "phase": "v0.2",
+      "sections": [
+        {
+          "kind": "line-items",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "장바구니는 v0.2 — 외부 판매처 링크형 v0(C44)",
+            "register": [
+              "A60"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "totals",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "장바구니는 v0.2 — 외부 판매처 링크형 v0(C44)",
+            "register": [
+              "A60"
+            ]
+          },
+          "copySlots": [
+            {
+              "id": "total",
+              "role": "배송비 포함 합계",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "payment-options",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "장바구니·결제는 v0.2 — 외부 판매처 링크형 v0(C44)",
+            "register": [
+              "A60"
+            ]
+          },
+          "copySlots": [
+            {
+              "id": "escrowNotice",
+              "role": "에스크로·소비자피해보상보험 선택 안내, 무통장 계좌(은행·번호·예금주)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "C-A-brand-mall",
+      "order": [
+        "notice-bar",
+        "header",
+        "hero",
+        "best",
+        "new-arrivals",
+        "curated",
+        "social-proof",
+        "brand-story",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 마르헨제이 BEST → NEW ARRIVAL → SELECTION → INFLUENCER",
+        "관찰 포인트오브뷰 키워드 검색·푸터",
+        "DESIGN §10-A·§15"
+      ]
+    },
+    {
+      "id": "C-B-local-shop-orders",
+      "order": [
+        "header",
+        "categories",
+        "best",
+        "shipping-pickup-info",
+        "origin-info",
+        "bulk-order-inquiry",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 성심당몰(원산지 안내·대량주문 상시 메뉴, 배송 안내 502px)",
+        "관찰 어니언 목록"
+      ]
+    },
+    {
+      "id": "C-C-single-product-d2c",
+      "order": [
+        "hero",
+        "curated",
+        "social-proof",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 Brightland — 상품 상세 흐름은 detail 원형 D-C",
+        "Baymard(배송비·반품 정보를 구매 근처에)"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "search-input(아이콘 뒤에 숨기지 않음)",
+        "cart"
+      ],
+      "evidence": [
+        "DESIGN §10-B·§16"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "상호",
+        "대표자",
+        "주소",
+        "전화",
+        "이메일",
+        "사업자등록번호",
+        "통신판매업 신고번호",
+        "이용약관",
+        "개인정보 처리방침",
+        "공정위 사업자정보 조회 링크",
+        "에스크로·피해보상보험 안내(선지급식)",
+        "무통장 계좌(해당 시)"
+      ],
+      "evidence": [
+        "t-comm-001",
+        "t-comm-002",
+        "DESIGN §9"
+      ]
+    },
+    {
+      "kind": "kakao-channel-button",
+      "required": false,
+      "mustContain": [],
+      "evidence": [
+        "DESIGN §17",
+        "관찰 포인트오브뷰"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "products": "real-required — 실물 촬영만(판정 2026-09-26). 색·크기가 달라지면 반품 사유",
+    "editing": "누끼·배경 확장은 상품 모양·색을 바꾸지 않는 선에서만",
+    "seasonalBanner": "generated-ok — 상품이 들어가지 않을 때만, 표기",
+    "customerPhotos": "real-required — 동의받은 것만"
+  },
+  "contentSchemaHints": [
+    "products[]: { slug, name, price, listPrice?, unitPrice?{amount,per}, options[]{name, values[]{label, soldOut}}, thumbs[], origin? } — 옵션은 보이는 버튼으로 렌더(select 금지)",
+    "business: { name, ceo, address, tel, email, bizNo, mailOrderNo, ftcLookupUrl, privacyOfficer?, bankAccount?{bank,number,holder}, escrowProvider? }",
+    "shipping: { fee, freeThreshold, courier, leadDays } — 구매 영역과 장바구니에서 같은 객체",
+    "wishlist: 비로그인 로컬 저장 → 로그인 시 병합"
+  ],
+  "references": [
+    {
+      "url": "https://www.pointofview.kr",
+      "why": "푸터에 대표자·주소·사업자번호·통신판매·개인정보관리책임자·계좌 텍스트, 카카오톡 채널, 키워드 검색(진입 팝업은 따르지 않음)"
+    },
+    {
+      "url": "https://marhenj.com",
+      "why": "BEST → NEW → SELECTION → 사회적 증거의 명확한 순서, 사업자번호 옆 [Check] 조회 링크(무료배송을 상단 띠에만 두는 점은 따르지 않음)"
+    },
+    {
+      "url": "https://www.sungsimdangmall.co.kr",
+      "why": "식품 가게 상시 메뉴(원산지 안내·대량주문·채팅상담), 배송 안내를 목록 위쪽에(하단 5탭 바는 §14-A 유지로 따르지 않음)"
+    },
+    {
+      "url": "https://brightland.co",
+      "why": "상품 정보가 이미지가 아닌 텍스트로 풍부(상세 7,678자), 리뷰 수를 구매 영역 근처에(한국 법정 표시는 없음)"
+    },
+    {
+      "url": "https://www.onionkr.com/product/list.html?cate_no=50",
+      "why": "작은 가게의 단순한 목록 격자, 초기 화면 푸터 법정 표시(구매 경로가 자사몰·스마트스토어로 갈림)"
+    }
+  ],
+  "legalRequirements": [
+    {
+      "basis": "전자상거래법 제10조·시행규칙 제7조",
+      "appliesWhen": "사이버몰 운영(항상)",
+      "requirement": "초기 화면에 상호·대표자·주소(불만 처리 주소 포함)·전화·이메일·사업자등록번호·이용약관 링크·공정위 사업자정보 공개페이지 연결. 모바일 순차 표시 허용 조항이 있으나 §10-A 「푸터는 접지 않는다」를 따른다",
+      "source": "https://www.law.go.kr/LSW/lsLinkCommonInfo.do?lsJoLnkSeq=1022342373"
+    },
+    {
+      "basis": "전자상거래법 제13조②10",
+      "appliesWhen": "선지급식(무통장입금 포함) 판매",
+      "requirement": "결제대금예치(에스크로) 또는 소비자피해보상보험 선택 가능 문구를 결제 수단 근처와 푸터에. 무통장 계좌는 은행·계좌번호·예금주 함께",
+      "source": "https://elaw.klri.re.kr/kor_service/lawViewMultiContent.do?hseq=38513"
+    },
+    {
+      "basis": "상품정보제공 고시(농수산물·가공식품)",
+      "appliesWhen": "식품 판매",
+      "requirement": "원산지 안내를 상시 메뉴나 상세 고정 자리에",
+      "source": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2000000026532"
+    }
+  ],
+  "legal": {
+    "pages": [
+      "privacy",
+      "terms",
+      "refund",
+      "withdrawal"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "전자상거래 등에서의 소비자보호에 관한 법률",
+        "약관의 규제에 관한 법률",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "website"
+  },
+  "conversion": [
+    {
+      "event": "cta_click",
+      "match": {
+        "id": "seller"
+      }
+    },
+    {
+      "event": "purchase",
+      "phase": "v0.2"
+    }
+  ]
+}

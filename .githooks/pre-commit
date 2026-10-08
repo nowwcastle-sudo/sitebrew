@@ -1,0 +1,16 @@
+#!/bin/sh
+# pre-commit: 스테이징한 변경에서 비밀값을 찾는다(gitleaks, 이 저장소 .gitleaks.toml). gitleaks 가 설치돼 있을 때만 돈다 — 없으면 설치 방법을 알리고 통과시킨다(CI 가 같은 검사를 한다).
+# 켜기(저장소마다 한 번):  git config core.hooksPath .githooks
+# 끄기: git commit --no-verify 는 쓰지 않는다. 정말 필요하면 SKIP_GITLEAKS=1 git commit ... (CI 는 그대로 잡는다)
+bin="${WF_GITLEAKS_BIN:-gitleaks}"
+if [ "${SKIP_GITLEAKS:-}" = "1" ]; then
+  echo "[pre-commit] SKIP_GITLEAKS=1 — 비밀값 검사를 건너뛴다(CI 는 그대로 검사한다)" >&2
+  exit 0
+fi
+if ! command -v "$bin" >/dev/null 2>&1; then
+  echo "[pre-commit] gitleaks 가 설치돼 있지 않아 비밀값 검사를 건너뛴다(CI 가 같은 검사를 한다)." >&2
+  echo "  설치(Windows):  winget install Gitleaks.Gitleaks   또는   scoop install gitleaks" >&2
+  exit 0
+fi
+root="$(git rev-parse --show-toplevel)"
+exec "$bin" git --staged --config "$root/.gitleaks.toml" --redact --no-banner --verbose "$root"

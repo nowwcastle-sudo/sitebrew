@@ -1,0 +1,641 @@
+{
+ "$comment": "서체 짝(P3-2 Task 16a, J5) — 생성물: factory/scripts/build-presets.mjs. 라이브러리 레시피(와 보드 B안)의 fonts 를 그대로. presetToRecipeHead 의 셋째 인자로 쓴다.",
+ "generator": "factory/scripts/build-presets.mjs",
+ "pairs": [
+  {
+   "id": "pair-recipe-r1-measure",
+   "source": "recipe:r1-measure",
+   "fonts": {
+    "display": {
+     "family": "Martian Mono",
+     "item": "font-martian-mono",
+     "weight": 600,
+     "tuned": "첫 화면 제목·레일·단계 번호 전용 고정폭. 굵기 600(제목)·400(레일), 제목 자간 -0.03em·행간 0.95, 레일은 대문자 자간 0.12em. 본문·표 칸에는 쓰지 않는다(숫자 칸은 fonts.mono)"
+    },
+    "displayKo": {
+     "family": "Nanum Gothic Coding",
+     "item": "font-nanum-gothic-coding"
+    },
+    "body": {
+     "family": "IBM Plex Sans KR",
+     "item": "font-ibm-plex-sans-kr",
+     "tuned": "본문 16px/1.7, 굵기 400·700만"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·숫자 입력·코드에만(T7-I1), 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r1-measure-b",
+   "source": "recipe:r1-measure",
+   "fonts": {
+    "display": {
+     "family": "Tektur",
+     "item": "font-tektur",
+     "weight": 400,
+     "tuned": "B안 제목 전용. 굵기 400, 행간 0.9, 자간 -0.02em, 첫 화면 제목 6vw(390에서 12vw)·아래 1/3에 앉힌다. 라벨은 대문자 자간 0.2em"
+    },
+    "displayKo": {
+     "family": "PyeojinGothic",
+     "item": "font-pyeojin-gothic"
+    },
+    "body": {
+     "family": "IBM Plex Sans KR",
+     "item": "font-ibm-plex-sans-kr",
+     "tuned": "본문 16px/1.7, 굵기 400·700만"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·숫자 입력·코드에만(T7-I1), 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r10-console",
+   "source": "recipe:r10-console",
+   "fonts": {
+    "display": {
+     "family": "Azeret Mono",
+     "item": "font-azeret-mono",
+     "weight": 600,
+     "tuned": "첫 화면 제목·버튼 라벨 전용 고정폭. 굵기 600, 대문자 세 줄 가운데 4.4vw(390에서 10.8vw)·행간 1.0·자간 -0.02em. 한글은 갈무리11(400·700)"
+    },
+    "displayKo": {
+     "family": "Galmuri11",
+     "item": "font-galmuri11"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.6 굵기 400, 표 셀 16px/1.5(T1 조밀 행 32px), 강조 600. 숫자 열은 tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·ID·코드에만, 굵기 400. 라벨·캡션·상태 이름에는 쓰지 않는다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r10-console-b",
+   "source": "recipe:r10-console",
+   "fonts": {
+    "display": {
+     "family": "Antonio",
+     "item": "font-antonio",
+     "weight": 600,
+     "tuned": "대안 라틴 제목·KPI 숫자 전용 좁은 산세리프. 굵기 600, 첫 화면 두 줄 4.4vw(390에서 9.7vw)·행간 1.0·자간 -0.01em. 운영 화면 제목은 1.2 비율 19 · 23 · 28 · 33px, KPI 숫자 tabular-nums. 한글은 오르빗(굵기 하나라 레시피 CSS 가 굵기 합성을 끈다) — 페이지 제목·빈 상태에만"
+    },
+    "displayKo": {
+     "family": "Orbit",
+     "item": "font-orbit"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.6 굵기 400, 표 셀 16px/1.5(T1 조밀 행 32px), 강조 600. 숫자 열은 tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·ID·코드에만, 굵기 400. 라벨·캡션·상태 이름에는 쓰지 않는다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r12-spectrum",
+   "source": "recipe:r12-spectrum",
+   "fonts": {
+    "display": {
+     "family": "Sora",
+     "item": "font-sora",
+     "weight": 600,
+     "tuned": "첫 화면·섹션 제목 전용. 굵기 600, 자간 -0.01em, 큰 수치(KPI)에도 같은 서체·같은 굵기"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.6 굵기 400, 표·지표 숫자 tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·코드에만, 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r13-folio",
+   "source": "recipe:r13-folio",
+   "fonts": {
+    "display": {
+     "family": "IBM Plex Sans",
+     "item": "font-ibm-plex-sans",
+     "weight": 600,
+     "tuned": "제목 전용 굵기 600, 자간 -0.005em, 행간 1.2. 문서 안 소제목은 500"
+    },
+    "displayKo": {
+     "family": "Nanum Myeongjo",
+     "item": "font-nanum-myeongjo"
+    },
+    "body": {
+     "family": "IBM Plex Sans KR",
+     "item": "font-ibm-plex-sans-kr",
+     "tuned": "본문 17px/1.75 굵기 400, 한 줄 40자 안쪽"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "코드·표 숫자 칸에만, 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r14-concrete",
+   "source": "recipe:r14-concrete",
+   "fonts": {
+    "display": {
+     "family": "Archivo",
+     "item": "font-archivo",
+     "weight": 800,
+     "tuned": "제목 전용 굵기 800, 대문자 우선, 자간 -0.02em, 행간 0.95"
+    },
+    "displayKo": {
+     "family": "Black Han Sans",
+     "item": "font-black-han-sans"
+    },
+    "body": {
+     "family": "Gothic A1",
+     "item": "font-gothic-a1",
+     "tuned": "본문 16px/1.55 굵기 500, 숫자 tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "코드·수치 라벨에만, 굵기 600"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r14-concrete-b",
+   "source": "recipe:r14-concrete",
+   "fonts": {
+    "display": {
+     "family": "Sirin Stencil",
+     "item": "font-sirin-stencil",
+     "weight": 400,
+     "tuned": "스텐실 제목 전용. 굵기 400 한 면, 대문자, 자간 0.02em. 본문·UI에는 쓰지 않는다"
+    },
+    "displayKo": {
+     "family": "Gasoek One",
+     "item": "font-gasoek-one"
+    },
+    "body": {
+     "family": "Gothic A1",
+     "item": "font-gothic-a1",
+     "tuned": "본문 16px/1.55 굵기 500, 숫자 tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "코드·수치 라벨에만, 굵기 600"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r15-atelier",
+   "source": "recipe:r15-atelier",
+   "fonts": {
+    "display": {
+     "family": "Libre Caslon Text",
+     "item": "font-libre-caslon-text",
+     "weight": 400,
+     "tuned": "제목 전용 굵기 400, 자간 0.01em, 행간 1.15. 이탤릭은 한 줄 부제에만"
+    },
+    "displayKo": {
+     "family": "Hahmlet",
+     "item": "font-hahmlet",
+     "weight": 400
+    },
+    "body": {
+     "family": "Noto Sans KR",
+     "item": "font-noto-sans-kr",
+     "tuned": "UI·본문 16px/1.7 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r16-tonal",
+   "source": "recipe:r16-tonal",
+   "fonts": {
+    "display": {
+     "family": "Jost",
+     "item": "font-jost",
+     "weight": 500,
+     "tuned": "제목 전용 굵기 500, 자간 -0.015em, 행간 1.08. 숫자는 라이닝"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.65 굵기 400"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "앱 창 안 코드·단축키에만, 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r16-tonal-b",
+   "source": "recipe:r16-tonal",
+   "fonts": {
+    "display": {
+     "family": "Noto Serif KR",
+     "item": "font-noto-serif-kr",
+     "weight": 600,
+     "tuned": "B안 제목 전용 세리프. 굵기 600, 자간 -0.01em, 행간 1.2. 한글은 같은 서체의 한글 면"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.65 굵기 400"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "앱 창 안 코드·단축키에만, 굵기 400"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r2-signal",
+   "source": "recipe:r2-signal",
+   "fonts": {
+    "display": {
+     "family": "Bricolage Grotesque",
+     "item": "font-bricolage-grotesque",
+     "weight": 500,
+     "tuned": "첫 화면 제목 목록 전용. 굵기 500, 6.6vw(390에서 10.8vw)·행간 0.86·자간 -0.03em, 한 줄에 한 항목을 쌓아 오른쪽 끝에서 자른다. 28~50px 제목은 자간 -0.02em"
+    },
+    "displayKo": {
+     "family": "Do Hyeon",
+     "item": "font-do-hyeon"
+    },
+    "body": {
+     "family": "Gothic A1",
+     "item": "font-gothic-a1",
+     "tuned": "본문 16px/1.7 굵기 400. 큰 한글 제목은 한글 제목체(현재 Do Hyeon, 대안 Moirai One, 둘 다 굵기 하나)가 그리고, 이 서체는 본문·부제(700)와 부품 제목 칸(16~18px — 한글 제목체를 건너뛴 스택)의 한글을 제 굵기로 그린다. 한글 제목 행간 1.1(받침 보호), 48px 이상 자간 -0.03em, 캡션도 본문 서체 16px(최소 14px)"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "I3 숫자 입력(전화·수량)·data-numeric 칸에만, 굵기 400. 라벨·캡션·번호에는 쓰지 않는다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r2-signal-b",
+   "source": "recipe:r2-signal",
+   "fonts": {
+    "display": {
+     "family": "Dela Gothic One",
+     "item": "font-dela-gothic-one",
+     "weight": 400,
+     "tuned": "대안 제목 전용. 굵기 400 하나(가로로 누른 초굵은 글자), 가운데 정렬 3줄 5.5vw·행간 1.05, 자간 0. 부품 제목 칸은 본문 서체로 돌아간다(단일 굵기 규칙)"
+    },
+    "displayKo": {
+     "family": "Moirai One",
+     "item": "font-moirai-one"
+    },
+    "body": {
+     "family": "Gothic A1",
+     "item": "font-gothic-a1",
+     "tuned": "본문 16px/1.7 굵기 400. 큰 한글 제목은 한글 제목체(현재 Do Hyeon, 대안 Moirai One, 둘 다 굵기 하나)가 그리고, 이 서체는 본문·부제(700)와 부품 제목 칸(16~18px — 한글 제목체를 건너뛴 스택)의 한글을 제 굵기로 그린다. 한글 제목 행간 1.1(받침 보호), 48px 이상 자간 -0.03em, 캡션도 본문 서체 16px(최소 14px)"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "I3 숫자 입력(전화·수량)·data-numeric 칸에만, 굵기 400. 라벨·캡션·번호에는 쓰지 않는다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r3-woodblock",
+   "source": "recipe:r3-woodblock",
+   "fonts": {
+    "display": {
+     "family": "Young Serif",
+     "item": "font-young-serif",
+     "weight": 400,
+     "tuned": "첫 화면 제목·가격 숫자 전용 두툼한 올드 세리프. 굵기 400 하나, 6.3vw(390에서 18vw)·행간 1.05, 첫 줄은 왼쪽 2/12 들여, 둘째 줄은 오른쪽 끝 맞춤. 부품 제목 칸은 본문 서체로 돌아간다"
+    },
+    "displayKo": {
+     "family": "Song Myung",
+     "item": "font-song-myung"
+    },
+    "body": {
+     "family": "Noto Sans KR",
+     "item": "font-noto-sans-kr",
+     "tuned": "본문 16px/1.7 굵기 400, 가격·메뉴 이름 700(차 300), 가격표 행은 T1 조밀이라 행간 1.5·tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "I3 전화·수량 입력에만, 굵기 400. 가격은 본문 서체 tabular-nums로 쓴다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r3-woodblock-b",
+   "source": "recipe:r3-woodblock",
+   "fonts": {
+    "display": {
+     "family": "Shrikhand",
+     "item": "font-shrikhand",
+     "weight": 400,
+     "tuned": "B안 가게 이름·칸 캡션 한 줄 전용 굵은 기울임 레터링. 굵기 400 하나, 첫 화면에서는 머리 줄 20~24px 과 칸 밑 캡션에만(두 칸의 색이 주인이다). 부품 제목 칸은 본문 서체로 돌아간다"
+    },
+    "displayKo": {
+     "family": "BM Euljiro",
+     "item": "font-bm-euljiro"
+    },
+    "body": {
+     "family": "Noto Sans KR",
+     "item": "font-noto-sans-kr",
+     "tuned": "본문 16px/1.7 굵기 400, 가격·메뉴 이름 700(차 300), 가격표 행은 T1 조밀이라 행간 1.5·tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "I3 전화·수량 입력에만, 굵기 400. 가격은 본문 서체 tabular-nums로 쓴다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r4-evidence",
+   "source": "recipe:r4-evidence",
+   "fonts": {
+    "display": {
+     "family": "Newsreader",
+     "item": "font-newsreader",
+     "weight": 300,
+     "tuned": "첫 화면·섹션 제목 전용 가는 세리프. 굵기 300, 4.4vw(390에서 10.3vw)·행간 1.1·자간 -0.01em. 부품 제목 칸도 이 스택(한글은 마루부리)"
+    },
+    "displayKo": {
+     "family": "MaruBuri",
+     "item": "font-maru-buri"
+    },
+    "body": {
+     "family": "Noto Sans KR",
+     "item": "font-noto-sans-kr",
+     "tuned": "본문 16px/1.7 굵기 400, KPI 숫자 300 + tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·숫자 입력·코드에만, 굵기 400. 신뢰도 칩·출처 라벨에는 쓰지 않는다"
+    },
+    "prose": {
+     "family": "Noto Serif KR",
+     "item": "font-noto-serif-kr",
+     "tuned": "AI가 말하는 요약·답 문장에만(font-prose, type-t03) — 제목·UI·부품에는 쓰지 않는다. 굵기 400, 23~28px(본문의 1.4~1.75배), 행간 1.6, 자간 0, 한 답 3문장 이하. 계산표의 최종값만 600"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r4-evidence-b",
+   "source": "recipe:r4-evidence",
+   "fonts": {
+    "display": {
+     "family": "Spectral",
+     "item": "font-spectral",
+     "weight": 400,
+     "tuned": "B안 제목 전용 화면용 세리프. 굵기 400, 가운데 정렬 3줄 3.1vw(390에서 7.8vw)·행간 1.1, 자간 -0.01em"
+    },
+    "displayKo": {
+     "family": "SeochoBatang",
+     "item": "font-seocho-batang"
+    },
+    "body": {
+     "family": "Noto Sans KR",
+     "item": "font-noto-sans-kr",
+     "tuned": "본문 16px/1.7 굵기 400, KPI 숫자 300 + tabular-nums"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "data-numeric 표 칸·숫자 입력·코드에만, 굵기 400. 신뢰도 칩·출처 라벨에는 쓰지 않는다"
+    },
+    "prose": {
+     "family": "Noto Serif KR",
+     "item": "font-noto-serif-kr",
+     "tuned": "AI가 말하는 요약·답 문장에만(font-prose, type-t03) — 제목·UI·부품에는 쓰지 않는다. 굵기 400, 23~28px(본문의 1.4~1.75배), 행간 1.6, 자간 0, 한 답 3문장 이하. 계산표의 최종값만 600"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r5-celadon",
+   "source": "recipe:r5-celadon",
+   "fonts": {
+    "display": {
+     "family": "Bodoni Moda",
+     "item": "font-bodoni-moda",
+     "weight": 400,
+     "tuned": "첫 화면 한 줄 제목 전용 대비 세리프. 굵기 400(가변 400~900 — 등장 때 wght 600 → 400, hover 500), 2.2~3vw 한 줄·행간 1.05·자간 -0.01em. 나머지 제목은 본문 고딕(「프리미엄이면 세리프」 기본값으로 번지지 않게)"
+    },
+    "displayKo": {
+     "family": "Diphylleia",
+     "item": "font-diphylleia"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.7 굵기 400, 자간 0. 큰 한글 제목은 한글 제목체(Diphylleia, 굵기 하나 — 48px 이상 자간 -0.02em, 행간 1.2)가 그리고, 부품 제목 칸(16~18px)의 한글은 한글 제목체를 건너뛰어 이 서체가 제 굵기로 그린다. detail 구매 포인트 제목은 가벼운 굵기 대신 크기(28px)로 세운다. 가격·수량은 tabular-nums"
+    },
+    "mono": null
+   }
+  },
+  {
+   "id": "pair-recipe-r6-civic",
+   "source": "recipe:r6-civic",
+   "fonts": {
+    "display": {
+     "family": "Fragment Mono",
+     "item": "font-fragment-mono",
+     "weight": 400,
+     "weightKo": 700,
+     "tuned": "라틴·숫자 전용 고정폭(굵기 400 하나 — 키트 항목에 400뿐이라 레시피 CSS 가 굵기 합성을 끈다). 접수번호·날짜·단계 라벨과 배너 머리 한 줄에만, 대문자 자간 0.04em. 한글 제목(Pretendard GOV)은 한글 제목 굵기 weightKo 700(--wf-heading-weight-ko, 진짜 700 면)이고, 한글만 있는 큰 제목은 font-heading-ko(본문 서체 스택)로 그려 고정폭 공백·쉼표가 끼지 않는다. 부품 제목 칸은 본문으로"
+    },
+    "body": {
+     "family": "Pretendard GOV",
+     "item": "font-pretendard-gov",
+     "tuned": "본문 17px/1.5 굵기 400(KRDS body medium), 강조는 700, 필요할 때만 500. 본문 small 15px까지 쓰고 KRDS body xsmall 13px은 쓰지 않는다(§2 14px 바닥). 날짜·건수는 tabular-nums"
+    },
+    "mono": null
+   }
+  },
+  {
+   "id": "pair-recipe-r6-civic-b",
+   "source": "recipe:r6-civic",
+   "fonts": {
+    "display": {
+     "family": "Unbounded",
+     "item": "font-unbounded",
+     "weight": 700,
+     "tuned": "대안 라틴·숫자 전용 넓은 기하 제목(자체 서체는 디스플레이·배너에만 — §21-8). 굵기 700(KRDS 제목 굵기), 크기는 KRDS display 60·44·36px 중에서만, 행간 150%·자간 KRDS 토큰. 첫 화면 H1 60px 세 줄. 한글 제목은 Pretendard GOV 700으로 떨어진다(한글 제목체를 두지 않는다 — §21-8)"
+    },
+    "body": {
+     "family": "Pretendard GOV",
+     "item": "font-pretendard-gov",
+     "tuned": "본문 17px/1.5 굵기 400(KRDS body medium), 강조는 700, 필요할 때만 500. 본문 small 15px까지 쓰고 KRDS body xsmall 13px은 쓰지 않는다(§2 14px 바닥). 날짜·건수는 tabular-nums"
+    },
+    "mono": null
+   }
+  },
+  {
+   "id": "pair-recipe-r7-docs",
+   "source": "recipe:r7-docs",
+   "fonts": {
+    "display": {
+     "family": "Besley",
+     "item": "font-besley",
+     "weight": 400,
+     "tuned": "첫 화면·섹션 제목 전용 클라렌던 세리프. 굵기 400, 첫 화면 세 줄 3.5vw(390에서 10.3vw)·행간 1.04·자간 -0.04em, 문서 H1 39px. 한글은 나눔스퀘어라운드(굵기 하나라 레시피 CSS 가 굵기 합성을 끈다)"
+    },
+    "displayKo": {
+     "family": "NanumSquareRound",
+     "item": "font-nanum-square-round"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.7 굵기 400, 강조 600, 자간 0, 한 줄 40자 이하(max-width 40em). 문서 목차·사이드 목록은 16px 한 크기"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "코드 블록·인라인 코드·kbd·data-numeric 숫자 칸에만, 굵기 400, 본문보다 0.9배. 메타 라벨·캡션·태그에는 쓰지 않는다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r7-docs-b",
+   "source": "recipe:r7-docs",
+   "fonts": {
+    "display": {
+     "family": "Libre Caslon Display",
+     "item": "font-libre-caslon-display",
+     "weight": 400,
+     "tuned": "B안 첫 화면 제목 전용 가는 디스플레이 세리프(굵기 하나). 왼쪽 4칸 네 줄 4.4vw(390에서 11.8vw)·행간 1.0·자간 -0.01em. 한글은 자연산스, 부품 제목 칸은 본문 서체"
+    },
+    "displayKo": {
+     "family": "NaturalSans",
+     "item": "font-natural-sans"
+    },
+    "body": {
+     "family": "Pretendard",
+     "item": "font-pretendard",
+     "tuned": "본문 16px/1.7 굵기 400, 강조 600, 자간 0, 한 줄 40자 이하(max-width 40em). 문서 목차·사이드 목록은 16px 한 크기"
+    },
+    "mono": {
+     "family": "IBM Plex Mono",
+     "item": "font-ibm-plex-mono",
+     "tuned": "코드 블록·인라인 코드·kbd·data-numeric 숫자 칸에만, 굵기 400, 본문보다 0.9배. 메타 라벨·캡션·태그에는 쓰지 않는다"
+    }
+   }
+  },
+  {
+   "id": "pair-recipe-r8-dusk",
+   "source": "recipe:r8-dusk",
+   "fonts": {
+    "display": {
+     "family": "Alegreya",
+     "item": "font-alegreya",
+     "weight": 400,
+     "tuned": "라틴 전용 문학 세리프. 내비 대문자(자간 0.06em)·캡션 이탤릭·가격에만, 굵기 400. 세로쓰기 한글 제목은 나눔손글씨 붓(굵기 하나 — 레시피 CSS 가 굵기 합성을 끈다)"
+    },
+    "displayKo": {
+     "family": "Nanum Brush Script",
+     "item": "font-nanum-brush-script"
+    },
+    "body": {
+     "family": "Nanum Gothic",
+     "item": "font-nanum-gothic",
+     "tuned": "본문 16px/1.75 굵기 400, 강조 700(차 300), 자간 0. 짙은 면 위 본문은 행간 1.8. 영업시간·가격·객실 수는 tabular-nums"
+    },
+    "mono": null
+   }
+  },
+  {
+   "id": "pair-recipe-r8-dusk-b",
+   "source": "recipe:r8-dusk",
+   "fonts": {
+    "display": {
+     "family": "Big Shoulders",
+     "item": "font-big-shoulders",
+     "weight": 500,
+     "tuned": "대안 첫 화면 한 낱말 전용 응축 대문자. 굵기 500, 17.8vw(390에서 20.5vw)·행간 0.8·자간 0, 화면 아래 끝에 걸친다. 섹션 제목은 1.333 비율 28 · 38 · 50px. 한글은 고운바탕(400·700)"
+    },
+    "displayKo": {
+     "family": "Gowun Batang",
+     "item": "font-gowun-batang"
+    },
+    "body": {
+     "family": "Nanum Gothic",
+     "item": "font-nanum-gothic",
+     "tuned": "본문 16px/1.75 굵기 400, 강조 700(차 300), 자간 0. 짙은 면 위 본문은 행간 1.8. 영업시간·가격·객실 수는 tabular-nums"
+    },
+    "mono": null
+   }
+  },
+  {
+   "id": "pair-recipe-r9-clay",
+   "source": "recipe:r9-clay",
+   "fonts": {
+    "display": {
+     "family": "Grandstander",
+     "item": "font-grandstander",
+     "weight": 700,
+     "tuned": "첫 화면·섹션 제목 전용 장난스러운 둥근 라틴. 굵기 700(외곽선 줄은 같은 굵기에 획 1.5px·채움 투명), 대문자 세 줄 4.2vw(390에서 9.2vw)·행간 1.1. 한글은 베이글 팻 원(굵기 하나라 레시피 CSS 가 굵기 합성을 끈다)"
+    },
+    "displayKo": {
+     "family": "Bagel Fat One",
+     "item": "font-bagel-fat-one"
+    },
+    "body": {
+     "family": "Gothic A1",
+     "item": "font-gothic-a1",
+     "tuned": "본문 16px/1.7 굵기 400, 가격·상품 이름 700(차 300), 작은 부품 제목 700, 자간 0. 가격·수량·할인율은 tabular-nums"
+    },
+    "mono": null
+   }
+  },
+  {
+   "id": "pair-recipe-r9-clay-b",
+   "source": "recipe:r9-clay",
+   "fonts": {
+    "display": {
+     "family": "Titan One",
+     "item": "font-titan-one",
+     "weight": 400,
+     "tuned": "B안 첫 화면 로고타입 전용 부푼 초굵은 라틴(굵기 하나). 가운데 세 줄 5~7.5vw·행간 0.95, 낱자마다 -4°~+4° 회전. 한글은 동글(300·400·700), 부품 제목 칸은 본문 서체"
+    },
+    "displayKo": {
+     "family": "Dongle",
+     "item": "font-dongle"
+    },
+    "body": {
+     "family": "Gothic A1",
+     "item": "font-gothic-a1",
+     "tuned": "본문 16px/1.7 굵기 400, 가격·상품 이름 700(차 300), 작은 부품 제목 700, 자간 0. 가격·수량·할인율은 tabular-nums"
+    },
+    "mono": null
+   }
+  }
+ ]
+}

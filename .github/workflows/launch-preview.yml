@@ -1,0 +1,162 @@
+# 미리보기 배포(Vercel 프로젝트 launch-factory-preview). 리눅스 러너에서 템플릿을 그대로 빌드하고 --prebuilt 로 올린다.
+# 이 파일에는 실서비스 쪽 대상이 한 군데도 없다 — 첫 단계의 가드와 시험(scripts/test/preview-workflow.test.mjs)이 막는다.
+# 비밀 4개(VERCEL_TOKEN · VERCEL_ORG_ID · VERCEL_PROJECT_ID · VERCEL_AUTOMATION_BYPASS_SECRET)와 변수 2개(LF_PREVIEW_ALIAS · LF_PREVIEW_PLANS_JSON)는
+# 저장소 관리자가 GitHub 저장소 설정(Settings → Secrets and variables → Actions)에 넣는다. LF_PREVIEW_ALIAS 는 미리보기가 가리킬 호스트 이름이다(예: my-preview.vercel.app).
+# 트리거는 손으로 누르는 것(workflow_dispatch)뿐이다: main 푸시마다 올리면 비밀이 들어가기 전의 실패 실행이 쌓이고,
+# 미리보기를 바꾸는 시점은 저장소 관리자가 정한다(푸시 트리거는 첫 성공 뒤 한 줄로 더할 수 있다).
+name: launch-factory preview deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: launch-factory
+
+# 배포가 겹치면 별칭이 엇갈린다 — 줄을 세우고 도중에 끊지 않는다.
+concurrency:
+  group: launch-factory-preview-deploy
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  PREVIEW_ALIAS: ${{ vars.LF_PREVIEW_ALIAS }}
+  # 이 저장소를 로컬에서 쓰던 버전으로 고정한다.
+  VERCEL_CLI_VERSION: 61.0.0
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      # actions/checkout v7.0.1 · actions/setup-node v7.0.0 — 태그가 아니라 전체 커밋 해시로 고정(GitHub 보안 강화 문서)
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # 가드: 이 파일에 실서비스 대상이 나오면 아무것도 올리지 않고 실패한다. 패턴을 조각으로 만들어 이 줄 자신은 걸리지 않는다.
+      - name: Guard (preview only)
+        shell: bash
+        run: |
+          p=prod
+          if grep -nEi "${p}uction|--${p}([^a-z]|$)" ../.github/workflows/launch-preview.yml; then
+            echo "::error::preview.yml must only target Preview"
+            exit 1
+          fi
+          echo "guard ok: workflow targets Preview only"
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: launch-factory/.nvmrc
+          cache: npm
+          cache-dependency-path: launch-factory/package-lock.json
+
+      # 설치·빌드 단계에는 Vercel 토큰을 주지 않는다(의존성 코드가 도는 자리).
+      - name: Install
+        run: npm ci
+
+      - name: Install Vercel CLI
+        run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
+
+      - name: Pull Vercel project settings (Preview)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview
+
+      # 배포 전 환경 이름 점검(LFENV): 방금 pull 한 Preview 환경에 live 필수 이름이 모두 있는지 본다(이름만 읽는다 — 값은 읽지 않는다).
+      # 필수가 없으면 여기서 실패한다(서버가 켜지지 않는 배포를 올리지 않는다). 선택 이름(INQUIRY_OWNER_EMAIL)이 없으면 ::warning:: 만 낸다(그 기능만 꺼진다).
+      # 비밀 자리표시를 지우는 아래 단계보다 먼저 돈다.
+      - name: Check env names (pre-deploy)
+        run: node scripts/env-check.mjs --names-file .vercel/.env.preview.local
+
+      # 프로젝트 Root Directory 가 template 이어야 저장소 뿌리에서 템플릿이 그대로 빌드된다(승인 뒤 컨트롤러가 한 번 바꾼다).
+      - name: Check project Root Directory
+        run: node scripts/deploy-preview/ci.mjs check-root .vercel/project.json template
+
+      # 배포 전용 값은 파일 사본이 아니라 이 단계의 덮어쓰기다: (1) 비밀 변수 자리표시 줄 제거 (2) 샌드박스 요금제를 빈 PLANS 에 채움.
+      # 실제 비밀 값은 빌드에 필요 없다 — 런타임 값은 Vercel 이 배포에 넣는다(빌드는 LF_MODE=live 만 있으면 된다).
+      - name: Prepare build inputs
+        env:
+          LF_PREVIEW_PLANS_JSON: ${{ vars.LF_PREVIEW_PLANS_JSON }}
+        run: |
+          node scripts/deploy-preview/ci.mjs strip-sensitive .vercel/.env.preview.local
+          node scripts/deploy-preview/ci.mjs patch-plans template/lib/launch/paddle-plans.ts
+
+      - name: Build (Preview)
+        env:
+          LF_MODE: live
+          NEXT_PUBLIC_APP_URL: https://${{ env.PREVIEW_ALIAS }}
+          NEXT_TELEMETRY_DISABLED: "1"
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: vercel build --target=preview --yes
+
+      - name: Deploy prebuilt (Preview)
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if ! vercel deploy --prebuilt --target=preview --regions icn1 --yes > deploy.out 2> deploy.err; then
+            echo "::error::vercel deploy failed"
+            tail -n 40 deploy.err
+            exit 1
+          fi
+          host="$(node scripts/deploy-preview/ci.mjs deploy-url deploy.out)"
+          echo "host=${host}" >> "$GITHUB_OUTPUT"
+          echo "deployed https://${host}"
+
+      # 별칭을 걸기 전에 이 배포가 Preview 인지 본다.
+      - name: Confirm deployment target is Preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOY_HOST: ${{ steps.deploy.outputs.host }}
+        run: |
+          vercel inspect "${DEPLOY_HOST}" > inspect.out 2>&1 || { cat inspect.out; exit 1; }
+          grep -E "^[[:space:]]*target[[:space:]]+preview[[:space:]]*$" inspect.out || { echo "::error::deployment target is not preview"; cat inspect.out; exit 1; }
+
+      - name: Check deployment URL (HTTP 200)
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          DEPLOY_HOST: ${{ steps.deploy.outputs.host }}
+        run: |
+          echo "::add-mask::${VERCEL_AUTOMATION_BYPASS_SECRET}"
+          node scripts/deploy-preview/ci.mjs verify "${DEPLOY_HOST}"
+
+      - name: Point the stable alias at this deployment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOY_HOST: ${{ steps.deploy.outputs.host }}
+        run: vercel alias set "${DEPLOY_HOST}" "${PREVIEW_ALIAS}"
+
+      - name: Check alias URL (HTTP 200)
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          echo "::add-mask::${VERCEL_AUTOMATION_BYPASS_SECRET}"
+          node scripts/deploy-preview/ci.mjs verify "${PREVIEW_ALIAS}"
+
+      # 마이그레이션 개수 점검(LFSMOKE, 경고만): 미리보기 DB 의 적용 기록(개수·when·해시)과 이 커밋의 journal 을 맞춰 본다. 읽기 전용(READ ONLY 트랜잭션) — 아무것도 쓰지 않는다.
+      # 2026-10-05 사고: 마이그레이션이 DB 에 안 적용된 채로 코드를 배포했다. 배포가 이미 끝난 뒤라 어긋나도 되돌릴 것이 없고, 그래서 경고(::warning::)만 낸다 — 이 단계는 실행을 실패시키지 않는다.
+      # Vercel 의 DATABASE_URL 은 민감 변수라 pull 로 읽을 수 없다 → 같은 DB 를 가리키는 읽기용 주소를 저장소 비밀 PREVIEW_DATABASE_URL 로 따로 둔다(대표 몫, docs/qa/gha-preview.md §4-C). 비밀이 없으면 건너뛴다(::notice::).
+      - name: Check migrations applied (warning only)
+        env:
+          DATABASE_URL: ${{ secrets.PREVIEW_DATABASE_URL }}
+        run: |
+          if [ -z "${DATABASE_URL}" ]; then
+            echo "::notice title=Migration check skipped::PREVIEW_DATABASE_URL secret is not set - add it to compare applied migrations with the journal (docs/qa/gha-preview.md)"
+            exit 0
+          fi
+          echo "::add-mask::${DATABASE_URL}"
+          code=0
+          node scripts/db-status.mjs || code=$?
+          if [ "${code}" -eq 0 ]; then
+            echo "migrations in sync"
+          elif [ "${code}" -eq 1 ]; then
+            echo "::warning title=Migrations out of sync::the preview database and packages/db/migrations differ (pending, ahead or changed) - see the db:status lines above. The deploy is already live."
+          else
+            echo "::warning title=Migration check could not run::db:status could not read the database (exit ${code}) - check the PREVIEW_DATABASE_URL secret"
+          fi
+          exit 0

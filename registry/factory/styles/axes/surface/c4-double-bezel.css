@@ -1,0 +1,20 @@
+/* C4 이중 베젤 — 큰 반경 계열. 32px 바깥 틀 안에 6px 짜리 muted 쟁반(불투명 테두리) → 안쪽 면 반경 26px(= 32 − 6, 동심).
+ * 바깥 헤어라인은 부품의 ring 색. 1순위 카드·히어로 목업에만(레시피 문서). 원천 style_axes.md 축 3. */
+.cn-card {
+  @apply gap-(--card-spacing) rounded-[32px] border-[6px] border-muted bg-clip-padding py-(--card-spacing) text-sm ring-1 inset-shadow-[0_1px_1px_rgb(255_255_255/0.15)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[26px] *:[img:last-child]:rounded-b-[26px] [--card-spacing:--spacing(6)] data-[size=sm]:[--card-spacing:--spacing(4)];
+}
+.cn-card-header {
+  @apply gap-1.5 rounded-t-[26px] px-(--card-spacing) [.border-b]:pb-(--card-spacing);
+}
+.cn-card-title {
+  @apply text-lg leading-snug font-semibold tracking-tight group-data-[size=sm]/card:text-base;
+}
+.cn-card-description {
+  @apply text-sm leading-relaxed;
+}
+.cn-card-content {
+  @apply px-(--card-spacing);
+}
+.cn-card-footer {
+  @apply rounded-b-[26px] border-t px-(--card-spacing) py-4;
+}

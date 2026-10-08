@@ -1,0 +1,14 @@
+{
+  "kind": "paywall",
+  "archetypeKinds": [ "onboarding-offer", "upgrade-prompt" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "variant": "onboarding-offer",
+  "title": "온보딩 끝 체험 제안 — 축하 머리·끝낸 설정 칩 + 가운데 제안 판",
+  "layout": "celebrate-center-offer",
+  "density": "spacious",
+  "archetypes": [ "saas", "pwa" ],
+  "rules": [ "P1", "P2", "P6", "L1", "L3", "M1" ],
+  "notes": "가운데 한 줄기: 체크 표 · 설정을 마쳤어요 · 끝낸 설정 칩 · 제안 판(plan-offer, 체험 요금제). 거절 선택지는 「무료로 계속하기」 링크(continueHref, 주 선택지와 같은 크기·모양 — P6). 포트: plans·checkout·track? Task 10d: 청약철회 제한 고지 + 필수 체크(PlanOffer — 체크해야 checkout 에 withdrawalConsent: true). 폼 제출 보호(copy.notices)."
+}

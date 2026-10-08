@@ -1,0 +1,61 @@
+{
+  "id": "equatorcompany-com",
+  "archetype": "brand",
+  "sourceGallery": "opl",
+  "url": "https://equatorcompany.com/",
+  "structure": {
+    "hero": "살구색 단색 전면에 상호 한 줄과 어두운 갈색 반원 한 쌍만 둠",
+    "sections": [
+      "단색 전면 인트로(상호 + 도형)",
+      "하단 Scroll to explore 안내",
+      "스크롤 뒤 하단 소형 메뉴 줄(링크 5개·아이콘 2개)",
+      "큰 선언 문장 구획"
+    ]
+  },
+  "type": {
+    "display": "굵기 중간의 휴머니스트 산세리프, 상호와 선언문 동일 계열",
+    "body": "같은 산세리프 소형",
+    "scale": "선언문 대형, 메뉴·안내 극소형의 두 단계"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": "약 1.5초에 점이 나타나 약 2초에 원으로 커지고 약 3초에 두 반원으로 갈라짐",
+    "scroll": "스크롤하면 반원이 이동하며 위치가 바뀌고 메뉴 줄이 아래에서 올라옴",
+    "hover": null,
+    "transition": null,
+    "durationsMs": [
+      1500,
+      500,
+      1000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "도형 변형은 스크롤 연동이라 시간은 프레임으로 추정"
+  },
+  "interaction": [
+    "스크롤 연동 도형 변형",
+    "하단 소형 메뉴 링크와 아이콘",
+    "Scroll to explore 안내"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, 메뉴 링크만",
+    "count": 0
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "색 면 하나와 단색 도형만으로 브랜드 마크를 움직이는 주인공으로 만든다",
+    "스크롤에 따라 도형이 위치를 바꾸는 연출은 이미지 없이도 서사를 만든다",
+    "메뉴를 첫 화면에서 숨기고 스크롤 뒤 가장자리에 작게 등장시킨다",
+    "모바일은 반원을 원 하나로 단순화하고 상호만 위에 남긴다"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "flybyjing-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://flybyjing.com/products/mild-sichuan-chili-crisp",
+  "structure": {
+    "hero": "빨강 전면 바탕 왼쪽에 파랑 병 사진과 노랑 원형 화살표, 오른쪽에 흰 대문자 세 줄 제품명·별점·설명·불릿 4개·팩 선택 알약",
+    "sections": [
+      "맨 위 검정 띠 문구(가로로 흐름)",
+      "내비(메뉴·로고·검색·카트 알약)",
+      "병 사진 갤러리(노랑 원형 화살표)",
+      "제품명과 별점",
+      "설명 문단과 불릿 4개",
+      "팩 수 선택 알약 3개",
+      "하단 주황 쿠키 배너"
+    ]
+  },
+  "type": {
+    "display": "좁고 굵은 대문자 산세리프 제품명",
+    "body": "세리프 14px",
+    "scale": "제품명 약 44px 세 줄, 설명 약 14px, 내비 약 12px 대문자"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": "약 0.75초에 주황 쿠키 배너가 아래에서 올라와 첫 화면 아래쪽을 덮음",
+    "scroll": null,
+    "hover": null,
+    "transition": "맨 위 검정 띠의 홍보 문구가 가로로 흐름",
+    "durationsMs": [
+      750
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "8초 영상에서 읽은 값. 갤러리는 자동으로 넘어가지 않음."
+  },
+  "interaction": [
+    "갤러리 화살표 2개",
+    "팩 수 선택 알약 3개",
+    "카트 버튼",
+    "검색 아이콘",
+    "내비 메뉴 4개",
+    "쿠키 저장·모두 동의·모두 거부",
+    "후기 별점 링크"
+  ],
+  "cta": {
+    "pattern": "흰 팩 선택 알약 3개와 우상단 카트 알약",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "빨강·파랑·노랑 세 색이 병 라벨 그대로 페이지 색이 되어 상품과 화면이 한 덩어리다.",
+    "제품명을 흰 대문자 세 줄로 키워 가격보다 이름을 먼저 읽게 한다.",
+    "팩 수 선택 알약이 구매 버튼 역할을 한다.",
+    "쿠키 배너가 주황 면으로 아래쪽을 덮어 첫 화면의 구매 영역 일부가 가려진다.",
+    "375에서는 병 사진이 전폭 위쪽에 서고 제품명은 아래로 내려간다."
+  ]
+}

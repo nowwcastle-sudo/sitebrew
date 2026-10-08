@@ -1,0 +1,58 @@
+{
+  "id": "notescoffee-com",
+  "archetype": "local",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://notescoffee.com/",
+  "structure": {
+    "hero": "검은 상단 바 아래 어두운 매장 사진 위에 큰 흰 로고, 그 아래 소개 문장과 하단 쿠키 띠",
+    "sections": [
+      "검은 상단 바(메뉴·매장·예약·구매·도매·구독·SNS)",
+      "로고 히어로(사진 배경)",
+      "소개 문장",
+      "하단 쿠키 동의 띠"
+    ]
+  },
+  "type": {
+    "display": "가는 기하학 산세리프 대문자와 둥근 로고타입",
+    "body": "라이트 산세리프(소개문은 이탤릭)",
+    "scale": "로고 약 120px, 소개 약 24px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "구매 링크만 노란색으로 강조한 내비",
+    "SNS 아이콘 3개",
+    "쿠키 거절·확인 버튼",
+    "모바일 장바구니 글자와 햄버거"
+  ],
+  "cta": {
+    "pattern": "내비의 예약·구매 링크(구매만 색 강조)",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "local"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "내비에 메뉴·매장·예약을 나란히 둔다.",
+    "구매 링크만 호박색으로 강조해 온라인 판매 진입을 한 곳으로 모은다.",
+    "쿠키 띠가 화면 아래를 가린다. 모바일에서는 첫 화면 아래 3분의 1을 덮는다.",
+    "소개 문장 두 줄로 가게 종류를 한 번에 알린다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

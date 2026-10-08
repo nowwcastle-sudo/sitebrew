@@ -1,0 +1,14 @@
+{
+  "kind": "onboarding",
+  "variant": "checklist-panel",
+  "title": "시작 체크리스트 — 할 일 3~5개·진행률 막대·닫고 다시 열기",
+  "layout": "progress-checklist",
+  "density": "comfortable",
+  "archetypes": [ "saas", "pwa", "dashboard" ],
+  "archetypeKinds": [ "onboarding-checklist", "getting-started" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "O5", "O6", "O11", "V4", "X1", "M1" ],
+  "notes": "할 일 3~5개를 가치 순서로(copy.items 순서, 5개 넘으면 앞 5개). 미리 체크는 completed(실제로 끝낸 단계 id)만 — 판에서 손으로 체크하지 않는다. 다음 할 일 하나만 주 버튼. 진행률 막대(progressbar, aria-valuetext 「n/m 끝냈어요」). 닫기(이 브라우저에 기억) → 한 줄 「다시 열기」. 모두 끝내면 판 안 축하 한 줄(O11). 평점·리뷰 요청 없음(V4). 계측(선택): cta_click"
+}

@@ -1,0 +1,35 @@
+/* H5 마스트헤드 — 중간 계열(펼침 메뉴 8px). 768px 이상: 전폭 제호 줄(72px, 가운데 제목 서체 36px, 아래 1px 잉크 괘선) + 섹션 레일(48px, 아래 2px 잉크 괘선).
+ * 고정은 레일만 — 헤더가 top -72px 에 붙어 제호는 스크롤과 함께 올라가고 레일 48px 만 남는다(고정 바닥 48px ≤ scroll-padding 80px, qa:shell).
+ * 768px 미만은 다른 값과 같은 한 줄 스티키 바(56px, 제호도 한 줄 로고)다(P3-2 D4). 괘선은 잉크(border-foreground)라 선 구획 예외 조건(3:1)을 받는다.
+ * 레일 링크는 모서리 없는 글자 링크 + 현재 위치 2px 밑줄. P3-2 Task 16a(대표 판단 2026-09-29), 원천 styles.json proposals H5(editorial-magazine). */
+.cn-navigation-menu {
+  @apply h-auto max-w-none flex-wrap gap-x-6 gap-y-0 border-y-2 border-foreground bg-background px-4 [&>span:first-child]:basis-full [&>span:first-child]:border-b [&>span:first-child]:border-foreground [&>span:first-child]:py-3 [&>span:first-child]:text-center [&>span:first-child]:font-heading [&>span:first-child]:text-4xl;
+}
+.cn-navigation-menu-list {
+  @apply gap-0;
+}
+.cn-navigation-menu-trigger-style {
+  @apply h-12 rounded-none px-3 py-2 text-sm font-semibold;
+}
+.cn-navigation-menu-link {
+  @apply gap-2 rounded-none px-3 py-2 text-sm font-semibold decoration-2 underline-offset-[6px] data-active:underline in-data-[slot=navigation-menu-content]:rounded-[6px] [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-navigation-menu-popup {
+  @apply rounded-[8px] ring-1;
+}
+.cn-navigation-menu-content {
+  @apply p-1 group-data-[viewport=false]/navigation-menu:rounded-[8px] group-data-[viewport=false]/navigation-menu:ring-1;
+}
+/* 셸(SiteShell): 768px 이상 제호 + 레일 120px, 헤더는 top -72px 스티키(레일만 남는다). 로고 칸이 제호 줄(전폭·가운데)이 되고 둘째 줄에 유틸리티·검색·메뉴·행동이 레일로 선다. */
+.cn-site-shell-header {
+  @apply border-b-2 border-foreground md:-top-18 md:[--site-shell-position:sticky];
+}
+.cn-site-shell-header-inner {
+  @apply min-h-14 gap-x-2 px-4 py-2 md:h-30 md:flex-wrap md:content-start md:gap-x-6 md:px-6 md:py-0 md:[&>[data-slot=site-shell-logo]]:flex md:[&>[data-slot=site-shell-logo]]:h-18 md:[&>[data-slot=site-shell-logo]]:basis-full md:[&>[data-slot=site-shell-logo]]:items-center md:[&>[data-slot=site-shell-logo]]:justify-center md:[&>[data-slot=site-shell-logo]]:border-b md:[&>[data-slot=site-shell-logo]]:border-foreground md:[&>[data-slot=site-shell-logo]]:font-heading md:[&>[data-slot=site-shell-logo]]:text-4xl md:[&_[data-slot=site-shell-nav]]:h-12 md:[&_[data-slot=site-shell-actions]]:h-12 md:[&_[data-slot=site-shell-utility]]:h-12 md:[&_[data-slot=site-shell-search]]:h-12 md:[&_[data-slot=site-shell-search]]:flex md:[&_[data-slot=site-shell-search]]:items-center;
+}
+.cn-site-shell-nav-list {
+  @apply gap-0 md:py-0;
+}
+.cn-site-shell-nav-link {
+  @apply min-h-10 rounded-none px-3 text-sm font-semibold decoration-2 underline-offset-[6px] [--site-shell-current-line:underline];
+}

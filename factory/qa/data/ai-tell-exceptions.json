@@ -1,0 +1,29 @@
+{
+  "$comment": "AI 티 관문 예외(데이터) — DESIGN.md 가 허용한 값만 둔다. 읽는 곳: factory/qa/ai-tell.mjs exempt(). 적중 한 곳이 checks 에 든 검사이고, match(정규식, 적중의 detail 또는 kas 줄)와 axisValues(그 요소를 감싼 축 값 — data-axes·[data-recipe] 레시피 축·/qa/axes 칸 aria-label 첫 값) 조건을 모두 채우면 점수에서 뺀다. 뺀 곳은 ai-tell.json waived 에 남는다. 새 예외는 DESIGN 절 번호와 운영자 판정 날짜가 있을 때만 더한다.",
+  "updated": "2026-09-26",
+  "exceptions": [
+    {
+      "id": "overshoot-curve",
+      "checks": ["G118", "kas-26"],
+      "match": "cubic-bezier\\(\\s*0?\\.34\\s*,\\s*1\\.56\\s*,\\s*0?\\.64\\s*,\\s*1\\s*\\)",
+      "design": "DESIGN.md §8-3 (ai_tell_gate E12)",
+      "why": "스프링 오버슈트의 CSS 근사 곡선 — DESIGN 이 제스처 놓기·드래그 반동·한 번의 주 연출용으로 허용하고, 게이트를 켜기 전에 예외로 등록하라고 적었다. 다른 오버슈트 곡선은 그대로 건다"
+    },
+    {
+      "id": "line-division",
+      "checks": ["G026", "G056", "G135"],
+      "match": "^(?:repeating|grid|border-only|)$",
+      "axisValuesFrom": "compat.requiresLineContrast",
+      "design": "DESIGN.md §6 「구분은 테두리부터 찾지 않는다」·「배경 줄무늬·격자 오버레이」 예외 · factory-rules.md §20-2 (ai_tell_gate E6, 2026-09-26)",
+      "why": "「선 구획」 축 값(C2 선 구획 격자·T4 괘선 격자 표·H3 괘선 도면 헤더·C6 굵은 테두리 색면 카드·C8 웹툰 컷 프레임·H5 마스트헤드 괘선)을 고른 레시피는 선으로 칸을 나눈다. 대신 선–배경 대비 3:1 은 G114 가 그 축 안에서만 잰다. 값 목록은 여기 두지 않는다 — axisValuesFrom 이 compat.json 의 requiresLineContrast 값(운영자 판정 2026-09-26)을 가리키고 읽을 때 채운다(원천 하나)"
+    },
+    {
+      "id": "brutal-offset",
+      "checks": ["G113"],
+      "match": "^hard-offset$",
+      "axisValues": ["S2", "I3"],
+      "design": "DESIGN.md §6 그림자 MUST 예외 · factory-rules.md §20-2 「단색 오프셋 그림자는 브루탈(반경 0) 축 값에서만」 (ai_tell_gate E5, 2026-09-26)",
+      "why": "브루탈 축 값(S2 단색 오프셋·I3 브루탈 프레임)은 블러 없는 단색 오프셋 그림자를 쓴다. 반경이 0 이 아닌 요소의 단색 오프셋(detail 'hard-offset radius')은 이 예외로도 빠지지 않는다"
+    }
+  ]
+}

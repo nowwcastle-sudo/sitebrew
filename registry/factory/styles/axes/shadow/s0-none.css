@@ -1,0 +1,67 @@
+/* S0 없음 — 깊이는 여백·배경 차이·부품의 1px 링만. 원천 style_axes.md 축 7. */
+.cn-card-shadow {
+  @apply shadow-none;
+}
+.cn-sidebar-inset-shadow {
+  @apply md:peer-data-[variant=inset]:shadow-none;
+}
+.cn-tabs-trigger-shadow {
+  @apply group-data-[variant=default]/tabs-list:data-active:shadow-none;
+}
+.cn-chart-tooltip-content-shadow {
+  @apply shadow-none;
+}
+.cn-combobox-content-shadow {
+  @apply shadow-none;
+}
+.cn-context-menu-content-shadow {
+  @apply shadow-none;
+}
+.cn-dropdown-menu-content-shadow {
+  @apply shadow-none;
+}
+.cn-hover-card-content-shadow {
+  @apply shadow-none;
+}
+.cn-menubar-content-shadow {
+  @apply shadow-none;
+}
+.cn-navigation-menu-popup-shadow {
+  @apply shadow-none;
+}
+.cn-popover-content-shadow {
+  @apply shadow-none;
+}
+.cn-select-content-shadow {
+  @apply shadow-none;
+}
+.cn-navigation-menu-content-shadow {
+  @apply group-data-[viewport=false]/navigation-menu:shadow-none;
+}
+.cn-navigation-menu-indicator-arrow-shadow {
+  @apply shadow-none;
+}
+.cn-context-menu-sub-content-shadow {
+  @apply shadow-none;
+}
+.cn-dropdown-menu-sub-content-shadow {
+  @apply shadow-none;
+}
+.cn-menubar-sub-content-shadow {
+  @apply shadow-none;
+}
+.cn-sidebar-inner-shadow {
+  @apply group-data-[variant=floating]:shadow-none;
+}
+.cn-sheet-content-shadow {
+  @apply shadow-none;
+}
+.cn-toast-shadow {
+  @apply shadow-none;
+}
+.cn-dialog-content-shadow {
+  @apply shadow-none;
+}
+.cn-alert-dialog-content-shadow {
+  @apply shadow-none;
+}

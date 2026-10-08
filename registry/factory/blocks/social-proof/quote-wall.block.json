@@ -1,0 +1,13 @@
+{
+  "kind": "social-proof",
+  "variant": "quote-wall",
+  "title": "사회적 증거 — 크기가 다른 후기 카드 벽",
+  "layout": "masonry-quotes",
+  "density": "comfortable",
+  "archetypes": ["saas", "brand", "local", "commerce", "landing"],
+  "archetypeKinds": ["testimonials", "reviews", "social-proof"],
+  "states": [],
+  "media": ["person"],
+  "motion": ["rise"],
+  "notes": "후기 길이대로 높이가 다른 카드를 2~3단 기둥으로 흘린다. 첫 후기는 크게. 실명·직함·소속 + 결과 한 줄, 사진 없으면 이름 첫 글자"
+}

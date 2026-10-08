@@ -1,0 +1,62 @@
+{
+  "id": "opinet-co-kr",
+  "archetype": "dashboard",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.opinet.co.kr/user/main/mainView.do",
+  "structure": {
+    "hero": "들판 사진 위 한 줄 문구, 하단에 오늘 유가 숫자 띠",
+    "sections": [
+      "로고+주 메뉴+로그인",
+      "사진 히어로+가격 띠",
+      "시도별 평균 지도",
+      "유가 추이 탭 차트",
+      "근처 최저가 주유소 Top5",
+      "국제유가 표",
+      "우측 고정 퀵 메뉴"
+    ]
+  },
+  "type": {
+    "display": "굵은 고딕 40px 히어로 문구",
+    "body": "고딕 14~16px",
+    "scale": "히어로 40/22px, 가격 숫자 26px, 표 14px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "기간 탭(1주·1개월·1년·3년)",
+    "지역 선택+정렬 드롭다운",
+    "지도 위 시도별 가격 핀",
+    "우측 고정 퀵 메뉴 아이콘",
+    "유종 3개 전환(휘발유·경유·LPG)"
+  ],
+  "cta": {
+    "pattern": "헤더 로그인·회원가입 버튼 + 퀵 메뉴",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard",
+      "public"
+    ],
+    "score": 0.55
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "큰 숫자와 증감 화살표를 어두운 띠에 올려 핵심 지표를 먼저 보인다",
+    "주황을 로고와 유종 선택 칸에 쓰고 상승·하락은 녹색·빨강 화살표로 나눈다",
+    "375에서는 대시보드 대신 앱 설치 안내 한 장이 뜬다(데스크톱 전용 화면)",
+    "3열 카드 안에서 지도·차트·순위 표를 같은 높이 기준선으로 맞춘다"
+  ]
+}

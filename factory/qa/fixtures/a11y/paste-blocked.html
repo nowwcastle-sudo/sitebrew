@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>접근성 시험 쪽</title>
+<style>
+body{margin:0;font:16px/1.6 sans-serif;color:#111;background:#fff}
+a{color:#0047b3}
+@media (prefers-color-scheme: dark){body{color:#f2f2f2;background:#111}a{color:#9cf}}
+main{padding:24px;max-width:640px}
+label{display:block;margin:12px 0 4px}
+input{min-height:32px;min-width:240px;font:inherit}
+button{min-height:44px;min-width:88px;font:inherit}
+
+</style></head><body><main>
+<h1>붙여넣기를 막는 비밀번호 칸</h1>
+<form onsubmit="return false">
+<label for="u">아이디</label><input id="u" name="username" autocomplete="username">
+<label for="p">비밀번호</label><input id="p" name="password" type="password" autocomplete="current-password">
+<p><button type="submit">로그인</button></p></form>
+<script>document.getElementById('p').addEventListener('paste',e=>e.preventDefault())</script>
+</main></body></html>

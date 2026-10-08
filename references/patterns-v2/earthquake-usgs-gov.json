@@ -1,0 +1,61 @@
+{
+  "id": "earthquake-usgs-gov",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://earthquake.usgs.gov/earthquakes/map/",
+  "structure": {
+    "hero": "좌측 지진 목록 패널, 오른쪽 전면 지도, 상단 얇은 앱 바",
+    "sections": [
+      "앱 바(로고·목록·지도·설정·도움말)",
+      "목록 패널 제목·건수",
+      "형식·정렬 선택",
+      "지진 목록 행",
+      "전면 지도(진원 점·판 경계선)",
+      "지도 컨트롤(레이어·정보)"
+    ]
+  },
+  "type": {
+    "display": "세리프 24px 패널 제목",
+    "body": "로보토 계열 14~16px",
+    "scale": "패널 제목 24px, 행 제목 16px, 보조 12px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "목록 정렬·형식 드롭다운",
+    "지도에 보이는 지진만 목록 보기 체크",
+    "지도 확대·축소·레이어 버튼",
+    "목록 행 선택 시 지도 이동",
+    "앱 바 아이콘으로 목록·지도 전환"
+  ],
+  "cta": {
+    "pattern": "앱 바 아이콘 4개",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard",
+      "pwa"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "목록과 지도를 좌우 분할하고 목록 행 선택이 지도와 이어지는 구조를 쓴다",
+    "규모 숫자를 행 왼쪽에 굵게, 큰 규모(6.6)는 빨강으로 구분한다",
+    "375에서는 목록 전체 화면이 되고 앱 바 아이콘으로 지도 보기를 연다",
+    "불러오기 완료를 하단 토스트 한 줄로 알려 로딩 피드백을 준다"
+  ]
+}

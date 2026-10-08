@@ -1,0 +1,64 @@
+{
+  "id": "johnnycupcakes-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://johnnycupcakes.com/products/kids-mystery-bundle-2-tees",
+  "structure": {
+    "hero": "굵은 테두리 안 둥근 사진, 좁은 대문자 제목·핑크 가격·민트 CTA",
+    "sections": [
+      "검정 헤더(로고·내비 5개·검색·계정·장바구니)",
+      "둥근 테두리 사진 갤러리",
+      "제목·할인가·정가 취소선·절약 칩",
+      "핏 알약(2개)",
+      "사이즈 알약 8개(품절 사선)·사이즈 차트 링크",
+      "수량 스테퍼 알약",
+      "민트 전폭 장바구니 알약",
+      "품절 사이즈 위시리스트 안내",
+      "교환 불가 안내(이탤릭)",
+      "지원 플로팅 버튼"
+    ]
+  },
+  "type": {
+    "display": "좁고 굵은 대문자 산세리프 제목",
+    "body": "둥근 산세리프 본문",
+    "scale": "제목 크게, 라벨 작게"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "핏·사이즈 알약 토글(품절은 사선)",
+    "수량 +/- 알약",
+    "모바일 이미지 점 표시와 확대 아이콘",
+    "「내 사이즈가 품절이면 위시리스트」 링크"
+  ],
+  "cta": {
+    "pattern": "민트 전폭 Add to cart 알약 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "품절 사이즈는 사선 알약으로 두고 위시리스트 링크를 잇는다",
+    "핑크 할인가·취소선·「절약 금액」 칩으로 할인 크기를 금액으로 보여준다",
+    "교환 불가 같은 제한을 CTA 바로 아래 한 줄로 적는다",
+    "민트 전폭 알약 CTA가 핑크·남색·코랄 사이에서 가장 눈에 띈다",
+    "굵은 테두리 안 둥근 사진 프레임이 브랜드의 장난기를 만든다"
+  ]
+}

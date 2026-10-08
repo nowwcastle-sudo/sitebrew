@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "use-mobile",
+      "description": "web-factory hooks: use-mobile",
+      "files": [
+        {
+          "path": "use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    }
+  ]
+}

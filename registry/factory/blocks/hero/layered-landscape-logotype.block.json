@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "layered-landscape-logotype",
+  "title": "히어로 — 층층 평면 풍경 + 가운데 기운 낱자 로고타입",
+  "layout": "layered-landscape-logotype",
+  "density": "spacious",
+  "archetypes": ["brand", "local", "commerce"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": [],
+  "motion": ["clip-reveal", "split-text", "rise", "parallax", "tilt-3d"],
+  "titleWidth": "column",
+  "notes": "첫 화면 전체가 직접 그린 평면 풍경(여섯 층 + 구름·깃발, 칸 색 block-1~4 — K8 레시피에서 제 색), 가운데 위에 낱자마다 조금씩 기운 로고타입 h1(줄마다 sm·lg) 양옆 잎 · 아래 알약 태그라인. 기본 기법 split-text·tilt-3d·clip-reveal. P3-1 r9-clay B 구성"
+}

@@ -1,0 +1,39 @@
+{
+  "status": "draft",
+  "contact": "{{business.email}}",
+  "notice": "Draft. This policy has been checked against the legal sources listed in our review and is waiting for the owner's approval. It is not in force yet.",
+  "clauses": [
+    {
+      "title": "1. Who handles your payment and refund",
+      "text": "Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns.\n\nSo a refund on {{product.name}} is paid back by Paddle, to the payment method you used. We, {{business.name}}, decide the refunds described in this policy and ask Paddle to pay them. Paddle's own terms (https://www.paddle.com/legal/checkout-buyer-terms) also apply to your purchase."
+    },
+    {
+      "title": "2. Free trials",
+      "text": "If a plan has a free trial, you are not charged while it runs. If you cancel before the trial ends, you are never charged. The end date and the price after it are shown before you start and under Account > Billing."
+    },
+    {
+      "title": "3. Our refund promise",
+      "text": "You can ask for a refund of a payment within {{legal.refundWindowDays}} days after it was charged. This covers the first payment and renewal payments. We approve the request unless there is clear abuse, such as repeated refunds of the same plan.\n\nThis promise is on top of the legal rights in section 5. It does not replace them."
+    },
+    {
+      "title": "4. After the {{legal.refundWindowDays}} days",
+      "text": "After that time, we do not refund a period you have already paid for, unless one of these is true:\n\n- the law gives you a right to a refund (see section 5);\n- the Service did not work as we described, and we could not fix it within a reasonable time;\n- we charged you by mistake, or charged a price you did not agree to.\n\nIf you cancel, you keep the plan until the end of the period you paid for and you are not charged again. If you choose to end the plan right now, we refund the unused part of the period only if one of the reasons above applies."
+    },
+    {
+      "title": "5. Your legal right to withdraw",
+      "text": "Some countries give consumers a right to cancel an online purchase within a short time, without giving a reason. This right stays as the law says. We do not take it away.\n\n- EU, EEA, UK and Switzerland: 14 days from the day you buy.\n- Korea: 7 days, under the Act on Consumer Protection in Electronic Commerce.\n- Some other countries have similar rights, for example Brazil, Canada and Singapore. The time differs by country.\n\nFor digital content and online services, the law in some places lets this right end once delivery starts, if you agreed to that. At checkout we show a notice and ask you to confirm it. Where the law does not allow the right to end this way, your right stays. Where a plan has a free trial, you can try the Service before you pay.\n\nTo use a legal right, follow section 7. You do not need to say why."
+    },
+    {
+      "title": "6. Price changes and cancelling",
+      "text": "If we raise the price of your plan, you can decline and cancel before the new price applies. You are not charged the new price (see \"Price changes\" in our Terms of Service (/terms))."
+    },
+    {
+      "title": "7. How to ask for a refund",
+      "text": "Use one of these ways:\n\n- Paddle's customer portal, from the link in your receipt or from Account > Billing;\n- our Contact page (/contact), or {{business.email}}.\n\nTell us the email you used to pay, the date and amount, and the receipt number if you have it. We reply as soon as we can. When a refund is approved, Paddle sends it to your original payment method. How long your bank takes to show it is outside our control. The refund includes the tax charged on that payment.\n\nPlease ask us first before you ask your bank for a chargeback, so we can fix the problem faster."
+    },
+    {
+      "title": "8. Changes to this policy",
+      "text": "If we change this policy, the change applies to purchases made after the new effective date. It never removes a right you had when you bought. This policy takes effect on {{legal.effectiveDate}}.\n\nQuestions: {{business.email}}, or our Contact page (/contact)."
+    }
+  ]
+}

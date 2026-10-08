@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "screenshot-window",
+  "title": "히어로 — 큰 제목 + 실제 제품 화면 창",
+  "layout": "screenshot-window",
+  "density": "spacious",
+  "archetypes": ["saas", "dashboard", "landing"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["screenshot"],
+  "motion": ["kinetic-type", "rise", "scrub-timeline", "tilt-3d"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "layout",
+  "notes": "배치로 대담: 전폭 큰 제목(D2·D3 를 받는다) 아래 문단·버튼, 그 아래 넓은 창 틀(점 셋 + 빈 주소 줄 — 글자 없음)에 실제 제품 화면 이미지 한 장(media screenshot — real-required 칸). narrow-title-wide-window 의 가상 앱 글을 뺀 짝이라 화면이 없으면 「실제 화면 필요」 틀(emptyLabel)로 그리고, 05 의 「실제 사진 필요」 자리·06 의 입력 대기 사유가 이 칸을 막는다(lp-demo-clarity). 등장은 제목 키네틱 → 창이 기울어진 채 들려 앉는다 → 문단·버튼, 스크롤 창 가라앉음, 마우스에서 아주 조금 기울기. FV1 Task 5.7"
+}

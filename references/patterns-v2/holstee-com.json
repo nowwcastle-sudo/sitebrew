@@ -1,0 +1,66 @@
+{
+  "id": "holstee-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.holstee.com/products/wall-calendar-blank",
+  "structure": {
+    "hero": "왼쪽 큰 상품 사진과 썸네일, 오른쪽 별점·제목·가격·불릿·옵션 알약",
+    "sections": [
+      "녹색 공지띠",
+      "헤더(내비 3개·중앙 자간 넓은 로고·아이콘)",
+      "브레드크럼",
+      "갤러리(화살표·썸네일 줄)",
+      "별점(리뷰 없음)",
+      "혜택 한 줄(아이콘)",
+      "가벼운 제목·강조 문구 상자",
+      "가격",
+      "불릿 3개",
+      "방향 알약·크기 알약",
+      "변형 이미지 스와치",
+      "녹색 장바구니 버튼"
+    ]
+  },
+  "type": {
+    "display": "넓은 자간 대문자 로고, 가벼운 산세리프 제목",
+    "body": "같은 산세리프 계열 본문",
+    "scale": "제목 크게 가볍게, 알약 라벨 중간"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "갤러리 이전·다음과 썸네일",
+    "방향·크기를 알약 두 줄로 선택",
+    "이미지 변형 스와치",
+    "모바일은 「2/13」 숫자 갤러리 컨트롤"
+  ],
+  "cta": {
+    "pattern": "녹색 전폭 장바구니 버튼(옵션 아래)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "옵션을 방향·크기·이미지 변형 세 줄로 쌓는다",
+    "크기 알약 안에 치수(cm·in)를 같이 적어 선택 오류를 줄인다",
+    "리뷰가 0일 때 「No reviews」 별점을 그대로 보여준다. 신뢰 신호로는 약하다",
+    "모바일은 점 대신 「2/13」 숫자와 화살표 컨트롤",
+    "혜택 한 줄(재사용 가능)과 불릿 3개로 가치 제안을 짧게 정리"
+  ]
+}

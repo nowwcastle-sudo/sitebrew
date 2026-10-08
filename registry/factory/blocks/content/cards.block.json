@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "cards",
+  "title": "카드 격자 — 사진(비율 고정)·제목·값 줄·설명·항목",
+  "layout": "card-grid",
+  "density": "comfortable",
+  "archetypes": [ "brand", "portfolio", "local", "public" ],
+  "archetypeKinds": [ "leadership", "work-grid", "doctors", "policy-cards" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content 섹션 렌더러(대장 C70). 카드 값은 콘텐츠 $ref — 사진은 콘텐츠 이미지 칸(src 없으면 「실제 사진 필요」 틀, 실사 필수 칸은 공개 불가 사유), 값 줄은 data-numeric. 카드 모양은 레시피 Card 부품."
+}

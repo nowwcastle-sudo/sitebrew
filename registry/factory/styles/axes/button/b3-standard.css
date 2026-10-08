@@ -1,0 +1,43 @@
+/* B3 표준 모서리(8px) — 중간 계열. shadcn 기본 결(variant 6종 그대로), h-10 → h-11. 원천 style_axes.md 축 1. */
+.cn-button {
+  @apply rounded-[8px] border text-sm font-medium [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-button-variant-outline {
+  @apply dark:bg-input/30 dark:hover:bg-input/50;
+}
+.cn-button-size-default {
+  @apply h-11 gap-1.5 px-4 has-data-[icon=inline-end]:pe-3 has-data-[icon=inline-start]:ps-3;
+}
+.cn-button-size-xs {
+  @apply h-7 gap-1 rounded-[6px] px-2 text-sm has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-sm {
+  @apply h-9 gap-1 rounded-[7px] px-3 text-sm has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-lg {
+  @apply h-12 gap-1.5 px-5 text-base has-data-[icon=inline-end]:pe-4 has-data-[icon=inline-start]:ps-4;
+}
+.cn-button-size-icon {
+  @apply size-11;
+}
+.cn-button-size-icon-xs {
+  @apply size-7 rounded-[6px] [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-icon-sm {
+  @apply size-9 rounded-[7px];
+}
+.cn-button-size-icon-lg {
+  @apply size-12;
+}
+.cn-button-group {
+  @apply has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-[8px];
+}
+.cn-button-group-orientation-horizontal {
+  @apply *:data-slot:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-[8px]! [&>[data-slot]~[data-slot]]:rounded-l-none [&>[data-slot]~[data-slot]]:border-l-0;
+}
+.cn-button-group-orientation-vertical {
+  @apply *:data-slot:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-[8px]! [&>[data-slot]~[data-slot]]:rounded-t-none [&>[data-slot]~[data-slot]]:border-t-0;
+}
+.cn-button-group-text {
+  @apply gap-2 rounded-[8px] border px-2.5 text-sm font-medium [&_svg:not([class*='size-'])]:size-4;
+}

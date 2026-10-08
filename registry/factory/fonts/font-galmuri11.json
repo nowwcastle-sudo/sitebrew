@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-galmuri11",
+  "type": "registry:item",
+  "title": "Galmuri11",
+  "description": "web-factory 폰트 키트: Galmuri11 (OFL-1.1) — Google Fonts 밖이라 1차 CDN 을 css 로 싣는다. 제작자 npm 패키지 galmuri@2.40.3(정확한 버전 고정)의 jsDelivr 스타일시트",
+  "css": {
+    "@import url(\"https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css\")": {}
+  },
+  "cssVars": {
+    "theme": {
+      "font-galmuri11-wf": "\"Galmuri11\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/quiple/galmuri",
+    "source": "https://github.com/quiple/galmuri",
+    "family": "Galmuri11",
+    "weight": [
+      "400",
+      "700"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

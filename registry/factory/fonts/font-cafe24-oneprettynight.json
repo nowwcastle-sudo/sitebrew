@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-cafe24-oneprettynight",
+  "type": "registry:item",
+  "title": "Cafe24Oneprettynight",
+  "description": "web-factory 폰트 키트: 카페24 고운밤 Cafe24Oneprettynight (OFL-1.1, 카페24 폰트 라이선스) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.1 의 커밋 149348bb2c5a9b67e26a9f211c330ef9899038af 로 고정. 자체 호스팅은 P3-3. P3-2 Task 15m",
+  "fontFace": {
+    "font-family": "\"Cafe24Oneprettynight\"",
+    "src": "url(\"https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@149348bb2c5a9b67e26a9f211c330ef9899038af/Cafe24Oneprettynight.woff\") format(\"woff\")",
+    "font-weight": "400",
+    "font-style": "normal",
+    "font-display": "swap"
+  },
+  "cssVars": {
+    "theme": {
+      "font-cafe24-oneprettynight-wf": "\"Cafe24Oneprettynight\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://fonts.cafe24.com/",
+    "source": "https://github.com/projectnoonnu/noonfonts_twelve/tree/149348bb2c5a9b67e26a9f211c330ef9899038af",
+    "family": "Cafe24Oneprettynight",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "inline-chip-title",
+  "title": "히어로 — 문장 속 칩 + 대괄호 캡션 대칭",
+  "layout": "inline-chip-title",
+  "density": "comfortable",
+  "archetypes": ["brand", "portfolio", "saas", "landing"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["chip"],
+  "motion": ["clip-reveal", "split-text", "rise", "oversize-crop", "tilt-3d"],
+  "titleWidth": "full",
+  "notes": "주사선 바탕 위 가운데 판(faces[0], 없으면 선) — 픽셀 송신탑 위·아래 거울, 대괄호 캡션 두 줄 사이 세 줄 제목 h1(첫 줄 낱말 사이 사진 칩 media chip, 둘째 줄 별표). 판 아래 버튼 둘, 바닥에 크게 잘린 한 낱말(oversize-crop). 기본 기법 split-text·oversize-crop. P3-1 r2-signal B 구성"
+}

@@ -1,0 +1,58 @@
+{
+  "id": "netlifystatus-com",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://www.netlifystatus.com/",
+  "structure": {
+    "hero": "로고와 구독 버튼 아래 초록 상태 띠와 서비스별 90일 막대",
+    "sections": [
+      "로고+구독 버튼",
+      "전체 상태 띠",
+      "사이트 소개 문단",
+      "90일 가동률 안내",
+      "서비스별 가동 막대 행",
+      "사고 이력"
+    ]
+  },
+  "type": {
+    "display": "가벼운 산세리프 28px 섹션 제목",
+    "body": "산세리프 14~16px",
+    "scale": "섹션 제목 28px, 상태 띠 20px, 보조 14px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "구독 버튼",
+    "컴포넌트 설명 툴팁",
+    "과거 가동률 링크"
+  ],
+  "cta": {
+    "pattern": "구독 버튼",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.75
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "상태 띠 색 하나로 현재 전체 상황을 먼저 말한다",
+    "막대 색이 초록·연두·주황으로 갈려 부분 장애가 칸 하나로 보인다",
+    "375에서는 로고가 가운데로 오고 막대가 30일로 줄며 긴 이름은 말줄임된다",
+    "소개 문단이 막대보다 앞에 있어 첫 화면의 데이터 비중이 낮다"
+  ]
+}

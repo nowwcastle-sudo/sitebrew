@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FINAL-WF B9 — role=checkbox 와 숨은 required 체크 입력이 짝인 필수 동의 (둘 다 누르면 체크가 풀리는 모양)</title>
+</head>
+<body>
+  <main>
+    <h1>사전 등록</h1>
+    <form id="lead" novalidate>
+      <label for="email">이메일</label>
+      <input id="email" name="email" type="email" aria-required="true" />
+      <!-- 눈에 보이는 칸은 role=checkbox, 짝인 숨은 입력(required)은 누르면 같은 상태를 토글한다. 입력 쪽은 상태 갱신이 한 틱 늦다(React 배치 갱신 모양) —
+           검사기가 입력도 누르고 role=checkbox 도 누르면 두 번 토글돼 체크가 풀린다. -->
+      <div data-consent="required">
+        <span id="consent" role="checkbox" tabindex="0" aria-checked="false"></span>
+        <input id="consent-input" type="checkbox" name="terms" required aria-hidden="true" tabindex="-1" />
+        <label id="consent-label">등록한 이메일은 입장 확인 메일을 보내는 데 써요</label>
+      </div>
+      <button type="submit">이메일로 사전 등록하기</button>
+      <div id="alert" role="alert"></div>
+      <p id="done" role="status"></p>
+    </form>
+  </main>
+  <script>
+    const box = document.getElementById('consent')
+    const input = document.getElementById('consent-input')
+    let on = false
+    const render = () => { box.setAttribute('aria-checked', String(on)); input.checked = on }
+    box.addEventListener('click', () => { on = !on; render() })
+    input.addEventListener('click', (e) => { e.preventDefault(); setTimeout(() => { on = !on; render() }, 0) })
+    document.getElementById('lead').addEventListener('submit', async (e) => {
+      e.preventDefault()
+      if (!on) { document.getElementById('alert').textContent = '이용 동의에 체크해 주세요.'; return }
+      const r = await fetch('/receive', { method: 'POST', body: new FormData(e.target) })
+      if (r.ok) document.getElementById('done').textContent = '접수했어요. 메일을 확인해 주세요.'
+    })
+  </script>
+</body>
+</html>

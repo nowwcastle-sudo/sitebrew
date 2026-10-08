@@ -1,0 +1,1691 @@
+{
+  "$comment": "레시피 보드(https://claude.ai/artifact/LFfuRm2ufekAEWxCTmKacB)를 만든 레시피 10벌의 머리·본문(커밋 8541c6f, 운영자 결정 반영 전 — alternates 포함). board.test.mjs 등이 보드·B안 검사를 이 고정본으로 돈다. 손으로 고치지 않는다.",
+  "commit": "8541c6f",
+  "heads": [
+    {
+      "id": "r1-measure",
+      "name": "도면 계측",
+      "mood": [
+        "계측",
+        "차분",
+        "정확"
+      ],
+      "axes": {
+        "button": "B1",
+        "input": "I3",
+        "surface": "C2",
+        "table": "T4",
+        "header": "H3",
+        "radius": "R0",
+        "shadow": "S0"
+      },
+      "motion": "M1",
+      "colorLogic": "K1",
+      "dynamics": [
+        "svg-draw"
+      ],
+      "alternates": {
+        "colorLogic": "K6",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.36 0.12 255)",
+            "field-1-foreground": "oklch(0.97 0.01 255)"
+          },
+          "dark": {
+            "field-1": "oklch(0.3 0.1 255)",
+            "field-1-foreground": "oklch(0.95 0.01 255)"
+          }
+        },
+        "dynamics": [
+          "svg-draw",
+          "clip-reveal"
+        ],
+        "note": "청사진 면 — 히어로와 사양 띠를 청사진 파랑 짙은 면(field-1)으로 깔고 흰 선으로 도면을 그린다. 사양 띠는 clip-path로 한 번 걷는다"
+      },
+      "signature": [
+        "data-strip",
+        "ledger"
+      ],
+      "icons": {
+        "library": "lucide",
+        "weight": "G1"
+      },
+      "fonts": {
+        "display": {
+          "family": "IBM Plex Sans",
+          "item": "font-ibm-plex-sans",
+          "weight": 700,
+          "tuned": "굵기 700(제목)·400(본문) 두 단계로 차 300, 큰 수치만 300, 40px 이상 제목 자간 -0.02em, 숫자는 tabular-nums"
+        },
+        "body": {
+          "family": "IBM Plex Sans KR",
+          "item": "font-ibm-plex-sans-kr",
+          "tuned": "본문 16px/1.7, 굵기 400·700만"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "item": "font-ibm-plex-mono",
+          "tuned": "data-numeric 표 칸·숫자 입력·코드에만(T7-I1), 굵기 400"
+        }
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.975 0.004 255)",
+          "foreground": "oklch(0.2 0.014 255)",
+          "card": "oklch(0.99 0.002 255)",
+          "card-foreground": "oklch(0.2 0.014 255)",
+          "popover": "oklch(0.99 0.002 255)",
+          "popover-foreground": "oklch(0.2 0.014 255)",
+          "primary": "oklch(0.24 0.02 255)",
+          "primary-foreground": "oklch(0.975 0.004 255)",
+          "secondary": "oklch(0.93 0.008 255)",
+          "secondary-foreground": "oklch(0.24 0.02 255)",
+          "muted": "oklch(0.945 0.006 255)",
+          "muted-foreground": "oklch(0.4 0.016 255)",
+          "accent": "oklch(0.925 0.035 255)",
+          "accent-foreground": "oklch(0.34 0.11 255)",
+          "destructive": "oklch(0.5 0.19 27)",
+          "border": "oklch(0.6 0.014 255)",
+          "input": "oklch(0.3 0.016 255)",
+          "ring": "oklch(0.47 0.15 255)",
+          "success": "oklch(0.5 0.1 155)",
+          "success-foreground": "oklch(0.985 0.005 155)",
+          "warning": "oklch(0.55 0.12 60)",
+          "warning-foreground": "oklch(0.985 0.005 60)",
+          "info": "oklch(0.47 0.15 255)",
+          "info-foreground": "oklch(0.985 0.004 255)",
+          "chart-1": "oklch(0.3 0.1 255)",
+          "chart-2": "oklch(0.4 0.13 255)",
+          "chart-3": "oklch(0.49 0.15 255)",
+          "chart-4": "oklch(0.57 0.13 255)",
+          "chart-5": "oklch(0.63 0.1 255)",
+          "sidebar": "oklch(0.96 0.005 255)",
+          "sidebar-foreground": "oklch(0.2 0.014 255)",
+          "sidebar-primary": "oklch(0.24 0.02 255)",
+          "sidebar-primary-foreground": "oklch(0.975 0.004 255)",
+          "sidebar-accent": "oklch(0.925 0.035 255)",
+          "sidebar-accent-foreground": "oklch(0.34 0.11 255)",
+          "sidebar-border": "oklch(0.6 0.014 255)",
+          "sidebar-ring": "oklch(0.47 0.15 255)"
+        },
+        "dark": {
+          "background": "oklch(0.17 0.01 255)",
+          "foreground": "oklch(0.95 0.006 255)",
+          "card": "oklch(0.2 0.011 255)",
+          "card-foreground": "oklch(0.95 0.006 255)",
+          "popover": "oklch(0.22 0.012 255)",
+          "popover-foreground": "oklch(0.95 0.006 255)",
+          "primary": "oklch(0.92 0.01 255)",
+          "primary-foreground": "oklch(0.19 0.014 255)",
+          "secondary": "oklch(0.27 0.012 255)",
+          "secondary-foreground": "oklch(0.95 0.006 255)",
+          "muted": "oklch(0.25 0.012 255)",
+          "muted-foreground": "oklch(0.8 0.012 255)",
+          "accent": "oklch(0.3 0.05 255)",
+          "accent-foreground": "oklch(0.92 0.03 255)",
+          "destructive": "oklch(0.7 0.16 25)",
+          "border": "oklch(0.55 0.014 255)",
+          "input": "oklch(0.72 0.014 255)",
+          "ring": "oklch(0.74 0.12 255)",
+          "success": "oklch(0.74 0.11 155)",
+          "success-foreground": "oklch(0.19 0.02 155)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.74 0.12 255)",
+          "info-foreground": "oklch(0.19 0.014 255)",
+          "chart-1": "oklch(0.93 0.04 255)",
+          "chart-2": "oklch(0.85 0.08 255)",
+          "chart-3": "oklch(0.77 0.12 255)",
+          "chart-4": "oklch(0.69 0.13 255)",
+          "chart-5": "oklch(0.62 0.12 255)",
+          "sidebar": "oklch(0.2 0.011 255)",
+          "sidebar-foreground": "oklch(0.95 0.006 255)",
+          "sidebar-primary": "oklch(0.92 0.01 255)",
+          "sidebar-primary-foreground": "oklch(0.19 0.014 255)",
+          "sidebar-accent": "oklch(0.3 0.05 255)",
+          "sidebar-accent-foreground": "oklch(0.92 0.03 255)",
+          "sidebar-border": "oklch(0.55 0.014 255)",
+          "sidebar-ring": "oklch(0.74 0.12 255)"
+        }
+      },
+      "references": [
+        "https://www.krds.go.kr/",
+        "https://www.moto-card.com/",
+        "component-k17",
+        "type-t06",
+        "color-c02",
+        "https://www.photiu.ai/"
+      ],
+      "archetypes": [
+        "dashboard",
+        "saas"
+      ],
+      "body": "## 결정 기록 (2026-09-26, 수정 1회차 반영)\n\n방향 원천은 dribbble-summary §6 R1(계측·차분·정확), style_axes N1(텔레메트리)·N4(인증·문서 신뢰)다. DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 도면 계측 (고름) | B 계측 문서 (남김, 안 씀) | C 야간 관제판 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 계측 · 차분 · 정확 | 공인 · 정돈 · 신뢰 | 야간 · 경계 · 조밀 |\n| 축 | B1 I3 C2 T4 H3 R0 S0, M1 | B2 I1 C1 T2 H1 R1 S1, M1 | B3 I1 C1 T1 H4 R1 S0, M0 |\n| 서체 짝과 이유 | IBM Plex Sans(제목) + Plex Sans KR(본문) + Plex Mono(숫자). 공학 문서용으로 만든 한 가족이라 「그로테스크 한 계열 두 굵기」(type-t01)를 지키면서 숫자 열이 맞는다 | Pretendard GOV 한 가족. 공공 서식의 가독성이 검증됐고 KRDS가 이 가족 하나로 쓴다 | Barlow Condensed(제목·수치) + Pretendard(본문). 좁은 벽 화면에 수치를 많이 싣기 위한 응축형 |\n| 색 3개 + 강조 1 | 오프화이트 용지 · 잉크 · 푸른 회색 + 청사진 파랑(hue 255) | 흰 바탕 · 짙은 남색 글자 · 옅은 회색 + 공공 파랑(hue 250) | 푸른 먹색 바탕(L 0.19) · 밝은 회색 글자 · 중간 회색 + 경보 호박색(hue 70) |\n| 사진·그림 | 사진 없음. 그림은 실제 데이터로 그린 차트와 수위 눈금뿐 | 사진 없음. 서식·도식과 인증 표지(실제 인증일 때만) | 사진 없음. 지도 타일과 실시간 차트 |\n| 이 안에서만 나오는 레이아웃 | KPI 한 줄 셀(1px 잉크 선) + 괘선 표 + 사양 띠 | 왼쪽 목차 레일 + 오른쪽 조항·표의 문서형 2열 | 12열 운영 벽: 사이드 레일 + 경보 대기열 + 조밀 표 |\n| 레퍼런스 2개 | https://www.krds.go.kr/ · https://www.moto-card.com/ | https://www.krds.go.kr/ · https://www.moef.go.kr/ | https://play.grafana.org/ · https://status.digitalocean.com/ |\n\n- **버린 안: C.** 다크 바탕에 경보 호박색 한 점만 채도를 갖는 구성은 §13 「거의 검정 + 형광 초록·주홍 한 점」의 바로 옆이다. 바탕을 L 0.19로 올리고 호박색 채도를 낮춰도, 첫인상을 만드는 것은 결국 어두운 면 위의 따뜻한 한 점이다. 세 안 가운데 §13 표의 한 행에 가장 가깝다.\n- **남긴 안: B.** 상투 표의 어느 행에도 걸리지 않는다. 그러나 교체 가능성 검사에서 떨어졌다. 주제를 은행·병원·학교로 바꿔 끼워도 색·반경·레이아웃이 그대로 성립해서, §13의 「UI 키트를 기본 테마 그대로 납품」과 구별되지 않는다. 이 레시피에서는 B의 「한글 서체를 한 가족으로 명시한다」만 가져왔다.\n- **고른 안: A.** 방문자 모드는 조작(dashboard)과 설득(saas) 두 가지다.\n- **교체 가능성 검사로 고친 것**\n  - 처음 액센트는 청록(hue 195)이었다. 공장 기본 테마와 같은 hue라서 도면의 재료인 청사진(프러시안 블루, hue 255)으로 옮겼다.\n  - 주 버튼은 잉크로 칠한다(B1 명세 「채움 잉크색」). 대신 파랑은 **선택·포커스·활성 상태를 표시하는 색**으로 약속한다: 포커스 링, 토글·탭의 눌림/선택 2px 안쪽 링(ring), 메뉴의 강조 칸(accent), 정보 상태(info), 차트. 쉬는 화면에서도 선택된 칸이 파랗게 보이도록 했다(수정 1회차 — 리뷰 「파랑이 차트에만 보여 흑백 도면처럼 읽힌다」).\n- **서체**: Plex 세 가지는 모두 SIL OFL 1.1이다(https://github.com/IBM/plex/blob/master/LICENSE.txt). §13·banlist 목록에 없다. 폰트 항목(`font-ibm-plex-*`)은 Task 8 폰트 키트가 만들고, 그 전까지는 스택의 이름 폴백과 시스템 한글로 그린다.\n- **아이콘**: lucide(키트 항목 `icons-lucide`, 부품은 정본 이름으로 어댑터를 부른다 — Task 9). 결은 G1(외곽선 2px, `--icon-stroke: 2`) 하나로 통일한다.\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 saas·awwwards·S 1.0 표본 네 곳의 유채색 수는 moto-card 1, photiu 2, mindrobotics 3, orchid.security 3이다. 카드 기준(2개 이하가 절제)으로 절제와 다색이 2:2로 갈린다. 빈도로 보면 saas 전체에서는 다색 카드(color-saas-accent-multi, 12곳)가 절제 카드(4곳)보다 많다. 그래도 브랜드 색을 하나로 둔 근거는 DESIGN §5다. 랜딩 대표색 2색(SOTD 24곳 중 24곳이 1~2색), 뉴트럴이 면적 대부분, 액센트는 활성 상태 전용이라는 규칙이다. 기법은 moto-card 행(유채 1, 본문 대비 20.03)에서 가져왔다. 상태색(성공·경고·오류·정보)은 §5 MUST라 따로 두고, 의미에만 쓴다.\n- **글자 크기**: 비율 1.25 하나로 16 · 20 · 25 · 31 · 39 · 49에서 멈춘다. 제목:본문은 49/16 ≈ 3.06배다. 기준 표본은 photiu(saas, S 1.0, h1:본문 3.0)다.\n\n## 분위기\n\n측량 도면처럼 조용하고 정확한 화면이다. 오프화이트 용지에 잉크 선으로 칸을 나누고, 모서리는 모두 직각이다. 브랜드 색은 청사진 파랑 하나다. 그 파랑은 지금 선택된 것, 포커스가 있는 곳, 데이터 계열을 가리킬 때만 나온다. 숫자는 모두 같은 폭으로 줄을 맞춘다.\n\n## 쓰는 법\n\n- 맞는 원형은 운영 대시보드와 기술형 SaaS 랜딩이다. 숫자·표·상태가 화면의 주인공인 곳에 쓴다.\n- 수치는 `tabular-nums`로 쓴다. 큰 수치는 굵기 300, 단위는 수치의 45% 크기에 굵기 400·muted 색으로 붙인다(type-t06). 예: 「1,284 건」에서 「건」만 작고 옅다.\n- 표의 숫자 칸에는 `data-numeric`을 단다. 그 칸만 고정폭 글꼴로 바뀐다(T4). 숫자 입력은 `inputMode=\"decimal\"`·`\"numeric\"` 또는 `type=\"tel\"`로 두면 고정폭이 된다(I3). 한글 이름·메모·머리·캡션은 본문 서체다.\n- KPI는 카드로 나누지 않는다. 한 줄 셀로 늘어놓고 1px 잉크 선으로 가른다(component-k17). 카드는 역할이 다른 덩어리에만 쓴다.\n- 글자 크기는 1.25 비율 한 줄로 쓴다(16 · 20 · 25 · 31 · 39 · 49). 화면 제목은 49px(본문의 약 3배)를 넘기지 않는다.\n- 주 버튼은 잉크 채움 한 개만 둔다. 보조 동작은 같은 반경(0)의 외곽선 버튼으로 한다.\n- 선택 상태는 파랑으로 표시한다. 토글·탭의 선택 칸은 2px 파란 안쪽 링을 두르고, 메뉴에서 강조된 칸은 옅은 파랑(accent)으로 칠한다.\n- 상태는 색과 글자를 함께 쓴다: 정상 success, 주의 warning, 오류 destructive, 안내 info(청사진 파랑). 배지 글자가 곧 상태 이름이다.\n- 차트는 청사진 파랑의 명도 단계 5개(chart-1~5)로 칠한다(color-c02). 다섯 단계 모두 배경 대비 3:1 이상이다(그래픽 요소 기준). 계열이 4개를 넘으면 선 모양·패턴·직접 라벨을 함께 쓴다(색만으로 구분하지 않는다).\n- 모션은 M1이다. 상태 전환은 150~200ms, 등장은 300ms 이하다. 튕김은 쓰지 않는다.\n- 역동 기법은 `svg-draw` 하나다. 수위 눈금과 사양 띠의 괘선을 화면에 들어올 때 한 번 그린다(`pathLength=\"1\"`, 동작 줄이기에서는 완성된 선). 대표 장면과 첫 화면에 이 선이 보여야 한다.\n- 보드 B안(`alternates`): 색 논리 K6 청사진 면 + `clip-reveal`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n\n## 하지 말 것\n\n- 둥근 모서리를 섞지 않는다. 버튼·입력·카드·배지·아바타까지 모두 0이다(§6).\n- 어두운 테마를 「검정 + 형광 한 점」으로 만들지 않는다. 다크 바탕은 L 17%의 푸른 회색이고, 액센트는 밝히되 채도는 낮춘다(§13).\n- 모노스페이스를 장식 라벨로 쓰지 않는다. 고정폭 글꼴은 숫자 칸(`data-numeric`)·숫자 입력·코드와 ID에만 쓰고, 한글 머리·캡션·내비·섹션 라벨·배지·eyebrow에는 쓰지 않는다(§13, T7-I1).\n- 청사진 파랑을 넓은 면이나 주 버튼에 칠하지 않는다. 파랑은 선택·포커스·정보·차트 전용이다.\n- 격자·눈금 선을 장식으로 깔지 않는다. 선은 실제 칸(표·카드·머리)을 나눌 때만 긋고, 구분선(`--border`)도 배경 대비 3:1 이상이다(§6 선 구획 예외의 조건).\n- 그림자를 더하지 않는다(S0). 깊이는 선과 표면 명도 차이로만 만든다.\n\n## 레퍼런스에서 가져온 기법\n\n- https://www.krds.go.kr/ : 색 램프의 단계 차로 대비를 정한다. muted-foreground는 배경 대비 7:1 단계(8.56 · 10.24)에, 선 구획 구분선(`--border`)은 3:1 단계(3.67 · 3.94)에 둔다. 입력 틀은 I3 잉크 틀이라 본문 대비(12.68 · 7.71)다. 표본 유형은 public(S 1.0, 본문 대비 16.18)이고, 가져온 것은 단계 차 규칙 하나뿐이다.\n- https://www.moto-card.com/ : 유채색을 하나만 두고 나머지는 무채 명도 단계로 채운다(표본 유채 1, 본문 대비 20.03). 청사진 파랑 하나, 나머지는 hue 255로 살짝 기운 회색이다.\n- https://www.photiu.ai/ : 화면 제목과 본문의 비율을 3배로 둔다(표본 h1:본문 3.0, S 1.0). 49/16 ≈ 3.06.\n- component-k17 : KPI를 카드 여러 장 대신 1px 구분선 한 줄 셀로 나눈다.\n- type-t06 : 큰 수치에 단위를 작게(45%) 붙인다.\n- color-c02 : 데이터 색을 한 hue의 명도 단계만으로 구성한다(chart-1~5).\n"
+    },
+    {
+      "id": "r10-console",
+      "name": "자홍 콘솔",
+      "mood": [
+        "조밀",
+        "즉답",
+        "절제"
+      ],
+      "axes": {
+        "button": "B3",
+        "input": "I1",
+        "surface": "C1",
+        "table": "T1",
+        "header": "H4",
+        "radius": "R2",
+        "shadow": "S0"
+      },
+      "motion": "M1",
+      "colorLogic": "K6",
+      "defaultTheme": "dark",
+      "dynamics": [
+        "view-transition",
+        "svg-draw"
+      ],
+      "alternates": {
+        "colorLogic": "K6",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.36 0.08 220)",
+            "field-1-foreground": "oklch(0.96 0.008 220)"
+          },
+          "dark": {
+            "field-1": "oklch(0.32 0.08 220)",
+            "field-1-foreground": "oklch(0.95 0.008 220)"
+          }
+        },
+        "motion": "M2",
+        "dynamics": [
+          "view-transition",
+          "clip-reveal"
+        ],
+        "note": "청록 먹 띠 — 상단 바 면을 자홍 먹에서 청록 먹(220°)으로 바꿔 자홍은 선택·포커스에만 남긴다. 모션은 M2, 오른쪽 상세 패널이 clip-path로 한 번 열린다. r1-measure B안(청사진 255°)과 함께 고르지 않는다 — 대시보드 두 벌이 짙은 파랑 띠로 모인다"
+      },
+      "signature": [
+        "data-strip",
+        "ledger"
+      ],
+      "icons": {
+        "library": "lucide",
+        "weight": "G3"
+      },
+      "fonts": {
+        "display": {
+          "family": "Sora",
+          "item": "font-sora",
+          "weight": 700,
+          "tuned": "라틴 제목·KPI 숫자 전용. 제목 굵기 700(본문 400과 차 300), KPI 큰 숫자는 600 + tabular-nums, 자간 -0.02em(32px 이상). 크기는 1.2 비율 16 · 19 · 23 · 28 · 33px — 운영 화면이라 큰 디스플레이를 쓰지 않는다. 한글 제목은 Pretendard 700으로 떨어진다"
+        },
+        "body": {
+          "family": "Pretendard",
+          "item": "font-pretendard",
+          "tuned": "본문 16px/1.6 굵기 400, 표 셀 16px/1.5(T1 조밀 행 32px), 강조 600. 숫자 열은 tabular-nums"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "item": "font-ibm-plex-mono",
+          "tuned": "data-numeric 표 칸·ID·코드에만, 굵기 400. 라벨·캡션·상태 이름에는 쓰지 않는다"
+        }
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.975 0.004 345)",
+          "foreground": "oklch(0.2 0.01 345)",
+          "card": "oklch(0.99 0.002 345)",
+          "card-foreground": "oklch(0.2 0.01 345)",
+          "popover": "oklch(0.99 0.002 345)",
+          "popover-foreground": "oklch(0.2 0.01 345)",
+          "primary": "oklch(0.24 0.01 345)",
+          "primary-foreground": "oklch(0.975 0.004 345)",
+          "secondary": "oklch(0.935 0.006 345)",
+          "secondary-foreground": "oklch(0.24 0.01 345)",
+          "muted": "oklch(0.95 0.005 345)",
+          "muted-foreground": "oklch(0.44 0.012 345)",
+          "accent": "oklch(0.94 0.03 345)",
+          "accent-foreground": "oklch(0.36 0.09 345)",
+          "destructive": "oklch(0.52 0.17 27)",
+          "border": "oklch(0.89 0.008 345)",
+          "input": "oklch(0.6 0.012 345)",
+          "ring": "oklch(0.5 0.15 345)",
+          "success": "oklch(0.5 0.1 160)",
+          "success-foreground": "oklch(0.985 0.005 160)",
+          "warning": "oklch(0.55 0.13 65)",
+          "warning-foreground": "oklch(0.985 0.005 65)",
+          "info": "oklch(0.5 0.1 245)",
+          "info-foreground": "oklch(0.985 0.004 245)",
+          "chart-1": "oklch(0.5 0.11 252)",
+          "chart-2": "oklch(0.64 0.14 60)",
+          "chart-3": "oklch(0.55 0.08 195)",
+          "chart-4": "oklch(0.72 0.06 245)",
+          "chart-5": "oklch(0.55 0.01 345)",
+          "sidebar": "oklch(0.96 0.005 345)",
+          "sidebar-foreground": "oklch(0.2 0.01 345)",
+          "sidebar-primary": "oklch(0.24 0.01 345)",
+          "sidebar-primary-foreground": "oklch(0.975 0.004 345)",
+          "sidebar-accent": "oklch(0.94 0.03 345)",
+          "sidebar-accent-foreground": "oklch(0.36 0.09 345)",
+          "sidebar-border": "oklch(0.89 0.008 345)",
+          "sidebar-ring": "oklch(0.5 0.15 345)",
+          "field-1": "oklch(0.36 0.1 345)",
+          "field-1-foreground": "oklch(0.97 0.008 345)"
+        },
+        "dark": {
+          "background": "oklch(0.19 0.02 340)",
+          "foreground": "oklch(0.95 0.008 340)",
+          "card": "oklch(0.22 0.02 340)",
+          "card-foreground": "oklch(0.95 0.008 340)",
+          "popover": "oklch(0.24 0.02 340)",
+          "popover-foreground": "oklch(0.95 0.008 340)",
+          "primary": "oklch(0.93 0.01 340)",
+          "primary-foreground": "oklch(0.2 0.02 340)",
+          "secondary": "oklch(0.27 0.018 340)",
+          "secondary-foreground": "oklch(0.95 0.008 340)",
+          "muted": "oklch(0.25 0.018 340)",
+          "muted-foreground": "oklch(0.79 0.014 340)",
+          "accent": "oklch(0.31 0.06 345)",
+          "accent-foreground": "oklch(0.95 0.03 345)",
+          "destructive": "oklch(0.7 0.16 25)",
+          "border": "oklch(0.33 0.018 340)",
+          "input": "oklch(0.6 0.02 340)",
+          "ring": "oklch(0.74 0.14 345)",
+          "success": "oklch(0.74 0.11 160)",
+          "success-foreground": "oklch(0.19 0.02 160)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.74 0.1 245)",
+          "info-foreground": "oklch(0.19 0.015 245)",
+          "chart-1": "oklch(0.74 0.11 245)",
+          "chart-2": "oklch(0.8 0.12 65)",
+          "chart-3": "oklch(0.72 0.08 195)",
+          "chart-4": "oklch(0.55 0.08 245)",
+          "chart-5": "oklch(0.62 0.012 340)",
+          "sidebar": "oklch(0.17 0.02 340)",
+          "sidebar-foreground": "oklch(0.95 0.008 340)",
+          "sidebar-primary": "oklch(0.93 0.01 340)",
+          "sidebar-primary-foreground": "oklch(0.2 0.02 340)",
+          "sidebar-accent": "oklch(0.31 0.06 345)",
+          "sidebar-accent-foreground": "oklch(0.95 0.03 345)",
+          "sidebar-border": "oklch(0.33 0.018 340)",
+          "sidebar-ring": "oklch(0.74 0.14 345)",
+          "field-1": "oklch(0.33 0.09 345)",
+          "field-1-foreground": "oklch(0.96 0.008 345)"
+        }
+      },
+      "references": [
+        "layout-l09",
+        "component-k17",
+        "component-k05",
+        "component-d06",
+        "color-c10",
+        "pal-sns-instagram-dcmlsefiicy-2",
+        "pal-sns-instagram-dct4vqjmytn-4",
+        "pal-sns-instagram-dudjznijp9d-1",
+        "https://play.grafana.org/"
+      ],
+      "archetypes": [
+        "dashboard"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 7)\n\n방향 원천은 선정서 `docs/recipes/candidates-2026-09-27.md` r10-console 줄(N9 운영 콘솔, dashboard 전용)이다. 축·서체·원형·라이트 색(바탕·글자·primary·ring)은 선정서 값 그대로다. Task 6b 뒤 묶음 C를 대담하게 다시 짜라는 운영자 결정에 따라 **다크를 기본 테마로(`defaultTheme: dark`), 색 논리를 K1에서 K6 색 면으로** 바꿨다. 모션은 선정서 M1 그대로다 — dashboard는 M3가 금지이고(compat.json recipeRules, §8-6 div-06), 매일 쓰는 운영 화면이다(§8-1).\n\n| 칸 | A 자홍 콘솔 (고름) | B 청록 먹 띠 (보드 B안) | C 다크 텔레메트리 + 네온 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 조밀 · 즉답 · 절제 | 조밀 · 차분 · 절제 | 기술 · 긴장 · 빛 |\n| 축 | B3 I1 C1 T1 H4 R2 S0, M1 | 같음, M2 | B1 I3 C2 T4 H3 R0 S0, M1 |\n| 색 논리 | K6 — 자홍 먹 면(상단 바 한 곳) + 자홍 선택·포커스, 다크 기본 | K6 — 청록 먹 면 + 자홍 선택·포커스 | 거의 검정 + 네온 초록 상태 |\n| 서체 짝과 이유 | Sora 700(라틴 제목·KPI 숫자) + Pretendard(본문·한글 제목) + Plex Mono(ID·숫자 칸) | 같은 짝 | 모노 전면 |\n| 이 안에서만 나오는 레이아웃 | 사이드 레일 앱 셸(H4) + 조밀 표(T1) + 자홍 먹 머리 띠 | 같은 틀, 청록 머리 띠 | 선 구획 계측 격자 |\n| 레퍼런스 2개 | layout-l09 · pal-sns-instagram-dct4vqjmytn-4 | pal-sns-instagram-dudjznijp9d-1 · https://play.grafana.org/ | 없음(상투 조합) |\n\n- **버린 안: C.** 「거의 검정 + 형광 한 점」(§13)이고 r1-measure(N1 도면 계측)와 방향이 겹친다(선정서 「버린 방향」). 선 구획 격자도 r1의 얼굴이다.\n- **다크 기본을 고른 이유(§5 MUST 「사용 장면으로 고른다」)**: 운영 콘솔은 관제실·야간 당직처럼 어두운 방에서 하루 종일 켜 두는 화면이다. 업종이 아니라 이 사용 장면으로 다크를 기본 미감으로 삼았다. 수동 전환은 설정 안의 보조로 둔다(해·달 스위치를 기본 부품처럼 달지 않는다). 라이트 테마는 보조로 같은 대비 기준을 채운다.\n  - **§5 MUST 「테마 기본값은 시스템 설정」과의 관계(리뷰 M3, 판정 (a))**: §5-B 다크 기본 레시피는 **저장된 선택이 없으면 다크로 시작**하고, 사용자가 설정에서 라이트·시스템으로 바꾼다(선택은 저장해 첫 페인트 전에 적용). 시스템 설정을 따르는 선택지는 설정에 남는다 — 예: next-themes `defaultTheme=\"dark\"` + `enableSystem`. README 생성 문구도 이 뜻으로 고쳤다. 이 예외 한 줄을 DESIGN.md §5 MUST 줄에 적는 일은 전역 규칙 문서라 컨트롤러 몫이다.\n- **다크 바탕(§5-B div-05)**: `0.19 0.02 340` — L 0.12~0.22·C 0.01~0.04 대역 안의 자홍 기운 먹색이다. 순흑이 아니고, 얼굴색(주 버튼 먹 흰색·자홍 선택)은 형광 초록·주홍이 아니다(lint `dark-neon` 통과).\n- **K6을 고른 이유와 주의(compat.json recipeRules caution)**: 브리프는 K1·K4 또는 주의를 달고 K6·K7을 허락했다. 계획 Task 6b 끝은 「묶음 C 3벌 모두 비골격(K6·K7·K8)」이라 K6을 골랐다 — 다크 기본만으로도 골격은 아니지만, 유채색 면 레시피 3벌(div-01)을 A 값으로 채운다. 유채색 면은 운영 화면의 의미색(상태·차트)과 다투므로 **면은 앱 셸 상단 바 한 곳에만** 쓴다(기준 시각·갱신 멈춤·전역 검색). KPI 줄·표·차트·상태 칸 뒤에는 깔지 않는다.\n  - **KPI 줄을 면에서 뺐다(Task 7 fix 1 — 리뷰 I2)**: 첫 판은 KPI 줄도 자홍 먹 면이었다. 경고 KPI의 빨강 글자가 면 위에서 다크(기본) 4.45:1, 라이트 1.91:1로 떨어지고(success 2.01·warning 2.28·info 1.92), 선택·포커스 전용인 자홍이 KPI 줄 전체를 칠하면 「이 줄이 선택됨·경보」로 읽힌다(§5 의미색 분리, color-c10). KPI 줄은 바탕·카드 위에 두고 크기(Sora 600 tabular)로 위계를 준다.\n  - **상단 바 위 조작(리뷰 I1)**: 첫 판은 라이트 상단 바 위 「갱신 멈춤」 버튼(먹 primary)이 면과 1.44:1, 포커스 링 1.75:1, 보조 글자 1.46:1이었다. 생성기의 `[data-face=\"field-1\"]` 스코프가 이제 그 안의 primary·ring을 면 글자색으로, primary-foreground를 면 색으로, 보조 글자·입력 테두리를 면 글자색을 섞은 값으로 바꾼다. 잰 값은 「게이트 기록」. lint는 이것을 경고(`recipe-caution`)로 알린다 — 위반 0.\n- **자홍의 쓰임**: 자홍 345°는 빨강 오류(27°)와 42° 떨어진 선택·포커스 전용이다 — 포커스 링, 선택 행(`accent`), 사이드 레일 현재 위치. 경고·오류는 의미색이 맡는다(§21-7 MUST). 증감은 빨강–초록 쌍 대신 부호 + 파랑–주황이다(§5 MUST) — 차트 1·2번이 파랑 252°·주황 60°다(라이트 1번 245°는 Tailwind sky-700과 OKLab 0.0048이라 252°로 옮겼다 — §5-A pal-04).\n- **K6 면 색(div-02)**: field-1 라이트 `0.36 0.1 345`·다크 `0.33 0.09 345` — 짙은 면 대역 안. 면 색은 하나다(자홍 먹). 면 위 글자는 두 테마 모두 쟀다(「게이트 기록」).\n- **모션 M1 + 기법 둘(div-06)**: `view-transition` — 목록 → 레코드 상세, 기간 필터 바꾸기 같은 뷰 전환(240~300ms, 요소 이름 하나에 하나). `svg-draw` — **조치 완료 체크 표시 한 번**(배정·상태 변경이 끝났다는 피드백)에만. 차트 선·스파크라인은 그리지 않는다 — 사용자가 읽는 데이터는 스타일 목적으로 움직이지 않는다(§8-1 MUST). 동작 줄이기에서는 전환 길이 0, 체크는 완성 상태다.\n- **B안: 청록 먹 띠.** 같은 K6에서 면만 청록 먹 220°로 바꿔, 자홍을 선택·포커스에만 남긴다(면적상 더 절제된 얼굴). 모션 M2 + 오른쪽 상세 패널 `clip-reveal`. 부분 조합(색만·모션만·기법만)도 모두 lint를 통과한다.\n- **색 수 판단**: `refs-v2/samples.jsonl` dashboard 10곳의 유채색 수 중앙값은 2(2개 이하 6곳)이고 주 색상각은 10곳 중 7곳이 180~240°(청록·파랑)다. 이 레시피는 얼굴 색을 자홍 한 묶음으로 두고(무채 먹 + 자홍 1), 차트·의미색은 따로 둔다. 파랑 일색인 대시보드 분포와 색상각으로 떨어진다(r1·r4·r6의 파랑과도 겹치지 않는다).\n- **팔레트 인용**: `pal-sns-instagram-dcmlsefiicy-2`(자홍 기운 먹 `0.17 0.03 1` + 밝은 면 `0.94 0.02 0`, 단색)에서 다크 바탕의 자홍 기운 먹색을, `pal-sns-instagram-dct4vqjmytn-4`(자홍~보라 짙은 램프 `0.14 0.06 330` · `0.36 0.09 317` · `0.5 0.07 358`)에서 자홍 먹 면의 명도·채도를 빌렸다. B안의 청록 먹은 `pal-sns-instagram-dudjznijp9d-1`(`0.39 0.07 225`, quiet luxury)의 색상각이다. 셋 다 augmented가 아닌 원본 팔레트이고 hex를 옮기지 않았다(§5-A).\n- **서체**: Sora·Pretendard·IBM Plex Mono 모두 SIL OFL 1.1(키트 항목 `meta.license`). §13·banlist에 없다. Sora는 라틴 전용이라 **한글 제목 서체는 Pretendard 700**이다(선정서 M5 — dashboard 세 벌의 한글 서체가 r1 Plex KR · r4 Noto Sans KR · r10 Pretendard로 모두 다르다). 로더는 Sora 1 + Plex Mono 1(공유) + Pretendard css 1이다.\n- **아이콘**: lucide, 결 G3(각진 2px — 기술). tabler G3은 r2가 쓴다.\n- **대비(lint와 같은 `contrast-lib ratio`)**: 다크(기본) 글자/바탕 15.99 · muted 9.54 · 주 버튼 글자/primary 14.75 · ring/바탕 7.53 · 입력 테두리 4.65 · 선택 행 글자/accent 11.56 · 자홍 먹 면 글자 11.33. 라이트 글자/바탕 16.86 · muted 7.26 · ring 6.07 · 입력 3.69 · 면 글자 10.46. B안 청록 먹 면 글자 라이트 9.27 · 다크 10.46.\n- **AI 티 점수**: 아래 「게이트 기록」.\n\n### 게이트 기록\n\n- lint 위반 0, 경고 1(`recipe-caution` K6 × dashboard — 위 「K6을 고른 이유와 주의」, 면은 상단 바 한 곳). 새 규칙 `face-contrast`·`primary-surface` 포함 A·B 모두 통과. B안 부분 조합 7개 모두 통과. qa:distinct 10벌 문제 없음(r1-measure와 축 6개 다름, 대표 면 자홍 345°는 K6 얼굴 가운데 가장 가까운 r1 B안 255°와 90°).\n- 첫 판 lint 위반 1: 라이트 `chart-1` `0.5 0.12 245`가 Tailwind sky-700과 OKLab 0.0048(§5-A pal-04) → `0.5 0.11 252`로 옮겼다.\n- 면 스코프 비율: field-1 면 조각 10% · 보조 글자 80% · 테두리 50%.\n- `/qa/recipes?r=r10-console`: run --strict 0(ux-gate는 라이트·다크 모두) · hit-area fine 34개 실패 0 · coarse 34개 실패 0.\n- **AI 티 점수 G 12/239**(kas 8/35) — G018 · G078 · G084 · G088×4 · G126 · G135×4, 모두 검수대 틀·면 견본 구획 쪽. 같은 빌드(741d7d2 + Task 7 fix 1, 차가운 캐시)에서 r1-measure를 대조로 함께 쟀다 — r1 G 12.\n- **상단 바 위의 조작**(리뷰 I1 — 라이트 「갱신 멈춤」 버튼 1.44·링 1.75이던 자리): 갤러리 「면 위의 조작」 견본(크기 위계 벤토: 첫 면이 큰 칸에 주 버튼·외곽선 버튼·입력·체크, 나머지 면은 작은 칸마다 조작 하나)을 CDP로 쟀다 — 라이트·다크를 `prefers-color-scheme`으로 따로 띄우고, Tab 키 뒤 `focus()`로 `:focus-visible` 링을 켠 계산 색(canvas sRGB)으로.\n  - 라이트 field-1: 포커스 링 **10.46** · 주 버튼 채움/면 10.46 · 버튼 글자 10.46 · 입력 테두리 3.66 · 보조 글자 7.14 · 체크 10.46.\n  - 다크(기본) field-1: 링 11.34 · 입력 3.76 · 보조 글자 7.59.\n- 한글 제목 서체(CDP): Sora는 라틴 전용이라 첫 family는 `Sora`이고, 그린 서체는 한글 글자 Pretendard Variable + 숫자·라틴 Sora다(`CSS.getPlatformFontsForNode`). 한글 제목 서체는 Pretendard 700이다.\n- 동작 줄이기(CDP, 갤러리 `prefers-reduced-motion: reduce`): 레시피 칸의 모션 토큰 `--duration-enter` 300ms(.3s) → 0s, `--duration-sheet`·`--duration-hover`·`--duration-press`·`--duration-popover` 모두 0s(factory-base가 토큰 자체를 접는다 — 리뷰 I7). 프리셋은 `animation: none`, 전환·지연은 0.\n\n## 분위기\n\n어두운 방에서 하루 종일 켜 두는 운영 콘솔이다. 바탕은 자홍 기운이 도는 먹색이고, 상단 바만 자홍 먹 면으로 한 단계 올라온다. 조밀한 표가 화면의 대부분이고, 자홍은 지금 고른 행과 포커스에만 나타난다. 경고색은 조치가 필요한 줄에만 있다. 화면을 바꿀 때만 짧게 넘어가고, 조치가 끝나면 체크 표시가 한 번 그려진다.\n\n## 쓰는 법\n\n- 원형은 운영 대시보드(dashboard) 하나다. 종류는 **운영형**(지금 조치할 것을 알린다)을 기본으로 한다(§21-7).\n- 다크가 기본 테마다: 저장된 선택이 없으면 `<html class=\"dark\">`와 `color-scheme: dark`로 시작하고(첫 페인트 전), 사용자가 설정에서 라이트·시스템을 고를 수 있게 한다.\n- 앱 셸: 왼쪽 사이드 레일(H4, 텍스트 라벨 상시·기본 펼침) + 상단 바. 상단 바가 자홍 먹 면(`bg-field-1`, 글자 `text-field-1-foreground`, **`data-face=\"field-1\"`**)이고 기준 시각·「갱신 멈춤」·전역 검색을 싣는다. `data-face`가 있어야 상단 바 안의 버튼·링·검색 입력이 면 위에서 대비를 지킨다.\n- 면은 상단 바 한 곳만. KPI 줄은 바탕·카드 위에 두고 Sora 600 tabular 크기로 위계를 준다. 표·차트·상태 칸 뒤에는 면을 깔지 않는다.\n- 표는 T1 조밀(행 32px, 헤더 행도 32px), 숫자 칸은 `data-numeric` + tabular-nums(Plex Mono), 첫 열은 사람이 읽는 이름이다. 선택 행은 `accent`(자홍 옅은 면), 일괄 작업은 「n개 선택됨」 + 표 위 작업 막대다.\n- 제목: 라틴·KPI 숫자는 Sora 700·600, 한글 제목은 Pretendard 700. 크기는 1.2 비율 16 · 19 · 23 · 28 · 33px에서 멈춘다.\n- 반경은 R2(작은 컨트롤 6~8px), 버튼 B3 8px, 카드 C1 헤어라인 + 그림자 없음(S0).\n- 모션 M1(hover 150ms, 등장 300ms). 역동 기법 둘:\n  - `view-transition` — 목록 → 상세, 기간 바꾸기. 같은 출처만, 이름은 요소 하나에 하나.\n  - `svg-draw` — 조치 완료 체크 표시 한 번(`pathLength=\"1\"`). 차트 선에는 쓰지 않는다.\n- 동작 줄이기: 전환 길이 0, 체크는 완성 상태로. 공장 바닥 규칙(factory-base)이 전환·애니메이션 길이를 0.01ms로 접는다.\n- 보드 B안(`alternates`): K6 청록 먹 띠 + M2 + `view-transition`·`clip-reveal`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n- 상태는 색과 글자·아이콘을 함께 쓴다: 성공 success(160°), 주의 warning(65°), 오류 destructive(27°), 안내 info(245°). 경고색은 조치가 필요한 항목에만.\n\n## 하지 말 것\n\n- 거의 검정 바탕에 형광 초록·주홍 한 점을 두지 않는다(§13). 바탕은 L 0.19 자홍 먹이다.\n- 자홍을 경고·오류·증감 표시로 쓰지 않는다. 자홍은 선택·포커스·현재 위치뿐이다.\n- 자홍 먹 면을 KPI 줄·표·차트·상태 칸 뒤에 깔지 않는다. 면은 상단 바 한 곳이다.\n- 상단 바에 `data-face` 없이 면 색만 칠하지 않는다.\n- 보드에서 이 레시피의 B안(청록 먹)을 r1-measure B안(청사진 파랑)과 함께 고르지 않는다.\n- 증감을 빨강–초록으로 칠하지 않는다. 부호 + 파랑–주황이다.\n- 차트 선·스파크라인·KPI 숫자를 그리거나 굴리며 등장시키지 않는다(§8-1).\n- 3D 기울임·자석·스크롤 등장을 쓰지 않는다(M3 금지, dashboard).\n- 해·달 테마 스위치를 기본 부품처럼 상단 바에 달지 않는다.\n- 모노스페이스를 라벨·캡션·상태 이름에 쓰지 않는다. 모노는 ID·숫자 칸·코드만이다.\n- 사이드바를 아이콘만 남긴 축소 상태로 기본 두지 않는다.\n- 두 색 사이에 그라디언트를 넣지 않는다(K7 듀오톤을 고르더라도). 면은 단색이다.\n\n## 레퍼런스에서 가져온 기법\n\n- layout-l09 : 1순위 카드를 크게 — 조치 영역이 첫 화면의 가장 큰 칸이다.\n- component-k17 : 한 줄 KPI 셀, 대부분은 여백만으로 나눈다.\n- component-k05 : 상태를 색·글자·아이콘으로 함께 표현한다.\n- component-d06 : 불확실성·기준을 수치 옆에 붙인다(§21-7 판단 기준).\n- color-c10 : 의미 색을 브랜드 색과 분리한다 — 자홍은 선택·포커스, 상태는 의미색.\n- pal-sns-instagram-dcmlsefiicy-2 : 자홍 기운 먹 단색 — 다크 바탕의 근거.\n- pal-sns-instagram-dct4vqjmytn-4 : 자홍 짙은 램프 — 자홍 먹 면(field-1)의 명도·채도 근거.\n- pal-sns-instagram-dudjznijp9d-1 : 청록 먹 225° — B안 면의 색상각.\n- https://play.grafana.org/ : 운영 콘솔의 사이드 레일·조밀 표·어두운 기본 테마.\n"
+    },
+    {
+      "id": "r2-signal",
+      "name": "흑백 신호",
+      "mood": [
+        "단정",
+        "대담",
+        "신호"
+      ],
+      "axes": {
+        "button": "B1",
+        "input": "I3",
+        "surface": "C2",
+        "table": "T3",
+        "header": "H3",
+        "radius": "R0",
+        "shadow": "S1"
+      },
+      "motion": "M0",
+      "colorLogic": "K4",
+      "dynamics": [
+        "oversize-crop",
+        "blend"
+      ],
+      "alternates": {
+        "colorLogic": "K7",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.52 0.2 28)",
+            "field-1-foreground": "oklch(0.985 0.003 28)",
+            "primary": "oklch(0.42 0.18 262)",
+            "sidebar-primary": "oklch(0.42 0.18 262)"
+          },
+          "dark": {
+            "field-1": "oklch(0.5 0.17 28)",
+            "field-1-foreground": "oklch(0.985 0.003 28)",
+            "primary": "oklch(0.8 0.1 262)",
+            "sidebar-primary": "oklch(0.8 0.1 262)"
+          }
+        },
+        "motion": "M1",
+        "dynamics": [
+          "split-text",
+          "oversize-crop"
+        ],
+        "note": "듀오톤 포스터 — 신호 빨강 면(field-1)과 코발트 잉크·주 버튼(primary)이 면적을 나눠 갖고(두 색 사이 그라디언트 없음), 첫 화면 제목은 글자 분할로 한 번 등장한다"
+      },
+      "signature": [
+        "hero-display",
+        "bento"
+      ],
+      "icons": {
+        "library": "tabler",
+        "weight": "G3"
+      },
+      "fonts": {
+        "display": {
+          "family": "Archivo",
+          "item": "font-archivo",
+          "weight": 800,
+          "tuned": "라틴 제목 전용. 굵기 800(제목)·400(부제) 두 단계, 자간 -0.04em(64px 이상)·-0.02em(28~50px), 행간 0.98은 라틴 소문자·숫자 제목에만. 디스플레이 clamp(2.75rem, 5vw + 1rem, 5.625rem)(최대 90px, 본문의 5.6배), 414px 이하에서 2줄을 넘으면 50px 단계로 내린다. 계단 제목은 1024px 이상에서만 줄마다 1~2단어·5단어 이하 3줄, 그 밖은 2줄"
+        },
+        "body": {
+          "family": "Gothic A1",
+          "item": "font-gothic-a1",
+          "tuned": "본문 16px/1.7 굵기 400, 한글 제목은 Archivo 뒤로 떨어져 이 서체 800(디스플레이)·700(부제)로 그린다. 한글 제목 행간 1.1(받침 보호, Archivo 라틴 제목의 0.98과 따로), 48px 이상 자간 -0.03em, 캡션도 본문 서체 16px(최소 14px)"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "item": "font-ibm-plex-mono",
+          "tuned": "I3 숫자 입력(전화·수량)·data-numeric 칸에만, 굵기 400. 라벨·캡션·번호에는 쓰지 않는다"
+        }
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.985 0.003 28)",
+          "foreground": "oklch(0.18 0.005 28)",
+          "card": "oklch(0.995 0.002 28)",
+          "card-foreground": "oklch(0.18 0.005 28)",
+          "popover": "oklch(0.995 0.002 28)",
+          "popover-foreground": "oklch(0.18 0.005 28)",
+          "primary": "oklch(0.2 0.006 28)",
+          "primary-foreground": "oklch(0.985 0.003 28)",
+          "secondary": "oklch(0.935 0.004 28)",
+          "secondary-foreground": "oklch(0.2 0.006 28)",
+          "muted": "oklch(0.95 0.003 28)",
+          "muted-foreground": "oklch(0.4 0.006 28)",
+          "accent": "oklch(0.925 0.004 28)",
+          "accent-foreground": "oklch(0.49 0.19 28)",
+          "destructive": "oklch(0.47 0.16 18)",
+          "border": "oklch(0.6 0.005 28)",
+          "input": "oklch(0.3 0.006 28)",
+          "ring": "oklch(0.55 0.2 28)",
+          "success": "oklch(0.5 0.1 150)",
+          "success-foreground": "oklch(0.985 0.005 150)",
+          "warning": "oklch(0.56 0.12 65)",
+          "warning-foreground": "oklch(0.985 0.005 65)",
+          "info": "oklch(0.48 0.12 245)",
+          "info-foreground": "oklch(0.985 0.004 245)",
+          "chart-1": "oklch(0.55 0.2 28)",
+          "chart-2": "oklch(0.26 0.006 28)",
+          "chart-3": "oklch(0.4 0.006 28)",
+          "chart-4": "oklch(0.52 0.005 28)",
+          "chart-5": "oklch(0.62 0.005 28)",
+          "sidebar": "oklch(0.97 0.003 28)",
+          "sidebar-foreground": "oklch(0.18 0.005 28)",
+          "sidebar-primary": "oklch(0.2 0.006 28)",
+          "sidebar-primary-foreground": "oklch(0.985 0.003 28)",
+          "sidebar-accent": "oklch(0.925 0.004 28)",
+          "sidebar-accent-foreground": "oklch(0.49 0.19 28)",
+          "sidebar-border": "oklch(0.6 0.005 28)",
+          "sidebar-ring": "oklch(0.55 0.2 28)"
+        },
+        "dark": {
+          "background": "oklch(0.17 0.004 28)",
+          "foreground": "oklch(0.95 0.003 28)",
+          "card": "oklch(0.2 0.005 28)",
+          "card-foreground": "oklch(0.95 0.003 28)",
+          "popover": "oklch(0.22 0.005 28)",
+          "popover-foreground": "oklch(0.95 0.003 28)",
+          "primary": "oklch(0.94 0.004 28)",
+          "primary-foreground": "oklch(0.19 0.005 28)",
+          "secondary": "oklch(0.27 0.005 28)",
+          "secondary-foreground": "oklch(0.95 0.003 28)",
+          "muted": "oklch(0.25 0.005 28)",
+          "muted-foreground": "oklch(0.8 0.005 28)",
+          "accent": "oklch(0.3 0.006 28)",
+          "accent-foreground": "oklch(0.8 0.12 28)",
+          "destructive": "oklch(0.7 0.13 20)",
+          "border": "oklch(0.55 0.005 28)",
+          "input": "oklch(0.72 0.005 28)",
+          "ring": "oklch(0.7 0.14 28)",
+          "success": "oklch(0.74 0.11 150)",
+          "success-foreground": "oklch(0.19 0.02 150)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.74 0.1 245)",
+          "info-foreground": "oklch(0.19 0.015 245)",
+          "chart-1": "oklch(0.7 0.14 28)",
+          "chart-2": "oklch(0.92 0.004 28)",
+          "chart-3": "oklch(0.8 0.005 28)",
+          "chart-4": "oklch(0.68 0.005 28)",
+          "chart-5": "oklch(0.58 0.005 28)",
+          "sidebar": "oklch(0.2 0.005 28)",
+          "sidebar-foreground": "oklch(0.95 0.003 28)",
+          "sidebar-primary": "oklch(0.94 0.004 28)",
+          "sidebar-primary-foreground": "oklch(0.19 0.005 28)",
+          "sidebar-accent": "oklch(0.3 0.006 28)",
+          "sidebar-accent-foreground": "oklch(0.8 0.12 28)",
+          "sidebar-border": "oklch(0.55 0.005 28)",
+          "sidebar-ring": "oklch(0.7 0.14 28)"
+        }
+      },
+      "references": [
+        "layout-l11",
+        "layout-l12",
+        "color-c04",
+        "type-portfolio-h1-ratio-high",
+        "pal-sns-instagram-dapad3qkle0-2",
+        "https://design-system.service.gov.uk/styles/page-template/",
+        "https://redcollar.co/",
+        "https://metic.studio/en"
+      ],
+      "archetypes": [
+        "brand",
+        "portfolio",
+        "public"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 5)\n\n방향 원천은 dribbble-summary §6 R2(스위스·흑백·신호)와 style_axes N6(포스터 타이포)이고, 선정서 `docs/recipes/candidates-2026-09-27.md` r2-signal 줄을 그대로 따랐다. DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 흑백 신호 (고름) | B 흑백 코발트 (남김, 안 씀) | C 야간 텔레메트리 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 단정 · 대담 · 신호 | 단정 · 정확 · 공학 | 야간 · 경계 · 조밀 |\n| 축 | B1 I3 C2 T3 H3 R0 S1, M0 | B1 I3 C2 T3 H3 R0 S1, M0 | B3 I1 C1 T1 H4 R1 S0, M1 |\n| 서체 짝과 이유 | Archivo 800(라틴 제목) + Gothic A1(본문, 한글 제목 800). 음수 자간의 넓은 그로테스크가 포스터 활자를 맡고, 한글은 획이 곧은 고딕으로 같은 결을 잇는다 | 같은 짝 | Barlow Condensed + Pretendard. 좁은 벽 화면용 응축형 |\n| 색 3개 + 강조 1 | 흰 종이 · 먹 · 중간 회색 + 신호 빨강(hue 28) | 흰 종이 · 먹 · 중간 회색 + 코발트(hue 260) | 먹색 바탕(L 0.17) · 밝은 회색 · 중간 회색 + 빨강·터미널 초록 한 점 |\n| 사진·그림 | 흑백 사진(채도 0), 색은 사진 밖 신호 하나 | 흑백 사진 | 사진 없음, 로그·실시간 선 |\n| 이 안에서만 나오는 레이아웃 | 화면 폭 가득한 3줄 계단 제목(layout-l11) + 45:55 사진 분할(layout-l12) + 가장자리에 붙인 워드마크 내비(N9) | 같은 틀 | 12열 경보 벽 |\n| 레퍼런스 2개 | layout-l11 · color-c04 | layout-l11 · https://design-system.service.gov.uk/styles/page-template/ | https://play.grafana.org/ · https://status.digitalocean.com/ |\n\n- **버린 안: C.** 먹색 바탕에 빨강·초록 한 점만 채도를 갖는 구성은 §13 「거의 검정 + 형광 초록·주홍 한 점」 그 자체다. 방향도 r1-measure(N1 계측)와 겹친다.\n- **남긴 안: B.** 상투 표에는 걸리지 않는다. 그러나 파랑 강조는 r1(255°)·r6(258°)과 겹쳐 보드에서 「다 비슷하다」가 된다. 파랑은 이 레시피에서 정보 상태색(info)으로만 남겼다.\n- **고른 안: A.** 방문자 모드는 설득(brand·portfolio)과 안내(public)다. 선정서 행 메모대로 r1과는 활자 규모·흑백 사진·빨강 신호 세 가지로 갈린다(축은 T·S 두 개만 다르다).\n- **크롬 구분(0 계열 세 벌, 선정서 리뷰 I3)**: r1·r2·r3은 B1·I3·C2·H3·R0이 같다. r2는 여기서 셋을 바꾼다. S1이라 팝오버·다이얼로그·스티키 헤더 아래에 여러 겹 틴트 그림자가 생기고(r1은 그림자 없음, r3은 단색 오프셋), 표는 T3이며, 내비는 N9 edge-aligned(큰 워드마크를 왼쪽 끝, 성긴 링크를 오른쪽 끝)다.\n- **교체 가능성 검사로 고친 것**\n  - 선택 칸(accent)을 옅은 분홍으로 두는 안을 검토했다. 메뉴를 열 때마다 분홍 면이 깔리면 빨강이 신호가 아니라 장식이 된다. accent 면은 무채 회색으로 두고, 빨강은 포커스 링·토글 선택 링(ring)·메뉴에서 가리키는 칸의 글자(accent-foreground)·차트 1번·큰 제목 한 줄에만 둔다.\n  - 갤러리(`/qa/recipes?r=r2-signal`, 1440 라이트) 첫 화면에는 빨강이 없다. 견본 틀이 헤더·KPI·글자 크기로 시작하고, 이 레시피의 큰 계단 제목·흑백 사진은 견본에 없기 때문이다. 쉬는 화면의 빨강은 아래쪽 토글 선택 링과 차트 1번 선에서 보인다. 「지금 가리키는 곳」 약속을 메뉴에도 잇도록, 드롭다운·셀렉트·메뉴바에서 포인터·키보드가 가리키는 칸의 글자(accent-foreground)를 빨강(L 0.49 C 0.19, 회색 면 위 5.53:1 · 다크 L 0.8 C 0.12, 6.92:1)으로 두었다. 주 내비의 현재 위치는 부품이 밑줄로 그린다(색 토큰 아님).\n  - 오류색이 신호 빨강과 같은 색이면 「지금 가리키는 곳」과 「잘못된 곳」이 구분되지 않는다. destructive는 hue 18·L 0.47의 더 어둡고 차가운 진홍으로 떼었다(신호는 hue 28·L 0.55). 오류는 늘 아이콘과 글자를 함께 쓰므로 색만으로 가르지 않는다(§5 MUST).\n  - 다크에서 빨강 채도를 0.2 그대로 두면 L 0.17 바탕 위에 채도 0.15 넘는 색이 하나만 남아 banlist `near-black-neon`(G130)에 걸린다. 다크의 ring·chart-1은 C 0.14, destructive는 C 0.13으로 낮췄다(§5 「다크는 채도를 0.02~0.04 낮추고 L을 올린다」).\n- **팔레트 인용**: `pal-sns-instagram-dapad3qkle0-2`(SNS, 가중 0.2, 보강 없음)의 구조 「무채 바탕 · 거의 검정 글자 · 진한 빨강 하나」와 빨강의 색상각(25.5°)만 가져왔다. hex는 옮기지 않았고, 원본 바탕의 차가운 청회(214°)는 버리고 뉴트럴을 빨강 쪽(28°)으로 아주 옅게(C 0.003~0.006) 기울였다. 원본 빨강(L 0.53 C 0.215)은 흰 바탕 글자 4.5:1에 못 미쳐서, 역할을 링·면·큰 글자로 한정했다(DESIGN §1-B SHOULD, §5-A 역할 배정).\n- **서체**: Archivo·Gothic A1·IBM Plex Mono 모두 SIL OFL 1.1이다(키트 항목 `meta.licenseUrl`). §13·banlist에 없다. Archivo는 라틴 전용이라 제목 스택이 Archivo → Gothic A1 → 시스템 한글 순으로 떨어진다. **한글 제목 서체는 Gothic A1 800**이다(선정서 M5). 처음 판은 키트에 800이 없어(400·500·700·900) 900으로 적었다. Task 6에서 r7-docs가 800을 쓰면서 키트 항목을 400·500·700·800으로 바꿨고(next/font `font-data.json`의 Gothic A1은 100~900이다. 키트 항목 굵기 상한 4(`factory/scripts/gen-fonts.mjs` `MAX_WEIGHTS`, `docs/qa/font-licenses.md` 「정적 서체는 4개까지」)를 지키려 900을 뺐다. 어느 레시피도 Gothic A1 500을 쓰지 않으므로(r2 400·700·800, r7 800) 400·700·800 셋으로 줄여 정적 굵기 하나를 덜 받는 안도 남겨 둔다(Task 6 리뷰 M2)), 이 레시피도 선정서 값 800으로 돌아왔다. 없는 굵기를 합성하지 않는다(§2).\n- **아이콘**: tabler(키트 항목 `icons-tabler`), 결은 G3(각진 2px — `stroke-linecap: square`·`linejoin: miter`). 직각 크롬과 같은 모서리다. r1(lucide)·r3(phosphor)·r4(lucide)와 결이 다르다.\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 portfolio 표본 23곳 중 19곳이 유채색 2개 이하(중앙값 1)이고, S 0.9 이상 11곳 가운데 redcollar(유채 1, hue 0)·metic(유채 1, hue 0)이 흰 바탕 + 빨강 하나 구성이다. brand는 29곳 중 15곳이 2개 이하(중앙값 2)라 절제와 다색이 반반이다. public은 19곳 모두 3개 이상(중앙값 8)이지만 S 1.0 표본 KRDS는 유채 3개에 주 색 하나가 면적을 맡는다. 그래서 강조는 빨강 하나로 두고, public에서는 §21-8 「주 색 약 10%」를 빨강이 아니라 먹 버튼·굵은 제목의 면적이 채우게 했다(빨강은 링·큰 제목, 긴급 공지와 오류는 의미색). 기법은 color-c04(흑백 사진 + 강렬한 색 하나, 면적 3~5%)에서 가져왔다. 상태색(성공·경고·오류·정보)은 §5 MUST라 따로 두고 의미에만 쓴다.\n- **글자 크기(리뷰 I3)**: 비율 1.333 하나로 16 · 21 · 28 · 38 · 50 · 67 · 90에서 멈춘다. 90px이 최대다 — 처음 판의 「한 단어·수치만 112px」은 1.333 비율 위의 값이 아니어서(90 × 1.333 = 120) §2 MUST 「하나의 비율로 정의된 토큰만」에 걸려 버렸다. 디스플레이는 `clamp(2.75rem, 5vw + 1rem, 5.625rem)`으로 rem을 섞어 확대에 반응하게 하고(§2 MUST), 414px 이하에서 2줄을 넘으면 50px 단계로 내린다. 제목:본문은 90/16 ≈ 5.6배다. 기준 카드는 type-portfolio-h1-ratio-high(중앙값 6.1, 범위 4.11~10.03)다. 선정서 행 메모의 「H1:본문 10 이상」은 본문 16px에서 160px이 되어 §2 MUST(디스플레이 상한 6rem, 한 단어 7rem)를 넘으므로 따르지 않았다.\n- **§2 「히어로 헤드라인 데스크톱 2줄 이하」 예외(리뷰 I3)**: 3줄 계단 제목은 이 MUST의 예외로 둔다. 근거는 layout-l11(한두 단어를 계단으로 끊는 포스터 활자, 관찰 5곳)이다. 조건은 셋이다: 줄마다 1~2단어, 제목 전체 5단어 이하, 1024px 이상에서만. 1024px 미만과 조건을 못 채우는 제목은 2줄 이하로 쓴다. 한글 제목(Gothic A1 800)은 행간 1.1로 따로 두어 받침이 잘리지 않게 한다(리뷰 M5 — §2 MUST 「행간 1.05 미만은 렌더로 확인」을 피하는 쪽을 골랐다).\n- **AI 티 점수**: `/qa/recipes?r=r2-signal` 경고 모드 G **12**/239(kas 5/35) — r1 기준선 12와 같다. 적중은 G018·G078·G084·G088×4·G126·G135×2로 r1과 같은 검수대 틀 쪽이고, 레시피 색·서체에서 새로 생긴 적중은 없다(표: `docs/qa/ai-tell-baseline.md`).\n\n## 분위기\n\n흰 종이에 먹으로 찍은 포스터처럼 단정하고 대담한 화면이다. 사진은 모두 흑백이고, 색은 신호 빨강 하나뿐이다. 그 빨강은 지금 가리키는 곳(포커스·선택)과 페이지에서 가장 큰 한 줄에만 나온다. 제목은 화면 폭을 가득 채우는 넓은 그로테스크로 계단처럼 끊어 쌓고, 나머지 글자는 모두 한 크기로 조용하다.\n\n## 쓰는 법\n\n- 맞는 원형은 브랜드 홈, 포트폴리오·스튜디오, 공공기관 안내다. 활자와 사진이 화면의 주인공인 곳에 쓴다.\n- 첫 화면 제목은 5단어 이하로 줄인다. 1024px 이상에서 줄마다 1~2단어면 3줄 계단으로 끊고 줄마다 1.5em씩 들여 시작한다. 그보다 좁거나 단어가 많으면 2줄 이하다(§2 예외 조건 — 결정 기록). 라틴 제목은 Archivo 800·자간 -0.04em·행간 0.98, 한글 제목은 Gothic A1 800·자간 -0.03em·행간 1.1이다. 크기는 `clamp(2.75rem, 5vw + 1rem, 5.625rem)`(최대 90px, 본문의 약 6배)이고, 414px 이하에서 2줄을 넘으면 50px 단계로 내린다.\n- 큰 수치로 제목을 세우면 바로 옆이나 아래에 그 수치가 무엇을 뜻하는지 말하는 문장 한 줄을 둔다(예: 「312」 옆에 「올해 문을 연 전시 수(예시)」). 수치 하나만으로 헤드라인을 채우지 않는다(§13).\n- 글자 크기는 1.333 비율 한 줄로 쓴다(16 · 21 · 28 · 38 · 50 · 67 · 90). 큰 글자는 제목 한 곳에만 쓰고, 내비·작업 제목·캡션은 16~21px 한 크기로 맞춘다(§21-4).\n- 사진은 흑백으로 넣는다(`filter: grayscale(1)`이 아니라 흑백으로 현상한 파일). 히어로는 글자 45 : 사진 55로 나누고 글자 쪽을 왼쪽 정렬한다(layout-l12).\n- 빨강은 여섯 곳에만 쓴다: 포커스 링, 토글·탭 선택 칸의 2px 안쪽 링(ring), 메뉴·선택 목록에서 가리키는 칸의 글자(accent-foreground — 회색 면 위 5.53:1), 차트 1번 계열, 페이지에서 가장 큰 제목 한 줄, 흑백 사진 위 한 개의 면(예: 「전시 중」 띠). 링 색(L 0.55)은 흰 바탕 작은 글자에 쓰지 않는다(4.5:1 미달).\n- 주 버튼은 먹 채움 하나다. 보조 동작은 같은 반경(0)의 외곽선 버튼이다.\n- 캡션·메타는 본문 서체 16px(최소 14px) muted 색으로 쓴다. 숫자 입력(전화·수량)과 `data-numeric` 칸만 IBM Plex Mono가 된다.\n- 내비는 edge-aligned다. 워드마크를 왼쪽 끝에 크게, 링크 3~5개를 오른쪽 끝에 성기게 둔다. 헤더 아래는 1px 먹 선으로 끊는다(H3).\n- 상태는 색과 글자를 함께 쓴다: 정상 success, 주의 warning, 오류 destructive(진홍, 신호 빨강보다 어둡다), 안내 info(파랑).\n- public에서 쓸 때: 빨강은 포커스 링과 큰 제목에만 두고, 긴급 공지·오류는 의미색이 맡는다. 본문은 KRDS 행간 150%·표준형 레이아웃 토큰을 따르고, 공식 배너·글자 크기 조정은 §21-8 순서대로 둔다(GOV.UK page template 결의 사각 그로테스크 + 흑백 + 한 색).\n- 모션은 M0이다. 상태가 바뀌면 바로 바뀐다(색 전환 120ms 이하 — 모션 토큰 M0 hover 120ms, DESIGN §8-2 바닥). 등장 연출은 두지 않는다.\n- 역동 기법은 움직이지 않는 둘이다. `oversize-crop` — 히어로·푸터 워드마크를 화면 폭보다 크게 두고 `clamp()`로 잘리는 자리를 정한다. `blend` — 흑백 사진에 겹친 큰 제목 한 줄만 `mix-blend-mode: difference`로 뒤집고(커서 추종 없이 겹침만), 겹친 자리의 대비를 다시 잰다. M0이라 등장 연출은 없다.\n- 보드 B안(`alternates`): 색 논리 K7 듀오톤 + 모션 M1 + `split-text`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n\n## 하지 말 것\n\n- 빨강을 넓은 면·주 버튼·본문 링크에 칠하지 않는다. 강조 면적은 3~5%다(color-c04).\n- 컬러 사진을 섞지 않는다. 색 사진이 한 장 들어오면 빨강이 신호가 아니라 여러 색 중 하나가 된다.\n- 「01 / 02 / 03」 번호 라벨, 라틴 대문자 메타 줄, 모노스페이스 캡션을 쓰지 않는다(§13). 번호는 실제 순서가 있을 때만 본문 서체로 쓴다.\n- 제목 속 단어를 기울이거나 빨강으로 칠해 강조하지 않는다. 위계는 크기·굵기로 낸다.\n- 둥근 모서리를 섞지 않는다. 버튼·입력·카드·배지·아바타까지 모두 0이다.\n- 디스플레이 제목을 6단어 넘게 쓰지 않는다. 길면 요점을 줄이고 나머지는 21px 부제로 보낸다(§2).\n- B안(K7 듀오톤)을 고르면 두 색 사이에 그라디언트를 넣지 않는다. 빨강 면과 코발트는 칸으로 나눈다.\n- Archivo를 한글 문장에 기대하지 않는다. 라틴 전용이라 한글은 Gothic A1로 떨어진다 — 한글 제목의 굵기·자간은 Gothic A1 기준으로 정한다.\n\n## 레퍼런스에서 가져온 기법\n\n- layout-l11 : 한두 단어를 화면 폭 가득 크게 두고 계단식으로 들여 끊는다(자간 -2~-4%). 이 레시피는 -4%, 3줄 계단이다.\n- layout-l12 : 글자 패널과 사진 패널을 45:55로 나누고 CTA를 글자 패널 아래에 둔다.\n- color-c04 : 사진을 흑백으로 빼고 강렬한 색 하나만 CTA가 아닌 신호(링·수치 막대)에 쓴다. 강조 면적 3~5%.\n- type-portfolio-h1-ratio-high : 제목:본문 비율을 4~10 구간에 둔다(표본 중앙값 6.1). 이 레시피는 5.6배다.\n- pal-sns-instagram-dapad3qkle0-2 : 무채 바탕 · 거의 검정 글자 · 진한 빨강 하나의 세 역할 구조와 빨강 색상각.\n- https://design-system.service.gov.uk/styles/page-template/ : 공공 화면에서 사각 그로테스크 + 흑백 + 한 색으로 공식성을 만든다. public 원형에서 헤더·본문·푸터의 순서와 먹 선 구획만 가져왔다.\n- https://redcollar.co/ · https://metic.studio/en : 흰 바탕에 유채색 하나(hue 0)만 두는 포트폴리오 표본(refs-v2, S 1.0·0.999). 색 수 판단의 근거다.\n"
+    },
+    {
+      "id": "r3-woodblock",
+      "name": "두도수 목판",
+      "mood": [
+        "손맛",
+        "인쇄",
+        "장터"
+      ],
+      "axes": {
+        "button": "B1",
+        "input": "I3",
+        "surface": "C2",
+        "table": "T1",
+        "header": "H3",
+        "radius": "R0",
+        "shadow": "S2"
+      },
+      "motion": "M0",
+      "colorLogic": "K1",
+      "dynamics": [
+        "grain",
+        "oversize-crop"
+      ],
+      "alternates": {
+        "colorLogic": "K8",
+        "color": {
+          "light": {
+            "block-1": "oklch(0.5 0.11 150)",
+            "block-1-foreground": "oklch(0.985 0.005 150)",
+            "block-2": "oklch(0.62 0.19 35)",
+            "block-2-foreground": "oklch(0.15 0.03 35)",
+            "block-3": "oklch(0.8 0.12 88)",
+            "block-3-foreground": "oklch(0.22 0.03 88)",
+            "block-4": "oklch(0.4 0.12 265)",
+            "block-4-foreground": "oklch(0.97 0.01 265)"
+          },
+          "dark": {
+            "block-1": "oklch(0.45 0.1 150)",
+            "block-1-foreground": "oklch(0.97 0.01 150)",
+            "block-2": "oklch(0.62 0.16 35)",
+            "block-2-foreground": "oklch(0.15 0.03 35)",
+            "block-3": "oklch(0.74 0.11 88)",
+            "block-3-foreground": "oklch(0.2 0.03 88)",
+            "block-4": "oklch(0.42 0.11 265)",
+            "block-4-foreground": "oklch(0.97 0.01 265)"
+          }
+        },
+        "motion": "M2",
+        "dynamics": [
+          "grain",
+          "clip-reveal"
+        ],
+        "note": "네 도수 판화 — 메뉴·상품 칸마다 판 색 하나(숲초록·주홍·황토·쪽, block-1~4), 가장 진한 판(주홍)은 한 칸뿐. 「세 번째 도수 금지」를 푼다"
+      },
+      "signature": [
+        "menu-board",
+        "hero-display"
+      ],
+      "icons": {
+        "library": "phosphor",
+        "weight": "G5"
+      },
+      "fonts": {
+        "display": {
+          "family": "Black Han Sans",
+          "item": "font-black-han-sans",
+          "weight": 400,
+          "tuned": "굵기 400 하나뿐이라 소비자가 직접 쓰는 25px 이상 제목 전용 — 본문·버튼·표·부품 제목에는 쓰지 않는다. 레시피 CSS가 .font-heading 굵기 합성을 끄고(font-synthesis-weight: none) 부품 제목 칸을 본문 서체로 돌린다. 48px 이상 자간 -0.02em, 행간 1.15(받침이 잘리지 않는 하한). 원·아치 문자(type-t09)는 로고 락업 한 곳에만"
+        },
+        "body": {
+          "family": "Noto Sans KR",
+          "item": "font-noto-sans-kr",
+          "tuned": "본문 16px/1.7 굵기 400, 가격·메뉴 이름 700(차 300), 가격표 행은 T1 조밀이라 행간 1.5·tabular-nums"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "item": "font-ibm-plex-mono",
+          "tuned": "I3 전화·수량 입력에만, 굵기 400. 가격은 본문 서체 tabular-nums로 쓴다"
+        }
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.975 0.01 150)",
+          "foreground": "oklch(0.28 0.03 52)",
+          "card": "oklch(0.99 0.006 150)",
+          "card-foreground": "oklch(0.28 0.03 52)",
+          "popover": "oklch(0.99 0.006 150)",
+          "popover-foreground": "oklch(0.28 0.03 52)",
+          "primary": "oklch(0.42 0.08 160)",
+          "primary-foreground": "oklch(0.975 0.01 150)",
+          "secondary": "oklch(0.93 0.02 150)",
+          "secondary-foreground": "oklch(0.3 0.05 165)",
+          "muted": "oklch(0.945 0.015 150)",
+          "muted-foreground": "oklch(0.42 0.03 52)",
+          "accent": "oklch(0.9 0.04 152)",
+          "accent-foreground": "oklch(0.3 0.05 165)",
+          "destructive": "oklch(0.5 0.16 32)",
+          "border": "oklch(0.58 0.035 160)",
+          "input": "oklch(0.32 0.03 52)",
+          "ring": "oklch(0.5 0.1 160)",
+          "success": "oklch(0.5 0.11 138)",
+          "success-foreground": "oklch(0.985 0.008 138)",
+          "warning": "oklch(0.55 0.12 70)",
+          "warning-foreground": "oklch(0.985 0.005 70)",
+          "info": "oklch(0.48 0.09 240)",
+          "info-foreground": "oklch(0.985 0.005 240)",
+          "chart-1": "oklch(0.36 0.07 162)",
+          "chart-2": "oklch(0.46 0.09 160)",
+          "chart-3": "oklch(0.55 0.1 158)",
+          "chart-4": "oklch(0.45 0.05 52)",
+          "chart-5": "oklch(0.6 0.06 52)",
+          "sidebar": "oklch(0.96 0.014 150)",
+          "sidebar-foreground": "oklch(0.28 0.03 52)",
+          "sidebar-primary": "oklch(0.42 0.08 160)",
+          "sidebar-primary-foreground": "oklch(0.975 0.01 150)",
+          "sidebar-accent": "oklch(0.9 0.04 152)",
+          "sidebar-accent-foreground": "oklch(0.3 0.05 165)",
+          "sidebar-border": "oklch(0.58 0.035 160)",
+          "sidebar-ring": "oklch(0.5 0.1 160)"
+        },
+        "dark": {
+          "background": "oklch(0.18 0.012 52)",
+          "foreground": "oklch(0.95 0.01 150)",
+          "card": "oklch(0.21 0.013 52)",
+          "card-foreground": "oklch(0.95 0.01 150)",
+          "popover": "oklch(0.23 0.014 52)",
+          "popover-foreground": "oklch(0.95 0.01 150)",
+          "primary": "oklch(0.78 0.1 158)",
+          "primary-foreground": "oklch(0.2 0.03 165)",
+          "secondary": "oklch(0.28 0.015 52)",
+          "secondary-foreground": "oklch(0.95 0.01 150)",
+          "muted": "oklch(0.26 0.014 52)",
+          "muted-foreground": "oklch(0.8 0.02 150)",
+          "accent": "oklch(0.32 0.04 160)",
+          "accent-foreground": "oklch(0.93 0.03 155)",
+          "destructive": "oklch(0.7 0.13 32)",
+          "border": "oklch(0.56 0.02 60)",
+          "input": "oklch(0.74 0.02 60)",
+          "ring": "oklch(0.76 0.11 158)",
+          "success": "oklch(0.76 0.11 138)",
+          "success-foreground": "oklch(0.2 0.03 138)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.75 0.08 240)",
+          "info-foreground": "oklch(0.2 0.02 240)",
+          "chart-1": "oklch(0.86 0.08 160)",
+          "chart-2": "oklch(0.76 0.1 158)",
+          "chart-3": "oklch(0.66 0.1 158)",
+          "chart-4": "oklch(0.76 0.06 60)",
+          "chart-5": "oklch(0.62 0.06 55)",
+          "sidebar": "oklch(0.21 0.013 52)",
+          "sidebar-foreground": "oklch(0.95 0.01 150)",
+          "sidebar-primary": "oklch(0.78 0.1 158)",
+          "sidebar-primary-foreground": "oklch(0.2 0.03 165)",
+          "sidebar-accent": "oklch(0.32 0.04 160)",
+          "sidebar-accent-foreground": "oklch(0.93 0.03 155)",
+          "sidebar-border": "oklch(0.56 0.02 60)",
+          "sidebar-ring": "oklch(0.76 0.11 158)"
+        }
+      },
+      "references": [
+        "color-c09",
+        "layout-i05",
+        "type-t09",
+        "layout-l18",
+        "color-local-accent-restrained",
+        "pal-sns-instagram-ddujmhojbb4-2"
+      ],
+      "archetypes": [
+        "local",
+        "commerce"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 5)\n\n방향 원천은 dribbble-summary §6 R3(판화·두도수·손맛)이고, 선정서 `docs/recipes/candidates-2026-09-27.md` r3-woodblock 줄을 그대로 따랐다. DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 두도수 목판 (고름) | B 리소 두 도수 (남김, 안 씀) | C 크라프트 장터 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 손맛 · 인쇄 · 장터 | 경쾌 · 인쇄 · 동네 | 따뜻 · 수제 · 옛날 |\n| 축 | B1 I3 C2 T1 H3 R0 S2, M0 | B1 I3 C2 T1 H3 R0 S2, M0 | B2 I2 C3 T2 H1 R1 S1, M2 |\n| 서체 짝과 이유 | Black Han Sans(한글 목판 제목) + Noto Sans KR(본문·가격표). 칼로 판 듯 두꺼운 한 굵기 제목과, 조밀한 가격표를 버티는 중립 고딕 | 같은 짝 | 웨스턴 세리프 디스플레이 + 손글씨 본문 |\n| 색 3개 + 강조 1 | 초록 기운 오프화이트 종이(hue 150) · 갈색 먹(hue 52) · 옅은 초록 면 + 숲초록 잉크(hue 160) | 흰 종이 · 먹 · 회색 + 형광 분홍·파랑 두 도수 | 크라프트 크림 바탕 · 에스프레소 글자 · 베이지 + 테라코타 |\n| 사진·그림 | 가게 실사 + 두 도수 판화 그림(평면 도형에 1~2px 입자) | 리소 망점 그림 | 수채 일러스트 |\n| 이 안에서만 나오는 레이아웃 | 가운데 대칭 마스트헤드(layout-l18, N6) + 조밀한 가격표(T1) + 먹색이 어긋나 찍힌 1순위 카드(S2) | 같은 틀 | 폴라로이드 카드 격자 |\n| 레퍼런스 2개 | color-c09 · layout-l18 | color-c09 · layout-i05 | 없음(상투 조합) |\n\n- **버린 안: C.** 크라프트 크림 바탕 + 테라코타 + 웨스턴 세리프는 §13 「따뜻한 크림 배경 + 세리프 디스플레이 + 테라코타」 정면이고, 계획의 피할 패턴(크림·베이지 바탕)이다.\n- **남긴 안: B.** 형광 분홍 면은 그 위 글자 대비가 서지 않고, 파랑 도수가 r1·r6의 파랑과 겹친다. 이 레시피에서는 「도수는 둘」이라는 규칙만 가져왔다.\n- **고른 안: A.** 방문자 모드는 찾기(local — 오늘 여는가·어디인가·가격)와 사기(commerce)다.\n- **크롬 구분(0 계열 세 벌, 선정서 리뷰 I3)**: r1·r2·r3은 B1·I3·C2·H3·R0이 같다. r3은 표가 T1 조밀(장터 가격표·메뉴판), 그림자가 S2 단색 오프셋(블러 0, 먹색 4px — 판이 어긋나 찍힌 인쇄), 내비가 N6 masthead(대칭 락업을 가운데 두는 헤더)다. 색도 셋 중 유일하게 바탕·글자·강조가 모두 유채(종이 초록 기운 C 0.01, 갈색 먹 C 0.03)다.\n- **S2의 범위(리뷰 M7)**: S2 축은 카드뿐 아니라 팝오버·셀렉트·드롭다운·메뉴바·툴팁·선택된 탭에도 `4px 4px 0 var(--foreground)`를 준다(축 CSS가 정한다). 버튼에는 그림자 훅이 없어 **주 CTA에는 오프셋이 없다** — 선정서의 「1순위 카드·주 CTA에만」과 다른 점이다. 그래서 「1순위에만」은 토큰이 아니라 쓰는 법이다: 카드 부품은 1순위 덩어리(오늘의 메뉴, 대표 상품)에만 쓰고, 나머지는 C2 선 구획으로 나눈다. 오버레이·선택 탭의 오프셋은 「지금 떠 있는 판」 표시로 받아들인다. 오프셋 색은 갈색 먹이다(초록 잉크가 아니다). 두 도수 인쇄에서 먹판이 어긋난 모양이다.\n- **교체 가능성 검사로 고친 것**\n  - 글자를 순흑 계열 먹으로 두면 초록 종이 위에서 「초록 테마의 기본값」으로 읽힌다. 선정서대로 글자를 갈색 먹(hue 52, 「색 있는 어두운 닻」)으로 두어 두 번째 도수로 만들었다. muted 글자도 같은 갈색에서 파생했다(§5 「색 있는 면 위 보조 글자는 그 hue에서」).\n  - 성공색이 숲초록 잉크와 같은 초록이면 주 버튼과 「완료」 배지가 한 색이 된다. success는 hue 138(잉크 160에서 22° 노란 쪽)로 떼고, 배지는 늘 「완료」 글자를 붙인다. 오류색은 빨강–초록 쌍을 피하려고 순빨강 대신 붉은 도장색(hue 32)으로 두고 아이콘·글자를 함께 쓴다(§5 MUST).\n  - 다크는 종이와 먹을 뒤집었다. 바탕이 갈색 먹판(L 0.18, hue 52)이고 글자가 초록 기운 흰 종이색이다. 소나무 밤을 쓰는 r8-dusk(초록 다크)와 겹치지 않게 다크 바탕을 초록으로 두지 않았다.\n- **팔레트 인용**: `pal-sns-instagram-ddujmhojbb4-2`(SNS 대표 저장분, 가중 0.2, 보강 없음)의 역할 구조를 그대로 가져왔다 — 바탕 옅은 초록(0.978 0.011 150) · 글자 갈색(0.30 0.027 52) · 주색 숲초록(0.479 0.078 161) · muted 옅은 초록 · 테두리 짙은 초록. hex는 옮기지 않고 OKLCH로 다시 만들었다. 주색은 흰 글자 4.5:1을 넉넉히 넘기려고 L을 0.42로 내렸고, 테두리는 선 구획 3:1만 맞추면 되어 짙은 초록 대신 L 0.58 초록 회색으로 올렸다.\n- **서체**: Black Han Sans·Noto Sans KR·IBM Plex Mono 모두 SIL OFL 1.1이다(키트 항목 `meta.licenseUrl`). Black Han Sans는 굵기 400 하나라 제목 전용이다(§2 MUST). **한글 제목 서체는 Black Han Sans**다(선정서 M5). 썸네일·자막용 임팩트 서체로 흔히 읽히므로(선정서 M2) 쓰임을 장터·식음으로 한정하고, Task 8 보드에서 Gasoek One(키트 `font-gasoek-one`, 같은 단일 굵기)과 A/B로 받는다.\n- **아이콘**: phosphor(키트 항목 `icons-phosphor`, 결 G5 → Phosphor Bold). 굵은 획이 목판 제목의 두께와 맞는다. 채움(fill)은 선택 표시에만 쓴다(§6-A).\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 local 23곳 중 13곳, commerce 23곳 중 16곳이 유채색 2개 이하다(중앙값 2·1). 카드 color-local-accent-restrained도 local 13곳의 유채색 중앙값이 1이다(범위 0~2). 인쇄 쪽 카드 color-c09는 「바탕 1 + 잉크 1~2색」(표본 5개)이다. 그래서 강조 도수는 초록 하나로 두고, 갈색은 C 0.03의 글자색이라 강조 묶음에 들지 않는다(§5-A — C 0.05 이상만 센다). 차트 4·5번 갈색(C 0.05~0.06)을 넣어도 색상각 묶음은 초록 160°·갈색 52° 두 개다. 상태색(성공·경고·오류·정보)은 §5 MUST라 따로 두고 의미에만 쓴다.\n- **글자 크기**: 비율 1.2 하나로 16 · 19 · 23 · 28 · 33 · 40 · 48 · 57에서 멈춘다. 가격표가 조밀하므로(T1) 작은 단계가 촘촘해야 하고, 제목:본문은 57/16 ≈ 3.6배다(local 표본 h1:본문 중앙값 3.75).\n- **AI 티 점수**: `/qa/recipes?r=r3-woodblock` 경고 모드 G **12**/239(kas 5/35) — r1 기준선 12와 같다. 적중은 r1과 같은 검수대 틀 쪽(G018·G078·G084·G088×4·G126·G135×2)이고, S2 오프셋(G113)은 축 한정 예외 `brutal-offset`으로 빠졌다(표: `docs/qa/ai-tell-baseline.md`).\n  - **Task 6 fix 1 다시 잼: G 13**/239(kas 5/35). 검수대 제목이 이제 레시피 제목 굵기(`fonts.display.weight: 400` → `--wf-heading-weight`)로 그려진다. 그래서 G006(+1, 「제목과 본문 굵기 차 300 미만」, 400 대 400)이 걸린다. **고치지 않고 이유를 적는다.** Black Han Sans는 굵기가 400 하나뿐이고, 글자 자체가 굵은 제목 전용 서체라 굵기 숫자의 차로는 위계가 재지지 않는다. 처음 판의 12는 검수대 제목이 `font-bold`(700)를 선언해서였다. 합성이 꺼져 있어 화면은 400이었는데 검사기는 선언 값 700을 읽었다. 없는 700을 적는 쪽이 사실과 다르다(§2 「서체가 실제로 가진 굵기만」). 나머지 적중은 앞과 같다.\n- **부품 제목과 합성 볼드(리뷰 I2)**: 레시피 부품도 제목에 굵기를 건다 — 카드 제목은 C2 축이 `text-lg font-bold`(18px 700), 대화상자·서랍·시트 제목은 16px, Empty 제목은 14px이고 모두 `font-heading`이다. 굵기 400 하나뿐인 Black Han Sans에 700이 걸리면 브라우저가 굵기를 합성해 획이 뭉개지고(리뷰 CDP 확인), 25px 미만 부품 제목에 제목 전용 서체가 나온다. 생성기가 단일 굵기 제목 서체(키트 항목의 굵기 수로 판정)에 두 규칙을 더해 막는다: `.font-heading { font-synthesis-weight: none }`, 부품 제목 칸 `[data-slot$=\"-title\"].font-heading`은 본문 스택(Noto Sans KR 700). 그래서 Black Han Sans는 소비자가 직접 쓴 25px 이상 제목에만 나오고, 거기에 bold를 걸어도 굵어지지 않는다(위계는 크기로 낸다). 갤러리 견본의 20px 크기 견본 줄은 모든 레시피 공통 틀이라 이 규칙 밖이다.\n\n## 분위기\n\n장날 게시판에 붙은 두 도수 목판 인쇄물 같은 화면이다. 초록 기운이 도는 흰 종이에 갈색 먹으로 글자를 찍고, 숲초록 잉크 한 도수로 누를 곳을 칠했다. 제목은 칼로 판 듯 두껍고, 가격표는 빽빽하다. 가장 먼저 봐야 할 카드 하나만 먹판이 살짝 어긋나 찍힌 것처럼 그림자가 진다.\n\n## 쓰는 법\n\n- 맞는 원형은 동네 가게·예약(식당·빵집·찻집·장터)과 소형 커머스(식품·생활)다. 오늘 여는지, 무엇을 얼마에 파는지가 주인공인 곳에 쓴다.\n- 헤더는 가운데 대칭 마스트헤드다. 가게 이름 락업을 가운데 두고 위아래를 같은 높이의 괘선으로 감싼다(layout-l18). 원·아치 모양 문자(type-t09)는 이 락업 한 곳에만 쓴다.\n- 큰 제목은 Black Han Sans(25px 이상, `font-heading`)다. 굵기 400 하나뿐이니 `font-bold`를 걸지 않는다(걸어도 레시피 CSS가 합성을 막는다). 부품 제목(카드·대화상자·서랍·시트·Empty)과 버튼·표·본문·배지는 Noto Sans KR이다.\n- 글자 크기는 1.2 비율 한 줄로 쓴다(16 · 19 · 23 · 28 · 33 · 40 · 48 · 57). 화면 제목은 57px(본문의 약 3.6배)를 넘기지 않는다.\n- 메뉴·가격표는 HTML 표(T1 조밀)로 싣는다(§21-3 MUST). 이름 700·가격 700 tabular-nums, 설명 400 muted. 메뉴판 사진은 보조로만 둔다.\n- 카드는 1순위 덩어리(오늘의 메뉴, 대표 상품) 하나에만 쓴다. 그 카드에만 먹색 오프셋(S2)이 생긴다. 나머지 묶음은 1px 선으로 가른다(C2).\n- 숲초록은 주 버튼 채움, 포커스 링, 선택 칸의 옅은 초록(accent)에 쓴다. 넓은 면은 종이색으로 둔다.\n- 그림은 평면 도형 두 도수(갈색 먹 + 숲초록)에 1~2px 입자로 음영을 넣는다(layout-i05). 파는 음식·상품·매장은 실물 사진만 쓴다(§21-3·§21-5 MUST).\n- 상태는 색과 글자를 함께 쓴다: 정상 success(노란 쪽 초록), 주의 warning, 품절·오류 destructive(도장 빨강), 안내 info.\n- 모션은 M0이다. 상태가 바뀌면 바로 바뀐다.\n- 역동 기법은 움직이지 않는 둘이다. `grain` — 두 도수 그림의 음영 입자를 feTurbulence 한 겹으로 넣는다(그림 안에만). `oversize-crop` — 푸터에 가게 이름을 화면 폭보다 크게 두고 아래를 잘라 끝낸다. M0이라 등장 연출은 없다.\n- 보드 B안(`alternates`): 색 논리 K8 네 도수 색 블록 + 모션 M2 + `clip-reveal`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n\n## 하지 말 것\n\n- 바탕을 크림·베이지로 데우지 않는다. 종이는 초록 기운(hue 150, C 0.01) 그대로 둔다(§13·§5-A).\n- 세 번째 도수를 더하지 않는다. 빨강·노랑은 상태색으로만 나온다.\n- Black Han Sans를 본문·버튼·가격에 쓰지 않는다. 굵기를 흉내 내려고 bold를 걸지도 않는다.\n- 모든 카드에 오프셋 그림자를 주지 않는다. 오프셋이 여럿이면 어긋난 판이 아니라 브루탈 장식이 된다.\n- 생성 이미지로 메뉴·상품을 그리지 않는다. 사진이 없으면 비율을 고정한 빈 자리(「매장 사진 자리」)로 둔다.\n- 입자 질감을 글자 뒤·표 뒤에 깔지 않는다. 입자는 그림 안에만 넣는다.\n- 둥근 모서리를 섞지 않는다. 버튼·입력·카드·배지·아바타까지 모두 0이다.\n\n## 레퍼런스에서 가져온 기법\n\n- color-c09 : 바탕 1 + 잉크 1~2색의 인쇄 도수 팔레트(표본 5개). 종이 1 + 갈색 먹 + 숲초록 잉크다.\n- layout-l18 : 글자 묶음 위아래를 좌우 대칭 장식(괘선)으로 감싸는 락업. 헤더 마스트헤드에 쓴다.\n- type-t09 : 글자를 원·아치 경로로 배치하는 브랜딩 락업. 로고 한 곳에만.\n- layout-i05 : 평면 도형에 1~2px 입자로 음영을 넣는다(그라디언트 대신).\n- color-local-accent-restrained : local 표본 13곳의 유채색 중앙값 1(범위 0~2). 강조 도수를 하나로 둔 근거다.\n- pal-sns-instagram-ddujmhojbb4-2 : 옅은 초록 바탕 · 갈색 글자 · 숲초록 주색 · 옅은 초록 muted · 짙은 초록 테두리의 역할 구조.\n"
+    },
+    {
+      "id": "r4-evidence",
+      "name": "근거 대화",
+      "mood": [
+        "근거",
+        "차분",
+        "대화"
+      ],
+      "axes": {
+        "button": "B3",
+        "input": "I1",
+        "surface": "C1",
+        "table": "T2",
+        "header": "H1",
+        "radius": "R2",
+        "shadow": "S1"
+      },
+      "motion": "M1",
+      "colorLogic": "K1",
+      "dynamics": [
+        "clip-reveal"
+      ],
+      "alternates": {
+        "colorLogic": "K7",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.84 0.13 75)",
+            "field-1-foreground": "oklch(0.22 0.03 75)",
+            "primary": "oklch(0.46 0.1 245)",
+            "sidebar-primary": "oklch(0.46 0.1 245)"
+          },
+          "dark": {
+            "field-1": "oklch(0.5 0.1 70)",
+            "field-1-foreground": "oklch(0.97 0.01 75)",
+            "primary": "oklch(0.78 0.1 245)",
+            "sidebar-primary": "oklch(0.78 0.1 245)"
+          }
+        },
+        "dynamics": [
+          "clip-reveal",
+          "svg-draw"
+        ],
+        "note": "근거 듀오톤 — 짙은 청 잉크·주 버튼(primary, C 0.1 · 245°)과 호박색 면(field-1 — 근거 카드·계산표 머리)이 면적을 나눠 갖는다. 「강조색 하나」를 푼다"
+      },
+      "signature": [
+        "ledger",
+        "doc-page"
+      ],
+      "icons": {
+        "library": "lucide",
+        "weight": "G1"
+      },
+      "fonts": {
+        "display": {
+          "family": "Noto Sans KR",
+          "item": "font-noto-sans-kr",
+          "weight": 700,
+          "tuned": "H1·섹션 제목·부품 제목(font-heading). 굵기 700(본문 400과 차 300), 48px 이상 자간 -0.02em, 제목 행간 1.2"
+        },
+        "body": {
+          "family": "Noto Sans KR",
+          "item": "font-noto-sans-kr",
+          "tuned": "본문 16px/1.7 굵기 400, KPI 숫자 300 + tabular-nums"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "item": "font-ibm-plex-mono",
+          "tuned": "data-numeric 표 칸·숫자 입력·코드에만, 굵기 400. 신뢰도 칩·출처 라벨에는 쓰지 않는다"
+        },
+        "prose": {
+          "family": "Noto Serif KR",
+          "item": "font-noto-serif-kr",
+          "tuned": "AI가 말하는 요약·답 문장에만(font-prose, type-t03) — 제목·UI·부품에는 쓰지 않는다. 굵기 400, 23~28px(본문의 1.4~1.75배), 행간 1.6, 자간 0, 한 답 3문장 이하. 계산표의 최종값만 600"
+        }
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.985 0.004 215)",
+          "foreground": "oklch(0.2 0.015 230)",
+          "card": "oklch(0.995 0.002 215)",
+          "card-foreground": "oklch(0.2 0.015 230)",
+          "popover": "oklch(0.995 0.002 215)",
+          "popover-foreground": "oklch(0.2 0.015 230)",
+          "primary": "oklch(0.42 0.08 215)",
+          "primary-foreground": "oklch(0.985 0.004 215)",
+          "secondary": "oklch(0.945 0.01 215)",
+          "secondary-foreground": "oklch(0.28 0.04 220)",
+          "muted": "oklch(0.955 0.007 215)",
+          "muted-foreground": "oklch(0.43 0.02 225)",
+          "accent": "oklch(0.93 0.03 215)",
+          "accent-foreground": "oklch(0.33 0.07 218)",
+          "destructive": "oklch(0.52 0.18 27)",
+          "border": "oklch(0.88 0.012 215)",
+          "input": "oklch(0.6 0.02 220)",
+          "ring": "oklch(0.5 0.1 215)",
+          "success": "oklch(0.52 0.11 155)",
+          "success-foreground": "oklch(0.985 0.005 155)",
+          "warning": "oklch(0.55 0.12 62)",
+          "warning-foreground": "oklch(0.985 0.005 62)",
+          "info": "oklch(0.5 0.12 250)",
+          "info-foreground": "oklch(0.985 0.004 250)",
+          "chart-1": "oklch(0.42 0.08 215)",
+          "chart-2": "oklch(0.55 0.09 215)",
+          "chart-3": "oklch(0.6 0.12 58)",
+          "chart-4": "oklch(0.64 0.06 212)",
+          "chart-5": "oklch(0.55 0.02 230)",
+          "sidebar": "oklch(0.97 0.006 215)",
+          "sidebar-foreground": "oklch(0.2 0.015 230)",
+          "sidebar-primary": "oklch(0.42 0.08 215)",
+          "sidebar-primary-foreground": "oklch(0.985 0.004 215)",
+          "sidebar-accent": "oklch(0.93 0.03 215)",
+          "sidebar-accent-foreground": "oklch(0.33 0.07 218)",
+          "sidebar-border": "oklch(0.88 0.012 215)",
+          "sidebar-ring": "oklch(0.5 0.1 215)"
+        },
+        "dark": {
+          "background": "oklch(0.17 0.01 225)",
+          "foreground": "oklch(0.95 0.006 215)",
+          "card": "oklch(0.2 0.012 225)",
+          "card-foreground": "oklch(0.95 0.006 215)",
+          "popover": "oklch(0.22 0.013 225)",
+          "popover-foreground": "oklch(0.95 0.006 215)",
+          "primary": "oklch(0.78 0.08 215)",
+          "primary-foreground": "oklch(0.19 0.02 225)",
+          "secondary": "oklch(0.27 0.014 225)",
+          "secondary-foreground": "oklch(0.95 0.006 215)",
+          "muted": "oklch(0.25 0.013 225)",
+          "muted-foreground": "oklch(0.8 0.015 215)",
+          "accent": "oklch(0.3 0.04 215)",
+          "accent-foreground": "oklch(0.92 0.03 215)",
+          "destructive": "oklch(0.7 0.14 25)",
+          "border": "oklch(0.32 0.014 225)",
+          "input": "oklch(0.6 0.02 220)",
+          "ring": "oklch(0.74 0.1 215)",
+          "success": "oklch(0.74 0.11 155)",
+          "success-foreground": "oklch(0.19 0.02 155)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.74 0.1 250)",
+          "info-foreground": "oklch(0.19 0.015 250)",
+          "chart-1": "oklch(0.78 0.08 215)",
+          "chart-2": "oklch(0.66 0.09 215)",
+          "chart-3": "oklch(0.78 0.12 65)",
+          "chart-4": "oklch(0.88 0.04 215)",
+          "chart-5": "oklch(0.6 0.02 225)",
+          "sidebar": "oklch(0.2 0.012 225)",
+          "sidebar-foreground": "oklch(0.95 0.006 215)",
+          "sidebar-primary": "oklch(0.78 0.08 215)",
+          "sidebar-primary-foreground": "oklch(0.19 0.02 225)",
+          "sidebar-accent": "oklch(0.3 0.04 215)",
+          "sidebar-accent-foreground": "oklch(0.92 0.03 215)",
+          "sidebar-border": "oklch(0.32 0.014 225)",
+          "sidebar-ring": "oklch(0.74 0.1 215)"
+        }
+      },
+      "references": [
+        "component-k09",
+        "type-t03",
+        "component-k08",
+        "component-d02",
+        "layout-saas-has-features",
+        "pal-sns-threads-daujod-k6nv-1",
+        "https://www.moto-card.com/"
+      ],
+      "archetypes": [
+        "saas",
+        "dashboard"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 5)\n\n방향 원천은 dribbble-summary §6 R5(근거·차분·대화)이고, 선정서 `docs/recipes/candidates-2026-09-27.md` r4-evidence 줄을 그대로 따랐다. DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 근거 대화 (고름) | B 무채 근거 (남김, 안 씀) | C 로열블루 + 라임 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 근거 · 차분 · 대화 | 근거 · 건조 · 정돈 | 명랑 · 빠름 · 똑똑 |\n| 축 | B3 I1 C1 T2 H1 R2 S1, M1 | B3 I1 C1 T2 H1 R2 S1, M1 | B4 I2 C3 T2 H2 R1 S1, M2 |\n| 서체 짝과 이유 | Noto Sans KR(제목·UI·본문) + Noto Serif KR(AI 답 문장만). 사람이 조작하는 곳은 고딕, 기계가 말하는 곳은 명조로 목소리를 가른다 | Noto Sans KR 한 가족 | 기하 산세리프 + Pretendard |\n| 색 3개 + 강조 1 | 옅은 청회 바탕 · 청회 먹 글자 · 옅은 청회 면 + 청회 215° 강조 1(+ 의미색 4종) | 흰 바탕 · 먹 · 회색 + 의미색만 | 흰 바탕 · 남색 글자 · 옅은 보라 면 + 로열블루(약 265°) + 라임 칩 |\n| 사진·그림 | 사진 없음. 실제 데이터 차트와 계산표 | 사진 없음 | 3D 오브 일러스트 |\n| 이 안에서만 나오는 레이아웃 | 계산표 AI 답(component-k09) + 예측 빗금 막대(component-d02) + 헤더 안 「묻기」 입력(N13, component-k08) | 같은 틀 | 가운데 채팅 히어로 |\n| 레퍼런스 2개 | component-k09 · type-t03 | component-k09 · https://www.moto-card.com/ | 없음(상투 조합) |\n\n- **버린 안: C.** 로열블루 버튼은 §13 `indigo-500` 버튼과 한 걸음이고, 라임 칩은 흰 바탕에서 3:1에 못 미친다. 강조 2개에 의미색이 더해져 사실상 강조 3개 이상이 된다(계획 피할 패턴).\n- **남긴 안: B.** 상투 표에는 걸리지 않는다. 그러나 무채 + 의미색만이면 r1-measure와 색 논리가 같아 대시보드 둘이 같은 얼굴이 된다. 이 레시피에서는 B의 「의미색이 상태를 전부 맡는다」만 가져왔다.\n- **고른 안: A.** 방문자 모드는 설득(saas)과 분석(dashboard — §21-7 종류는 **분석형**: 상단 바 + 접히는 패널, 원형에 saas가 있어 H4 사이드 레일을 쓰지 않는다)이다.\n- **세리프 범위(선정서 리뷰 I7 · Task 5 리뷰 I1)**: 명조는 제목 서체가 아니라 `fonts.prose` 역할이다. prose는 AI가 말하는 요약·답 문장에만 쓴다(`font-prose`, type-t03 — 같은 화면의 산세리프 비율 90% 이상). 제목 서체(display, `font-heading`)는 Noto Sans KR 700이라 H1·UI 제목·부품 제목(카드·대화상자·서랍·시트·Empty)이 모두 고딕으로 나온다. **한글 제목 서체는 Noto Sans KR 700**이다(선정서 M5). 처음 판에서는 명조를 display 칸에 두어 레시피 부품의 `font-heading` 제목이 소비자 설치본에서도 Noto Serif KR 600으로 나왔다(리뷰가 CDP로 확인). 역할 필드 prose를 만들어 구조로 막았다 — 부품 원천은 `font-prose`를 쓰지 않는다.\n- **기본 shadcn과 다른 크롬(선정서 리뷰)**: 주 버튼이 거의 검정이 아니라 청회 215° 채움이다. 작은 컨트롤(배지·탭·토글·kbd·아바타)만 알약이고 큰 면은 16px, 나머지는 6~8px이다(R2). 버튼은 44px(B3의 h-11), 표 행은 48px(T2), 그림자는 바탕 색조의 여러 겹 틴트(S1)다. 입력 테두리는 배경 대비 3:1 이상(`--input` L 0.6)이라 기본 shadcn의 옅은 회색 테두리보다 진하다.\n- **비 AI 서명(선정서 리뷰 I7)**: 이 레시피의 첫 화면에는 셋을 둔다. 계산표 AI 답(component-k09 — 확인한 자료 수, 항목별 ± 값, 최종값), 예측 빗금 막대(component-d02 — 과거 옅게, 현재 채움 + 「지금」, 예측 빗금), 신뢰도 칩. 지금 갤러리 견본은 모든 레시피에 같은 틀(KPI·표·선 차트)을 그리므로 이 셋이 렌더되지 않는다 — 견본 확장은 Task 5 범위 밖이라 보고서에 넘겼다.\n- **교체 가능성 검사로 고친 것**\n  - 차트를 청회 한 hue의 명도 단계로만 칠하면 r1(청사진 파랑 단계)과 차트가 같은 얼굴이 된다. 비교 계열(chart-3)을 호박색 58°로 두어 파랑–주황 쌍(§5 MUST 「빨강–초록 대신 파랑–주황」)을 만들고, 예측·기준선(chart-5)은 거의 무채 회색으로 두었다. 호박색은 데이터 색이라 강조 묶음에 넣지 않지만, 경고색(62°)과 가까우므로 경고는 늘 배지 글자 「주의」와 아이콘을 함께 쓴다.\n  - 정보색을 강조색과 같은 215°로 두면 「안내」 배지와 선택 칸이 같은 색이 된다. info는 250°로 떼었다(215°와 35° — 같은 묶음 안의 다른 단계).\n- **팔레트 인용**: `pal-sns-threads-daujod-k6nv-1`은 **augmented 팔레트**다(바탕을 더한 팔레트, DESIGN §5-A pal-01 바탕 보강). 옅은 시안 225°의 색상각만 빌린 약한 근거다. 원본 주색(0.847 0.101 225)은 흰 바탕에서 글자·면으로 쓸 수 없는 밝기라 가져오지 않았고, 짙은 남색 글자(0.218 0.036 251)의 「차가운 먹」 역할만 hue 230·C 0.015로 옅게 다시 만들었다.\n- **서체**: Noto Sans KR·Noto Serif KR·IBM Plex Mono 모두 SIL OFL 1.1이다(키트 항목 `meta.licenseUrl`). §13·banlist에 없다(banlist의 display·body 항목은 prose에도 걸린다). 명조는 §13 「세리프는 편집·출판 성격을 한 줄로 설명할 수 있을 때만」에 대해 이렇게 적는다: 기계가 말한 문장을 사람이 조작하는 UI와 다른 목소리로 구분하려는 역할 서체이고, 제목에는 쓰지 않는다(type-t03, 관찰 3건). 로더는 셋이다(Noto Sans KR 1 — display·body 공유, Noto Serif KR 1, Plex Mono 1).\n- **아이콘**: lucide(키트 항목 `icons-lucide`), 결 G1(외곽선 2px, 둥근 끝). 조작 UI가 많은 saas·dashboard 기본 결이다.\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 saas 25곳 중 유채색 2개 이하는 5곳뿐이다(중앙값 4). S 0.9 이상 표본도 moto-card 1 · photiu 2 · mindrobotics 3 · orchid 3으로 갈린다. dashboard는 10곳 중 6곳이 2개 이하다(중앙값 2). 빈도만 보면 saas는 다색 쪽이다. 그래도 강조를 청회 하나로 둔 근거는 DESIGN §5다(랜딩 대표색 2색, 액센트는 활성 상태 전용, 대시보드 경고색은 조치가 필요한 항목에만 — §21-7 MUST). 기법은 moto-card 행(유채 1, 본문 대비 20.03)에서 가져왔다. 의미색 4종(성공·경고·오류·정보)은 §5 MUST라 따로 두고, 차트의 호박색은 비교 계열 하나에만 쓴다. 색상각 묶음(§5-A, C ≥ 0.05)은 청회 215~250° 하나와 호박 58~62° 하나, 둘이다.\n- **글자 크기**: 비율 1.2 하나로 16 · 19 · 23 · 28 · 33 · 40 · 48 · 57에서 멈춘다. saas 히어로 H1 57px(§21-1 권장 56~72의 아래 끝), 섹션 H2 40px, AI 답 문장 23~28px(본문의 1.4~1.75배, type-t03 관찰 1.5~2.5배의 아래쪽 — 대화 문장이 제목보다 커지지 않게)이다.\n- **AI 티 점수**: `/qa/recipes?r=r4-evidence` 경고 모드 G **12**/239(kas 7/35) — r1 기준선 12와 같다(Task 5 fix 1 뒤 재측정). 적중은 r1과 같은 검수대 틀 쪽(G018·G078·G084·G088×4·G126·G135×3)이다.\n  - 처음 판은 16이었다. G033(3)은 H1 축이 NavigationMenu 부품에 반투명 + 블러 8px를 조건 없이 줘서 갤러리 칸 안의 흐르는 내비에 걸린 것이다 — 축 원천을 고쳐(블러는 셸이 스티키인 768px 이상에서만, 부품은 불투명) 빠졌다.\n  - G056(1)은 검사기 오탐이었다. 375px 견본 버튼 줄은 `flex-wrap gap-3`이라 줄 사이가 12px 떨어져 있어 테두리가 붙지 않는다. 검사기가 간격 상한 없이 「위아래로 쌓인 테두리 행」을 모두 겹침으로 셌다(처음 판의 「테두리가 붙는다」는 사실과 달랐다). 검사기에 간격 1px 이하 조건을 더해 빠졌다.\n  - G135가 r1(2건)보다 1건 많은 것은 KPI 줄 테두리다. r4(C1)에는 선 구획 예외가 없다.\n\n## 분위기\n\n차분하게 근거를 대는 화면이다. 옅은 청회 바탕에 청회 먹으로 글자를 쓰고, 강조는 청회 215° 하나다. 사람이 조작하는 곳은 모두 고딕이고, AI가 답하는 문장만 명조로 한 톤 낮춰 말한다. 답에는 늘 계산 과정이 붙는다 — 확인한 자료 수, 항목마다 더하고 뺀 값, 그리고 최종값.\n\n## 쓰는 법\n\n- 맞는 원형은 AI 기능이 있는 SaaS 랜딩과 분석형 운영 대시보드다. 숫자에 근거를 붙여야 하는 곳에 쓴다.\n- AI 답은 계산표로 보인다(component-k09): 위에 「자료 12건 확인」과 신뢰도 칩(「높음」·「보통」·「낮음」 글자), 가운데 항목 5~7행(항목 이름 · ± 값, 값은 `data-numeric`), 아래에 최종값을 행 글자의 2배로. 답의 요약 문장은 `font-prose`(Noto Serif KR) 23~28px로 쓴다.\n- 제목은 Noto Sans KR 700이다(`font-heading`). 명조 `font-prose`는 AI 답 문장에만 단다 — prose는 AI 답 글자 전용 역할이다.\n- 글자 크기는 1.2 비율 한 줄로 쓴다(16 · 19 · 23 · 28 · 33 · 40 · 48 · 57). 히어로 H1은 57px, 섹션 H2는 40px이다.\n- 차트는 상태로 인코딩한다(component-d02): 지난 기간은 옅게(chart-4), 이번 기간은 채움(chart-1) + 「지금」 표시, 예측은 chart-1 빗금. 비교 계열은 호박색(chart-3), 기준선은 회색(chart-5)이다. 계열을 색만으로 가르지 않고 직접 라벨을 단다.\n- 헤더 안에 AI 진입점 「묻기」를 둔다(N13, component-k08) — 알약 모양 입력 한 칸, 단축키 표시는 kbd 칩으로. 헤더는 전폭 64px 바에 아래 헤어라인이다(H1).\n- 주 버튼은 청회 채움 하나다. 보조 동작은 외곽선 버튼, 세 번째부터는 링크 글자로 낮춘다(§21-1).\n- 선택 상태는 청회로 표시한다: 포커스 링, 토글·탭 선택 칸, 메뉴 강조 칸(accent).\n- 상태는 색과 글자를 함께 쓴다: 정상 success, 주의 warning, 오류 destructive, 안내 info(250°, 강조와 다른 단계). 대시보드에서는 조치가 필요한 항목에만 경고색을 쓰고 정상 행을 초록으로 칠하지 않는다(§21-7).\n- 숫자는 `tabular-nums`로 쓰고, 표의 숫자 칸에만 `data-numeric`을 달아 IBM Plex Mono로 바꾼다.\n- 모션은 M1이다. 상태 전환 150~200ms, 등장 300ms 이하. 계산표 행은 위에서부터 차례로 나타나되 전체 300ms 안에 끝낸다.\n- 역동 기법은 `clip-reveal` 하나다. 계산표 행과 최종값을 위에서 아래로 `clip-path: inset()`으로 걷어 드러낸다(전체 300ms 안, 동작 줄이기에서는 바로 표시). 대표 장면(근거 표)과 첫 화면의 AI 답에 나온다.\n- 보드 B안(`alternates`): 색 논리 K7 짙은 청·호박 듀오톤 + `svg-draw`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n\n## 하지 말 것\n\n- H1·섹션 제목·카드 제목·버튼·표에 `font-prose`(명조)를 쓰지 않는다. 명조는 AI가 말한 문장에만 있다.\n- AI 답을 말풍선 문단 하나로 끝내지 않는다. 근거(자료 수·항목별 값) 없이 결론만 보이지 않는다.\n- 신뢰도를 색 점 하나로 표시하지 않는다. 칩에 「높음」 같은 글자를 쓴다.\n- 강조색을 둘로 늘리지 않는다. 호박색은 차트의 비교 계열 하나뿐이고 버튼·배지·링크에 쓰지 않는다.\n- 모든 버튼을 알약으로 만들지 않는다. 알약은 배지·탭·토글·kbd·아바타 같은 작은 컨트롤만이다(R2).\n- 헤더 밖 카드·모달에 블러를 쓰지 않는다. 반투명은 헤더 바 한 곳(블러 8px 이하)뿐이다.\n- B안(K7 듀오톤)을 고르면 두 색 사이에 그라디언트를 넣지 않는다. 청 잉크와 호박 면은 칸으로 나눈다.\n- 「AI」를 보라 그라디언트·반짝이 아이콘으로 표시하지 않는다(§13). AI 답은 명조 문장과 계산표로 알아보게 한다.\n\n## 레퍼런스에서 가져온 기법\n\n- component-k09 : AI 답을 계산표로 보인다 — 확인한 자료 수, 신뢰도 칩 1개, 항목별 ± 값 5~7행, 최종값은 행의 약 2배.\n- type-t03 : AI가 말하는 문장(요약·답변)만 세리프로, 나머지 UI는 산세리프로 구분한다(같은 화면 산세리프 90% 이상).\n- component-k08 : AI 진입점을 헤더 안 버튼·입력 하나로 둔다(「묻기」 + 단축키).\n- component-d02 : 막대를 상태로 인코딩한다 — 과거 옅게, 현재 채움 + 「지금」, 예측 빗금.\n- layout-saas-has-features : saas 표본 12곳이 기능 격자 섹션을 둔다(높이 중앙값 1.12vh). 기능 섹션은 작업 흐름 순서로 한 단계씩, 단계마다 실제 UI 조각(계산표·빗금 막대)을 보인다(§21-1).\n- pal-sns-threads-daujod-k6nv-1 : 옅은 시안 225°의 색상각과 「차가운 먹」 글자 역할(augmented 팔레트 — 약한 근거).\n- https://www.moto-card.com/ : 유채색을 하나만 두고 나머지를 무채 명도 단계로 채운다(표본 유채 1, 본문 대비 20.03, S 1.0).\n"
+    },
+    {
+      "id": "r5-celadon",
+      "name": "청자 고요",
+      "mood": [
+        "고요",
+        "재질",
+        "여백"
+      ],
+      "axes": {
+        "button": "B2",
+        "input": "I2",
+        "surface": "C3",
+        "table": "T3",
+        "header": "H2",
+        "radius": "R1",
+        "shadow": "S1"
+      },
+      "motion": "M2",
+      "colorLogic": "K1",
+      "dynamics": [
+        "clip-reveal",
+        "variable-axis"
+      ],
+      "alternates": {
+        "colorLogic": "K6",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.86 0.07 187)",
+            "field-1-foreground": "oklch(0.22 0.02 200)"
+          },
+          "dark": {
+            "field-1": "oklch(0.47 0.08 187)",
+            "field-1-foreground": "oklch(0.95 0.01 187)"
+          }
+        },
+        "motion": "M3",
+        "dynamics": [
+          "tilt-3d",
+          "clip-reveal",
+          "variable-axis"
+        ],
+        "note": "청자 면 — 상세페이지 첫 장·구매 포인트 띠를 청자 면(field-1)으로 깔고 한 재질 오브젝트를 3D로 기울인다. 「청자를 큰 면에 깔지 않는다」를 푼다"
+      },
+      "signature": [
+        "product-hero",
+        "hero-display"
+      ],
+      "icons": {
+        "library": "phosphor",
+        "weight": "G2"
+      },
+      "fonts": {
+        "display": {
+          "family": "Jost",
+          "item": "font-jost",
+          "weight": 200,
+          "tuned": "라틴 소문자 제목 전용. 큰 제목(28px 이상)은 굵기 200(본문 400과 차 200 — §2 「본문 400이면 제목 200」), 자간 -0.01em, 행간 1.1. 300·400은 쓰지 않는다(차 100은 위계가 서지 않는다). 크기는 1.333 비율 21 · 28 · 38 · 50 · 67px, 히어로 H1 67px(4.1875rem)"
+        },
+        "body": {
+          "family": "Pretendard",
+          "item": "font-pretendard",
+          "tuned": "본문 16px/1.7 굵기 400, 자간 0. 한글 제목은 Jost 뒤로 떨어져 이 서체 200으로 그린다(48px 이상 자간 -0.02em, 행간 1.2). detail 구매 포인트 제목은 가벼운 굵기 대신 크기(28px)로 세운다. 가격·수량은 tabular-nums"
+        },
+        "mono": null
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.975 0.006 190)",
+          "foreground": "oklch(0.22 0.015 220)",
+          "card": "oklch(0.99 0.003 190)",
+          "card-foreground": "oklch(0.22 0.015 220)",
+          "popover": "oklch(0.99 0.003 190)",
+          "popover-foreground": "oklch(0.22 0.015 220)",
+          "primary": "oklch(0.52 0.05 187)",
+          "primary-foreground": "oklch(0.985 0.004 190)",
+          "secondary": "oklch(0.94 0.012 195)",
+          "secondary-foreground": "oklch(0.3 0.03 200)",
+          "muted": "oklch(0.95 0.008 195)",
+          "muted-foreground": "oklch(0.42 0.02 215)",
+          "accent": "oklch(0.93 0.025 190)",
+          "accent-foreground": "oklch(0.32 0.045 195)",
+          "destructive": "oklch(0.52 0.17 27)",
+          "border": "oklch(0.9 0.01 200)",
+          "input": "oklch(0.6 0.018 210)",
+          "ring": "oklch(0.52 0.05 187)",
+          "success": "oklch(0.52 0.1 150)",
+          "success-foreground": "oklch(0.985 0.005 150)",
+          "warning": "oklch(0.54 0.12 60)",
+          "warning-foreground": "oklch(0.985 0.005 60)",
+          "info": "oklch(0.5 0.1 245)",
+          "info-foreground": "oklch(0.985 0.004 245)",
+          "chart-1": "oklch(0.52 0.05 187)",
+          "chart-2": "oklch(0.7 0.045 187)",
+          "chart-3": "oklch(0.38 0.03 215)",
+          "chart-4": "oklch(0.84 0.03 190)",
+          "chart-5": "oklch(0.6 0.012 215)",
+          "sidebar": "oklch(0.99 0.003 190)",
+          "sidebar-foreground": "oklch(0.22 0.015 220)",
+          "sidebar-primary": "oklch(0.52 0.05 187)",
+          "sidebar-primary-foreground": "oklch(0.985 0.004 190)",
+          "sidebar-accent": "oklch(0.93 0.025 190)",
+          "sidebar-accent-foreground": "oklch(0.32 0.045 195)",
+          "sidebar-border": "oklch(0.9 0.01 200)",
+          "sidebar-ring": "oklch(0.52 0.05 187)"
+        },
+        "dark": {
+          "background": "oklch(0.18 0.014 185)",
+          "foreground": "oklch(0.94 0.006 190)",
+          "card": "oklch(0.21 0.014 186)",
+          "card-foreground": "oklch(0.94 0.006 190)",
+          "popover": "oklch(0.23 0.014 186)",
+          "popover-foreground": "oklch(0.94 0.006 190)",
+          "primary": "oklch(0.76 0.055 187)",
+          "primary-foreground": "oklch(0.18 0.014 185)",
+          "secondary": "oklch(0.27 0.014 186)",
+          "secondary-foreground": "oklch(0.94 0.006 190)",
+          "muted": "oklch(0.25 0.014 186)",
+          "muted-foreground": "oklch(0.78 0.015 200)",
+          "accent": "oklch(0.3 0.03 195)",
+          "accent-foreground": "oklch(0.92 0.03 190)",
+          "destructive": "oklch(0.7 0.14 25)",
+          "border": "oklch(0.33 0.014 186)",
+          "input": "oklch(0.6 0.015 205)",
+          "ring": "oklch(0.76 0.055 187)",
+          "success": "oklch(0.74 0.11 150)",
+          "success-foreground": "oklch(0.19 0.02 150)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.74 0.1 245)",
+          "info-foreground": "oklch(0.19 0.015 245)",
+          "chart-1": "oklch(0.76 0.055 187)",
+          "chart-2": "oklch(0.62 0.05 187)",
+          "chart-3": "oklch(0.88 0.02 200)",
+          "chart-4": "oklch(0.5 0.03 200)",
+          "chart-5": "oklch(0.66 0.012 205)",
+          "sidebar": "oklch(0.21 0.014 186)",
+          "sidebar-foreground": "oklch(0.94 0.006 190)",
+          "sidebar-primary": "oklch(0.76 0.055 187)",
+          "sidebar-primary-foreground": "oklch(0.18 0.014 185)",
+          "sidebar-accent": "oklch(0.3 0.03 195)",
+          "sidebar-accent-foreground": "oklch(0.92 0.03 190)",
+          "sidebar-border": "oklch(0.33 0.014 186)",
+          "sidebar-ring": "oklch(0.76 0.055 187)"
+        }
+      },
+      "references": [
+        "layout-i02",
+        "color-c01",
+        "color-palette-offwhite",
+        "color-portfolio-accent-restrained",
+        "pal-sns-instagram-ddeit3lidlc-2",
+        "pal-sns-instagram-dzoqiujatgc-2",
+        "https://brightland.co/products/the-mediterranean-duo",
+        "https://marhenj.com/product/voyage-square/1442/category/311/display/2/"
+      ],
+      "archetypes": [
+        "detail",
+        "portfolio"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 6)\n\n방향 원천은 dribbble-summary §6 R6(촉감·단일재질·고요)이고, 선정서 `docs/recipes/candidates-2026-09-27.md` r5-celadon 줄을 따랐다. 색 두 값(primary·ring)만 선정서에서 옮겼다(아래 「색상각 이동」). DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 청자 고요 (고름) | B 알루미늄 스모크 (남김, 안 씀) | C 호두 에스프레소 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 고요 · 재질 · 여백 | 차갑게 · 정밀 · 무게 | 따뜻 · 고급 · 느긋 |\n| 축 | B2 I2 C3 T3 H2 R1 S1, M2 | B2 I2 C3 T3 H2 R1 S1, M2 | B4 I4 C4 T3 H2 R1 S1, M2 |\n| 서체 짝과 이유 | Jost 200(라틴 소문자 제목) + Pretendard(본문, 한글 제목 200). 기하 산세리프의 가는 획이 유약 표면처럼 조용하고, 한글도 같은 가는 굵기로 잇는다 | 같은 짝 | 세리프 디스플레이 + 고딕 본문 |\n| 색 3개 + 강조 1 | 차가운 오프화이트 바탕 · 청회 먹 글자 · 한 단계 밝은 카드 면 + 청자 187° 저채도 1 | 흰 바탕 · 먹 · 회색, 강조 없음 | 크림 바탕 · 에스프레소 글자 · 호두 갈색 + 브라스 |\n| 사진·그림 | 실물 상품 촬영(색은 사진 속 재질이 가져온다) + 분위기 조각에만 한 재질 3D 오브젝트(layout-i02) | 같은 사진 | 따뜻한 조명의 연출 컷 |\n| 이 안에서만 나오는 레이아웃 | 떠 있는 알약 내비(N5 floating pill) + 넓은 여백 위 860px 세로 상세 열 | 같은 틀 | 이중 베젤 카드 격자 |\n| 레퍼런스 2개 | layout-i02 · color-portfolio-accent-restrained | color-c01 · https://marhenj.com/product/voyage-square/1442/category/311/display/2/ | 없음(상투 조합) |\n\n- **버린 안: C.** 베이지·브라스·에스프레소는 design-taste가 「프리미엄 소비재 기본 팔레트」로 꼽는 조합이고, 크림 바탕은 §13 「따뜻한 크림 배경 + 세리프 디스플레이」 정면이다(계획 피할 패턴 크림·베이지). B4·I4·C4도 선정서가 이번에 쓰지 않기로 한 가공 하드웨어 묶음(N3)이다.\n- **남긴 안: B.** 상투 표에는 걸리지 않는다. 그러나 무채만 두면 r7-docs와 색 논리가 같고, 사진이 없는 화면에서는 색이 사라진다. 이 레시피에서는 B의 「색은 사진이 가져온다」만 가져왔다.\n- **고른 안: A.** 방문자 모드는 둘이다. detail(모바일 상세 한 장에서 구매 판단)과 portfolio(실제 작업을 보고 문의)이다. 둘 다 사진이 주인공이라 UI 색은 한 걸음 물러선다.\n- **색 이동(Task 5 리뷰 M3 · 컨트롤러 판정 「r5가 옮긴다」, Task 6 리뷰 M3로 한 번 더)**: 선정서의 primary `0.45 0.06 175`·ring `0.52 0.08 175`는 r3-woodblock(primary `0.42 0.08 160`·ring `0.5 0.1 160`)과 OKLab 0.040·0.037로 거의 같았다. primary와 ring을 한 값 `0.52 0.05 187`로 옮겼다.\n  - 떼어 놓은 거리는 색상각이 아니라 **L과 C**에서 나온다. primary는 r3보다 L이 0.10 밝고 C가 0.03 낮다(OKLab 0.109). ring은 C가 r3의 절반이다(OKLab 0.063). 사람 눈에는 r3가 짙은 숲초록 채움이고, r5는 한 톤 밝고 회색 기운이 도는 청자다.\n  - 첫 판은 192°였다. 리뷰가 「r4(215°) 쪽으로 지나쳤다」고 봐서 인용 팔레트의 청자 187°로 되돌렸다. 이제 r3·r4와 거리가 같다(primary 0.109·0.109, ring 0.063·0.064).\n  - 색상각 차는 r3와 27°, r4와 28°라 qa:distinct(30° 이상)는 두 쌍 모두 「색 같음」으로 센다. 두 쌍은 축(r3와 7개, r4와 6개)과 서체로 통과한다. 원형도 detail·portfolio 대 local·commerce·saas·dashboard로 겹치지 않는다.\n  - 다크 바탕도 r4(`0.17 0.01 225`)와 사실상 같았다(OKLab 0.003). `0.18 0.014 185`로 청자 기운을 줘 0.014로 벌렸고, 다크 중립색(카드·면·테두리)도 186°로 맞췄다.\n  - 더 밝은 청자 채움(L 0.62 + 먹 글자)은 버렸다. Button·Badge의 `link` 변형이 `text-primary`로 글자를 그려서, primary가 바탕 위 글자로도 4.5:1이어야 한다. 지금 값은 글자 5.01:1, 위 글자 5.15:1이다.\n  - 색상각을 30° 이상 옮기는 다른 길(130° 이하)은 이끼·올리브로 넘어가 r8-dusk(125°) 자리가 된다.\n- **주 버튼은 청자가 아니다(B2)**: B2는 주 버튼을 잉크(`--foreground`, 청회 먹)로 채운다. 청자는 선택·진행 표시(체크박스·라디오·스위치·진행 막대·슬라이더), 링크 글자, 포커스 링, 선택 칸(accent)에만 나온다. 면적으로 보면 청자는 화면의 몇 %에 그친다. 선정서 「청자 저채도 1, 나머지 색은 사진 속 재질」과 맞다.\n- **H2 가드(선정서 리뷰 I4)**: 헤더 축 H2의 반투명·블러는 셸 안쪽 줄이 fixed 알약 섬이 되는 768px 이상에서만 걸린다(블러 12px — 가드 20px 이하). NavigationMenu 부품 자체는 불투명이다. Task 6에서 축 원천을 H1과 같은 방식으로 고쳤다(커밋 9352b9c). 반투명은 헤더 한 곳뿐이다. 카드·모달·시트는 불투명이고(C3), 모달 뒤 스크림만 base의 4px 블러다. 알약 내비는 내용 폭(`max-w-max`, 최대 화면 폭 − 48px)이고 데스크톱에서 링크를 펼친다. 모바일은 흐름 안의 평범한 바라 블러가 없다.\n- **I2 × C3 주의(호환표 caution)**: 입력이 muted 면(`0.95`) 위에 놓여, 경계는 `--input` `0.6`이 맡는다(바탕 대비 3.65:1, muted 대비 3.3:1). C3의 깊이는 S1(여러 겹 틴트 그림자)이 맡는다.\n- **팔레트 인용**: `pal-sns-instagram-ddeit3lidlc-2`와 `pal-sns-instagram-dzoqiujatgc-2`는 둘 다 **augmented 팔레트**다(바탕을 더한 팔레트, DESIGN §5-A pal-01 바탕 보강). 청자 187°(`#99E1D9`, `0.86 0.073 187`)와 차가운 하늘 227°(`#B2D5E5`)의 저채도 쌍에서 색상각만 빌렸다. 원본 두 색은 밝기 0.85 이상이라 흰 바탕의 글자·표시로 쓸 수 없다. 색상각 187°를 L 0.52·C 0.05로 다시 만들었다. 바탕 `0.975 0.006 190`은 첫 팔레트의 보강 바탕(`0.975 0.01 187`)보다 C를 낮춘 값이다(§5-A 오프화이트, 차가운 색상은 0.02까지).\n- **서체**: Jost·Pretendard 모두 SIL OFL 1.1이다(키트 항목 `meta.licenseUrl`). §13·banlist에 없다. Jost는 라틴 전용이라 제목 스택이 Jost → Pretendard → 시스템 한글 순으로 떨어진다. **한글 제목 서체는 Pretendard 200**이다(선정서 M5). 둘 다 가변 서체라 200을 합성하지 않고 그대로 그린다. 부품 제목(카드·대화상자)은 축이 주는 굵기(C3 카드 제목 600)를 따른다. 가벼운 200은 28px 이상 큰 제목에만 쓴다(작은 크기에서 획이 흐려진다). 200은 머리 `fonts.display.weight`로 기계가 읽는다 — `--wf-heading-weight: 200`과 `.font-heading` 기본 층 굵기로 나가 소비자 제목에도 200이 온다(Task 6 리뷰 I1). 부품 제목 칸은 축이 준 굵기 유틸리티가 이긴다. 로더는 둘이다(Jost 1, Pretendard css `@import` 1).\n- **아이콘**: phosphor(키트 항목 `icons-phosphor`), 결 G2(Phosphor light — 가는 선). 제목의 200과 같은 획 두께다.\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 portfolio 23곳 중 19곳이 유채색 2개 이하다(중앙값 1). S 0.9 이상 11곳 중 9곳이 유채 0~1이다(avecanni·madebykota·gionatannese 0, tokonoma·redcollar 1 등). detail은 14곳 중 5곳만 2개 이하다(중앙값 3). 그런데 detail의 유채색은 대부분 상품 사진과 사진에 구운 글자에서 온다(선정서 근거 URL 마르헨제이 1200×22823 통이미지). 그래서 UI 강조는 청자 하나로 두고, 나머지 색은 사진이 가져온다(color-c01 「액센트 0, 색은 사진이」의 한 걸음 뒤). 차트도 청자 명도 단계와 청회 무채로만 칠한다. 색상각 묶음(§5-A, C ≥ 0.05)은 청자 187° 하나다. 의미색(성공·경고·오류·정보)은 §5 MUST라 따로 둔다.\n- **글자 크기**: 비율 1.333 하나로 16 · 21 · 28 · 38 · 50 · 67에서 멈춘다. portfolio 선언문 H1은 67px(§21-4 42~72), 작업 격자의 UI 글자는 16px 한 크기다(§21-4). detail은 860px 열 안에서 구매 포인트 제목 28px, 본문 16px이다.\n- **AI 티 점수**: `/qa/recipes?r=r5-celadon` 경고 모드 G **13**/239(kas 6/35, Task 6 fix 1 다시 잼 — 같은 빌드 대조 r1 12). 적중은 검수대 틀 쪽(G018·G078·G084·G088×4·G126·G135×3)과 G006 하나다.\n  - **G006(+1, 제목과 본문 굵기 차 300 미만, 200 대 400)은 고치지 않고 이유를 적는다.** 검수대 제목이 이제 레시피 제목 굵기 200으로 그려져서 걸렸다(처음 판 12는 검수대가 제목을 700으로 그렸기 때문 — Task 6 리뷰 I1). DESIGN §2 SHOULD가 「본문 400이면 제목 700 또는 200」을 예로 들어 200을 허용한다. 검사기는 차 300 이상만 본다(차 200). 제목을 100으로 내리면 차는 300이 되지만 67px에서도 획이 머리카락처럼 가늘어져 대비가 무너진다. 선정서 M1(「300·400의 차 100은 위계가 서지 않아 제목 200」)을 지킨다.\n  - 같은 재측정에서 G102(「제목 속 굵은 강조」)도 한 번 걸렸다. 검수대 제목 안의 id 표지 `<code>`가 400이라 200 제목보다 굵게 읽힌 것이다(갤러리 틀). 표지가 제목 굵기를 따르게 고쳐 빠졌다(`app/qa/recipes/specimen.tsx`).\n  - H2 축은 이 레시피가 처음 쓴다. 갤러리 칸 안의 흐르는 NavigationMenu에 블러가 없다(CDP `backdrop-filter: none`, 375·1280). 그래서 G033·G133이 걸리지 않았다. `/qa/shell?h=H2`에서는 768·1024 스티키 셸에서만 섬이 fixed + `blur(12px)`이다. 375, 투명도 줄이기·고대비, `sticky={false}`(Task 6 fix 1 — 리뷰 M1)에서는 블러 없이 불투명이다.\n\n## 분위기\n\n차가운 오프화이트 위에 청자 한 색만 조용히 놓인 화면이다. 제목은 가는 획의 기하 산세리프 소문자이고, 한글 제목도 같은 가는 굵기로 떨어진다. 색은 대부분 상품과 작업 사진 속 재질에서 온다. UI는 청자로 선택된 것만 표시하고 물러선다. 헤더는 화면 위에 뜬 알약 섬이고, 그 한 곳에만 반투명이 있다.\n\n## 쓰는 법\n\n- 맞는 원형은 한국 커머스 상세페이지(detail)와 포트폴리오·스튜디오(portfolio)다. 재질이 보이는 실물 사진이 있을 때 쓴다.\n- 사진이 색을 맡는다. 상품 컷은 실물 촬영만 쓴다(§21-6 MUST). 한 재질 3D 오브젝트(layout-i02 — 유약·유리·금속 중 하나)는 상품이 아닌 분위기 조각에만 쓰고, 배경은 무채다.\n- 제목: 라틴은 Jost 200 소문자·자간 -0.01em, 한글은 Pretendard 200이다. 200은 28px 이상 제목에만 쓰고, 그보다 작은 제목은 크기로 위계를 세운다. 본문은 Pretendard 400 16px/1.7이다.\n- 글자 크기는 1.333 비율 한 줄로 쓴다(16 · 21 · 28 · 38 · 50 · 67). portfolio 선언문 H1은 67px, 섹션 제목은 38px이다.\n- detail은 860px 열 안에 세로로 흐른다. 구매 포인트 제목 28px, 본문 16px(390px 화면에서도 16px)이고, 상품정보제공 고시·배송·반품은 HTML 표로 싣는다. 하단 고정 구매 바의 주 버튼은 잉크 채움(B2)이다.\n- 주 버튼은 잉크(청회 먹) 채움 하나다. 청자는 선택된 것에만 쓴다: 체크·라디오·스위치 켜짐, 진행 막대, 선택 칸(accent), 링크 글자, 포커스 링.\n- 헤더는 떠 있는 알약 섬이다(H2). 내용 폭으로 두고 데스크톱에서 링크를 펼친다. 반투명·블러(12px)는 768px 이상에서 섬이 떠 있을 때만 걸린다.\n- 카드는 선 없이 한 단계 밝은 면(`--card`)이 바탕 위에 뜨고, 깊이는 여러 겹 틴트 그림자(S1)가 맡는다. 반경은 면이 12~16px로 부드럽고(R1), 버튼은 6px 단단한 모서리(B2), 체크박스는 네모 뜻을 지켜 6px이다.\n- 입력은 옅은 채움(I2) 위에 3:1 테두리(`--input`)를 둔다. 초점을 받으면 바탕이 페이지 색으로 돌아온다.\n- 표는 여유 있게(T3) 쓴다. 스펙·고시 표는 행 사이를 넓게 두고, 숫자 칸은 tabular-nums다.\n- 모션은 M2다. hover 200~300ms, 등장 400~600ms(`power2.out`). 등장 연출은 첫 화면 사진 한 번이고, 모든 섹션에 같은 스크롤 리빌을 걸지 않는다.\n- 역동 기법은 둘이다. `clip-reveal` — 첫 화면 사진을 `clip-path: inset()`으로 한 번 걷는다(이 레시피의 유일한 등장 연출). `variable-axis` — 첫 화면 H1이 들어올 때 Jost·Pretendard의 wght 축을 100에서 200으로 한 번 옮기고 멈춘다(본문 금지, 동작 줄이기에서는 200 고정).\n- 보드 B안(`alternates`): 색 논리 K6 청자 면 + 모션 M3 + `tilt-3d`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n- 상태는 색과 글자를 함께 쓴다: 성공 success(150°), 주의 warning, 오류 destructive, 안내 info(245°).\n\n## 하지 말 것\n\n- 크림·베이지·호두 갈색·브라스로 따뜻하게 바꾸지 않는다. 바탕은 차가운 오프화이트(C 0.006)다.\n- 청자를 큰 면(히어로 바탕·섹션 띠·주 버튼)에 깔지 않는다. 청자는 선택 표시와 링크에만 있다.\n- 파는 상품을 3D·생성 이미지로 대신하지 않는다. 3D 오브젝트는 분위기 조각에만 둔다.\n- 헤더 밖에 블러를 쓰지 않는다. 카드·모달·시트·드롭다운은 불투명이다(§13 「모든 내비·모달에 글래스」). 헤더 블러도 20px를 넘기지 않는다.\n- 모든 버튼을 알약으로 만들지 않는다. 알약은 헤더 섬과 그 안의 링크뿐이고, 버튼은 B2의 6px 단단한 모서리다.\n- 제목에 300·400을 섞지 않는다. 제목은 200 하나, 본문은 400이다. 28px 아래에 200을 쓰지 않는다.\n- Jost로 한글 문장을 기대하지 않는다. 라틴 전용이라 한글은 Pretendard로 떨어진다. 한글 제목의 굵기·자간은 Pretendard 기준으로 정한다.\n- 모든 카드에 같은 반경 + 같은 그림자를 되풀이하지 않는다(§13). 1순위 카드만 S1 그림자로 띄우고, 나머지는 여백으로 나눈다.\n\n## 레퍼런스에서 가져온 기법\n\n- layout-i02 : 한 재질(유약·유리·금속)을 제대로 쓴 3D 오브젝트를 무채 배경 위 분위기 조각 하나로 둔다(재질 1~2종, 관찰 5건).\n- color-c01 : UI 색은 오프화이트와 먹만 두고, 색은 사진이 가져온다(액센트 0). 이 레시피는 선택 표시에만 청자 하나를 더했다.\n- color-palette-offwhite : 순백 대신 색이 살짝 든 오프화이트를 가장 밝은 면으로 쓴다. 차가운 색상이라 C 0.006으로 두고 카드는 바탕보다 L 0.015 밝게 둔다.\n- color-portfolio-accent-restrained : portfolio 19곳이 유채색 2개 이하(절제)다. 강조를 청자 하나로 둔 근거다.\n- pal-sns-instagram-ddeit3lidlc-2 : 청자 187°의 색상각(augmented 팔레트 — 약한 근거).\n- pal-sns-instagram-dzoqiujatgc-2 : 차가운 하늘 227°와 먹의 저채도 쌍 — 글자·중립색을 청회 쪽으로 기울인 근거(augmented 팔레트 — 약한 근거).\n- https://brightland.co/products/the-mediterranean-duo : 상세 한 장에서 상품 실물 컷과 넓은 여백, 짧은 문구 덩어리를 번갈아 둔다(detail 구조 근거).\n- https://marhenj.com/product/voyage-square/1442/category/311/display/2/ : 한국 상세의 세로 흐름과 하단 고정 구매 바(detail 구조 근거). 통이미지에 글자를 굽는 방식은 따르지 않는다(§21-6).\n"
+    },
+    {
+      "id": "r6-civic",
+      "name": "공공 신뢰",
+      "mood": [
+        "공식",
+        "명료",
+        "신뢰"
+      ],
+      "axes": {
+        "button": "B2",
+        "input": "I1",
+        "surface": "C1",
+        "table": "T2",
+        "header": "H1",
+        "radius": "R2",
+        "shadow": "S0"
+      },
+      "motion": "M1",
+      "colorLogic": "K1",
+      "dynamics": [
+        "view-transition"
+      ],
+      "alternates": {
+        "colorLogic": "K6",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.87 0.06 258)",
+            "field-1-foreground": "oklch(0.21 0.03 260)"
+          },
+          "dark": {
+            "field-1": "oklch(0.32 0.1 262)",
+            "field-1-foreground": "oklch(0.96 0.01 262)"
+          }
+        },
+        "dynamics": [
+          "view-transition",
+          "svg-draw"
+        ],
+        "note": "정부 파랑 띠 — 첫 화면 제목·자주 찾는 서비스 띠를 옅은 정부 파랑 면(field-1)에 남색 글자로 올린다(다크에서는 짙은 파랑 면)"
+      },
+      "signature": [
+        "notice-list",
+        "doc-page"
+      ],
+      "icons": {
+        "library": "lucide",
+        "weight": "G1"
+      },
+      "fonts": {
+        "display": {
+          "family": "Pretendard GOV",
+          "item": "font-pretendard-gov",
+          "weight": 700,
+          "tuned": "KRDS 타이포 토큰을 따른다(§21-8): 제목 굵기 700, 행간 150%, 큰 제목 자간 KRDS 토큰(display 60·44·36px, heading xlarge 40·large 32에 +1px). 제목 크기는 display 60·44·36, heading 40·32·24·19·17px 중에서만. 히어로 H1 40px(본문 17px의 2.35배 — type-public-h1-ratio-low)"
+        },
+        "body": {
+          "family": "Pretendard GOV",
+          "item": "font-pretendard-gov",
+          "tuned": "본문 17px/1.5 굵기 400(KRDS body medium), 강조는 700, 필요할 때만 500. 본문 small 15px까지 쓰고 KRDS body xsmall 13px은 쓰지 않는다(§2 14px 바닥). 날짜·건수는 tabular-nums"
+        },
+        "mono": null
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.99 0.003 262)",
+          "foreground": "oklch(0.21 0.03 260)",
+          "card": "oklch(0.995 0.002 262)",
+          "card-foreground": "oklch(0.21 0.03 260)",
+          "popover": "oklch(0.995 0.002 262)",
+          "popover-foreground": "oklch(0.21 0.03 260)",
+          "primary": "oklch(0.55 0.2 262)",
+          "primary-foreground": "oklch(0.99 0.003 262)",
+          "secondary": "oklch(0.955 0.012 262)",
+          "secondary-foreground": "oklch(0.34 0.11 260)",
+          "muted": "oklch(0.96 0.005 258)",
+          "muted-foreground": "oklch(0.42 0.018 258)",
+          "accent": "oklch(0.955 0.022 262)",
+          "accent-foreground": "oklch(0.39 0.15 262)",
+          "destructive": "oklch(0.53 0.19 27)",
+          "border": "oklch(0.9 0.008 258)",
+          "input": "oklch(0.58 0.02 258)",
+          "ring": "oklch(0.55 0.2 262)",
+          "success": "oklch(0.52 0.12 150)",
+          "success-foreground": "oklch(0.99 0.005 150)",
+          "warning": "oklch(0.54 0.13 58)",
+          "warning-foreground": "oklch(0.99 0.005 58)",
+          "info": "oklch(0.5 0.11 238)",
+          "info-foreground": "oklch(0.99 0.004 238)",
+          "chart-1": "oklch(0.55 0.2 262)",
+          "chart-2": "oklch(0.72 0.1 262)",
+          "chart-3": "oklch(0.62 0.13 55)",
+          "chart-4": "oklch(0.86 0.04 262)",
+          "chart-5": "oklch(0.55 0.012 258)",
+          "sidebar": "oklch(0.995 0.002 262)",
+          "sidebar-foreground": "oklch(0.21 0.03 260)",
+          "sidebar-primary": "oklch(0.55 0.2 262)",
+          "sidebar-primary-foreground": "oklch(0.99 0.003 262)",
+          "sidebar-accent": "oklch(0.955 0.022 262)",
+          "sidebar-accent-foreground": "oklch(0.39 0.15 262)",
+          "sidebar-border": "oklch(0.9 0.008 258)",
+          "sidebar-ring": "oklch(0.55 0.2 262)"
+        },
+        "dark": {
+          "background": "oklch(0.17 0.015 262)",
+          "foreground": "oklch(0.95 0.005 258)",
+          "card": "oklch(0.2 0.018 262)",
+          "card-foreground": "oklch(0.95 0.005 258)",
+          "popover": "oklch(0.22 0.02 262)",
+          "popover-foreground": "oklch(0.95 0.005 258)",
+          "primary": "oklch(0.72 0.13 262)",
+          "primary-foreground": "oklch(0.17 0.03 262)",
+          "secondary": "oklch(0.27 0.025 262)",
+          "secondary-foreground": "oklch(0.95 0.005 258)",
+          "muted": "oklch(0.25 0.02 262)",
+          "muted-foreground": "oklch(0.8 0.015 258)",
+          "accent": "oklch(0.3 0.05 262)",
+          "accent-foreground": "oklch(0.93 0.03 262)",
+          "destructive": "oklch(0.7 0.15 25)",
+          "border": "oklch(0.33 0.02 262)",
+          "input": "oklch(0.62 0.02 258)",
+          "ring": "oklch(0.72 0.13 262)",
+          "success": "oklch(0.74 0.12 150)",
+          "success-foreground": "oklch(0.19 0.02 150)",
+          "warning": "oklch(0.8 0.13 70)",
+          "warning-foreground": "oklch(0.2 0.03 70)",
+          "info": "oklch(0.74 0.1 238)",
+          "info-foreground": "oklch(0.19 0.02 238)",
+          "chart-1": "oklch(0.72 0.13 262)",
+          "chart-2": "oklch(0.58 0.12 262)",
+          "chart-3": "oklch(0.78 0.12 62)",
+          "chart-4": "oklch(0.88 0.04 262)",
+          "chart-5": "oklch(0.62 0.012 258)",
+          "sidebar": "oklch(0.2 0.018 262)",
+          "sidebar-foreground": "oklch(0.95 0.005 258)",
+          "sidebar-primary": "oklch(0.72 0.13 262)",
+          "sidebar-primary-foreground": "oklch(0.17 0.03 262)",
+          "sidebar-accent": "oklch(0.3 0.05 262)",
+          "sidebar-accent-foreground": "oklch(0.93 0.03 262)",
+          "sidebar-border": "oklch(0.33 0.02 262)",
+          "sidebar-ring": "oklch(0.72 0.13 262)"
+        }
+      },
+      "references": [
+        "type-public-korean-font",
+        "type-public-h1-ratio-low",
+        "component-public-nav-top-bar-top-bar",
+        "layout-public-first-cta-early",
+        "pal-sns-instagram-dpbpoicj3j4-1",
+        "https://www.krds.go.kr/html/pattern/sample_main_01.html"
+      ],
+      "archetypes": [
+        "public"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 6)\n\n방향 원천은 style_axes 「레시피 방향 후보」 N4(인증·문서 신뢰)이고, 선정서 `docs/recipes/candidates-2026-09-27.md` r6-civic 줄을 따랐다. 색 한 값(primary = ring)만 선정서에서 옮겼다(아래 「색 이동」). DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n- **KRDS 적용 수준(§21-8 SHOULD — 결정 기록 맨 위)**: 레시피는 **표준형**을 기본으로 둔다. 기관 유형(중앙행정기관 대표 / 운영서비스·시스템 / 공공기관 / 지방자치단체)은 브리프마다 다르므로 찍어내기(P3-3)가 브리프에서 판정한다. 공식 배너 「이 누리집은 대한민국 공식 전자정부 누리집입니다.」는 공식 정부 서비스일 때만 두고, 공식 정부 서비스가 아닌 공공기관 누리집에서는 두지 않는다. 운영기관 식별자도 같다.\n\n| 칸 | A KRDS 한 가족 (고름) | B 빨강·파랑 두 강조 (남김, 안 씀) | C 남보라 그라디언트 + 글래스 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 공식 · 명료 · 신뢰 | 공식 · 긴박 · 알림 | 혁신 · 미래 · 매끈 |\n| 축 | B2 I1 C1 T2 H1 R2 S0, M1 | B2 I1 C1 T2 H1 R2 S0, M1 | B4 I2 C5 T2 H2 R1 S1, M2 |\n| 서체 짝과 이유 | Pretendard GOV 한 가족(제목 700·본문 400). §21-8 「국·영문 모두 Pretendard GOV 한 가족」 그대로다 | 같은 가족 | 기하 산세리프 제목 + Pretendard |\n| 색 3개 + 강조 1 | 흰 바탕 · 남청 먹 글자 · 옅은 파랑 면 + KRDS 파랑 262° 1(면적 약 10%) | 흰 바탕 · 먹 · 회색 + 파랑 + 빨강 | 남색→보라 그라디언트 · 흰 글자 · 반투명 면 |\n| 사진·그림 | 실제 현장 사진(시설·행사), 픽토그램은 lucide 한 가족 | 같은 사진 | 3D 오브·추상 그래픽 |\n| 이 안에서만 나오는 레이아웃 | 공식 배너 → 로고·유틸리티·검색·메뉴(N12, 2행 헤더는 스크롤을 올릴 때만) + 「자주 찾는 서비스」 바로가기 + 날짜·담당 부서가 붙은 공지 목록 | 같은 틀 + 빨간 긴급 띠 | 가운데 히어로 + 글래스 카드 3장 |\n| 레퍼런스 2개 | type-public-korean-font · https://www.krds.go.kr/html/pattern/sample_main_01.html | component-public-nav-top-bar-top-bar · layout-public-first-cta-early | 없음(상투 조합) |\n\n- **버린 안: C.** 남색→보라 그라디언트는 §13 첫 줄이고, 글래스 카드는 「모든 표면 글래스」다. C5(글래스)는 호환표가 public 원형에서 막는다.\n- **남긴 안: B.** 상투 표에는 걸리지 않는다. 그러나 강조가 둘이면 빨강 강조가 오류색과 섞이고, KRDS 「강조색은 면적 5% 이하」와 부딪힌다. **빨강은 오류(destructive)에만 쓴다.** 긴급 공지의 긴급도는 레이블 글자(상·중·하)와 아이콘이 맡고, 색은 의미색을 쓴다(§21-8 긴급 공지).\n- **고른 안: A.** 방문자 모드는 「목적별로 필요한 민원·정보에 빨리 닿기」다(§21-8). 메인은 이용 데이터 순서로 짠다. 첫 화면에 「자주 찾는 서비스」 바로가기를 두고, 같은 목적의 공지·안내는 제목과 한 줄 안내가 있는 한 섹션으로 모은다.\n- **색 이동(Task 5 리뷰 · 컨트롤러 판정 「r6가 옮긴다」)**: 선정서의 primary = ring `0.48 0.16 258`은 r1-measure의 ring `0.47 0.15 255`와 OKLab 0.016으로 같은 파랑이었다. primary = ring을 `0.55 0.2 262`로 옮겼다.\n  - 원천은 KRDS 주 색 primary-50(`#256EF4` = `0.575 0.214 261`)의 색상각이다. `#256EF4` 위 순백 글자는 4.55:1(sRGB 직접 계산)로 4.5를 넘는다. L을 낮춘 이유는 반대 방향이다: 이 레시피 바탕 `0.99` 위에 `#256EF4`를 **링크 글자**로 쓰면 4.42:1로 4.5에 못 미친다(Button·Badge `link` 변형이 `text-primary`다). L만 0.55로 낮춰 바탕 위 링크 글자와 `primary-foreground`(`0.99`) 위 글자가 둘 다 4.9:1이다.\n  - r1 ring과 색상각 차는 7°뿐이다. 대신 L이 0.08 밝고 C가 0.05 높다(OKLab 0.097). r1의 파랑은 채도가 낮은 청회 계열의 포커스 링이고, r6은 채도 높은 관청 파랑이다. qa:distinct에서는 r1 primary가 무채(`0.24 0.02 255`)라 primary만으로 「색 다름」이 된다.\n  - 색상각을 30° 옮기면 225°(r4-evidence 215° 옆 청록) 아니면 285°(§13 보라·`indigo-500` 쪽)가 된다. 둘 다 공공 파랑이 아니라서 L·C로 떼었다.\n  - Tailwind 기본 스케일과는 blue-600·700 모두 0.005 밖이다(lint `palette-tailwind` 통과).\n- **주 버튼은 파랑이 아니다(B2)**: B2는 주 버튼을 잉크(`--foreground`, 남청 먹 `0.21 0.03 260`)로 채운다. KRDS 버튼 규격의 주 버튼은 주 색 채움이라 이 점이 KRDS와 다르다. 남청 채움은 관공서에서 흔한 주 버튼 색이라 받아들였다(Task 6 리뷰 3절). 파랑 면적 약 10%는 링크 글자, 선택 탭·메뉴, 체크·라디오·스위치, 진행 막대, 「자주 찾는 서비스」 아이콘, 「새 글」 배지, 포커스 링이 채운다.\n- **뒤집는 조건(Task 6 리뷰 M9 — 기록만 한다)**: 브리프가 KRDS 준수 누리집(공식 전자정부·공공기관·지자체 표준형)이거나, Task 8 보드에서 잰 파랑 면적이 약 10%에 크게 못 미치면 이 레시피의 버튼 축을 B3(주 버튼 = `--primary` 채움, 44px)로 바꾼다. 그때는 T2도 T3로 함께 바꾼다 — B3만 바꾸면 r4-evidence(B3 I1 C1 T2 H1 R2 S1)와 축이 1개(S)만 달라 qa:distinct가 실패한다. B3 + T3이면 r4와 T·S, r7-docs와 B·I 두 축이 다르다. 이 교체는 레시피 원천을 고치는 일이다. 찍어내기가 글로 읽고 바꾸는 교체가 아니다.\n- **KRDS 토큰 대응**\n  - 색: 주 색(파랑 262°, 면적 약 10%)과 강조(새 글·중요 배지 — secondary 옅은 파랑 면 + 남색 글자, 면적 5% 이하)는 같은 파랑 묶음 안의 다른 단계다. 강조에 두 번째 색상각을 쓰지 않는다. 의미색은 성공 150°·경고 58°·오류 27°·정보 238°다.\n  - 글자: 행간 150%, 제목 700·본문 400, display 60·44·36 · heading 40·32·24·19·17 · body 19·17·15px. §2의 한 비율 규칙 대신 이 토큰을 쓴다(§21-8 MUST). 13px은 쓰지 않는다.\n  - 포커스: 링은 주 색 262°(바탕 대비 4.9:1, 불투명 2px — 공장 규칙). 선명한 화면 모드를 둘 때는 본문 15:1·제목 7:1을 따로 채운다(§21-8 SHOULD).\n  - 레이아웃: 브레이크포인트 360·768·1024·1280px, 칼럼 4·8·12·12, 거터 16·16·24·24px, 최소 화면 여백 16·24·24·24px, 콘텐츠 최대 1200px(§21-8 SHOULD).\n- **local 원형에서 뺐다(Task 6 리뷰 I2 · 컨트롤러 판정)**: 선정서는 local(의료)에 쓸 때 제목 서체를 따로 고르라고 했다(M6 — 관청 파랑 + 한 가족은 병원에서 §14-D 「제목까지 하나면 기본값」). 그러나 그 교체를 레시피 본문 글로만 두면 기계가 읽지 못한다. `ai/tasks/local.json`은 이 레시피를 local 후보로 그대로 추천하고, 설치하면 관청 파랑 + Pretendard GOV 한 가족이 병원에 깔린다. 그래서 원형을 public 하나로 줄였다. 병원·의원 같은 local은 이 레시피를 쓰지 않는다(r3-woodblock, 예정 r8-dusk).\n- **팔레트 인용**: `pal-sns-instagram-dpbpoicj3j4-1`은 보강하지 않은 팔레트다(augmented 아님). 주색 `#1F57F5`(`0.53 0.24 264`)의 「신뢰 파랑」 색상각만 참고했고, 둘째 강조 시안 `#00DDFF`는 가져오지 않았다(강조 하나). 채도는 0.2로 낮췄다.\n- **서체**: Pretendard GOV는 SIL OFL 1.1이다(npm `pretendard-gov@1.3.9`, 키트 항목 `font-pretendard-gov`, 2026-09-27 판정). §13·banlist에 없다. `meta.aliasOf: font-pretendard`는 레시피 차이 검사에서만 Pretendard와 한 서체로 묶는 표시다. 실제로 싣는 것은 GOV 파일이다. **한글 제목 서체는 Pretendard GOV 700**이다(선정서 M5). 가변 서체라 400·500·700을 합성 없이 그린다. 로더는 하나다(css `@import` 1).\n- **아이콘**: lucide(키트 항목 `icons-lucide`), 결 G1(외곽선 2px, 둥근 끝). 헤더 아이콘 버튼에는 보이는 레이블을 붙인다(검색·로그인만 예외, §21-8).\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 public 19곳은 모두 유채색 3개 이상이다(중앙값 8). 그러나 S 0.999 표본인 KRDS 자신(krds.go.kr)은 유채 3개다. 이 표본의 `dominantHue` 220은 페이지 전체에서 가장 넓은 유채색의 색상각을 잰 값이다. KRDS 주 색 토큰(primary-50, 261°)과는 다른 값이다. 나머지 유채는 의미색이다. 그래서 강조는 파랑 하나로 두고, 공공 누리집의 다색은 의미색 4종이 맡게 했다. 색상각 묶음(§5-A, C ≥ 0.05)은 파랑 238~262° 하나와 차트 비교 계열 주황 55° 하나, 둘이다. 주황은 데이터 색이라 버튼·배지·링크에 쓰지 않는다.\n- **대표 장면(Task 6 리뷰 M8 → Task 8 Step 1b)**: `signature` 1순위는 `notice-list`(날짜·담당 부서·「새 글」 배지가 붙은 공지 목록)다. 공통 견본에서는 이 레시피가 「r7 + 파란 링크」로 읽혀서, 보드는 이 장면을 첫 장으로 찍는다. 2순위는 자주 찾는 서비스 바로가기다.\n- **AI 티 점수**: `/qa/recipes?r=r6-civic` 경고 모드 G **12**/239(kas 7/35) — r1 기준선 12와 같다(같은 빌드 대조 r1 12). 적중은 검수대 틀 쪽(G018·G078·G084·G088×4·G126·G135×2)이고 예외로 뺀 곳은 0이다. 이 레시피만의 적중은 없다. 크롬(C1·S0·B2)이 기본 shadcn에 가까워 §13 「UI 키트 기본 테마 그대로」 위험은 점수가 아니라 Task 8 보드 대표 장면(공식 배너·자주 찾는 서비스·공지 목록)으로 판정한다.\n  - Task 6 fix 1 다시 잼(제목 굵기 반영·r7 종이 색·원형 축소 뒤): G **12**/239로 같다. 검수대 제목은 이제 레시피 굵기로 그려진다(r6 700, r7 800).\n\n## 분위기\n\n공식 누리집의 차분한 신뢰다. 흰 바탕에 남청 먹 글자를 쓰고, 파랑 하나가 링크와 선택된 것을 가리킨다. 서체는 Pretendard GOV 한 가족이고, 행간이 넉넉해 긴 안내문도 숨이 차지 않다. 첫 화면에는 자주 찾는 민원 바로가기가 있고, 공지 목록에는 날짜와 담당 부서가 붙는다.\n\n## 쓰는 법\n\n- 맞는 원형은 공공기관 누리집(public)이다. KRDS 표준형을 따른다.\n- 헤더 순서는 건너뛰기 링크 → 공식 배너(공식 정부 서비스만) → 로고(왼쪽 위) → 유틸리티 링크(오른쪽 위, 디바이더) → 검색 → 메인 메뉴다. 헤더는 64px 헤어라인 바(H1)이고, 2행을 넘으면 스크롤을 올릴 때만 보인다(N12). 고정할 때는 공식 배너를 빼고 고정한다.\n- 헤더 유틸리티에 글자 크기 조정(90·100·110·130%, 배율 숫자와 설명 레이블)을 둔다. 130%에서도 가로 스크롤이 없어야 한다.\n- 글자는 KRDS 토큰으로 쓴다: 본문 17px/150%, 제목 700, 히어로 H1 40px, 섹션 제목 32px, 카드 제목 24·19px. 13px은 쓰지 않고 가장 작은 글자는 15px(본문 small)다.\n- 첫 화면 안에 「자주 찾는 서비스」 바로가기(방문 목적별 4~8개, 아이콘 + 두 단어 이내 레이블)를 둔다. 첫 CTA는 첫 화면에 온다(layout-public-first-cta-early).\n- 공지·보도자료 목록은 행마다 제목, 날짜(`2026. 9. 27.` 한 형식), 담당 부서를 붙이고, 새 글은 「새 글」 배지(secondary — 옅은 파랑 면 + 남색 글자)로 표시한다. 행은 헤어라인으로 나누고(C1) 높이 48px(T2)다.\n- 주 버튼은 남청 먹 채움 하나(B2, 6px)다. 보조는 외곽선, 세 번째부터는 링크 글자로 낮춘다. 링크는 파랑 글자에 밑줄이다.\n- 반경은 작은 컨트롤(배지·탭·토글)만 알약, 큰 면 16px, 나머지 6~8px(R2)다. 그림자는 쓰지 않고(S0) 구획은 헤어라인과 여백이 맡는다.\n- 긴급 공지는 메인 메뉴와 히어로 사이에 전체 폭 하나만 둔다. 긴급도 레이블(상·중·하) + 아이콘 + 한 줄 문장 + 링크 하나이고, 색은 의미색(경고 주황·오류 빨강)이다. 숨기기 버튼을 두지 않는다.\n- 푸터는 서비스 로고 → 연락처(주소·대표전화·운영 시간) → 유틸리티 링크 → 정책 링크 → 저작권 → 운영기관 식별자 순서다. 「개인정보 처리방침」은 이 이름 그대로 굵게 구분한다.\n- 레이아웃은 KRDS 표준형 토큰(360·768·1024·1280px, 칼럼 4·8·12·12, 거터 16·16·24·24px, 최대 1200px)으로 짠다.\n- 모션은 M1이다. hover 150~200ms, 등장 300~400ms. 캐러셀은 자동으로 돌리지 않는다.\n- 역동 기법은 `view-transition` 하나다. 공지 목록에서 상세로 갈 때 제목 한 요소만 이어지게 View Transitions로 옮긴다(같은 출처, `view-transition-name`은 요소 하나에 하나, 동작 줄이기에서는 길이 0).\n- 보드 B안(`alternates`): 색 논리 K6 옅은 정부 파랑 면 + `svg-draw`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n\n## 하지 말 것\n\n- 빨강을 강조·장식에 쓰지 않는다. 빨강은 오류와 긴급 공지의 「상」 등급에만 있다.\n- 강조색을 둘로 늘리지 않는다. 새 글·중요 배지도 파랑 묶음 안의 다른 단계(secondary)다.\n- 남색→보라 그라디언트, 글래스 카드, 3D 오브로 「혁신」을 표시하지 않는다(§13).\n- 13px 글자를 쓰지 않는다. 표 메타·캡션도 15px 이상이다.\n- 공식 정부 서비스가 아닌 누리집에 공식 배너를 달지 않는다.\n- 메인 캐러셀을 자동 회전시키지 않는다. 기관이 요구하면 KRDS 조건(정지 버튼이 캐러셀 안 첫 Tab)을 지킨다.\n- 헤더 아이콘 버튼을 레이블 없이 두지 않는다(검색·로그인 예외). 로고 alt에 「로고」를 붙이지 않는다.\n- 병원·의원(local)에 쓰지 않는다. 관청 파랑 + Pretendard GOV 한 가족은 병원에서 기본값으로 읽힌다(§14-D).\n- 파랑을 링크에만 가두지 않는다. 자주 찾는 서비스·선택 탭·「새 글」 배지로 주 색 약 10%를 채운다.\n- 첫 화면을 기본 카드 3장 격자로 채우지 않는다. 자주 찾는 서비스 바로가기와 공지 목록이 첫 화면을 맡는다.\n\n## 레퍼런스에서 가져온 기법\n\n- type-public-korean-font : public 18곳이 한글 서체를 지정한다. KRDS 정본은 Pretendard GOV다.\n- type-public-h1-ratio-low : public 16곳의 H1:본문 비율이 2.5 미만이다(법원도서관·부천시·항공우주연구원 등 17~32px 제목). 히어로 H1 40px / 본문 17px(2.35배)로 둔다.\n- component-public-nav-top-bar-top-bar : 1440·390 모두 상단 바 내비(8곳). 햄버거 대신 좁은 화면에서도 상단 바에 주요 메뉴를 둔다.\n- layout-public-first-cta-early : 첫 CTA가 첫 화면(0~1번째 섹션)에 온다(15곳). 「자주 찾는 서비스」 바로가기가 그 자리다.\n- pal-sns-instagram-dpbpoicj3j4-1 : 흰 바탕 + 신뢰 파랑 하나의 색상각(264°). 둘째 강조 시안은 가져오지 않았다.\n- https://www.krds.go.kr/html/pattern/sample_main_01.html : KRDS 메인 견본 — 공식 배너, 헤더 순서, 자주 찾는 서비스, 공지 목록의 날짜·부서 표기.\n"
+    },
+    {
+      "id": "r7-docs",
+      "name": "문서 작업대",
+      "mood": [
+        "문서",
+        "조용",
+        "정돈"
+      ],
+      "axes": {
+        "button": "B2",
+        "input": "I2",
+        "surface": "C1",
+        "table": "T3",
+        "header": "H1",
+        "radius": "R2",
+        "shadow": "S0"
+      },
+      "motion": "M0",
+      "colorLogic": "K3",
+      "dynamics": [
+        "oversize-crop"
+      ],
+      "alternates": {
+        "colorLogic": "K6",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.42 0.08 170)",
+            "field-1-foreground": "oklch(0.96 0.01 170)"
+          },
+          "dark": {
+            "field-1": "oklch(0.4 0.08 170)",
+            "field-1-foreground": "oklch(0.95 0.01 170)"
+          }
+        },
+        "motion": "M2",
+        "dynamics": [
+          "view-transition",
+          "sticky-stack"
+        ],
+        "note": "칠판 표지 — 랜딩 표지와 목차 머리 띠를 칠판 청록 짙은 면(field-1)으로 칠하고, 문서 사이 이동은 View Transitions. 「넓은 면에 원색 금지」를 푼다"
+      },
+      "signature": [
+        "doc-page",
+        "app-shell"
+      ],
+      "icons": {
+        "library": "tabler",
+        "weight": "G2"
+      },
+      "fonts": {
+        "display": {
+          "family": "Gothic A1",
+          "item": "font-gothic-a1",
+          "weight": 800,
+          "tuned": "제목 전용 굵기 800(본문 400과 차 400), 자간 -0.02em(39px 이상)·0(31px 이하), 행간 1.25. 크기는 1.25 비율 20 · 25 · 31 · 39 · 49 · 61px, 문서 H1 39px, saas 히어로 H1 61px. 부품 제목은 축이 주는 굵기(C1 카드 제목 600)"
+        },
+        "body": {
+          "family": "Pretendard",
+          "item": "font-pretendard",
+          "tuned": "본문 16px/1.7 굵기 400, 강조 600, 자간 0, 한 줄 40자 이하(max-width 40em). 문서 목차·사이드 목록은 16px 한 크기"
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "item": "font-ibm-plex-mono",
+          "tuned": "코드 블록·인라인 코드·kbd·data-numeric 숫자 칸에만, 굵기 400, 본문보다 0.9배. 메타 라벨·캡션·태그에는 쓰지 않는다"
+        }
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.982 0.007 92)",
+          "foreground": "oklch(0.21 0.012 70)",
+          "card": "oklch(0.992 0.004 92)",
+          "card-foreground": "oklch(0.21 0.012 70)",
+          "popover": "oklch(0.992 0.004 92)",
+          "popover-foreground": "oklch(0.21 0.012 70)",
+          "primary": "oklch(0.23 0.012 70)",
+          "primary-foreground": "oklch(0.982 0.007 92)",
+          "secondary": "oklch(0.955 0.008 88)",
+          "secondary-foreground": "oklch(0.23 0.012 70)",
+          "muted": "oklch(0.955 0.008 88)",
+          "muted-foreground": "oklch(0.43 0.012 70)",
+          "accent": "oklch(0.935 0.01 85)",
+          "accent-foreground": "oklch(0.21 0.012 70)",
+          "destructive": "oklch(0.53 0.17 27)",
+          "border": "oklch(0.89 0.008 85)",
+          "input": "oklch(0.6 0.01 80)",
+          "ring": "oklch(0.3 0.012 70)",
+          "success": "oklch(0.52 0.1 150)",
+          "success-foreground": "oklch(0.99 0.004 150)",
+          "warning": "oklch(0.55 0.12 60)",
+          "warning-foreground": "oklch(0.99 0.004 60)",
+          "info": "oklch(0.5 0.1 240)",
+          "info-foreground": "oklch(0.99 0.004 240)",
+          "chart-1": "oklch(0.3 0.012 70)",
+          "chart-2": "oklch(0.55 0.09 240)",
+          "chart-3": "oklch(0.64 0.11 58)",
+          "chart-4": "oklch(0.7 0.01 80)",
+          "chart-5": "oklch(0.85 0.008 85)",
+          "sidebar": "oklch(0.965 0.008 88)",
+          "sidebar-foreground": "oklch(0.21 0.012 70)",
+          "sidebar-primary": "oklch(0.23 0.012 70)",
+          "sidebar-primary-foreground": "oklch(0.982 0.007 92)",
+          "sidebar-accent": "oklch(0.935 0.01 85)",
+          "sidebar-accent-foreground": "oklch(0.21 0.012 70)",
+          "sidebar-border": "oklch(0.89 0.008 85)",
+          "sidebar-ring": "oklch(0.3 0.012 70)"
+        },
+        "dark": {
+          "background": "oklch(0.18 0.008 70)",
+          "foreground": "oklch(0.93 0.008 88)",
+          "card": "oklch(0.21 0.008 70)",
+          "card-foreground": "oklch(0.93 0.008 88)",
+          "popover": "oklch(0.23 0.008 70)",
+          "popover-foreground": "oklch(0.93 0.008 88)",
+          "primary": "oklch(0.93 0.008 88)",
+          "primary-foreground": "oklch(0.2 0.008 70)",
+          "secondary": "oklch(0.27 0.008 70)",
+          "secondary-foreground": "oklch(0.93 0.008 88)",
+          "muted": "oklch(0.25 0.008 70)",
+          "muted-foreground": "oklch(0.78 0.01 85)",
+          "accent": "oklch(0.29 0.008 70)",
+          "accent-foreground": "oklch(0.93 0.008 88)",
+          "destructive": "oklch(0.7 0.14 25)",
+          "border": "oklch(0.32 0.008 70)",
+          "input": "oklch(0.62 0.01 80)",
+          "ring": "oklch(0.82 0.01 85)",
+          "success": "oklch(0.74 0.1 150)",
+          "success-foreground": "oklch(0.2 0.02 150)",
+          "warning": "oklch(0.8 0.12 72)",
+          "warning-foreground": "oklch(0.2 0.03 72)",
+          "info": "oklch(0.74 0.09 240)",
+          "info-foreground": "oklch(0.2 0.02 240)",
+          "chart-1": "oklch(0.9 0.008 88)",
+          "chart-2": "oklch(0.72 0.09 240)",
+          "chart-3": "oklch(0.78 0.11 65)",
+          "chart-4": "oklch(0.6 0.008 80)",
+          "chart-5": "oklch(0.42 0.008 70)",
+          "sidebar": "oklch(0.21 0.008 70)",
+          "sidebar-foreground": "oklch(0.93 0.008 88)",
+          "sidebar-primary": "oklch(0.93 0.008 88)",
+          "sidebar-primary-foreground": "oklch(0.2 0.008 70)",
+          "sidebar-accent": "oklch(0.29 0.008 70)",
+          "sidebar-accent-foreground": "oklch(0.93 0.008 88)",
+          "sidebar-border": "oklch(0.32 0.008 70)",
+          "sidebar-ring": "oklch(0.82 0.01 85)"
+        }
+      },
+      "references": [
+        "layout-l08",
+        "component-saas-nav-top-bar-top-bar",
+        "color-palette-offwhite",
+        "type-t01",
+        "pal-uupm-76",
+        "https://web.dev/articles/offline-ux-design-guidelines"
+      ],
+      "archetypes": [
+        "saas",
+        "pwa"
+      ],
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 6)\n\n방향 원천은 style_axes 「레시피 방향 후보」 N2(문서형 작업공간)이고, 선정서 `docs/recipes/candidates-2026-09-27.md` r7-docs 줄을 그대로 따랐다. DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 무채 문서 (고름) | B 명조 문서 (남김, 안 씀) | C 따뜻한 종이 + 테라코타 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 문서 · 조용 · 정돈 | 문서 · 고요 · 읽기 | 아늑 · 손글씨 · 따뜻 |\n| 축 | B2 I2 C1 T3 H1 R2 S0, M0 | B2 I2 C1 T3 H1 R2 S0, M0 | B3 I2 C3 T3 H1 R2 S1, M1 |\n| 서체 짝과 이유 | Gothic A1 800(제목) + Pretendard(본문) + Plex Mono(코드). 곧고 굵은 고딕 제목이 문서 구획을 세우고, 본문은 화면용 고딕으로 오래 읽힌다 | 명조 제목 + Pretendard | 세리프 디스플레이 + 고딕 |\n| 색 3개 + 강조 1 | 종이 빛 오프화이트 바탕 · 따뜻한 먹 글자 · 옅은 종이 면 + 강조 없음(색은 의미 태그의 옅은 짝에만) | 같은 무채 | 크림 `#F7F6F3` · 갈색 먹 · 베이지 면 + 테라코타 |\n| 사진·그림 | 사진 없음. 실제 화면 스크린샷(헤어라인 테두리)과 코드 블록 | 같음 | 손그림 일러스트 |\n| 이 안에서만 나오는 레이아웃 | 세 구획 헤더(N1b — 로고 · 문서 메뉴 · 검색·계정) + 왼쪽 목차 · 본문 · 오른쪽 문서 내 목차 + FAQ 왼쪽 1/3 제목 · 오른쪽 2/3 아코디언(layout-l08) | 같은 틀 | 가운데 카드 흐름 |\n| 레퍼런스 2개 | layout-l08 · type-t01 | layout-l08 · color-palette-offwhite | 없음(상투 조합) |\n\n- **버린 안: C.** 따뜻한 종이 + 세리프 제목 + 테라코타는 §13 「따뜻한 크림 배경 + 세리프 디스플레이 + 테라코타」 정면이다(N2 원문 주의 그대로). 크림 바탕은 계획 피할 패턴이기도 하다.\n- **남긴 안: B.** 상투 표에는 걸리지 않는다. 그러나 명조 제목은 pwa 앱 바 작은 크기에서 약하다. 이 레시피에서는 B의 「읽기 우선 조판」(한 줄 40자, 행간 1.7)만 가져왔다.\n- **고른 안: A.** 방문자 모드는 읽고 찾기다. saas(문서가 곧 제품 설명인 도구)와 pwa(연결이 끊겨도 쓰는 문서형 앱)에 쓴다.\n- **K3 복제 인상(선정서 리뷰에서 수용)**: 무채 문서 + 의미 태그 옅은 짝은 minimalist-ui(노션) 팔레트의 논리 그대로다. 색 값은 복사하지 않았다. 종이는 색상각 92°·C 0.007, 먹은 70°·C 0.012로 다시 만들었다. 노션의 대표 인상인 세리프·손그림도 쓰지 않는다. 대신 굵은 고딕 제목(Gothic A1 800)과 세 구획 헤더가 이 레시피의 얼굴이다.\n- **기본 shadcn과 다른 크롬(§13 「UI 키트 기본 테마 그대로」 경계)**: 무채 + 잉크 주 버튼은 기본 shadcn과 가장 가깝다. 차이는 여섯이다.\n  - 바탕·먹이 무채(C 0) zinc·neutral이 아니라 종이 빛(92°, C 0.007)과 따뜻한 먹(70°, C 0.012)이다.\n  - 제목이 Gothic A1 800이다.\n  - 입력이 옅은 채움(I2)이고 경계는 3:1(`--input` L 0.6)이다.\n  - 표가 여유 있게(T3) 놓인다.\n  - 작은 컨트롤만 알약이다(R2).\n  - 색은 의미 태그에만 나온다. 이 경계는 갤러리 AI 티 점수로 본다.\n- **종이와 먹(Task 6 리뷰 I3)**: 첫 판의 바탕 `0.985 0.002 90`·먹 `0.2 0.004 90`은 C가 0.002~0.004라 눈에 보이지 않았다. shadcn neutral 기본 테마(바탕 순백·primary `0.205 0 0`)와 공통 견본에서 구분되지 않았다. 리뷰가 준 값으로 종이와 먹을 따뜻한 한 회색 계열로 옮겼다: 바탕 `0.982 0.007 92`, 카드 `0.992 0.004 92`, 면 `0.955 0.008 88`, 먹 `0.21 0.012 70`, primary `0.23 0.012 70`, 테두리 `0.89 0.008 85`, 입력 `0.6 0.01 80`, 다크 바탕 `0.18 0.008 70`.\n  - 크림 판정 밖이다. 따뜻한 색상각(60~95°)이지만 C 0.007이 §5-A 문턱 0.012 아래다(lint `palette-cream` 통과).\n  - 대비(라이트): 글자/바탕 16.85, muted-fg/바탕 7.71, muted-fg/면 7.13, 입력/바탕 3.75, 입력/면 3.46이다. 다크는 글자 15.31, muted-fg 9.4, 입력 5.16이다.\n  - 한계도 적어 둔다. 거리로 재면 shadcn neutral과 ΔOKLab이 여전히 0.02~0.07이다(바탕 0.019, primary 0.028, 글자 0.066). 달라진 것은 거리가 아니라 색조다. 순백·순회색 대신 누런 종이와 갈색 기운의 먹이 보인다. 나머지 차이는 Gothic A1 800 제목과 문서 세 칸이 맡는다.\n- **ring은 무채다**: 포커스 링은 먹 `0.3 0.012 70`(바탕 대비 12.97:1)이다. 선택 표시(체크·스위치·진행)도 먹 채움이다. 색이 없는 대신 굵기(2px 불투명)와 대비로 보인다.\n- **public 원형에서 뺐다(Task 6 리뷰 I2 · 컨트롤러 판정)**: 선정서는 public에서 링크·ring을 KRDS 주 색으로, 본문을 Pretendard GOV로 바꾸라고 했다(M6). 그러나 그 교체를 레시피 본문 글로만 두면 기계가 읽지 못한다. `ai/tasks/public.json`은 이 레시피를 public 후보로 그대로 추천하고, 설치하면 Pretendard 본문에 주 색 없는 누리집이 된다(§21-8 MUST 「국·영문 모두 Pretendard GOV」 위반). 그래서 원형을 saas·pwa로 줄였다. public에는 이 레시피를 쓰지 않는다(r2-signal·r6-civic).\n- **서체**: Gothic A1·Pretendard·IBM Plex Mono 모두 SIL OFL 1.1이다(키트 항목 `meta.licenseUrl`). §13·banlist에 없다. Gothic A1 800은 선정서 값이다. 키트에 없어서 Task 6에서 `font-gothic-a1` 굵기를 400·500·700·800으로 바꿨다. next/font `font-data.json`의 Gothic A1은 100~900이다. 키트 항목 굵기 상한 4(`factory/scripts/gen-fonts.mjs` `MAX_WEIGHTS`, `docs/qa/font-licenses.md` 「정적 서체는 4개까지」)를 지키려 900을 뺐다. 어느 레시피도 Gothic A1 500을 쓰지 않으므로(r2 400·700·800, r7 800) 400·700·800 셋으로 줄여 정적 굵기 하나를 덜 받는 안도 남겨 둔다(Task 6 리뷰 M2). Gothic A1은 한글·라틴을 모두 그리므로 **한글 제목 서체는 Gothic A1 800**이다(선정서 M5). 본문 Pretendard는 가변 서체다. 로더는 셋이다(Gothic A1 1, Pretendard css `@import` 1, Plex Mono 1).\n- **아이콘**: tabler(키트 항목 `icons-tabler`), 결 G2(1.5px 선, 둥근 끝). 문서 본문 글자 굵기와 맞춘 가는 선이다. 같은 G2인 r5-celadon은 phosphor라 모양이 갈린다.\n- **팔레트 인용**: `pal-uupm-76`은 보강하지 않은 데이터셋 팔레트다(augmented 아님, ui-ux-pro-max colors.csv #76). 「무채 먹 + 옅은 회색 면」의 역할 배정만 가져왔다. 이 행의 주색 `#18181B`·바탕 `#FAFAFA`·테두리 `#E4E4E7`은 Tailwind zinc 기본 스케일 값이라 복사하지 않았다(§5-A). 종이 92°·C 0.007, 먹 70°·C 0.012로 다시 만들었다.\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 saas 25곳 중 5곳이 유채색 2개 이하다(중앙값 4). S 0.9 이상 표본 moto-card는 유채 1개, photiu는 2개다. pwa는 7곳 중 3곳이 2개 이하다(중앙값 3). 빈도는 다색 쪽이다. 그래도 강조를 0으로 둔 근거는 N2 방향 자체(K3 무채 문서)와 DESIGN §5 「뉴트럴이 면적의 대부분」이다. 필요한 색은 의미색 4종이 맡는다. 차트의 파랑 240°·주황 58°는 의미 태그 짝에서 가져온 데이터 색이다(파랑–주황 쌍, §5 MUST). 색상각 묶음(§5-A, C ≥ 0.05)은 그 둘뿐이고 버튼·링크·배지에 쓰지 않는다.\n- **글자 크기**: 비율 1.25 하나로 16 · 20 · 25 · 31 · 39 · 49 · 61에서 멈춘다. 문서 H1 39px, 섹션 H2 31px, 소제목 25·20px이다. saas 히어로 H1은 61px(§21-1 56~72)이다.\n- **대표 장면(Task 6 리뷰 M8 → Task 8 Step 1b)**: `signature` 1순위는 `doc-page`(세 구획 헤더 + 왼쪽 목차 · 본문 · 오른쪽 문서 내 목차, Gothic A1 800 제목)다. 공통 견본에는 이 레시피의 얼굴이 없어서 보드는 이 장면을 첫 장으로 찍는다. 2순위는 태그 옅은 짝이 있는 문서 목록이다.\n- **AI 티 점수**: `/qa/recipes?r=r7-docs` 경고 모드 G **12**/239(kas 6/35) — r1 기준선 12와 같다(같은 빌드 대조 r1 12). 적중은 검수대 틀 쪽(G018·G078·G084·G088×4·G126·G135×3)이고 예외로 뺀 곳은 0이다. 무채 + 잉크 버튼이라 기본 shadcn과의 거리는 점수로 잡히지 않는다. 세 구획 헤더·문서 세 칸·태그 옅은 짝은 Task 8 보드 대표 장면으로 판정한다.\n  - Task 6 fix 1 다시 잼(제목 굵기 반영·r7 종이 색·원형 축소 뒤): G **12**/239로 같다. 검수대 제목은 이제 레시피 굵기로 그려진다(r6 700, r7 800).\n\n## 분위기\n\n잘 정돈된 문서 한 권이다. 종이 빛 오프화이트에 따뜻한 먹으로 글자를 쓰고, 굵은 고딕 제목이 구획을 세운다. 색은 거의 없다. 「완료」·「검토 중」 같은 태그만 옅은 색 면에 같은 색 글자로 놓인다. 코드와 단축키는 고정폭 서체로 쓰고, 나머지는 모두 고딕이다.\n\n## 쓰는 법\n\n- 맞는 원형은 문서가 곧 제품인 SaaS(saas)와 문서형 모바일 앱(pwa)이다.\n- 헤더는 세 구획이다(N1b): 왼쪽 로고, 가운데 문서 메뉴, 오른쪽 검색·계정. 64px 헤어라인 바(H1)이고, 768px 이상에서 스티키다.\n- 문서 화면은 왼쪽 목차 · 본문(한 줄 40자 이하) · 오른쪽 문서 내 목차 세 칸이다. 좁은 화면에서는 목차를 접는다.\n- 제목은 Gothic A1 800이다. 글자 크기는 1.25 비율 한 줄로 쓴다(16 · 20 · 25 · 31 · 39 · 49 · 61). 문서 H1 39px, 섹션 31px이다. 본문은 Pretendard 400 16px/1.7이다.\n- 색은 의미 태그에만 쓴다. 태그는 옅은 면(의미색 10~12%를 바탕에 섞은 색) + 같은 의미색 글자다. 완료는 success, 주의는 warning, 안내는 info, 오류는 destructive다. 태그 글자는 늘 단어로 쓴다.\n- 주 버튼은 먹 채움 하나다(B2, 6px). 보조는 외곽선, 세 번째부터는 링크 글자다. 링크는 먹 글자에 밑줄이다.\n- 입력은 옅은 채움(I2) 위 3:1 테두리다. 표는 여유 있게(T3) 쓰고, 행은 헤어라인으로 나눈다(C1). 그림자는 쓰지 않는다(S0).\n- FAQ는 왼쪽 1/3에 제목, 오른쪽 2/3에 아코디언을 두고 행을 헤어라인으로 나눈다(layout-l08).\n- 코드 블록·인라인 코드·kbd·`data-numeric` 숫자 칸만 IBM Plex Mono다.\n- pwa에서는 하단 탭바(3~5개, 아이콘 + 라벨)를 쓰고, 연결이 끊기면 행동 언어로 알린다(「인터넷 연결이 끊겼어요」, web.dev offline-ux). 오프라인에서 쓴 글은 「저장됨 · 연결되면 보냅니다」로 확인해 준다.\n- 모션은 M0이다. 전환 0~200ms, 튕김 없음. 아코디언·목차 접힘도 200ms 안에 끝난다.\n- 역동 기법은 움직이지 않는 `oversize-crop` 하나다. 랜딩 표지의 푸터에 제품 이름 워드마크를 화면 폭보다 크게 두고 아래를 잘라 끝낸다(`clamp()`로 잘리는 자리 통제). 문서 화면에는 쓰지 않는다. M0이라 등장 연출은 없다.\n- 보드 B안(`alternates`): 색 논리 K6 칠판 청록 면 + 모션 M2 + `view-transition`·`sticky-stack`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n\n## 하지 말 것\n\n- 크림·베이지 종이, 세리프 제목, 테라코타 강조로 바꾸지 않는다(§13).\n- 넓은 면(히어로 바탕·섹션 띠·카드 채움)에 원색을 깔지 않는다. 색은 태그의 옅은 짝에만 있다.\n- 메타 라벨·캡션·날짜·태그에 고정폭 서체를 쓰지 않는다. 모노는 코드·kbd·숫자 칸뿐이다.\n- 태그를 색 점 하나로 표시하지 않는다. 태그에는 단어를 쓴다.\n- 「01 / 02 / 03」 번호 라벨로 문서 절을 꾸미지 않는다. 번호는 실제 순서가 있는 단계에만 쓴다.\n- 가짜 브라우저 바·코드 창 틀을 그리지 않는다. 화면은 실제 스크린샷을 헤어라인 테두리 `<figure>`에 넣는다.\n- 제목 800을 부품 제목·버튼에 퍼뜨리지 않는다. 800은 문서·섹션 제목(20px 이상)에만 쓴다.\n- 바탕·먹을 zinc·neutral 기본값(C 0)으로 되돌리지 않는다. 종이 빛과 따뜻한 먹이 이 레시피의 색이다.\n- 제목을 본문 서체나 700으로 두지 않는다. Gothic A1 800이 이 레시피의 얼굴이다.\n- 공공기관 누리집(public)에 쓰지 않는다. 본문이 Pretendard GOV가 아니고 주 색이 없다(§21-8).\n\n## 레퍼런스에서 가져온 기법\n\n- layout-l08 : FAQ를 제목 왼쪽 1/3, 아코디언 오른쪽 2/3로 나누고 행을 헤어라인으로 구분한다(행 높이 56~64px, + 아이콘 오른쪽).\n- component-saas-nav-top-bar-top-bar : saas 5곳이 1440·390 모두 상단 바 내비다. 세 구획 헤더를 좁은 화면에서도 상단 바로 둔다.\n- color-palette-offwhite : 순백 대신 색이 살짝 든 오프화이트(색상각 92°·C 0.007 — 따뜻한 색상각이지만 C 0.012 아래라 크림이 아니다)를 가장 밝은 면으로 쓴다.\n- type-t01 : 한 패밀리 안에서 굵기 두 단계로 전 화면을 짠다. 이 레시피는 본문 Pretendard 400·600, 제목만 Gothic A1 800으로 한 단계 더 올렸다.\n- pal-uupm-76 : 무채 먹 + 옅은 회색 면의 역할 배정(데이터셋 팔레트, Tailwind zinc 값은 복사하지 않았다).\n- https://web.dev/articles/offline-ux-design-guidelines : 연결 상태를 행동 언어로 알리고, 오프라인 작업을 저장됨으로 확인해 준다(pwa 구조 근거).\n"
+    },
+    {
+      "id": "r8-dusk",
+      "name": "솔숲 저녁",
+      "mood": [
+        "저녁",
+        "숲",
+        "느림"
+      ],
+      "axes": {
+        "button": "B3",
+        "input": "I1",
+        "surface": "C3",
+        "table": "T2",
+        "header": "H1",
+        "radius": "R1",
+        "shadow": "S1"
+      },
+      "motion": "M3",
+      "colorLogic": "K6",
+      "dynamics": [
+        "split-text",
+        "clip-reveal",
+        "sticky-stack"
+      ],
+      "alternates": {
+        "colorLogic": "K7",
+        "color": {
+          "light": {
+            "field-1": "oklch(0.34 0.1 138)",
+            "field-1-foreground": "oklch(0.96 0.012 130)",
+            "primary": "oklch(0.5 0.14 42)",
+            "sidebar-primary": "oklch(0.5 0.14 42)"
+          },
+          "dark": {
+            "field-1": "oklch(0.32 0.1 138)",
+            "field-1-foreground": "oklch(0.95 0.012 130)",
+            "primary": "oklch(0.76 0.12 50)",
+            "sidebar-primary": "oklch(0.76 0.12 50)"
+          }
+        },
+        "motion": "M2",
+        "dynamics": [
+          "clip-reveal",
+          "svg-draw"
+        ],
+        "note": "솔과 감 — 솔숲 짙은 면(field-1)과 감물 주 버튼·잉크(primary 42°)가 면적을 나눠 갖는다(두 색 사이 그라디언트 없음). 모션은 M2로 한 단계 내리고, 글자 분할 대신 먹선(svg-draw)을 한 번 긋는다"
+      },
+      "signature": [
+        "hero-display",
+        "menu-board"
+      ],
+      "icons": {
+        "library": "lucide",
+        "weight": "G2"
+      },
+      "fonts": {
+        "display": {
+          "family": "Hahmlet",
+          "item": "font-hahmlet",
+          "weight": 700,
+          "tuned": "헤리티지 브리프 전용 한글·라틴 세리프 제목. 굵기 700(본문 400과 차 300), 48px 이상 자간 -0.03em, 제목 행간 1.2(받침 보호). 크기는 1.333 비율 21 · 28 · 38 · 50 · 67px, 히어로 H1 67px(4.1875rem, 짧은 구 2줄 이하). 20px 아래 부품 제목에서는 획 대비가 약해 18px 이상에만 쓴다. 기울임은 쓰지 않는다"
+        },
+        "body": {
+          "family": "Nanum Gothic",
+          "item": "font-nanum-gothic",
+          "tuned": "본문 16px/1.75 굵기 400, 강조 700(차 300), 자간 0. 짙은 면 위 본문은 행간 1.8. 영업시간·가격·객실 수는 tabular-nums"
+        },
+        "mono": null
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.975 0.006 230)",
+          "foreground": "oklch(0.22 0.02 150)",
+          "card": "oklch(0.99 0.004 230)",
+          "card-foreground": "oklch(0.22 0.02 150)",
+          "popover": "oklch(0.99 0.004 230)",
+          "popover-foreground": "oklch(0.22 0.02 150)",
+          "primary": "oklch(0.45 0.07 125)",
+          "primary-foreground": "oklch(0.975 0.006 230)",
+          "secondary": "oklch(0.935 0.018 135)",
+          "secondary-foreground": "oklch(0.28 0.04 140)",
+          "muted": "oklch(0.95 0.006 230)",
+          "muted-foreground": "oklch(0.43 0.02 160)",
+          "accent": "oklch(0.925 0.03 130)",
+          "accent-foreground": "oklch(0.3 0.05 135)",
+          "destructive": "oklch(0.52 0.17 27)",
+          "border": "oklch(0.895 0.01 210)",
+          "input": "oklch(0.6 0.015 200)",
+          "ring": "oklch(0.52 0.09 125)",
+          "success": "oklch(0.5 0.1 165)",
+          "success-foreground": "oklch(0.985 0.005 165)",
+          "warning": "oklch(0.54 0.12 60)",
+          "warning-foreground": "oklch(0.985 0.005 60)",
+          "info": "oklch(0.5 0.1 245)",
+          "info-foreground": "oklch(0.985 0.004 245)",
+          "chart-1": "oklch(0.45 0.07 125)",
+          "chart-2": "oklch(0.32 0.1 138)",
+          "chart-3": "oklch(0.66 0.08 125)",
+          "chart-4": "oklch(0.55 0.02 220)",
+          "chart-5": "oklch(0.82 0.05 128)",
+          "sidebar": "oklch(0.99 0.004 230)",
+          "sidebar-foreground": "oklch(0.22 0.02 150)",
+          "sidebar-primary": "oklch(0.45 0.07 125)",
+          "sidebar-primary-foreground": "oklch(0.975 0.006 230)",
+          "sidebar-accent": "oklch(0.925 0.03 130)",
+          "sidebar-accent-foreground": "oklch(0.3 0.05 135)",
+          "sidebar-border": "oklch(0.895 0.01 210)",
+          "sidebar-ring": "oklch(0.52 0.09 125)",
+          "field-1": "oklch(0.32 0.1 138)",
+          "field-1-foreground": "oklch(0.96 0.012 130)",
+          "field-2": "oklch(0.86 0.08 128)",
+          "field-2-foreground": "oklch(0.24 0.04 142)"
+        },
+        "dark": {
+          "background": "oklch(0.16 0.02 155)",
+          "foreground": "oklch(0.94 0.01 130)",
+          "card": "oklch(0.19 0.02 155)",
+          "card-foreground": "oklch(0.94 0.01 130)",
+          "popover": "oklch(0.21 0.02 155)",
+          "popover-foreground": "oklch(0.94 0.01 130)",
+          "primary": "oklch(0.78 0.1 125)",
+          "primary-foreground": "oklch(0.17 0.02 150)",
+          "secondary": "oklch(0.25 0.02 150)",
+          "secondary-foreground": "oklch(0.94 0.01 130)",
+          "muted": "oklch(0.23 0.02 150)",
+          "muted-foreground": "oklch(0.78 0.015 140)",
+          "accent": "oklch(0.28 0.04 135)",
+          "accent-foreground": "oklch(0.9 0.05 125)",
+          "destructive": "oklch(0.7 0.14 25)",
+          "border": "oklch(0.31 0.02 150)",
+          "input": "oklch(0.58 0.02 150)",
+          "ring": "oklch(0.76 0.1 125)",
+          "success": "oklch(0.74 0.11 165)",
+          "success-foreground": "oklch(0.19 0.02 165)",
+          "warning": "oklch(0.8 0.12 75)",
+          "warning-foreground": "oklch(0.2 0.03 75)",
+          "info": "oklch(0.74 0.1 245)",
+          "info-foreground": "oklch(0.19 0.015 245)",
+          "chart-1": "oklch(0.78 0.1 125)",
+          "chart-2": "oklch(0.56 0.09 138)",
+          "chart-3": "oklch(0.9 0.04 128)",
+          "chart-4": "oklch(0.62 0.02 220)",
+          "chart-5": "oklch(0.46 0.06 130)",
+          "sidebar": "oklch(0.19 0.02 155)",
+          "sidebar-foreground": "oklch(0.94 0.01 130)",
+          "sidebar-primary": "oklch(0.78 0.1 125)",
+          "sidebar-primary-foreground": "oklch(0.17 0.02 150)",
+          "sidebar-accent": "oklch(0.28 0.04 135)",
+          "sidebar-accent-foreground": "oklch(0.9 0.05 125)",
+          "sidebar-border": "oklch(0.31 0.02 150)",
+          "sidebar-ring": "oklch(0.76 0.1 125)",
+          "field-1": "oklch(0.3 0.1 138)",
+          "field-1-foreground": "oklch(0.95 0.012 130)",
+          "field-2": "oklch(0.38 0.08 128)",
+          "field-2-foreground": "oklch(0.97 0.01 128)"
+        }
+      },
+      "references": [
+        "color-c07",
+        "layout-l01",
+        "color-palette-anchor-surface-mid",
+        "layout-local-has-hero",
+        "type-brand-korean-font",
+        "motion-n03",
+        "pal-sns-instagram-dwih2ynktud-7",
+        "pal-sns-instagram-djwzhoizfmb-5",
+        "pal-sns-instagram-dudjznijp9d-2"
+      ],
+      "archetypes": [
+        "local",
+        "brand"
+      ],
+      "archetypeConditions": {
+        "local": "헤리티지 업장(한옥 스테이·찻집·수목원·전통 식음)에만 — 병원·일반 카페·미용실은 r3-woodblock",
+        "brand": "헤리티지 브랜드(한옥 스테이·찻집·전통 식음 등)에만 — IT·일반 소비재·프리미엄 브랜드에 세리프를 기본으로 쓰지 않는다(§13)"
+      },
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 7)\n\n방향 원천은 선정서 `docs/recipes/candidates-2026-09-27.md` r8-dusk 줄(N7 고요한 자연 다크)이다. 축·서체·원형·라이트 바탕·글자·primary·ring은 선정서 값 그대로다. Task 6b 뒤 묶음 C를 대담하게 다시 짜라는 운영자 결정(2026-09-27 「색감 팔레트가 계속 똑같고 너무 정적이다」)에 따라 **색 논리를 K6 색 면으로, 모션을 M2에서 M3로** 올렸다. DESIGN §1-B대로 세 안을 같은 칸으로 적고, §13에 가장 가까운 안을 버렸다.\n\n| 칸 | A 솔숲 저녁 (고름) | B 솔과 감 (보드 B안) | C 남색 밤하늘 + 금 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 저녁 · 숲 · 느림 | 저녁 · 숲 · 온기 | 밤 · 고급 · 반짝임 |\n| 축 | B3 I1 C3 T2 H1 R1 S1, M3 | 같음, M2 | B4 I4 C4 T2 H2 R1 S1, M2 |\n| 색 논리 | K6 색 면 — 솔숲 짙은 면(field-1)과 이끼 안개 밝은 면(field-2), 강조 이끼 125° | K7 듀오톤 — 솔숲 면 + 감물 주 버튼 42° | 남색 바탕 + 금색 강조 |\n| 서체 짝과 이유 | Hahmlet 700(한글·라틴 세리프 제목) + 나눔고딕(본문). 한옥·찻집의 붓 획 대비를 제목에만 두고 본문은 담백한 고딕 | 같은 짝 | 세리프 기울임 히어로 + 고딕 |\n| 사진·그림 | 저녁빛 실사(공간·객실·차) 한 장이 첫 화면 왼쪽 55~60%, 오른쪽은 짙은 솔숲 면 패널 | 같은 사진 | 별·빛 번짐 장식 |\n| 이 안에서만 나오는 레이아웃 | 분할 첫 화면(사진 + 솔숲 면 패널에 H1·오늘 영업시간·주소·예약 버튼), 솔숲 면 띠에 객실·코스를 겹쳐 쌓는 스티키 카드 | 같은 틀, 감물 주 버튼 | 가운데 히어로 + 카드 3장 |\n| 레퍼런스 2개 | color-c07 · layout-l01 | pal-sns-instagram-dudjznijp9d-2 · pal-sns-instagram-dwih2ynktud-7 | 없음(상투 조합) |\n\n- **버린 안: C.** 남색 밤하늘 + 금색은 브라스 계열 프리미엄 기본값이고, 파랑은 r1·r6에서 이미 쓴다(선정서 「버린 방향」). 세리프 기울임 히어로는 §13 기본값 목록이다.\n- **B안: 솔과 감.** 소나무와 감물(감즙 염색)은 한옥 스테이·전통 식음에서 실제로 쓰는 두 재료다. 감물 42°는 솔숲 138°와 96° 떨어져 K7 조건(90° 이상)을 넘는다. `alternates`에 기계 데이터로 두었고, B 전체와 부분 조합이 모두 같은 lint를 통과한다.\n- **고른 안: A.** 사용 장면은 저녁에 예약을 찾는 손님이다(한옥 스테이·찻집·수목원). 첫 화면은 **분할 히어로**다(Task 7 fix 1 — 리뷰 I4-b): 1440px에서 실사 한 장이 왼쪽 55~60%, 오른쪽 40~45%가 솔숲 짙은 면 패널이고 그 위에 H1·오늘 영업시간·주소 한 줄·예약 버튼이 있다. 390px에서는 사진이 위, 솔숲 면 패널이 바로 아래다. 그래서 「저녁 숲」이 첫 화면 면적으로 보이고(1440×900에서 면 약 40%), §21-3의 첫 화면 과업(영업시간·주소·예약)이 사진 위가 아니라 면 위에서 풀린다 — layout-l01의 「사진 어두운 곳에만 흰 글자」 제약도 사라진다. 첫 판은 「사진 아래를 면이 받는다」였는데, 1440×900 첫 화면에서 면 면적이 0에 가까워 보드 대표 장면에서 대담함이 보이지 않았다. 흰 바탕에 강조 한 점을 두는 골격을 버렸다.\n- **K6 면 색(DESIGN §5-B div-02)**: field-1 `0.32 0.1 138`(짙은 면 대역 L 0.25~0.6·C 0.08~0.18 안), field-2 `0.86 0.08 128`(밝은 면 대역 L 0.82~0.95·C 0.06~0.14 안). 두 면은 색상각 10° 차라 한 묶음이다(§5-B 「면 색 2개까지」). 면 위 글자는 두 테마 모두 면마다 쟀다(아래 「대비」).\n  - 솔숲 138°는 처음에 150°였다. qa:distinct의 대담한 얼굴 비교에서 r7-docs B안의 칠판 청록(`0.42 0.08 170`)과 색상각 20°·ΔL 0.1로 닮았다고 걸려 138°로 옮겼다(170°와 32°).\n  - Task 7 fix 1(리뷰 M1)에서 field-1 C를 0.085 → 0.1로 올렸다. 보드에서 r7-docs B안(칠판 청록 `0.42 0.08 170`)과 함께 승인되면 「짙은 초록 띠 + 흰 바탕」 두 벌이 되는 것을 색상각(32°)만이 아니라 채도(ΔC 0.02)·명도(ΔL 0.1)로도 떼어 놓는다. 그래도 둘은 초록~청록 한 계열이다 — 보드에서 둘을 함께 고르지 않는다.\n  - 라임은 쓰지 않는다(선정서 N7 주의, color-c07 「유행 편중」). 이끼 125°는 C 0.07~0.1로 둔다.\n- **면 위 조작(Task 7 fix 1 — 리뷰 I1)**: 첫 판은 라이트 솔숲 면 위 포커스 링이 2.30:1, 이끼 주 버튼이 1.69:1, 보조 글자가 1.54:1이었다(링·주 버튼 토큰이 바탕 기준). 생성기가 이제 면 구획 `[data-face=\"field-1\"]`·`[data-face=\"field-2\"]` 스코프를 내고, 그 안에서 ring·primary = 면 글자색, primary-foreground = 면 색, 보조 글자·테두리 = 면 글자색을 섞은 값이 된다. 「짙은 면 위 주 버튼은 반전」이 글이 아니라 토큰이다. lint `face-contrast`와 갤러리 「면 위의 조작」 견본으로 잰 값은 「게이트 기록」에 있다.\n- **다크 기본을 쓰지 않은 이유(리뷰 M3로 고쳐 씀)**: 선정서는 「다크가 주인」이라 적었다. 다크 기본(§5-B)은 사용 장면으로 고른다(§5 MUST) — r8의 손님은 낮에도 예약을 찾고(점심 찻집·주말 스테이), 저녁 분위기는 솔숲 면이 라이트에서도 만든다. 그래서 테마는 시스템을 따르고 다크 토큰을 먼저 설계했다. 묶음 C의 다크 기본은 r10-console이 맡는다(어두운 방에서 하루 종일 켜 두는 운영 화면). r8은 라이트에서도 솔숲 면이 화면을 채우므로 「저녁」이 라이트에서 사라지지 않는다. 다크 바탕은 소나무 밤 `0.16 0.02 155`(§5 12~18%)이다.\n- **헤리티지 범위(선정서 M7)**: Hahmlet 세리프 제목은 한옥 스테이·찻집·수목원·전통 식음처럼 헤리티지를 한 줄로 설명할 수 있는 브리프에만 쓴다(§13 MUST 「프리미엄이면 세리프」 금지). 「하지 말 것」에 적었다. 획 대비가 커서 앱 바 크기에서 약해 원형에 `pwa`를 넣지 않았다.\n- **모션 M3(div-06)**: 원형 local·brand는 M3가 허락된다(compat.json recipeRules는 dashboard·public만 막는다). 기법 셋은 모두 첫 화면·첫 스크롤에 나온다: `split-text`(히어로 H1 한 번, 글자 25ms 간격), `clip-reveal`(히어로 사진을 `inset()`으로 걷기), `sticky-stack`(솔숲 면 띠 안 객실·코스 카드 3~5장). 동작 줄이기에서는 셋 다 불투명도 변화 또는 정지 상태다(§8-6 표 오른쪽 열). 자석 버튼은 고르지 않았다 — 예약 CTA를 움직이면 저녁·느림과 맞지 않는다.\n- **색 수 판단**: `refs-v2/samples.jsonl` local 23곳의 유채색 수 중앙값은 2(2개 이하 13곳, 3개 이상 10곳)이고, brand 29곳도 중앙값 2(3개 이상 14곳)다. 이 레시피의 얼굴 색은 솔숲·이끼 한 묶음(138°·125°, 45° 안)이다. 면적은 크게 쓰지만 색상각 묶음은 하나라서 두 원형의 중앙값 안에 있다. 의미색(성공 165°·경고·오류·정보)은 §5 MUST라 따로 둔다. 성공색은 이끼와 헷갈리지 않게 165°로 옮겼다.\n- **대비(lint와 같은 `contrast-lib ratio`)**: 라이트 글자/바탕 16.04 · muted 글자/바탕 7.47 · 주 버튼 글자/primary 6.78 · ring/바탕 4.99 · 입력 테두리/바탕 3.65 · field-1 글자/면 10.94 · field-2 글자/면 10.86. 다크 글자/바탕 16.27 · muted 9.72 · ring 9.25 · field-1 글자/면 11.48 · field-2 글자/면 8.98. B안(K7) 라이트 감물 위 글자 5.94 · 솔숲 면 글자 10.14, 다크 감물 위 글자 8.56.\n- **팔레트 인용**: `pal-sns-instagram-dwih2ynktud-7`(숲 단색 램프 `0.26 0.04 161` · `0.42 0.06 142` · `0.62 0.06 149`)에서 솔숲 면의 색상각과 짙은 명도 단계를, `pal-sns-instagram-djwzhoizfmb-5`(이끼 `0.84 0.07 136` · `0.59 0.07 118`)에서 이끼 강조와 밝은 면(field-2)의 색상각을 빌렸다. 둘 다 augmented가 아닌 원본 팔레트다. B안의 감물 42°는 `pal-sns-instagram-dudjznijp9d-2`(`0.46 0.12 39`, quiet luxury)의 색상각이다. 세 팔레트 모두 hex를 그대로 옮기지 않고 OKLCH 대역으로 다시 만들었다(§5-A).\n- **서체**: Hahmlet·Nanum Gothic 모두 SIL OFL 1.1이다(키트 항목 `meta.license`). §13·banlist에 없다. **한글 제목 서체는 Hahmlet 700**이다(선정서 M5) — Hahmlet은 한글 글리프가 있는 세리프라 한글 제목도 이 서체로 그린다. 가변 서체(wght 100~900)라 700을 합성하지 않는다. 로더는 둘이다(Hahmlet 1, Nanum Gothic 1).\n- **아이콘**: lucide, 결 G2(1.5px 가는 선) — 세리프 제목의 가는 가로획과 같은 무게다.\n- **AI 티 점수**: 아래 「게이트 기록」.\n\n### 게이트 기록\n\n- lint 위반 0·경고 0(새 규칙 `face-contrast`·`primary-surface` 포함, A·B 모두). B안 부분 조합 7개 모두 통과. qa:distinct 10벌 문제 없음(대담한 얼굴: 솔숲 138°는 r7 B안 170°와 32°, C 0.1 대 0.08).\n- 면 스코프 비율(생성기 `faceTokens`): field-1 면 조각 10% · 보조 글자 78% · 테두리 50%, field-2 10% · 86% · 50%.\n- `/qa/recipes?r=r8-dusk`: run --strict 0(ux-gate 0·behavior 0) · hit-area fine 35개 실패 0 · coarse 35개 실패 0.\n  - fix 1 첫 재측정에서 ux-gate가 한 번 떨어졌다: 새 면 견본의 보조 글자가 6.66:1로 본문 7:1 관문 아래였다. 생성기가 면 보조 글자 비율을 7:1부터 찾도록 고쳤다(닿지 않으면 4.5 바닥, lint 경고).\n- **AI 티 점수 G 12/239**(kas 7/35) — G018 · G078 · G084 · G088×4 · G126 · G135×5, 모두 검수대 틀과 면 견본 구획(면 안의 면) 쪽. 같은 빌드(741d7d2 + Task 7 fix 1, 차가운 캐시)에서 r1-measure를 대조로 함께 쟀다 — r1 G 12.\n- **면 위의 조작**(리뷰 I1 — 라이트 예약 띠 링 2.30이던 자리): 갤러리 「면 위의 조작」 견본(크기 위계 벤토: 첫 면이 큰 칸에 주 버튼·외곽선 버튼·입력·체크, 나머지 면은 작은 칸마다 조작 하나)을 CDP로 쟀다 — 라이트·다크를 `prefers-color-scheme`으로 따로 띄우고, Tab 키 뒤 `focus()`로 `:focus-visible` 링을 켠 계산 색(canvas sRGB)으로.\n  - 라이트 field-1(솔숲 짙은 면): 포커스 링 **10.94** · 주 버튼 채움/면 10.94 · 버튼 글자 10.94 · 입력 테두리 3.73 · 보조 글자 7.05 · 체크 10.94. field-2: 링 10.89 · 테두리 토큰 3.17 · 보조 글자 8.17.\n  - 다크 field-1: 링 11.48 · 입력 3.79 · 보조 글자 7.33. field-2: 링 8.95 · 테두리 3.36 · 보조 글자 7.03.\n- 한글 제목 서체(CDP `getComputedStyle` 첫 family · `CSS.getPlatformFontsForNode` · `document.fonts.check`): 레시피 제목 h2와 크기 견본 제목 6개 모두 첫 family `Hahmlet` 700, 그린 서체 Hahmlet(웹폰트), `fonts.check` true.\n- 동작 줄이기(CDP, 갤러리 `prefers-reduced-motion: reduce`): 레시피 칸의 모션 토큰 `--duration-enter` 700ms(.7s) → 0s, `--duration-sheet`·`--duration-hover`·`--duration-press`·`--duration-popover` 모두 0s(factory-base가 토큰 자체를 접는다 — 리뷰 I7). 프리셋은 `animation: none`, 전환·지연은 0.\n- 갤러리 한계: 공통 견본은 분할 첫 화면·역동 기법을 그리지 않는다 — Task 8 대표 장면(`hero-photo`·`hero-display`)에서 보인다.\n\n## 분위기\n\n해가 지는 솔숲이다. 첫 화면은 저녁빛 실사 한 장과 짙은 솔숲 면 패널이 나란히 선다. 제목은 붓 획 대비가 있는 한글 세리프, 본문은 담백한 고딕이다. 색은 솔숲과 이끼 한 줄기뿐이고, 밝은 이끼 안개 면이 가끔 숨을 돌린다. 움직임은 느리지만 분명하다: 제목이 글자 단위로 한 번 내려앉고, 사진 가림막이 한 번 걷히고, 객실 카드가 스크롤을 따라 겹쳐 쌓인다.\n\n## 쓰는 법\n\n- 맞는 원형은 동네 가게·예약(local)과 브랜드 홈(brand)이다. 한옥 스테이·찻집·수목원·전통 식음처럼 헤리티지를 한 줄로 말할 수 있을 때만 쓴다.\n- 첫 화면은 분할 히어로다: 1440px에서 사진 55~60% + 솔숲 면 패널 40~45%(H1·오늘 영업시간·주소 한 줄·예약 버튼), 390px에서는 사진 아래 면 패널. 사진 위에는 글자를 올리지 않는다.\n- 면: 첫 화면 패널과 예약 띠는 솔숲 짙은 면(`bg-field-1`, 글자 `text-field-1-foreground`)이다. **면 구획에는 `data-face=\"field-1\"`(밝은 면은 `data-face=\"field-2\"`)을 함께 단다** — 그 안의 링·주 버튼·보조 글자·입력 테두리가 면의 짝 색으로 바뀐다. 메뉴·객실 소개 같은 가벼운 띠는 이끼 안개 밝은 면(`bg-field-2`)이다. 짙은 면과 밝은 면을 섹션마다 번갈아도 되지만, 한 페이지의 면 색은 이 둘뿐이다.\n- 짙은 면 위 주 버튼은 반전한다: 채움은 `field-1-foreground`, 글자는 `field-1` — `data-face` 스코프가 `primary`·`primary-foreground`를 그렇게 바꾸므로 부품은 그대로 쓴다. 흰 바탕 위 주 버튼은 이끼(`primary`)다.\n- 제목: Hahmlet 700. H1 67px·행간 1.2·자간 -0.03em, 섹션 제목 38px. 한 페이지 크기는 1.333 비율 16 · 21 · 28 · 38 · 50 · 67. 본문은 나눔고딕 16px/1.75이다.\n- local이면 첫 화면(390px)의 솔숲 면 패널에 오늘 영업시간·주소 한 줄·예약 버튼 하나를 둔다(§21-3).\n- 머리는 H1 헤어라인 바다(바탕색). 첫 판의 「사진 위 투명 → 스크롤하면 단색」(N10 scroll-morph)은 분할 히어로로 바꾸면서 뺐다 — 사진 위에 글자·내비를 올리지 않는다. 반투명 블러는 H1 축이 정한 sticky 768px 이상에서만이다.\n- 카드는 C3 면 + S1 틴트 그림자, 반경 R1(12~16px). 버튼은 B3 8px이다.\n- 모션은 M3다(등장 700ms, expo-out 감속, hover 200ms). 역동 기법 셋:\n  - `split-text` — 히어로 H1만, 글자 25ms 간격, 총 1.2초 안. 원문은 `aria-label`, 조각은 `aria-hidden`.\n  - `clip-reveal` — 히어로 사진 가림막을 `clip-path: inset()`으로 한 번 걷는다. 글자는 처음부터 읽힌다.\n  - `sticky-stack` — 솔숲 면 띠 안에서 객실·코스 카드 3~5장이 `position: sticky`로 겹쳐 쌓인다. 40rem 미만에서는 일반 목록이다.\n- 동작 줄이기: 글자 분할은 불투명도만, 가림막은 즉시 표시, 스태킹은 일반 목록. 공장 바닥 규칙(factory-base)이 전환·애니메이션 길이를 0.01ms로 접는다.\n- 보드 B안(`alternates`): K7 솔과 감 + M2 + `clip-reveal`·`svg-draw`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n- 상태는 색과 글자를 함께 쓴다: 성공 success(165°), 주의 warning, 오류 destructive, 안내 info(245°).\n\n## 하지 말 것\n\n- 헤리티지가 아닌 브리프(병원·IT·일반 카페·프리미엄 소비재)에 이 레시피를 쓰지 않는다. 「고급스러우면 세리프」는 §13 MUST 위반이다. 그런 브리프는 r3·r5·r7에서 고른다.\n- 라임·형광 초록을 더하지 않는다. 이끼는 C 0.1 이하다(「거의 검정 + 형광 한 점」 §13).\n- 솔숲 면 위에 이끼 버튼을 올리지 않는다(면과 버튼의 명도 차가 작다). 짙은 면 위 버튼은 반전 채움이다.\n- 두 색 사이에 그라디언트를 넣지 않는다(K7 듀오톤 B안의 솔숲·감물, A의 솔숲·이끼 모두). 면은 단색이다.\n- 제목을 기울이지 않고, 제목 안에 굵기가 다른 강조 단어를 넣지 않는다.\n- 20px 아래 작은 제목에 Hahmlet을 쓰지 않는다. 부품 안 작은 라벨은 본문 고딕이다.\n- 모든 섹션에 같은 등장 연출을 걸지 않는다. 등장 연출은 히어로 한 번, 스태킹은 솔숲 띠 한 곳뿐이다.\n- 예약 버튼에 자석·맥동을 걸지 않는다.\n- 크림·베이지 바탕으로 따뜻하게 바꾸지 않는다. 바탕은 안개회색(C 0.006)이다.\n\n## 레퍼런스에서 가져온 기법\n\n- color-c07 : 주제에서 나온 초록 한 줄기를 강조로 쓴다. 같은 카드의 「유행 편중」 주의를 받아 라임을 빼고 솔숲·이끼로 낮췄다.\n- layout-l01 : 실사가 설득력을 만든다 — 첫 화면에 실사를 크게 둔다. 이 카드의 「사진 위 흰 글자는 어두운 영역에만」 주의는 분할 히어로로 피했다(글자는 면 패널 위).\n- color-palette-anchor-surface-mid : 팔레트를 바탕·글자·면·강조 역할로 먼저 나눈다. 짙은 닻색(솔숲)을 면으로, 밝은 중간색(이끼 안개)을 둘째 면으로 배정했다.\n- layout-local-has-hero : local 첫 화면은 실사 히어로다. 영업시간·예약 버튼을 그 첫 화면 안(면 패널)에 둔다.\n- type-brand-korean-font : 브랜드 홈의 한글 전용 서체 사용. 이 레시피는 한글 글리프가 있는 세리프(Hahmlet)를 제목에 둔다.\n- motion-n03 : 목적 있는 모션 — 등장 연출은 첫 화면 제목 한 번에 몬다.\n- pal-sns-instagram-dwih2ynktud-7 : 숲 단색 램프. 솔숲 면(138°)과 짙은 명도 단계의 근거.\n- pal-sns-instagram-djwzhoizfmb-5 : 이끼 두 톤. 이끼 강조(125°)와 밝은 면 field-2의 근거.\n- pal-sns-instagram-dudjznijp9d-2 : 감물 39°. B안 듀오톤 주 버튼의 색상각.\n"
+    },
+    {
+      "id": "r9-clay",
+      "name": "말랑 점토",
+      "mood": [
+        "말랑",
+        "친근",
+        "손끝"
+      ],
+      "axes": {
+        "button": "B3",
+        "input": "I1",
+        "surface": "C3",
+        "table": "T3",
+        "header": "H1",
+        "radius": "R1",
+        "shadow": "S3"
+      },
+      "motion": "M3",
+      "colorLogic": "K8",
+      "dynamics": [
+        "split-text",
+        "tilt-3d",
+        "clip-reveal"
+      ],
+      "alternates": {
+        "colorLogic": "K8",
+        "color": {
+          "light": {
+            "block-1": "oklch(0.76 0.13 235)",
+            "block-1-foreground": "oklch(0.22 0.02 250)",
+            "block-4": "oklch(0.9 0.08 95)",
+            "block-4-foreground": "oklch(0.24 0.02 250)"
+          },
+          "dark": {
+            "block-1": "oklch(0.72 0.1 235)",
+            "block-1-foreground": "oklch(0.19 0.02 255)",
+            "block-4": "oklch(0.42 0.06 95)",
+            "block-4-foreground": "oklch(0.95 0.01 95)"
+          }
+        },
+        "motion": "M2",
+        "dynamics": [
+          "clip-reveal"
+        ],
+        "note": "하늘 점토 — 가장 큰 칸(peak)을 노랑에서 하늘 점토(235°)로 옮기고 노랑은 옅은 칸·버튼 글자·선택 칸에만 남긴다. 글자 분할·3D 기울임 없이 M2, 첫 화면 사진 가림막만 한 번 걷는다"
+      },
+      "signature": [
+        "bento",
+        "app-shell",
+        "product-hero"
+      ],
+      "icons": {
+        "library": "phosphor",
+        "weight": "G4"
+      },
+      "fonts": {
+        "display": {
+          "family": "Jua",
+          "item": "font-jua",
+          "weight": 400,
+          "tuned": "굵기 400 하나뿐인 둥근 한글 제목 서체라 소비자가 직접 쓰는 25px 이상 제목 전용 — 본문·버튼·표·부품 제목에는 쓰지 않는다. 레시피 CSS가 .font-heading 굵기 합성을 끄고 부품 제목 칸을 본문 서체로 돌린다. 위계는 굵기 대신 크기로 세운다(H1 50px = 본문의 3.1배, 1.25 비율 20 · 25 · 31 · 39 · 50). 48px 이상 자간 -0.02em, 행간 1.2"
+        },
+        "body": {
+          "family": "Gothic A1",
+          "item": "font-gothic-a1",
+          "tuned": "본문 16px/1.7 굵기 400, 가격·상품 이름 700(차 300), 작은 부품 제목 700, 자간 0. 가격·수량·할인율은 tabular-nums"
+        },
+        "mono": null
+      },
+      "color": {
+        "light": {
+          "background": "oklch(0.98 0.006 250)",
+          "foreground": "oklch(0.24 0.02 250)",
+          "card": "oklch(0.995 0.003 250)",
+          "card-foreground": "oklch(0.24 0.02 250)",
+          "popover": "oklch(0.995 0.003 250)",
+          "popover-foreground": "oklch(0.24 0.02 250)",
+          "primary": "oklch(0.3 0.025 250)",
+          "primary-foreground": "oklch(0.88 0.14 92)",
+          "secondary": "oklch(0.95 0.01 250)",
+          "secondary-foreground": "oklch(0.28 0.02 250)",
+          "muted": "oklch(0.955 0.006 250)",
+          "muted-foreground": "oklch(0.44 0.02 250)",
+          "accent": "oklch(0.92 0.1 95)",
+          "accent-foreground": "oklch(0.26 0.02 250)",
+          "destructive": "oklch(0.52 0.17 27)",
+          "border": "oklch(0.9 0.01 250)",
+          "input": "oklch(0.62 0.02 250)",
+          "ring": "oklch(0.55 0.11 85)",
+          "success": "oklch(0.52 0.1 155)",
+          "success-foreground": "oklch(0.985 0.005 155)",
+          "warning": "oklch(0.55 0.13 55)",
+          "warning-foreground": "oklch(0.985 0.005 55)",
+          "info": "oklch(0.5 0.1 245)",
+          "info-foreground": "oklch(0.985 0.004 245)",
+          "chart-1": "oklch(0.55 0.11 85)",
+          "chart-2": "oklch(0.55 0.09 235)",
+          "chart-3": "oklch(0.58 0.08 165)",
+          "chart-4": "oklch(0.62 0.1 45)",
+          "chart-5": "oklch(0.45 0.02 250)",
+          "sidebar": "oklch(0.995 0.003 250)",
+          "sidebar-foreground": "oklch(0.24 0.02 250)",
+          "sidebar-primary": "oklch(0.3 0.025 250)",
+          "sidebar-primary-foreground": "oklch(0.88 0.14 92)",
+          "sidebar-accent": "oklch(0.92 0.1 95)",
+          "sidebar-accent-foreground": "oklch(0.26 0.02 250)",
+          "sidebar-border": "oklch(0.9 0.01 250)",
+          "sidebar-ring": "oklch(0.55 0.11 85)",
+          "block-1": "oklch(0.85 0.15 92)",
+          "block-1-foreground": "oklch(0.24 0.02 250)",
+          "block-2": "oklch(0.87 0.1 165)",
+          "block-2-foreground": "oklch(0.24 0.02 250)",
+          "block-3": "oklch(0.84 0.1 45)",
+          "block-3-foreground": "oklch(0.24 0.02 250)",
+          "block-4": "oklch(0.85 0.1 235)",
+          "block-4-foreground": "oklch(0.24 0.02 250)"
+        },
+        "dark": {
+          "background": "oklch(0.19 0.02 255)",
+          "foreground": "oklch(0.95 0.006 250)",
+          "card": "oklch(0.22 0.02 255)",
+          "card-foreground": "oklch(0.95 0.006 250)",
+          "popover": "oklch(0.24 0.02 255)",
+          "popover-foreground": "oklch(0.95 0.006 250)",
+          "primary": "oklch(0.84 0.13 92)",
+          "primary-foreground": "oklch(0.2 0.02 255)",
+          "secondary": "oklch(0.27 0.02 255)",
+          "secondary-foreground": "oklch(0.95 0.006 250)",
+          "muted": "oklch(0.25 0.02 255)",
+          "muted-foreground": "oklch(0.78 0.015 250)",
+          "accent": "oklch(0.3 0.04 92)",
+          "accent-foreground": "oklch(0.92 0.06 92)",
+          "destructive": "oklch(0.7 0.14 25)",
+          "border": "oklch(0.33 0.02 255)",
+          "input": "oklch(0.6 0.02 250)",
+          "ring": "oklch(0.84 0.13 92)",
+          "success": "oklch(0.74 0.11 155)",
+          "success-foreground": "oklch(0.19 0.02 155)",
+          "warning": "oklch(0.8 0.12 70)",
+          "warning-foreground": "oklch(0.2 0.03 70)",
+          "info": "oklch(0.74 0.1 245)",
+          "info-foreground": "oklch(0.19 0.015 245)",
+          "chart-1": "oklch(0.84 0.13 92)",
+          "chart-2": "oklch(0.72 0.09 235)",
+          "chart-3": "oklch(0.74 0.08 165)",
+          "chart-4": "oklch(0.76 0.09 45)",
+          "chart-5": "oklch(0.6 0.02 250)",
+          "sidebar": "oklch(0.22 0.02 255)",
+          "sidebar-foreground": "oklch(0.95 0.006 250)",
+          "sidebar-primary": "oklch(0.84 0.13 92)",
+          "sidebar-primary-foreground": "oklch(0.2 0.02 255)",
+          "sidebar-accent": "oklch(0.3 0.04 92)",
+          "sidebar-accent-foreground": "oklch(0.92 0.06 92)",
+          "sidebar-border": "oklch(0.33 0.02 255)",
+          "sidebar-ring": "oklch(0.84 0.13 92)",
+          "block-1": "oklch(0.8 0.13 92)",
+          "block-1-foreground": "oklch(0.2 0.02 255)",
+          "block-2": "oklch(0.4 0.08 165)",
+          "block-2-foreground": "oklch(0.95 0.01 165)",
+          "block-3": "oklch(0.42 0.08 45)",
+          "block-3-foreground": "oklch(0.95 0.01 45)",
+          "block-4": "oklch(0.4 0.08 235)",
+          "block-4-foreground": "oklch(0.95 0.01 235)"
+        }
+      },
+      "references": [
+        "layout-i02",
+        "layout-l10",
+        "motion-m04",
+        "layout-commerce-has-product-list",
+        "pal-sns-instagram-dutypk8cchi-1",
+        "pal-sns-threads-ddbj6vadbvk-2",
+        "pal-sns-instagram-djwzhoizfmb-1",
+        "https://www.sungsimdangmall.co.kr/shop/product/product_view?product_cd=6002880",
+        "https://web.dev/case-studies/jdid"
+      ],
+      "archetypes": [
+        "pwa",
+        "detail",
+        "commerce"
+      ],
+      "archetypeConditions": {
+        "pwa": "식품·생활·키즈 브랜드 앱에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(금융·업무 앱은 r7-docs)",
+        "detail": "식품·생활·키즈 상품 상세에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(재질 상품은 r5-celadon)",
+        "commerce": "식품·생활·키즈 몰에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(동네 가게 몰은 r3-woodblock)"
+      },
+      "body": "## 결정 기록 (2026-09-27, P3-1 Task 7)\n\n방향 원천은 선정서 `docs/recipes/candidates-2026-09-27.md` r9-clay 줄(N8 촉감 클레이)이다. 축·서체·원형·바탕·글자·ring은 선정서 값 그대로다. 라이트 primary는 선정서의 노랑 채움에서 **슬레이트 채움 + 노랑 글자**로 뒤집었다(아래 「노랑의 쓰임」 — 갤러리 게이트에서 잰 대비 실패). Task 6b 뒤 묶음 C를 대담하게 다시 짜라는 운영자 결정에 따라 **색 논리를 K8 색 블록으로, 모션을 M2에서 M3로** 올렸다. 선정서가 「클레이는 1순위에만」이라 적은 것은 그대로다 — 칸 색은 칸마다 하나이고, 클레이 그림자(S3)는 가장 큰 칸 하나에만 둔다.\n\n| 칸 | A 말랑 점토 (고름) | B 하늘 점토 (보드 B안) | C 파스텔 카드 3색 (버림) |\n|---|---|---|---|\n| 분위기 3단어 | 말랑 · 친근 · 손끝 | 말랑 · 맑음 · 차분 | 귀여움 · 가벼움 · 유행 |\n| 축 | B3 I1 C3 T3 H1 R1 S3, M3 | 같음, M2 | B4 I4 C3 T3 H2 R2 S3, M2 |\n| 색 논리 | K8 — 노랑 점토 큰 칸 1(peak) + 민트·복숭아·하늘 작은 칸 | K8 — 하늘 점토 큰 칸 + 민트·복숭아·옅은 노랑 | 카드마다 라벤더·민트·피치 |\n| 서체 짝과 이유 | Jua 400(둥근 한글 제목) + Gothic A1(본문). 손으로 빚은 둥근 획과 담백한 고딕 본문 | 같은 짝(보드에서 Jua ↔ Gowun Dodum도 본다) | 둥근 라틴 + 시스템 한글 |\n| 사진·그림 | 실물 상품 컷, 분위기 칸에만 한 재질 3D 점토 오브젝트(layout-i02) | 같음 | 3D 캐릭터 |\n| 이 안에서만 나오는 레이아웃 | 크기가 다른 칸 격자(벤토) — 가장 큰 칸이 노랑 점토, 떠 있는 칩 내비(N2) | 같은 격자, 가장 큰 칸이 하늘 | 같은 크기 카드 3장 |\n| 레퍼런스 2개 | layout-l10 · pal-sns-instagram-dutypk8cchi-1 | pal-sns-instagram-djwzhoizfmb-1 · layout-i02 | 없음(상투 조합) |\n\n- **버린 안: C.** 카드마다 파스텔 3색은 피할 패턴 「강조 3개 이상」이고, color-c06 파스텔 KPI(§14-A 불채택)다. B4 알약 + H2 섬은 「모든 버튼 알약」이다(선정서 「버린 방향」).\n- **A와 C의 차이**: 둘 다 여러 색을 쓰지만 A는 **칸 크기로 위계를 준다**(§5-B K8). 가장 큰 칸 하나만 가장 진한 노랑(C 0.15)이고 나머지 세 칸은 C 0.1 점토다. 같은 크기 카드에 같은 채도 파스텔을 돌리지 않는다.\n  - Task 7 fix 1(리뷰 I3): 첫 판의 작은 칸은 L 0.86~0.88 · C 0.06~0.07로, 버린 안 C 「파스텔 카드」와 같은 대역이었다(차이가 칸 크기뿐). 세 칸을 C 0.1로 올려 점토색으로 뺐다. peak와의 C 차는 0.05로 유지된다.\n- **K8 칸 색(div-04)**: block-1 노랑 `0.85 0.15 92`(peak) · block-2 민트 `0.87 0.1 165` · block-3 살구 `0.84 0.1 45` · block-4 하늘 `0.85 0.1 235`. 색상각 묶음 4개(45° 단일 연결), 칸 번호(= 배치 순서) 색상각이 92 → 165 → 45 → 235로 한 방향으로 돌지 않아 무지개 순서가 아니다. peak와 둘째 칸의 C 차는 0.05다(기준 0.02 이상). 칸 위 글자는 네 칸 모두 슬레이트(아래 「대비」).\n  - 다크에서는 노랑 칸만 밝게 두고 나머지 세 칸은 L 0.4대 짙은 점토(C 0.08) + 밝은 글자다. 어두운 화면에서 네 칸이 모두 밝으면 위계가 사라진다.\n  - **칸 안의 조작(리뷰 I1)**: 첫 판은 다크 노랑 peak 칸 안의 주 버튼(노랑)·포커스 링(노랑)이 칸과 1.14:1이었고, 라이트 칸 안 입력 테두리가 2.30~2.60이었다. 생성기가 이제 칸마다 `[data-face=\"block-N\"]` 스코프를 내서 그 안의 primary·ring = 칸 글자색(슬레이트), primary-foreground = 칸 색, 보조 글자·테두리 = 칸 글자색을 섞은 값이 된다. 다크 peak 칸 안의 CTA는 슬레이트 채움 + 노랑 글자, 링은 슬레이트다. 잰 값은 「게이트 기록」.\n- **노랑의 쓰임(선정서 I6, ring 색 규칙) — 라이트 primary를 뒤집은 이유**: 첫 판은 선정서대로 라이트 primary를 노랑 `0.82 0.14 92`(위 글자 슬레이트 9.41:1)로 두었다. 갤러리 게이트에서 AI 티 관문이 G104(APCA)를 잡았다 — `link` 변형 버튼 「측정 기준 보기」가 `text-primary`로 노랑 글자를 그려 Lc 27.6(바탕 대비 1.65:1, WCAG 1.4.3 실패)이었다. 컴파일본을 보면 `link` 버튼·배지는 `text-primary`, 체크박스·라디오·스위치 트랙·진행 막대·슬라이더 구간은 `bg-primary`로 칠한다. 레시피 데이터로는 이 부품들을 ring 색으로 돌릴 수 없다(부품 코드의 규칙). 노랑의 L을 낮추는 길(3:1에 L 약 0.64)은 선정서가 이미 버렸다(올리브가 된다).\n  - 그래서 라이트는 **primary = 슬레이트 `0.3 0.025 250`, primary-foreground = 노랑 `0.88 0.14 92`**(9.48:1)이다. 주 버튼은 슬레이트 점토에 노랑 글자, 체크·라디오·스위치는 슬레이트 채움에 노랑 표시, 링크 글자는 슬레이트(12.85:1)다. 노랑은 가장 큰 칸(block-1), 버튼·배지 글자, 선택 칸(`accent`)에 산다\n  - Task 7 fix 1(리뷰 I3): 첫 판 accent `0.95 0.045 92`는 계획이 금한 크림 경계(`oklch(0.9x 0.0x 60~90)`)에 걸친 옅은 면이었고, 반전의 대가로 부품 면이 모두 슬레이트라 라이트 크롬이 「흰 바탕 + 먹 + 한 점」 골격처럼 보였다. accent를 노랑 `0.92 0.1 95`(글자 슬레이트)로 바꿔 선택 칩·메뉴 강조·hover가 노랑을 띠게 했다. — 단독 상태 표시에 노랑이 나오지 않으므로 ring 색 규칙이 저절로 지켜진다. `chart-1`은 ring 값 `0.55 0.11 85`(4.6:1)다.\n  - 다크는 노랑 채움 `0.84 0.13 92` + 슬레이트 글자 그대로다(바탕 대비 11.3:1 — 글자·표시 모두 통과). 두 테마가 같은 노랑·슬레이트 쌍을 뒤집어 쓴다.\n- **모션 M3(div-06)**: 원형 pwa·detail·commerce는 M3가 허락된다(compat.json recipeRules는 dashboard·public만 막는다). 그러나 pwa는 매일 쓰는 앱이라 §8-1 「매일 쓰는 기능 UI엔 스크롤 등장 금지」를 지킨다 — 세 기법은 **마케팅 면(detail 첫 장·commerce 홈·pwa 첫 실행 소개)에만** 건다. `split-text`는 첫 화면 Jua H1 한 번(글자 25ms 간격), `tilt-3d`는 가장 큰 칸 하나(최대 6°, `(hover: hover) and (pointer: fine)`), `clip-reveal`은 첫 화면 상품 사진 한 번이다. 셋 다 동작 줄이기에서 불투명도만·평면·즉시 표시다.\n  - **자석 버튼을 뺐다(Task 7 fix 1 — 리뷰 I3)**: `magnetic-cta`와 `tilt-3d`는 `pointer: fine`에서만 켜진다. 그런데 원형 셋 가운데 detail(390×844 기준)·pwa(설치 앱)는 모바일이 기본이고 commerce도 대부분 모바일이라, 첫 판에서 실제로 보이는 기법은 `clip-reveal` 하나였다. 데스크톱 detail에서는 자석이 갈 「주 CTA」가 구매하기라, 옆 장바구니·옵션 버튼과 붙어 잘못 누르기 쉬웠다. 자석 대신 터치에서도 보이는 `split-text`(둥근 Jua 글자가 하나씩 내려앉는 「손끝」 연출)를 넣었다.\n  - **M3를 유지한 근거**: `split-text`(글자 단위 연출)와 `tilt-3d`(원근 3D)는 축 8의 M3 정의(등장 700ms·expo-out·시그니처 연출)에 맞는 두 기법이고, 모바일에서도 `split-text`와 `clip-reveal` 두 개가 보인다. 기법이 `clip-reveal` 하나만 남았다면 M2로 내렸을 것이다.\n  - **`tilt-3d`는 상품 사진이 든 칸에 걸지 않는다**: 원근 변형이 §21-5·§21-6 「색·질감·크기가 실제와 같게」와 부딪친다. 기울이는 칸은 글자·일러스트·분위기 오브젝트(layout-i02)만 든 가장 큰 칸이다.\n- **B안: 하늘 점토.** 같은 K8에서 peak만 하늘 235°(`0.78 0.11 235`)로 옮기고 노랑은 옅은 칸(`0.9 0.08 95`)과 버튼 글자로 줄였다. 모션은 M2, 기법은 `clip-reveal` 하나다. 「노랑 + 슬레이트 = 메신저 노랑」 연상(선정서 M2)이 걸리는 브리프에서 고를 수 있다. 하늘 peak는 작은 칸이 C 0.1로 오르면서 `0.78 0.11` → `0.76 0.13 235`로 올렸다(peak C 차 0.02 이상). 자석을 뺀 뒤 부분 조합 7개가 모두 lint를 통과한다.\n- **색 수 판단**: `refs-v2/samples.jsonl`에서 detail 14곳의 유채색 수 중앙값은 3(3개 이상 9곳), pwa 7곳도 중앙값 3(3개 이상 4곳)이다. commerce 23곳은 중앙값 1이다. 이 레시피는 칸 네 묶음을 쓰므로 detail·pwa 분포 위쪽이고 commerce 분포 밖이다. commerce에서는 칸 색을 상품 목록 칸이 아니라 기획전·카테고리 칸(분위기 칸)에만 쓴다 — 상품 사진이 색을 가져오는 곳에 칸 색을 겹치지 않는다(「쓰는 법」).\n- **대비(lint와 같은 `contrast-lib ratio`)**: 라이트 글자/바탕 15.52 · muted 7.32 · 주 버튼 노랑 글자/슬레이트 9.48 · primary(링크 글자)/바탕 12.85 · ring/바탕 4.63 · 입력 테두리 3.43 · 칸 글자 block-1 10.38 · block-2 11.54 · block-3 9.68 · block-4 10.50 · accent 위 글자 12.29. 다크 글자/바탕 15.96 · primary/바탕 11.30 · 칸 글자 block-1 9.68 · block-2 7.66 · block-3 7.53 · block-4 7.85. B안 라이트 하늘 칸 글자 8.23 · 옅은 노랑 칸 12.23. 칸과 바탕의 경계는 1.3~1.5:1이라 칸은 장식 면이다. 칸 안의 조작 요소는 `[data-face=\"block-N\"]` 스코프로 칸 대비를 잰다 — 라이트 칸 안 입력 테두리 3.07~3.27 · 링 10.4~11.8, 다크 노랑 peak 칸 안 링·주 버튼 9.68 · 보조 글자 6.40(lint `face-contrast`, 수치는 「게이트 기록」). 첫 판의 「칸 안 조작 요소가 자기 경계 3:1을 가진다」는 재지 않은 주장이었다(라이트 입력 테두리 2.30~2.60).\n- **팔레트 인용**: `pal-sns-instagram-dutypk8cchi-1`(노랑 `0.77 0.14 93` + 슬레이트 `0.32 0.01 217`, minimalist)에서 노랑·슬레이트 쌍을, `pal-sns-threads-ddbj6vadbvk-2`(retro·sunshine, **augmented 팔레트** — 바탕을 더한 팔레트, DESIGN §5-A pal-01)에서 햇빛 노랑(`0.91 0.08 101`)과 주황 57°(`#EB7D00`, `0.70 0.17 57`)의 짝을 — 주황의 색상각을 빌려 살구 칸(45°·C 0.1)으로 낮췄다 — `pal-sns-instagram-djwzhoizfmb-1`(Y2K·soft·cool: 라벤더 303°·민트 164°·복숭아 26°)에서 점토 칸의 명도 대역(L 0.84~0.95)을 빌렸다(채도는 C 0.1로 올렸다). 라벤더는 쓰지 않았다(버린 안 C의 라벤더·민트·피치를 피한다). 모두 hex를 옮기지 않고 OKLCH로 다시 만들었다.\n- **서체(선정서 M2 연상 포함)**: Jua·Gothic A1 모두 SIL OFL 1.1(키트 항목 `meta.license`). §13·banlist에 없다. **한글 제목 서체는 Jua 400**이다(선정서 M5). Jua는 굵기 하나뿐이라 부품 제목 칸(카드·대화상자)은 본문 Gothic A1로 그려지고, `.font-heading` 굵기 합성은 꺼진다(`singleWeightRules`). Jua는 배달앱 계열 둥근 서체로 읽혀 쓰임을 식품·생활·키즈로 한정한다. 로더는 둘이다(Jua 1, Gothic A1 1 — r2·r7과 같은 family라 공유).\n- **아이콘**: phosphor, 결 G4(둥근 2px — 친근).\n- **AI 티 점수**: 아래 「게이트 기록」.\n\n### 게이트 기록\n\n- lint 위반 0·경고 0(새 규칙 `face-contrast`·`primary-surface` 포함, A·B 모두). 자석을 뺀 뒤 B안 부분 조합 7개 모두 통과(첫 판은 5/7). qa:distinct 10벌 문제 없음(K8 대표 칸: 노랑 92°는 r3 B안 주홍 35°와 57°).\n- 면 스코프 비율: block-1 면 조각 10% · 보조 글자 82% · 테두리 51%, block-2~4 10% · 94~96% · 50%(칸 글자 짝이 7:1 근처라 보조 글자가 거의 칸 글자색이다).\n- `/qa/recipes?r=r9-clay`: run --strict 0 · hit-area fine 37개 실패 0 · coarse 37개 실패 0.\n- **AI 티 점수 G 13/239**(kas 6/35) — G006 · G018 · G078 · G084 · G088×4 · G126 · G135×6. 같은 빌드(741d7d2 + Task 7 fix 1, 차가운 캐시)에서 r1-measure를 대조로 함께 쟀다 — r1 G 12. **G104는 없다**(fix 1에서 다시 잼 — 라이트 primary 슬레이트 12.85:1).\n  - 첫 판은 **G 16**이었다: +3 G104(APCA) — 라이트 primary 노랑을 `link` 버튼이 글자색으로 써 Lc 27.6. primary를 슬레이트 + 노랑 글자로 뒤집어 고쳤다(위 「노랑의 쓰임」). 이제 lint `primary-surface`가 같은 실패를 생성 전에 막는다.\n  - fix 1 첫 재측정도 **16**이었다: +3 G136(같은 구조 카드 연속 4장) — 새 면 견본을 같은 구조 칸 네 개로 그렸기 때문이다. 견본을 크기 위계 벤토(큰 칸 하나 + 작은 칸마다 조작 하나)로 바꿔 빠졌다.\n  - **G006(+1, 제목 400 대 본문 400)은 고치지 않고 이유를 적는다.** Jua는 굵기 400 하나뿐이다(키트 `font.weight` [\"400\"]). 제목을 굵히면 합성 굵기가 되고(레시피 CSS가 `font-synthesis-weight: none`으로 막는다), 본문 Gothic A1은 300 굵기가 없다(400·500·700·800). 위계는 크기로 세운다(H1 50px = 본문 3.1배). r3-woodblock(Black Han Sans 400)과 같은 판정이다.\n- **칸 안의 조작**(리뷰 I1 — 다크 노랑 peak 칸 안 CTA·링 1.14이던 자리): 갤러리 「면 위의 조작」 견본(크기 위계 벤토: 첫 면이 큰 칸에 주 버튼·외곽선 버튼·입력·체크, 나머지 면은 작은 칸마다 조작 하나)을 CDP로 쟀다 — 라이트·다크를 `prefers-color-scheme`으로 따로 띄우고, Tab 키 뒤 `focus()`로 `:focus-visible` 링을 켠 계산 색(canvas sRGB)으로.\n  - 다크 block-1(노랑 peak): 포커스 링 **9.68** · 주 버튼 채움(슬레이트)/칸 9.68 · 버튼 글자(노랑)/채움 9.68 · 입력 테두리 3.30 · 보조 글자 7.12 · 체크 9.68. block-2·3·4: 링 7.68 · 7.51 · 테두리 3.07 · 3.03 · 3.12 · 보조 글자 7.04 · 7.01 · 7.08.\n  - 라이트 block-1: 링 10.40 · 입력 3.20 · 보조 글자 7.13. block-2·3·4: 링 11.58 · 9.68 · 테두리 3.26 · 3.03 · 3.14 · 보조 글자 10.41 · 9.05 · 9.42.\n- 한글 제목 서체(CDP): 레시피 제목 h2와 크기 견본 제목 6개 모두 첫 family `Jua`, 그린 서체 Jua(웹폰트), `fonts.check` true. 견본의 `font-bold` 제목 2개는 계산 굵기 700이지만 합성 굵기가 꺼져 Jua 400 획 그대로다. 부품 칸 제목 h3는 Gothic A1 700(단일 굵기 규칙).\n- 동작 줄이기(CDP, 갤러리 `prefers-reduced-motion: reduce`): 레시피 칸의 모션 토큰 `--duration-enter` 700ms(.7s) → 0s, `--duration-sheet`·`--duration-hover`·`--duration-press`·`--duration-popover` 모두 0s(factory-base가 토큰 자체를 접는다 — 리뷰 I7). 프리셋은 `animation: none`, 전환·지연은 0. 글자 분할·기울임은 블록 단계(P3-2)에서 `matchMedia`와 이 토큰을 함께 본다.\n- 노랑 단독 표시 확인(선정서 I6): 라이트 체크박스·라디오·스위치·진행 막대·슬라이더는 `bg-primary`(슬레이트 — 바탕 대비 12.85:1), 그 위 표시는 노랑(9.48:1)이다. 라이트에서 노랑이 단독 상태 표시로 나오는 곳은 없다. 노랑 면은 가장 큰 칸과 `accent`(선택·hover — 위 글자 슬레이트 12.29:1)다.\n\n## 분위기\n\n손으로 빚은 점토 조각을 크기 순서대로 늘어놓은 화면이다. 가장 큰 칸은 햇빛 노랑 점토이고, 민트·살구·하늘 작은 칸이 그 곁에 붙는다. 버튼은 슬레이트 점토에 노랑 글자, 고른 칩과 메뉴는 노랑이다. 제목은 둥근 한글, 본문은 담백한 고딕이다. 둥근 제목은 글자 하나씩 내려앉고, 가장 큰 칸은 마우스를 따라 살짝 기운다. 나머지는 가만히 있다.\n\n## 쓰는 법\n\n- 맞는 원형은 모바일 PWA(pwa)·한국 상세페이지(detail)·소형 커머스(commerce)다. 식품·생활·키즈 브랜드에 쓴다.\n- 칸: 벤토 격자에서 가장 큰 칸 하나만 `bg-block-1`(노랑 점토)이고 클레이 그림자(S3)를 받는다. **칸마다 `data-face=\"block-N\"`을 함께 단다** — 칸 안 버튼·링·입력·보조 글자가 그 칸의 짝 색으로 바뀐다. 작은 칸은 `bg-block-2`·`bg-block-3`·`bg-block-4`, 글자는 각 `text-block-n-foreground`다. 칸 번호가 배치 순서다(1 → 4). 칸이 셋이면 block-4를 뺀다.\n- commerce·detail에서 칸 색은 기획전·카테고리·구매 포인트 칸에만 쓴다. 상품 목록 칸과 상품 사진 뒤는 흰 카드다(사진이 색을 가져온다).\n- 라이트에서 주 버튼·배지·체크·스위치는 슬레이트 채움(`primary`)에 노랑 글자·표시(`primary-foreground`)다. 노랑 면은 가장 큰 칸과 선택·hover 면(`accent` `0.92 0.1 95`)이다. 차트 1번은 ring 색(`0.55 0.11 85`)이다. 다크에서는 노랑 채움 + 슬레이트 글자로 뒤집힌다.\n- 제목: Jua 400, 25px 이상에만. H1 50px(행간 1.2, 자간 -0.02em), 섹션 제목 31px. 크기는 1.25 비율 16 · 20 · 25 · 31 · 39 · 50. 부품 제목·버튼·표는 Gothic A1이다. 본문 16px/1.7.\n- 반경은 R1(면 12~16px), 버튼은 B3 8px — 알약은 떠 있는 칩 내비(N2)의 작은 칩뿐이다. pwa 하단 탭바는 pwa 원형 규칙(§21-9)을 따른다.\n- 모션은 M3다(등장 700ms, hover 200ms). 역동 기법 셋, 마케팅 면에만:\n  - `split-text` — 첫 화면 Jua H1 한 번, 글자 25ms 간격, 총 1.2초 안. 원문은 `aria-label`, 조각은 `aria-hidden`.\n  - `tilt-3d` — 가장 큰 칸 하나, 최대 6°, `(hover: hover) and (pointer: fine)`에서만. 상품 사진이 든 칸에는 걸지 않는다.\n  - `clip-reveal` — 첫 화면 상품 사진 가림막을 한 번 걷는다.\n- 동작 줄이기: 글자 분할은 불투명도만, 기울임은 평면, 가림막은 즉시 표시. factory-base가 모션 토큰 자체도 0ms로 접는다. 공장 바닥 규칙(factory-base)이 전환·애니메이션 길이를 0.01ms로 접는다.\n- 보드 B안(`alternates`): K8 하늘 점토 + M2 + `clip-reveal`. 운영자가 고르기 전까지 설치되는 값은 위 A다.\n- 상태는 색과 글자를 함께 쓴다: 성공 success, 주의 warning(55°), 오류 destructive, 안내 info.\n\n## 하지 말 것\n\n- 같은 크기 카드에 파스텔을 돌려 칠하지 않는다. 칸 크기로 위계를 주고, 가장 진한 색은 가장 큰 칸 하나뿐이다.\n- 칸을 무지개 순서(색상환 한 방향)로 늘어놓지 않는다.\n- 라이트 primary를 노랑으로 되돌리지 않는다. `link` 버튼 글자·스위치 트랙·진행 막대·체크 채움이 primary로 그려져 바탕 대비 1.65:1이 된다(WCAG 1.4.3·1.4.11).\n- 노랑의 L을 낮춰 대비를 맞추지 않는다 — 올리브로 변한다. 노랑 옆 단독 표시가 필요하면 ring 색을 쓴다.\n- 모든 버튼을 알약으로 만들지 않는다. 클레이 그림자를 모든 카드에 두지 않는다.\n- Jua로 본문·버튼·표·작은 부품 제목을 쓰지 않는다. `font-bold`로 Jua를 굵히지 않는다(합성 굵기).\n- 매일 쓰는 앱 화면(pwa 목록·설정)에 글자 분할·기울임·스크롤 등장을 걸지 않는다.\n- 자석 버튼을 쓰지 않는다. 구매하기·장바구니·옵션·하단 구매 바는 움직이지 않는다.\n- 상품 사진이 든 칸을 기울이지 않는다(§21-5·§21-6 — 색·질감·크기가 실제와 같게).\n- 면 색만 칠하고 `data-face`를 빠뜨리지 않는다 — 칸 안 링·버튼이 바탕 기준 색으로 남아 사라진다.\n- 파는 상품을 3D·생성 이미지로 대신하지 않는다. 3D 점토 오브젝트는 분위기 칸에만 둔다(§21-5·§21-6).\n- 라벤더·보라 칸을 더하지 않는다.\n\n## 레퍼런스에서 가져온 기법\n\n- layout-i02 : 한 재질(점토)을 제대로 쓴 3D 오브젝트를 분위기 칸 하나에 둔다.\n- layout-l10 : 1순위 한 곳에 집중한다 — 가장 큰 칸 하나에만 가장 진한 색과 클레이 그림자.\n- motion-m04 : 목적 있는 순차 등장. 이 레시피는 첫 화면 제목 글자 분할과 사진 가림막 한 번만 쓴다.\n- layout-commerce-has-product-list : 커머스 홈의 상품 목록 칸은 흰 카드로 두고 칸 색을 기획전 칸에 몬다.\n- pal-sns-instagram-dutypk8cchi-1 : 노랑 + 슬레이트 쌍 — 가장 큰 칸 노랑, 슬레이트 버튼과 그 위 노랑 글자의 근거.\n- pal-sns-threads-ddbj6vadbvk-2 : 햇빛 노랑과 주황 57°의 짝 — 주황을 살구 칸(45°·C 0.1)으로 낮춰 썼다(augmented 팔레트 — 약한 근거).\n- pal-sns-instagram-djwzhoizfmb-1 : 옅은 점토 칸의 명도·채도 대역(민트·복숭아).\n- https://www.sungsimdangmall.co.kr/shop/product/product_view?product_cd=6002880 : 식품 상세의 세로 흐름과 원산지·고시 표(detail 구조 근거).\n- https://web.dev/case-studies/jdid : 앱 셸을 캐시에서 먼저 그리는 PWA(pwa 구조 근거).\n"
+    }
+  ]
+}

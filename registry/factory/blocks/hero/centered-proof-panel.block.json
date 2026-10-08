@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "centered-proof-panel",
+  "title": "히어로 — 가운데 제목 + 접힘선을 넘는 증거 패널",
+  "layout": "centered-proof-panel",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard", "detail", "landing"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["split-text", "rise", "clip-reveal", "svg-draw", "tilt-3d"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "layout",
+  "notes": "짙은 구역(DarkZone) 가운데 제목 h1 · 설명 · 알약 버튼 둘, 아래로 접힘선을 넘는 카드 패널(머리·배지 → KPI 넷(두 칸씩, 넓은 화면 네 칸) → 추세 선 + 근거 목록, 첫 근거는 면 색 칩 위). 기본 기법 clip-reveal·svg-draw. P3-1 r4-evidence B 구성"
+}

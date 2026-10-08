@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>strict fixture — portfolio-works-contact-linkimg-bad (링크 안 그림 + 형제 제목 카드 둘뿐: 작업 3개가 아니다)</title>
+<style>
+  html, body { margin: 0; font-family: system-ui, sans-serif; background: #fff; color: #1a1a1a; }
+  header { padding: 12px 16px; border-bottom: 1px solid #ccc; }
+  header nav a { margin-right: 12px; color: #1a1a1a; }
+  main { padding: 16px; max-width: 960px; margin: 0 auto; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .card { border: 1px solid #ccc; padding: 12px; border-radius: 8px; }
+  .thumb { display: block; width: 100%; height: 120px; background: #eee; }
+  .filler { height: 2000px; }
+</style>
+</head>
+<body>
+<header><nav aria-label="주 메뉴"><a href="/">개요</a><a href="/orders">주문</a><a href="/settings">설정</a></nav></header>
+<main>
+  <h1>브랜드와 화면을 함께 만들어요</h1>
+  <p>작은 팀과 일하는 디자이너예요. 일 문의는 <a href="mailto:hello@example.com">hello@example.com</a> 으로 보내 주세요.</p>
+  <section><h2>작업</h2>
+  <ul class="grid">
+    <li><div data-slot="card" class="card"><a href="/work/1"><img class="thumb" alt="봄 시즌 브랜드 사이트" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></a><h3>봄 시즌 브랜드 사이트</h3></div></li>
+    <li><div data-slot="card" class="card"><a href="/work/2"><img class="thumb" alt="예약 앱 리뉴얼" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="></a><h3>예약 앱 리뉴얼</h3></div></li>
+  </ul></section>
+  <div class="filler"></div>
+</main>
+</body>
+</html>

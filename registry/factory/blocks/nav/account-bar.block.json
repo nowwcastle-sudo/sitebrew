@@ -1,0 +1,13 @@
+{
+  "kind": "nav",
+  "variant": "account-bar",
+  "title": "상단 내비 — 세션 prop 이 정하는 로그인·가입 / 계정 메뉴",
+  "layout": "account-bar",
+  "density": "comfortable",
+  "archetypes": ["saas", "pwa", "dashboard", "commerce"],
+  "archetypeKinds": ["nav", "top-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "왼쪽 워드마크 · 주 메뉴 링크 한 줄 · 오른쪽 세션 칸. session.status signed-out 이면 [로그인] 링크 + [가입] 버튼, signed-in 이면 계정 메뉴 하나(details — 자바스크립트 없이 열고 닫힘: 로그인한 사람 표시 · 계정 링크 · 주 메뉴와 떨어진 [로그아웃] POST 폼). 서버 컴포넌트 — 첫 HTML 부터 세션에 맞는 머리, 뿌리 data-session. 모든 폭에서 위에 붙고 누름 대상 44px 이상"
+}

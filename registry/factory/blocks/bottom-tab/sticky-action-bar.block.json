@@ -1,0 +1,13 @@
+{
+  "kind": "bottom-tab",
+  "variant": "sticky-action-bar",
+  "title": "하단 고정 줄 — 가격 + 구매 버튼",
+  "layout": "sticky-action-bar",
+  "density": "comfortable",
+  "archetypes": ["commerce", "detail"],
+  "archetypeKinds": ["sticky-buy-bar", "primary-action-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "왼쪽: 상품 이름(선택) · 판매가(원화 toLocaleString ko-KR, data-numeric·tabular-nums) · 정가 취소선(선택). 오른쪽: 보조 행동(외곽선, 선택 — 640 이상에서만) + 구매(주색). 375 는 가격 + 구매 버튼 한 줄. 줄 높이만큼 제자리 빈 칸 + 문서 --bottom-bar-height·scroll-padding-bottom, 안전 영역 여백"
+}

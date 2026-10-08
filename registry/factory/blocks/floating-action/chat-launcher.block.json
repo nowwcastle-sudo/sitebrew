@@ -1,0 +1,13 @@
+{
+  "kind": "floating-action",
+  "variant": "chat-launcher",
+  "title": "메신저 문의 단추 — 글자 알약 단추 + 문의 채널 링크 판(위젯 스크립트 없음)",
+  "layout": "corner-pill",
+  "density": "comfortable",
+  "archetypes": ["commerce", "detail", "public", "local", "saas", "brand", "dashboard", "portfolio"],
+  "archetypeKinds": ["chat-widget", "contact-launcher"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "오른쪽 아래 모서리에 글자가 보이는 알약 단추 하나(aria-expanded·aria-controls). 누르면 위로 문의 채널 링크 판이 펼쳐진다(메신저·메일·자주 묻는 질문 링크 — 외부 채팅 위젯 스크립트를 불러오지 않는다). 펼침 판은 대화상자가 아니다: 초점을 가두지 않고 Esc·바깥 누름으로 닫히며 닫히면 초점이 단추로 돌아온다. 아래 고정 줄이 있으면 그 위로 올라앉고 가린 높이만큼 scroll-padding-bottom(WCAG 2.4.11). 하단 탭이 있는 쪽에서는 그리지 않는다. 계측(선택): cta_click"
+}

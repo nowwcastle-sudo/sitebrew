@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "object-3d-orbit",
+  "title": "히어로 — 3D 오브젝트 궤도(이미지 → GLB 모델, 없으면 2.5D·포스터)",
+  "layout": "object-3d-orbit",
+  "density": "spacious",
+  "archetypes": ["landing", "portfolio", "saas", "commerce", "detail"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["scene3d", "image"],
+  "motion": ["kinetic-type", "rise", "scrub-timeline"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "motion",
+  "notes": "전폭 제목 아래 왼쪽 문단·버튼, 오른쪽 3D 무대. 3D 는 이미지에서 시작한다: 고품질 원본 이미지(판매 대상은 실제 사진, 상징 오브젝트는 생성 이미지) → 이미지-3D 변환 GLB(model) → three.js 는 표시만(PBR 재질 그대로·RoomEnvironment·ACES·접지 그림자·천천히 도는 턴테이블·마우스 기울임, 정지 단추). 첫 칠(LCP)은 포스터 그림이고 three·GLTFLoader 는 등장이 끝난 뒤 브라우저가 한가할 때 동적 import 로만 올린다. 모델이 없고 원본 이미지(media)만 있으면 2.5D(CSS 기울임·반사광, three 없음), 둘 다 없으면 muted 무대(03 은 이 히어로를 고르지 않는다). 라이브러리 기본 도형 장면은 없다. 동작 줄이기·M0 는 three 를 내려받지 않고 포스터만. GLB ≤ 2 MB. FV1 Task 5.7 · 3D-GEN"
+}

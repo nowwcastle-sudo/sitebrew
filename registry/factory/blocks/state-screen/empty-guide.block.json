@@ -1,0 +1,13 @@
+{
+  "kind": "state-screen",
+  "variant": "empty-guide",
+  "title": "상태 화면 — 빈 상태 안내 + 행동",
+  "layout": "empty-guide",
+  "density": "spacious",
+  "archetypes": ["dashboard", "saas", "pwa", "commerce"],
+  "archetypeKinds": ["state-screens", "empty-state"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "한 판 두 단: 무엇이 없는지 제목 h2 · 까닭 한 줄 · 주 행동 하나(+ 보조 링크) | 시작 단계 번호 목록. 빈 틀·가짜 숫자 없음"
+}

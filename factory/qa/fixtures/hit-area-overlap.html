@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>히트 영역 — 겹침(예시)</title>
+<style>
+  body { font: 16px/1.7 sans-serif; padding: 48px; }
+  .row { display: flex; gap: 4px; align-items: center; margin-bottom: 64px; }
+  .t { position: relative; width: 44px; height: 24px; border: 0; padding: 0; background: #ddd; }
+  /* 44 식: 24px 높이 → 위아래 -10px, 44px 폭 → 좌우 0 */
+  .t::after { content: ""; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+  .col { display: flex; flex-direction: column; gap: 0; margin-bottom: 64px; }
+  /* 묶음 규칙(부품의 in-[[data-slot=button-group][data-orientation=vertical]]:after:inset-y-0 에 해당) */
+  [data-orientation=vertical][data-slot=button-group] .t::after { top: 0; bottom: 0; }
+  /* 터치 바닥(부품의 pointer-coarse:in-[…vertical]:min-h-11 에 해당) — floor 가 붙은 묶음에만 */
+  @media (pointer: coarse) { [data-orientation=vertical][data-slot=button-group].floor .t { min-height: 44px; } }
+  .sq { position: relative; width: 24px; height: 24px; border: 0; padding: 0; background: #ddd; }
+  .sq::after { content: ""; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+</style>
+</head>
+<body>
+  <!-- 양성 대조: 세로로 붙은 버튼 — 아래 버튼의 ::after 가 위 버튼의 보이는 아래쪽을 가져간다(묶음 규칙 없음) -->
+  <div class="col" data-slot="stack">
+    <button class="t" data-slot="button">위 예시</button>
+    <button class="t" data-slot="button">아래 예시</button>
+  </div>
+  <!-- 묶음 규칙이 있는 세로 ButtonGroup: 겹침 0 -->
+  <div class="col floor" data-slot="button-group" data-orientation="vertical">
+    <button class="t" data-slot="button">묶음 위 예시</button>
+    <button class="t" data-slot="button">묶음 아래 예시</button>
+  </div>
+  <!-- 터치 바닥이 없는 세로 묶음: fine 에서는 예외(24)로 통과, coarse 에서는 24 < 44 로 실패 -->
+  <div class="col" data-slot="button-group" data-orientation="vertical">
+    <button class="t" data-slot="button">바닥 없는 위 예시</button>
+    <button class="t" data-slot="button">바닥 없는 아래 예시</button>
+  </div>
+  <!-- 묶음 밖 toggle 한 줄, 간격 4px: DESIGN §7 「인접 타깃 사이 8px」 아래라 겹침 실패(받아들인 겹침 아님) -->
+  <div class="row">
+    <button class="sq" data-slot="toggle" aria-label="토글 가 예시"></button>
+    <button class="sq" data-slot="toggle" aria-label="토글 나 예시"></button>
+  </div>
+</body>
+</html>

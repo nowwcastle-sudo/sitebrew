@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-noto-serif-kr",
+  "type": "registry:font",
+  "title": "Noto Serif KR",
+  "description": "web-factory 폰트 키트: Noto Serif KR (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Noto Serif KR Variable', serif",
+    "provider": "google",
+    "import": "Noto_Serif_KR",
+    "variable": "--font-noto-serif-kr-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/noto-serif-kr"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/notoserifkr/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Noto+Serif+KR",
+    "role": [
+      "display",
+      "body"
+    ],
+    "korean": true
+  }
+}

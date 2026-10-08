@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — nav-island.html</title>
+<style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  main { padding: 16px; max-width: 640px; }
+  main p { color: #1a1a1a; margin: 0 0 48px; }
+  nav a { color: #1a1a1a; padding: 12px 16px; display: inline-block; }
+  /* H2 떠 있는 섬: 헤더는 static, 안쪽 줄만 fixed — 내비는 섬 안에서 스크롤 뒤에도 보인다(통과해야 한다) */
+  header { padding: 12px 16px; background: #ffffff; min-height: 48px; }
+  .island { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); background: #ffffff; border: 1px solid #ccc; border-radius: 999px; padding: 4px 12px; z-index: 10; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="island"><span>달빛</span> <nav aria-label="fixture nav"><a href="#a">소개</a><a href="#b">메뉴</a></nav></div>
+  </header>
+  <main>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (1).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (2).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (3).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (4).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (5).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (6).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (7).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (8).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (9).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (10).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (11).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (12).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (13).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (14).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (15).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (16).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (17).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (18).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (19).</p>
+    <p>이 문단은 스크롤을 만들기 위한 긴 본문 텍스트입니다. 대비 검사에 잡히도록 충분히 길게 씁니다 (20).</p>
+  </main>
+</body>
+</html>

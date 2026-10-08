@@ -1,0 +1,85 @@
+{
+ "_note": "mood 없는 골든 20개 브리프(분위기 칸을 지운 사본)의 pickDirections 결과 해시(저장소 뿌리 경로를 <repo> 로 바꾼 JSON 의 sha256 앞 12자 — 로고 경로가 clone 자리마다 다르다) — mood 가산 도입(FIT-3) 전 기준 abbe3be0 에서 찍었다. 씨앗은 그때 골든 파일에 박혀 있던 값을 여기 고정한다(골든 씨앗을 다시 골라도 이 기준은 안 바뀐다). 방향 고르기를 일부러 바꾸면 이 값을 새로 찍고 이유를 커밋에 쓴다.",
+ "cases": {
+  "brand-1": {
+   "seed": 1,
+   "hash": "5499f7795acd"
+  },
+  "brand-2": {
+   "seed": 5,
+   "hash": "a0da3165e9a5"
+  },
+  "commerce-1": {
+   "seed": 3,
+   "hash": "8001deff8b06"
+  },
+  "commerce-2": {
+   "seed": 2,
+   "hash": "4f68675f49d1"
+  },
+  "dashboard-1": {
+   "seed": 4,
+   "hash": "8f3d1a68b0ef"
+  },
+  "dashboard-2": {
+   "seed": 1,
+   "hash": "aa6dec5719c8"
+  },
+  "detail-1": {
+   "seed": 2,
+   "hash": "87d33efaa702"
+  },
+  "detail-2": {
+   "seed": 6,
+   "hash": "abd8f96e3134"
+  },
+  "local-1": {
+   "seed": 8,
+   "hash": "cca1ff5a211c"
+  },
+  "local-2": {
+   "seed": 20,
+   "hash": "86556c88ebf1"
+  },
+  "portfolio-1": {
+   "seed": 2,
+   "hash": "5bdea9d72099"
+  },
+  "portfolio-2": {
+   "seed": 8,
+   "hash": "451df2f7a6d0"
+  },
+  "public-1": {
+   "seed": 6,
+   "hash": "5ce2d3dafa75"
+  },
+  "public-2": {
+   "seed": 2,
+   "hash": "a8dcfd3bfe18"
+  },
+  "pwa-1": {
+   "seed": 6,
+   "hash": "b7a9514461fc"
+  },
+  "pwa-2": {
+   "seed": 3,
+   "hash": "5d806670a28f"
+  },
+  "saas-1": {
+   "seed": 24,
+   "hash": "c60833cea0b5"
+  },
+  "saas-2": {
+   "seed": 5,
+   "hash": "5ff791ec1978"
+  },
+  "landing-1": {
+   "seed": 48,
+   "hash": "389e4a1bf9c6"
+  },
+  "landing-2": {
+   "seed": 135,
+   "hash": "9ae6b165ee9a"
+  }
+ }
+}

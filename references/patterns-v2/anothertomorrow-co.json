@@ -1,0 +1,58 @@
+{
+  "id": "anothertomorrow-co",
+  "archetype": "commerce",
+  "sourceGallery": "httpster",
+  "url": "https://anothertomorrow.co/",
+  "structure": {
+    "hero": "전폭 모델 사진 위 가운데 대문자 제목과 흰 사각 버튼",
+    "sections": [
+      "공지띠(이전·다음·닫기)",
+      "투명 헤더(내비 4개·세리프 로고·검색·계정·가방)",
+      "전폭 사진 히어로",
+      "창업자 인용(모바일에서 확인)",
+      "NEW ARRIVALS / BEST SELLERS 탭 상품 줄"
+    ]
+  },
+  "type": {
+    "display": "세리프 로고와 넓은 자간 굵은 대문자 제목",
+    "body": "산세리프 본문, 인용은 세리프",
+    "scale": "대문자 제목 중간 크기, UI는 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "공지띠 이전·다음·닫기",
+    "모바일 NEW ARRIVALS/BEST SELLERS 탭 전환",
+    "상품 카드 New 라벨",
+    "헤더 검색·계정·가방"
+  ],
+  "cta": {
+    "pattern": "흰 사각 Shop Now 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.78
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "사진 속 색(붉은 문, 연두 코트)이 팔레트를 대신하고 UI는 흰색·검정만 쓴다",
+    "탭으로 상품 줄을 바꾸는 구조는 모바일 공간 효율이 좋다",
+    "창업자 인용 한 단락을 히어로 아래에 둬 브랜드 신뢰를 전달",
+    "사진 하단 글자와 버튼은 밝은 바닥 위에서 대비가 약하다"
+  ]
+}

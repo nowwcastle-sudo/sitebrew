@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "baseline-split",
+  "title": "히어로 — 바닥선을 공유하는 두 칸 + 치수선 면",
+  "layout": "baseline-split",
+  "density": "spacious",
+  "archetypes": ["detail", "saas", "brand"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["field"],
+  "motion": ["clip-reveal", "svg-draw", "split-text", "rise", "parallax"],
+  "titleWidth": "column",
+  "notes": "위 52~56svh 짙은 면(DarkZone)에 사진(media field, 선택) + 바탕 60% 가림막 + 직접 그린 치수선 도면, 치수 글자는 바탕색 이름표. 아래 12칸: 제목 8칸(h1, 줄바꿈 titleLines) · 설명·외곽선 버튼 4칸이 같은 바닥선. 375: 세로 치수 글자는 세로쓰기. 기본 기법 svg-draw. P3-1 r1-measure B 구성"
+}

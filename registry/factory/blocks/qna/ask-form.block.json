@@ -1,0 +1,14 @@
+{
+  "kind": "qna",
+  "variant": "ask-form",
+  "title": "상품 문의 — 왼쪽 자주 받는 문의 3건, 오른쪽 궁금한 점 남기기 폼(D97 수신 경로)",
+  "layout": "list-beside-ask-form",
+  "density": "comfortable",
+  "archetypes": [ "detail", "commerce" ],
+  "archetypeKinds": [ "qna" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "O2", "A4", "T5", "X1", "X2", "M1" ],
+  "notes": "두 칸: 자주 받는 문의 <ol>(최대 3건, 접히지 않는다) | 폼(답변 받을 연락처·궁금한 점·개인정보 수집 동의(필수, data-consent=required)). 답은 남긴 연락처로만 가고 공개되지 않는다는 한 줄. 제출 흐름 _shared/form-flow — 빈 필수 칸·서버 칸 오류는 칸 아래 「무엇이·어떻게」 + 첫 오류 칸 포커스, 서버 오류는 폼 위 알림 + 입력 보존, 보내는 중 aria-busy·버튼 aria-disabled, 성공은 폼 자리 접수 번호. 폼 밑 전화·메일 링크(선택). agent-form-attrs(자동 제출 없음). 구매자 공개 게시판·비밀글은 v0.2(대장 A62)."
+}

@@ -1,0 +1,27 @@
+{
+  "name": "feature-security",
+  "title": "보안 보호 — 요청 제한·Turnstile·멱등 키",
+  "description": "경로·서버 액션이 부르는 보호 도우미(요청 제한 → 봇 방어 순, 429 + Retry-After, 폼 멱등 키)와 지난 제한 창·멱등 키를 지우는 Cron. 제한 저장소는 DB 라 서버리스에서도 함께 센다.",
+  "npm": ["@launch-factory/db", "@launch-factory/env", "@launch-factory/security"],
+  "registryDependencies": ["feature-auth-betterauth"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "TURNSTILE_SECRET_KEY", "TURNSTILE_SITE_KEY", "CRON_SECRET"],
+  "files": [
+    "files/lib/launch/security.ts",
+    "files/app/api/cron/security/route.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts"
+  ],
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(rate_limits·idempotency_keys 표는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. 경로 처리기 첫 줄에서 부른다: const blocked = await guardRequest(request, \"signUp\"); if (blocked) return blocked. 공개 폼은 봇 확인도 한다: guardRequest(request, \"inquiry\", { bot: { token: form.get(\"cf-turnstile-response\") } }). 서버 액션은 guardAction(route, { headers: await headers() }) 이고 막히면 code·retryAfter 가 든 실패를 돌려준다.",
+    "3. 기본 경로 이름: signUp·signIn·passwordReset·inquiry·checkoutStart. 새 경로는 lib/launch/security.ts 의 RATE_RULES 에 { max, windowSec } 를 더한다 — 규칙 없는 이름은 던진다(한도 없이 통과하지 않는다).",
+    "4. 같은 폼을 두 번 보내도 한 번만 처리하려면 once(scope, key, run) 를 쓴다(키는 폼을 열 때 만든 UUID, 성공 결과만 24시간 저장). 이미 처리 중이면 { inProgress: true }.",
+    "5. Turnstile: mock 은 통과, live 는 TURNSTILE_SECRET_KEY 가 필수다(없으면 던진다 — 운영자 할 일 O7). 위젯은 TURNSTILE_SITE_KEY 로 그리고 CSP 에 @launch-factory/security/turnstile 의 TURNSTILE_CSP 를 더한다.",
+    "6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/security\", \"schedule\": \"30 4 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.",
+    "7. 요청 제한은 요청 머리의 IP 로 센다. 어느 머리를 믿을지는 환경이 정하고(ipAddressFromEnv — 인증·문의 항목과 같은 함수) 기본은 어떤 머리도 믿지 않는다(x-forwarded-for 를 속여 한도를 피하지 못한다. 못 찾으면 경로별 공용 통 하나로 세고 로그에 한 번 알린다). Vercel 에서는 VERCEL=1 로 자동 감지해 x-vercel-forwarded-for → x-forwarded-for 를 믿는다(Vercel 이 덮어쓴다). 그 밖의 호스트는 LF_TRUSTED_PROXY(vercel|none)·LF_CLIENT_IP_HEADER(앞단이 덮어쓰는 머리 하나, 예: cf-connecting-ip)·LF_TRUSTED_PROXY_CIDRS(프록시 주소, 쉼표) 중 하나를 사용자 환경 변수에 둔다. 잘못된 값은 켤 때 던진다.",
+    "8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

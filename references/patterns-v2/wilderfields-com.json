@@ -1,0 +1,61 @@
+{
+  "id": "wilderfields-com",
+  "archetype": "brand",
+  "sourceGallery": "httpster",
+  "url": "https://www.wilderfields.com/",
+  "structure": {
+    "hero": "식탁 위 음식 사진 영상을 깐 전면 화면 가운데 초대형 장식 세리프 워드마크",
+    "sections": [
+      "상단 링크(Greens·Food Service·Instagram)",
+      "흰 알약 Find in Store 버튼",
+      "초대형 워드마크 + 전면 영상",
+      "모바일 핑크 원형 Menu 버튼"
+    ]
+  },
+  "type": {
+    "display": "하이콘트라스트 장식 디스플레이 세리프, 화면 폭 70%",
+    "body": "그로테스크 산세리프 소형 링크",
+    "scale": "워드마크 하나만 크고 나머지 극소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "사진 영상이 먼저 보이고 약 1.25초부터 워드마크가 투명에서 선명해지며 약 2초에 상단 링크가 나타남",
+    "scroll": null,
+    "hover": null,
+    "transition": "약 1.5초 동안 초록 막이 덮였다 걷히며 영상이 한 번 재시작됨",
+    "durationsMs": [
+      1250,
+      500,
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "초록 막 전환은 영상 후반 4.5~6초 구간에서 관찰"
+  },
+  "interaction": [
+    "상단 링크 3개",
+    "Find in Store 알약 버튼",
+    "모바일 핑크 원형 메뉴 버튼"
+  ],
+  "cta": {
+    "pattern": "흰 알약 Find in Store 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "식품 사진 영상 위에 개성 있는 디스플레이 서체 워드마크 하나로 브랜드를 선언한다",
+    "포장지 핑크가 사진에서 오는 유일한 강한 색이라 UI는 흰 글자와 알약 버튼 하나로 제한한다",
+    "모바일은 워드마크를 아래로 내리고 핑크 원형 메뉴 버튼만 위에 둔다",
+    "링크를 3개로 줄이고 구매 경로를 상단 알약 하나에 모은다"
+  ]
+}

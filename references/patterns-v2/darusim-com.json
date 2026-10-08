@@ -1,0 +1,58 @@
+{
+  "id": "darusim-com",
+  "archetype": "portfolio",
+  "sourceGallery": "opl",
+  "url": "https://darusim.com/",
+  "structure": {
+    "hero": "좌측 직함 문장과 소개 문단 셋, 우측 픽셀 아트 자화상",
+    "sections": [
+      "상단 로고·직함·현지 시각·테마 토글(해·달)",
+      "소개 제목과 문단 3개",
+      "픽셀 아트 일러스트(모서리 픽셀 잘림)",
+      "알약 링크 3개(Email 복사·LinkedIn·Resume)"
+    ]
+  },
+  "type": {
+    "display": "중간 굵기 기하 산세리프 제목",
+    "body": "같은 산세리프 회색 본문, 행간 넓음",
+    "scale": "제목 중형, 본문 중형, 현지 시각 모노 극소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "라이트·다크 테마 토글",
+    "이메일 복사 알약",
+    "외부 링크 알약 2개",
+    "현지 시각 실시간 표시"
+  ],
+  "cta": {
+    "pattern": "연한 회색 알약 링크 3개(Email·LinkedIn·Resume)",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.55
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "이메일을 복사 아이콘 붙은 알약으로 두어 한 번에 연락처를 가져가게 한다",
+    "픽셀 아트 자화상이 개성을 전하고 모서리 잘림이 디테일이 된다",
+    "현지 시각을 모노 글자로 헤더에 두어 생동감을 준다",
+    "모바일은 이미지를 제목 바로 아래로 올려 본문을 이어 읽게 한다"
+  ]
+}

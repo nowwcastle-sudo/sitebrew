@@ -1,0 +1,60 @@
+{
+  "id": "play-grafana-org",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://play.grafana.org/d/ma7w5nw/f1-driver-championship-points",
+  "structure": {
+    "hero": "다크 사이드 메뉴와 빈 본문 가운데 로딩 문구(모바일은 F1 패널)",
+    "sections": [
+      "사이드 메뉴(접이식 그룹)",
+      "상단 검색·도움말·로그인",
+      "대시보드 본문(로딩 중)",
+      "시간 범위·새로고침 도구 줄",
+      "설명 패널",
+      "그라디언트 통계 패널"
+    ]
+  },
+  "type": {
+    "display": "산세리프 14~16px 메뉴",
+    "body": "산세리프 14px",
+    "scale": "메뉴 14px, 패널 제목 18px, 통계 수치 60px대"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "메뉴 그룹 펼침",
+    "단축키 검색 입력",
+    "시간 범위 이전·다음·확대",
+    "새로고침 주기 선택",
+    "공유·편집 버튼"
+  ],
+  "cta": {
+    "pattern": "헤더 로그인 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "로딩 상태가 본문 한가운데 문구 하나와 스피너뿐이라 빈 화면이 길다",
+    "375에서는 시간 범위·새로고침 도구가 버튼 묶음으로 쌓여 화면 상단을 차지한다",
+    "통계 패널을 큰 수치와 색 바탕으로 채워 핵심 값을 먼저 보인다",
+    "다크 바탕에 주황 로고 하나만 쓰고 나머지는 회색 계열로 둔다"
+  ]
+}

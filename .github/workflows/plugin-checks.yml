@@ -1,0 +1,54 @@
+name: plugin-checks
+
+# plugins/, packages/, install.ps1 and the two marketplace files are not part of web-factory (ci.yml ignores them) and not part of launch-factory
+# (launch-factory-ci.yml). Without this workflow a change to them ran no check at all. It runs the plugin's own contract tests (the skills against the kit
+# they install) and the single-version check on every pull request and push that touches those files.
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'packages/**'
+      - 'install.ps1'
+      - '.claude-plugin/**'
+      - '.agents/**'
+      - 'ci/check-single-version.mjs'
+      - 'ci/bump-version.mjs'
+      - '.github/workflows/plugin-checks.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+      - 'packages/**'
+      - 'install.ps1'
+      - '.claude-plugin/**'
+      - '.agents/**'
+      - 'ci/check-single-version.mjs'
+      - 'ci/bump-version.mjs'
+      - '.github/workflows/plugin-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plugin-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plugin-checks:
+    name: plugin-checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: one release number in every place
+        run: node ci/check-single-version.mjs
+      - name: plugin contract tests
+        run: node --test --test-force-exit --test-timeout=300000 "plugins/sitebrew/test/*.test.mjs"

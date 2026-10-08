@@ -1,0 +1,13 @@
+{
+  "kind": "nav",
+  "variant": "inline-links",
+  "title": "상단 내비 — 왼쪽 워드마크·오른쪽 링크 한 줄",
+  "layout": "inline-links",
+  "density": "comfortable",
+  "archetypes": ["saas", "commerce", "local", "detail", "portfolio"],
+  "archetypeKinds": ["header", "top-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "넓은 화면: 워드마크 · 링크 한 줄(오른쪽으로 민다) · 행동 버튼 하나가 한 줄. 375: 워드마크가 첫 줄, 둘째 줄은 가로 스크롤 링크 + 오른쪽 행동 버튼. 모든 폭에서 위에 붙는다(data-sticky-nav). 등장 모션 없음 — 처음부터 누를 수 있다"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "stanley1913-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.stanley1913.com/products/stanley-1913-devin-booker-pre-party-flask-shot-glass-set",
+  "structure": {
+    "hero": "큰 상품 사진(Coming Soon 태그), 굵은 제목·가격·일정·Notify Me",
+    "sections": [
+      "검정 공지띠(일시정지·이전·다음·클럽·지원)",
+      "헤더(로고·내비 4개·검색창·가방)",
+      "브레드크럼",
+      "큰 상품 사진(Coming Soon 태그)",
+      "사양 줄(뜨거움·차가움 등 N/A)",
+      "제목·가격",
+      "출시 일정 문구(붉은색)",
+      "색상 스와치(사선)",
+      "검정 Notify Me 버튼",
+      "쿠키 패널·20% 할인 탭"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 제목",
+    "body": "같은 산세리프 계열 본문",
+    "scale": "제목 크게, 일정 문구는 중간 붉은색"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "출시 전 상태에서 Notify Me 버튼",
+    "색상 스와치에 사선 표시",
+    "공지띠 일시정지·이전·다음",
+    "20% 할인 가입 탭",
+    "쿠키 3버튼"
+  ],
+  "cta": {
+    "pattern": "검정 전폭 Notify Me 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.84
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "출시 전 상태를 태그·붉은 일정 문구·Notify Me 버튼으로 일관되게 표시",
+    "색상 스와치에 사선을 그어 아직 선택할 수 없음을 알린다",
+    "사양 줄에 값이 없으면 「N/A」로 채워 칸이 비어 보이지 않게 한다",
+    "큰 상품 사진 아래에 보온·보냉 사양 아이콘을 줄로 둔다",
+    "모바일은 제목이 사진보다 앞에 나오고 쿠키 시트가 아래를 덮는다"
+  ]
+}

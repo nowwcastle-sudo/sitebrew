@@ -1,0 +1,13 @@
+{
+  "kind": "features",
+  "variant": "numbered-steps",
+  "title": "기능 — 번호 단계 3~5개(가로 흐름·세로 쌓기)",
+  "layout": "numbered-steps",
+  "density": "comfortable",
+  "archetypes": ["saas", "local", "public", "pwa", "landing"],
+  "archetypeKinds": ["how-it-works", "workflow-features", "key-points"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "넓은 화면: 단계가 가로로 나란히, 위 1px 선이 한 줄로 이어진다. 375: 세로로 쌓이고 왼쪽 선. 번호 큰 숫자 data-numeric, 단계 이름 h3"
+}

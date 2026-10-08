@@ -1,0 +1,325 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource/ibm-plex-mono";
+@import "@fontsource/ibm-plex-sans-kr";
+@import "@fontsource-variable/martian-mono";
+@import "@fontsource/nanum-gothic-coding";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-martian-mono-wf, "Martian Mono", "Nanum Gothic Coding", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif), var(--font-nanum-gothic-coding-wf, "Nanum Gothic Coding", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif), var(--font-ibm-plex-sans-kr-wf, "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-sans: var(--font-ibm-plex-sans-kr-wf, "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+    --ease-standard: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+    --ease-in-screen: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+    --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    --duration-press: 120ms;
+    --duration-hover: 200ms;
+    --duration-popover: 160ms;
+    --duration-enter: 500ms;
+    --duration-sheet: 320ms;
+    --font-heading-ko: var(--font-nanum-gothic-coding-wf, "Nanum Gothic Coding", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif), var(--font-ibm-plex-sans-kr-wf, "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-mono: var(--font-ibm-plex-mono-wf, "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", monospace), ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", var(--font-ibm-plex-sans-kr-wf, "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", monospace), "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+    --font-ibm-plex-mono-wf: 'IBM Plex Mono', monospace;
+    --font-ibm-plex-sans-kr-wf: 'IBM Plex Sans KR', sans-serif;
+    --font-martian-mono-wf: 'Martian Mono Variable', monospace;
+    --font-nanum-gothic-coding-wf: 'Nanum Gothic Coding', monospace;
+    --wf-shadow-surface: var(--wf-shadow-surface);
+    --wf-mask-radius: var(--wf-mask-radius);
+    --wf-heading-weight: var(--wf-heading-weight);
+    --wf-motion: var(--wf-motion);
+    --wf-font-tuned: var(--wf-font-tuned);
+    --wf-axes: var(--wf-axes);
+    --icon-linejoin: var(--icon-linejoin);
+    --icon-linecap: var(--icon-linecap);
+    --icon-stroke: var(--icon-stroke);
+  @keyframes wf-fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+        }
+  to {
+    opacity: 1;
+    transform: none;
+        }
+    }
+  @keyframes wf-sheet-in {
+  from {
+    transform: translateY(100%);
+        }
+  to {
+    transform: none;
+        }
+    }
+  @keyframes wf-breathe {
+  0%, 100% {
+    transform: scale(1);
+        }
+  50% {
+    transform: scale(1.02);
+        }
+    }
+}
+
+:root {
+    --background: oklch(0.9596 0.0041 121.56);
+    --foreground: oklch(0.1985 0.0438 254.97);
+    --card: oklch(0.9865 0.0041 121.56);
+    --card-foreground: oklch(0.1985 0.0438 254.97);
+    --popover: oklch(0.9865 0.0041 121.56);
+    --popover-foreground: oklch(0.1985 0.0438 254.97);
+    --primary: oklch(0.3254 0.0794 257.02);
+    --primary-foreground: oklch(0.9596 0.0041 121.56);
+    --secondary: oklch(0.9243 0.0074 132.42);
+    --secondary-foreground: oklch(0.1985 0.0438 254.97);
+    --muted: oklch(0.9243 0.0074 132.42);
+    --muted-foreground: oklch(0.3937 0.0371 256.14);
+    --accent: oklch(0.9214 0.0178 253.34);
+    --accent-foreground: oklch(0.3254 0.0794 257.02);
+    --destructive: oklch(0.5 0.19 27);
+    --border: oklch(0.6081 0.0181 245.24);
+    --input: oklch(0.5600 0.0235 248.25);
+    --ring: oklch(0.4914 0.1858 263.30);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0px;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+    --success: oklch(0.5 0.1 155);
+    --success-foreground: oklch(0.985 0.005 155);
+    --warning: oklch(0.55 0.12 60);
+    --warning-foreground: oklch(0.985 0.005 60);
+    --info: oklch(0.47 0.15 255);
+    --info-foreground: oklch(0.985 0.004 255);
+    --icon-stroke: 2;
+    --icon-linecap: round;
+    --icon-linejoin: round;
+    --ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+    --ease-in-screen: cubic-bezier(0.45, 0, 0.55, 1);
+    --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+    --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+    --duration-press: 100ms;
+    --duration-hover: 150ms;
+    --duration-popover: 150ms;
+    --duration-enter: 300ms;
+    --duration-sheet: 260ms;
+    --wf-axes: "B1 I3 C2 T4 H3 R0 S0";
+    --wf-font-tuned: "display body mono";
+    --wf-motion: 1;
+    --wf-heading-weight: 600;
+    --wf-mask-radius: calc(infinity * 1px);
+    --wf-shadow-surface: none;
+}
+
+.dark {
+    --background: oklch(0.1873 0.0099 234.39);
+    --foreground: oklch(0.9490 0.0051 145.54);
+    --card: oklch(0.2260 0.0142 239.34);
+    --card-foreground: oklch(0.9490 0.0051 145.54);
+    --popover: oklch(0.2260 0.0142 239.34);
+    --popover-foreground: oklch(0.9490 0.0051 145.54);
+    --primary: oklch(0.7700 0.0517 252.17);
+    --primary-foreground: oklch(0.1985 0.0438 254.97);
+    --secondary: oklch(0.2510 0.0162 240.71);
+    --secondary-foreground: oklch(0.9490 0.0051 145.54);
+    --muted: oklch(0.2510 0.0162 240.71);
+    --muted-foreground: oklch(0.7933 0.0169 245.14);
+    --accent: oklch(0.2847 0.0368 253.76);
+    --accent-foreground: oklch(0.9005 0.0342 253.72);
+    --destructive: oklch(0.7 0.16 25);
+    --border: oklch(0.5072 0.0249 246.16);
+    --input: oklch(0.5967 0.0239 246.06);
+    --ring: oklch(0.7267 0.1165 262.57);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+    --success: oklch(0.74 0.11 155);
+    --success-foreground: oklch(0.19 0.02 155);
+    --warning: oklch(0.8 0.12 75);
+    --warning-foreground: oklch(0.2 0.03 75);
+    --info: oklch(0.74 0.12 255);
+    --info-foreground: oklch(0.19 0.014 255);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 1rem;
+    line-height: 1.7;
+    font-variant-numeric: tabular-nums;
+    }
+  html {
+    @apply font-sans;
+    }
+  html:lang(ko), :lang(ko) {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    }
+  h1, h2, h3 {
+    text-wrap: balance;
+    line-height: 1.2;
+    }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    }
+  button, a[href], [role="button"], summary, input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"], label {
+    touch-action: manipulation;
+    }
+  html:has([data-sticky-nav]) {
+    scroll-padding-top: var(--site-header-h, 5rem);
+    }
+  /* 쿠키 띠가 문서 맨 아래를 가리지 않게 하는 여백은 web-factory 의 bottom-bar-space `pad` 가 맡는다(v0.0.11 이 동작 줄이기에서 0.0156px 로 떨어지던 계산을 고쳤다 — docs/qa/lfpin-v011.md). 제품 쪽 body padding-bottom 규칙은 걷었다(이중 여백 방지). */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+    --duration-press: 0ms !important;
+    --duration-hover: 0ms !important;
+    --duration-popover: 0ms !important;
+    --duration-enter: 0ms !important;
+    --duration-sheet: 0ms !important;
+        }
+    }
+  svg.lucide {
+    stroke-width: var(--icon-stroke, 2);
+    stroke-linecap: var(--icon-linecap, round);
+    stroke-linejoin: var(--icon-linejoin, round);
+    }
+  .font-heading {
+    font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700));
+    }
+  .font-heading-ko {
+    font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700));
+    }
+}
+
+@media print {
+  [data-slot="site-shell-skip-link"], [data-slot="site-shell-banner"], [data-slot="site-shell-header"], [data-slot="site-shell-footer"], [data-block^="bottom-tab-"], [data-block^="announcement-"], [data-block="consent-bottom-banner"], [data-print="hide"] {
+    display: none !important;
+    }
+  html, body, [data-slot="site-shell"] {
+    background: #fff !important;
+    color: #000 !important;
+    }
+  [data-slot="site-shell-policy"] a[href]::after, main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.875em;
+    word-break: break-all;
+    }
+  * {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    }
+  [data-enter] {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+    }
+  a, button {
+    break-inside: avoid;
+    }
+}
+  .wf-fade-rise {
+    animation: wf-fade-rise var(--duration-enter, 500ms) var(--ease-standard, cubic-bezier(0.23, 1, 0.32, 1)) both;
+}
+  .wf-sheet-in {
+    animation: wf-sheet-in var(--duration-sheet, 320ms) var(--ease-sheet, cubic-bezier(0.32, 0.72, 0, 1)) both;
+}
+  .wf-breathe {
+    animation: wf-breathe 4s ease-in-out infinite;
+}
+  [data-paused] {
+    animation-play-state: paused;
+}
+  [data-paused] * {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wf-fade-rise {
+    animation: none;
+    }
+  .wf-sheet-in {
+    animation: none;
+    }
+  .wf-breathe {
+    animation: none;
+    }
+}

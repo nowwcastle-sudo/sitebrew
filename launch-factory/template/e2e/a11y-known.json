@@ -1,0 +1,8 @@
+{
+  "note": "axe 알려진 위반(쪽|장면|규칙). 새 위반은 경고, 줄이기만 한다 — npm run smoke -- --mode mock --update-axe-baseline 로 갱신하고 diff 를 사람이 본다",
+  "known": [
+    "/account|signed-in|landmark-unique",
+    "/sign-in|signed-out|color-contrast",
+    "/sign-up|signed-out|color-contrast"
+  ]
+}

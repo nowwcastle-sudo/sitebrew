@@ -1,0 +1,62 @@
+{
+  "id": "juicedbikes-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://juicedbikes.com/products/juiced-twist-throttle",
+  "structure": {
+    "hero": "좁은 대문자 제목·가격이 모인 왼쪽 열과 굵은 테두리 칸의 사진",
+    "sections": [
+      "검정 상단 줄(브랜드 전환)",
+      "형광 연두 공지띠",
+      "굵은 로고·내비 3개·지원·가방 헤더",
+      "브레드크럼",
+      "제목·가격·품절 상태·한 줄 설명",
+      "비활성 Sold Out 버튼",
+      "큰 갤러리(테두리 화살표)",
+      "썸네일 4열 격자(테두리 칸)"
+    ]
+  },
+  "type": {
+    "display": "매우 좁고 굵은 대문자 산세리프, 이탤릭 로고",
+    "body": "중성 산세리프 본문",
+    "scale": "제목 크게, 가격·내비도 같은 좁은 서체"
+  },
+  "colorLogic": "K4",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "테두리 있는 사각 화살표 버튼",
+    "썸네일 격자 선택",
+    "쿠키 패널(설정·거부·수락)",
+    "품절 상태 안내"
+  ],
+  "cta": {
+    "pattern": "비활성 Sold Out 회색 버튼(품절)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.72
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "굵은 검정 선과 형광 연두로 파워스포츠 브랜드의 거친 느낌을 만든다",
+    "정보 열(왼쪽)과 사진(오른쪽)을 선으로 칸막이해 구조가 명확하다",
+    "화살표를 테두리 사각 버튼으로 크게 만들어 터치하기 쉽다",
+    "품절 상태에서도 가격·설명·버튼 자리가 유지된다",
+    "첫 화면 정보가 적다. 옵션 많은 상품엔 다른 구성이 필요"
+  ]
+}

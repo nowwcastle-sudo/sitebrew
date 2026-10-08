@@ -1,0 +1,64 @@
+{
+  "id": "seitaroyamazaki-com",
+  "archetype": "portfolio",
+  "sourceGallery": "cssda",
+  "url": "https://seitaroyamazaki.com/",
+  "structure": {
+    "hero": "전면 몽타주 영상, 좌상단 이중 서체 로고, 우상단 회색 메뉴 버튼",
+    "sections": [
+      "좌상단 영문+일본어 로고",
+      "우상단 메뉴 버튼(회색 면)",
+      "전면 몽타주 영상(작업실·먹물 필름·호수·조형물·전시 배너)",
+      "우하단 프로필 사진+인스타그램 위젯"
+    ]
+  },
+  "type": {
+    "display": "넓은 자간 기하 산세리프 + 명조 세리프 혼합 로고",
+    "body": "일본어 명조 소형 부제",
+    "scale": "로고만 중형, 나머지 극소형 단일 위계"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": "짙은 회색 로딩 면에 로고와 메뉴만 약 0.75초 보이다 작업실 영상으로 교체",
+    "scroll": null,
+    "hover": null,
+    "transition": "장면이 하드컷으로 바뀌며 작업실, 먹물 필름, 호수, 조형물, 전시 배너 순",
+    "durationsMs": [
+      750,
+      1250,
+      2250,
+      2000,
+      1250
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "컷 간격은 4fps 프레임 수로 추정"
+  },
+  "interaction": [
+    "메뉴 버튼",
+    "인스타그램 위젯",
+    "모바일은 세로 크롭 영상"
+  ],
+  "cta": {
+    "pattern": "문구 CTA 없음, 메뉴 버튼과 SNS 위젯",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.7
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "작업 과정과 결과를 짧은 영상 컷으로 이어 홈에서 세계관을 보인다",
+    "메뉴를 회색 면 버튼 하나로 줄이고 나머지는 영상에 맡긴다",
+    "프로필 얼굴과 SNS 링크를 우하단 위젯 하나로 묶어 신뢰감을 더한다",
+    "모바일은 영상을 세로 크롭하고 로고와 메뉴 위치는 그대로 유지한다"
+  ]
+}

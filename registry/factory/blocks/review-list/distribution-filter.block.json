@@ -1,0 +1,14 @@
+{
+  "kind": "review-list",
+  "variant": "distribution-filter",
+  "title": "평점 분포 필터 — 별점 막대가 진짜 거르기, 5개 이하면 막대 숨김",
+  "layout": "bars-filter-list",
+  "density": "comfortable",
+  "archetypes": [ "commerce", "detail", "local", "saas" ],
+  "archetypeKinds": [ "reviews", "rating-distribution" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "T2", "T5", "T6", "T9", "X4", "X1", "M1" ],
+  "notes": "왼쪽: 큰 평균 + 별 + 리뷰 수·기준일(T2) · 별점 막대(전체·5~1점 라디오, 하나만 — data-distribution, 리뷰 5개 이하면 숨김) · 리뷰 쓰기 링크와 쓴 뒤 보상 안내. 오른쪽: 결과 줄(role=status) · 리뷰 목록(날짜순, 인증 구매 표지, 판매자 답변은 들여 쓴 판 data-seller-reply) · 더 보기. 1·2점도 늘 고를 수 있다. 리뷰 0개면 첫 리뷰 청하기. 별점 JSON-LD 는 subject 가 Product 일 때만(X4). 계측(선택): cta_click"
+}

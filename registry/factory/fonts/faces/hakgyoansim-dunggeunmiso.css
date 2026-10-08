@@ -1,0 +1,4 @@
+/* 생성물 — factory/scripts/gen-fonts.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* web-factory 폰트 키트 font-hakgyoansim-dunggeunmiso: HakgyoansimDunggeunmiso (OFL-1.1, https://copyright.keris.or.kr/wft/fntDwnldView?fntGrpId=GFT202408200000000000003) — 원천 https://github.com/projectnoonnu/2408-5/tree/b6287cfe294ed60927aa616a13af781e85a1ddf7 */
+@font-face { font-family: "HakgyoansimDunggeunmiso"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-5@b6287cfe294ed60927aa616a13af781e85a1ddf7/HakgyoansimDunggeunmisoTTF-R.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "HakgyoansimDunggeunmiso"; src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-5@b6287cfe294ed60927aa616a13af781e85a1ddf7/HakgyoansimDunggeunmisoTTF-B.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }

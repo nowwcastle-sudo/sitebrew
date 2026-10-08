@@ -1,0 +1,14 @@
+{
+  "kind": "referral",
+  "variant": "invite-panel",
+  "title": "초대 판 — 양쪽 보상(제품 가치)·링크 복사·원클릭 공유·진행 상태판",
+  "layout": "reward-progress-panel",
+  "density": "comfortable",
+  "archetypes": [ "saas", "pwa", "commerce" ],
+  "archetypeKinds": [ "referral", "invite" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "V1", "V2", "X1", "M1" ],
+  "notes": "상시 진입점(V1 — 설정·메뉴의 같은 자리). 왼쪽: h2·설명 · 양쪽 보상(data-rewards — 나·친구, 제품 가치) · 내 초대 링크 칸 + 링크 복사(클립보드가 막히면 칸을 골라 두고 알림) · 카카오톡(§17 템플릿 규격 통과 때만 — SDK 없으면 링크 복사로) · 문자(채운 글) · 보상 조건 링크. 오른쪽 진행 상태판(data-referral-progress — 보낸 초대·가입한 친구·받은 기간). 계측(선택): referral_share(channel)"
+}

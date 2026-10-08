@@ -1,0 +1,61 @@
+{
+  "id": "hanwooboard-or-kr",
+  "archetype": "public",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.hanwooboard.or.kr/pages/main/main.html",
+  "structure": {
+    "hero": "어두운 한우 요리 사진 슬라이드 아래에 롤링 통계 띠를 두고, 오른쪽에 아이콘 퀵 메뉴를 세로로 고정한 자조금 기관 홈",
+    "sections": [
+      "로고·메인 내비 5개·햄버거",
+      "슬라이드 히어로(제목·설명·번호·정지)",
+      "롤링 통계 띠(기간·증감률)",
+      "새로운 소식 제목",
+      "오른쪽 고정 퀵 메뉴(소개·포털·센터·맨 위로)"
+    ]
+  },
+  "type": {
+    "display": "굵은 한글 고딕 제목(좁은 자간)",
+    "body": "한글 고딕",
+    "scale": "제목 약 48px, 통계 수치 약 20px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "슬라이드 이전·다음·정지",
+    "통계 띠 자동 롤링",
+    "오른쪽 퀵 메뉴 8개",
+    "맨 위로 버튼",
+    "햄버거 메뉴"
+  ],
+  "cta": {
+    "pattern": "오른쪽 퀵 메뉴의 포털·센터 링크",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "핵심 시장 통계를 슬라이드 아래 한 줄 롤링 띠로 보여 준다.",
+    "증감률을 주황 화살표와 함께 쓰고 기준 기간을 왼쪽에 둔다.",
+    "둥근 모서리 사진 슬라이드에 어두운 오버레이로 흰 글을 지킨다.",
+    "오른쪽 퀵 메뉴는 데스크톱에서만 고정이다.",
+    "모바일은 통계 띠가 세로 표(항목·값·증감)가 되고 소개 링크 둘이 위에 붙는다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

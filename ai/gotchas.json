@@ -1,0 +1,455 @@
+{
+  "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
+  "source": "factory/ai/gotchas.source.json",
+  "mirror": "docs/agents/agent-guide.md §5",
+  "gotchas": [
+    {
+      "id": "dialog-cancel-initial-focus",
+      "area": "part",
+      "rule": "[취소] 버튼이 다이얼로그를 열 때 초기 포커스를 받는다(기본 shadcn과 다름).",
+      "action": "되돌릴 수 없는 확인 다이얼로그에서 [확인]에 autoFocus 를 달지 않는다.",
+      "source": "docs/agents/agent-guide.md §5(계획 1)"
+    },
+    {
+      "id": "toast-dom-removal",
+      "area": "part",
+      "rule": "시간 제한이 있는 토스트는 사라질 때 DOM에서도 제거한다(숨김 처리만 하지 않는다).",
+      "action": "토스트를 숨김(hidden·opacity)으로 남기는 코드를 쓰지 않는다.",
+      "source": "docs/agents/agent-guide.md §5(계획 1)"
+    },
+    {
+      "id": "hit-area-pseudo",
+      "area": "part",
+      "rule": "44px 히트 영역은 실제 크기가 아니라 `after:` 가상 요소로 확장한다(레이아웃 크기는 그대로). 묶음 안 등 예외는 마우스 24px·터치 44px다(`docs/decisions/2026-09-26-p2.md` 2·3).",
+      "action": "누르는 요소의 크기를 키우려고 높이·패딩을 바꾸지 않는다. 예외 목록은 factory/qa/hit-area-exceptions.json 이다.",
+      "source": "docs/agents/agent-guide.md §5(계획 1)"
+    },
+    {
+      "id": "focus-ring-opaque",
+      "area": "part",
+      "rule": "포커스 링은 불투명하고 3:1 대비·2px 이상이다(기본 shadcn의 반투명 링과 다름).",
+      "action": "링 색에 알파(/50 등)를 붙이지 않는다.",
+      "source": "docs/agents/agent-guide.md §5(계획 1)"
+    },
+    {
+      "id": "factory-base-dependency",
+      "area": "install",
+      "rule": "모든 레시피 부품은 `factory-base`(계획 1 결과)에 의존한다 — 단독으로 떼어 쓰지 않는다.",
+      "action": "부품 파일만 복사하지 말고 레지스트리 항목으로 설치한다(의존이 함께 온다).",
+      "source": "docs/agents/agent-guide.md §5(계획 1)"
+    },
+    {
+      "id": "install-pinned-tag",
+      "area": "install",
+      "rule": "설치는 항상 버전 고정 태그로 한다: `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#vX.Y.Z -y -o` (브랜치·`main`으로 설치하지 않는다).",
+      "action": "한 소비자 안에서 태그를 섞지 않는다. 태그를 찍기 전 npm run gen:all 로 모든 생성물을 다시 만들고, npm run registry:pincheck -- vX.Y.Z 와 커밋 뒤 npm run check:regen 이 둘 다 0이어야 한다(pincheck 는 registry.json 만 보고, ai/tasks 설치 명령의 태그는 check:regen 이 지킨다).",
+      "source": "docs/agents/agent-guide.md §5(계획 1)"
+    },
+    {
+      "id": "font-var-wf",
+      "area": "font",
+      "rule": "폰트 키트의 CSS 변수는 `--font-<slug>-wf`다(v0.0.3의 `--font-<slug>`와 다름 — `docs/qa/p2-migration.md`).",
+      "action": "서체 변수를 직접 부를 때 끝에 -wf 를 붙인다. v0.0.3 소비자는 p2-migration.md 순서로 올린다.",
+      "source": "T9-c2 · Task 13a"
+    },
+    {
+      "id": "recipe-switch-font-loader",
+      "area": "recipe",
+      "rule": "레시피를 바꾸면(두 번째 레시피 `add`) 이전 레시피의 서체 로더가 `app/layout.tsx`에 남는다 — 빌드는 되지만 안 쓰는 서체를 계속 싣는다.",
+      "action": "새 레시피가 쓰지 않는 서체의 const 선언, <html className> 의 .variable, 쓰지 않는 next/font import, globals.css @theme 의 그 줄을 지운다(docs/qa/p2-migration.md 「옛 로더와 @theme 줄을 치운다」). 그 뒤 npm run build 0.",
+      "source": "T9-c2 · Task 13a"
+    },
+    {
+      "id": "init-geist-loader",
+      "area": "font",
+      "rule": "`shadcn init`이 넣은 Geist·Geist_Mono 로더(`variable: \"--font-sans\"`·`\"--font-mono\"`)가 `app/layout.tsx`에 남아 런타임 `var(--font-sans)`·`var(--font-mono)`를 Geist로 덮고 Geist 파일도 계속 받는다 — 화면 본문은 `@theme inline`에 박힌 값이라 레시피 서체로 그려진다.",
+      "action": "첫 레시피 add 뒤 layout.tsx 에서 next/font/google 의 Geist·Geist_Mono import, const geist = Geist({…})·const fontMono = Geist_Mono({…}) 선언, <html className> 의 geist.variable·fontMono.variable 을 지운다(recipe-switch-font-loader 와 같은 절차). 그 뒤 npm run build 0. 서체를 CSS에서 부를 때는 var(--font-sans) 대신 font-sans·font-heading·font-mono 클래스나 --font-<slug>-wf 를 쓴다. 레시피 cssVars 로는 고치지 않는다(next/font 클래스와 같은 특이도라 순서에 달린다).",
+      "source": "Task 13b 소비자 확인 · 리뷰 I1"
+    },
+    {
+      "id": "recipe-part-overwrite",
+      "area": "install",
+      "rule": "레시피 소비자에 기본 부품 이름(`button` 등)을 `add -o` 하면 같은 `components/ui/<부품>.tsx`에 깔려 레시피 부품을 기본 모양으로 조용히 덮는다.",
+      "action": "레시피를 넣은 뒤에는 부품을 <recipe>-<부품>(예: r1-measure-button)으로 add 한다. 기본 부품을 함께 쓰려면 레시피보다 먼저 add 한다. 확인: node factory/qa/consumer-markers.mjs <url> --recipe <id> --consumer <폴더>.",
+      "source": "Task 13b 리뷰 I2"
+    },
+    {
+      "id": "touch-exception-consumer-trigger",
+      "area": "part",
+      "rule": "클래스를 주지 않는 트리거(hover-card·popover·tooltip·dialog 등의 render 로 넘긴 인라인 링크 등)는 소비자 요소라 부품이 44px를 만들 수 없다 — 터치(`pointer: coarse`)에서 44px는 소비자가 맞춘다.",
+      "action": "트리거를 Button 으로 그리거나, 넘기는 요소에 터치 44px 높이·폭을 준다. hit-area 측정에서 consumer-triggers 예외로 통과하는 것은 부품 쪽 판정일 뿐이다.",
+      "source": "Task 13a Fix round 2 · 장부 판정(예외 2건 유지)"
+    },
+    {
+      "id": "touch-exception-resizable-handle",
+      "area": "part",
+      "rule": "resizable 손잡이의 높이는 패널 묶음의 높이를 따른다 — 폭은 터치 45px이지만 높이 44px는 소비자 배치가 정한다.",
+      "action": "패널 묶음(ResizablePanelGroup)을 44px 이상 높이로 배치한다.",
+      "source": "Task 13a Fix round 2 · 장부 판정(예외 2건 유지)"
+    },
+    {
+      "id": "blocks-data-numeric",
+      "area": "block",
+      "rule": "블록은 숫자 열(금액·수량·날짜 수치·ID)에 `data-numeric`을 기본으로 단다 — mono 서체는 `data-numeric` 칸·숫자 입력·코드에만 쓰고 한글 본문·머리글·이름에는 쓰지 않는다.",
+      "action": "표·목록 블록을 만들 때 숫자 칸 <td>·<th> 에 data-numeric 을 단다. 한글이 든 칸에는 달지 않는다.",
+      "source": "T7r1-c2 · T7-I1"
+    },
+    {
+      "id": "mock-port-not-serializable",
+      "area": "contract",
+      "rule": "mock 어댑터가 돌려주는 `submit`·`retry`는 함수라 서버 컴포넌트에서 클라이언트 블록으로 props로 넘길 수 없다.",
+      "action": "QA·시연 페이지는 stateFromQuery 를 클라이언트 쪽(useSearchParams 등)에서 부른다.",
+      "source": "Task 10"
+    },
+    {
+      "id": "kakao-channel-no-prefill",
+      "area": "contract",
+      "rule": "카카오톡 채널 채팅은 미리 채운 글을 공식으로 받지 않는다(`?text=`는 무시될 수 있다) — `kakaoChannelSubmit`은 같은 글을 클립보드로 옮긴다.",
+      "action": "블록은 접수 결과의 nextStep 을 그대로 보인다(복사 성공·실패에 따라 어댑터가 안내 문구를 바꾼다). 글이 채팅창에 미리 들어간다고 가정한 문구를 쓰지 않는다. 실제 브라우저 클립보드 확인은 P3′ QA 목록에 있다.",
+      "source": "Task 10"
+    },
+    {
+      "id": "blocks-take-port-methods",
+      "area": "contract",
+      "rule": "기능 블록은 포트 전체가 아니라 필요한 메서드만 props 로 받는다(`cancel: BillingPort[\"cancel\"]`, `track?: AnalyticsPort[\"track\"]`) — 블록은 공급자(Better Auth·Paddle·토스 등)를 모르고, 계측 동의는 어댑터가 본다.",
+      "action": "블록 props 에 `billing: BillingPort` 같은 포트 전체를 두지 않는다. `track` 은 선택 prop 이고 없으면 아무 일도 하지 않는다. 블록 안에서 동의 여부를 따로 확인하거나 우회해 보내지 않는다. 이벤트 이름과 props 는 `events.ts`(`EVENTS`·`EventProps`)만 쓰고 props 에 이름·이메일·전화·자유 글을 싣지 않는다. QA 는 adapter-mock 의 포트 목(`mockBilling` ?sub= · `mockAuth` ?auth= · `mockAnalytics`/`mockNotify` ?consent=)을 끼운다.",
+      "source": "P3-2 Task 10"
+    },
+    {
+      "id": "attribution-by-composer",
+      "area": "contract",
+      "rule": "기능 블록의 계측 태그(블록·레시피·문구 출처)는 블록이 아니라 조립하는 쪽이 `withAttribution`으로 붙인다.",
+      "action": "블록은 `track?.(name, props)` 두 인자로만 부르고 props 에 `blockId` 같은 태그를 넣지 않는다(타입 오류). 페이지에서 `withAttribution(analytics, { recipeId })`로 한 번, 블록마다 `withAttribution(page, { blockId: \"<kind>-<variant>\" })`로 감싼 `.track`을 블록에 넘긴다(`@/components/contract/attribution`, 안쪽 태그가 이긴다). 렌더마다 새로 감싸지 않는다(track 이 바뀐다). 어댑터는 track 의 셋째 인자 `meta.attribution`을 이벤트 props 와 따로 보낸다(계약 판 2 — `CONTRACT_VERSION`).",
+      "source": "P3-2 Task 10c"
+    },
+    {
+      "id": "optional-consent-default-false",
+      "area": "contract",
+      "rule": "가입 동의(`ConsentInput`)는 약관·개인정보가 각각 `true` 만 받는 별도 필수 항목이고, 선택(마케팅 email·sms·kakao·push) 동의는 기본 false 다 — 체크된 채로 그리지 않는다(전자상거래법 §21-2①2).",
+      "action": "선택 동의 체크박스·스위치의 초기값은 해제로 두고, 필수 두 항목과 한 덩어리(「전체 동의」만 있는 화면)로 묶지 않는다. 계측·마케팅 쿠키 동의(`ConsentState`)도 결정 전에는 둘 다 false 다.",
+      "source": "P3-2 Task 10"
+    },
+    {
+      "id": "single-weight-display",
+      "area": "font",
+      "rule": "제목 서체가 굵기 하나뿐인 레시피(Black Han Sans 등)는 `.font-heading`의 굵기 합성을 끄고, 부품 제목 칸(`[data-slot$=\"-title\"].font-heading`)을 본문 서체로 그린다 — 기본 shadcn처럼 카드·대화상자 제목이 제목 서체로 나오지 않는다.",
+      "action": "제목 서체는 소비자가 직접 쓰는 큰 제목(레시피 쓰는 법의 최소 크기 이상)에만 `font-heading`으로 단다. `font-bold`를 걸어도 굵어지지 않으니 위계는 크기로 낸다.",
+      "source": "Task 5 fix 1"
+    },
+    {
+      "id": "font-prose-consumer-only",
+      "area": "font",
+      "rule": "`fonts.prose`가 있는 레시피는 `font-prose` 유틸리티(`--font-prose`)를 더 준다. 레시피 부품은 이것을 쓰지 않는다.",
+      "action": "긴 글 목소리(예: AI 답 문장)는 레시피 원천 본문이 정한 자리에서만 소비자·블록이 `font-prose`를 단다. 제목·UI에 쓰지 않는다.",
+      "source": "Task 5 fix 1"
+    },
+    {
+      "id": "heading-weight-base-layer",
+      "area": "font",
+      "rule": "제목 굵기는 레시피가 정한다: `.font-heading`이 기본 층(`@layer base`)에서 `font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700))`을 받는다(예: r4-evidence 300, r1·r10 600) — 기본 shadcn처럼 제목이 늘 굵지 않다. 한글 제목 굵기 `--wf-heading-weight-ko`는 레시피 머리 `fonts.display.weightKo`에 적었을 때만 나온다(지금은 r6-civic 700 — 라틴 Fragment Mono는 면이 400 하나라 합성 없이 400 그대로, 한글은 진짜 700). 적지 않으면 한글도 제목 굵기를 따른다. 한글만 있는 큰 제목은 `font-heading-ko`(`--font-heading-ko` — 라틴 제목 서체를 건너뛴 displayKo → 본문 → 시스템 한글, 굵기는 같은 토큰)로 그릴 수 있다 — 기본 shadcn에는 없는 유틸리티다. 제목이 아닌 곳(KPI 큰 숫자·통계 수치·라벨)에 `font-heading`만 달아도 이 굵기를 그대로 받는다(r4에서는 300으로 가늘고, r6에서는 한글이 700으로 굵다).",
+      "action": "큰 제목은 `font-heading`(한글만 있고 라틴 제목 서체의 고정폭 공백·구두점이 끼면 안 되는 제목은 `font-heading-ko`)만 달고 `font-bold` 같은 굵기 클래스를 붙이지 않는다(붙이면 유틸리티 층이라 레시피 굵기를 이긴다). 부품 제목 칸은 축이 준 굵기를 그대로 쓴다. 제목이 아닌 큰 숫자·라벨에 제목 서체만 빌릴 때는 `font-heading`과 함께 굵기 클래스(`font-light`·`font-semibold` 등)를 단다 — 굵기는 그 요소가 정한다.",
+      "source": "Task 6 fix 1 · Task 6 재검수 N1 · Task 14c"
+    },
+    {
+      "id": "recipe-motion-tokens",
+      "area": "recipe",
+      "rule": "레시피가 모션 토큰(`--duration-*`·`--ease-*`)을 `:root`에 싣는다: 레시피 `motion`(M0~M3)의 값이 `motion-core`의 기본값(M2)을 덮는다. M0 레시피는 `--duration-enter: 0ms`라 `.wf-fade-rise` 같은 등장 프리셋이 바로 최종 상태로 보인다.",
+      "action": "전환·등장 길이는 숫자 대신 토큰(`var(--duration-hover)`·`var(--ease-standard)` 등)으로 쓴다. M0 레시피에서 등장 연출이 안 보이는 것은 의도다 — 연출이 필요하면 레시피 모션 값을 바꾼다. JS 연출(WAAPI·rAF·Motion)은 이 토큰을 `getComputedStyle`로 읽고 `matchMedia('(prefers-reduced-motion: reduce)')`도 함께 듣는다 — 동작 줄이기에서는 factory-base가 토큰 자체를 0ms로 접는다(지연도 0).",
+      "source": "Task 6b (시험작 D7) · Task 7 fix 1(리뷰 I7)"
+    },
+    {
+      "id": "recipe-color-field-keys",
+      "area": "recipe",
+      "rule": "색 논리 K6(색 면)·K7(듀오톤)·K8(색 블록) 레시피는 shadcn 표준 밖의 색 키 `--field-1`·`--field-2`·`--block-1`~`--block-4`(각 `-foreground` 짝)를 싣고, `bg-field-1`·`text-field-1-foreground`·`bg-block-2` 같은 유틸리티로 이어 둔다. 다른 레시피에는 이 키가 없다.",
+      "action": "면·칸은 `bg-field-N`/`bg-block-N`, 그 위 글자는 반드시 짝 `text-…-foreground`로 칠한다(대비는 짝끼리만 쟀다). 레시피를 바꾸면 이 유틸리티가 빈 변수가 되니, 면·칸을 쓰는 블록은 레시피 `colorLogic`을 확인한다.",
+      "source": "Task 6b"
+    },
+    {
+      "id": "recipe-face-scope",
+      "area": "recipe",
+      "rule": "면·칸 색 레시피(K6~K8)는 면 구획 스코프 `[data-face=\"field-1\"]`·`[data-face=\"block-2\"]` 등을 싣는다. 그 안에서 `--foreground`·`--primary`·`--primary-foreground`·`--ring`·`--muted-foreground`·`--border`·`--input`(과 면 조각 muted·accent·secondary)이 그 면의 짝 색으로 바뀐다 — 기본 shadcn에는 없는 속성이다. 면 안의 카드(`[data-slot=\"card\"]`)와 `[data-face-reset]`은 레시피 원래 값으로 돌아간다.",
+      "action": "블록은 `bg-field-N`·`bg-block-N`을 칠한 구획에 반드시 `data-face=\"field-N\"`(칸이면 `block-N`)을 함께 단다. 빠뜨리면 바탕 기준 링·주 버튼·보조 글자가 면 위에서 대비를 잃는다(예: 짙은 면 위 링 2.3:1). 면 안에 면이 아닌 흰 구획을 두면 `data-face-reset`을 단다.",
+      "source": "Task 7 fix 1(리뷰 I1)"
+    },
+    {
+      "id": "shadcn-strips-head-comments",
+      "area": "install",
+      "rule": "shadcn은 설치할 때 파일 맨 앞 주석 블록(첫 선언의 JSDoc 포함)을 지운다.",
+      "action": "소비자가 봐야 할 설명은 파일 머리가 아니라 export 선언 옆 JSDoc 에 둔다.",
+      "source": "Task 10"
+    },
+    {
+      "id": "motion-gsap-ssr-gate",
+      "area": "install",
+      "rule": "`motion-gsap` 장면은 하이드레이션 때 시작 상태를 입힌다 — 서버 렌더 페이지에서는 첫 HTML 이 끝 모양으로 먼저 칠해졌다가 숨고 다시 등장한다(번쩍임). 머리의 `<MotionBoot />`(motion-gsap)가 JS 가 돌고 동작 줄이기가 아닐 때만 `<html data-motion=\"on\">`을 달고 `[data-enter]`를 장면이 시작할 때까지 숨긴다. 문서 파싱이 끝난 때(DOMContentLoaded)부터 안전장치 시간(운영 1.5초 · 개발 8초, `failsafeMs`로 바꾼다) 안에 시작하지 못하면 드러내고(`data-motion=\"late\"`), 스트리밍으로 DOMContentLoaded 가 늦어도 머리 파싱부터 안전장치 + 2.5초 안에는 드러난다(절대 상한). 그 뒤 하이드레이션된 서버 HTML 장면은 등장을 건너뛴다 — 개발에서는 건너뛸 때 `console.info` 한 줄이 남는다. `data-motion=\"late\"`는 제때 시작한 페이지에도 달린다(시각만 보고 붙는다) — 등장을 실제로 건너뛰었는지는 장면 뿌리의 `data-wf-entered=\"skipped\"`로 판정한다. 인라인 스크립트·스타일이라 엄격 CSP(nonce)에서는 nonce 를 넘겨야 한다.",
+      "action": "`app/layout.tsx`의 `<html suppressHydrationWarning>` 안 `<head>`에 `<MotionBoot />`를 두고, 등장이 숨기거나 움직이는 요소(또는 그 조상)에 `data-enter`를 단다. 누르는 요소처럼 숨기면 안 되는 것은 `data-enter=\"keep\"`(보이는 자리에서 transform 으로만 움직인다). 관문·촬영은 3.2초 같은 고정 시간이 아니라 뿌리의 `data-wf-entered`·`wf:entered`를 기다린다. nonce CSP 를 쓰면 미들웨어(Next 16 은 `proxy.ts`)가 요청 머리 `x-nonce`에 nonce 를 싣고, 레이아웃이 `const nonce = (await headers()).get(\"x-nonce\") ?? undefined`로 읽어 `<MotionBoot nonce={nonce} />`로 넘긴다(`style-src`·`script-src` 둘 다 nonce 를 허용해야 한다).",
+      "source": "Task 11 fix(리뷰 b1 I3) · fix 2(재리뷰 N1·N3)"
+    },
+    {
+      "id": "font-face-file-import",
+      "area": "install",
+      "rule": "파일만 있는 키트 서체(SeochoBatang·PyeojinGothic·NaturalSans·BM Euljiro)는 `@font-face`가 전역 CSS 에 들어가지 않는다 — `styles/wf-fonts/<slug>.css` 파일로 깔리고 전역 CSS 에는 `@import \"../styles/wf-fonts/<slug>.css\"` 한 줄이 붙는다(shadcn 4.21 css 필드는 @font-face 를 깨뜨린다). 상대 경로라 전역 CSS 가 프로젝트(또는 src) 바로 아래 한 단계 폴더(`app/globals.css`·`styles/globals.css`)에 있을 때 풀린다.",
+      "action": "전역 CSS 를 더 깊은 곳으로 옮겼으면 그 @import 경로를 새 자리에 맞춘다. `styles/wf-fonts/` 파일은 손으로 고치지 않고 항목을 다시 add 한다.",
+      "source": "Task 15(M8)"
+    },
+    {
+      "id": "site-shell-page-title",
+      "area": "part",
+      "rule": "`SiteShell`은 `pageTitle`(필수)로 main 맨 앞에 h1 을 하나 그린다 — 기본 shadcn 에는 없는 셸 제목 칸이다. 히어로 블록이 h1 을 가지는 페이지에서는 `pageTitle={false}`로 셸 h1 을 끈다(한 페이지 h1 하나). main 은 `width`(기본 `content` 1200px · `wide` 1440px · `full` 한계 없음)만큼만 넓어지고, 헤더는 375px 에서도 한 줄 스티키 바다(768px 이상 고정 방식은 헤더 축 값).",
+      "action": "히어로 블록을 셸 안에 두면 `<SiteShell pageTitle={false} width=\"full\" …>`로 쓴다. 제목 줄이 필요한 일반 페이지는 `pageTitle=\"…\"`을 주고 children 에 h1 을 두지 않는다. 375px 에서 로고·유틸리티·검색·행동 버튼은 줄지 않으니 합이 폭을 넘지 않게 짧게 둔다(메뉴만 가로로 스크롤한다).",
+      "source": "P3-2 Task 2(시험작 1호 D1·D4)"
+    },
+    {
+      "id": "recipe-shape-tokens",
+      "area": "recipe",
+      "rule": "레시피 base 가 `:root` 에 모양 토큰 셋을 싣는다: `--radius`(반경 축 값 — R0 0px · R1/R3 13px · R2 10px, shadcn 기본 0.625rem 을 덮는다)·`--wf-mask-radius`(둥근 그림 칸 — R3 만 블롭, 나머지는 원)·`--wf-shadow-surface`(그림자 축의 카드 그림자 한 값). 그래서 `rounded-sm`…`rounded-4xl`·블록 표면이 레시피 모양을 따른다 — R0 레시피에서는 모서리가 모두 각진다.",
+      "action": "블록·소비자 코드의 표면 반경은 `rounded-*` 토큰으로만 쓴다(임의 px 금지 — lint block-token). 둥근 그림 마스크는 `rounded-(--wf-mask-radius)`, 떠 보여야 하는 블록 표면은 `shadow-(--wf-shadow-surface)`. 컨트롤(버튼·입력·배지)에는 마스크 토큰을 쓰지 않는다.",
+      "source": "P3-2 Task 8(대장 A11 — 1c 우려 3)"
+    },
+    {
+      "id": "recipe-alt-item",
+      "area": "install",
+      "rule": "보드 B안이 있는 레시피는 `<id>-alt`(registry:base) 항목도 낸다 — 부품은 A 항목 그대로이고 색·서체·모션·히어로 메타만 B다(`meta.recipe.alternateOf`·`hero`). A 를 먼저 깔고 `-alt` 를 `-o` 로 덮으면 `:root` 색·서체 스택이 B 로 바뀐다. r5-celadon 은 B안이 없어 `-alt` 가 없다.",
+      "action": "B안으로 찍을 때는 `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<id>-alt#vX.Y.Z -y -o` 한 번이면 된다(부품·A 서체까지 딸려 온다). 히어로 블록은 `meta.recipe.hero`(B 히어로)를 설치한다. A 서체 로더가 `app/layout.tsx` 에 남는 것은 레시피를 바꿀 때와 같다(gotcha recipe-switch-font-loader).",
+      "source": "P3-2 Task 8(대장 A10)"
+    },
+    {
+      "id": "hero-axis-parts",
+      "area": "block",
+      "rule": "히어로 블록은 새 축 부품을 import 하지 않고 props 로 받는다: `texture`(Texture — 레시피 머리 X1~X8) · `display`(DisplayTitle — D2·D3, 제목이 전폭인 히어로(메타 `titleWidth: \"full\"`)만 이 props 가 있다). 두 부품은 머리가 그 축을 적은 레시피에만 깔리기 때문이다. 히어로 옆 띠 `announcement/launch-banner`도 `texture`를 받는다(DisplayTitle 은 받지 않는다). 넘기지 않으면 원래 제목·바탕 그대로다.",
+      "action": "조립하는 쪽(찍어낸 페이지)이 레시피 머리를 보고 넘긴다(`recipe.mjs heroAxisParts`): D2·D3 이면 `display={DisplayTitle}`(`@/components/ui/display`), X1~X8 이면 `texture={Texture}`(`@/components/ui/texture`). D2 는 titleWidth column 히어로와 함께 쓰지 않는다(lint `display-hero-width`가 막는다 — 좁은 칸에서 음절마다 줄이 바뀐다).",
+      "source": "P3-2 Task 8(대장 A20)"
+    },
+    {
+      "id": "contract-v2-optional-additions",
+      "area": "contract",
+      "rule": "계약 판 2 안의 추가(Task 10d)는 모두 선택이다 — `ActionResult` 실패의 `code`·`retryAfter`·`manageUrl`, `signIn` 의 `rememberMe`·`redirectTo`, `ConsentInput.ageOver14`, `checkout` 의 `withdrawalConsent`, 계정 편의·2단계·탈퇴·푸시 구독·`identify`·`portal` 메서드가 없는 어댑터도 계약을 지키므로, 블록은 필요한 메서드만 받고 `undefined` 를 다룬다.",
+      "action": "블록이 새 메서드를 받을 때는 `AuthPort[\"changePassword\"]`(선택이라 `undefined` 가 섞인다)를 그대로 props 로 받고 없으면 그 기능을 그리지 않는다. 어댑터가 확인 칸을 요구하면(launch-factory 는 `ageOver14`·`withdrawalConsent` 기본 필수) 그 칸을 실어 주는 블록만 쓴다 — 가입은 `AuthSignUpConsents` 에 `copy.ageOver14` 를, 결제 시작은 `PlanOffer`(paywall 네 변형)를 쓴다. 안 쓰면 모든 가입·결제가 필드 오류로 끝난다. 갤러리는 `mockAuth({ requireAgeOver14 })`·`mockBilling({ requireWithdrawalConsent })` 로 같은 거절을 재현한다.",
+      "source": "P3-2 Task 10d(대장 A52·D60·D61)"
+    },
+    {
+      "id": "submit-guard-notices",
+      "area": "block",
+      "rule": "폼을 가진 블록(`usePortForm`·`useFormFlow`)은 `copy.notices`(시간 초과·요청 제한·지원 안 함 문구)를 hook 에 넘겨야 15초 뒤 「응답이 늦어요」 + [다시 시도], `code: \"rate_limited\"` 의 남은 초 버튼, `provider_unsupported` 의 관리 링크가 켜진다 — 안 넘기면 멈춘 서버에서 스피너가 끝없이 돈다.",
+      "action": "새 폼 블록은 copy 에 `notices: SubmitNotices`(`_shared/submit-guard`)를 두고 `usePortForm({ id, notices: copy.notices })`·`useFormFlow(submit, { …, notices: copy.form.notices })` 로 넘긴다. 폼 제출이 아닌 버튼·소셜 로그인처럼 [다시 시도]가 폼을 다시 보내면 안 되는 자리는 `form.run(action, { retry })` 로 다시 부를 것을 준다. 결제 시작 버튼은 `holdLabel={form.holdLabel}` 을 붙인다. 원천 규칙은 `blocks-submit-guard.test.mjs`(notices 빠진 사본은 실패).",
+      "source": "P3-2 Task 10d(대장 A101·D104·D136·D160)"
+    },
+    {
+      "id": "idempotency-key-by-composer",
+      "area": "block",
+      "rule": "멱등 키(`idempotencyKey`)와 봇 확인 토큰(`cf-turnstile-response`)은 블록이 만들지 않는다 — 폼을 여는 조립하는 쪽이 숨은 입력으로 더한다. 블록이 제출마다 새 키를 만들면 시간 초과 뒤 [다시 시도]가 같은 요청으로 묶이지 않아 중복 처리된다.",
+      "action": "조립하는 쪽은 폼을 열 때 UUID 하나를 만들어 숨은 입력 `idempotencyKey` 로 싣고, 성공 뒤 「다시 보내기」에서만 새 키를 만든다(launch-factory D130). 블록의 [다시 시도]는 같은 폼을 다시 보내므로 같은 키가 간다.",
+      "source": "P3-2 Task 10d(대장 D136)"
+    },
+    {
+      "id": "withdrawal-consent-plan-offer",
+      "area": "block",
+      "rule": "결제를 시작하는 블록(`BillingPort[\"checkout\"]` 을 받는 paywall 네 변형)은 `_shared/plan-offer` 의 청약철회 제한 고지와 필수 체크(미리 켜지 않음)를 거쳐 `checkout({ planId, withdrawalConsent: true })` 를 부른다 — 체크 없이는 결제 호출이 나가지 않는다(전자상거래법 제17조 제2항 제5호·제6항 단서). 사업자가 철회 제한을 두지 않으면(`legal.withdrawalPolicy` full) `copy.withdrawal` 을 빼서 고지·체크 없이 바로 시작한다(`withdrawalConsent` 를 싣지 않는다) — 그때는 어댑터도 withdrawalConsent 를 요구하지 않아야 한다.",
+      "action": "새 결제 시작 블록은 `PlanOffer` 를 쓰고 `start(consent)` 의 `consent` 를 checkout 에 그대로 싣는다(`checkout({ planId, ...consent })`). copy 의 `offer.withdrawal`(notice·trial·consentLabel·consentRequired)은 서비스 성격에 맞춰 법률 검토를 거친 문구로 바꾼다 — 예시 문구는 초안이다. 원천 규칙은 `blocks-submit-guard.test.mjs`.",
+      "source": "P3-2 Task 10d(대장 D61)"
+    },
+    {
+      "id": "blocks-need-recipe-base",
+      "area": "block",
+      "rule": "블록 항목은 ui 부품 의존이 없다 — 레시피 base(`<레시피 id>`) 하나를 먼저 설치해 부품·아이콘 어댑터를 깐 뒤에 블록(`block-<kind>-<variant>`)을 받는다. 블록만 설치하면 `@/components/ui/*` 와 `@/components/icons` import 가 풀리지 않아 빌드가 깨진다.",
+      "action": "설치 순서는 레시피 base → (B안이면 `<레시피>-alt` -o) → 블록. 블록 원천에 ui 부품 의존(`registryDependencies` 의 `button` 등)을 넣지 않는다 — 레시피마다 부품 모양이 다르고, 블록이 기본 부품 이름을 끌어오면 레시피 부품을 기본 모양으로 덮는다(`recipe-part-overwrite`). 닫힘은 `npm run registry:closure`(r1-measure base 와 묶어 본다)가 지킨다. 원형별 설치 목록은 `ai/tasks/<원형>.json` 의 `blocks`.",
+      "source": "P3-2 Task 9(대장 A25·블록 층 설계)"
+    },
+    {
+      "id": "block-heading-levels",
+      "area": "block",
+      "rule": "블록 제목은 h2 이고 h1 은 hero 블록만 가진다 — 히어로가 있는 페이지는 `SiteShell pageTitle={false}` 로 셸 h1 을 끄고, 히어로가 없는 페이지(블록만 이은 화면)는 셸 h1 을 켜 둔다(한 페이지 h1 하나).",
+      "action": "찍어낼 때 페이지에 hero 블록이 들어가는지 먼저 본다. 들어가면 `<SiteShell pageTitle={false}>`, 아니면 `pageTitle` 에 페이지 제목 문자열. 블록이 h1 을 새로 만들지 않는다(`blocks:check` 가 hero 밖의 h1 을 잡는다).",
+      "source": "P3-2 Task 9(SiteShell·블록 제목 규칙)"
+    },
+    {
+      "id": "og-image-font-tracing",
+      "area": "install",
+      "rule": "`og-image` 의 `readOgFont()` 는 Pretendard 파일(`node_modules/pretendard/…/Pretendard-Bold.otf`)을 실행 때 읽는다 — 소비자에 `font-pretendard`(npm `pretendard`)가 있어야 하고, 요청 때 그리는 동적 경로(`app/blog/[slug]/opengraph-image.tsx`)는 `next.config` 의 `outputFileTracingIncludes: { \"/**/opengraph-image\": [\"./node_modules/pretendard/dist/public/static/Pretendard-Bold.otf\"] }` 를 더해야 배포 추적에 그 파일이 들어간다(정적 `app/opengraph-image.tsx` 는 빌드 때 읽어 필요 없다).",
+      "action": "동적 OG 경로를 만들면 같은 커밋에서 next.config 에 위 키를 넣는다. 키는 picomatch 라 `[slug]` 를 그대로 쓰면 글자 묶음으로 읽혀 안 맞는다 — `/**/opengraph-image` 나 `\\\\[slug\\\\]` 로 쓴다. `readOgFont` 는 경로가 실행 때 정해져 Turbopack 의 「프로젝트 전체 추적」 경고가 나므로 `join(/*turbopackIgnore: true*/ process.cwd(), path)` 로 껐고, 그 대가로 파일이 자동으로 추적되지 않는다. 검증은 `factory/qa/consumer-install.mjs`(동적 경로 `.nft.json` 에 Pretendard 파일이 있는지는 빌드 뒤 `.next/server/app/blog/[slug]/opengraph-image/route.js.nft.json` 을 본다).",
+      "source": "P3-2 Task 9(대장 A13 — 소비자 설치 실측 2026-10-01, Next 16.3.4)"
+    },
+    {
+      "id": "block-date-locale",
+      "area": "block",
+      "rule": "날짜를 적는 블록(결제·계정·구독 해지·공지·후기·문의)과 조각(`_shared/billing-format` 의 `formatFrom`·`formatUntil`·`DateText`)은 블록 공통 props 의 `locale`(\"ko\"·\"en\")·`timeZone`(IANA 이름)을 받는다 — 둘 다 없으면 예전 그대로 ko-KR·Asia/Seoul 이라 영어 제품에서 날짜가 「2026년 10월 31일」로 나온다.",
+      "action": "영어 사이트는 블록에 `locale=\"en\"`을 넘긴다(찍어내기 06 은 영어 사이트의 모든 블록 props 에 `locale: \"en\"`을 싣는다). 손님 시간대로 읽으려면 `timeZone` 도 넘긴다 — 같은 순간이 서울과 뉴욕에서 다른 날짜가 된다. 한국어 사이트는 아무것도 넘기지 않아도 출력이 바이트 단위로 같다(검사 `blocks-i18n.test.mjs`).",
+      "source": "P3-5 I18N(대장 D234 — launch-factory 관통 F6)"
+    },
+    {
+      "id": "part-accessible-names-locale",
+      "area": "part",
+      "rule": "부품이 스스로 그리는 접근 이름(대화상자·시트 「닫기」, 쪽 이동, 캐러셀 이전·다음, 사이드바 열고 닫기, 토스트 「알림」, 건너뛰기 링크 등)은 문구 표 `ui/locale-labels`(ko·en)에서 읽는다 — 부품은 `locale`(\"ko\"·\"en\", 기본 ko) prop 을 받고, 이미 있던 문구 prop(`navLabel`·`aria-label`·`text`·`title` …)을 주면 그 값이 표보다 앞선다. 문구 표는 컨텍스트가 아니라 prop 이라 서버 부품(breadcrumb·pagination·site-shell)도 같다.",
+      "action": "영어 사이트에서 대화상자를 열면 `<DialogContent locale=\"en\">`(블록 안에서는 블록의 `locale` 을 넘긴다), 셸은 `<SiteShell locale=\"en\">`(찍어낸 사이트의 `shellProps` 가 이미 싣는다). 새 부품이 접근 이름을 하나라도 직접 그리면 `locale-labels.tsx` 에 ko·en 값을 함께 더하고 `uiLabels(locale)` 로 읽는다 — 부품에 한국어 글을 직접 쓰면 `blocks-i18n.test.mjs` 가 잡는다. 부품 파일 이름은 `ui` 로 시작하지 않는다: 설치 때 import 재작성이 `@/registry/…/ui/ui-x` 를 `@/components/ui-x` 로 잘못 풀어 닫힘이 깨진다(그래서 `locale-labels`).",
+      "source": "P3-5 I18N(대장 D235 — launch-factory 관통 F6)"
+    },
+    {
+      "id": "auth-reset-password-optional",
+      "area": "contract",
+      "rule": "`AuthPort.resetPassword?({ token, newPassword })`(비밀번호 재설정 마무리)는 계약 판 2 안의 선택 메서드다 — `requestPasswordReset` 이 보낸 메일 링크가 돌려보내는 주소의 `?token=` 으로 쓴다. 토큰이 틀렸거나 만료됐거나 이미 썼으면 `{ ok: false, code: \"invalid_token\" }`, 짧은 비밀번호는 `fieldErrors.newPassword` 다. 없는 어댑터도 계약을 지킨다.",
+      "action": "재설정 화면은 `auth/new-password` 블록에 `resetPassword`·`token`(주소의 ?token=, 없거나 ?error=INVALID_TOKEN 이면 빈 값)을 넘긴다 — 토큰이 없으면 폼 없이 「링크가 더는 열리지 않아요」 + 재설정 다시 받기로 간다. 어댑터는 적합성 묶음의 `auth.signed-out.reset-password-*` 둘을 통과해야 한다(모르는 토큰·빈 토큰으로 비밀번호가 바뀌면 실패). 갤러리 목은 가상 토큰 `MOCK_RESET_TOKEN` 만 한 번 받는다.",
+      "source": "P3-5 I18N(대장 D236 — launch-factory 관통 F4)"
+    },
+    {
+      "id": "read-error-sign-in-slot",
+      "area": "block",
+      "rule": "읽기 포트가 로그아웃·만료 상태에서 `{ ok: false, code: \"signInRequired\" }` 로 끝나면 `_shared/port-read ReadError` 는 [다시 시도] 대신 로그인 링크를 보인다 — 로그인 행동(`signIn: { href, label }`)을 받았을 때만이고, 못 받았거나 code 가 없으면 예전 그대로 [다시 시도]다. `AsyncState` 의 error 와 `ReadError` 는 code 를 `data-error-code` 로 남긴다.",
+      "action": "보호된 쪽(계정·결제 관리)의 위쪽에서 `<ReadErrorProvider signIn={{ href: signInHref(\"/sign-in\", 지금 경로), label }}>` 로 한 번 감싼다 — 아래 모든 읽기 블록이 받는다(블록마다 props 를 더하지 않는다). `signInHref` 는 같은 사이트 경로만 next 로 싣는다. 어댑터는 로그인 필요 실패에 `code: \"signInRequired\"` 를 싣는다(없으면 로그인 링크가 안 나온다).",
+      "source": "P3-6 WFBLK-B(감사 product-ux-audit B04·K03·K04·H01·N10)"
+    },
+    {
+      "id": "footer-business-optional-no-real-values",
+      "area": "block",
+      "rule": "`footer/product-legal` 의 사업자 정보 8칸(상호·대표자·주소·전화·메일·사업자등록번호·통신판매업 신고번호·호스팅 업체)은 전부 선택이고 값이 있는 칸만 그린다 — 하나도 없으면 사업자 구획 자체가 없다. 블록·예시에 실제 값을 넣지 않는다(예시는 Example Co.·+82 10-0000-0000 같은 가짜 값 — 공장은 남도 쓴다).",
+      "action": "사업자 값은 제품 설정(환경 변수·설정 파일)에서 읽어 `business` prop 으로 넘기고 빈 칸은 비워 둔다(통신판매업 신고번호는 면제 대상이면 비운다). 값이 비어 있다는 이유로 문구를 지어내지 않는다.",
+      "source": "P3-6 WFBLK-B(감사 product-ux-audit B04·K03·K04·H01·N10)"
+    },
+    {
+      "id": "cookie-settings-reopen",
+      "area": "block",
+      "rule": "쿠키 선택은 결정한 뒤에도 다시 열 수 있어야 한다(철회는 동의만큼 쉽게). 푸터의 「쿠키 설정」(`footer/product-legal` 의 `cookieSettings`)은 `data-consent-open` 앵커이고, 같은 쪽의 `consent/bottom-banner`(`copy.preferences` 가 있을 때 항목별 대화상자, 없으면 띠가 다시 뜬다)·`consent/preference-dialog` 가 그것을 받아 연다 — 쿠키 블록이 없으면 링크 href 가 그대로 동작한다. 띠는 좁은 화면에서 화면 높이의 1/5(20dvh)를 넘지 않는다.",
+      "action": "푸터 링크의 href 는 쿠키 블록이 없거나 자바스크립트가 없을 때 가는 곳이다(`#cookie-settings` 또는 처리방침의 쿠키 절). 띠의 글이 길면 글 칸 안에서만 스크롤하니 `copy.body` 는 짧게 쓴다.",
+      "source": "P3-6 WFBLK-B(감사 product-ux-audit B04·K03·K04·H01·N10)"
+    },
+    {
+      "id": "app-state-screens",
+      "area": "block",
+      "rule": "`state-screen/error-retry`·`not-found`·`loading` 은 앱 전체 `error.tsx`·`global-error.tsx`·`not-found.tsx`·`loading.tsx` 에 그대로 끼운다 — 모두 스타일 속성이 없고(엄격 CSP 안전), `header` 칸(머리·내비 블록)·`errorCode`(뿌리 `data-error-code`)·`requestId`(+ `copy.requestIdLabel`)·`copy.support`(지원 경로)·`headingLevel`(쪽에 다른 h1 이 없으면 1)을 받는다. error-retry 는 `copy.signIn` 이 있으면 [다시 시도] 대신 로그인 링크를 보인다.",
+      "action": "`global-error.tsx` 는 레이아웃을 대신하므로 자기 `<html><body>` 안에서 `header` 로 `nav/account-bar` 같은 머리를 직접 끼운다(세션을 모르면 로그아웃 상태로). 요청 번호는 Next 의 `error.digest` 를 `requestId` 로 넘긴다.",
+      "source": "P3-6 WFBLK-B(감사 product-ux-audit B04·K03·K04·H01·N10)"
+    },
+    {
+      "id": "nav-account-bar-session",
+      "area": "block",
+      "rule": "`nav/account-bar` 는 서버 컴포넌트이고 `session` prop(`signed-out`·`signed-in`)이 머리를 정한다 — 로그아웃 상태는 [로그인]·[가입], 로그인 상태는 계정 메뉴(`<details>`) 안의 [로그아웃] POST 폼이다(주 메뉴와 떨어져 있고 링크가 아니다). 뿌리 `data-session` 이 세션을 따르는지 기계가 읽는 표지다.",
+      "action": "서버 레이아웃이 세션을 읽어 `session` 으로 넘긴다 — 로그인·가입·로그아웃 서버 액션이 끝나면 그 레이아웃이 다시 그려져야(revalidate·redirect) 새로고침 없이 바뀐다. `signOutAction` 은 로그아웃 주소 또는 서버 액션이고 없으면 로그아웃 단추를 그리지 않는다.",
+      "source": "P3-6 WFBLK-B(감사 product-ux-audit B04·K03·K04·H01·N10)"
+    },
+    {
+      "id": "block-human-approval-hint",
+      "area": "block",
+      "rule": "사람 승인이 필요한 행동(결제·요금제 변경·해지·탈퇴·이메일·비밀번호 변경·동의·개인정보 제공·가입)의 제출·확정 컨트롤은 눈에 보이는 짧은 안내 글(`copy.humanHint` — 권장 「직접 확인하고 눌러 주세요」 / \"You'll confirm this yourself\", 60자 이하)과 기계 표지 `data-requires-human=\"<행동>\"`(+ `aria-describedby` 가 안내 글을 가리킴)을 함께 갖는다 — 어떤 행동이 승인 행동인지는 `contract/human-actions.ts` 표 한 곳이 정한다. 조회·검색·채우기·초안·로그인에는 달지 않는다.",
+      "action": "조립하는 쪽은 블록 copy 의 `humanHint`(해당 블록의 copy 타입에 필수 칸 — paywall 네 변형은 `copy.offer.humanHint`)를 로캘에 맞춰 채운다. 안 채우면 타입 오류이고, 빈 글이면 화면에 안내가 없어 `npm run qa:agent-boundary` 가 `human-control-no-hint` 로 잡는다. WebMCP `toolname`(문의·예약 요청·질문 폼)은 승인 컨트롤을 담은 폼에 달지 않는다.",
+      "source": "P3-7 AXWF(감사 product-ux-audit M01·M02·M05, 규칙 R18·R19, factory-rules.md §23-7 U20)"
+    },
+    {
+      "id": "block-approval-required-state",
+      "area": "block",
+      "rule": "포트가 사람 승인 없이 부른 승인 행동을 `{ ok: false, code: \"confirmation_required\", retryable: false }`(옛 이름 `approval_required` 도 같다) 로 멈추면 폼 알림은 오류가 아니라 「승인 대기」 알림(`role=\"status\"` · `data-state=\"awaiting-approval\"` · 기다림 아이콘)으로 보이고, 실패 알림에는 `data-error-code`·`data-retryable` 이 남는다 — `copy.notices.approval` 이 있을 때만(없으면 예전 서버 오류 칸).",
+      "action": "`copy.notices.approval` 에 제목·`attempted`(무엇을 하려 했나)·`progress`(어디까지 했나)·`reason`(포트가 이유를 안 줄 때)·`next`(사람이 할 다음 행동 하나)·`route`(사람에게 넘기는 길)를 채운다 — 본문 순서는 이 순서로 고정이다. 포트(어댑터)는 승인 행동을 확인 입력(`confirmed: true`) 없이 받으면 이 code 로 끝내고 상태는 바꾸지 않는다(R20). 탈퇴에서 입력한 이메일이 틀린 결과(`fieldErrors.confirmEmail`)는 알림이 아니라 그 칸 옆 오류로 그려진다.",
+      "source": "P3-7 AXWF·AXC(감사 product-ux-audit M04, 규칙 R21, factory-rules.md §23-7 U21)"
+    },
+    {
+      "id": "block-confirmed-input",
+      "area": "block",
+      "rule": "승인 행동 블록(해지 흐름·가격 변경 동의/거절·결제 관리의 요금제 변경·계정 이메일 변경·탈퇴·내 정보 내려받기·알림 동의)은 자기 확인 단계(확정 버튼·동의 스위치) 뒤에 포트 입력의 선택 칸 `confirmed: true` 를 직접 싣는다 — `changePlan`·`cancel`·`applyRetentionOffer`·`acceptPriceChange`·`changeEmail`·`deleteAccount`·`exportMyData`·`setConsents` 의 입력 모두. 탈퇴는 `copy.decision.typed` 가 있고 로그인한 주소가 있으면 사람이 입력한 이메일 주소를 `confirmEmail` 로 함께 싣는다(틀리면 포트를 부르기 전에 그 칸 오류).",
+      "action": "조립하는 쪽은 블록 밖에서 `confirmed` 를 덧붙이는 감싸기(`watch.confirmed`)나 이메일 입력 칸을 따로 두지 않는다. 확인을 요구하는 어댑터는 `confirmed: true` 가 없으면 상태를 바꾸지 않고 `confirmation_required` 로 끝낸다 — 갤러리·찍어낸 사이트의 목은 `requireConfirmation: true` 라서 이 칸을 빠뜨린 블록은 화면에서 승인 대기로 막힌다. `confirmed: true` 는 호출한 쪽의 선언이지 사람이 눌렀다는 증명이 아니다(서명 토큰은 후속). 이름 입력 확인을 쓰려면 탈퇴 블록 `copy.decision.typed`(라벨·표시·설명·불일치 글)를 채운다.",
+      "source": "P3-7 AXC(launch-factory LFAX apply-lfax.md §6, 감사 product-ux-audit M03, 규칙 R20)"
+    },
+    {
+      "id": "block-server-parts-no-client-values",
+      "area": "block",
+      "rule": "서버 부품(맨 위에 \"use client\" 가 없는 블록·조각 — footer/product-legal 등)은 \"use client\" 모듈에서 상수·도우미 값을 가져오지 않는다. RSC 에서 클라이언트 모듈의 값은 값이 아니라 클라이언트 참조로 와서, 펼쳐도(`{...consentOpenAttrs}`) 속성이 하나도 안 붙는다 — 서버 HTML 의 「쿠키 설정」 링크에 data-consent-open 이 없어 대화상자가 안 열렸다(갤러리는 클라이언트 쪽이라 안 걸렸다). 컴포넌트·훅은 참조로 와도 쓸 수 있다.",
+      "action": "서버 부품이 쓸 순수 값은 \"use client\" 가 아닌 조각에 둔다(`_shared/consent-open-attrs` — 브라우저 쪽 훅은 `_shared/consent-open`). 새 조각을 만들 때 상수와 훅을 한 파일에 같이 두지 않는다. `rel11-fixes.test.mjs` 가 서버 부품의 이런 import 를 잡는다.",
+      "source": "P3-7 REL11(launch-factory LFADA·LFADB·병합 관문 발견, 2026-10-04)"
+    },
+    {
+      "id": "form-blur-validation-defers-while-pointer-down",
+      "area": "block",
+      "rule": "포트 폼(`usePortForm`)의 칸 검사(blur)는 포인터를 누르고 있는 동안 오류 문구를 그리지 않고 뗀 직후로 미룬다. 보내기 단추를 누르는 순간 칸이 포커스를 잃어 검사가 오류 문구를 그리면 단추가 아래로 밀려 손을 뗄 때 포인터가 단추 밖이라 click 이 안 나간다 — 진짜 마우스는 제출도 첫 오류 칸 포커스도 안 일어났다(JS click 은 mousedown 이 없어 가렸다).",
+      "action": "블록이 칸 옆에 오류를 그리는 폼을 새로 만들면 `usePortForm` 의 `form.blur` 를 쓴다(직접 onBlur 로 오류를 그리면 같은 증상이 난다). 시험은 JS click 이 아니라 CDP Input.dispatchMouseEvent 로 누른다(`rel11-gallery.test.mjs`).",
+      "source": "P3-7 REL11(launch-factory LFADA·LFADB·병합 관문 발견, 2026-10-04)"
+    },
+    {
+      "id": "block-pinned-bar-scroll-padding",
+      "area": "block",
+      "rule": "스크롤 칸 아래에 붙는 고정 행동 줄(업그레이드 대화상자의 `data-pinned-bar`)은 실제 높이를 재서 스크롤 칸의 scroll-padding-bottom 에 싣는다(`_shared/pinned-bar-space`). 고정 값(scroll-pb-36 = 144px)은 줄이 더 높을 때(고지 글·영어·좁은 화면) 줄 바로 위 띠의 링크를 「이미 보인다」고 보게 해 줄 밑에 가린 채 포커스를 받게 한다(WCAG 2.4.11).",
+      "action": "스크롤 칸 안에 sticky 줄을 새로 두면 `usePinnedBarSpace()` 의 ref 를 스크롤 칸에 주고 줄에 `data-pinned-bar` 를 단다. 대화상자 격자는 `grid-cols-[minmax(0,1fr)]` 로 두어 줄바꿈 없는 표의 최소 폭이 칸을 밀지 못하게 한다.",
+      "source": "P3-7 REL11(launch-factory LFADA·LFADB·병합 관문 발견, 2026-10-04)"
+    },
+    {
+      "id": "block-popup-today-device-only",
+      "area": "block",
+      "rule": "`announcement/popup-today` 의 「오늘 하루 보지 않기」는 오늘 날짜(YYYY-MM-DD)를 이 기기의 localStorage 에만 적는다(서버로 보내지 않는다) — 닫기 단추는 이번 방문 동안(세션)만 기억한다. 기본 shadcn 대화상자와 달리 비모달(가림 막 없음·초점을 가두지 않음)이고, 하이드레이션 뒤 기억을 읽고 나서 나타나며, 창이 뜰 때 초점이 body 면 닫기 단추가 처음 초점을 받는다.",
+      "action": "닫은 기록을 서버로 보내거나 이 창을 모달로 바꾸지 않는다(첫 화면을 가리는 모달 금지 A5·A6). 저장소를 못 쓰는 곳은 이번 화면에서만 닫힌다.",
+      "source": "FV1 Task 5.8(보드 A1 interaction:dismiss-for-today)"
+    },
+    {
+      "id": "block-floating-action-bottom-tab",
+      "area": "block",
+      "rule": "떠 있는 행동 블록(`floating-action/quick-menu-rail`·`chat-launcher`·`call-bar`)은 쪽에 하단 탭 블록(`data-block^=\"bottom-tab-\"`)이 있으면 그리지 않는다(고정 줄 둘이 서로의 초점을 가린다). 아래에 앉은 동안에는 가린 높이만큼 문서 뿌리 scroll-padding-bottom 을 주고(`_shared/floating-kit useFloatingSpace`), 아래 고정 줄 call-bar 는 높이를 `--wf-float-bar` 로 실어 다른 떠 있는 요소가 그 위로 앉는다. call-bar 는 md 미만에서만 화면 아래에 붙는다.",
+      "action": "떠 있는 요소를 새로 만들면 `useFloatingDrawn()`·`useFloatingSpace()` 를 부른다. 하단 탭·쿠키 띠(`--bottom-bar-height`)는 `_shared/bottom-bar-space` 가 맡으므로 값을 서로 덮지 않게 변수 이름을 따로 둔다.",
+      "source": "FV1 Task 5.8(보드 A1 section:quick-menu-rail·section:chat-widget)"
+    },
+    {
+      "id": "block-notice-ticker-pausable",
+      "area": "block",
+      "rule": "`announcement/notice-ticker` 는 공지를 5초 이상 간격으로 넘기고(intervalMs 는 5000 아래로 내려가지 않는다), 정지 단추·마우스 올림·초점 들어옴으로 멈춘다(WCAG 2.2.2). 동작 줄이기에서는 굴리지 않고 공지를 모두 목록으로 보인다 — 겹쳐 쌓기는 CSS motion-safe 에서만 걸린다. 굴리는 동안 활성이 아닌 공지는 inert 이다.",
+      "action": "공지 줄을 JS 상태만으로 숨기지 않는다(동작 줄이기·JS 없는 화면에서 공지가 사라진다). 정지 단추는 `_shared/loop-pause` 를 쓴다.",
+      "source": "FV1 Task 5.8(보드 A1 section:notice-ticker)"
+    },
+    {
+      "id": "block-export-csv-formula-guard",
+      "area": "block",
+      "rule": "데이터 표의 [CSV 내려받기]·[표 복사](`_shared/export-actions`)는 거르고 정렬한 결과 전부를 내보내고(쪽 하나가 아니다), CSV 에는 한글 엑셀용 UTF-8 BOM 을 붙이며, 칸이 `=`·`+`·`-`·`@`·탭·줄바꿈으로 시작하는 글이면 앞에 `'` 를 붙인다(스프레드시트 수식 주입 방지). 파일은 이 브라우저 안에서 만들고 서버로 보내지 않는다.",
+      "action": "표 변형에 내보내기를 달 때 `copy.export` 가 있을 때만 그린다(없으면 예전 그대로). 숫자 칸은 화면 글자(12,900원)가 아니라 원래 값으로 내보낸다.",
+      "source": "FV1 Task 5.8(보드 A1 interaction:export-copy)"
+    },
+    {
+      "id": "block-store-badges-text-only",
+      "area": "block",
+      "rule": "`final-cta/store-badges` 는 앱 스토어·확장 설치 배지를 글자 단추로만 그린다 — 각 스토어의 공식 배지 그림은 상표 규칙을 지켜야 하므로 저장소에 넣지 않는다(규칙 링크 `docs/qa/factory-v1/asset-licenses.md` 7절).",
+      "action": "공식 배지 그림이 필요하면 조립하는 쪽이 스토어 규칙 페이지에서 직접 받아 규칙대로 쓴다. 저장소에는 스토어 로고·배지 이미지 파일을 추가하지 않는다.",
+      "source": "FV1 Task 5.8(보드 A1 cta:app-download)"
+    },
+    {
+      "id": "block-filter-bar-url-state",
+      "area": "block",
+      "rule": "거르기 줄 `filter-bar/chips`·`toolbar`·`search-filter` 는 거른 상태를 주소 쿼리(`?category=…`·`?q=…`·`?sort=price-asc`)에 두고 `history.replaceState` 로 쓴다(`_shared/filter-query`) — 새로고침·공유·뒤로 가기에서 그대로 남고, 거르기를 바꾸면 쪽 번호(`page`)는 지운다. 서버 렌더·하이드레이션 동안은 주소를 모른다(시작 값 `initial` 만 쓴다). 기본 shadcn 에는 없는 동작이다.",
+      "action": "목록 항목을 이 블록이 직접 거르게 하려면 `target` 셀렉터를 주고 항목에 `data-filter-<이름>`(쉼표로 여러 값)·`data-sort-<키>`(숫자) 속성을 단다(속성이 없으면 항목 글에서 찾는다). 쪽마다 서버가 거르는 표는 `target` 없이 `onChange`·주소 쿼리를 읽어 다시 그린다. 정렬은 요소를 옮기지 않고 CSS `order` 만 바꾸므로 부모가 flex·grid 여야 한다.",
+      "source": "FV1 Task 5.9(골든 1차 필수 섹션 블록 없음 — A87·A88)"
+    },
+    {
+      "id": "block-permissions-read-only",
+      "area": "block",
+      "rule": "`account/permissions` 는 브라우저 권한을 `navigator.permissions.query` 로 읽기만 한다 — 알림 허용 창·위치 읽기·푸시 구독을 직접 부르지 않고, 권한을 바꾸는 길은 브라우저 사이트 설정 단계 안내다. 권한 이름을 읽지 못하는 브라우저는 「알 수 없음」이다.",
+      "action": "[켜기] 단추가 필요하면 조립하는 쪽이 `onRequest(id)` 를 주어 요청 창을 직접 연다(단추는 아직 묻지 않음 상태일 때만 그려지고 누르면 `onRequest` 만 부른다). 블록 안에서 `requestPermission`·`getCurrentPosition` 을 부르지 않는다.",
+      "source": "FV1 Task 5.9(pwa settings/permissions — C72)"
+    },
+    {
+      "id": "block-app-sidebar-collapse-names",
+      "area": "block",
+      "rule": "`nav/app-sidebar` 는 처음에 펼쳐져 글자 이름표가 보이고, 접으면 아이콘 줄이 되지만 링크 이름은 눈에 안 보이는 글(sr-only)로 남아 접근 이름이 같다 — 접힌 항목에는 title 말풍선이 붙는다. 접기 단추는 `aria-expanded`·`aria-controls` 를 가진 진짜 버튼이고 접힘은 이 화면에서만 기억한다(저장하지 않는다). lg 미만에서는 위에 붙는 가로 줄이라 접기 단추가 없다.",
+      "action": "사이드바를 아이콘만으로 그리지 않는다(접힌 상태가 기본이면 안 된다 — 앱 셸 필수 조건 default-expanded). 항목 이름을 `aria-label` 로만 두지 말고 글(sr-only)로 둔다.",
+      "source": "FV1 Task 5.9(dashboard global/app-shell-sidebar)"
+    },
+    {
+      "id": "stamp-empty-page-guide",
+      "area": "block",
+      "rule": "찍어낸 사이트에서 본문이 하나도 안 그려진 쪽(앱 고유 주 화면처럼 콘텐츠로 못 그리는 섹션뿐)은 06 이 빈 상태 안내 블록(`state-screen/empty-guide`: 무엇이 비었나 + 첫 행동 하나)을 그린다 — 머리글·공지·동의 띠만 있는 쪽은 ux 관문이 본문 0 으로 떨어뜨린다. 안 그려진 섹션의 「자료 연결 안 됨」 공개 불가 사유는 그대로 남는다.",
+      "action": "새 앱 쪽 섹션을 더하면 그 쪽이 본문 블록을 하나 이상 그리는지 본다. 빈 안내는 사실을 주장하지 않는 낱말만 쓴다(`site-bind.mjs EMPTY_PAGE_UI`).",
+      "source": "FV1 Task 5.13(UX H08, 골든 ux bodyChecked 0)"
+    },
+    {
+      "id": "block-form-required-and-error-summary",
+      "area": "block",
+      "rule": "포트 폼·문의 흐름 폼은 보내기가 칸 오류로 막히면 폼 맨 위 알림(role=\"alert\")에 칸마다 한 줄 오류 요약(`data-error-summary`, 그 칸으로 가는 링크)을 그린다. 필수 칸은 `aria-required` 를 갖는데 포트 폼은 검사기가 빈 값을 거절하는 칸을 필수로 읽고, 검사기가 DOM 을 읽을 수 있어 서버·첫 하이드레이션 값이 달라질 수 있으니 붙은 뒤에만 켠다.",
+      "action": "새 폼 블록은 `usePortForm` 의 `validators` 에 필수 칸의 빈 값 거절을 적고 `FormAlert` 를 폼 맨 위에 둔다. 검사기가 `read()` 같은 DOM 읽기에 기대면 `required` 가 서버에서 false 임을 안다.",
+      "source": "FV1 Task 5.13(UX H06)"
+    },
+    {
+      "id": "block-no-korean-literals",
+      "area": "block",
+      "rule": "블록 코드(`blocks/**/*.tsx`)에는 한국어 글자 literal 을 직접 쓰지 않는다 — 블록의 화면 글은 `copy` 로 받고, 코드가 스스로 만드는 글(원화 단위 「원」·「24시」·제작자용 점검 메시지)은 `blocks/_shared/block-labels.tsx` 의 ko·en 표(`blockLabels(locale)`)에서 읽는다. 로캘이 없으면 ko 라 한국어 출력은 같다.",
+      "action": "블록에 새 문구를 더하면 `copy` 칸으로 받는다. 코드가 만들어야 하는 글이면 block-labels 표에 ko·en 을 함께 더한다(`blocks-i18n.test.mjs` 가 표 밖의 한글 literal 을 잡는다).",
+      "source": "FV1 Task 5.14(골든 「다른 언어의 화면 문구」)"
+    },
+    {
+      "id": "stamp-english-site-ui-labels",
+      "area": "block",
+      "rule": "블록 예시(fixture)의 화면 이름표는 한글이라, 영어 사이트의 섹션 props 에 한글이 그대로 남는다. 06 의 bindSection 이 영어 사이트에서 번역표(`factory/stamp/ui-labels-en.mjs`)로 일반 이름표를 바꾸고, 이 사업의 문장은 04 화면 문구 칸(영어 사이트는 번역표 뒤에도 한글인 문장)으로 보낸다. 한글 잎이 수십 개인 큰 제품 화면(가입·로그인·계정·결제·해지·온보딩 14블록)은 예시 모듈이 영어 장면 `fixtureEn` 을 내보내고 영어 사이트의 06 은 `fixtureOf(b, { locale })` 로 그것을 쓴다(한국어는 `fixture` 그대로). 둘 다 못 닫은 한글은 「다른 언어·다른 사업의 화면 문구 남음」 공개 불가 사유다.",
+      "action": "새 블록의 예시 이름표가 영어 사이트에서 한글로 남으면 번역표에 그 글자를 더한다(사업 문장은 더하지 않는다 — 문구 칸 몫). 요일 낱말은 `days` 칸 아래에서만 바뀐다. 제품 화면 블록이 영어 사이트에서 한글을 수십 개 남기면 예시 모듈에 `fixtureEn`(같은 짜임, 글만 영어, 사업 이름·업종 낱말 없이)을 더한다 — 한국어 `fixture` 는 건드리지 않는다(`stamp-follow-en-scenes.test.mjs` 가 모든 블록의 한국어 예시 해시를 지킨다).",
+      "source": "FV1 Task 5.14(C333)"
+    }
+  ]
+}

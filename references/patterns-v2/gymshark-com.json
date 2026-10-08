@@ -1,0 +1,67 @@
+{
+  "id": "gymshark-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.gymshark.com/products/gymshark-adapt-x-whitney-jacket-jackets-outerwear-purple-aw26",
+  "structure": {
+    "hero": "왼쪽 2열 사진 갤러리, 오른쪽 굵은 대문자 제목과 옵션 열",
+    "sections": [
+      "공지띠(학생 할인)",
+      "헤더(내비 4개·중앙 로고·검색창·찜·계정·가방)",
+      "2열 이미지 갤러리+세로 진행 막대",
+      "상품 정보(New 태그·제목·가격·설명)",
+      "색상 이미지 스와치 10개",
+      "사이즈 격자",
+      "리워드 안내 박스",
+      "국가 확인 팝업·쿠키 바"
+    ]
+  },
+  "type": {
+    "display": "좁고 굵은 대문자 산세리프 제목",
+    "body": "중성 산세리프 본문",
+    "scale": "제목 크게, 가격·옵션 라벨은 작게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "회색 스켈레톤 블록이 약 0.75초 안에 모델 사진·옵션으로 교체됨",
+    "scroll": null,
+    "hover": null,
+    "transition": "1.5~2.25초에 국가 확인 팝업이 우하단에 뜨고 이어 쿠키 바가 하단에 올라옴",
+    "durationsMs": [
+      750,
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "색상 스와치를 상품 이미지 썸네일로 표시",
+    "사이즈 격자 선택",
+    "이미지 위 「최근 24시간 조회 N명」 사회적 증거 칩",
+    "공지띠 일시정지",
+    "국가 확인 팝업"
+  ],
+  "cta": {
+    "pattern": "사이즈 선택 뒤 검정 Add to bag(첫 화면 아래)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.88
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "색상 스와치를 착용 사진 썸네일로 보여줘 색 선택이 쉽다",
+    "이미지 위 「N명이 조회」 칩은 가벼운 사회적 증거로 첫 화면에서 보인다",
+    "사이즈를 격자 칸으로 펼쳐 한 번에 비교하게 한다",
+    "모바일은 사진 한 장을 세로로 크게 보여주고 일반 스크롤로 이어진다",
+    "로드 직후 스켈레톤을 쓰고 0.75초 안에 교체해 빈 화면이 길지 않다",
+    "국가 팝업과 쿠키 바가 겹쳐 화면을 가린다. 노출 순서가 필요"
+  ]
+}

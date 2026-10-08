@@ -1,0 +1,8 @@
+{
+  "synthetic": "응답 모양 바뀜 — 최상위 LawSearch·법령 없음(실측 아님)",
+  "url": "https://www.law.go.kr/DRF/lawSearch.do?OC=***&target=law&type=JSON&query=%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%20%EB%B3%B4%ED%98%B8%EB%B2%95",
+  "status": 200,
+  "body": {
+    "result": { "code": "99", "message": "unexpected" }
+  }
+}

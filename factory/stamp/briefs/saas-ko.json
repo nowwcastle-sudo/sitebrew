@@ -1,0 +1,19 @@
+{
+  "topic": "프리랜서를 위한 견적서 보내기·승인 상태 한눈에 보기 서비스",
+  "archetype": "saas",
+  "locale": "ko",
+  "facts": {
+    "name": "견적노트",
+    "legalName": "주식회사 견적노트랩",
+    "representative": "김하늘",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "price": "월 9,900원(부가세 포함), 첫 14일 무료",
+    "trial": "첫 14일 무료, 카드 등록 없이 시작",
+    "claim": "견적서를 링크로 보내고 고객이 열어 봤는지, 승인했는지를 한 화면에서 확인해요",
+    "howItWorks": "견적서를 만들고, 링크를 보내고, 승인 알림을 받아요",
+    "address": "서울특별시 마포구 월드컵로 120, 3층",
+    "phone": "02-1234-5678",
+    "productUrl": "https://gyeonjeok.example.com"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "retention",
+  "variant": "payment-failed-banner",
+  "title": "결제 실패 띠 — 사유·재시도일·접근 유지 + 결제 수단 바꾸기",
+  "layout": "slim-warning-strip",
+  "density": "compact",
+  "archetypes": [ "saas", "pwa", "dashboard", "commerce" ],
+  "archetypeKinds": [ "payment-failed", "notice-bar" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "R1", "X1", "M1" ],
+  "notes": "가로 한 줄 띠(페이지 흐름 안 — 가리지 않는다): 경고 · 사유별 문구 · 재시도일 · 그때까지 그대로 쓴다(data-access-kept) · [결제 수단 바꾸기](updatePaymentMethod → redirectUrl). past_due 일 때만 보이고, 창으로 돌아오거나 카드를 바꾸면 다시 읽어 복구되면 사라진다. 구독 읽기 중·실패면 아무것도 그리지 않는다(읽기 상태는 조용하다 — 그래서 메타 상태는 제출 결과만). 포트: subscription·updatePaymentMethod·track? P3-6 F02: 띠는 role=alert(비차단), 다시 결제하는 날 + 접근이 멈추는 날(graceEndsAt — copy.accessUntil), 복구되면 띠가 사라지고 확인 글(copy.recovered, role=status)."
+}

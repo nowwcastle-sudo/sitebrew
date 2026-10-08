@@ -1,0 +1,88 @@
+/* 모션 키트 원천(motion-core). gen-kits.mjs 가 @theme → cssVars.theme, 나머지 규칙 → css 로 옮긴다.
+   근거: DESIGN §8-2 타이밍 표·이징 토큰, §8-4 루프 정지, §8-7 reduced-motion. 소비자에서 @theme 는 `@theme inline` 으로 들어가
+   CSS 변수로 남지 않을 수 있어, 아래 프리셋은 var(--토큰, 같은 값) 으로 기본값을 함께 적는다. */
+@theme {
+  /* 들어옴·기본 ease-out */
+  --ease-standard: cubic-bezier(0.23, 1, 0.32, 1);
+  /* 모달·페이지 전환 emphasized */
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  /* 화면 안 이동 ease-in-out */
+  --ease-in-screen: cubic-bezier(0.77, 0, 0.175, 1);
+  /* 나감 ease-in */
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  /* 바닥 시트·드로어 */
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 120ms;
+  --duration-hover: 200ms;
+  --duration-popover: 160ms;
+  /* 요소 등장(스크롤·로드) 400~700ms */
+  --duration-enter: 500ms;
+  /* 바닥 시트·드로어 진입 200~350ms(§8-2) */
+  --duration-sheet: 320ms;
+}
+
+/* 요소 등장(스크롤·로드, 드묾): 8px 아래에서 불투명도와 함께. 마케팅 면에 한 번만 — 매일 쓰는 기능 UI 에는 걸지 않는다(§8-1). */
+@keyframes wf-fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 바닥 시트 진입: 자기 높이만큼(100%) 아래에서. 나갈 때는 같은 길로(§8-3). */
+@keyframes wf-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* 앰비언트 루프: 크기 ±2%, 주기 4s, ease-in-out(§8-2·§8-4). 화면 밖·탭 숨김에서는 use-pause-offscreen 이 멈춘다. */
+@keyframes wf-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.wf-fade-rise {
+  animation: wf-fade-rise var(--duration-enter, 500ms) var(--ease-standard, cubic-bezier(0.23, 1, 0.32, 1)) both;
+}
+
+.wf-sheet-in {
+  animation: wf-sheet-in var(--duration-sheet, 320ms) var(--ease-sheet, cubic-bezier(0.32, 0.72, 0, 1)) both;
+}
+
+.wf-breathe {
+  animation: wf-breathe 4s ease-in-out infinite;
+}
+
+/* use-pause-offscreen 이 다는 표지: 그 요소와 자손의 애니메이션을 멈춘다. */
+[data-paused] {
+  animation-play-state: paused;
+}
+[data-paused] * {
+  animation-play-state: paused;
+}
+
+/* 동작 줄이기: 세 프리셋 모두 끈다. 요소의 기본 상태가 최종 상태라 내용은 그대로 보인다. */
+@media (prefers-reduced-motion: reduce) {
+  .wf-fade-rise {
+    animation: none;
+  }
+  .wf-sheet-in {
+    animation: none;
+  }
+  .wf-breathe {
+    animation: none;
+  }
+}

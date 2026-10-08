@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-grandstander",
+  "type": "registry:font",
+  "title": "Grandstander",
+  "description": "web-factory 폰트 키트: Grandstander (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Grandstander Variable', sans-serif",
+    "provider": "google",
+    "import": "Grandstander",
+    "variable": "--font-grandstander-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/grandstander"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/grandstander/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Grandstander",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": "lunchbox-io",
+  "archetype": "saas",
+  "sourceGallery": "httpster",
+  "url": "https://lunchbox.io/",
+  "structure": {
+    "hero": "중앙 정렬 2행 대형 헤드라인, 4행 설명 문단, 검은 알약 버튼 하나, 그 아래 검은 큰 둥근 패널이 올라옴",
+    "sections": [
+      "검은 알약형 내비(로고·메뉴 4·로그인 드롭다운·노란 데모 버튼)",
+      "중앙 히어로",
+      "검은 라운드 패널 속 제품 모듈 카드(웹·앱 등)",
+      "우측 스크롤 진행 표시"
+    ]
+  },
+  "type": {
+    "display": "가벼운 중립 산세리프 약 85px, 중앙 2행",
+    "body": "같은 계열 약 19px 중앙 정렬",
+    "scale": "H1 약 85px·설명 약 19px·UI 약 15px(1440)"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "note": "정지 화면만으로는 알 수 없다. 수집 메타상 CSS 애니메이션 4개",
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "알약 내비 안 로그인 드롭다운",
+    "스크롤 진행 막대",
+    "모바일 내비는 로고·노란 데모·햄버거 3요소"
+  ],
+  "cta": {
+    "pattern": "검은 알약 주 버튼 + 내비 노란 데모 버튼, 모바일은 내비 안에 노란 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.85
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "검은 알약 내비와 노란 단일 액센트 버튼으로 브랜드 인상을 짧게 만든다",
+    "중앙 정렬 대형 헤드라인과 짧은 설명만으로 첫 화면을 구성한다",
+    "첫 화면 아래에 검은 둥근 패널을 올려 다음 구획의 제품 모듈을 암시한다",
+    "설명 끝에 무료 포함 혜택 문구를 붙여 데모 신청 동기를 더한다",
+    "모바일은 내비를 로고·데모 버튼·메뉴 3개로 압축한다"
+  ]
+}

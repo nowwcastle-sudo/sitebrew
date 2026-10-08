@@ -1,0 +1,59 @@
+{
+  "id": "buck-co",
+  "archetype": "brand",
+  "sourceGallery": "httpster",
+  "url": "https://buck.co/",
+  "structure": {
+    "hero": "로고 옆에 회사 소개 한 문장이 크게 놓이고 바로 아래 작업 썸네일 둘",
+    "sections": [
+      "헤더(선형 로고·소개 문장·Work·About·검색·메뉴)",
+      "작업 카드 2열(크기 다른 이미지+캡션)",
+      "쿠키 동의 줄(하단 고정)"
+    ]
+  },
+  "type": {
+    "display": "가는 기하 산세리프, 소개 문장은 중대형 본문 크기",
+    "body": "같은 산세리프 소형 캡션과 회색 설명",
+    "scale": "소개 문장 중대형, 카드 제목 소형, 설명 회색"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "정지 화면만으로 판단, 동작 정보 없음"
+  },
+  "interaction": [
+    "검색 아이콘",
+    "햄버거 메뉴",
+    "작업 카드 클릭",
+    "쿠키 동의 줄"
+  ],
+  "cta": {
+    "pattern": "노란 Got it 쿠키 버튼 외 CTA 없음, 카드가 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio",
+      "brand"
+    ],
+    "score": 0.65
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "소개 문장을 헤더 자리에 크게 놓아 소개와 내비를 한 줄로 합친다",
+    "작업 썸네일을 서로 다른 폭으로 두어 균일 격자의 단조로움을 깬다",
+    "캡션은 분류 라벨과 제목 두 칸으로 나눠 읽기 쉽게 한다",
+    "노란 면 버튼 하나만 색을 두고 나머지는 무채색으로 유지한다",
+    "모바일은 소개 문장을 본문 크기로 키우고 쿠키 시트가 하단 5분의 1을 덮는다"
+  ]
+}

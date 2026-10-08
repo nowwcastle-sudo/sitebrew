@@ -1,0 +1,42 @@
+{
+  "topic": "Hand-thrown ceramic pour-over coffee dripper product page (fictional business — example)",
+  "archetype": "detail",
+  "locale": "en",
+  "facts": {
+    "name": "Hand-thrown ceramic pour-over dripper",
+    "price": "$48 including VAT",
+    "seller": "Kiln & Kettle Studio",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "address": "12 Example Street, Seoul",
+    "shipping": "Ships within 3 business days, tracked, free over $80. Remote areas cost $4 more",
+    "returns": "Return unused items within 14 days of delivery for a refund. We refund within 3 business days after the item arrives back",
+    "origin": "Thrown and glazed by hand in a small studio in Icheon, Korea",
+    "specs": "Stoneware, fits size 02 filters, 11 cm wide, dishwasher safe",
+    "audience": "Home coffee brewers who like handmade tableware",
+    "action": "Add the dripper to the cart",
+    "mood": "warm",
+    "legalName": "Kiln & Kettle Studio Ltd.",
+    "representative": "Hana Seo",
+    "mailOrderNo": "2026-Seoul-0555",
+    "phone": "+82-2-1234-5678",
+    "shippingFee": "$6",
+    "returnsFeePayer": "buyer",
+    "courier": "Example Courier",
+    "noticeCategory": "Kitchenware",
+    "story": "Each dripper is thrown on a wheel and glazed by hand in a small studio, so no two look the same",
+    "faq": "How should I clean it? | Hand wash is best to keep the glaze | Care ; Which filters fit? | Standard cone paper filters fit | Use ; Does it ship abroad? | Shipping details are listed on this page | Shipping",
+    "compare": "Hand-thrown dripper | Machine-pressed dripper ; Shaping | Thrown on a wheel one at a time | Pressed in a mold ; Glaze | Brushed on and fired by hand | Sprayed on by machine ; Cleaning | Hand wash is best | Dishwasher safe"
+  },
+  "brand": {
+    "colors": [
+      "#0F5C6E",
+      "#F2C14E"
+    ],
+    "fonts": [
+      "Fraunces",
+      "Inter"
+    ]
+  },
+  "seed": 1
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "links",
+  "title": "링크 묶음 — 넓은 누르는 칸(tiles) 또는 <nav> 세로 메뉴(menu, 지금 쪽 aria-current)",
+  "layout": "link-tiles",
+  "density": "comfortable",
+  "archetypes": [ "public", "brand", "pwa", "portfolio" ],
+  "archetypeKinds": [ "quick-links", "careers", "job-list", "utility-links", "next-work", "side-menu" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content·part 섹션 렌더러(대장 C70). tiles 는 칸 전체가 링크(44px 넘는 높이), menu 는 <nav> 세로 목록 — 공공 서브 쪽 왼쪽 하위 메뉴(part navigation-menu 자리: 펼침 메뉴가 아니라 세로 목록이라 navigation-menu 부품 대신 nav 목록). 바깥 사이트는 새 창 + 아이콘 + 읽기 도구 글자."
+}

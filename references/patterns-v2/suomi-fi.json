@@ -1,0 +1,62 @@
+{
+  "id": "suomi-fi",
+  "archetype": "public",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.suomi.fi/etusivu",
+  "structure": {
+    "hero": "파란 면에 제목 한 줄과 흰 안내 카드 세 장, 위쪽에 검색·언어·로그인 줄",
+    "sections": [
+      "로고·검색·언어·로그인 줄",
+      "내비 6개(드롭다운 3개)",
+      "파란 면 제목",
+      "안내 카드 3장(태그·제목·링크)",
+      "더 보기 버튼",
+      "서비스 카드 목록"
+    ]
+  },
+  "type": {
+    "display": "휴머니스트 산세리프 굵게",
+    "body": "같은 산세리프",
+    "scale": "제목 약 36px, 카드 제목 약 20px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "검색 상자와 버튼",
+    "언어 드롭다운",
+    "내비 드롭다운",
+    "카드 링크 3개",
+    "더 보기 버튼",
+    "로그인 버튼"
+  ],
+  "cta": {
+    "pattern": "오른쪽 위 로그인(파란 채움) 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "로그인 버튼을 오른쪽 위에 가장 눈에 띄는 색으로 둔다.",
+    "카드마다 분류 태그를 사진 모서리에 붙인다.",
+    "모바일은 검색과 메뉴가 글자 라벨이 달린 아이콘 두 개로 줄어든다.",
+    "현재 페이지 내비 항목에 파란 밑줄을 둔다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

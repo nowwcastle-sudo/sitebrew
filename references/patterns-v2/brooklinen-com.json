@@ -1,0 +1,69 @@
+{
+  "id": "brooklinen-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.brooklinen.com/products/essential-sheet-set",
+  "structure": {
+    "hero": "왼쪽에 세로 썸네일 열과 큰 대표 사진(화살표·NEW 태그), 오른쪽에 제목·할인가·색상·사이즈·장바구니 영역",
+    "sections": [
+      "네이비 공지띠(이전·다음)",
+      "헤더(로고·내비 7개·검색창·계정·가방)",
+      "브레드크럼",
+      "갤러리(세로 썸네일·화살표)",
+      "상품 정보(제목·정가 취소선·할인가·할인율 칩)",
+      "포함 구성 한 줄",
+      "색상 스와치와 이름 설명",
+      "사이즈 알약+사이즈 가이드 링크",
+      "무료배송 줄",
+      "수량·찜·장바구니",
+      "리워드 안내 박스",
+      "쿠키 하단 바"
+    ]
+  },
+  "type": {
+    "display": "둥근 세리프 로고와 굵은 산세리프 제목",
+    "body": "같은 산세리프 본문",
+    "scale": "제목 중간 크기, 가격 굵게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "세로 썸네일 선택·좌우 화살표",
+    "색상 스와치 선택 시 색 이름과 한 줄 설명",
+    "사이즈 알약 토글",
+    "수량 드롭다운",
+    "찜 하트",
+    "발송 예정일 안내"
+  ],
+  "cta": {
+    "pattern": "둥근 Add to Cart 알약 하나(수량·찜 옆)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.93
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "정가 취소선, 할인가, 할인율 칩 순서로 가격 줄을 읽게 한다",
+    "색상 이름과 한 줄 설명(예: 「White, Crisp」)을 스와치 옆에 보여준다",
+    "사이즈를 알약 두 개로 단순하게 두고 가이드 링크를 같은 줄에 둔다",
+    "장바구니 알약 바로 옆에 수량과 찜을 붙이고 아래에 발송일을 적는다",
+    "무료배송 기준을 CTA 위 한 줄로 안내해 장바구니 전환을 돕는다",
+    "모바일은 제목·가격을 사진보다 위에 두는 순서다. 사진 우선 시안과 비교할 만하다"
+  ]
+}

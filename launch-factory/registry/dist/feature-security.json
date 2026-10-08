@@ -1,0 +1,93 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feature-security",
+  "type": "registry:item",
+  "title": "보안 보호 — 요청 제한·Turnstile·멱등 키",
+  "description": "경로·서버 액션이 부르는 보호 도우미(요청 제한 → 봇 방어 순, 429 + Retry-After, 폼 멱등 키)와 지난 제한 창·멱등 키를 지우는 Cron. 제한 저장소는 DB 라 서버리스에서도 함께 센다.",
+  "dependencies": [
+    "@launch-factory/db@0.0.0",
+    "@launch-factory/env@0.0.0",
+    "@launch-factory/security@0.0.0"
+  ],
+  "registryDependencies": [
+    "@launch-factory/feature-auth-betterauth"
+  ],
+  "files": [
+    {
+      "path": "registry/feature-security/files/lib/launch/security.ts",
+      "type": "registry:file",
+      "target": "lib/launch/security.ts",
+      "content": "// launch-factory: 보안 보호 조립 — 요청 제한(DB 저장소) · 봇 방어(Cloudflare Turnstile) · 폼 멱등 키(DB). 제품의 경로·서버 액션이 부르는 도우미다.\n// 순서는 한도 → 봇이다(Cloudflare 호출도 세기 위해서). 막히면 경로는 429(Retry-After)·400·503 응답을, 서버 액션은 code·retryAfter 가 든 실패를 받는다.\nimport { hitRateLimit, withIdempotency, type IdempotentOutcome } from \"@launch-factory/db\"\nimport { blockedResponse, blockedResult, protect, type Blocked, type LaunchFailure } from \"@launch-factory/security/protect\"\nimport { createRateLimiter, ipAddressFromEnv, warnNoIpOnce, type RateLimiter, type RateRule, type Requester } from \"@launch-factory/security/rate-limit\"\nimport { createTurnstile, type Turnstile } from \"@launch-factory/security/turnstile\"\nimport { DEFAULT_LOCALE } from \"@/lib/launch/config\"\nimport { database } from \"@/lib/launch/db\"\nimport { env, required } from \"@/lib/launch/env\"\n\n/**\n * 제품이 더하는 경로별 한도. 기본 경로(signUp·signIn·passwordReset·inquiry·checkoutStart)는 패키지 값을 쓴다.\n * 이름이 없는 경로를 부르면 던진다(조용히 한도 없이 통과하지 않는다). 예: { \"invite\": { max: 5, windowSec: 60 } }\n */\nexport const RATE_RULES: Record<string, RateRule> = {}\n\nlet limiterCache: Promise<RateLimiter> | undefined\nlet turnstileCache: Turnstile | undefined\n\nexport function limiter(): Promise<RateLimiter> {\n  // 믿을 IP 머리는 환경이 정한다(대장 D205): 기본은 어떤 머리도 믿지 않고, Vercel 은 자동, 그 밖은 LF_TRUSTED_PROXY·LF_CLIENT_IP_HEADER·LF_TRUSTED_PROXY_CIDRS. 인증 항목과 같은 함수다\n  return (limiterCache ??= database().then((db) =>\n    createRateLimiter({ store: { hit: (key, windowMs, now) => hitRateLimit(db, key, windowMs, now) }, rules: RATE_RULES, ipAddress: ipAddressFromEnv(process.env), onNoIp: warnNoIpOnce() }),\n  ))\n}\n\n/** mock 은 통과한다. live 는 TURNSTILE_SECRET_KEY 가 필수다(없으면 던진다) */\nexport function turnstile(): Turnstile {\n  return (turnstileCache ??= createTurnstile(env().LF_MODE === \"live\" ? { mode: \"live\", secretKey: required(\"TURNSTILE_SECRET_KEY\") } : { mode: \"mock\" }))\n}\n\nexport interface GuardOptions {\n  /** 로그인한 사용자 id(있으면 제한 키에 들어간다) */\n  userId?: string | null\n  /** 봇 확인을 할 때만(가입·문의처럼 공개 폼). token 은 폼의 cf-turnstile-response */\n  bot?: { token: string | null | undefined; idempotencyKey?: string }\n}\n\nasync function blockedBy(route: string, who: Requester, bot: GuardOptions[\"bot\"]): Promise<Blocked | null> {\n  return protect(await limiter(), { route, who, ...(bot ? { bot: { turnstile: turnstile(), ...bot } } : {}) })\n}\n\n/** 경로 처리기 앞에서 부른다. 막히면 돌려줄 응답(429 + Retry-After · 400 · 503), 통과면 null */\nexport async function guardRequest(request: Request, route: string, options: GuardOptions = {}): Promise<Response | null> {\n  const blocked = await blockedBy(route, { headers: request.headers, userId: options.userId ?? null }, options.bot)\n  return blocked ? blockedResponse(blocked, DEFAULT_LOCALE) : null\n}\n\n/** 서버 액션 앞에서 부른다. 막히면 계약 모양의 실패(code·retryAfter 포함), 통과면 null. 요청 머리는 next/headers 의 headers() 로 넘긴다 */\nexport async function guardAction(route: string, who: Requester, bot?: GuardOptions[\"bot\"]): Promise<LaunchFailure | null> {\n  const blocked = await blockedBy(route, who, bot)\n  return blocked ? blockedResult(blocked, DEFAULT_LOCALE) : null\n}\n\n/** 같은 (scope, key) 는 24시간 동안 한 번만 성공한다. 키 모양 검사는 부르는 쪽이 한다. 성공 결과만 저장하고, 같은 키로 다시 오면 그 결과를 돌려준다 */\nexport async function once<R>(scope: string, key: string, run: () => Promise<R>): Promise<IdempotentOutcome<R>> {\n  return withIdempotency(await database(), { scope, key, now: new Date() }, run)\n}\n"
+    },
+    {
+      "path": "registry/feature-security/files/app/api/cron/security/route.ts",
+      "type": "registry:file",
+      "target": "app/api/cron/security/route.ts",
+      "content": "// launch-factory: 보안 표 정리 Cron(하루 한 번 권장). 지난 요청 제한 창(하루 넘음)과 보존 기간(24시간)이 지난 멱등 키를 지운다.\n// vercel.json 에 `{ \"crons\": [{ \"path\": \"/api/cron/security\", \"schedule\": \"30 4 * * *\" }] }` 를 더한다. CRON_SECRET 이 없으면 401 이다.\nimport { purgeIdempotencyKeys, purgeRateLimits } from \"@launch-factory/db\"\nimport { cronAuthorized, unauthorized } from \"@/lib/launch/cron\"\nimport { database } from \"@/lib/launch/db\"\n\nexport const runtime = \"nodejs\"\nexport const dynamic = \"force-dynamic\"\n\nconst DAY_MS = 24 * 60 * 60 * 1000\n\nexport async function GET(request: Request) {\n  if (!cronAuthorized(request)) return unauthorized()\n  const db = await database()\n  const now = new Date()\n  return Response.json({ rateLimits: await purgeRateLimits(db, new Date(now.getTime() - DAY_MS)), idempotencyKeys: await purgeIdempotencyKeys(db, now) })\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/db.ts",
+      "type": "registry:file",
+      "target": "lib/launch/db.ts",
+      "content": "// launch-factory: DB 연결. mock 은 메모리 PGlite(키 없이 켜진다), live 는 DATABASE_URL(Supabase 풀러 6543 — prepared statement 끔은 패키지가 한다).\n// mock 의 마이그레이션은 이 앱에 설치된 db/migrations 를 쓴다(번들 안에서는 패키지 폴더를 찾을 수 없다).\nimport { join } from \"node:path\"\nimport { db, type Database } from \"@launch-factory/db\"\nimport { env, required } from \"@/lib/launch/env\"\n\nlet cached: Promise<Database> | undefined\n\nexport function database(): Promise<Database> {\n  return (cached ??= env().LF_MODE === \"mock\" ? db.local({ migrationsFolder: join(process.cwd(), \"db\", \"migrations\") }) : Promise.resolve(db(required(\"DATABASE_URL\"))))\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/env.ts",
+      "type": "registry:file",
+      "target": "lib/launch/env.ts",
+      "content": "// launch-factory: 환경 읽기. 이름만 다루고 값은 어디에도 남기지 않는다.\n// LF_MODE 는 항상 필수다 — 없으면 켜지지 않는다(조용히 mock 으로 가지 않는다). live 에서는 공급자 키가 모두 필수다.\nimport { loadAppEnv, type AppEnv } from \"@launch-factory/env\"\n\nlet cached: AppEnv | undefined\n\n/** 처음 부를 때 한 번 검사한다. 빠진 이름은 모두 모아 한 번에 알린다(값은 싣지 않는다). */\nexport function env(): AppEnv {\n  return (cached ??= loadAppEnv())\n}\n\n/** 설정값·비밀값 하나를 읽는다. 없으면 이름만 담아 던진다. */\nexport function required(name: string): string {\n  const value = (env() as Record<string, string | undefined>)[name] ?? process.env[name]\n  if (!value) throw new Error(`${name} is not set (see .env.example)`)\n  return value\n}\n\n/** 없어도 되는 설정값. */\nexport function optional(name: string): string | undefined {\n  return process.env[name] || undefined\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/config.ts",
+      "type": "registry:file",
+      "target": "lib/launch/config.ts",
+      "content": "// launch-factory: 제품마다 고치는 값. 이 파일은 제품 것이다 — 레지스트리를 다시 받으면 덮어쓸지 묻는다.\nimport type { Locale } from \"@launch-factory/email\"\nimport { env, required } from \"@/lib/launch/env\"\n\nexport const PRODUCT_NAME = \"My Product\"\n/** 사용자 칸(user.locale)이 비었을 때 메일·오류 문구의 언어 */\nexport const DEFAULT_LOCALE: Locale = \"en\"\n/** 가입 때 동의 기록에 남길 약관·개인정보 처리방침의 판. 문서를 고치면 올린다 */\nexport const CONSENT_VERSIONS = { terms: \"2026-09-30\", privacy: \"2026-09-30\" }\n/** 결제 메일이 가리키는 화면 경로 */\nexport const ROUTES = { billing: \"/account/billing\", acceptPriceChange: \"/account/billing/price-change\", decline: \"/account/billing/cancel\", security: \"/forgot-password\", contact: \"/contact\" }\n\n/** 앱 주소. mock 에서는 로컬 주소로 켜지고, live 에서는 NEXT_PUBLIC_APP_URL 이 필수다 */\nexport function appUrl(): string {\n  // 빈 문자열은 없는 것으로 본다 — shadcn CLI 가 envVars 이름을 `NAME=`(빈 값)으로 .env.local 에 적는다\n  return process.env.NEXT_PUBLIC_APP_URL || (env().LF_MODE === \"mock\" ? \"http://localhost:3000\" : required(\"NEXT_PUBLIC_APP_URL\"))\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/cron.ts",
+      "type": "registry:file",
+      "target": "lib/launch/cron.ts",
+      "content": "// launch-factory: Cron 경로 인증. Vercel Cron 은 CRON_SECRET 이 있으면 `Authorization: Bearer <값>` 을 붙여 부른다\n// (https://vercel.com/docs/cron-jobs/manage-cron-jobs#securing-cron-jobs). 값이 없거나 다르면 거절한다 — 비밀이 없으면 열어 두지 않는다.\nimport { timingSafeEqual } from \"node:crypto\"\n\nexport function cronAuthorized(request: Request): boolean {\n  const secret = process.env.CRON_SECRET\n  if (!secret) return false\n  const given = request.headers.get(\"authorization\") ?? \"\"\n  const want = `Bearer ${secret}`\n  return given.length === want.length && timingSafeEqual(Buffer.from(given), Buffer.from(want))\n}\n\nexport const unauthorized = () => Response.json({ error: \"unauthorized\" }, { status: 401 })\n"
+    }
+  ],
+  "envVars": {
+    "LF_MODE": "",
+    "DATABASE_URL": "",
+    "TURNSTILE_SECRET_KEY": "",
+    "TURNSTILE_SITE_KEY": "",
+    "CRON_SECRET": ""
+  },
+  "docs": "설치 뒤 할 일\n1. 인증 항목이 함께 설치된다(rate_limits·idempotency_keys 표는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs\n2. 경로 처리기 첫 줄에서 부른다: const blocked = await guardRequest(request, \"signUp\"); if (blocked) return blocked. 공개 폼은 봇 확인도 한다: guardRequest(request, \"inquiry\", { bot: { token: form.get(\"cf-turnstile-response\") } }). 서버 액션은 guardAction(route, { headers: await headers() }) 이고 막히면 code·retryAfter 가 든 실패를 돌려준다.\n3. 기본 경로 이름: signUp·signIn·passwordReset·inquiry·checkoutStart. 새 경로는 lib/launch/security.ts 의 RATE_RULES 에 { max, windowSec } 를 더한다 — 규칙 없는 이름은 던진다(한도 없이 통과하지 않는다).\n4. 같은 폼을 두 번 보내도 한 번만 처리하려면 once(scope, key, run) 를 쓴다(키는 폼을 열 때 만든 UUID, 성공 결과만 24시간 저장). 이미 처리 중이면 { inProgress: true }.\n5. Turnstile: mock 은 통과, live 는 TURNSTILE_SECRET_KEY 가 필수다(없으면 던진다 — 운영자 할 일 O7). 위젯은 TURNSTILE_SITE_KEY 로 그리고 CSP 에 @launch-factory/security/turnstile 의 TURNSTILE_CSP 를 더한다.\n6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/security\", \"schedule\": \"30 4 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.\n7. 요청 제한은 요청 머리의 IP 로 센다. 어느 머리를 믿을지는 환경이 정하고(ipAddressFromEnv — 인증·문의 항목과 같은 함수) 기본은 어떤 머리도 믿지 않는다(x-forwarded-for 를 속여 한도를 피하지 못한다. 못 찾으면 경로별 공용 통 하나로 세고 로그에 한 번 알린다). Vercel 에서는 VERCEL=1 로 자동 감지해 x-vercel-forwarded-for → x-forwarded-for 를 믿는다(Vercel 이 덮어쓴다). 그 밖의 호스트는 LF_TRUSTED_PROXY(vercel|none)·LF_CLIENT_IP_HEADER(앞단이 덮어쓰는 머리 하나, 예: cf-connecting-ip)·LF_TRUSTED_PROXY_CIDRS(프록시 주소, 쉼표) 중 하나를 사용자 환경 변수에 둔다. 잘못된 값은 켤 때 던진다.\n8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+  "meta": {
+    "launch": {
+      "tables": [],
+      "schema": [],
+      "migrations": [],
+      "routes": [
+        "app/api/cron/security/route.ts"
+      ],
+      "actions": [],
+      "noEntrypointReason": null,
+      "setup": {
+        "npmrc": [
+          "save-exact=true"
+        ],
+        "transpilePackages": [
+          "@launch-factory/account-lifecycle",
+          "@launch-factory/analytics-posthog",
+          "@launch-factory/auth",
+          "@launch-factory/consent",
+          "@launch-factory/contract",
+          "@launch-factory/db",
+          "@launch-factory/email",
+          "@launch-factory/env",
+          "@launch-factory/i18n",
+          "@launch-factory/security"
+        ],
+        "serverExternalPackages": [
+          "@electric-sql/pglite"
+        ]
+      }
+    }
+  }
+}

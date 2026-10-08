@@ -1,0 +1,104 @@
+{
+  "applied": true,
+  "board": "https://claude.ai/artifact/LFfuRm2ufekAEWxCTmKacB",
+  "decidedBy": "owner",
+  "decisions": [
+    {
+      "axisPicks": {
+        "colorLogic": "A",
+        "dynamics": "A"
+      },
+      "decidedAt": "2026-09-27T09:07:34.565Z",
+      "recipe": "r1-measure",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "A",
+        "dynamics": "A",
+        "motion": "A"
+      },
+      "decidedAt": "2026-09-27T09:08:58.420Z",
+      "recipe": "r10-console",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "B",
+        "dynamics": "B",
+        "motion": "B"
+      },
+      "decidedAt": "2026-09-27T09:09:01.614Z",
+      "recipe": "r2-signal",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "B",
+        "dynamics": "B",
+        "motion": "B"
+      },
+      "decidedAt": "2026-09-27T09:09:12.054Z",
+      "recipe": "r3-woodblock",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "B",
+        "dynamics": "B"
+      },
+      "decidedAt": "2026-09-27T09:09:27.462Z",
+      "recipe": "r4-evidence",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "B",
+        "dynamics": "B",
+        "motion": "B"
+      },
+      "decidedAt": "2026-09-27T09:09:42.865Z",
+      "recipe": "r5-celadon",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "B",
+        "dynamics": "B"
+      },
+      "decidedAt": "2026-09-27T09:10:00.489Z",
+      "recipe": "r6-civic",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "B",
+        "dynamics": "B",
+        "motion": "B"
+      },
+      "decidedAt": "2026-09-27T09:10:15.786Z",
+      "recipe": "r7-docs",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "A",
+        "dynamics": "A",
+        "motion": "A"
+      },
+      "decidedAt": "2026-09-27T09:10:42.745Z",
+      "recipe": "r8-dusk",
+      "verdict": "approve"
+    },
+    {
+      "axisPicks": {
+        "colorLogic": "A",
+        "dynamics": "A",
+        "motion": "B"
+      },
+      "decidedAt": "2026-09-27T09:11:47.208Z",
+      "recipe": "r9-clay",
+      "verdict": "approve"
+    }
+  ]
+}

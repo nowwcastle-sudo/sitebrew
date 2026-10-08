@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-nanum-square-round",
+  "type": "registry:item",
+  "title": "NanumSquareRound",
+  "description": "web-factory 폰트 키트: NanumSquareRound (NAVER Font License (나눔·마루부리·클로바 공통)) — Google Fonts 밖이라 1차 CDN 을 css 로 싣는다. 네이버 한글한글 아름답게 1차 CDN 스타일시트(NanumSquareRound 이름에는 Regular 한 면, 다른 굵기는 NanumSquareRoundB 등 다른 이름)",
+  "css": {
+    "@import url(\"https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css\")": {}
+  },
+  "cssVars": {
+    "theme": {
+      "font-nanum-square-round-wf": "\"NanumSquareRound\""
+    }
+  },
+  "meta": {
+    "license": "NAVER Font License",
+    "licenseUrl": "https://hangeul.naver.com/font",
+    "source": "https://hangeul.naver.com/font",
+    "family": "NanumSquareRound",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

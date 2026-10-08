@@ -1,0 +1,19 @@
+{
+  "topic": "Late-invoice reminders that get freelancers paid without awkward emails",
+  "archetype": "saas",
+  "locale": "en",
+  "facts": {
+    "name": "Payloop",
+    "legalName": "Payloop Labs Ltd.",
+    "representative": "Jordan Lee",
+    "bizNo": "123-45-67890",
+    "email": "hello@example.com",
+    "price": "Free for 3 clients; Pro $12 per month for unlimited clients; VAT not included",
+    "trial": "14-day Pro trial, no card required",
+    "claim": "Sends polite payment reminders on the schedule you choose and stops the moment an invoice is marked paid",
+    "howItWorks": "Connect your invoicing tool, pick a reminder schedule, watch paid status update automatically",
+    "address": "12 Example Street, Seoul",
+    "phone": "+82-2-1234-5678",
+    "productUrl": "https://payloop.example.com"
+  }
+}

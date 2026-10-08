@@ -1,0 +1,13 @@
+{
+  "kind": "state-screen",
+  "variant": "not-found",
+  "title": "상태 화면 — 없는 주소(404) + 처음으로 + 갈 만한 곳",
+  "layout": "not-found",
+  "density": "comfortable",
+  "archetypes": ["dashboard", "saas", "pwa", "commerce", "public"],
+  "archetypeKinds": ["state-screens"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "앱 전체 not-found 로 쓴다: 큰 404(data-numeric) · 제목 · 무엇이 일어났는지 · [처음으로] + 지원 링크 · 갈 만한 곳 링크 목록. header 칸(머리·내비 블록을 끼운다)·errorCode(기본 not_found — 뿌리 data-error-code)·requestId·headingLevel(쪽 h1 이 없으면 1). 서버 컴포넌트·스타일 속성 없음(엄격 CSP 안전)"
+}

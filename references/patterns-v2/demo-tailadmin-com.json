@@ -1,0 +1,61 @@
+{
+  "id": "demo-tailadmin-com",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://demo.tailadmin.com/",
+  "structure": {
+    "hero": "밝은 사이드바와 둥근 흰 카드로 이커머스 지표를 보이는 화면",
+    "sections": [
+      "사이드바(그룹·하위 메뉴·NEW 배지)",
+      "상단 바(검색 단축키·테마)",
+      "요약 카드 2개",
+      "월별 매출 막대 차트",
+      "월 목표 반원 게이지",
+      "통계 영역 차트+기간 선택"
+    ]
+  },
+  "type": {
+    "display": "둥근 산세리프 20px 카드 제목",
+    "body": "산세리프 14px",
+    "scale": "카드 제목 20px, 수치 32px, 보조 14px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "사이드바 하위 메뉴 펼침",
+    "명령 검색(단축키)",
+    "다크 모드 토글",
+    "카드 점 세 개 메뉴",
+    "개요·매출·수익 탭 전환",
+    "날짜 범위 선택"
+  ],
+  "cta": {
+    "pattern": "상단 검색·알림·프로필 메뉴",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "남색 한 가지로 선택·강조·차트를 통일하고 증감만 초록·빨강 알약으로 둔다",
+    "카드가 둥글고 여백이 넉넉해 밀도는 낮지만 읽기 쉽다",
+    "메뉴 항목에 NEW 배지를 달아 새 기능 노출을 사이드바에서 처리한다",
+    "375에서는 요약 카드와 차트가 단일 열 전폭으로 쌓인다"
+  ]
+}

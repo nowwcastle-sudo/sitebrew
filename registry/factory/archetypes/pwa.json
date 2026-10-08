@@ -1,0 +1,508 @@
+{
+  "id": "pwa",
+  "purpose": "설치해 앱처럼 쓰는 사용자가 연결이 불안정해도 핵심 과업을 끝낸다.",
+  "coreTask": "① 설치 가능 판정: manifest 경고 0, 서비스 워커 등록, 첫 로드에 설치 배너·권한 요청 0. ② 네트워크를 끊고 홈·최근 본 화면 열기 → 미캐시 경로는 사용자 지정 오프라인 화면. ③ 오프라인 중 작업 1건 저장 → 재연결 → 동기화 완료 표시 확인. ④ standalone 에뮬레이션에서 하위 화면 → 앱 안 뒤로가기로 복귀, 탭바 위치가 스크롤 전후 동일.",
+  "completion": "product",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "app-bar",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "nav"
+          ],
+          "allowedVariants": [
+            "block-nav-app-bar-tabs"
+          ],
+          "copySlots": [
+            {
+              "id": "title",
+              "role": "화면 이름(<title> 앞부분, 앱 전환기 이름)",
+              "maxChars": 60
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "empty-state",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "onboarding",
+            "state-screen"
+          ],
+          "allowedVariants": [
+            "block-onboarding-empty-first-action",
+            "block-state-screen-empty-guide"
+          ],
+          "copySlots": [
+            {
+              "id": "reason",
+              "role": "비어 있는 이유(빈 탭도 숨기지 않음)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "empty",
+              "aspect": null,
+              "source": "generated-ok"
+            }
+          ]
+        },
+        {
+          "kind": "primary-content",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "앱 고유 주 화면(목록·입력) — 본문",
+            "render": { "as": "cards", "heading": { "ko": "주요 기능", "en": "Main features" }, "from": ["homeItems"], "fields": { "title": "title", "summary": "body" } }
+          },
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "list-thumb",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "skeleton",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "part",
+            "reason": "첫 화면 로딩 뼈대 — ui 부품",
+            "parts": [
+              "skeleton"
+            ],
+            "render": {
+              "as": "skeleton",
+              "heading": {
+                "ko": "불러오는 중",
+                "en": "Loading"
+              }
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "primary-action-bar",
+          "required": false,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "bottom-tab/sticky-action-bar 가 pwa 를 archetypes 에 적지 않았다",
+            "register": [
+              "C71"
+            ]
+          },
+          "copySlots": [
+            {
+              "id": "cta",
+              "role": "금액·결과를 담은 문구(단일 과업형)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "sub-detail",
+      "route": "/detail",
+      "sections": [
+        {
+          "kind": "app-bar",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "nav"
+          ],
+          "allowedVariants": [
+            "block-nav-app-bar-tabs"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "detail-content",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "상세 본문",
+            "render": { "as": "prose", "heading": { "ko": "자세히", "en": "Details" }, "from": ["detailBody"] }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "offline",
+      "route": "/offline",
+      "sections": [
+        {
+          "kind": "offline-fallback",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "state-screen"
+          ],
+          "allowedVariants": [
+            "block-state-screen-offline-cached"
+          ],
+          "copySlots": [
+            {
+              "id": "message",
+              "role": "행동 언어 상태 문구(「인터넷 연결이 끊겼어요」)",
+              "maxChars": null
+            },
+            {
+              "id": "retry",
+              "role": "재시도 버튼",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "route": "/settings",
+      "sections": [
+        {
+          "kind": "permissions",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "account"
+          ],
+          "allowedVariants": [
+            "block-account-permissions"
+          ],
+          "copySlots": [
+            {
+              "id": "toggle",
+              "role": "알림 켜기·끄기, 위치·카메라",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "text-size",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "글자 크기 설정 블록이 없다",
+            "register": [
+              "C72"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "offline-storage",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "오프라인 저장 설정 블록이 없다",
+            "register": [
+              "C72"
+            ]
+          },
+          "copySlots": [
+            {
+              "id": "usage",
+              "role": "「오프라인 저장」 토글·저장 위치·용량",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "theme",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "테마 설정 블록이 없다",
+            "register": [
+              "C72"
+            ]
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "utility-links",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "도움말·약관 링크 — 본문",
+            "render": {
+              "as": "links",
+              "heading": {
+                "ko": "도움말과 약관",
+                "en": "Help and terms"
+              },
+              "from": [
+                "@legal-pages"
+              ]
+            }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "completion",
+      "route": "/done",
+      "sections": [
+        {
+          "kind": "result",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "앱 고유 결과 화면 — 확인 블록 셋(가입·예약·주문)과 뜻이 다르다",
+            "render": { "as": "prose", "heading": { "ko": "결과", "en": "Result" }, "from": ["resultBody"] }
+          },
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "install-or-notify-offer",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "PWA 설치·알림 유도 블록이 없다",
+            "register": [
+              "A69"
+            ]
+          },
+          "copySlots": [
+            {
+              "id": "benefit",
+              "role": "얻는 것 + 「허용」·「나중에」",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "V1-tab-app",
+      "order": [
+        "app-bar",
+        "primary-content",
+        "bottom-tab-bar"
+      ],
+      "evidence": [
+        "M3 navigation bar",
+        "Apple HIG tab bars",
+        "KRDS 탭바·헤더(모바일 앱)"
+      ]
+    },
+    {
+      "id": "V2-single-task",
+      "order": [
+        "app-bar",
+        "primary-content",
+        "primary-action-bar",
+        "completion:result",
+        "completion:install-or-notify-offer"
+      ],
+      "evidence": [
+        "M3(목적지 3개 미만이면 탭바 대신 탭)",
+        "web.dev app-design",
+        "Starbucks PWA(Chrome Dev Summit 2018)"
+      ]
+    },
+    {
+      "id": "V3-offline-first",
+      "order": [
+        "app-shell-cached",
+        "offline-ready-toast",
+        "connection-banner",
+        "saved-pending-queue",
+        "sync-complete",
+        "update-toast"
+      ],
+      "evidence": [
+        "web.dev offline-ux-design-guidelines",
+        "JD.ID 사례",
+        "Pinterest 사례"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "bottom-tab-bar",
+      "required": false,
+      "condition": "최상위 목적지 3~5개일 때 필수(판정 2026-09-26, §14-A pwa 예외). 가운데 「+」 없음, 하위 화면에서 숨김 가능",
+      "mustContain": [
+        "icon+label",
+        "equal-width",
+        "home-left",
+        "all-right"
+      ],
+      "evidence": [
+        "pw-03",
+        "pw-04",
+        "pw-19"
+      ]
+    },
+    {
+      "kind": "connection-banner",
+      "required": true,
+      "mustContain": [
+        "action-language"
+      ],
+      "evidence": [
+        "pw-10"
+      ],
+      "blockKinds": [
+        "state-screen"
+      ],
+      "allowedVariants": [
+        "block-state-screen-offline-cached"
+      ]
+    },
+    {
+      "kind": "update-toast",
+      "required": true,
+      "mustContain": [
+        "새 버전이 있어요 — 새로고침"
+      ],
+      "evidence": [
+        "pw-12"
+      ],
+      "blockKinds": [
+        "announcement"
+      ],
+      "allowedVariants": [
+        "block-announcement-update-toast"
+      ]
+    },
+    {
+      "kind": "install-prompt",
+      "required": false,
+      "condition": "beforeinstallprompt 뒤에만, 핵심 여정 밖, 거절 기억. iOS 안내는 display-mode: browser에서만",
+      "mustContain": [
+        "dismiss"
+      ],
+      "evidence": [
+        "pw-07"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "appIcon": "maskable, 플랫폼 중립 모양, 192px·512px 필수, 작은 크기에서도 읽힘",
+    "manifestScreenshots": "real-required — 실제 화면만, 기기 프레임·가짜 데이터 금지",
+    "splash": "운영체제가 background_color + 아이콘으로 그림(별도 JS 스플래시를 겹치지 않는 편이 좋으나 근거 확인 안 됨)",
+    "contentImages": "오프라인 캐시 대상이라 용량 예산: 썸네일은 목록 폭 크기, 원본은 상세에서만, 자주 안 바뀌는 이미지는 stale-while-revalidate",
+    "stockAndGenerated": "실제 상품·장소를 대신하지 않음(§6-A)"
+  },
+  "contentSchemaHints": [
+    "manifest: { name, short_name, description, icons[{src,sizes:192x192|512x512,purpose:maskable}], start_url, display: standalone, theme_color, background_color, screenshots[], prefer_related_applications: false }",
+    "tabs[]: { id, label(1~2단어), icon, iconFilled, href } — 3~5개",
+    "offline: { fallbackUrl, precache[], runtimeCache{ images: stale-while-revalidate, home: network-first, static: cache-first } }",
+    "strings: { offline, serviceDown, savedPending, synced, updateAvailable } — 한 곳에서 정의해 모든 화면이 같은 문구"
+  ],
+  "references": [
+    {
+      "url": "https://app.starbucks.com/",
+      "why": "주문형 PWA(V2): 웹 가입 리워드 회원 65% 증가, 주문의 25%가 데스크톱(Chrome Dev Summit 2018, 라이브 관찰 안 함)"
+    },
+    {
+      "url": "https://medium.com/pinterest-engineering/a-one-year-pwa-retrospective-f4a2f4129e05",
+      "why": "Pinterest: 앱 셸 캐시·홈 화면 추가·푸시, 핵심 번들 650KB → 150KB, 모바일 웹 주간 사용자 +103%"
+    },
+    {
+      "url": "https://web.dev/case-studies/rakuten-24",
+      "why": "beforeinstallprompt 자체 설치 유도 + 수동 안내 페이지, 설치 사용자 재방문율 +450%"
+    },
+    {
+      "url": "https://web.dev/case-studies/jdid",
+      "why": "불안정한 망: 홈 network first, 정적 자원 cache first, 브랜드 오프라인 대체 화면, 모바일 전환율 +53%"
+    },
+    {
+      "url": "https://web.dev/articles/offline-ux-design-guidelines",
+      "why": "「오프라인 준비 완료」 토스트, 오프라인 상태 알림, 스켈레톤 화면 예시(2016)"
+    }
+  ],
+  "legalRequirements": [],
+  "legal": {
+    "pages": [
+      "privacy",
+      "terms"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "약관의 규제에 관한 법률",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "software"
+  },
+  "conversion": [
+    {
+      "event": "app_install"
+    },
+    {
+      "event": "activation"
+    }
+  ]
+}

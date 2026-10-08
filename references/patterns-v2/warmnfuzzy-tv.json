@@ -1,0 +1,64 @@
+{
+  "id": "warmnfuzzy-tv",
+  "archetype": "brand",
+  "sourceGallery": "awwwards",
+  "url": "https://www.warmnfuzzy.tv/",
+  "structure": {
+    "hero": "전면 쇼릴 영상 위 하단 대문자 슬로건과 정보 줄 헤더, 중앙에 글리치 PLAY SHOWREEL 라벨",
+    "sections": [
+      "파란 면 로더 + 회전 사각 마스크 인트로",
+      "전면 쇼릴 영상 히어로",
+      "정보 줄 헤더(로고·소개 링크·최신 작업·WORK·INFO·CONTACT)",
+      "하단 대문자 슬로건",
+      "쿠키 줄(우하단)"
+    ]
+  },
+  "type": {
+    "display": "압축 두꺼운 그로테스크 대문자 + 장식 로고체",
+    "body": "같은 그로테스크 중간 굵기 소형",
+    "scale": "슬로건 대형, 헤더 소형 두 단계"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": "청색 면에서 약 0.5초 뒤 회전하는 작은 조각이 약 1.5초 동안 커지고 육각형을 거쳐 약 2.25초에 전면 영상이 됨",
+    "scroll": null,
+    "hover": null,
+    "transition": "클립을 약 1초마다 모션 블러 와이프, 도형 마스크, 와이어프레임 글리치, 흰 겹침으로 바꿔 가며 전환",
+    "durationsMs": [
+      500,
+      1500,
+      250,
+      1000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "쇼릴 클립 전환 종류가 여럿이라 시간은 범위 추정"
+  },
+  "interaction": [
+    "PLAY SHOWREEL 중앙 라벨",
+    "정보 줄에 최신 작업 썸네일",
+    "쿠키 수락·거부 줄"
+  ],
+  "cta": {
+    "pattern": "PLAY SHOWREEL 중앙 라벨과 CONTACT 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand",
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "짧은 컷마다 전환 효과를 바꿔 쇼릴 자체를 첫 화면 경험으로 만든다",
+    "회전 도형 마스크가 커지며 영상이 되는 인트로로 기대를 키운다",
+    "두꺼운 대문자 슬로건을 하단에 걸쳐 영상 위 위계를 한 문장으로 모은다",
+    "모바일은 컬러 블러 와이프 위에 슬로건 일부를 잘라 크게 걸어 개성을 유지한다"
+  ]
+}

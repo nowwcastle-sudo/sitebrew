@@ -1,0 +1,14 @@
+{
+  "kind": "confirmation",
+  "variant": "order-complete",
+  "title": "주문 완료 — 주문 번호·총액·다음 일과 때·도움·행동 하나 + 비회원 조회·계정 1~2칸",
+  "layout": "receipt-next-steps",
+  "density": "comfortable",
+  "archetypes": [ "commerce", "detail" ],
+  "archetypeKinds": [ "order-confirmation", "thank-you" ],
+  "states": [ "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A10", "O3", "L1", "X1", "M1" ],
+  "notes": "머리: 확인 표지·h2·한 줄. 왼쪽: 주문 번호·결제 총액(data-price=billed, VAT 포함 표기 — L1) · 비회원 주문 조회 경로(data-guest-lookup — O3) · 다음 일 단계(data-next-steps, 단계마다 언제 — data-when) · 주 행동 하나(data-next-action). 오른쪽: 도움(data-help — 전화·문의) · 계정 만들기(선택, data-account-offer — 이메일은 주문에서 채움 + 비밀번호 하나, O3). 평점 요청 없음. 폼 블록: submit({ email, password }). 계측(선택): cta_click · signup_start·signup_complete·form_error"
+}

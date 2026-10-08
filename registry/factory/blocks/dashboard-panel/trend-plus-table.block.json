@@ -1,0 +1,13 @@
+{
+  "kind": "dashboard-panel",
+  "variant": "trend-plus-table",
+  "title": "대시보드 — 추세 차트 + 표(필터)",
+  "layout": "trend-table",
+  "density": "compact",
+  "archetypes": ["dashboard", "saas"],
+  "archetypeKinds": ["main-trend", "trend-charts", "data-table", "filter-bar"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": [],
+  "motion": ["rise", "svg-draw"],
+  "notes": "지표 고르기(진짜 버튼 aria-pressed) → 결론 제목 + SVG 선 차트(데이터 점만, 목표값이 있을 때만 목표 선 — 장식 선·격자 없음, 값 글자는 HTML, sr-only 점 표) → 경로 필터 + 결과 수 role=status + 표(첫 열 행 머리, 숫자 열 data-numeric·오른쪽, 행 높이 density). 읽기 4상태"
+}

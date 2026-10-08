@@ -1,0 +1,61 @@
+{
+  "id": "newtreemall-co-kr",
+  "archetype": "commerce",
+  "sourceGallery": "webaward-kr",
+  "url": "https://newtreemall.co.kr/",
+  "structure": {
+    "hero": "좌우 배너가 비쳐 보이는 중앙 프로모션 캐러셀. 위에 검색창·카테고리 내비",
+    "sections": [
+      "유틸리티 헤더(가입·로그인·장바구니)",
+      "검색창",
+      "카테고리 내비(이벤트 강조)",
+      "프로모션 캐러셀",
+      "원형 아이콘 바로가기",
+      "플로팅 도우미·위로 버튼",
+      "모바일 하단 탭바"
+    ]
+  },
+  "type": {
+    "display": "굵은 한글 고딕, 배너 안 큰 제목",
+    "body": "한글 고딕 본문, 정보 밀도 높음",
+    "scale": "작은 라벨 위주, 배너 제목만 크게"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "캐러셀 좌우 화살표와 점 페이지네이션",
+    "원형 아이콘 10개 바로가기 줄",
+    "플로팅 AI 도우미 말풍선과 캐릭터",
+    "모바일 하단 탭바(로그인·카테고리·홈·장바구니·마이)"
+  ],
+  "cta": {
+    "pattern": "배너 전체가 링크, 친구추천 쿠폰 플로팅 배지",
+    "count": 6
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.62
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "한국 쇼핑몰 문법: 검색창을 헤더 중앙에 크게, 이벤트 메뉴만 강조색",
+    "원형 아이콘 바로가기 줄은 카테고리 진입을 한 줄로 줄이는 데 효과적",
+    "모바일은 하단 탭바(홈·카테고리·장바구니)가 주 내비 역할을 한다",
+    "쿠폰 금액을 플로팅 배지로 상시 노출해 가입·구매 유도",
+    "밀도가 높아 여백 중심 시안과 결이 다르다. 한국형 몰에만 참고"
+  ]
+}

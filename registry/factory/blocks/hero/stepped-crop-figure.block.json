@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "stepped-crop-figure",
+  "title": "히어로 — 계단식으로 물린 오른쪽 그림",
+  "layout": "stepped-crop-figure",
+  "density": "comfortable",
+  "archetypes": ["saas", "detail", "brand"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": [],
+  "motion": ["clip-reveal", "split-text", "svg-draw", "rise", "parallax", "tilt-3d"],
+  "titleWidth": "column",
+  "notes": "넓은 화면: 칸 전체 평면 풍경(직접 그린 SVG)을 계단 모양으로 잘라 오른쪽 칸에 물리고, 왼쪽 칸에 머리말 → 제목 h1 → 근거 형광 구절(면 색) 설명 → 채움 버튼(→) → 함께하는 곳. 1024 아래는 글 아래 그림(다른 계단). 기본 기법 clip-reveal·svg-draw. P3-1 r4-evidence A 구성"
+}

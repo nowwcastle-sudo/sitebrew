@@ -1,0 +1,62 @@
+{
+  "id": "ukhsa-dashboard-data-gov-uk",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://ukhsa-dashboard.data.gov.uk/",
+  "structure": {
+    "hero": "쿠키 동의 박스와 정부 파랑 헤더 아래 큰 제목과 설명",
+    "sections": [
+      "쿠키 동의 박스",
+      "정부 로고+서비스명+검색",
+      "주 메뉴",
+      "베타 안내 줄",
+      "제목+설명+관련 링크",
+      "목차",
+      "인기 주제 카드",
+      "건강 주제 목록"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 48px 제목",
+    "body": "산세리프 19px 본문",
+    "scale": "제목 48px, 섹션 36px, 본문 19px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "쿠키 수락·거부 버튼",
+    "검색 입력",
+    "목차 앵커 링크",
+    "주제 카드 링크"
+  ],
+  "cta": {
+    "pattern": "쿠키 수락·거부 버튼 + 카드 링크",
+    "count": 4
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard",
+      "public"
+    ],
+    "score": 0.5
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "대시보드 입구가 설명문과 목차, 주제 카드 목록으로 구성된 문서형 안내 화면이다",
+    "쿠키 박스가 화면 위쪽 약 4분의 1을 차지한다",
+    "375에서는 쿠키 버튼이 전폭으로 쌓이고 메뉴가 접힌다",
+    "카드 안에 작은 지도와 차트 미리보기를 넣어 데이터 주제를 예고한다"
+  ]
+}

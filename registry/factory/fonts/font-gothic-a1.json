@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-gothic-a1",
+  "type": "registry:font",
+  "title": "Gothic A1",
+  "description": "web-factory 폰트 키트: Gothic A1 (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Gothic A1', sans-serif",
+    "provider": "google",
+    "import": "Gothic_A1",
+    "variable": "--font-gothic-a1-wf",
+    "weight": [
+      "400",
+      "500",
+      "700",
+      "800"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/gothic-a1"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gothica1/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Gothic+A1",
+    "role": [
+      "body",
+      "display"
+    ],
+    "korean": true
+  }
+}

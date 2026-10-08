@@ -1,0 +1,13 @@
+{
+  "kind": "menu-price",
+  "variant": "category-tabs",
+  "title": "메뉴·가격표 — 분류 탭",
+  "layout": "category-tabs",
+  "density": "comfortable",
+  "archetypes": ["local", "commerce"],
+  "archetypeKinds": ["menu-price"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "밑줄 탭(분류 + 개수, 좁으면 그 줄만 가로 밀림) → 그 분류의 메뉴를 넓으면 두 열 목록(이름·설명 | 가격). 분류가 하나면 탭 없이 목록"
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "consent",
+  "variant": "inline-notice",
+  "title": "쿠키 동의 자리 안내 — 막힌 내용 자리의 점선 판·7일간 보지 않기",
+  "layout": "placeholder-panel",
+  "density": "comfortable",
+  "archetypes": [ "local", "brand", "commerce", "detail", "public", "landing" ],
+  "archetypeKinds": [ "consent-placeholder", "directions" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L3", "L7", "X3", "M1" ],
+  "notes": "동의가 필요한 바깥 내용(지도·영상) 자리의 점선 판: 무엇이 빠졌고 어느 동의가 필요한지 · [거부하기][허용하고 보기] 대등 · 7일간 보지 않기(data-snooze — 들를 때마다 다시 묻는 판이라). 허용이면 내용 자리, 거부·쉬는 중이면 한 줄 + 설정 링크. 결정은 setConsent(다른 항목 그대로). 포트: consent·setConsent·track?"
+}

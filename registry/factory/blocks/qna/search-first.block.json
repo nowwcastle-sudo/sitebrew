@@ -1,0 +1,14 @@
+{
+  "kind": "qna",
+  "variant": "search-first",
+  "title": "상품 문의 — 검색 먼저: 검색 칸 → 결과 개수 → 답변 목록, 결과가 없으면 문의 채널 판",
+  "layout": "search-then-fallback-channels",
+  "density": "compact",
+  "archetypes": [ "detail", "commerce" ],
+  "archetypeKinds": [ "qna" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "T5", "X1", "X2", "M1" ],
+  "notes": "위: 큰 검색 칸(type=search, 라벨 visible, 검색어는 어디에도 보내지 않는다, 지우기 버튼) + 결과 개수(role=status). 아래 답변 목록(첫 5건·더 보기). 결과 0건이면 목록 자리에 「찾는 답이 없나요?」 판(data-qna-not-found), 어떤 경우든 마지막에 문의 채널 줄. 질문·답변 모두에서 찾는다(공백 접기·대소문자 무시 — qnaMatches). 답변은 접히지 않는다(X2)."
+}

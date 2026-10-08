@@ -1,0 +1,13 @@
+{
+  "kind": "final-cta",
+  "variant": "kinetic-band",
+  "title": "마지막 행동 유도 — 키네틱 타이포 반전 띠",
+  "layout": "kinetic-band",
+  "density": "spacious",
+  "archetypes": ["saas", "brand", "commerce", "local", "landing"],
+  "archetypeKinds": ["final-cta"],
+  "states": [],
+  "media": [],
+  "motion": ["play-on-view", "kinetic-type", "stagger-in", "punch-in"],
+  "notes": "화면 폭 반전 띠(full-band 와 같은 대비 짝) 위 화면 폭 가까운 큰 제목 + 한 줄(선택) + 버튼 둘. 화면에 들어올 때 제목 글자 키네틱 등장 → 한 줄·버튼 스태거 → 주 버튼 펀치 인. 스크롤 동안 낱말이 바깥으로 벌어지고 기운다(키네틱 스크럽), 등장 뒤 글자 물결. MOTKIT(P3-5)"
+}

@@ -1,0 +1,74 @@
+/* 대표 장면의 역동 기법(DESIGN §8-6) — app/qa/recipes/scenes.tsx 가 레시피(또는 B안) dynamics 에 있는 기법에만 클래스를 단다.
+   길이·곡선은 레시피 모션 토큰(--duration-enter·--ease-emphasized)을 따른다 — M0 이면 0ms 라 바로 최종 상태다.
+   모든 등장은 보이는 최종 상태로 끝난다(both). 동작 줄이기에서는 전부 끈다. */
+
+@keyframes wf-split-in {
+  from { opacity: 0; transform: translateY(0.4em); }
+}
+.wf-split > span {
+  display: inline-block;
+  white-space: pre;
+  animation: wf-split-in var(--duration-enter, 300ms) var(--ease-emphasized, ease-out) both;
+  animation-delay: calc(var(--i, 0) * 24ms);
+}
+
+@keyframes wf-clip-in {
+  from { clip-path: inset(0 0 100% 0); }
+}
+.wf-clip { animation: wf-clip-in var(--duration-enter, 300ms) var(--ease-emphasized, ease-out) both; }
+
+@keyframes wf-draw {
+  from { stroke-dashoffset: 1; }
+}
+.wf-draw path, .wf-draw polyline {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: wf-draw calc(var(--duration-enter, 300ms) * 2.5) var(--ease-standard, ease-out) both;
+}
+
+/* 기울임은 누르는 요소가 없는 칸에만 단다 — 회전한 상자는 히트 영역이 줄어든다(app-shell 실측 43.9px). */
+.wf-tilt {
+  transform: perspective(1200px) rotateX(4deg) rotateY(-6deg);
+  transform-origin: 50% 60%;
+  transition: transform var(--duration-hover, 200ms) var(--ease-standard, ease-out);
+}
+.wf-tilt:hover { transform: perspective(1200px) rotateX(0deg) rotateY(0deg); }
+
+@keyframes wf-wght {
+  from { font-variation-settings: "wght" 100; }
+}
+.wf-wght { animation: wf-wght calc(var(--duration-enter, 300ms) * 2) var(--ease-standard, ease-out) both; }
+
+/* 그레인: feTurbulence 한 장을 면 위에 곱하기로. 누르는 데 끼지 않는다. */
+.wf-grain { position: relative; isolation: isolate; }
+.wf-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.wf-grain > :not([aria-hidden]) { position: relative; z-index: 1; }
+
+/* 오버사이즈 타입 크롭: 장식 글자(aria-hidden)를 칸 가장자리에서 자른다. 자르는 것은 감싼 div(overflow hidden)다. */
+.wf-crop {
+  pointer-events: none;
+  user-select: none;
+  line-height: 0.8;
+  white-space: nowrap;
+  font-size: clamp(7rem, 22vw, 20rem);
+}
+.wf-blend { mix-blend-mode: overlay; color: oklch(0.98 0 0); }
+
+/* 빗금 예측 막대(data-strip). */
+.wf-hatch {
+  background-image: repeating-linear-gradient(135deg, currentColor 0 2px, transparent 2px 7px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wf-split > span, .wf-clip, .wf-draw path, .wf-draw polyline, .wf-wght { animation: none; }
+  .wf-tilt, .wf-tilt:hover { transform: none; transition: none; }
+}

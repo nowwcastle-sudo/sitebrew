@@ -1,0 +1,21 @@
+{
+  "name": "@launch-factory/account-lifecycle",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "셀프 탈퇴(구독 해지 → 유예 → 파기), 거래기록 분리 보존(키 있는 해시 subject_ref·4갈래 기간), 파기 Cron, 내 정보 내려받기.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "drizzle-orm": "0.45.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0"
+  }
+}

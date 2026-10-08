@@ -1,0 +1,59 @@
+{
+  "id": "gov-uk",
+  "archetype": "public",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.gov.uk/",
+  "structure": {
+    "hero": "쿠키 안내가 맨 위를 차지하고 아래에 파란 면 제목과 검색 상자가 놓인 정부 포털",
+    "sections": [
+      "쿠키 안내와 허용·거부 버튼",
+      "로고·메뉴·검색 아이콘",
+      "파란 면 제목",
+      "검색 상자",
+      "인기 서비스 목록"
+    ]
+  },
+  "type": {
+    "display": "굵은 중립 산세리프(전용 서체)",
+    "body": "같은 산세리프",
+    "scale": "제목 약 48px, 본문 약 19px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "추가 쿠키 허용·거부 버튼",
+    "쿠키 보기 링크",
+    "검색 상자와 버튼",
+    "메뉴 열기"
+  ],
+  "cta": {
+    "pattern": "초록 쿠키 버튼 둘과 검색 버튼",
+    "count": 3
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 1
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "쿠키 선택을 허용·거부 같은 크기 두 버튼으로 나란히 둔다.",
+    "제목을 한 문장으로 두고 바로 아래에 검색 상자를 놓는다.",
+    "파란 면 하나가 헤더와 검색을 한 덩어리로 묶는다.",
+    "모바일은 쿠키 안내가 첫 화면의 절반 이상을 차지하고 버튼이 전체 폭이다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

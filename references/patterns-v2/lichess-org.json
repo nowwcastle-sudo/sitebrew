@@ -1,0 +1,62 @@
+{
+  "id": "lichess-org",
+  "archetype": "pwa",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://lichess.org/",
+  "structure": {
+    "hero": "왼쪽에 시간 규칙 3×3 격자, 오른쪽에 방 만들기·친구 도전·컴퓨터 대국 버튼, 아래에 체스판 카드",
+    "sections": [
+      "상단 바(로고·메뉴·검색·로그인·가입)",
+      "빠른 대국 시간 격자 9칸",
+      "방 만들기·친구 도전·컴퓨터 대국 버튼 3개",
+      "접속자와 대국 수",
+      "기부·소식·스토어 카드",
+      "실시간 대국 체스판 미리보기"
+    ]
+  },
+  "type": {
+    "display": "가벼운 산세리프 격자 숫자",
+    "body": "산세리프 13~14px",
+    "scale": "격자 숫자 약 28px, 라벨 약 12px, 메뉴 13px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "시간 규칙 칸을 눌러 상대 찾기",
+    "방 만들기",
+    "친구 도전",
+    "컴퓨터 대국",
+    "상단 검색",
+    "로그인·가입 버튼",
+    "실시간 대국 체스판 열기"
+  ],
+  "cta": {
+    "pattern": "시간 규칙 격자 9칸과 방·친구·컴퓨터 버튼 3개",
+    "count": 12
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.85
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "로그인 없이 격자 한 칸만 누르면 대국이 시작돼 가입 요구가 첫 행동 앞에 서지 않는다.",
+    "시간 규칙을 숫자 격자로 단순화해 설명 없이 고르게 한다.",
+    "375에서도 격자가 3열을 유지하고 버튼이 아래로 쌓인다.",
+    "오른쪽 실시간 체스판 카드가 서비스가 살아 있음을 보인다."
+  ]
+}

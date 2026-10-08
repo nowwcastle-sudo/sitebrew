@@ -1,0 +1,14 @@
+{
+  "kind": "confirmation",
+  "variant": "upgrade-complete",
+  "title": "결제 완료·요금제 열림 — 결제를 확인하는 중(폴링) → 새로 열린 기능·영수증은 메일로·행동 하나·결제 관리",
+  "layout": "centered-unlocked-poll",
+  "density": "spacious",
+  "archetypes": ["saas", "pwa", "dashboard"],
+  "archetypeKinds": ["upgrade-confirmation", "payment-return"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["A10", "P10", "X1", "M1"],
+  "notes": "결제창에서 돌아온 화면(A64·D82). subscription() 이 active·trialing 이면 가운데 한 판: 확인 표지 · h2 · 한 줄 · 새로 열린 기능(data-unlocked — P10) · 영수증은 메일로(data-receipt) · 다음 행동 하나(data-next-action) · 결제 관리 링크(data-manage). 웹훅 전(none 등)이면 「결제를 확인하는 중」(role=status, data-confirming)을 pollEvery 초마다 다시 읽고, pollMax 번 뒤에도 안 열리면 「메일로 알려드릴게요」(data-late — 행동 하나). 다시 읽는 동안 자리는 그대로. 포트: subscription. 계측(선택): cta_click P3-6 E09: 영수증이 가는 메일 주소(props email — copy.receiptTo)와 「청구서·영수증 보기」(props portal + copy.invoices·notices)를 결제 직후 화면에서 잇는다(없으면 예전 모양)."
+}

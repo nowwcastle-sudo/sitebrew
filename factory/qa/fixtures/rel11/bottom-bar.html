@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bottom-bar-space 시험 틀</title>
+<style>
+  body { margin: 0; font: 16px/1.5 sans-serif; }
+  #content { height: 300px; background: #eef; }
+  #grow { height: 0; background: #efe; }
+  footer { height: 60px; background: #ddd; }
+  /* 쿠키 띠: 화면 아래에 붙는다(높이 158px) */
+  #bar { position: fixed; left: 0; right: 0; bottom: 0; height: 158px; background: #222; color: #fff; }
+</style>
+</head>
+<body>
+  <div id="content">내용</div>
+  <div id="grow"></div>
+  <footer id="footer"><a href="#x">푸터 링크</a></footer>
+  <div id="bar" data-consent-banner>쿠키 띠</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-pretendard-gov",
+  "type": "registry:item",
+  "title": "Pretendard GOV",
+  "description": "web-factory 폰트 키트: Pretendard GOV 동적 서브셋(npm pretendard-gov, OFL-1.1) — Google Fonts 밖이라 css @import 로 싣는다(docs/qa/pretendard-install.md). Pretendard 와 메트릭 호환 변형(meta.aliasOf)",
+  "dependencies": [
+    "pretendard-gov"
+  ],
+  "css": {
+    "@import \"pretendard-gov/dist/web/variable/pretendardvariable-gov-dynamic-subset.css\"": {}
+  },
+  "cssVars": {
+    "theme": {
+      "font-pretendard-gov-wf": "\"Pretendard GOV Variable\", \"Pretendard GOV\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/orioncactus/pretendard/blob/main/LICENSE",
+    "source": "https://github.com/orioncactus/pretendard/tree/main/packages/pretendard-gov",
+    "family": "Pretendard GOV",
+    "role": [
+      "body",
+      "display"
+    ],
+    "korean": true,
+    "aliasOf": "font-pretendard"
+  }
+}

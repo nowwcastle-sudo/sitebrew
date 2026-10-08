@@ -1,0 +1,47 @@
+/* B2 단단한 모서리(6px) — 중간 계열. 주 버튼은 잉크(글자색)로 꽉 채운 단단한 면, 그림자 없음, hover 는 잉크 90%, 누르면 97%(DESIGN §8-3).
+ * 부품의 bg-primary 를 이기려고 채움만 !(important). 원천 style_axes.md 축 1. */
+.cn-button-variant-default {
+  @apply bg-foreground! text-background! hover:bg-foreground/90!;
+}
+.cn-button {
+  @apply rounded-[6px] border text-sm font-semibold active:scale-[0.97] [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-button-variant-outline {
+  @apply dark:bg-input/30 dark:hover:bg-input/50;
+}
+.cn-button-size-default {
+  @apply h-11 gap-1.5 px-5 has-data-[icon=inline-end]:pe-4 has-data-[icon=inline-start]:ps-4;
+}
+.cn-button-size-xs {
+  @apply h-7 gap-1 rounded-[4px] px-2.5 text-sm has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-sm {
+  @apply h-9 gap-1 rounded-[5px] px-3.5 text-sm has-data-[icon=inline-end]:pe-2.5 has-data-[icon=inline-start]:ps-2.5 [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-lg {
+  @apply h-12 gap-2 px-6 text-base has-data-[icon=inline-end]:pe-5 has-data-[icon=inline-start]:ps-5;
+}
+.cn-button-size-icon {
+  @apply size-11;
+}
+.cn-button-size-icon-xs {
+  @apply size-7 rounded-[4px] [&_svg:not([class*='size-'])]:size-3.5;
+}
+.cn-button-size-icon-sm {
+  @apply size-9 rounded-[5px];
+}
+.cn-button-size-icon-lg {
+  @apply size-12;
+}
+.cn-button-group {
+  @apply has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-[6px];
+}
+.cn-button-group-orientation-horizontal {
+  @apply *:data-slot:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-[6px]! [&>[data-slot]~[data-slot]]:rounded-l-none [&>[data-slot]~[data-slot]]:border-l-0;
+}
+.cn-button-group-orientation-vertical {
+  @apply *:data-slot:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-[6px]! [&>[data-slot]~[data-slot]]:rounded-t-none [&>[data-slot]~[data-slot]]:border-t-0;
+}
+.cn-button-group-text {
+  @apply gap-2 rounded-[6px] border px-3 text-sm font-semibold [&_svg:not([class*='size-'])]:size-4;
+}

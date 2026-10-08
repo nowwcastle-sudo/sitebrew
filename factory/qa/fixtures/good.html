@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — good</title>
+<style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  nav { position: sticky; top: 0; background: #ffffff; border-bottom: 1px solid #ccc; padding: 12px 16px; }
+  main { padding: 16px; max-width: 640px; }
+  p { color: #1a1a1a; }
+  dialog { border: none; border-radius: 8px; padding: 16px; }
+  dialog::backdrop { background: rgba(0,0,0,0.3); }
+  .toast { position: fixed; right: 16px; bottom: 16px; background: #1a1a1a; color: #fff; padding: 12px 16px; border-radius: 8px; }
+  .toast button { margin-left: 8px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+</style>
+</head>
+<body>
+  <nav aria-label="fixture nav">good fixture</nav>
+  <main>
+    <p>이 문단은 대비 검사를 위한 본문 텍스트입니다. 충분히 길게 작성합니다.</p>
+    <span class="sr-only">이 문장은 화면에는 보이지 않는 스크린리더 전용 안내이며, 게이트가 클리핑으로 잘못 판정하면 안 되는 매우 긴 한글 텍스트입니다.</span>
+
+    <button data-qa="confirm-open">발주 확정하기</button>
+    <dialog id="confirm-dialog">
+      <p>확정하면 되돌릴 수 없습니다.</p>
+      <button id="cancel-btn">취소</button>
+      <button id="ok-btn">확인</button>
+    </dialog>
+
+    <button data-qa="toast-trigger">임시 저장하기</button>
+    <div id="toast-host"></div>
+
+    <div>
+      <button data-qa="filter" id="filter-a" aria-pressed="true">흰 우유</button>
+      <button data-qa="filter" id="filter-b" aria-pressed="false">저지방</button>
+    </div>
+  </main>
+
+  <script>
+    window.__orders = 0;
+
+    const dialog = document.getElementById('confirm-dialog');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const okBtn = document.getElementById('ok-btn');
+
+    document.querySelector('[data-qa="confirm-open"]').addEventListener('click', () => {
+      dialog.showModal();
+      cancelBtn.focus();
+    });
+    cancelBtn.addEventListener('click', () => dialog.close());
+    okBtn.addEventListener('click', () => {
+      window.__orders++;
+      dialog.close();
+    });
+
+    document.querySelector('[data-qa="toast-trigger"]').addEventListener('click', () => {
+      const host = document.getElementById('toast-host');
+      host.innerHTML = '';
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = '<span>임시 저장했습니다.</span><button type="button">되돌리기</button>';
+      host.appendChild(el);
+      setTimeout(() => { el.remove(); }, 3000);
+    });
+
+    for (const btn of document.querySelectorAll('[data-qa="filter"]')) {
+      btn.addEventListener('click', () => {
+        btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "@launch-factory/inquiry",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "문의 폼 서버 수신(대장 D97) — 요청 제한·Turnstile·멱등 키로 지키고, 최소 개인정보만 저장(보유 기간 뒤 파기), 운영자께 알림 메일 한 통, 선택 접수 확인 메일. web-factory contact-form 블록의 submit 포트 모양(ActionResult·fieldErrors).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/consent": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/email": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/security": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0"
+  }
+}

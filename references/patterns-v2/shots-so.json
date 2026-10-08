@@ -1,0 +1,61 @@
+{
+  "id": "shots-so",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://shots.so/",
+  "structure": {
+    "hero": "흐린 앱 화면 위 중앙 시작 카드와 그라디언트 시작 버튼",
+    "sections": [
+      "흐린 앱 화면 배경",
+      "시작 카드(로고·제목·설명)",
+      "시작 버튼(375에서는 설치 버튼)",
+      "약관·제작자 문구"
+    ]
+  },
+  "type": {
+    "display": "중간 굵기 산세리프 56px",
+    "body": "산세리프 16~18px",
+    "scale": "제목 56px, 설명 18px, 법적 문구 13px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": "회색 스플래시에 로고만 보이다 시작 카드가 나타난다",
+    "scroll": null,
+    "hover": null,
+    "transition": "카드 윗면 사진이 1.5~2초마다 다른 목업 사진으로 교체된다",
+    "durationsMs": [
+      500,
+      1750
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "스플래시 약 0.5초, 슬라이드 약 1.5~2초 간격으로 6장 이상 순환"
+  },
+  "interaction": [
+    "시작 버튼",
+    "약관 링크",
+    "카드 윗면 사진 자동 순환",
+    "모바일 웹앱 설치 버튼"
+  ],
+  "cta": {
+    "pattern": "시작 버튼(모바일은 웹앱 설치 버튼)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.9
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "진입 카드 뒤에 실제 에디터 화면이 비쳐 도구 화면임을 먼저 알린다",
+    "375에서는 시작 버튼이 웹앱 설치 버튼으로 바뀌어 설치 흐름을 노출한다",
+    "카드 윗면 사진이 계속 바뀌어 제품 결과물을 문구 없이 보여 준다",
+    "주황-보라 그라디언트 버튼 하나만 강조색으로 쓴다"
+  ]
+}

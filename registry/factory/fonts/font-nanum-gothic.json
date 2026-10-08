@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-nanum-gothic",
+  "type": "registry:font",
+  "title": "Nanum Gothic",
+  "description": "web-factory 폰트 키트: Nanum Gothic (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Nanum Gothic', sans-serif",
+    "provider": "google",
+    "import": "Nanum_Gothic",
+    "variable": "--font-nanum-gothic-wf",
+    "weight": [
+      "400",
+      "700",
+      "800"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/nanum-gothic"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/nanumgothic/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Nanum+Gothic",
+    "role": [
+      "body"
+    ],
+    "korean": true
+  }
+}

@@ -1,0 +1,66 @@
+"use client"
+
+import * as React from "react"
+
+import type { BlockBase } from "@/registry/factory/contract/block-contract"
+import type { AnalyticsPort } from "@/registry/factory/contract/ports"
+import { Download } from "@/registry/factory/icons"
+import { cn } from "@/registry/factory/lib/utils"
+import { rise } from "@/registry/factory/motion/gsap-techniques"
+import { useGsapScene } from "@/registry/factory/motion/use-gsap-scene"
+
+import { BlockHeading } from "../_shared/block-heading"
+
+// 마지막 행동 유도 — 앱 스토어·확장 설치 배지 줄(앱·PWA·브라우저 확장 안내). 제목 h2 + 한 줄 설명 + 스토어마다 글자 단추 하나(스토어 이름 + 받는 방법).
+// 공식 배지 그림(각 스토어가 정한 로고·여백·문구)은 저장소에 넣지 않는다 — 그림은 스토어의 상표 규칙을 지켜야 하므로, 이 블록은 글자 단추만 낸다.
+// 공식 배지를 쓰려면 조립하는 쪽이 각 스토어의 규칙 페이지에서 직접 받아 규칙대로 쓴다(규칙 링크: docs/qa/factory-v1/asset-licenses.md 「스토어 배지」).
+// 단추는 반전 색 면(전경색 바탕 · 바탕색 글자) 위에 스토어 이름이 보이고, 모두 같은 크기다(어느 스토어도 더 크게 밀지 않는다). 계측(선택): cta_click.
+export type StoreBadge = {
+  // 스토어 종류 — 표지(data-store)만 정한다. 이름과 문구는 label 이 준다
+  store: "app-store" | "google-play" | "web-store" | "direct"
+  // 단추에 보이는 글(= 접근 이름): 「앱 스토어에서 받기」
+  label: string
+  href: string
+  // 작은 한 줄(선택): 「iPhone·iPad」 「무료」
+  hint?: string
+}
+export type FinalCtaStoreBadgesCopy = {
+  title: string
+  lead?: string
+  badges: StoreBadge[]
+  // 아래 작은 안내(선택): 지원 기기·상표 안내 같은 것
+  note?: string
+}
+export type FinalCtaStoreBadgesProps = BlockBase<FinalCtaStoreBadgesCopy> & {
+  track?: AnalyticsPort["track"]
+}
+
+export function FinalCtaStoreBadges({ copy, track, id = "get-the-app", className }: FinalCtaStoreBadgesProps) {
+  const ref = React.useRef<HTMLElement>(null)
+  useGsapScene(ref, (s) => {
+    rise(s, s.q("[data-enter]"))
+  })
+  return (
+    <section ref={ref} id={id} data-block="final-cta-store-badges" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+      <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
+      <ul data-enter className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        {copy.badges.map((b, i) => (
+          <li key={i}>
+            <a href={b.href} data-store={b.store} onClick={() => track?.("cta_click", { id: `store-${b.store}`, label: b.label, section: id })} className="relative flex min-h-14 w-full items-center gap-3 rounded-lg border border-foreground bg-foreground px-5 py-2.5 text-background hover:bg-foreground/90 sm:w-auto sm:min-w-60">
+              <Download aria-hidden="true" className="size-6 shrink-0" />
+              <span className="flex min-w-0 flex-col">
+                <span className="text-base leading-[1.35] [overflow-wrap:anywhere]">{b.label}</span>
+                {b.hint ? <span className="text-sm leading-[1.4] [overflow-wrap:anywhere]">{b.hint}</span> : null}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      {copy.note ? (
+        <p data-enter className="max-w-prose text-sm leading-[1.6]">
+          {copy.note}
+        </p>
+      ) : null}
+    </section>
+  )
+}

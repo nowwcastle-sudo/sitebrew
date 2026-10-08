@@ -1,0 +1,31 @@
+{
+  "topic": "구립 도서관 「해오름도서관」 누리집 — 이용 안내·프로그램·공지 (가상 사업체 — 예시)",
+  "archetype": "public",
+  "locale": "ko",
+  "facts": {
+    "name": "해오름구립도서관",
+    "legalName": "해오름구",
+    "representative": "관장 김은서",
+    "email": "hello@example.com",
+    "phone": "02-1234-5678",
+    "address": "서울특별시 해오름구 예시로 100",
+    "hours": "화-금 09:00-20:00, 토·일 09:00-17:00, 월·공휴일 휴관",
+    "departments": "어린이자료실 · 일반자료실 · 디지털자료실",
+    "transit": "가까운 지하철역 3번 출구에서 걸어서 5분",
+    "parking": "지하 주차장 40면(2시간 무료)",
+    "naverMapUrl": "https://example.com/maps/naver/haeoreum-library",
+    "kakaoMapUrl": "https://example.com/maps/kakao/haeoreum-library",
+    "guide": "도서는 한 번에 열 권까지 빌려요 ; 반납은 열린 시간에 무인 반납함에도 할 수 있어요 ; 휴관일에는 반납함만 열어요",
+    "notice": "추석 연휴에는 9월 25일부터 28일까지 쉬어요",
+    "noticeCategory": "이용 안내 · 프로그램 · 휴관 공지",
+    "quickLinks": "도서 검색 https://example.com/catalog ; 대출 기간 연장 https://example.com/renew ; 이용 안내 /guide ; 프로그램 신청 https://example.com/programs",
+    "notices": "2026-09-20 | 이용 안내 | 추석 연휴 휴관 안내 | 운영지원팀 | https://example.com/notices/chuseok-closed ; 2026-09-12 | 프로그램 | 가을 독서 교실 참가자를 모집해요 | 어린이자료실 | https://example.com/notices/reading-class ; 2026-09-05 | 휴관 공지 | 서가 정리로 일반자료실이 하루 쉬어요 | 일반자료실 | https://example.com/notices/shelf-day ; 2026-08-28 | 이용 안내 | 디지털자료실 컴퓨터를 새로 바꿨어요 | 디지털자료실 | https://example.com/notices/new-computers",
+    "policyCards": "해오름 대출 카드 | 구 안 도서관 어디서나 책을 빌리고 반납해요 | 연중 상시",
+    "audience": "구 안 주민과 도서관 이용자",
+    "action": "도서 검색하고 프로그램 신청하기",
+    "mood": "친절한",
+    "phoneNote": "평일 09:00-18:00에 받아요. 점심시간에는 연결이 늦을 수 있어요",
+    "copyright": "© 2026 해오름구립도서관. 모든 권리를 가지고 있어요"
+  },
+  "seed": 5
+}

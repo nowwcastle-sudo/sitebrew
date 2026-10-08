@@ -1,0 +1,60 @@
+{
+  "id": "tacosmyguey-com",
+  "archetype": "local",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://tacosmyguey.com/",
+  "structure": {
+    "hero": "타코 사진 위에 가까운 매장 선택 팝업과 쿠키 동의 상자가 겹쳐 뜬 첫 화면",
+    "sections": [
+      "내비(메뉴·소개·매장·연락)와 모자 로고",
+      "현재 매장 감지 드롭다운과 주문 버튼",
+      "가까운 매장 선택 팝업(5곳)",
+      "쿠키 안내 상자"
+    ]
+  },
+  "type": {
+    "display": "압축 대문자 산세리프",
+    "body": "압축 산세리프 본문",
+    "scale": "팝업 매장명 약 24px, 내비 약 22px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "가까운 매장 자동 감지 후 선택",
+    "다른 매장 선택 카드 4개",
+    "헤더 매장 드롭다운",
+    "주문하기 버튼",
+    "쿠키 수락·닫기"
+  ],
+  "cta": {
+    "pattern": "빨간 주문하기 버튼과 매장 카드",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "local"
+    ],
+    "score": 0.95
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "들어오자마자 위치로 가까운 매장을 알려 주고 다른 매장도 고르게 한다.",
+    "매장 카드에 이름과 전체 주소를 함께 보여 준다.",
+    "헤더에도 현재 매장 드롭다운이 있어 팝업을 닫아도 바꿀 수 있다.",
+    "쿠키 상자가 팝업과 겹쳐 첫 화면을 두 겹으로 덮는다.",
+    "모바일에서는 주소가 카드 폭을 넘쳐 잘리는 줄이 있다.",
+    "정지 화면 기준이라 모션은 판단하지 않았다."
+  ]
+}

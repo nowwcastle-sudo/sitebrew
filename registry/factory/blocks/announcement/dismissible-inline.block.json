@@ -1,0 +1,14 @@
+{
+  "kind": "announcement",
+  "variant": "dismissible-inline",
+  "title": "본문 안 알림 판 — 한 메시지·끝나는 날·[괜찮아요][행동] 대등·7일간 보지 않기",
+  "layout": "inline-callout",
+  "density": "comfortable",
+  "archetypes": [ "saas", "pwa", "dashboard", "commerce" ],
+  "archetypeKinds": [ "announcement", "feature-notice" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A8", "L3", "L7", "L8", "X1", "M1" ],
+  "notes": "본문 흐름 안 판: 종 표지 · h2 · 한 줄 · 「{date}까지」(endsAt 실제 날짜 — data-until) · [괜찮아요][행동] 대등(choice-pair) · 7일간 보지 않기(data-snooze). 거절은 공지 id 로 기억, 쉬기는 7일. endsAt 필수 — 지나면(startsAt 전에도) hidden. 계측(선택): cta_click"
+}

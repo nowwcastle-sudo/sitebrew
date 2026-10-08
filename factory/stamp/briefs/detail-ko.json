@@ -1,0 +1,21 @@
+{
+  "topic": "손바느질 린넨 앞치마 상세 페이지",
+  "archetype": "detail",
+  "locale": "ko",
+  "facts": {
+    "name": "손바느질 린넨 앞치마",
+    "price": "39,000원(부가세 포함)",
+    "seller": "결이 공방",
+    "bizNo": "123-45-67890",
+    "mailOrderNo": "2026-서울마포-0123",
+    "address": "서울특별시 마포구 월드컵로 120, 1층",
+    "phone": "02-1234-5678",
+    "email": "hello@example.com",
+    "shipping": "결제 후 3일 안에 보내요. 배송비 3,000원, 5만원 이상 무료",
+    "shippingFee": "3,000원",
+    "returnsFeePayer": "buyer",
+    "returns": "받은 날부터 7일 안에 반품할 수 있어요. 단순 변심 반품 배송비는 고객 부담이에요",
+    "origin": "리투아니아산 린넨 원단, 국내 봉제",
+    "specs": "린넨 100%, 길이 88cm, 어깨끈 조절 가능, 30도 손세탁"
+  }
+}

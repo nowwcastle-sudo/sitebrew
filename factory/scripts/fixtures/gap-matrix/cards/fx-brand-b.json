@@ -1,0 +1,49 @@
+{
+  "id": "fx-brand-b",
+  "archetype": "brand",
+  "sourceGallery": "fixture",
+  "url": "https://example.com/fx-brand-b",
+  "structure": {
+    "hero": "화면 가득 전폭 영상과 제목",
+    "sections": [
+      "머리글",
+      "본문"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프",
+    "body": "산세리프 16px",
+    "scale": "제목 48px"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": "스크롤하면 가로 스크롤 전시 줄이 지나감",
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "메뉴 링크"
+  ],
+  "cta": {
+    "pattern": "메뉴 링크 둘",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "가짜 시험 카드"
+  ]
+}

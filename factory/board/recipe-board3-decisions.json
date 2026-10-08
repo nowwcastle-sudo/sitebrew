@@ -1,0 +1,110 @@
+{
+  "appliedAt": "2026-09-28T09:49:34.000Z",
+  "r1-measure": {
+    "aspects": {
+      "B": {
+        "color": "like",
+        "layout": "dislike",
+        "motion": "like",
+        "type": "like"
+      }
+    },
+    "decidedAt": "2026-09-28T09:22:46.965Z",
+    "likes": {
+      "A": "like"
+    },
+    "notes": {
+      "B": "모바일에서 3600의 배치가 좀 이상하게 되어 있음."
+    }
+  },
+  "r2-signal": {
+    "decidedAt": "2026-09-28T09:23:26.706Z",
+    "letters": "이 레시피는 2판(Task 10f, f00aee5)에서 한 번 글자가 뒤집혔다 — 3판 보드의 A = 2판 이후 머리(inline-chip-title), 3판 보드의 B(pick) = 2판 이전 머리이자 지금 다시 승격된 안(cropped-title-list). recipe-board2-decisions.json 의 letters와 반대 방향이다.",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    },
+    "pick": "B"
+  },
+  "r3-woodblock": {
+    "decidedAt": "2026-09-28T09:23:55.714Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r4-evidence": {
+    "decidedAt": "2026-09-28T09:24:26.621Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r5-celadon": {
+    "decidedAt": "2026-09-28T09:24:49.019Z",
+    "likes": {
+      "A": "like"
+    }
+  },
+  "r6-civic": {
+    "aspects": {
+      "A": {
+        "color": "like",
+        "layout": "like",
+        "motion": "dislike",
+        "type": "like"
+      }
+    },
+    "decidedAt": "2026-09-28T09:25:39.525Z",
+    "likes": {
+      "B": "like"
+    },
+    "notes": {
+      "A": "움직임이 너무 단순해.",
+      "B": "움직임은 단순하지만, 깔끔해서 오히려 좋아"
+    },
+    "pick": "B"
+  },
+  "r7-docs": {
+    "decidedAt": "2026-09-28T09:26:06.390Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r8-dusk": {
+    "decidedAt": "2026-09-28T09:27:20.527Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    },
+    "note": "모든 레시피 중에 가장 마음에 드는 실사 움직임 및 영상이야. 주제에 맞게 단정하고 깔끔해. 실사 영상 배경이 단조로운 배경보다 훨씬 나은 것 같아.",
+    "pick": "B"
+  },
+  "r9-clay": {
+    "decidedAt": "2026-09-28T09:27:51.518Z",
+    "likes": {
+      "A": "like",
+      "B": "like"
+    }
+  },
+  "r10-console": {
+    "aspects": {
+      "A": {
+        "color": "like",
+        "layout": "like",
+        "motion": "dislike",
+        "type": "like"
+      }
+    },
+    "decidedAt": "2026-09-28T09:28:47.878Z",
+    "likes": {
+      "B": "like"
+    },
+    "notes": {
+      "A": "모션 움직임이 좀 단순해. 뭔가 아쉽달까. 좋은데 뭔가 하나 빠진 느낌이야."
+    },
+    "pick": "B"
+  },
+  "source": "https://claude.ai/artifact/138xBisSWmr8RZY6EheoSg (likes, board 3)"
+}

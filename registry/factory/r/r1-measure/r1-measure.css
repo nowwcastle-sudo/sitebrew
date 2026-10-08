@@ -1,0 +1,85 @@
+/* 생성물 — factory/scripts/recipe.mjs 로 다시 만든다. 손으로 고치지 않는다. */
+/* 도면 계측(r1-measure) 순수 CSS 변수 — shadcn 없이 단일 HTML 에 붙인다. 원천: registry/factory/recipes/r1-measure/DESIGN.md */
+:root {
+  --background: oklch(0.9596 0.0041 121.56);
+  --foreground: oklch(0.1985 0.0438 254.97);
+  --card: oklch(0.9865 0.0041 121.56);
+  --card-foreground: oklch(0.1985 0.0438 254.97);
+  --popover: oklch(0.9865 0.0041 121.56);
+  --popover-foreground: oklch(0.1985 0.0438 254.97);
+  --primary: oklch(0.3254 0.0794 257.02);
+  --primary-foreground: oklch(0.9596 0.0041 121.56);
+  --secondary: oklch(0.9243 0.0074 132.42);
+  --secondary-foreground: oklch(0.1985 0.0438 254.97);
+  --muted: oklch(0.9243 0.0074 132.42);
+  --muted-foreground: oklch(0.3937 0.0371 256.14);
+  --accent: oklch(0.9214 0.0178 253.34);
+  --accent-foreground: oklch(0.3254 0.0794 257.02);
+  --destructive: oklch(0.5 0.19 27);
+  --border: oklch(0.6081 0.0181 245.24);
+  --input: oklch(0.5600 0.0235 248.25);
+  --ring: oklch(0.4914 0.1858 263.30);
+  --success: oklch(0.5 0.1 155);
+  --success-foreground: oklch(0.985 0.005 155);
+  --warning: oklch(0.55 0.12 60);
+  --warning-foreground: oklch(0.985 0.005 60);
+  --info: oklch(0.47 0.15 255);
+  --info-foreground: oklch(0.985 0.004 255);
+  --font-sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading: "Martian Mono", "Nanum Gothic Coding", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-heading-ko: "Nanum Gothic Coding", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --icon-stroke: 2;
+  --icon-linecap: round;
+  --icon-linejoin: round;
+  --ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-screen: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 100ms;
+  --duration-hover: 150ms;
+  --duration-popover: 150ms;
+  --duration-enter: 300ms;
+  --duration-sheet: 260ms;
+  --wf-axes: "B1 I3 C2 T4 H3 R0 S0";
+  --wf-font-tuned: "display body mono";
+  --wf-motion: 1;
+  --wf-heading-weight: 600;
+  --radius: 0px;
+  --wf-mask-radius: calc(infinity * 1px);
+  --wf-shadow-surface: none;
+}
+
+.dark {
+  --background: oklch(0.1873 0.0099 234.39);
+  --foreground: oklch(0.9490 0.0051 145.54);
+  --card: oklch(0.2260 0.0142 239.34);
+  --card-foreground: oklch(0.9490 0.0051 145.54);
+  --popover: oklch(0.2260 0.0142 239.34);
+  --popover-foreground: oklch(0.9490 0.0051 145.54);
+  --primary: oklch(0.7700 0.0517 252.17);
+  --primary-foreground: oklch(0.1985 0.0438 254.97);
+  --secondary: oklch(0.2510 0.0162 240.71);
+  --secondary-foreground: oklch(0.9490 0.0051 145.54);
+  --muted: oklch(0.2510 0.0162 240.71);
+  --muted-foreground: oklch(0.7933 0.0169 245.14);
+  --accent: oklch(0.2847 0.0368 253.76);
+  --accent-foreground: oklch(0.9005 0.0342 253.72);
+  --destructive: oklch(0.7 0.16 25);
+  --border: oklch(0.5072 0.0249 246.16);
+  --input: oklch(0.5967 0.0239 246.06);
+  --ring: oklch(0.7267 0.1165 262.57);
+  --success: oklch(0.74 0.11 155);
+  --success-foreground: oklch(0.19 0.02 155);
+  --warning: oklch(0.8 0.12 75);
+  --warning-foreground: oklch(0.2 0.03 75);
+  --info: oklch(0.74 0.12 255);
+  --info-foreground: oklch(0.19 0.014 255);
+}
+
+/* 제목 굵기(한글 제목 굵기 → fonts.display.weight → 700): 기본 층이라 굵기를 따로 준 요소가 이긴다 */
+@layer base {
+.font-heading { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+.font-heading-ko { font-weight: var(--wf-heading-weight-ko, var(--wf-heading-weight, 700)); }
+}

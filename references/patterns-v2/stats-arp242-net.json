@@ -1,0 +1,59 @@
+{
+  "id": "stats-arp242-net",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://stats.arp242.net/",
+  "structure": {
+    "hero": "연노랑 필터 줄 아래 경로별 방문 수와 스파크라인 행 목록",
+    "sections": [
+      "안내 문구 줄",
+      "기간·경로 필터 줄",
+      "이전·다음 이동 링크",
+      "경로별 순위 행(스파크라인)",
+      "이어지는 표 섹션"
+    ]
+  },
+  "type": {
+    "display": "기본 산세리프 24px 섹션 제목",
+    "body": "산세리프 15~16px",
+    "scale": "섹션 제목 24px, 경로 16px, 보조 13px"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "기간 프리셋 텍스트 링크(일·주·월)",
+    "날짜 직접 입력",
+    "경로 필터 입력",
+    "시간·일 단위 보기 전환",
+    "이전·다음 기간 이동"
+  ],
+  "cta": {
+    "pattern": "우상단 로그인 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "행마다 순위 숫자, 증감 %, 경로, 스파크라인을 같은 줄에 둔다",
+    "링크 색 외 장식이 거의 없는 문서형 구성으로 읽기 속도를 올린다",
+    "375에서는 스파크라인이 줄 아래로 내려가고 전폭이 된다",
+    "필터 줄을 노란 면으로 구분해 조작 영역을 즉시 찾게 한다"
+  ]
+}

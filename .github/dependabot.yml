@@ -1,0 +1,86 @@
+# P3-8 — Dependabot 버전 업데이트(npm + github-actions). 보안 업데이트·경보는 저장소 설정(대표)이 따로 켠다.
+# 정확한 버전으로 고정한 의존성(react·next·gsap·axe-core·sharp …)은 레지스트리 pincheck·시각 기준과 묶여 있어 PR 이 와도 컨트롤러가 ci:verify 와 시각 판정을 거쳐 올린다.
+# cooldown: 갓 나온 버전을 바로 설치하지 않는다(보안 업데이트에는 적용되지 않는다 — 문서).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+      semver-minor-days: 14
+      semver-patch-days: 7
+    groups:
+      next:
+        patterns:
+          - next
+          - eslint-config-next
+          - '@next/*'
+      react:
+        patterns:
+          - react
+          - react-dom
+          - '@types/react'
+          - '@types/react-dom'
+      npm-minor-patch:
+        update-types:
+          - minor
+          - patch
+        exclude-patterns:
+          - next
+          - eslint-config-next
+          - '@next/*'
+          - react
+          - react-dom
+    labels:
+      - dependencies
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 3
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns:
+          - '*'
+    labels:
+      - dependencies
+
+  # Sitebrew: launch-factory/ is an npm project of its own (own lock file, workspaces, template). GitHub reads only this file, so its entries live here.
+  - package-ecosystem: npm
+    directories:
+      - '/launch-factory'
+      - '/launch-factory/template'
+      - '/launch-factory/packages/*'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    labels:
+      - dependencies
+    groups:
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+        group-by: dependency-name
+      runtime-minor-patch:
+        dependency-type: production
+        update-types: [minor, patch]
+        group-by: dependency-name

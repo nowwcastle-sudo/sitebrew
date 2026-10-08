@@ -1,0 +1,13 @@
+{
+  "kind": "final-cta",
+  "variant": "store-badges",
+  "title": "마지막 행동 유도 — 앱 스토어·확장 설치 글자 배지 줄",
+  "layout": "store-badge-row",
+  "density": "comfortable",
+  "archetypes": ["pwa", "saas", "dashboard", "portfolio", "public"],
+  "archetypeKinds": ["app-download", "final-cta"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "제목 h2 + 한 줄 설명 + 스토어마다 반전 색 글자 단추(스토어 이름 + 받는 방법 + 작은 한 줄, 모두 같은 크기, data-store 표지). 공식 배지 그림은 저장소에 넣지 않는다 — 각 스토어의 상표 규칙을 지켜야 하므로 글자 단추만 낸다(규칙 링크: docs/qa/factory-v1/asset-licenses.md 「스토어 배지」). 계측(선택): cta_click"
+}

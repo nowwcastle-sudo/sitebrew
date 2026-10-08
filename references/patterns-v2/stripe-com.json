@@ -1,0 +1,62 @@
+{
+  "id": "stripe-com",
+  "archetype": "saas",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://stripe.com/",
+  "structure": {
+    "hero": "흰 바탕 오른쪽을 가로지르는 주황·분홍·파랑 리본 그래픽, 왼쪽에 큰 헤드라인(뒷부분 파랑 그라디언트)·설명·시작 버튼 둘, 아래 고객 로고 줄",
+    "sections": [
+      "내비(로고·제품·솔루션·개발자·리소스·가격·로그인·영업 문의)",
+      "결제 총액 실시간 숫자 한 줄",
+      "헤드라인과 설명",
+      "시작 버튼과 구글 가입 버튼",
+      "리본 그래픽",
+      "고객 로고 줄",
+      "쿠키 안내 카드"
+    ]
+  },
+  "type": {
+    "display": "중간 굵기 산세리프, 뒷부분 그라디언트 글자",
+    "body": "산세리프 16px",
+    "scale": "헤드라인 약 40px, 설명 약 16px, 내비 약 13px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "내비 메뉴 드롭다운",
+    "시작 버튼",
+    "구글로 가입 버튼",
+    "로그인 버튼",
+    "영업 문의 버튼",
+    "쿠키 수락·관리 버튼"
+  ],
+  "cta": {
+    "pattern": "파랑 시작 버튼과 구글 가입 외곽선 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "오른쪽을 리본 그래픽 하나가 차지해 제품 화면 없이도 브랜드가 기억된다.",
+    "헤드라인 뒷부분만 그라디언트로 칠해 약속의 핵심을 강조한다.",
+    "헤드라인 위에 실시간 총액 숫자를 한 줄 올려 규모를 숫자로 먼저 보인다.",
+    "375에서는 리본이 사라지고 시작 버튼과 가입 버튼이 전폭으로 선다."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "mastodon-social",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://mastodon.social/",
+  "structure": {
+    "hero": "좌측 서버 소개, 가운데 공개 타임라인, 우측 가입 안내 3열",
+    "sections": [
+      "검색+서버 소개 열",
+      "유행 중 제목",
+      "게시물·해시태그·소식 탭",
+      "게시물 타임라인",
+      "우측 로고·메뉴·가입 열",
+      "푸터 링크"
+    ]
+  },
+  "type": {
+    "display": "산세리프 15px 본문 중심",
+    "body": "로보토 계열 15px",
+    "scale": "게시물 본문 15px, 이름 15px 굵게, 보조 13px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "세 열 틀이 먼저 서고 타임라인이 비어 있다 게시물이 채워진다",
+    "scroll": "가운데 열이 독립적으로 스크롤되고 좌우 열은 고정된다",
+    "hover": null,
+    "transition": null,
+    "durationsMs": [
+      500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "피드는 약 0.5초 뒤 채워지고 중앙 열만 3초간 스크롤"
+  },
+  "interaction": [
+    "검색 입력",
+    "탭 3개 전환",
+    "게시물 답글·부스트·즐겨찾기·북마크",
+    "계정 만들기·로그인 버튼",
+    "이미지 숨김 보기"
+  ],
+  "cta": {
+    "pattern": "계정 생성 버튼 + 로그인 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.85
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "세 열이 각자 스크롤되는 소셜 앱 구조를 데스크톱에서 그대로 보인다",
+    "375에서는 한 열 타임라인이 되고 가입·로그인 버튼이 하단 바에 고정된다",
+    "게시물마다 같은 아이콘 줄(답글·부스트·즐겨찾기·북마크·더보기)을 반복한다",
+    "보라 하나로 활성 탭 밑줄과 가입 버튼을 맞춘다",
+    "게시물 본문은 사용자 생성 글이라 카드에는 구조 관찰만 남긴다"
+  ]
+}

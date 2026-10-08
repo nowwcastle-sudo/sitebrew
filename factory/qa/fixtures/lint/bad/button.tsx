@@ -1,0 +1,10 @@
+// lint-ui bad fixture: every line below breaks one rule. Not compiled.
+const a = "focus-visible:ring-1 focus-visible:ring-ring"
+const b = "focus-visible:ring-3 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
+const c = "focus-visible:ring-3 focus-visible:ring-ring aria-invalid:ring-3 aria-invalid:ring-destructive/20"
+const d = "h-6 text-xs"
+const e = "text-[0.8rem]"
+const f = "transition-all duration-150"
+const g = "relative h-6 after:absolute after:-inset-[11px] in-data-[slot=button-group]:rounded-lg"
+const h = "data-open:animate-in fade-in-0"
+const i = "focus-visible:ring-3 focus-visible:ring-ring aria-invalid:ring-destructive/20 aria-invalid:focus-visible:ring-ring dark:aria-invalid:ring-destructive/40"

@@ -1,0 +1,14 @@
+{
+  "kind": "confirmation",
+  "variant": "booking-complete",
+  "title": "예약·문의 요청 완료 — 요청 내용 표·다음 일과 때·도움·행동 하나 + 성공 뒤 별점(선택)",
+  "layout": "ticket-plus-steps",
+  "density": "comfortable",
+  "archetypes": [ "local", "brand" ],
+  "archetypeKinds": [ "booking-confirmation", "inquiry-confirmation" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "A10", "V4", "T9", "X1", "M1" ],
+  "notes": "왼쪽 표 모양 판: 상태 한 줄 · h2 · 요청 내용 dl(날짜·시각 서울, 인원, 요청 번호 — data-booking) · 다음 행동 하나(오시는 길 — data-next-action). 오른쪽: 다음 일과 그때(data-next-steps · data-when) · 도움(data-help — 전화 tel:, 채널 링크) · 성공 뒤 경험 별점(선택 — data-rating-ask, 고른 것 없이 시작 T9, 고르면 고맙다는 한 줄, V4: 성공 뒤에만). 자체 예약 시스템 없음(대표 Q13 — 링크 + 문의 폼 뒤 화면). 계측(선택): cta_click"
+}

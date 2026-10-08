@@ -1,0 +1,65 @@
+{
+  "id": "anthracitestudio-be",
+  "archetype": "portfolio",
+  "sourceGallery": "cssda",
+  "url": "https://anthracitestudio.be/en",
+  "structure": {
+    "hero": "남색에 가까운 검은 면, 세리프 제목에 파란 하이라이트 두 구절, 아래 ASCII 문자 일러스트",
+    "sections": [
+      "검은 상자 헤더(로고·상호·햄버거)와 FR/EN 전환",
+      "세리프 대형 제목(파란 하이라이트)",
+      "소개 문장과 이메일·프로젝트 보기 버튼",
+      "배경 ASCII 문자 손 일러스트",
+      "쿠키 동의 카드(좌하단)"
+    ]
+  },
+  "type": {
+    "display": "좁은 세리프 디스플레이 대형 + 흰 글자 파란 면 하이라이트",
+    "body": "둥근 산세리프 중형 소개 + 모노스페이스 대문자 버튼",
+    "scale": "제목 대형, 소개 중형, 버튼 모노 소형"
+  },
+  "colorLogic": "K9",
+  "motion": {
+    "entrance": "검은 화면에 상호 문구가 글자 섞임 효과로 약 1.75초 타이핑된 뒤 본 화면이 약 0.5초에 나타남",
+    "scroll": null,
+    "hover": null,
+    "transition": "ASCII 일러스트가 약 2초 동안 서서히 선명해지고 영상 끝에 픽셀 조각이 번쩍임",
+    "durationsMs": [
+      1750,
+      500,
+      2000
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "타이핑과 일러스트 선명화 시간은 4fps 프레임으로 추정"
+  },
+  "interaction": [
+    "언어 전환 FR/EN",
+    "이메일 보내기 외곽선 버튼",
+    "프로젝트 보기 밑줄 링크",
+    "쿠키 수락·거부",
+    "햄버거 메뉴"
+  ],
+  "cta": {
+    "pattern": "외곽선 EMAIL ME 버튼과 밑줄 링크 SEE THE PROJECTS",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "portfolio"
+    ],
+    "score": 0.85
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "글자가 섞였다 풀리는 타이핑 인트로가 첫 2초에 정체성을 심어 준다",
+    "제목 일부 구절에 파란 면을 칠해 두 군데 강조만으로 위계를 만든다",
+    "배경을 문자로 그린 일러스트로 채워 이미지 없이도 기술 분위기를 만든다",
+    "모노스페이스 외곽선 버튼과 세리프 제목 대비가 개성 있는 짝이 된다",
+    "모바일은 제목을 세 줄로 쌓고 쿠키 카드가 하단 절반 가까이 덮는다"
+  ]
+}

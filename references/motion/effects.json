@@ -1,0 +1,5459 @@
+{
+ "_schema": {
+  "generated": "2026-10-03",
+  "lane": "MOTRES",
+  "note": "parameters 의 수치는 [min,max] 범위, durationMs 단위 ms, stagger 단위 s. examples 는 ref·태그·우리 말 요약만 — 원본 URL·제목·작성자는 저장소 밖 design-rules/factory/motion/cases.jsonl 에서 같은 ref 로 찾는다(원문·코드 복사 없음). seenVia=search 는 검색 결과의 URL·제목·스니펫으로 확인, fetch 는 페이지를 열어 확인.",
+  "gsapLicense": "GSAP 3.13 이후 SplitText·ScrollTrigger·ScrambleText·Flip·CustomEase 등 전 플러그인 무료(https://gsap.com/pricing/). 이 저장소는 gsap 3.15.0 고정, 라이선스는 Standard No Charge License(2025-04-30 발효, 노코드 시각 애니메이션 빌더만 제외)로 docs/qa/motion-licenses.md 에 판정됨.",
+  "factoryGate": "공장 기준 = DESIGN.md §8(모션)·§8-6(역동 기법 표)·§8-7(접근성 바닥선). tier: baseline=모션 강도 M1~M2 에서 기본 허용 / dynamic=레시피 dynamics 로 고른 곳에서만(M2~M3) / signature=M3 레시피의 시그니처 1개 한정. dashboardPublic=false 면 dashboard·public 원형에는 쓰지 않는다(§8-6: M3 는 dashboard·public 레시피에 고르지 않음).",
+  "factoryTokens": {
+   "easeOut": "cubic-bezier(.23,1,.32,1)",
+   "emphasized": "cubic-bezier(.2,0,0,1)",
+   "inMove": "cubic-bezier(.77,0,.175,1)",
+   "exit": "cubic-bezier(.4,0,1,1)",
+   "sheet": "cubic-bezier(.32,.72,0,1)",
+   "source": "DESIGN.md §8-2"
+  }
+ },
+ "priorities": {
+  "_note": "MOTRES 제안(컨트롤러 판단용). 순위 기준: 운영자가 지적한 약점(실사 배경·영상·모션 그래픽) 해소 효과 / 공장 기준(DESIGN §8) 안에서 안전한가 / 키트에 이미 있는가 / 성능·접근성 위험. M 수준은 motion-scale.ts 의 M0~M3.",
+  "items": [
+   {
+    "rank": 1,
+    "effect": "ken-burns",
+    "pair": "fullbleed 사진 히어로 배경(켄 번스)",
+    "archetypes": [
+     "local",
+     "public",
+     "brand",
+     "commerce"
+    ],
+    "where": "첫 화면 배경 + 소개 섹션 배경",
+    "level": "M1~M2",
+    "kitWork": "ambientDrift 위에 kenBurns 도우미(방향 교대·크로스페이드·reduced-motion 정지·정지 버튼)",
+    "why": "영상보다 용량이 훨씬 작고 public·local 에서도 baseline 으로 허용. 실사 사진 활용이 약하다는 지적을 가장 싸게 해소. 호버 확대는 공장 규칙 위반이라 배경에만."
+   },
+   {
+    "rank": 2,
+    "effect": "fullbleed-video-hero(영상 배경 히어로 보강)",
+    "pair": "기존 MediaVideo(포스터+visible·reduced-motion 재생) 위에 정지 컨트롤·save-data·AV1·스크림 추가",
+    "archetypes": [
+     "brand",
+     "local",
+     "public",
+     "commerce",
+     "portfolio"
+    ],
+    "where": "첫 화면(히어로 블록 banded-full-bleed 계열)",
+    "level": "M1~M3",
+    "kitWork": "registry/factory/blocks/_shared/hero-media.tsx 의 MediaVideo 는 이미 포스터 우선·muted loop playsInline·preload none·화면 안/탭 보임/동작 줄이기 아님일 때만 재생을 한다. 빠진 것(이 파일과 banded-full-bleed.tsx 에서 찾지 못함): ① 5초 넘는 루프의 사용자 정지 버튼(WCAG 2.2.2·DESIGN §8-7 MUST) ② save-data·저사양 조건 ③ AV1 소스 우선순위(현재 mp4+webm) ④ 글자 대비용 스크림 ⑤ 용량 예산 ≤3MB 검사",
+    "why": "영상 배경 히어로 사례가 가장 흔한 구성(영상·사진 배경 사례 265건 중 71건)이고 키트에 기반이 있어 보강 비용이 작다. 규칙 위반(정지 컨트롤 부재)을 먼저 메운다."
+   },
+   {
+    "rank": 3,
+    "effect": "kinetic-typography + text-mask-reveal",
+    "pair": "히어로 헤드라인 글자·줄 리빌(1.2s 이내) + data-enter=keep",
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "local"
+    ],
+    "where": "첫 화면 헤드라인",
+    "level": "M2~M3",
+    "kitWork": "splitReveal 에 워드 롤링·가변 폰트 굵기 펄스 추가, autoSplit 재분할, 서버 렌더 텍스트 유지",
+    "why": "사례 220건으로 가장 풍부. 키트에 splitReveal·variableAxis 가 이미 있어 확장 비용이 작다. C173·C233 의 LCP 실패를 피하는 규칙을 부품에 넣는다."
+   },
+   {
+    "rank": 4,
+    "effect": "lower-third",
+    "pair": "영상 히어로 위 하단 캡션 띠",
+    "archetypes": [
+     "brand",
+     "public",
+     "local",
+     "commerce"
+    ],
+    "where": "영상 히어로·사례 영상 카드",
+    "level": "M1~M2",
+    "kitWork": "LowerThird 부품(막대→이름→역할 스태거, 진입 400~700ms·유지 3~6s·퇴장 250~450ms, 4.5:1 스크림, 텍스트 대체)",
+    "why": "운영자 요청 8효과 중 키트에 전혀 없는 것. 사례 61건 중 진입·유지·퇴장 수치 기준이 선명한 규칙 문서가 있다."
+   },
+   {
+    "rank": 5,
+    "effect": "video-mask-typography",
+    "pair": "대형 글자 안에 영상·사진",
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "local"
+    ],
+    "where": "첫 화면 시그니처(레시피당 1개)",
+    "level": "M3",
+    "kitWork": "SVG mask + video + 투명 실제 h1, 스크롤 확대 전환은 선택",
+    "why": "'실사 영상 활용'을 가장 눈에 띄게 보여주는 단일 장면. background-clip:text 로는 영상이 안 되므로 SVG mask 방식을 부품에 고정."
+   },
+   {
+    "rank": 6,
+    "effect": "scroll-scrubbed-video(프레임 시퀀스)",
+    "pair": "핀 구간 + WebP 60~150프레임 캔버스",
+    "archetypes": [
+     "saas",
+     "commerce",
+     "detail",
+     "brand"
+    ],
+    "where": "제품 상세·기능 소개 한 구간",
+    "level": "M3",
+    "kitWork": "FrameSequence 부품(프리로드·aria-hidden 캔버스·reduced-motion 첫 프레임)",
+    "why": "애플식 제품 연출. 영상 currentTime 직접 스크럽은 끊기므로 프레임 방식이 안전. 용량 3~5MB 예산이 필요해 첫 화면 밖."
+   },
+   {
+    "rank": 7,
+    "effect": "page-transition / whip-pan",
+    "pair": "View Transitions 240~400ms(baseline) + 방향 블러 휩 팬(M3)",
+    "archetypes": [
+     "portfolio",
+     "commerce",
+     "saas",
+     "detail",
+     "pwa"
+    ],
+    "where": "목록→상세, 섹션 전환",
+    "level": "M1~M3",
+    "kitWork": "viewTransition 위에 공유 요소 규약, whipPan 전환(SVG feGaussianBlur)",
+    "why": "휩 팬은 키트에 없고 페이지 전환은 있다. 미지원 브라우저는 즉시 전환으로 점진적 향상."
+   },
+   {
+    "rank": 8,
+    "effect": "punch-in",
+    "pair": "사진·영상 레이어 급확대 컷 + 수치 강조",
+    "archetypes": [
+     "brand",
+     "commerce"
+    ],
+    "where": "하이라이트 한 곳",
+    "level": "M2~M3",
+    "kitWork": "punchIn 도우미(텍스트 scale 1.1~1.3 상한, 이미지 1.4~2.5)",
+    "why": "역동성 체감이 크지만 텍스트 급확대는 공장 규칙(읽히는 크기) 위반이라 이미지·영상 컷에 한정."
+   },
+   {
+    "rank": 9,
+    "effect": "stagger + sticky-stacking-cards + marquee",
+    "pair": "카드 그리드(≤8개 개별)·스티키 스택·마키 띠",
+    "archetypes": [
+     "saas",
+     "commerce",
+     "dashboard",
+     "portfolio",
+     "brand"
+    ],
+    "where": "기능·사례 섹션",
+    "level": "M1~M2",
+    "kitWork": "rise/clipReveal 에 grid·from:center, 마키 속도 연동",
+    "why": "이미 키트에 있어 위험이 가장 낮다. dashboard 에도 허용되는 유일한 군."
+   },
+   {
+    "rank": 10,
+    "effect": "cinemagraph / duotone-video",
+    "pair": "짧은 루프 한 컷 + 브랜드 색 톤",
+    "archetypes": [
+     "brand",
+     "local",
+     "commerce"
+    ],
+    "where": "섹션 배경·상품 카드",
+    "level": "M2",
+    "kitWork": "CinemagraphLoop 부품(2~4초, 640~1080px, poster=첫 프레임), duotone 오버레이 클래스",
+    "why": "GIF 대신 영상 포맷(자료: 3.7MB→551KB)으로 가볍고 Higgsfield 생성 루프와 잘 맞는다."
+   },
+   {
+    "rank": 11,
+    "effect": "M3 장식군(custom-cursor-morph · hover-image-trail · webgl-distortion · cursor-spotlight-reveal · text-scramble · horizontal-scroll · scroll-velocity-skew · smooth-scroll-inertia)",
+    "pair": "포트폴리오·브랜드 M3 레시피 한정",
+    "archetypes": [
+     "portfolio",
+     "brand"
+    ],
+    "where": "갤러리·목록(첫 화면 밖)",
+    "level": "M3",
+    "kitWork": "레시피 2벌에만 선택 적용, 나머지 기본 제외",
+    "why": "DESIGN §8-1 이 커서 장식을 기본 금지하고 §8-6 이 M3 를 dashboard·public 에서 제외한다. 번들·접근성 비용이 커서 마지막."
+   }
+  ],
+  "avoid": [
+   "카드·이미지 호버 확대(켄 번스 호버 포함) — DESIGN §8-2 위반",
+   "텍스트 급확대 펀치 인(scale 1.4+) — 글자는 읽히는 크기 안에서 강조",
+   "스크롤 하이재킹 스무스 스크롤 기본 탑재 — 키보드·접근성 위험",
+   "소리 있는 자동재생·5초 초과 영상의 정지 컨트롤 누락"
+  ]
+ },
+ "effects": [
+  {
+   "id": "kinetic-typography",
+   "name": "Kinetic Typography",
+   "ko": "키네틱 타이포그래피",
+   "what": "글자·단어·줄이 이동·크기·회전·굵기 변화로 움직이며 문장의 의미와 리듬을 직접 전하는 타이포 연출.",
+   "whereOnWeb": [
+    "히어로 헤드라인 진입",
+    "프리로더·인트로 타이틀 시퀀스",
+    "섹션 사이 대형 문구 전환",
+    "스크롤 연동 문장 리빌(한 줄씩)",
+    "영상 배경 위 슬로건"
+   ],
+   "parameters": {
+    "durationMs": {
+     "perUnit": [
+      400,
+      900
+     ],
+     "headlineTotalMax": 1200,
+     "showpieceTotalMax": 2000,
+     "note": "공장 기준(DESIGN §8-1): 히어로 전체 등장 1.2s 이내·글자는 읽히는 상태로 시작. 2s 초과는 감점. showpiece 는 모션 강도 M3 레시피 한정."
+    },
+    "easing": [
+     "expo.out",
+     "power4.out",
+     "cubic-bezier(.16,1,.3,1)",
+     "공장 토큰 cubic-bezier(.23,1,.32,1)"
+    ],
+    "stagger": {
+     "chars": [
+      0.02,
+      0.03
+     ],
+     "charsShowpiece": [
+      0.03,
+      0.05
+     ],
+     "words": [
+      0.06,
+      0.12
+     ],
+     "lines": [
+      0.1,
+      0.2
+     ],
+     "unit": "s",
+     "note": "공장 기준 글자 분할 20~30ms(DESIGN §8-3)"
+    },
+    "distance": {
+     "yPercentWithMask": [
+      100,
+      120
+     ],
+     "yPxWithoutMask": [
+      40,
+      120
+     ]
+    },
+    "rotationDeg": [
+     0,
+     15
+    ],
+    "variableFont": {
+     "axes": [
+      "wght",
+      "wdth"
+     ],
+     "note": "가변 폰트 축 보간으로 굵기 펄스"
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "SplitText",
+      "ScrollTrigger"
+     ],
+     "api": [
+      "SplitText.create(el,{type:'chars,words,lines',mask:'lines',autoSplit:true,onSplit(self){return gsap.from(self.chars,{yPercent:110,stagger:0.03,ease:'expo.out'})}})",
+      "gsap.matchMedia()"
+     ],
+     "license": "GSAP 3.13 이후 SplitText 포함 전 플러그인 무료(npm)"
+    },
+    "css": {
+     "api": [
+      "--i 인덱스 + animation-delay: calc(var(--i)*60ms)",
+      "font-variation-settings 키프레임"
+     ],
+     "note": "JS 없이 글자별 지연; 헤드라인 문자열은 서버에서 span 분할"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "prefers-reduced-motion: reduce 이면 최종 상태 즉시 표시(gsap.matchMedia 로 분기)하거나 opacity 만 200ms 이하로 전환. 무한 반복 지터는 끈다.",
+    "screenReader": "SplitText aria:auto 가 부모 aria-label + 자식 aria-hidden 부여; 링크가 섞인 문장은 aria:hidden + 스크린리더 전용 복사본.",
+    "wcag": [
+     "2.2.2 자동 시작 5초 초과 움직임은 정지 수단",
+     "2.3.3 상호작용 유발 모션은 끌 수 있어야 함"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "헤드라인이 LCP 요소다. 초기 opacity:0 + 긴 지연은 LCP 를 늦춘다. 지연 300ms 이하, 가능하면 mask 슬라이드업(transform)으로 시작한다. 이 저장소 실측 선례: 히어로 캡션 글자가 JS 진입(MotionBoot+GSAP) 뒤로 밀려 elementRenderDelay 5.2s·LCP 12~16s(docs/deferred-register.md C173), 요금 카드가 등장 연출에 가려 elementRenderDelay 300ms(C233). 첫 화면 제목·캡션은 서버 렌더 그대로 두고 data-enter=keep 을 쓴다.",
+    "clsRisk": "폰트 로드 뒤 줄바꿈이 바뀌면 재분할로 레이아웃이 튄다. autoSplit:true 로 폰트 로드·폭 변경 시 재분할하고, 컨테이너 min-height 를 예약한다.",
+    "guards": [
+     "transform·opacity 만 애니메이트",
+     "글자 수 200개 초과 시 줄 단위로 분할",
+     "will-change 는 진행 중에만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "local"
+    ],
+    "placement": "첫 화면 히어로 헤드라인 + 섹션 전환"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/SplitText/",
+    "https://gsap.com/pricing/",
+    "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+    "https://web.dev/articles/lcp",
+    "https://web.dev/articles/cls"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "히어로 전체 1.2s 이내, 글자 20~30ms, 한 섹션에 한 번, opacity:0 에서 관찰자 대기 금지(DESIGN §8-1·§8-3). 원문 aria-label·조각 aria-hidden. 2s 이상 대형 연출은 signature(M3)."
+   },
+   "kit": {
+    "status": "partial",
+    "kitTechnique": "splitReveal(type chars|words|lines), variableAxis",
+    "gap": "글자별 3D 회전·워드 롤링·스크롤 연동 문장 읽기 진행"
+   },
+   "examples": [
+    "\u00000\u0000",
+    "\u00001\u0000",
+    "\u00002\u0000",
+    "\u00003\u0000",
+    "\u00004\u0000",
+    "\u00005\u0000",
+    "\u00006\u0000",
+    "\u00007\u0000",
+    "\u00008\u0000",
+    "\u00009\u0000",
+    "\u000010\u0000",
+    "\u000011\u0000",
+    "\u000012\u0000",
+    "\u000013\u0000",
+    "\u000014\u0000",
+    "\u000015\u0000",
+    "\u000016\u0000",
+    "\u000017\u0000",
+    "\u000018\u0000",
+    "\u000019\u0000",
+    "\u000020\u0000",
+    "\u000021\u0000",
+    "\u000022\u0000",
+    "\u000023\u0000",
+    "\u000024\u0000",
+    "\u000025\u0000",
+    "\u000026\u0000",
+    "\u000027\u0000",
+    "\u000028\u0000",
+    "\u000029\u0000",
+    "\u000030\u0000",
+    "\u000031\u0000",
+    "\u000032\u0000",
+    "\u000033\u0000",
+    "\u000034\u0000",
+    "\u000035\u0000",
+    "\u000036\u0000",
+    "\u000037\u0000",
+    "\u000038\u0000",
+    "\u000039\u0000",
+    "\u000040\u0000",
+    "\u000041\u0000",
+    "\u000042\u0000",
+    "\u000043\u0000",
+    "\u000044\u0000",
+    "\u000045\u0000",
+    "\u000046\u0000",
+    "\u000047\u0000",
+    "\u000048\u0000",
+    "\u000049\u0000",
+    "\u000050\u0000",
+    "\u000051\u0000",
+    "\u000052\u0000",
+    "\u000053\u0000",
+    "\u000054\u0000",
+    "\u000055\u0000",
+    "\u000056\u0000",
+    "\u000057\u0000",
+    "\u000058\u0000",
+    "\u000059\u0000",
+    "\u000060\u0000",
+    "\u000061\u0000",
+    "\u000062\u0000",
+    "\u000063\u0000",
+    "\u000064\u0000",
+    "\u000065\u0000",
+    "\u000066\u0000",
+    "\u000067\u0000",
+    "\u000068\u0000",
+    "\u000069\u0000",
+    "\u000070\u0000",
+    "\u000071\u0000",
+    "\u000072\u0000",
+    "\u000073\u0000",
+    "\u000074\u0000",
+    "\u000075\u0000",
+    "\u000076\u0000",
+    "\u000077\u0000",
+    "\u000078\u0000",
+    "\u000079\u0000",
+    "\u000080\u0000",
+    "\u000081\u0000",
+    "\u000082\u0000",
+    "\u000083\u0000",
+    "\u000084\u0000",
+    "\u000085\u0000",
+    "\u000086\u0000",
+    "\u000087\u0000",
+    "\u000088\u0000",
+    "\u000089\u0000",
+    "\u000090\u0000",
+    "\u000091\u0000",
+    "\u000092\u0000",
+    "\u000093\u0000",
+    "\u000094\u0000",
+    "\u000095\u0000",
+    "\u000096\u0000",
+    "\u000097\u0000",
+    "\u000098\u0000",
+    "\u000099\u0000",
+    "\u0000100\u0000",
+    "\u0000101\u0000",
+    "\u0000102\u0000",
+    "\u0000103\u0000",
+    "\u0000104\u0000",
+    "\u0000105\u0000",
+    "\u0000106\u0000",
+    "\u0000107\u0000",
+    "\u0000108\u0000",
+    "\u0000109\u0000",
+    "\u0000110\u0000",
+    "\u0000111\u0000",
+    "\u0000112\u0000",
+    "\u0000113\u0000",
+    "\u0000114\u0000",
+    "\u0000115\u0000",
+    "\u0000116\u0000",
+    "\u0000117\u0000",
+    "\u0000118\u0000",
+    "\u0000119\u0000",
+    "\u0000120\u0000",
+    "\u0000121\u0000",
+    "\u0000122\u0000",
+    "\u0000123\u0000",
+    "\u0000124\u0000",
+    "\u0000125\u0000",
+    "\u0000126\u0000",
+    "\u0000127\u0000",
+    "\u0000128\u0000",
+    "\u0000129\u0000",
+    "\u0000130\u0000",
+    "\u0000131\u0000",
+    "\u0000132\u0000",
+    "\u0000133\u0000",
+    "\u0000134\u0000",
+    "\u0000135\u0000",
+    "\u0000136\u0000",
+    "\u0000137\u0000",
+    "\u0000138\u0000",
+    "\u0000139\u0000",
+    "\u0000140\u0000",
+    "\u0000141\u0000",
+    "\u0000142\u0000",
+    "\u0000143\u0000",
+    "\u0000144\u0000",
+    "\u0000145\u0000",
+    "\u0000146\u0000",
+    "\u0000147\u0000",
+    "\u0000148\u0000",
+    "\u0000149\u0000",
+    "\u0000150\u0000",
+    "\u0000151\u0000",
+    "\u0000152\u0000",
+    "\u0000153\u0000",
+    "\u0000154\u0000",
+    "\u0000155\u0000",
+    "\u0000156\u0000",
+    "\u0000157\u0000",
+    "\u0000158\u0000",
+    "\u0000159\u0000",
+    "\u0000160\u0000",
+    "\u0000161\u0000",
+    "\u0000162\u0000",
+    "\u0000163\u0000",
+    "\u0000164\u0000",
+    "\u0000165\u0000",
+    "\u0000166\u0000",
+    "\u0000167\u0000",
+    "\u0000168\u0000",
+    "\u0000169\u0000",
+    "\u0000170\u0000",
+    "\u0000171\u0000",
+    "\u0000172\u0000",
+    "\u0000173\u0000",
+    "\u0000174\u0000",
+    "\u0000175\u0000",
+    "\u0000176\u0000",
+    "\u0000177\u0000",
+    "\u0000178\u0000",
+    "\u0000179\u0000",
+    "\u0000180\u0000",
+    "\u0000181\u0000",
+    "\u0000182\u0000",
+    "\u0000183\u0000",
+    "\u0000184\u0000",
+    "\u0000185\u0000",
+    "\u0000186\u0000",
+    "\u0000187\u0000",
+    "\u0000188\u0000",
+    "\u0000189\u0000",
+    "\u0000190\u0000",
+    "\u0000191\u0000",
+    "\u0000192\u0000",
+    "\u0000193\u0000",
+    "\u0000194\u0000",
+    "\u0000195\u0000",
+    "\u0000196\u0000",
+    "\u0000197\u0000",
+    "\u0000198\u0000",
+    "\u0000199\u0000",
+    "\u0000200\u0000",
+    "\u0000201\u0000",
+    "\u0000202\u0000",
+    "\u0000203\u0000",
+    "\u0000204\u0000",
+    "\u0000205\u0000",
+    "\u0000206\u0000",
+    "\u0000207\u0000",
+    "\u0000208\u0000",
+    "\u0000209\u0000",
+    "\u0000210\u0000",
+    "\u0000211\u0000",
+    "\u0000212\u0000",
+    "\u0000213\u0000",
+    "\u0000214\u0000",
+    "\u0000215\u0000",
+    "\u0000216\u0000",
+    "\u0000217\u0000",
+    "\u0000218\u0000",
+    "\u0000219\u0000"
+   ],
+   "exampleCount": 220
+  },
+  {
+   "id": "lower-third",
+   "name": "Lower Third",
+   "ko": "로어 서드(하단 캡션 띠)",
+   "what": "화면 아래 3분의 1 영역에 이름·직함·캡션을 띠 형태로 밀어 넣었다 빼는 방송식 정보 바.",
+   "whereOnWeb": [
+    "영상 히어로 위 장면 캡션·출연자 이름",
+    "사례·후기 영상 카드의 화자 소개",
+    "뉴스·공지 티커 띠",
+    "하단 고정 알림·토스트 바",
+    "포트폴리오 프로젝트 이름 띠(호버 시 올라옴)"
+   ],
+   "parameters": {
+    "durationMs": {
+     "in": [
+      400,
+      700
+     ],
+     "hold": [
+      2500,
+      6000
+     ],
+     "out": [
+      250,
+      450
+     ]
+    },
+    "easing": {
+     "in": "power3.out / cubic-bezier(.22,1,.36,1)",
+     "out": "power2.in"
+    },
+    "stagger": {
+     "barThenText": [
+      0.08,
+      0.15
+     ],
+     "unit": "s"
+    },
+    "distance": {
+     "slideInPx": [
+      24,
+      80
+     ],
+     "widthPercentOfViewport": [
+      28,
+      45
+     ],
+     "bottomSafeAreaPercent": [
+      8,
+      15
+     ]
+    },
+    "clipPath": "inset(0 100% 0 0) → inset(0) 로 띠가 펼쳐지는 방식도 가능"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core timeline"
+     ],
+     "api": [
+      "gsap.timeline().from('.bar',{xPercent:-101})",
+      "from('.name',{yPercent:100}) (overflow:hidden 안)",
+      "timeline.delay/ hold 후 reverse()"
+     ]
+    },
+    "css": {
+     "api": [
+      "@keyframes + animation-fill-mode:both",
+      "clip-path:inset()",
+      "transform:translateX()"
+     ],
+     "note": "고정 위치는 position:absolute; bottom 은 safe-area-inset 고려"
+    },
+    "webgl": null,
+    "video": {
+     "note": "영상 currentTime 에 맞춰 표시하려면 video timeupdate/requestVideoFrameCallback 로 큐 포인트 구동; 영상은 자막 트랙과 별개로 접근성 텍스트 제공"
+    }
+   },
+   "a11y": {
+    "reducedMotion": "슬라이드 대신 즉시 표시·페이드(≤150ms). 자동으로 사라지는 정보는 5초 이상 유지하거나 수동 닫기 제공.",
+    "screenReader": "정보 전달용이면 role=status/aria-live=polite 로 텍스트 제공, 영상 속 인물 소개는 영상 설명(트랜스크립트)에 포함.",
+    "wcag": [
+     "2.2.1 시간 제한 조정",
+     "1.2.x 영상 대체 수단",
+     "1.4.3 대비 4.5:1(영상 위 반투명 배경 띠 필수)"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "LCP 와 무관한 오버레이지만 영상 위에 얹히므로 영상 포스터 로드와 같은 시점에 등장시키지 않는다(영상 시작 +0.8s 이후).",
+    "clsRisk": "절대 위치 오버레이라 CLS 위험 낮음. 폭을 vw·% 로 지정하고 폰트 로드 지연으로 띠 높이가 변하지 않게 line-height 고정.",
+    "guards": [
+     "transform·clip-path 만 사용",
+     "모바일에서는 폭 90%·하단 safe-area 확보",
+     "영상 자막과 겹치지 않는 영역 배치"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "public",
+     "local",
+     "commerce"
+    ],
+    "placement": "영상 히어로 하단 캡션, 사례 영상 화자 소개, 공지 띠"
+   },
+   "sources": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path",
+    "https://gsap.com/docs/v3/GSAP/Timeline/"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "영상 위 캡션 띠, 진입 400~700ms ease-out, 4.5:1 대비 스크림 필수. 정보 전달이면 텍스트로도 제공."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "하단 캡션 띠 진입·퇴장 타임라인(영상 큐 연동 포함)"
+   },
+   "examples": [
+    "\u0000220\u0000",
+    "\u0000221\u0000",
+    "\u0000222\u0000",
+    "\u0000223\u0000",
+    "\u0000224\u0000",
+    "\u0000225\u0000",
+    "\u0000226\u0000",
+    "\u0000227\u0000",
+    "\u0000228\u0000",
+    "\u0000229\u0000",
+    "\u0000230\u0000",
+    "\u0000231\u0000",
+    "\u0000232\u0000",
+    "\u0000233\u0000",
+    "\u0000234\u0000",
+    "\u0000235\u0000",
+    "\u0000236\u0000",
+    "\u0000237\u0000",
+    "\u0000238\u0000",
+    "\u0000239\u0000",
+    "\u0000240\u0000",
+    "\u0000241\u0000",
+    "\u0000242\u0000",
+    "\u0000243\u0000",
+    "\u0000244\u0000",
+    "\u0000245\u0000",
+    "\u0000246\u0000",
+    "\u0000247\u0000",
+    "\u0000248\u0000",
+    "\u0000249\u0000",
+    "\u0000250\u0000",
+    "\u0000251\u0000",
+    "\u0000252\u0000",
+    "\u0000253\u0000",
+    "\u0000254\u0000",
+    "\u0000255\u0000",
+    "\u0000256\u0000",
+    "\u0000257\u0000",
+    "\u0000258\u0000",
+    "\u0000259\u0000",
+    "\u0000260\u0000",
+    "\u0000261\u0000",
+    "\u0000262\u0000",
+    "\u0000263\u0000",
+    "\u0000264\u0000",
+    "\u0000265\u0000",
+    "\u0000266\u0000",
+    "\u0000267\u0000",
+    "\u0000268\u0000",
+    "\u0000269\u0000",
+    "\u0000270\u0000",
+    "\u0000271\u0000",
+    "\u0000272\u0000",
+    "\u0000273\u0000",
+    "\u0000274\u0000",
+    "\u0000275\u0000",
+    "\u0000276\u0000",
+    "\u0000277\u0000",
+    "\u0000278\u0000",
+    "\u0000279\u0000",
+    "\u0000280\u0000"
+   ],
+   "exampleCount": 61
+  },
+  {
+   "id": "ken-burns",
+   "name": "Ken Burns Effect",
+   "ko": "켄 번스 효과(정지 사진 줌·팬)",
+   "what": "정지 사진을 천천히 확대·축소하며 한쪽으로 팬해 다큐멘터리처럼 생동감을 주는 효과.",
+   "whereOnWeb": [
+    "풀블리드 사진 히어로 슬라이드쇼",
+    "기관·지역 업장 소개의 실사 배경",
+    "스크롤 연동 사진 스토리(스크럽 줌)",
+    "로딩 중 포스터 이미지 생동감"
+   ],
+   "avoid": [
+    "카드·이미지 호버 확대(공장 규칙 DESIGN §8-2: 카드·이미지·버튼 hover 에서 크기를 키우지 않는다) — 켄 번스는 히어로·섹션 배경에만"
+   ],
+   "parameters": {
+    "durationMs": {
+     "perSlide": [
+      6000,
+      12000
+     ],
+     "crossfade": [
+      800,
+      1500
+     ]
+    },
+    "easing": [
+     "linear",
+     "sine.inOut",
+     "cubic-bezier(.37,0,.63,1)"
+    ],
+    "stagger": null,
+    "distance": {
+     "scaleFrom": 1,
+     "scaleTo": [
+      1.08,
+      1.2
+     ],
+     "panPercent": [
+      2,
+      6
+     ]
+    },
+    "direction": "슬라이드마다 줌인/줌아웃·팬 방향을 번갈아",
+    "imageMinWidthPx": 2400
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "gsap.fromTo(img,{scale:1},{scale:1.12,x:'-3%',duration:10,ease:'none'})",
+      "ScrollTrigger scrub 으로 스크롤 연동"
+     ]
+    },
+    "css": {
+     "api": [
+      "@keyframes kb { to { transform: scale(1.12) translate(-2%,-2%) } }",
+      "animation-timing-function:linear",
+      "object-fit:cover + overflow:hidden 컨테이너"
+     ],
+     "note": "CSS 만으로 충분, 이미지는 컨테이너보다 스케일 여유"
+    },
+    "webgl": null,
+    "video": {
+     "note": "사진 대신 영상은 코덱 부담, 정지 사진 켄 번스는 영상 대비 용량 1/10 이하"
+    }
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 정적 이미지(첫 프레임)만 표시. 확대·팬은 전정기관 자극 유발 가능(MDN 경고: 큰 객체 스케일·패닝).",
+    "screenReader": "의미 있는 사진은 alt, 장식이면 alt=''.",
+    "wcag": [
+     "2.2.2 5초 초과 자동 움직임은 일시정지 수단",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "첫 이미지가 LCP. fetchpriority=high·적절한 srcset·AVIF/WebP, 줌 시작 전 이미지가 이미 그려져야 한다.",
+    "clsRisk": "이미지에 width/height 또는 aspect-ratio 를 고정.",
+    "guards": [
+     "transform:scale 만 사용(top/left·width 금지)",
+     "화면 밖 슬라이드는 애니메이션 정지(IntersectionObserver)",
+     "이미지 2400px 이하, 슬라이드 4장 이내"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "local",
+     "public",
+     "brand",
+     "commerce"
+    ],
+    "placement": "첫 화면 실사 배경 + 섹션 배경"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion",
+    "https://web.dev/articles/lcp",
+    "https://web.dev/articles/cls",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "히어로·섹션 배경에만. 카드·이미지 호버 확대 금지(DESIGN §8-2). 주기 6~12s 앰비언트로 취급하고 5초 초과이므로 정지 컨트롤·reduced-motion 정지(WCAG 2.2.2)."
+   },
+   "kit": {
+    "status": "partial",
+    "kitTechnique": "ambientDrift(x,y,rotate,scale,duration)",
+    "gap": "슬라이드쇼 크로스페이드·방향 교대·reduced-motion 정지를 묶은 켄 번스 전용 도우미"
+   },
+   "examples": [
+    "\u0000281\u0000",
+    "\u0000282\u0000",
+    "\u0000283\u0000",
+    "\u0000284\u0000",
+    "\u0000285\u0000",
+    "\u0000286\u0000",
+    "\u0000287\u0000",
+    "\u0000288\u0000",
+    "\u0000289\u0000",
+    "\u0000290\u0000",
+    "\u0000291\u0000",
+    "\u0000292\u0000",
+    "\u0000293\u0000",
+    "\u0000294\u0000",
+    "\u0000295\u0000",
+    "\u0000296\u0000",
+    "\u0000297\u0000",
+    "\u0000298\u0000",
+    "\u0000299\u0000",
+    "\u0000300\u0000",
+    "\u0000301\u0000",
+    "\u0000302\u0000",
+    "\u0000303\u0000",
+    "\u0000304\u0000",
+    "\u0000305\u0000",
+    "\u0000306\u0000",
+    "\u0000307\u0000",
+    "\u0000308\u0000",
+    "\u0000309\u0000",
+    "\u0000310\u0000",
+    "\u0000311\u0000",
+    "\u0000312\u0000",
+    "\u0000313\u0000",
+    "\u0000314\u0000",
+    "\u0000315\u0000",
+    "\u0000316\u0000",
+    "\u0000317\u0000",
+    "\u0000318\u0000",
+    "\u0000319\u0000",
+    "\u0000320\u0000",
+    "\u0000321\u0000",
+    "\u0000322\u0000",
+    "\u0000323\u0000",
+    "\u0000324\u0000",
+    "\u0000325\u0000",
+    "\u0000326\u0000",
+    "\u0000327\u0000",
+    "\u0000328\u0000",
+    "\u0000329\u0000",
+    "\u0000330\u0000",
+    "\u0000331\u0000",
+    "\u0000332\u0000",
+    "\u0000333\u0000",
+    "\u0000334\u0000",
+    "\u0000335\u0000",
+    "\u0000336\u0000",
+    "\u0000337\u0000",
+    "\u0000338\u0000",
+    "\u0000339\u0000",
+    "\u0000340\u0000",
+    "\u0000341\u0000",
+    "\u0000342\u0000",
+    "\u0000343\u0000",
+    "\u0000344\u0000",
+    "\u0000345\u0000",
+    "\u0000346\u0000",
+    "\u0000347\u0000",
+    "\u0000348\u0000",
+    "\u0000349\u0000",
+    "\u0000350\u0000",
+    "\u0000351\u0000",
+    "\u0000352\u0000",
+    "\u0000353\u0000",
+    "\u0000354\u0000",
+    "\u0000355\u0000",
+    "\u0000356\u0000",
+    "\u0000357\u0000",
+    "\u0000358\u0000",
+    "\u0000359\u0000",
+    "\u0000360\u0000",
+    "\u0000361\u0000",
+    "\u0000362\u0000",
+    "\u0000363\u0000",
+    "\u0000364\u0000",
+    "\u0000365\u0000",
+    "\u0000366\u0000",
+    "\u0000367\u0000",
+    "\u0000368\u0000",
+    "\u0000369\u0000",
+    "\u0000370\u0000",
+    "\u0000371\u0000",
+    "\u0000372\u0000",
+    "\u0000373\u0000",
+    "\u0000374\u0000",
+    "\u0000375\u0000",
+    "\u0000376\u0000",
+    "\u0000377\u0000",
+    "\u0000378\u0000",
+    "\u0000379\u0000",
+    "\u0000380\u0000",
+    "\u0000381\u0000",
+    "\u0000382\u0000",
+    "\u0000383\u0000",
+    "\u0000384\u0000",
+    "\u0000385\u0000",
+    "\u0000386\u0000",
+    "\u0000387\u0000",
+    "\u0000388\u0000",
+    "\u0000389\u0000",
+    "\u0000390\u0000"
+   ],
+   "exampleCount": 110
+  },
+  {
+   "id": "punch-in",
+   "name": "Punch-in",
+   "ko": "펀치 인(급확대 임팩트)",
+   "what": "요소를 순간적으로 크게 확대(또는 큰 크기에서 제자리로 슬램)해 충격·강조를 주는 컷 효과.",
+   "whereOnWeb": [
+    "히어로 핵심 문구 슬램 등장",
+    "수치·가격 강조(카운트 완료 순간)",
+    "CTA 버튼 팝",
+    "스크롤 연동 사진 컷 전환의 급줌",
+    "영상 하이라이트 구간 강조"
+   ],
+   "parameters": {
+    "durationMs": {
+     "in": [
+      180,
+      450
+     ],
+     "settle": [
+      250,
+      500
+     ]
+    },
+    "easing": [
+     "back.out(1.7)",
+     "expo.out",
+     "power4.out",
+     "cubic-bezier(.34,1.56,.64,1)"
+    ],
+    "stagger": {
+     "words": [
+      0.05,
+      0.1
+     ],
+     "unit": "s"
+    },
+    "distance": {
+     "textScaleFrom": [
+      1.1,
+      1.3
+     ],
+     "imageOrVideoScaleFrom": [
+      1.4,
+      2.5
+     ],
+     "scaleTo": 1,
+     "overshoot": [
+      1.04,
+      1.1
+     ],
+     "note": "글자는 읽히는 크기 안에서 강조(DESIGN §8-6): 텍스트 시작 scale 1.1~1.3. 급확대(1.4~2.5)는 사진·영상 레이어 컷에만."
+    },
+    "shake": "선택: 6~12px 이내 짧은 흔들림 ≤120ms"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core",
+      "CustomEase(선택)"
+     ],
+     "api": [
+      "gsap.from(el,{scale:2,opacity:0,duration:0.35,ease:'expo.out'})",
+      "tl.to(el,{scale:1.06,duration:0.08}).to(el,{scale:1,duration:0.2,ease:'back.out(2)'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "@keyframes punch {0%{transform:scale(2);opacity:0}100%{transform:scale(1);opacity:1}}",
+      "animation-timing-function: cubic-bezier(.16,1,.3,1)"
+     ],
+     "note": "한 번만 재생(animation-iteration-count:1)"
+    },
+    "webgl": null,
+    "video": {
+     "note": "영상 편집의 펀치 인 = 크롭 확대. 웹에서는 video 요소에 transform:scale 로 구현 가능"
+    }
+   },
+   "a11y": {
+    "reducedMotion": "scale 변화 없이 opacity 전환만. 급격한 확대는 전정기관 자극 유발 가능.",
+    "screenReader": "의미 변화가 없는 시각 효과, 포커스 이동 없음.",
+    "wcag": [
+     "2.3.3",
+     "2.3.1 초당 3회 초과 점멸 금지(연속 펀치 반복 금지)"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "LCP 텍스트에 scale 2 이상 시작을 쓰면 첫 페인트가 가려질 수 있다 → 첫 화면에서는 scale 1.2 이하 또는 mask 로 대체.",
+    "clsRisk": "transform 이라 CLS 없음. 겹침 방지를 위해 부모 overflow:hidden.",
+    "guards": [
+     "한 화면에 동시 펀치 3개 이하",
+     "같은 요소 반복 재생 금지",
+     "확대 시 래스터 흐림 방지: 원본을 최종 크기 기준으로 렌더, will-change 짧게"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "commerce",
+     "saas"
+    ],
+    "placement": "히어로 키워드 1개 + 가격·수치 강조"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Eases/",
+    "https://gsap.com/docs/v3/Eases/CustomEase/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "텍스트는 읽히는 크기 안에서만(시작 scale 1.1~1.3). 1.4배 이상 급확대는 사진·영상 레이어 컷에만, 페이지당 1~2곳."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "scale 슬램 + 오버슈트 안착, 사진·영상 레이어 컷 확대"
+   },
+   "examples": [
+    "\u0000391\u0000",
+    "\u0000392\u0000",
+    "\u0000393\u0000",
+    "\u0000394\u0000",
+    "\u0000395\u0000",
+    "\u0000396\u0000",
+    "\u0000397\u0000",
+    "\u0000398\u0000",
+    "\u0000399\u0000",
+    "\u0000400\u0000",
+    "\u0000401\u0000",
+    "\u0000402\u0000",
+    "\u0000403\u0000",
+    "\u0000404\u0000",
+    "\u0000405\u0000",
+    "\u0000406\u0000",
+    "\u0000407\u0000",
+    "\u0000408\u0000",
+    "\u0000409\u0000",
+    "\u0000410\u0000",
+    "\u0000411\u0000",
+    "\u0000412\u0000",
+    "\u0000413\u0000",
+    "\u0000414\u0000",
+    "\u0000415\u0000",
+    "\u0000416\u0000",
+    "\u0000417\u0000",
+    "\u0000418\u0000",
+    "\u0000419\u0000",
+    "\u0000420\u0000",
+    "\u0000421\u0000",
+    "\u0000422\u0000",
+    "\u0000423\u0000",
+    "\u0000424\u0000",
+    "\u0000425\u0000",
+    "\u0000426\u0000",
+    "\u0000427\u0000",
+    "\u0000428\u0000",
+    "\u0000429\u0000",
+    "\u0000430\u0000",
+    "\u0000431\u0000",
+    "\u0000432\u0000",
+    "\u0000433\u0000",
+    "\u0000434\u0000",
+    "\u0000435\u0000",
+    "\u0000436\u0000",
+    "\u0000437\u0000",
+    "\u0000438\u0000",
+    "\u0000439\u0000",
+    "\u0000440\u0000",
+    "\u0000441\u0000",
+    "\u0000442\u0000",
+    "\u0000443\u0000",
+    "\u0000444\u0000",
+    "\u0000445\u0000",
+    "\u0000446\u0000",
+    "\u0000447\u0000",
+    "\u0000448\u0000",
+    "\u0000449\u0000",
+    "\u0000450\u0000",
+    "\u0000451\u0000",
+    "\u0000452\u0000",
+    "\u0000453\u0000",
+    "\u0000454\u0000",
+    "\u0000455\u0000",
+    "\u0000456\u0000",
+    "\u0000457\u0000",
+    "\u0000458\u0000",
+    "\u0000459\u0000"
+   ],
+   "exampleCount": 69
+  },
+  {
+   "id": "stagger",
+   "name": "Stagger",
+   "ko": "스태거(순차 지연)",
+   "what": "여러 요소에 시작 시간을 조금씩 어긋나게 줘서 파도처럼 순서대로 움직이게 하는 방식.",
+   "whereOnWeb": [
+    "카드·리스트 그리드 진입",
+    "내비게이션 메뉴 항목 순차 등장",
+    "텍스트 글자·단어 순차 리빌",
+    "로고 월·이미지 갤러리 격자 물결",
+    "스크롤 진입 시 섹션 구성요소"
+   ],
+   "parameters": {
+    "durationMs": {
+     "perItem": [
+      400,
+      800
+     ],
+     "totalMax": 1200
+    },
+    "easing": [
+     "power3.out",
+     "expo.out",
+     "cubic-bezier(.22,1,.36,1)"
+    ],
+    "stagger": {
+     "each": [
+      0.03,
+      0.08
+     ],
+     "eachShowpiece": [
+      0.08,
+      0.12
+     ],
+     "from": [
+      "start",
+      "center",
+      "edges",
+      "random",
+      "end"
+     ],
+     "grid": "[행,열] 로 2차원 물결",
+     "ease": "스태거 간격 자체에 이즈 적용 가능",
+     "unit": "s",
+     "note": "공장 기준(DESIGN §8-3): 형제 30~80ms, 카드·리스트 기본 60ms, 방향은 한 줄기"
+    },
+    "distance": {
+     "yPx": [
+      8,
+      24
+     ],
+     "yPxLargeCards": [
+      32,
+      64
+     ],
+     "xPx": [
+      16,
+      48
+     ]
+    },
+    "maxItemsAnimated": 8,
+    "overflowRule": "9개 이상은 묶어서 한 번에(ScrollTrigger.batch), 개별 스태거 8개까지(DESIGN §8-2)"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core",
+      "ScrollTrigger.batch()"
+     ],
+     "api": [
+      "gsap.from(items,{y:32,opacity:0,stagger:{each:0.08,from:'start',grid:'auto'}})",
+      "ScrollTrigger.batch('.card',{onEnter:b=>gsap.from(b,{y:32,opacity:0,stagger:0.1})})"
+     ]
+    },
+    "css": {
+     "api": [
+      "animation-delay: calc(var(--i) * 80ms)",
+      "(실험) sibling-index()·sibling-count() 지원 브라우저에서 --i 불필요(확인 필요)"
+     ],
+     "note": "항목 수 고정이면 CSS 만으로 충분"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "지연 0 으로 한꺼번에 표시하거나 opacity 만 짧게. 순차 등장하는 콘텐츠도 DOM 순서는 읽기 순서와 같게 유지.",
+    "screenReader": "시각 지연이 읽기 순서를 바꾸지 않게 한다.",
+    "wcag": [
+     "1.3.2 의미 있는 순서",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "첫 화면 카드가 LCP 인 경우 stagger 지연이 LCP 를 늦춘다 → 첫 화면은 최대 지연 합 300ms 이하, 화면 밖은 스크롤 진입 때 시작.",
+    "clsRisk": "등장 전에도 자리를 차지하게(visibility/opacity 만 변경, display:none 금지).",
+    "guards": [
+     "총 시간 상한 1.2s(항목이 많으면 each 를 줄임)",
+     "8개 초과 항목은 배치(ScrollTrigger.batch)로 묶어 한 번에",
+     "transform·opacity 만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "saas",
+     "commerce",
+     "dashboard",
+     "brand",
+     "portfolio"
+    ],
+    "placement": "카드·기능 그리드·리스트 진입"
+   },
+   "sources": [
+    "https://gsap.com/resources/getting-started/Staggers/",
+    "https://gsap.com/docs/v3/GSAP/Tween/",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.batch()"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "형제 30~80ms(기본 60ms), 개별 8개까지·초과는 묶음, 목록이 목록으로 나타날 때만, 스크롤 등장은 마케팅 면에만·한 번(DESIGN §8-1·§8-2)."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "rise(stagger), clipReveal(stagger), splitReveal(stagger)",
+    "gap": "grid·from:center 분배"
+   },
+   "examples": [
+    "\u0000460\u0000",
+    "\u0000461\u0000",
+    "\u0000462\u0000",
+    "\u0000463\u0000",
+    "\u0000464\u0000",
+    "\u0000465\u0000",
+    "\u0000466\u0000",
+    "\u0000467\u0000",
+    "\u0000468\u0000",
+    "\u0000469\u0000",
+    "\u0000470\u0000",
+    "\u0000471\u0000",
+    "\u0000472\u0000",
+    "\u0000473\u0000",
+    "\u0000474\u0000",
+    "\u0000475\u0000",
+    "\u0000476\u0000",
+    "\u0000477\u0000",
+    "\u0000478\u0000",
+    "\u0000479\u0000",
+    "\u0000480\u0000",
+    "\u0000481\u0000",
+    "\u0000482\u0000",
+    "\u0000483\u0000",
+    "\u0000484\u0000",
+    "\u0000485\u0000",
+    "\u0000486\u0000",
+    "\u0000487\u0000",
+    "\u0000488\u0000",
+    "\u0000489\u0000",
+    "\u0000490\u0000",
+    "\u0000491\u0000",
+    "\u0000492\u0000",
+    "\u0000493\u0000",
+    "\u0000494\u0000",
+    "\u0000495\u0000",
+    "\u0000496\u0000",
+    "\u0000497\u0000",
+    "\u0000498\u0000",
+    "\u0000499\u0000",
+    "\u0000500\u0000",
+    "\u0000501\u0000",
+    "\u0000502\u0000",
+    "\u0000503\u0000",
+    "\u0000504\u0000",
+    "\u0000505\u0000",
+    "\u0000506\u0000",
+    "\u0000507\u0000",
+    "\u0000508\u0000",
+    "\u0000509\u0000",
+    "\u0000510\u0000",
+    "\u0000511\u0000",
+    "\u0000512\u0000",
+    "\u0000513\u0000",
+    "\u0000514\u0000",
+    "\u0000515\u0000",
+    "\u0000516\u0000",
+    "\u0000517\u0000",
+    "\u0000518\u0000",
+    "\u0000519\u0000",
+    "\u0000520\u0000",
+    "\u0000521\u0000",
+    "\u0000522\u0000",
+    "\u0000523\u0000",
+    "\u0000524\u0000",
+    "\u0000525\u0000",
+    "\u0000526\u0000",
+    "\u0000527\u0000",
+    "\u0000528\u0000",
+    "\u0000529\u0000",
+    "\u0000530\u0000",
+    "\u0000531\u0000",
+    "\u0000532\u0000",
+    "\u0000533\u0000",
+    "\u0000534\u0000",
+    "\u0000535\u0000",
+    "\u0000536\u0000",
+    "\u0000537\u0000",
+    "\u0000538\u0000",
+    "\u0000539\u0000",
+    "\u0000540\u0000",
+    "\u0000541\u0000",
+    "\u0000542\u0000",
+    "\u0000543\u0000",
+    "\u0000544\u0000",
+    "\u0000545\u0000",
+    "\u0000546\u0000",
+    "\u0000547\u0000",
+    "\u0000548\u0000",
+    "\u0000549\u0000",
+    "\u0000550\u0000",
+    "\u0000551\u0000",
+    "\u0000552\u0000",
+    "\u0000553\u0000",
+    "\u0000554\u0000",
+    "\u0000555\u0000",
+    "\u0000556\u0000",
+    "\u0000557\u0000",
+    "\u0000558\u0000",
+    "\u0000559\u0000",
+    "\u0000560\u0000",
+    "\u0000561\u0000",
+    "\u0000562\u0000",
+    "\u0000563\u0000",
+    "\u0000564\u0000",
+    "\u0000565\u0000",
+    "\u0000566\u0000",
+    "\u0000567\u0000",
+    "\u0000568\u0000",
+    "\u0000569\u0000",
+    "\u0000570\u0000",
+    "\u0000571\u0000",
+    "\u0000572\u0000",
+    "\u0000573\u0000",
+    "\u0000574\u0000",
+    "\u0000575\u0000",
+    "\u0000576\u0000",
+    "\u0000577\u0000",
+    "\u0000578\u0000",
+    "\u0000579\u0000",
+    "\u0000580\u0000",
+    "\u0000581\u0000",
+    "\u0000582\u0000",
+    "\u0000583\u0000",
+    "\u0000584\u0000",
+    "\u0000585\u0000",
+    "\u0000586\u0000",
+    "\u0000587\u0000",
+    "\u0000588\u0000",
+    "\u0000589\u0000",
+    "\u0000590\u0000",
+    "\u0000591\u0000",
+    "\u0000592\u0000",
+    "\u0000593\u0000",
+    "\u0000594\u0000",
+    "\u0000595\u0000",
+    "\u0000596\u0000",
+    "\u0000597\u0000",
+    "\u0000598\u0000",
+    "\u0000599\u0000",
+    "\u0000600\u0000",
+    "\u0000601\u0000",
+    "\u0000602\u0000",
+    "\u0000603\u0000",
+    "\u0000604\u0000",
+    "\u0000605\u0000",
+    "\u0000606\u0000",
+    "\u0000607\u0000",
+    "\u0000608\u0000",
+    "\u0000609\u0000",
+    "\u0000610\u0000",
+    "\u0000611\u0000",
+    "\u0000612\u0000",
+    "\u0000613\u0000",
+    "\u0000614\u0000",
+    "\u0000615\u0000",
+    "\u0000616\u0000",
+    "\u0000617\u0000",
+    "\u0000618\u0000",
+    "\u0000619\u0000",
+    "\u0000620\u0000",
+    "\u0000621\u0000",
+    "\u0000622\u0000",
+    "\u0000623\u0000",
+    "\u0000624\u0000",
+    "\u0000625\u0000"
+   ],
+   "exampleCount": 166
+  },
+  {
+   "id": "whip-pan",
+   "name": "Whip Pan Transition",
+   "ko": "휩 팬(빠른 패닝 전환)",
+   "what": "카메라를 휙 돌리듯 화면을 빠르게 옆으로 밀며 모션 블러를 걸어 다음 장면으로 넘기는 전환.",
+   "whereOnWeb": [
+    "섹션·슬라이드 사이 가로 스와이프 전환",
+    "풀스크린 갤러리 이동",
+    "영상 챕터 전환(컷 사이 블러 스와이프)",
+    "페이지 전환 오버레이",
+    "캐러셀 빠른 넘김"
+   ],
+   "parameters": {
+    "durationMs": {
+     "total": [
+      240,
+      400
+     ],
+     "showpiece": [
+      350,
+      700
+     ],
+     "blurPeak": [
+      120,
+      250
+     ],
+     "note": "공장 기준 페이지·뷰 전환 240~400ms(DESIGN §8-2). 350~700ms 는 M3 showpiece 한정."
+    },
+    "easing": [
+     "power4.inOut",
+     "expo.inOut",
+     "cubic-bezier(.76,0,.24,1)"
+    ],
+    "stagger": null,
+    "distance": {
+     "xPercent": [
+      60,
+      100
+     ],
+     "blurPx": [
+      8,
+      28
+     ],
+     "skewXDeg": [
+      -12,
+      12
+     ]
+    },
+    "layerOffset": "앞·뒤 레이어 이동 속도 차 1.0 : 0.6"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core",
+      "Observer",
+      "CustomEase"
+     ],
+     "api": [
+      "gsap.fromTo(next,{xPercent:100,filter:'blur(0px)'},{xPercent:0,duration:0.55,ease:'power4.inOut'})",
+      "blur 는 중간에만: filter 키프레임 0→20→0",
+      "Observer.create({type:'wheel,touch',onUp,onDown})"
+     ]
+    },
+    "css": {
+     "api": [
+      "transform:translateX + filter:blur() 키프레임",
+      "SVG feGaussianBlur stdDeviation 은 x 방향만 (모션 블러 근사)",
+      "View Transitions API ::view-transition-old/new"
+     ],
+     "note": "방향성 블러는 SVG 필터 stdDeviation=\"20 0\""
+    },
+    "webgl": {
+     "note": "셰이더로 방향 모션블러(샘플 8~16 회)와 RGB 분리 → 고급 표현, 모바일에서는 CSS 폴백"
+    },
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 즉시 교차 페이드(≤150ms). 빠른 가로 이동 + 블러는 전정기관 자극 유발 가능.",
+    "screenReader": "전환 중 포커스를 새 섹션 제목으로 이동, aria-live 안내.",
+    "wcag": [
+     "2.3.3",
+     "2.3.1 점멸 금지",
+     "2.1.1 키보드로도 전환 가능"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "첫 화면 요소가 아니라 상호작용 전환이라 LCP 영향 낮음.",
+    "clsRisk": "전환 레이어는 position:fixed/absolute 로 레이아웃 밖에서 이동.",
+    "guards": [
+     "filter:blur 는 전환 중에만, 큰 면적에 연속 사용 금지(GPU 비용)",
+     "INP: 전환 중 입력을 잠그되 400ms 이내",
+     "모바일 저사양은 블러 생략 후 슬라이드만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand",
+     "commerce"
+    ],
+    "placement": "섹션·갤러리 전환"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/Observer/",
+    "https://developer.chrome.com/docs/web-platform/view-transitions/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "뷰 전환 240~400ms 안에서는 baseline(슬라이드+짧은 블러). 350~700ms·방향성 블러는 M3 시그니처 한정. 반드시 reduced-motion 교차 페이드 대체."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": "viewTransition(부분)",
+    "gap": "방향 모션 블러 슬라이드 전환(SVG feGaussianBlur·filter 키프레임)"
+   },
+   "examples": [
+    "\u0000626\u0000",
+    "\u0000627\u0000",
+    "\u0000628\u0000",
+    "\u0000629\u0000",
+    "\u0000630\u0000",
+    "\u0000631\u0000",
+    "\u0000632\u0000",
+    "\u0000633\u0000",
+    "\u0000634\u0000",
+    "\u0000635\u0000",
+    "\u0000636\u0000",
+    "\u0000637\u0000",
+    "\u0000638\u0000",
+    "\u0000639\u0000",
+    "\u0000640\u0000",
+    "\u0000641\u0000",
+    "\u0000642\u0000",
+    "\u0000643\u0000",
+    "\u0000644\u0000",
+    "\u0000645\u0000",
+    "\u0000646\u0000",
+    "\u0000647\u0000",
+    "\u0000648\u0000",
+    "\u0000649\u0000",
+    "\u0000650\u0000",
+    "\u0000651\u0000",
+    "\u0000652\u0000",
+    "\u0000653\u0000",
+    "\u0000654\u0000",
+    "\u0000655\u0000",
+    "\u0000656\u0000",
+    "\u0000657\u0000",
+    "\u0000658\u0000",
+    "\u0000659\u0000",
+    "\u0000660\u0000",
+    "\u0000661\u0000",
+    "\u0000662\u0000",
+    "\u0000663\u0000",
+    "\u0000664\u0000",
+    "\u0000665\u0000",
+    "\u0000666\u0000",
+    "\u0000667\u0000",
+    "\u0000668\u0000",
+    "\u0000669\u0000",
+    "\u0000670\u0000",
+    "\u0000671\u0000",
+    "\u0000672\u0000",
+    "\u0000673\u0000",
+    "\u0000674\u0000",
+    "\u0000675\u0000",
+    "\u0000676\u0000",
+    "\u0000677\u0000",
+    "\u0000678\u0000",
+    "\u0000679\u0000",
+    "\u0000680\u0000",
+    "\u0000681\u0000",
+    "\u0000682\u0000",
+    "\u0000683\u0000",
+    "\u0000684\u0000"
+   ],
+   "exampleCount": 59
+  },
+  {
+   "id": "easing",
+   "name": "Easing",
+   "ko": "이징(가감속 곡선·스프링)",
+   "what": "움직임이 시간에 따라 빨라지고 느려지는 곡선을 설계해 같은 이동도 무겁게·경쾌하게·탄력 있게 느끼도록 만드는 기법.",
+   "whereOnWeb": [
+    "모든 진입·퇴장 전환의 기본 곡선",
+    "호버·포커스 마이크로 인터랙션",
+    "스프링·바운스(CTA 팝, 토스트)",
+    "스크롤 스크럽 보정(scrub 지연)",
+    "커스텀 이즈로 브랜드 모션 서명 만들기"
+   ],
+   "parameters": {
+    "durationMs": {
+     "micro": [
+      120,
+      250
+     ],
+     "ui": [
+      250,
+      500
+     ],
+     "hero": [
+      600,
+      1400
+     ]
+    },
+    "easing": [
+     "power2.out",
+     "power3.inOut",
+     "expo.out",
+     "back.out(1.7)",
+     "elastic.out(1,0.3)",
+     "cubic-bezier(.16,1,.3,1)",
+     "CustomEase.create('brand','M0,0 C0.5,0 0.1,1 1,1')",
+     "CSS linear(0, .5, 1, ...) 스프링 근사"
+    ],
+    "stagger": null,
+    "distance": null,
+    "rule": "진입은 out, 퇴장은 in, 화면 내 이동은 inOut. 같은 화면에서 곡선 계열 3종 이내"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core eases",
+      "CustomEase",
+      "CustomBounce",
+      "CustomWiggle"
+     ],
+     "api": [
+      "ease:'power3.out'",
+      "CustomEase.create(name,'.17,.67,.83,.67')",
+      "CustomBounce.create('b',{strength:0.6,squash:3})",
+      "gsap.parseEase()"
+     ]
+    },
+    "css": {
+     "api": [
+      "transition-timing-function: cubic-bezier()",
+      "linear() 함수(Baseline 2023-12)로 스프링·바운스 근사",
+      "@property + animation-composition"
+     ],
+     "note": "CSS linear() 는 점 목록을 선형 보간해 임의 곡선 근사"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 duration 을 0~100ms 로 줄이고 바운스·탄성은 제거(overshoot 는 전정기관 자극).",
+    "screenReader": "해당 없음.",
+    "wcag": [
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "긴 duration + 느린 시작 곡선(in)이 첫 화면 가시 시점을 늦춘다 → 첫 화면은 out 계열.",
+    "clsRisk": "이즈 자체는 CLS 와 무관, 오버슈트가 레이아웃 속성에 걸리면 위험(transform 에만).",
+    "guards": [
+     "곡선은 디자인 토큰으로 3~5개만 정의",
+     "CSS 곡선은 변수(--ease-out, --ease-in-out)"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "saas",
+     "commerce",
+     "dashboard",
+     "public",
+     "local",
+     "portfolio",
+     "detail",
+     "pwa"
+    ],
+    "placement": "전 구간 모션 토큰(전역)"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Eases/",
+    "https://gsap.com/docs/v3/Eases/CustomEase/",
+    "https://gsap.com/docs/v3/Eases/CustomBounce/",
+    "https://gsap.com/docs/v3/Eases/CustomWiggle/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/linear"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "이징 토큰 3~5개로 고정(DESIGN §8-2: ease-out cubic-bezier(.23,1,.32,1) · emphasized (.2,0,0,1) · 화면 안 (.77,0,.175,1) · 퇴장 (.4,0,1,1) · 시트 (.32,.72,0,1)). 이 카탈로그의 expo.out 등은 같은 계열의 GSAP 이름일 뿐 토큰으로 대응시켜 쓴다. `transition: all` 금지."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "motion-scale.ts(bezierArgs 로 레시피 이징 토큰→CustomEase, LEVEL_SCALE M0~M3 배율)",
+    "gap": "CSS linear() 스프링 토큰"
+   },
+   "examples": [
+    "\u0000685\u0000",
+    "\u0000686\u0000",
+    "\u0000687\u0000",
+    "\u0000688\u0000",
+    "\u0000689\u0000",
+    "\u0000690\u0000",
+    "\u0000691\u0000",
+    "\u0000692\u0000",
+    "\u0000693\u0000",
+    "\u0000694\u0000",
+    "\u0000695\u0000",
+    "\u0000696\u0000",
+    "\u0000697\u0000",
+    "\u0000698\u0000",
+    "\u0000699\u0000",
+    "\u0000700\u0000",
+    "\u0000701\u0000",
+    "\u0000702\u0000",
+    "\u0000703\u0000",
+    "\u0000704\u0000",
+    "\u0000705\u0000",
+    "\u0000706\u0000",
+    "\u0000707\u0000",
+    "\u0000708\u0000",
+    "\u0000709\u0000",
+    "\u0000710\u0000",
+    "\u0000711\u0000",
+    "\u0000712\u0000",
+    "\u0000713\u0000",
+    "\u0000714\u0000",
+    "\u0000715\u0000",
+    "\u0000716\u0000",
+    "\u0000717\u0000",
+    "\u0000718\u0000",
+    "\u0000719\u0000",
+    "\u0000720\u0000",
+    "\u0000721\u0000",
+    "\u0000722\u0000",
+    "\u0000723\u0000",
+    "\u0000724\u0000",
+    "\u0000725\u0000",
+    "\u0000726\u0000",
+    "\u0000727\u0000",
+    "\u0000728\u0000",
+    "\u0000729\u0000",
+    "\u0000730\u0000",
+    "\u0000731\u0000",
+    "\u0000732\u0000",
+    "\u0000733\u0000",
+    "\u0000734\u0000",
+    "\u0000735\u0000",
+    "\u0000736\u0000",
+    "\u0000737\u0000",
+    "\u0000738\u0000",
+    "\u0000739\u0000",
+    "\u0000740\u0000",
+    "\u0000741\u0000",
+    "\u0000742\u0000",
+    "\u0000743\u0000",
+    "\u0000744\u0000",
+    "\u0000745\u0000",
+    "\u0000746\u0000",
+    "\u0000747\u0000",
+    "\u0000748\u0000",
+    "\u0000749\u0000",
+    "\u0000750\u0000",
+    "\u0000751\u0000",
+    "\u0000752\u0000",
+    "\u0000753\u0000",
+    "\u0000754\u0000",
+    "\u0000755\u0000",
+    "\u0000756\u0000",
+    "\u0000757\u0000",
+    "\u0000758\u0000",
+    "\u0000759\u0000",
+    "\u0000760\u0000",
+    "\u0000761\u0000",
+    "\u0000762\u0000",
+    "\u0000763\u0000",
+    "\u0000764\u0000",
+    "\u0000765\u0000",
+    "\u0000766\u0000",
+    "\u0000767\u0000",
+    "\u0000768\u0000",
+    "\u0000769\u0000",
+    "\u0000770\u0000",
+    "\u0000771\u0000",
+    "\u0000772\u0000",
+    "\u0000773\u0000",
+    "\u0000774\u0000",
+    "\u0000775\u0000",
+    "\u0000776\u0000",
+    "\u0000777\u0000",
+    "\u0000778\u0000",
+    "\u0000779\u0000",
+    "\u0000780\u0000",
+    "\u0000781\u0000",
+    "\u0000782\u0000",
+    "\u0000783\u0000",
+    "\u0000784\u0000",
+    "\u0000785\u0000",
+    "\u0000786\u0000",
+    "\u0000787\u0000",
+    "\u0000788\u0000",
+    "\u0000789\u0000",
+    "\u0000790\u0000",
+    "\u0000791\u0000",
+    "\u0000792\u0000",
+    "\u0000793\u0000",
+    "\u0000794\u0000",
+    "\u0000795\u0000",
+    "\u0000796\u0000",
+    "\u0000797\u0000",
+    "\u0000798\u0000",
+    "\u0000799\u0000",
+    "\u0000800\u0000",
+    "\u0000801\u0000",
+    "\u0000802\u0000",
+    "\u0000803\u0000",
+    "\u0000804\u0000",
+    "\u0000805\u0000",
+    "\u0000806\u0000",
+    "\u0000807\u0000",
+    "\u0000808\u0000",
+    "\u0000809\u0000",
+    "\u0000810\u0000",
+    "\u0000811\u0000",
+    "\u0000812\u0000",
+    "\u0000813\u0000",
+    "\u0000814\u0000",
+    "\u0000815\u0000",
+    "\u0000816\u0000",
+    "\u0000817\u0000",
+    "\u0000818\u0000",
+    "\u0000819\u0000",
+    "\u0000820\u0000",
+    "\u0000821\u0000",
+    "\u0000822\u0000",
+    "\u0000823\u0000",
+    "\u0000824\u0000",
+    "\u0000825\u0000",
+    "\u0000826\u0000",
+    "\u0000827\u0000",
+    "\u0000828\u0000",
+    "\u0000829\u0000",
+    "\u0000830\u0000",
+    "\u0000831\u0000",
+    "\u0000832\u0000",
+    "\u0000833\u0000",
+    "\u0000834\u0000",
+    "\u0000835\u0000",
+    "\u0000836\u0000",
+    "\u0000837\u0000",
+    "\u0000838\u0000",
+    "\u0000839\u0000",
+    "\u0000840\u0000",
+    "\u0000841\u0000",
+    "\u0000842\u0000",
+    "\u0000843\u0000",
+    "\u0000844\u0000",
+    "\u0000845\u0000",
+    "\u0000846\u0000",
+    "\u0000847\u0000",
+    "\u0000848\u0000",
+    "\u0000849\u0000",
+    "\u0000850\u0000",
+    "\u0000851\u0000",
+    "\u0000852\u0000",
+    "\u0000853\u0000",
+    "\u0000854\u0000",
+    "\u0000855\u0000",
+    "\u0000856\u0000",
+    "\u0000857\u0000",
+    "\u0000858\u0000",
+    "\u0000859\u0000",
+    "\u0000860\u0000",
+    "\u0000861\u0000",
+    "\u0000862\u0000",
+    "\u0000863\u0000",
+    "\u0000864\u0000",
+    "\u0000865\u0000",
+    "\u0000866\u0000",
+    "\u0000867\u0000",
+    "\u0000868\u0000",
+    "\u0000869\u0000",
+    "\u0000870\u0000",
+    "\u0000871\u0000"
+   ],
+   "exampleCount": 187
+  },
+  {
+   "id": "ease-out",
+   "name": "Ease-out",
+   "ko": "이즈 아웃(감속 진입)",
+   "what": "처음엔 빠르게 시작해 끝에서 서서히 멈추는 감속 곡선으로, 진입 모션을 자연스럽고 반응이 빠르게 느끼게 한다.",
+   "whereOnWeb": [
+    "요소 화면 진입(리빌·슬라이드업)",
+    "드롭다운·모달·토스트 열림",
+    "호버로 들어오는 상태",
+    "스크롤 진입 카드",
+    "페이지 내 앵커 이동 도착"
+   ],
+   "parameters": {
+    "durationMs": {
+     "micro": [
+      150,
+      250
+     ],
+     "ui": [
+      250,
+      450
+     ],
+     "reveal": [
+      600,
+      1200
+     ]
+    },
+    "easing": [
+     "power2.out",
+     "power3.out",
+     "power4.out",
+     "expo.out",
+     "cubic-bezier(.22,1,.36,1)",
+     "cubic-bezier(.16,1,.3,1)",
+     "cubic-bezier(0,0,.2,1)"
+    ],
+    "stagger": null,
+    "distance": {
+     "yPx": [
+      12,
+      48
+     ],
+     "scaleFrom": [
+      0.94,
+      0.98
+     ]
+    },
+    "strength": "약: power2 / 중: power3 / 강: power4·expo (강할수록 끝이 길게 끌림 → 지속시간을 키운다)"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "ease:'power3.out'",
+      "ease:'expo.out'",
+      "gsap.defaults({ease:'power3.out',duration:0.6})"
+     ]
+    },
+    "css": {
+     "api": [
+      "transition-timing-function: cubic-bezier(.22,1,.36,1)",
+      "--ease-out-quart: cubic-bezier(.25,1,.5,1)",
+      "--ease-out-expo: cubic-bezier(.16,1,.3,1)"
+     ],
+     "note": "CSS 기본 ease-out 키워드는 cubic-bezier(0,0,.58,1) 로 약함 → 토큰화한 곡선 사용"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 이동 제거 후 opacity 만, duration ≤150ms.",
+    "screenReader": "해당 없음.",
+    "wcag": [
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "출현 즉시 보이도록 지속시간 ≤450ms. expo.out 은 끝 70%가 거의 멈춘 듯 보여 실제 체감 시간이 짧다.",
+    "clsRisk": "transform·opacity 만.",
+    "guards": [
+     "in-곡선을 진입에 쓰지 않는다(굼뜬 반응 → INP 체감 악화)",
+     "한 프로젝트 out 곡선은 2~3종"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "saas",
+     "commerce",
+     "dashboard",
+     "public",
+     "local",
+     "portfolio",
+     "detail",
+     "pwa"
+    ],
+    "placement": "전 구간 진입 기본값"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Eases/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function",
+    "https://web.dev/articles/inp"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "들어올 땐 ease-out, 나갈 땐 ease-in, 화면 안 이동은 ease-in-out. 요소 등장 400~700ms, hover 150~250ms."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "motion-scale.ts 이징 토큰(--ease-*)",
+    "gap": null
+   },
+   "examples": [
+    "\u0000872\u0000",
+    "\u0000873\u0000",
+    "\u0000874\u0000",
+    "\u0000875\u0000",
+    "\u0000876\u0000",
+    "\u0000877\u0000",
+    "\u0000878\u0000",
+    "\u0000879\u0000",
+    "\u0000880\u0000",
+    "\u0000881\u0000",
+    "\u0000882\u0000",
+    "\u0000883\u0000",
+    "\u0000884\u0000",
+    "\u0000885\u0000",
+    "\u0000886\u0000",
+    "\u0000887\u0000",
+    "\u0000888\u0000",
+    "\u0000889\u0000",
+    "\u0000890\u0000",
+    "\u0000891\u0000",
+    "\u0000892\u0000",
+    "\u0000893\u0000",
+    "\u0000894\u0000",
+    "\u0000895\u0000",
+    "\u0000896\u0000",
+    "\u0000897\u0000",
+    "\u0000898\u0000",
+    "\u0000899\u0000",
+    "\u0000900\u0000",
+    "\u0000901\u0000",
+    "\u0000902\u0000",
+    "\u0000903\u0000",
+    "\u0000904\u0000",
+    "\u0000905\u0000",
+    "\u0000906\u0000",
+    "\u0000907\u0000",
+    "\u0000908\u0000",
+    "\u0000909\u0000",
+    "\u0000910\u0000",
+    "\u0000911\u0000",
+    "\u0000912\u0000",
+    "\u0000913\u0000",
+    "\u0000914\u0000",
+    "\u0000915\u0000",
+    "\u0000916\u0000",
+    "\u0000917\u0000",
+    "\u0000918\u0000",
+    "\u0000919\u0000",
+    "\u0000920\u0000",
+    "\u0000921\u0000",
+    "\u0000922\u0000",
+    "\u0000923\u0000",
+    "\u0000924\u0000",
+    "\u0000925\u0000",
+    "\u0000926\u0000",
+    "\u0000927\u0000",
+    "\u0000928\u0000",
+    "\u0000929\u0000",
+    "\u0000930\u0000",
+    "\u0000931\u0000",
+    "\u0000932\u0000",
+    "\u0000933\u0000",
+    "\u0000934\u0000",
+    "\u0000935\u0000",
+    "\u0000936\u0000",
+    "\u0000937\u0000",
+    "\u0000938\u0000",
+    "\u0000939\u0000",
+    "\u0000940\u0000",
+    "\u0000941\u0000",
+    "\u0000942\u0000",
+    "\u0000943\u0000",
+    "\u0000944\u0000",
+    "\u0000945\u0000",
+    "\u0000946\u0000",
+    "\u0000947\u0000",
+    "\u0000948\u0000",
+    "\u0000949\u0000",
+    "\u0000950\u0000",
+    "\u0000951\u0000",
+    "\u0000952\u0000"
+   ],
+   "exampleCount": 81
+  },
+  {
+   "id": "text-mask-reveal",
+   "name": "Text Mask Reveal",
+   "ko": "텍스트 마스크 리빌(줄 슬라이드업)",
+   "what": "overflow 를 자른 마스크 안에서 글줄·이미지를 아래에서 위로 밀어 올려 한 줄씩 드러내는 에디토리얼 리빌.",
+   "whereOnWeb": [
+    "히어로 헤드라인 줄 단위 등장",
+    "섹션 제목·본문 리드 리빌",
+    "이미지 커튼 와이프 리빌",
+    "푸터 대형 문구"
+   ],
+   "parameters": {
+    "durationMs": {
+     "perLine": [
+      700,
+      1200
+     ]
+    },
+    "easing": [
+     "expo.out",
+     "power4.out",
+     "cubic-bezier(.16,1,.3,1)"
+    ],
+    "stagger": {
+     "lines": [
+      0.08,
+      0.15
+     ],
+     "unit": "s"
+    },
+    "distance": {
+     "yPercent": [
+      100,
+      120
+     ]
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "SplitText",
+      "ScrollTrigger"
+     ],
+     "api": [
+      "SplitText.create(el,{type:'lines',mask:'lines',autoSplit:true,onSplit(s){return gsap.from(s.lines,{yPercent:110,stagger:0.1,ease:'expo.out'})}})"
+     ],
+     "license": "GSAP 3.13+ 무료"
+    },
+    "css": {
+     "api": [
+      "wrapper overflow:clip + 내부 span translateY(110%) → 0",
+      "clip-path:inset(0 0 100% 0) → inset(0)"
+     ],
+     "note": "줄 분할을 서버에서 하면 JS 없이도 가능"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "최종 상태 즉시 표시.",
+    "screenReader": "SplitText aria 자동 처리, 또는 span 분할 시 부모 aria-label.",
+    "wcag": [
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "히어로 헤드라인이 LCP 일 때 마스크 안에서 시작하면 초기에 보이지 않아 LCP 가 지연될 수 있다 → 시작 지연 0~200ms.",
+    "clsRisk": "마스크 높이를 line-height 로 고정, 폰트 로드 후 재분할(autoSplit).",
+    "guards": [
+     "transform 만 사용",
+     "descender 잘림 방지 padding-bottom 0.1em"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "public"
+    ],
+    "placement": "히어로·섹션 제목"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/SplitText/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "clip-path 리빌 계열(DESIGN §8-6 표). 히어로 전체 1.2s 이내, 글자는 읽히는 상태에서 시작."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "splitReveal(from=110), clipReveal",
+    "gap": null
+   },
+   "examples": [
+    "\u0000953\u0000",
+    "\u0000954\u0000",
+    "\u0000955\u0000",
+    "\u0000956\u0000",
+    "\u0000957\u0000",
+    "\u0000958\u0000",
+    "\u0000959\u0000",
+    "\u0000960\u0000",
+    "\u0000961\u0000",
+    "\u0000962\u0000",
+    "\u0000963\u0000",
+    "\u0000964\u0000",
+    "\u0000965\u0000",
+    "\u0000966\u0000",
+    "\u0000967\u0000",
+    "\u0000968\u0000",
+    "\u0000969\u0000",
+    "\u0000970\u0000",
+    "\u0000971\u0000",
+    "\u0000972\u0000",
+    "\u0000973\u0000",
+    "\u0000974\u0000",
+    "\u0000975\u0000",
+    "\u0000976\u0000",
+    "\u0000977\u0000",
+    "\u0000978\u0000",
+    "\u0000979\u0000",
+    "\u0000980\u0000",
+    "\u0000981\u0000",
+    "\u0000982\u0000",
+    "\u0000983\u0000",
+    "\u0000984\u0000",
+    "\u0000985\u0000",
+    "\u0000986\u0000",
+    "\u0000987\u0000",
+    "\u0000988\u0000",
+    "\u0000989\u0000",
+    "\u0000990\u0000",
+    "\u0000991\u0000",
+    "\u0000992\u0000",
+    "\u0000993\u0000",
+    "\u0000994\u0000",
+    "\u0000995\u0000",
+    "\u0000996\u0000",
+    "\u0000997\u0000",
+    "\u0000998\u0000",
+    "\u0000999\u0000",
+    "\u00001000\u0000",
+    "\u00001001\u0000",
+    "\u00001002\u0000",
+    "\u00001003\u0000",
+    "\u00001004\u0000",
+    "\u00001005\u0000",
+    "\u00001006\u0000",
+    "\u00001007\u0000",
+    "\u00001008\u0000",
+    "\u00001009\u0000",
+    "\u00001010\u0000",
+    "\u00001011\u0000",
+    "\u00001012\u0000",
+    "\u00001013\u0000",
+    "\u00001014\u0000",
+    "\u00001015\u0000",
+    "\u00001016\u0000",
+    "\u00001017\u0000",
+    "\u00001018\u0000",
+    "\u00001019\u0000",
+    "\u00001020\u0000",
+    "\u00001021\u0000",
+    "\u00001022\u0000",
+    "\u00001023\u0000",
+    "\u00001024\u0000",
+    "\u00001025\u0000",
+    "\u00001026\u0000",
+    "\u00001027\u0000",
+    "\u00001028\u0000",
+    "\u00001029\u0000",
+    "\u00001030\u0000",
+    "\u00001031\u0000",
+    "\u00001032\u0000",
+    "\u00001033\u0000",
+    "\u00001034\u0000",
+    "\u00001035\u0000",
+    "\u00001036\u0000",
+    "\u00001037\u0000",
+    "\u00001038\u0000"
+   ],
+   "exampleCount": 86
+  },
+  {
+   "id": "scroll-scrub-pin",
+   "name": "Scroll Scrub & Pin",
+   "ko": "스크롤 연동 스크럽·핀",
+   "what": "스크롤 위치가 애니메이션 진행도를 직접 구동하고, 섹션을 화면에 고정(핀)해 이야기를 단계별로 펼치는 방식.",
+   "whereOnWeb": [
+    "제품 소개 스토리텔링 섹션",
+    "스크롤로 진행되는 단계 설명(how it works)",
+    "사진·영상 프레임 스크럽",
+    "큰 문장이 단어별로 색이 차오르는 읽기 진행"
+   ],
+   "parameters": {
+    "durationMs": null,
+    "scrub": {
+     "value": [
+      0.5,
+      1.5
+     ],
+     "unit": "s 스무딩, true 는 즉시 추종"
+    },
+    "pinHeightVh": [
+     100,
+     400
+    ],
+    "easing": [
+     "none (스크럽 기본)",
+     "power1.inOut (snap)"
+    ],
+    "stagger": null,
+    "distance": {
+     "scrollLengthPx": "+=500 ~ +=3000"
+    },
+    "snap": {
+     "snapTo": "labels",
+     "durationS": [
+      0.2,
+      1
+     ]
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger"
+     ],
+     "api": [
+      "scrollTrigger:{trigger,pin:true,start:'top top',end:'+=2000',scrub:1,snap:'labels'}",
+      "gsap.matchMedia()"
+     ],
+     "license": "GSAP 3.13+ 무료"
+    },
+    "css": {
+     "api": [
+      "animation-timeline: scroll() / view()",
+      "animation-range: entry 0% cover 40%",
+      "position:sticky"
+     ],
+     "note": "CSS Scroll-driven animations 는 Chrome 115+, Safari 26 지원, Firefox 미지원(2023 문서 기준 — 도입 전 caniuse 재확인)"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 핀·스크럽 해제하고 단계 콘텐츠를 일반 흐름으로 쌓아 보여준다(gsap.matchMedia).",
+    "screenReader": "핀된 콘텐츠도 DOM 읽기 순서 유지, 스크롤 길이가 긴 구간은 건너뛰기 링크.",
+    "wcag": [
+     "2.3.3 패럴랙스류 스크롤 모션 비활성화",
+     "2.1.1 키보드 스크롤 가능"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "첫 화면에 핀 스페이서가 있으면 레이아웃 계산이 늘어난다 → 첫 화면은 핀 없이.",
+    "clsRisk": "핀 스페이서가 높이를 추가해 아래 콘텐츠를 밀어 CLS 처럼 보일 수 있다 → ScrollTrigger refresh 전 이미지 크기 고정, 이미지 로드 후 refresh.",
+    "guards": [
+     "scrub 대상은 transform·opacity",
+     "INP: 스크롤 핸들러 대신 ScrollTrigger/CSS timeline",
+     "모바일은 핀 길이 줄이거나 해제"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "saas",
+     "brand",
+     "portfolio",
+     "detail"
+    ],
+    "placement": "스토리텔링 섹션(첫 화면 아래)"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://developer.chrome.com/docs/css-ui/scroll-driven-animations",
+    "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "시그니처 한 구간에만, 마케팅 면 한정, 첫 화면 밖. reduced-motion 이면 핀·스크럽 해제(DESIGN §8-7)."
+   },
+   "kit": {
+    "status": "partial",
+    "kitTechnique": "scrubTimeline, stickyStack",
+    "gap": "snap·label 연동 스토리 구간 도우미"
+   },
+   "examples": [
+    "\u00001039\u0000",
+    "\u00001040\u0000",
+    "\u00001041\u0000",
+    "\u00001042\u0000",
+    "\u00001043\u0000",
+    "\u00001044\u0000",
+    "\u00001045\u0000",
+    "\u00001046\u0000",
+    "\u00001047\u0000",
+    "\u00001048\u0000",
+    "\u00001049\u0000",
+    "\u00001050\u0000",
+    "\u00001051\u0000",
+    "\u00001052\u0000",
+    "\u00001053\u0000",
+    "\u00001054\u0000",
+    "\u00001055\u0000",
+    "\u00001056\u0000",
+    "\u00001057\u0000",
+    "\u00001058\u0000",
+    "\u00001059\u0000",
+    "\u00001060\u0000",
+    "\u00001061\u0000",
+    "\u00001062\u0000",
+    "\u00001063\u0000",
+    "\u00001064\u0000",
+    "\u00001065\u0000",
+    "\u00001066\u0000",
+    "\u00001067\u0000",
+    "\u00001068\u0000",
+    "\u00001069\u0000",
+    "\u00001070\u0000",
+    "\u00001071\u0000",
+    "\u00001072\u0000",
+    "\u00001073\u0000",
+    "\u00001074\u0000",
+    "\u00001075\u0000",
+    "\u00001076\u0000",
+    "\u00001077\u0000",
+    "\u00001078\u0000",
+    "\u00001079\u0000",
+    "\u00001080\u0000",
+    "\u00001081\u0000",
+    "\u00001082\u0000",
+    "\u00001083\u0000",
+    "\u00001084\u0000",
+    "\u00001085\u0000",
+    "\u00001086\u0000",
+    "\u00001087\u0000",
+    "\u00001088\u0000",
+    "\u00001089\u0000",
+    "\u00001090\u0000",
+    "\u00001091\u0000",
+    "\u00001092\u0000",
+    "\u00001093\u0000",
+    "\u00001094\u0000",
+    "\u00001095\u0000",
+    "\u00001096\u0000",
+    "\u00001097\u0000",
+    "\u00001098\u0000",
+    "\u00001099\u0000",
+    "\u00001100\u0000",
+    "\u00001101\u0000",
+    "\u00001102\u0000",
+    "\u00001103\u0000",
+    "\u00001104\u0000",
+    "\u00001105\u0000",
+    "\u00001106\u0000",
+    "\u00001107\u0000",
+    "\u00001108\u0000",
+    "\u00001109\u0000",
+    "\u00001110\u0000",
+    "\u00001111\u0000",
+    "\u00001112\u0000",
+    "\u00001113\u0000",
+    "\u00001114\u0000",
+    "\u00001115\u0000",
+    "\u00001116\u0000",
+    "\u00001117\u0000",
+    "\u00001118\u0000",
+    "\u00001119\u0000",
+    "\u00001120\u0000",
+    "\u00001121\u0000",
+    "\u00001122\u0000",
+    "\u00001123\u0000",
+    "\u00001124\u0000",
+    "\u00001125\u0000",
+    "\u00001126\u0000",
+    "\u00001127\u0000",
+    "\u00001128\u0000",
+    "\u00001129\u0000",
+    "\u00001130\u0000",
+    "\u00001131\u0000",
+    "\u00001132\u0000",
+    "\u00001133\u0000",
+    "\u00001134\u0000",
+    "\u00001135\u0000",
+    "\u00001136\u0000",
+    "\u00001137\u0000",
+    "\u00001138\u0000",
+    "\u00001139\u0000",
+    "\u00001140\u0000",
+    "\u00001141\u0000",
+    "\u00001142\u0000",
+    "\u00001143\u0000",
+    "\u00001144\u0000",
+    "\u00001145\u0000",
+    "\u00001146\u0000",
+    "\u00001147\u0000",
+    "\u00001148\u0000",
+    "\u00001149\u0000",
+    "\u00001150\u0000",
+    "\u00001151\u0000",
+    "\u00001152\u0000",
+    "\u00001153\u0000",
+    "\u00001154\u0000",
+    "\u00001155\u0000",
+    "\u00001156\u0000",
+    "\u00001157\u0000",
+    "\u00001158\u0000",
+    "\u00001159\u0000",
+    "\u00001160\u0000",
+    "\u00001161\u0000",
+    "\u00001162\u0000",
+    "\u00001163\u0000",
+    "\u00001164\u0000",
+    "\u00001165\u0000",
+    "\u00001166\u0000",
+    "\u00001167\u0000",
+    "\u00001168\u0000",
+    "\u00001169\u0000",
+    "\u00001170\u0000",
+    "\u00001171\u0000",
+    "\u00001172\u0000",
+    "\u00001173\u0000",
+    "\u00001174\u0000",
+    "\u00001175\u0000",
+    "\u00001176\u0000",
+    "\u00001177\u0000",
+    "\u00001178\u0000",
+    "\u00001179\u0000",
+    "\u00001180\u0000",
+    "\u00001181\u0000",
+    "\u00001182\u0000",
+    "\u00001183\u0000",
+    "\u00001184\u0000",
+    "\u00001185\u0000",
+    "\u00001186\u0000",
+    "\u00001187\u0000",
+    "\u00001188\u0000",
+    "\u00001189\u0000",
+    "\u00001190\u0000",
+    "\u00001191\u0000",
+    "\u00001192\u0000",
+    "\u00001193\u0000",
+    "\u00001194\u0000",
+    "\u00001195\u0000",
+    "\u00001196\u0000",
+    "\u00001197\u0000",
+    "\u00001198\u0000",
+    "\u00001199\u0000",
+    "\u00001200\u0000",
+    "\u00001201\u0000",
+    "\u00001202\u0000",
+    "\u00001203\u0000",
+    "\u00001204\u0000",
+    "\u00001205\u0000",
+    "\u00001206\u0000",
+    "\u00001207\u0000",
+    "\u00001208\u0000",
+    "\u00001209\u0000",
+    "\u00001210\u0000",
+    "\u00001211\u0000",
+    "\u00001212\u0000",
+    "\u00001213\u0000",
+    "\u00001214\u0000",
+    "\u00001215\u0000",
+    "\u00001216\u0000",
+    "\u00001217\u0000",
+    "\u00001218\u0000",
+    "\u00001219\u0000",
+    "\u00001220\u0000",
+    "\u00001221\u0000",
+    "\u00001222\u0000",
+    "\u00001223\u0000",
+    "\u00001224\u0000",
+    "\u00001225\u0000",
+    "\u00001226\u0000",
+    "\u00001227\u0000",
+    "\u00001228\u0000",
+    "\u00001229\u0000",
+    "\u00001230\u0000",
+    "\u00001231\u0000",
+    "\u00001232\u0000"
+   ],
+   "exampleCount": 194
+  },
+  {
+   "id": "parallax-depth",
+   "name": "Parallax Depth",
+   "ko": "패럴랙스·다층 깊이",
+   "what": "배경과 전경이 스크롤·마우스에 따라 서로 다른 속도로 움직여 평면에 깊이를 만드는 연출.",
+   "whereOnWeb": [
+    "풀블리드 실사 히어로 배경 이동",
+    "레이어 분리 일러스트·제품 컷아웃",
+    "마우스 이동에 반응하는 미세 틸트",
+    "섹션 이미지 스크롤 오프셋"
+   ],
+   "parameters": {
+    "durationMs": null,
+    "speedRatio": {
+     "background": [
+      0.2,
+      0.5
+     ],
+     "midground": [
+      0.6,
+      0.8
+     ],
+     "foreground": [
+      1,
+      1.2
+     ]
+    },
+    "travelPercent": [
+     8,
+     20
+    ],
+    "easing": [
+     "none (스크럽)",
+     "power2.out (마우스 추종 quickTo)"
+    ],
+    "stagger": null,
+    "distance": null,
+    "mouseRangePx": [
+     10,
+     30
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger"
+     ],
+     "api": [
+      "gsap.to(bg,{yPercent:-15,ease:'none',scrollTrigger:{trigger,scrub:true}})",
+      "gsap.quickTo(el,'x',{duration:0.6,ease:'power3'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "animation-timeline:view() + translateY",
+      "perspective + translateZ(CSS 3D 패럴랙스)"
+     ],
+     "note": "배경 이미지는 컨테이너보다 확대(scale 1.2) 여유 필요"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 완전 정지(WCAG 2.3.3 해설이 패럴랙스를 비필수 모션 예로 든다).",
+    "screenReader": "장식 레이어 aria-hidden.",
+    "wcag": [
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "히어로 이미지가 LCP: 패럴랙스 확대분만큼 큰 이미지가 필요 → srcset·AVIF.",
+    "clsRisk": "transform 만, 컨테이너 overflow:hidden 및 고정 높이.",
+    "guards": [
+     "scroll 이벤트 직접 처리 금지(ScrollTrigger·CSS timeline)",
+     "레이어 5개 이하",
+     "모바일 터치기기에서는 마우스 패럴랙스 비활성"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "local",
+     "portfolio",
+     "commerce"
+    ],
+    "placement": "실사 히어로 배경"
+   },
+   "sources": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html",
+    "https://developer.chrome.com/docs/css-ui/scroll-driven-animations",
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "reduced-motion 에서 완전 정지(DESIGN §8-7 은 패럴랙스를 끄라고 명시). 레이어 5개 이하."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "parallax, pointerDepth",
+    "gap": null
+   },
+   "examples": [
+    "\u00001233\u0000",
+    "\u00001234\u0000",
+    "\u00001235\u0000",
+    "\u00001236\u0000",
+    "\u00001237\u0000",
+    "\u00001238\u0000",
+    "\u00001239\u0000",
+    "\u00001240\u0000",
+    "\u00001241\u0000",
+    "\u00001242\u0000",
+    "\u00001243\u0000",
+    "\u00001244\u0000",
+    "\u00001245\u0000",
+    "\u00001246\u0000",
+    "\u00001247\u0000",
+    "\u00001248\u0000",
+    "\u00001249\u0000",
+    "\u00001250\u0000",
+    "\u00001251\u0000",
+    "\u00001252\u0000",
+    "\u00001253\u0000",
+    "\u00001254\u0000",
+    "\u00001255\u0000",
+    "\u00001256\u0000",
+    "\u00001257\u0000",
+    "\u00001258\u0000",
+    "\u00001259\u0000",
+    "\u00001260\u0000",
+    "\u00001261\u0000",
+    "\u00001262\u0000",
+    "\u00001263\u0000",
+    "\u00001264\u0000",
+    "\u00001265\u0000",
+    "\u00001266\u0000",
+    "\u00001267\u0000",
+    "\u00001268\u0000",
+    "\u00001269\u0000",
+    "\u00001270\u0000",
+    "\u00001271\u0000",
+    "\u00001272\u0000",
+    "\u00001273\u0000",
+    "\u00001274\u0000",
+    "\u00001275\u0000",
+    "\u00001276\u0000",
+    "\u00001277\u0000",
+    "\u00001278\u0000",
+    "\u00001279\u0000",
+    "\u00001280\u0000",
+    "\u00001281\u0000",
+    "\u00001282\u0000",
+    "\u00001283\u0000",
+    "\u00001284\u0000",
+    "\u00001285\u0000",
+    "\u00001286\u0000",
+    "\u00001287\u0000",
+    "\u00001288\u0000",
+    "\u00001289\u0000",
+    "\u00001290\u0000",
+    "\u00001291\u0000",
+    "\u00001292\u0000",
+    "\u00001293\u0000",
+    "\u00001294\u0000",
+    "\u00001295\u0000",
+    "\u00001296\u0000",
+    "\u00001297\u0000",
+    "\u00001298\u0000",
+    "\u00001299\u0000",
+    "\u00001300\u0000",
+    "\u00001301\u0000",
+    "\u00001302\u0000",
+    "\u00001303\u0000",
+    "\u00001304\u0000",
+    "\u00001305\u0000",
+    "\u00001306\u0000",
+    "\u00001307\u0000",
+    "\u00001308\u0000",
+    "\u00001309\u0000",
+    "\u00001310\u0000",
+    "\u00001311\u0000",
+    "\u00001312\u0000",
+    "\u00001313\u0000",
+    "\u00001314\u0000",
+    "\u00001315\u0000",
+    "\u00001316\u0000"
+   ],
+   "exampleCount": 84
+  },
+  {
+   "id": "marquee-strip",
+   "name": "Marquee Strip",
+   "ko": "마키 스트립(무한 흐르는 띠)",
+   "what": "문구·로고 띠를 끊김 없이 가로로 흘려 보내고, 스크롤 속도에 따라 속도·방향을 바꾸기도 하는 띠.",
+   "whereOnWeb": [
+    "섹션 사이 대형 슬로건 띠",
+    "고객사 로고 띠",
+    "푸터 직전 CTA 띠",
+    "스크롤 속도 연동 텍스트 띠"
+   ],
+   "parameters": {
+    "speedPxPerSec": [
+     40,
+     120
+    ],
+    "durationMs": {
+     "loopCycle": [
+      12000,
+      40000
+     ]
+    },
+    "easing": [
+     "none(linear)"
+    ],
+    "stagger": null,
+    "distance": null,
+    "scrollVelocityBoost": [
+     1.5,
+     4
+    ],
+    "hoverSlowdown": 0.2
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core",
+      "ScrollTrigger(속도 연동)",
+      "Observer"
+     ],
+     "api": [
+      "gsap.to(track,{xPercent:-50,repeat:-1,duration:30,ease:'none'})",
+      "ScrollTrigger.create({onUpdate:self=>timeScale(1+Math.abs(self.getVelocity())/1000)})"
+     ]
+    },
+    "css": {
+     "api": [
+      "@keyframes marquee {to{transform:translateX(-50%)}} + 내용 2회 복제",
+      "animation: marquee 30s linear infinite",
+      "animation-play-state: paused"
+     ],
+     "note": "내용 복제본은 aria-hidden"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 정지하고 가로 스크롤 가능한 정적 줄 또는 줄바꿈 나열.",
+    "screenReader": "복제본 aria-hidden, 원본만 읽기. 정보가 중요하면 정적 목록 제공.",
+    "wcag": [
+     "2.2.2 5초 초과 자동 이동은 일시정지 수단 필수(호버·포커스 정지 + 정지 버튼)"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "낮음.",
+    "clsRisk": "트랙 높이 고정.",
+    "guards": [
+     "화면 밖일 때 일시정지(IntersectionObserver)",
+     "이미지 로고는 크기 고정",
+     "transform 만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "saas",
+     "commerce",
+     "portfolio"
+    ],
+    "placement": "섹션 구분 띠"
+   },
+   "sources": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+    "https://gsap.com/docs/v3/Plugins/Observer/"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "페이지당 하나, 복제 트랙 −50% 이동, hover·focus 정지, 정지 버튼 필수, linear 허용(DESIGN §8-6 표)."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "marquee",
+    "gap": "스크롤 속도 연동"
+   },
+   "examples": [
+    "\u00001317\u0000",
+    "\u00001318\u0000",
+    "\u00001319\u0000",
+    "\u00001320\u0000",
+    "\u00001321\u0000",
+    "\u00001322\u0000",
+    "\u00001323\u0000",
+    "\u00001324\u0000",
+    "\u00001325\u0000",
+    "\u00001326\u0000",
+    "\u00001327\u0000",
+    "\u00001328\u0000",
+    "\u00001329\u0000",
+    "\u00001330\u0000",
+    "\u00001331\u0000",
+    "\u00001332\u0000",
+    "\u00001333\u0000",
+    "\u00001334\u0000",
+    "\u00001335\u0000",
+    "\u00001336\u0000",
+    "\u00001337\u0000",
+    "\u00001338\u0000",
+    "\u00001339\u0000",
+    "\u00001340\u0000",
+    "\u00001341\u0000",
+    "\u00001342\u0000",
+    "\u00001343\u0000",
+    "\u00001344\u0000",
+    "\u00001345\u0000",
+    "\u00001346\u0000",
+    "\u00001347\u0000",
+    "\u00001348\u0000",
+    "\u00001349\u0000",
+    "\u00001350\u0000",
+    "\u00001351\u0000",
+    "\u00001352\u0000",
+    "\u00001353\u0000",
+    "\u00001354\u0000",
+    "\u00001355\u0000",
+    "\u00001356\u0000",
+    "\u00001357\u0000"
+   ],
+   "exampleCount": 41
+  },
+  {
+   "id": "custom-cursor-morph",
+   "name": "Custom Cursor Morph",
+   "ko": "변형 커서",
+   "what": "기본 커서를 원·점 등으로 바꿔 마우스를 부드럽게 따라가게 하고 링크·미디어 위에서 모양·라벨이 변하는 인터랙션.",
+   "whereOnWeb": [
+    "포트폴리오 갤러리 호버 시 'View' 라벨 커서",
+    "링크·버튼 위 확대",
+    "영상 위 재생 아이콘 커서",
+    "텍스트 위 반전(blend-mode difference)"
+   ],
+   "parameters": {
+    "durationMs": {
+     "follow": [
+      100,
+      300
+     ],
+     "morph": [
+      200,
+      400
+     ]
+    },
+    "easing": [
+     "power3.out (quickTo)",
+     "expo.out"
+    ],
+    "stagger": null,
+    "distance": {
+     "sizePx": {
+      "default": [
+       12,
+       20
+      ],
+      "hover": [
+       48,
+       120
+      ]
+     }
+    },
+    "lerp": [
+     0.1,
+     0.2
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core quickTo",
+      "Flip(선택)"
+     ],
+     "api": [
+      "const xTo=gsap.quickTo(cursor,'x',{duration:0.4,ease:'power3'})",
+      "pointermove 로 xTo(e.clientX)"
+     ]
+    },
+    "css": {
+     "api": [
+      "mix-blend-mode:difference",
+      "pointer-events:none",
+      "@media (hover:hover) and (pointer:fine)"
+     ],
+     "note": "터치 기기에는 표시하지 않는다"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 지연 없이 즉시 따라가거나 커스텀 커서 해제하고 시스템 커서 유지.",
+    "screenReader": "장식 요소 aria-hidden, 의미 라벨(View)은 링크 자체 텍스트에도 존재해야 한다.",
+    "wcag": [
+     "2.5.8 타깃 크기",
+     "1.4.13 호버 콘텐츠"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음.",
+    "clsRisk": "fixed 위치라 없음.",
+    "guards": [
+     "pointermove 에서 DOM 읽기 금지, quickTo 사용",
+     "@media (hover:hover) 에서만 활성",
+     "시스템 커서를 완전히 숨기지 말고 입력 필드 위에서는 복원"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand"
+    ],
+    "placement": "데스크톱 갤러리·링크"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "시스템 커서를 바꾸거나 따라다니는 장식은 기본 금지(DESIGN §8-1 MUST). 모션 강도 높음 레시피에서만, (hover:hover) and (pointer:fine) 한정."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": "listen(포인터 헬퍼)",
+    "gap": "변형 커서(DESIGN §8-1 기본 금지 — M3 한정)"
+   },
+   "examples": [
+    "\u00001358\u0000",
+    "\u00001359\u0000",
+    "\u00001360\u0000",
+    "\u00001361\u0000",
+    "\u00001362\u0000",
+    "\u00001363\u0000",
+    "\u00001364\u0000",
+    "\u00001365\u0000",
+    "\u00001366\u0000",
+    "\u00001367\u0000",
+    "\u00001368\u0000",
+    "\u00001369\u0000",
+    "\u00001370\u0000",
+    "\u00001371\u0000",
+    "\u00001372\u0000",
+    "\u00001373\u0000",
+    "\u00001374\u0000",
+    "\u00001375\u0000",
+    "\u00001376\u0000",
+    "\u00001377\u0000",
+    "\u00001378\u0000",
+    "\u00001379\u0000",
+    "\u00001380\u0000",
+    "\u00001381\u0000",
+    "\u00001382\u0000",
+    "\u00001383\u0000",
+    "\u00001384\u0000",
+    "\u00001385\u0000",
+    "\u00001386\u0000",
+    "\u00001387\u0000",
+    "\u00001388\u0000",
+    "\u00001389\u0000",
+    "\u00001390\u0000",
+    "\u00001391\u0000",
+    "\u00001392\u0000",
+    "\u00001393\u0000",
+    "\u00001394\u0000",
+    "\u00001395\u0000",
+    "\u00001396\u0000",
+    "\u00001397\u0000",
+    "\u00001398\u0000",
+    "\u00001399\u0000",
+    "\u00001400\u0000"
+   ],
+   "exampleCount": 43
+  },
+  {
+   "id": "clip-path-wipe",
+   "name": "Clip-path Wipe",
+   "ko": "클립패스 와이프·원형 확장",
+   "what": "clip-path 도형(사각·원·대각선)을 키우거나 줄여 화면·이미지를 가리고 드러내는 전환.",
+   "whereOnWeb": [
+    "이미지·섹션 진입 와이프",
+    "원형 확장 테마·페이지 전환",
+    "메뉴 오버레이 열림",
+    "호버 시 이미지 교체 와이프"
+   ],
+   "parameters": {
+    "durationMs": {
+     "wipe": [
+      500,
+      1000
+     ]
+    },
+    "easing": [
+     "expo.inOut",
+     "power4.inOut",
+     "cubic-bezier(.76,0,.24,1)"
+    ],
+    "stagger": {
+     "layers": [
+      0.05,
+      0.12
+     ],
+     "unit": "s"
+    },
+    "distance": null,
+    "shapes": [
+     "inset()",
+     "circle(0 at x y) → circle(150%)",
+     "polygon() 대각선"
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core",
+      "ScrollTrigger(선택)"
+     ],
+     "api": [
+      "gsap.fromTo(el,{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)',duration:0.8,ease:'expo.inOut'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "clip-path 전환",
+      "View Transitions ::view-transition-new 에 clip-path 키프레임"
+     ],
+     "note": "shape 함수 종류가 같고 점 개수가 같아야 보간된다"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "즉시 전환 또는 페이드.",
+    "screenReader": "clip-path 는 접근성 트리에 영향 없음, 가려진 콘텐츠에 포커스가 가지 않게 inert/visibility 처리.",
+    "wcag": [
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "클립된 영역은 LCP 후보 크기에서 제외될 수 있다(보이는 부분만 계산, 확인 필요).",
+    "clsRisk": "없음.",
+    "guards": [
+     "큰 영역 연속 애니메이션 시 페인트 비용 → 짧게",
+     "will-change: clip-path 는 진행 중에만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "commerce"
+    ],
+    "placement": "메뉴 오버레이·이미지 리빌·페이지 전환"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path",
+    "https://developer.chrome.com/docs/web-platform/view-transitions/"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "좌표 수가 같은 모양끼리 전환(DESIGN §8-6 clip-path 리빌). 오버레이 열림 200~350ms."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "clipReveal(from)",
+    "gap": "원형 확장·대각선 모양"
+   },
+   "examples": [
+    "\u00001401\u0000",
+    "\u00001402\u0000",
+    "\u00001403\u0000",
+    "\u00001404\u0000",
+    "\u00001405\u0000",
+    "\u00001406\u0000",
+    "\u00001407\u0000",
+    "\u00001408\u0000",
+    "\u00001409\u0000",
+    "\u00001410\u0000",
+    "\u00001411\u0000",
+    "\u00001412\u0000",
+    "\u00001413\u0000",
+    "\u00001414\u0000",
+    "\u00001415\u0000",
+    "\u00001416\u0000",
+    "\u00001417\u0000",
+    "\u00001418\u0000",
+    "\u00001419\u0000",
+    "\u00001420\u0000",
+    "\u00001421\u0000",
+    "\u00001422\u0000",
+    "\u00001423\u0000",
+    "\u00001424\u0000",
+    "\u00001425\u0000",
+    "\u00001426\u0000",
+    "\u00001427\u0000",
+    "\u00001428\u0000",
+    "\u00001429\u0000",
+    "\u00001430\u0000",
+    "\u00001431\u0000",
+    "\u00001432\u0000",
+    "\u00001433\u0000",
+    "\u00001434\u0000",
+    "\u00001435\u0000",
+    "\u00001436\u0000",
+    "\u00001437\u0000",
+    "\u00001438\u0000",
+    "\u00001439\u0000",
+    "\u00001440\u0000",
+    "\u00001441\u0000",
+    "\u00001442\u0000",
+    "\u00001443\u0000",
+    "\u00001444\u0000",
+    "\u00001445\u0000",
+    "\u00001446\u0000",
+    "\u00001447\u0000",
+    "\u00001448\u0000",
+    "\u00001449\u0000",
+    "\u00001450\u0000"
+   ],
+   "exampleCount": 50
+  },
+  {
+   "id": "horizontal-scroll",
+   "name": "Horizontal Scroll",
+   "ko": "가로 스크롤 갤러리·섹션",
+   "what": "세로 스크롤을 가로 이동으로 바꿔 프로젝트·단계·사진을 나란히 훑게 하는 레이아웃.",
+   "whereOnWeb": [
+    "포트폴리오 프로젝트 목록",
+    "연혁·프로세스 타임라인",
+    "상품 컬렉션 훑기",
+    "사진 에세이"
+   ],
+   "parameters": {
+    "durationMs": null,
+    "scrub": [
+     0.5,
+     1
+    ],
+    "panelWidthVw": [
+     60,
+     100
+    ],
+    "easing": [
+     "none"
+    ],
+    "stagger": null,
+    "distance": {
+     "scrollLengthMultiplier": "패널 합산 너비와 같음(end: '+=' + scrollWidth)"
+    },
+    "snap": "1/(panels-1)"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger"
+     ],
+     "api": [
+      "gsap.to(panels,{xPercent:-100*(n-1),ease:'none',scrollTrigger:{trigger:wrap,pin:true,scrub:1,snap:1/(n-1),end:()=>'+='+wrap.offsetWidth}})"
+     ]
+    },
+    "css": {
+     "api": [
+      "scroll-snap-type:x mandatory + overflow-x:auto",
+      "animation-timeline: view(inline)"
+     ],
+     "note": "네이티브 가로 스크롤 + scroll-snap 이 접근성·성능 면에서 안전한 기본"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 핀 해제하고 일반 세로 나열 또는 네이티브 가로 스크롤.",
+    "screenReader": "패널 순서를 DOM 순서와 일치, 키보드 포커스가 패널에 닿으면 해당 위치로 스크롤.",
+    "wcag": [
+     "2.1.1 키보드",
+     "1.4.10 리플로우(320px 에서 가로 스크롤 요구 예외 주의)",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "핀 구간은 첫 화면 밖에 둔다.",
+    "clsRisk": "스페이서 높이 변화 → 이미지 크기 고정 후 refresh.",
+    "guards": [
+     "모바일은 가로 핀 대신 네이티브 스크롤 스냅",
+     "패널 안 이미지 lazy + 크기 고정"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "commerce",
+     "brand"
+    ],
+    "placement": "프로젝트·컬렉션 섹션"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "마케팅 면 한정, 모바일은 네이티브 스냅 스크롤, reduced-motion 해제."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "핀+가로 이동 도우미(모바일 네이티브 스냅 폴백)"
+   },
+   "examples": [
+    "\u00001451\u0000",
+    "\u00001452\u0000",
+    "\u00001453\u0000",
+    "\u00001454\u0000",
+    "\u00001455\u0000",
+    "\u00001456\u0000",
+    "\u00001457\u0000",
+    "\u00001458\u0000",
+    "\u00001459\u0000",
+    "\u00001460\u0000",
+    "\u00001461\u0000",
+    "\u00001462\u0000",
+    "\u00001463\u0000",
+    "\u00001464\u0000",
+    "\u00001465\u0000",
+    "\u00001466\u0000",
+    "\u00001467\u0000",
+    "\u00001468\u0000",
+    "\u00001469\u0000",
+    "\u00001470\u0000",
+    "\u00001471\u0000",
+    "\u00001472\u0000",
+    "\u00001473\u0000",
+    "\u00001474\u0000",
+    "\u00001475\u0000",
+    "\u00001476\u0000",
+    "\u00001477\u0000",
+    "\u00001478\u0000",
+    "\u00001479\u0000",
+    "\u00001480\u0000",
+    "\u00001481\u0000",
+    "\u00001482\u0000",
+    "\u00001483\u0000",
+    "\u00001484\u0000",
+    "\u00001485\u0000",
+    "\u00001486\u0000",
+    "\u00001487\u0000",
+    "\u00001488\u0000",
+    "\u00001489\u0000",
+    "\u00001490\u0000",
+    "\u00001491\u0000",
+    "\u00001492\u0000",
+    "\u00001493\u0000",
+    "\u00001494\u0000",
+    "\u00001495\u0000",
+    "\u00001496\u0000",
+    "\u00001497\u0000"
+   ],
+   "exampleCount": 47
+  },
+  {
+   "id": "text-scramble",
+   "name": "Text Scramble",
+   "ko": "텍스트 스크램블(디코드)",
+   "what": "글자가 무작위 문자로 흔들리다 하나씩 제자리 글자로 확정되는 해독 효과.",
+   "whereOnWeb": [
+    "메뉴 호버 라벨",
+    "섹션 키워드 등장",
+    "상태 문구 전환",
+    "테크·사이버 톤 히어로 서브카피"
+   ],
+   "parameters": {
+    "durationMs": {
+     "word": [
+      600,
+      1500
+     ]
+    },
+    "easing": [
+     "none",
+     "power1.inOut"
+    ],
+    "stagger": null,
+    "distance": null,
+    "chars": "upperCase / lowerCase / 사용자 정의 문자 집합",
+    "revealDelay": [
+     0.1,
+     0.4
+    ],
+    "speed": [
+     0.3,
+     1
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrambleTextPlugin"
+     ],
+     "api": [
+      "gsap.to(el,{duration:1,scrambleText:{text:'새 문구',chars:'XO',revealDelay:0.3,speed:0.6}})"
+     ],
+     "license": "GSAP 3.13+ 무료(가격 페이지에 ScrambleText 포함)"
+    },
+    "css": {
+     "api": [],
+     "note": "CSS 만으로는 불가, 소량 JS(requestAnimationFrame)로 대체 가능"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 최종 문구 즉시 표시.",
+    "screenReader": "스크램블 중간 문자열이 낭독되지 않게 aria-label 에 최종 문구 고정 + 시각 요소 aria-hidden.",
+    "wcag": [
+     "2.3.3",
+     "1.3.1"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "LCP 텍스트에 쓰면 최종 문구 확정이 늦어진다 → 서브카피·메뉴에만.",
+    "clsRisk": "고정폭 글꼴 또는 min-width 로 폭 흔들림(CLS) 방지.",
+    "guards": [
+     "동시 스크램블 3개 이하",
+     "호버는 쓰로틀"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "saas",
+     "portfolio",
+     "dashboard"
+    ],
+    "placement": "메뉴 호버·서브카피"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/ScrambleTextPlugin/",
+    "https://gsap.com/pricing/"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "장식용 서브카피·메뉴 호버에만, 최종 문구를 aria-label 로 고정."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "ScrambleText 래퍼"
+   },
+   "examples": [
+    "\u00001498\u0000",
+    "\u00001499\u0000",
+    "\u00001500\u0000",
+    "\u00001501\u0000",
+    "\u00001502\u0000",
+    "\u00001503\u0000",
+    "\u00001504\u0000",
+    "\u00001505\u0000",
+    "\u00001506\u0000",
+    "\u00001507\u0000",
+    "\u00001508\u0000",
+    "\u00001509\u0000",
+    "\u00001510\u0000",
+    "\u00001511\u0000",
+    "\u00001512\u0000",
+    "\u00001513\u0000",
+    "\u00001514\u0000",
+    "\u00001515\u0000",
+    "\u00001516\u0000",
+    "\u00001517\u0000",
+    "\u00001518\u0000",
+    "\u00001519\u0000",
+    "\u00001520\u0000",
+    "\u00001521\u0000",
+    "\u00001522\u0000",
+    "\u00001523\u0000",
+    "\u00001524\u0000",
+    "\u00001525\u0000",
+    "\u00001526\u0000",
+    "\u00001527\u0000",
+    "\u00001528\u0000",
+    "\u00001529\u0000",
+    "\u00001530\u0000",
+    "\u00001531\u0000",
+    "\u00001532\u0000",
+    "\u00001533\u0000",
+    "\u00001534\u0000",
+    "\u00001535\u0000",
+    "\u00001536\u0000",
+    "\u00001537\u0000"
+   ],
+   "exampleCount": 40
+  },
+  {
+   "id": "magnetic-hover",
+   "name": "Magnetic Hover",
+   "ko": "마그네틱 버튼·호버",
+   "what": "커서가 가까워지면 버튼·요소가 자석처럼 따라 움직이고 떠나면 탄성 있게 복귀하는 호버 상호작용.",
+   "whereOnWeb": [
+    "주요 CTA 버튼",
+    "내비 로고·메뉴 아이콘",
+    "SNS 아이콘 열",
+    "카드 호버"
+   ],
+   "parameters": {
+    "durationMs": {
+     "follow": [
+      300,
+      500
+     ],
+     "return": [
+      500,
+      900
+     ]
+    },
+    "easing": {
+     "follow": "power2.out",
+     "return": "elastic.out(1,0.3)"
+    },
+    "stagger": null,
+    "distance": {
+     "pullFactor": [
+      0.2,
+      0.35
+     ],
+     "maxPx": [
+      10,
+      24
+     ],
+     "note": "공장 기준 이동 계수 0.2~0.35(DESIGN §8-6)"
+    },
+    "radiusPx": [
+     60,
+     120
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core quickTo"
+     ],
+     "api": [
+      "quickTo(btn,'x',{duration:0.4,ease:'power3'})",
+      "mouseleave → gsap.to(btn,{x:0,y:0,ease:'elastic.out(1,0.3)'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "transition: transform .3s",
+      "CSS 만으로는 커서 위치를 알 수 없어 소량 JS 필요"
+     ],
+     "note": "@media (hover:hover) and (pointer:fine) 에서만"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 이동 제거, 색 변화만.",
+    "screenReader": "포커스 스타일은 별도 제공(키보드 사용자는 마그네틱 효과 없음).",
+    "wcag": [
+     "2.5.8 타깃 최소 24px 유지",
+     "2.4.7 포커스 표시",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음.",
+    "clsRisk": "transform 만이라 없음, 히트영역이 움직여 클릭 빗나감 방지: 라벨만 이동·히트영역 고정.",
+    "guards": [
+     "터치 기기 비활성",
+     "mousemove 쓰로틀·quickTo"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "saas",
+     "portfolio",
+     "commerce"
+    ],
+    "placement": "히어로 CTA·헤더"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
+    "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "주 CTA 하나, 모션 강도 높음 레시피에서만, 이동 계수 0.2~0.35, (hover:hover)(pointer:fine), 키보드 포커스에는 효과 없음(DESIGN §8-6·§8-7)."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "magneticCta",
+    "gap": null
+   },
+   "examples": [
+    "\u00001538\u0000",
+    "\u00001539\u0000",
+    "\u00001540\u0000",
+    "\u00001541\u0000",
+    "\u00001542\u0000",
+    "\u00001543\u0000",
+    "\u00001544\u0000",
+    "\u00001545\u0000",
+    "\u00001546\u0000",
+    "\u00001547\u0000",
+    "\u00001548\u0000",
+    "\u00001549\u0000",
+    "\u00001550\u0000",
+    "\u00001551\u0000",
+    "\u00001552\u0000",
+    "\u00001553\u0000",
+    "\u00001554\u0000",
+    "\u00001555\u0000",
+    "\u00001556\u0000",
+    "\u00001557\u0000",
+    "\u00001558\u0000",
+    "\u00001559\u0000",
+    "\u00001560\u0000",
+    "\u00001561\u0000",
+    "\u00001562\u0000",
+    "\u00001563\u0000",
+    "\u00001564\u0000",
+    "\u00001565\u0000",
+    "\u00001566\u0000",
+    "\u00001567\u0000",
+    "\u00001568\u0000",
+    "\u00001569\u0000",
+    "\u00001570\u0000",
+    "\u00001571\u0000"
+   ],
+   "exampleCount": 34
+  },
+  {
+   "id": "hover-image-trail",
+   "name": "Hover Image Trail & Reveal",
+   "ko": "호버 이미지 트레일·플로팅 프리뷰",
+   "what": "리스트 항목이나 빈 영역 위에서 마우스를 움직이면 이미지가 꼬리처럼 따라붙거나 항목 옆에 떠올라 미리 보여주는 효과.",
+   "whereOnWeb": [
+    "프로젝트 목록 호버 프리뷰",
+    "히어로 마우스 이동 이미지 트레일",
+    "메뉴 항목 호버 이미지",
+    "팀·사례 목록"
+   ],
+   "parameters": {
+    "durationMs": {
+     "in": [
+      300,
+      500
+     ],
+     "life": [
+      600,
+      1200
+     ],
+     "out": [
+      300,
+      600
+     ]
+    },
+    "easing": [
+     "power3.out",
+     "expo.out"
+    ],
+    "stagger": {
+     "spawnDistancePx": [
+      60,
+      140
+     ],
+     "maxImages": 6,
+     "unit": "px 이동마다 1장"
+    },
+    "distance": {
+     "imageWidthPx": [
+      160,
+      320
+     ],
+     "rotationDeg": [
+      -8,
+      8
+     ]
+    },
+    "lerp": [
+     0.08,
+     0.2
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core quickTo",
+      "Flip(선택)"
+     ],
+     "api": [
+      "pointermove 거리 누적 → 다음 img 에 gsap.fromTo(scale 0.8→1, opacity)",
+      "quickSetter / quickTo"
+     ]
+    },
+    "css": {
+     "api": [
+      "position:fixed 이미지 + pointer-events:none",
+      "clip-path 리빌"
+     ],
+     "note": "이미지는 미리 decode, 수 장 풀 재사용"
+    },
+    "webgl": {
+     "note": "OGL·three.js 평면 + 셰이더로 호버 왜곡 가능(webgl-distortion 참고)"
+    },
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 트레일 비활성, 목록 옆 고정 프리뷰 1장.",
+    "screenReader": "이미지는 장식(aria-hidden), 정보는 항목 텍스트에 있어야 함.",
+    "wcag": [
+     "1.4.13 호버·포커스 콘텐츠",
+     "2.1.1 키보드 포커스에도 같은 프리뷰"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음.",
+    "clsRisk": "fixed 레이어.",
+    "guards": [
+     "이미지 풀 6장 재사용(DOM 증식 금지)",
+     "이미지 400px 이하로 리사이즈",
+     "터치 기기 비활성"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand",
+     "commerce"
+    ],
+    "placement": "프로젝트·상품 목록"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
+    "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "마우스 추종 장식 — 스프링 보간 필수, M3 한정, 정보는 항목 텍스트에 있어야 함."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "이미지 풀 재사용 트레일"
+   },
+   "examples": [
+    "\u00001572\u0000",
+    "\u00001573\u0000",
+    "\u00001574\u0000",
+    "\u00001575\u0000",
+    "\u00001576\u0000",
+    "\u00001577\u0000",
+    "\u00001578\u0000",
+    "\u00001579\u0000",
+    "\u00001580\u0000",
+    "\u00001581\u0000",
+    "\u00001582\u0000",
+    "\u00001583\u0000",
+    "\u00001584\u0000",
+    "\u00001585\u0000",
+    "\u00001586\u0000",
+    "\u00001587\u0000",
+    "\u00001588\u0000",
+    "\u00001589\u0000",
+    "\u00001590\u0000",
+    "\u00001591\u0000",
+    "\u00001592\u0000",
+    "\u00001593\u0000",
+    "\u00001594\u0000",
+    "\u00001595\u0000",
+    "\u00001596\u0000",
+    "\u00001597\u0000",
+    "\u00001598\u0000",
+    "\u00001599\u0000",
+    "\u00001600\u0000",
+    "\u00001601\u0000"
+   ],
+   "exampleCount": 30
+  },
+  {
+   "id": "webgl-distortion",
+   "name": "WebGL Image Distortion",
+   "ko": "WebGL 이미지 왜곡·셰이더 호버",
+   "what": "이미지를 WebGL 텍스처로 올려 호버·스크롤 속도에 따라 물결·픽셀·RGB 분리 등으로 왜곡하는 효과.",
+   "whereOnWeb": [
+    "갤러리·프로젝트 카드 호버",
+    "스크롤 속도 연동 이미지 휘어짐",
+    "히어로 이미지 전환(디스플레이스먼트 맵)",
+    "실사 배경의 유체 반응"
+   ],
+   "parameters": {
+    "durationMs": {
+     "hoverIn": [
+      400,
+      800
+     ],
+     "transition": [
+      800,
+      1500
+     ]
+    },
+    "easing": [
+     "power2.out",
+     "expo.out"
+    ],
+    "stagger": null,
+    "distance": null,
+    "uniforms": {
+     "strength": [
+      0.1,
+      0.6
+     ],
+     "scrollVelocityScale": [
+      0.5,
+      2
+     ]
+    },
+    "texturePx": "1024~2048"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core(유니폼 트윈)",
+      "ScrollTrigger"
+     ],
+     "api": [
+      "gsap.to(material.uniforms.uProgress,{value:1,duration:1})"
+     ]
+    },
+    "css": {
+     "api": [
+      "SVG feDisplacementMap + filter (약한 대체)"
+     ],
+     "note": "CSS 폴백으로 이미지 줌·클립 와이프 제공"
+    },
+    "webgl": {
+     "api": [
+      "OGL",
+      "three.js ShaderMaterial",
+      "Curtains.js(DOM 동기)"
+     ],
+     "note": "DOM 이미지와 위치 동기화, 캔버스 1개로 여러 평면"
+    },
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 WebGL 비활성하고 원본 <img> 표시.",
+    "screenReader": "캔버스 대신 원본 img 에 alt 유지(캔버스는 aria-hidden).",
+    "wcag": [
+     "1.1.1 대체 텍스트",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "캔버스 텍스처 로드는 LCP 후보가 아님 → 첫 화면에는 <img> 먼저 표시하고 WebGL 로 승격.",
+    "clsRisk": "캔버스 크기를 이미지 컨테이너에 고정.",
+    "guards": [
+     "저사양·모바일은 폴백",
+     "DPR 상한 2",
+     "화면 밖 렌더 정지",
+     "three.js 번들은 동적 import(약 600KB+ → OGL 약 30KB 선택 검토, 번들 크기는 도입 시 측정)"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand"
+    ],
+    "placement": "갤러리 카드 호버(첫 화면 밖)"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API",
+    "https://web.dev/articles/lcp"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "첫 화면 밖 갤러리 한정, <img> 먼저 표시 후 승격, 저사양·reduced-motion 폴백. 번들 크기는 도입 시 측정(확인 필요)."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "OGL·three 셰이더 호버(첫 화면 밖, 동적 import)"
+   },
+   "examples": [
+    "\u00001602\u0000",
+    "\u00001603\u0000",
+    "\u00001604\u0000",
+    "\u00001605\u0000",
+    "\u00001606\u0000",
+    "\u00001607\u0000",
+    "\u00001608\u0000",
+    "\u00001609\u0000",
+    "\u00001610\u0000",
+    "\u00001611\u0000",
+    "\u00001612\u0000",
+    "\u00001613\u0000",
+    "\u00001614\u0000",
+    "\u00001615\u0000",
+    "\u00001616\u0000",
+    "\u00001617\u0000",
+    "\u00001618\u0000",
+    "\u00001619\u0000",
+    "\u00001620\u0000",
+    "\u00001621\u0000",
+    "\u00001622\u0000",
+    "\u00001623\u0000",
+    "\u00001624\u0000",
+    "\u00001625\u0000",
+    "\u00001626\u0000",
+    "\u00001627\u0000",
+    "\u00001628\u0000",
+    "\u00001629\u0000",
+    "\u00001630\u0000",
+    "\u00001631\u0000",
+    "\u00001632\u0000",
+    "\u00001633\u0000",
+    "\u00001634\u0000",
+    "\u00001635\u0000",
+    "\u00001636\u0000",
+    "\u00001637\u0000",
+    "\u00001638\u0000",
+    "\u00001639\u0000",
+    "\u00001640\u0000",
+    "\u00001641\u0000",
+    "\u00001642\u0000",
+    "\u00001643\u0000",
+    "\u00001644\u0000",
+    "\u00001645\u0000",
+    "\u00001646\u0000",
+    "\u00001647\u0000",
+    "\u00001648\u0000",
+    "\u00001649\u0000",
+    "\u00001650\u0000",
+    "\u00001651\u0000",
+    "\u00001652\u0000",
+    "\u00001653\u0000",
+    "\u00001654\u0000",
+    "\u00001655\u0000",
+    "\u00001656\u0000",
+    "\u00001657\u0000",
+    "\u00001658\u0000",
+    "\u00001659\u0000",
+    "\u00001660\u0000",
+    "\u00001661\u0000",
+    "\u00001662\u0000",
+    "\u00001663\u0000",
+    "\u00001664\u0000",
+    "\u00001665\u0000",
+    "\u00001666\u0000",
+    "\u00001667\u0000",
+    "\u00001668\u0000",
+    "\u00001669\u0000",
+    "\u00001670\u0000"
+   ],
+   "exampleCount": 69
+  },
+  {
+   "id": "page-transition",
+   "name": "Page Transition",
+   "ko": "페이지 전환(View Transitions 등)",
+   "what": "페이지 이동 때 요소가 이전 화면에서 다음 화면으로 이어지는 듯 보이게 하는 전환.",
+   "whereOnWeb": [
+    "목록→상세 이미지 이어지기",
+    "메뉴 이동 시 커튼 와이프",
+    "SPA·MPA 라우트 전환",
+    "상품 카드→상품 상세"
+   ],
+   "parameters": {
+    "durationMs": {
+     "transition": [
+      300,
+      600
+     ]
+    },
+    "easing": [
+     "ease-in-out",
+     "cubic-bezier(.76,0,.24,1)",
+     "expo.inOut"
+    ],
+    "stagger": null,
+    "distance": null,
+    "names": "view-transition-name 으로 공유 요소 지정"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "Flip",
+      "core"
+     ],
+     "api": [
+      "Flip.getState(els)→Flip.from(state,{duration:0.6,ease:'power2.inOut'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "@view-transition { navigation: auto }",
+      "::view-transition-old(root) / ::view-transition-new(root)",
+      "view-transition-name",
+      "document.startViewTransition()"
+     ],
+     "note": "Cross-document: Chrome 126+·Safari 18.2+, Firefox 미지원(문서 기준) → 미지원은 즉시 전환(점진적 향상)"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "@media (prefers-reduced-motion: reduce) { ::view-transition-group(*){animation:none} }",
+    "screenReader": "전환 후 포커스를 새 페이지 제목으로, 문서 title·aria-live 안내.",
+    "wcag": [
+     "2.4.3 포커스 순서",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "전환이 새 페이지 렌더를 막는 동안 LCP 가 늦어진다 → 렌더 블로킹 시간 상한(수백 ms).",
+    "clsRisk": "스냅샷 기반이라 낮음.",
+    "guards": [
+     "view-transition-name 은 페이지당 고유",
+     "큰 요소 다수 지정 금지",
+     "미지원 브라우저 폴백"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "commerce",
+     "portfolio",
+     "saas",
+     "detail",
+     "pwa"
+    ],
+    "placement": "목록→상세, 라우트 전환"
+   },
+   "sources": [
+    "https://developer.chrome.com/docs/web-platform/view-transitions/",
+    "https://developer.chrome.com/docs/web-platform/view-transitions/cross-document",
+    "https://gsap.com/docs/v3/Plugins/Flip/"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "뷰·페이지 전환 240~400ms emphasized, 같은 출처만, view-transition-name 은 요소 하나에 하나, reduced-motion 이면 길이 0(DESIGN §8-6·§8-2)."
+   },
+   "kit": {
+    "status": "partial",
+    "kitTechnique": "viewTransition(update)",
+    "gap": "공유 요소 view-transition-name 규약·교차 문서 @view-transition"
+   },
+   "examples": [
+    "\u00001671\u0000",
+    "\u00001672\u0000",
+    "\u00001673\u0000",
+    "\u00001674\u0000",
+    "\u00001675\u0000",
+    "\u00001676\u0000",
+    "\u00001677\u0000",
+    "\u00001678\u0000",
+    "\u00001679\u0000",
+    "\u00001680\u0000",
+    "\u00001681\u0000",
+    "\u00001682\u0000",
+    "\u00001683\u0000",
+    "\u00001684\u0000",
+    "\u00001685\u0000",
+    "\u00001686\u0000",
+    "\u00001687\u0000",
+    "\u00001688\u0000",
+    "\u00001689\u0000",
+    "\u00001690\u0000",
+    "\u00001691\u0000",
+    "\u00001692\u0000",
+    "\u00001693\u0000",
+    "\u00001694\u0000",
+    "\u00001695\u0000",
+    "\u00001696\u0000",
+    "\u00001697\u0000",
+    "\u00001698\u0000",
+    "\u00001699\u0000",
+    "\u00001700\u0000",
+    "\u00001701\u0000",
+    "\u00001702\u0000",
+    "\u00001703\u0000",
+    "\u00001704\u0000",
+    "\u00001705\u0000",
+    "\u00001706\u0000",
+    "\u00001707\u0000",
+    "\u00001708\u0000",
+    "\u00001709\u0000",
+    "\u00001710\u0000",
+    "\u00001711\u0000",
+    "\u00001712\u0000",
+    "\u00001713\u0000",
+    "\u00001714\u0000",
+    "\u00001715\u0000",
+    "\u00001716\u0000",
+    "\u00001717\u0000",
+    "\u00001718\u0000",
+    "\u00001719\u0000",
+    "\u00001720\u0000",
+    "\u00001721\u0000",
+    "\u00001722\u0000",
+    "\u00001723\u0000",
+    "\u00001724\u0000",
+    "\u00001725\u0000",
+    "\u00001726\u0000",
+    "\u00001727\u0000",
+    "\u00001728\u0000",
+    "\u00001729\u0000",
+    "\u00001730\u0000",
+    "\u00001731\u0000",
+    "\u00001732\u0000",
+    "\u00001733\u0000",
+    "\u00001734\u0000",
+    "\u00001735\u0000",
+    "\u00001736\u0000",
+    "\u00001737\u0000",
+    "\u00001738\u0000",
+    "\u00001739\u0000",
+    "\u00001740\u0000",
+    "\u00001741\u0000"
+   ],
+   "exampleCount": 71
+  },
+  {
+   "id": "video-mask-typography",
+   "name": "Video/Photo Mask Typography",
+   "ko": "비디오·사진 마스크 타이포",
+   "what": "영상이나 실사 사진을 글자 모양 안에 채워 넣어 큰 글씨가 곧 영상 창이 되게 하는 타이포.",
+   "whereOnWeb": [
+    "브랜드 히어로 큰 글씨(영상이 글자 안에서 재생)",
+    "섹션 오프너 거대 단어",
+    "로딩 후 글자 확대되며 영상 전체로 전환(줌 인 마스크)",
+    "스크롤 연동 글자 확대 → 전체 화면 영상"
+   ],
+   "parameters": {
+    "durationMs": {
+     "zoomReveal": [
+      900,
+      1800
+     ]
+    },
+    "easing": [
+     "expo.inOut",
+     "power4.inOut"
+    ],
+    "stagger": null,
+    "distance": {
+     "fontSizeVw": [
+      18,
+      40
+     ],
+     "maskScaleTo": "글자 안 영역이 화면을 덮을 때까지(50~150배 또는 scale)"
+    },
+    "fontWeight": "900 이상 굵은 글꼴(가는 글꼴은 영상이 안 보임)"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger"
+     ],
+     "api": [
+      "scrub 으로 mask scale 확대",
+      "gsap.to(text,{scale:60,...})"
+     ]
+    },
+    "css": {
+     "api": [
+      "background-clip:text + -webkit-text-fill-color:transparent (이미지 배경만, video 는 불가)",
+      "mix-blend-mode:screen/multiply 로 흰 배경 위 검은 글자 구멍 만들기(video 위 레이어)",
+      "mask-image: url(text.svg) / SVG <mask> + <foreignObject>"
+     ],
+     "note": "video 는 background-clip:text 에 쓸 수 없어 blend-mode 또는 SVG mask 방식 사용"
+    },
+    "webgl": null,
+    "video": {
+     "note": "영상 muted playsinline autoplay loop, 포스터 필수, 10초 이하 루프, 720p 이하로도 충분(글자 면적이 작음)"
+    }
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 영상 정지(poster 만) 또는 단색 글자로 대체.",
+    "screenReader": "마스크 글자는 실제 텍스트(h1)로 존재해야 한다(이미지화 금지).",
+    "wcag": [
+     "1.4.3 대비(영상이 밝으면 글자 인지 저하)",
+     "2.2.2 5초 초과 영상은 정지 수단"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "영상·포스터가 LCP 후보. poster 를 preload + fetchpriority=high.",
+    "clsRisk": "컨테이너 aspect-ratio 고정.",
+    "guards": [
+     "영상 비트레이트 1Mbps 이하",
+     "모바일 데이터 절약 모드는 포스터만",
+     "mask 확대 애니메이션 시 will-change 짧게"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "local"
+    ],
+    "placement": "첫 화면 히어로 큰 글씨"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/mask-image",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip",
+    "https://developer.chrome.com/blog/autoplay"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "대형 글자 한 단어의 시그니처. 배경 영상 규칙 적용(autoplay muted loop playsinline, reduced-motion 이면 poster, 5초 넘으면 정지 컨트롤). 실제 h1 텍스트 유지."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "SVG mask + video + 접근 가능한 실제 h1, 스크롤 확대 전환"
+   },
+   "examples": [
+    "\u00001742\u0000",
+    "\u00001743\u0000",
+    "\u00001744\u0000",
+    "\u00001745\u0000",
+    "\u00001746\u0000",
+    "\u00001747\u0000",
+    "\u00001748\u0000",
+    "\u00001749\u0000",
+    "\u00001750\u0000",
+    "\u00001751\u0000",
+    "\u00001752\u0000",
+    "\u00001753\u0000",
+    "\u00001754\u0000",
+    "\u00001755\u0000",
+    "\u00001756\u0000",
+    "\u00001757\u0000",
+    "\u00001758\u0000",
+    "\u00001759\u0000",
+    "\u00001760\u0000",
+    "\u00001761\u0000",
+    "\u00001762\u0000",
+    "\u00001763\u0000",
+    "\u00001764\u0000",
+    "\u00001765\u0000",
+    "\u00001766\u0000",
+    "\u00001767\u0000",
+    "\u00001768\u0000",
+    "\u00001769\u0000",
+    "\u00001770\u0000",
+    "\u00001771\u0000",
+    "\u00001772\u0000",
+    "\u00001773\u0000",
+    "\u00001774\u0000",
+    "\u00001775\u0000",
+    "\u00001776\u0000",
+    "\u00001777\u0000",
+    "\u00001778\u0000",
+    "\u00001779\u0000",
+    "\u00001780\u0000"
+   ],
+   "exampleCount": 39
+  },
+  {
+   "id": "scroll-velocity-skew",
+   "name": "Scroll-velocity Skew",
+   "ko": "스크롤 속도 연동 스큐",
+   "what": "스크롤 속도(px/s)를 줄여 clamp 한 값을 이미지·텍스트·마키의 skew·이동에 입히고, 멈추면 0 으로 감쇠시키는 효과.",
+   "whereOnWeb": [
+    "이미지 갤러리 스크롤 시 기울어짐",
+    "마키 띠 속도·방향 반응",
+    "대형 헤드라인 자간·기울기 반응",
+    "카드 리스트의 끌리는 느낌"
+   ],
+   "parameters": {
+    "durationMs": {
+     "settle": [
+      300,
+      700
+     ]
+    },
+    "easing": [
+     "power3.out (감쇠)"
+    ],
+    "stagger": null,
+    "distance": {
+     "skewDeg": [
+      -20,
+      20
+     ],
+     "velocityDivisor": [
+      200,
+      400
+     ],
+     "clampDeg": [
+      8,
+      20
+     ]
+    },
+    "note": "속도 값은 ScrollTrigger self.getVelocity() 를 나눠 -20~20 도로 clamp 하는 방식이 공개 예제에서 확인됨"
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger",
+      "gsap.quickTo"
+     ],
+     "api": [
+      "ScrollTrigger.create({onUpdate:self=>skewTo(gsap.utils.clamp(-20,20,self.getVelocity()/-300))})",
+      "const skewTo=gsap.quickTo(el,'skewY',{duration:0.5,ease:'power3'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "--skew 커스텀 프로퍼티를 JS 가 갱신, transform:skewY(var(--skew))"
+     ],
+     "note": "CSS scroll-driven 은 속도값을 직접 못 읽는다"
+    },
+    "webgl": {
+     "note": "셰이더 유니폼으로 속도를 넘겨 이미지 휘어짐(webgl-distortion)으로 확장"
+    },
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 완전 비활성(스크롤 속도 연동 변형은 전정기관 자극 우려).",
+    "screenReader": "해당 없음(시각 효과).",
+    "wcag": [
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음.",
+    "clsRisk": "transform 만이라 없음.",
+    "guards": [
+     "onUpdate 에서 DOM 읽기 금지, quickTo 사용",
+     "skew 대상 5~10개 이내",
+     "터치 관성 스크롤에서 과한 기울기 방지: clamp"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand",
+     "commerce"
+    ],
+    "placement": "갤러리·마키(첫 화면 아래)"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
+    "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "스크롤 속도 연동 변형 — reduced-motion 비활성, 갤러리·마키에 한정, quickTo 사용."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "속도 연동 skew(M3)"
+   },
+   "examples": [
+    "\u00001781\u0000",
+    "\u00001782\u0000",
+    "\u00001783\u0000",
+    "\u00001784\u0000",
+    "\u00001785\u0000",
+    "\u00001786\u0000",
+    "\u00001787\u0000",
+    "\u00001788\u0000",
+    "\u00001789\u0000",
+    "\u00001790\u0000",
+    "\u00001791\u0000",
+    "\u00001792\u0000",
+    "\u00001793\u0000",
+    "\u00001794\u0000",
+    "\u00001795\u0000"
+   ],
+   "exampleCount": 15
+  },
+  {
+   "id": "smooth-scroll-inertia",
+   "name": "Smooth Scroll (Inertia)",
+   "ko": "관성 스무스 스크롤",
+   "what": "Lenis·ScrollSmoother 등으로 스크롤에 관성을 입히고 GSAP ticker 와 동기화해 모든 스크롤 연출의 기준 시계로 쓰는 인프라성 효과.",
+   "whereOnWeb": [
+    "사이트 전역 스크롤 감촉",
+    "ScrollTrigger scrub 연출의 부드러운 추종",
+    "앵커 이동 시 이징 스크롤",
+    "가로 갤러리와 핀 구간의 일관된 진행"
+   ],
+   "parameters": {
+    "durationMs": null,
+    "lerp": [
+     0.07,
+     0.15
+    ],
+    "duration(s)": [
+     1,
+     1.4
+    ],
+    "easing": [
+     "expo.out 계열 (Lenis 기본 easing 함수)"
+    ],
+    "stagger": null,
+    "distance": null,
+    "wheelMultiplier": [
+     0.8,
+     1.2
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger",
+      "ScrollSmoother(GSAP 3.13 무료)"
+     ],
+     "api": [
+      "lenis.on('scroll',ScrollTrigger.update)",
+      "gsap.ticker.add(t=>lenis.raf(t*1000))",
+      "gsap.ticker.lagSmoothing(0)"
+     ],
+     "license": "GSAP 3.13+ 무료, Lenis 는 별도 오픈소스 라이브러리(도입 시 라이선스·번들 크기 확인)"
+    },
+    "css": {
+     "api": [
+      "scroll-behavior:smooth (관성 아님, 앵커 이동만)",
+      "html.lenis 클래스 관련 CSS"
+     ],
+     "note": "네이티브 스크롤을 흉내 내므로 키보드·접근성 호환이 라이브러리 품질에 달림"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 Lenis 를 만들지 않고 네이티브 스크롤 유지.",
+    "screenReader": "스크롤 하이재킹 금지: 키보드(Page Down, Space)·앵커·find-in-page 가 정상이어야 함.",
+    "wcag": [
+     "2.1.1 키보드",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "초기화 JS 가 메인 스레드를 점유하면 INP 에 영향 → idle 시점 초기화.",
+    "clsRisk": "없음.",
+    "guards": [
+     "스크롤 컨테이너 중첩(overflow:auto) 구간은 data-lenis-prevent 로 예외 처리",
+     "iOS·터치는 네이티브 관성이 이미 좋으므로 데스크톱만 적용 검토"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand",
+     "saas"
+    ],
+    "placement": "전역(스크롤 연출이 많은 페이지에서만)"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://gsap.com/pricing/",
+    "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "스크롤 하이재킹 위험: 키보드·앵커·찾기 정상 동작 필수, 데스크톱만, reduced-motion 이면 네이티브. 공장 기본값에서 제외 권장."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "Lenis 연동(공장 기본 제외 권장)"
+   },
+   "examples": [
+    "\u00001796\u0000",
+    "\u00001797\u0000",
+    "\u00001798\u0000",
+    "\u00001799\u0000",
+    "\u00001800\u0000",
+    "\u00001801\u0000",
+    "\u00001802\u0000",
+    "\u00001803\u0000",
+    "\u00001804\u0000",
+    "\u00001805\u0000",
+    "\u00001806\u0000",
+    "\u00001807\u0000",
+    "\u00001808\u0000",
+    "\u00001809\u0000",
+    "\u00001810\u0000",
+    "\u00001811\u0000",
+    "\u00001812\u0000",
+    "\u00001813\u0000",
+    "\u00001814\u0000",
+    "\u00001815\u0000",
+    "\u00001816\u0000",
+    "\u00001817\u0000",
+    "\u00001818\u0000",
+    "\u00001819\u0000",
+    "\u00001820\u0000",
+    "\u00001821\u0000",
+    "\u00001822\u0000",
+    "\u00001823\u0000",
+    "\u00001824\u0000",
+    "\u00001825\u0000",
+    "\u00001826\u0000"
+   ],
+   "exampleCount": 31
+  },
+  {
+   "id": "sticky-stacking-cards",
+   "name": "Sticky Stacking Cards",
+   "ko": "스티키 스택 카드",
+   "what": "카드가 스크롤에 따라 핀되어 서로 위로 겹쳐 쌓이거나 축소·페이드되며 다음 카드에 덮이는 연출.",
+   "whereOnWeb": [
+    "기능·서비스 소개 카드 스택",
+    "프로젝트 케이스 겹침",
+    "단계별 프로세스 설명",
+    "요금제·후기 카드"
+   ],
+   "parameters": {
+    "durationMs": null,
+    "scrub": [
+     0.5,
+     1
+    ],
+    "easing": [
+     "none (스크럽)",
+     "power2.inOut"
+    ],
+    "stagger": {
+     "perCard": [
+      0.25,
+      0.5
+     ],
+     "unit": "timeline units"
+    },
+    "distance": {
+     "scalePrev": [
+      0.9,
+      0.96
+     ],
+     "opacityPrev": [
+      0.6,
+      1
+     ],
+     "topOffsetPx": [
+      16,
+      48
+     ]
+    },
+    "rotationDeg": [
+     -3,
+     3
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "ScrollTrigger"
+     ],
+     "api": [
+      "카드마다 ScrollTrigger pin:true, pinSpacing:false",
+      "타임라인에서 index*duration 만큼 y 를 올려 쌓기"
+     ]
+    },
+    "css": {
+     "api": [
+      "position:sticky; top:calc(var(--i)*24px)",
+      "animation-timeline:view() 로 이전 카드 scale 축소"
+     ],
+     "note": "CSS sticky 만으로 기본 스택이 되고 Chrome 115+ 에서는 scroll-driven 으로 축소까지 가능"
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 sticky·축소 해제하고 일반 세로 나열.",
+    "screenReader": "DOM 순서 = 읽기 순서, 가려진 카드의 링크가 포커스를 받지 않게 처리.",
+    "wcag": [
+     "2.4.3 포커스 순서",
+     "2.3.3"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음(첫 화면 아래).",
+    "clsRisk": "핀 스페이서 높이를 고정하고 이미지 크기 예약.",
+    "guards": [
+     "카드 5개 이하",
+     "sticky 우선, pin 은 필요할 때만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "saas",
+     "portfolio",
+     "brand",
+     "detail"
+    ],
+    "placement": "기능·케이스 섹션"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+    "https://developer.chrome.com/docs/css-ui/scroll-driven-animations",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/position"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "단계·기능 3~5개(DESIGN §8-6 표), reduced-motion 이면 일반 목록."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "stickyStack",
+    "gap": null
+   },
+   "examples": [
+    "\u00001827\u0000",
+    "\u00001828\u0000",
+    "\u00001829\u0000",
+    "\u00001830\u0000",
+    "\u00001831\u0000",
+    "\u00001832\u0000",
+    "\u00001833\u0000",
+    "\u00001834\u0000",
+    "\u00001835\u0000",
+    "\u00001836\u0000",
+    "\u00001837\u0000",
+    "\u00001838\u0000",
+    "\u00001839\u0000",
+    "\u00001840\u0000",
+    "\u00001841\u0000",
+    "\u00001842\u0000",
+    "\u00001843\u0000"
+   ],
+   "exampleCount": 17
+  },
+  {
+   "id": "cursor-spotlight-reveal",
+   "name": "Cursor Spotlight Reveal",
+   "ko": "커서 스포트라이트 리빌",
+   "what": "커서를 따라다니는 원형 마스크가 아래 겹의 텍스트·이미지를 드러내는 손전등형 리빌.",
+   "whereOnWeb": [
+    "히어로 숨은 이미지·카피 드러내기",
+    "팀·갤러리 호버",
+    "404·인트로 장난기 있는 상호작용",
+    "프리미엄 브랜드 오프닝"
+   ],
+   "parameters": {
+    "durationMs": {
+     "follow": [
+      150,
+      400
+     ],
+     "expand": [
+      300,
+      600
+     ]
+    },
+    "easing": [
+     "power3.out (quickTo)"
+    ],
+    "stagger": null,
+    "distance": {
+     "radiusPx": [
+      80,
+      200
+     ],
+     "radiusHoverPx": [
+      200,
+      320
+     ]
+    },
+    "edgeSoftnessPx": [
+     20,
+     60
+    ]
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "quickTo"
+     ],
+     "api": [
+      "quickTo(el,'--x')/('--y') 로 CSS 변수 갱신"
+     ]
+    },
+    "css": {
+     "api": [
+      "mask-image: radial-gradient(circle var(--r) at var(--x) var(--y), #000 0, transparent 100%)",
+      "clip-path: circle(var(--r) at var(--x) var(--y))"
+     ],
+     "note": "mask-image 는 2023-12 이후 주요 브라우저 지원(MDN)"
+    },
+    "webgl": {
+     "note": "WebGL 셰이더로 유체형 마스크(예: Awwwards 'cursor interaction' 사례)"
+    },
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 마스크 대신 전체 노출.",
+    "screenReader": "가려진 정보도 DOM 에는 모두 있어야 하며 시각적으로만 숨김 해제 효과. 필수 정보를 호버 뒤에만 두지 않는다.",
+    "wcag": [
+     "1.4.13 호버 콘텐츠",
+     "2.1.1 키보드 대체(포커스 시 전체 노출)"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음.",
+    "clsRisk": "없음.",
+    "guards": [
+     "터치 기기 비활성",
+     "큰 면적 마스크 갱신은 rAF 1회/프레임"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio"
+    ],
+    "placement": "히어로·404(장식적 인터랙션)"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/mask-image",
+    "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "커서 추종 장식 — M3 한정, 필수 정보를 가린 채 두지 않는다."
+   },
+   "kit": {
+    "status": "missing",
+    "kitTechnique": null,
+    "gap": "mask-image 원형 커서 리빌(M3)"
+   },
+   "examples": [
+    "\u00001844\u0000",
+    "\u00001845\u0000",
+    "\u00001846\u0000",
+    "\u00001847\u0000",
+    "\u00001848\u0000",
+    "\u00001849\u0000",
+    "\u00001850\u0000",
+    "\u00001851\u0000",
+    "\u00001852\u0000",
+    "\u00001853\u0000",
+    "\u00001854\u0000"
+   ],
+   "exampleCount": 11
+  },
+  {
+   "id": "scroll-hint",
+   "name": "Scroll Hint",
+   "ko": "스크롤 유도 표시",
+   "what": "첫 화면 아래에 더 볼 내용이 있음을 알리는 작은 화살표·문구가 짧게 까딱이다가, 사용자가 스크롤하면 그 즉시 멈추는 연출.",
+   "whereOnWeb": [
+    "풀블리드 사진·영상 히어로 하단 가운데",
+    "세로로 긴 랜딩 첫 화면 끝",
+    "다음 구획이 첫 화면에 걸려 보이지 않는 쪽"
+   ],
+   "parameters": {
+    "durationMs": {
+     "cycle": [
+      1200,
+      2000
+     ],
+     "repeats": [
+      2,
+      3
+     ],
+     "totalMax": 5000,
+     "note": "합계(한 번 × 반복 수)가 5초를 넘으면 멈춤 단추 필수. 기본 1600ms × 3회 = 4.8초."
+    },
+    "easing": [
+     "sine.inOut"
+    ],
+    "distance": {
+     "travelPx": [
+      6,
+      12
+     ],
+     "note": "M2 기준 8px — 강도 배율이 곱해진다."
+    },
+    "delayS": {
+     "afterEntrance": 1.6,
+     "note": "등장 끝 + 1.6초 뒤 시작(첫 칠·LCP 창 밖)."
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "gsap.to(el,{y:8,duration:0.8,ease:'sine.inOut',yoyo:true,repeat:5,clearProps:'transform'})",
+      "window.addEventListener('scroll',stop,{once:true,passive:true})"
+     ]
+    },
+    "css": {
+     "api": [
+      "@keyframes hint {50%{transform:translateY(8px)}}",
+      "animation-iteration-count: 3"
+     ],
+     "note": "JS 없이도 가능하나 스크롤 즉시 멈춤은 JS 가 필요하다."
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 제자리 정지(표시는 그대로 보인다).",
+    "screenReader": "장식이므로 aria-hidden. 다음 구획으로 가는 실제 링크가 있으면 그 링크가 이름을 가진다.",
+    "wcag": [
+     "2.2.2 5초 넘게 자동으로 움직이는 것은 정지 수단"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음 — 등장 끝 + 1.6초 뒤 transform 만 건드린다.",
+    "clsRisk": "없음 — transform 만 쓴다.",
+    "guards": [
+     "transform 만 애니메이트",
+     "반복 수 상한 3회",
+     "스크롤하면 되돌리고 리스너 해제"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "local",
+     "commerce"
+    ],
+    "placement": "히어로 하단 가운데(랜딩 포함)"
+   },
+   "sources": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion",
+    "https://gsap.com/docs/v3/GSAP/gsap.to()/"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "합계 5초 이내(기본 3회), 스크롤하면 즉시 멈춤, 5초를 넘기면 멈춤 단추. 글을 가리지 않는다."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "scrollHint(s, target) + scrollHintPlan",
+    "gap": null
+   }
+  },
+  {
+   "id": "preloader-intro",
+   "name": "Preloader Intro",
+   "ko": "프리로더 인트로",
+   "what": "첫 방문에만 화면 가장자리에 얇은 진행 띠가 1.2초 안에 차고 걷히는 도입 연출. 글 위를 덮지 않고 건너뛰기 단추가 늘 있다.",
+   "whereOnWeb": [
+    "브랜드·포트폴리오 첫 방문 도입",
+    "무거운 히어로 그림이 들어오는 순간의 가벼운 신호"
+   ],
+   "parameters": {
+    "durationMs": {
+     "total": [
+      600,
+      1200
+     ],
+     "totalMax": 1200,
+     "note": "채움 70% + 걷힘 30%. 1.2초를 넘기지 않는다."
+    },
+    "easing": [
+     "cubic-bezier(.25,1,.5,1)",
+     "cubic-bezier(.4,0,1,1)"
+    ],
+    "distance": {
+     "bandThicknessPx": [
+      2,
+      6
+     ],
+     "note": "글 위를 덮지 않는 얇은 띠(전면 덮개 금지)."
+    },
+    "visits": {
+     "firstVisitOnly": true,
+     "note": "세션 저장소(sessionStorage)에 표지 — 못 읽으면 첫 방문으로 본다."
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "tl.fromTo(bar,{scaleX:0,transformOrigin:'0% 50%'},{scaleX:1})",
+      "tl.to(band,{autoAlpha:0})",
+      "skip.addEventListener(\"click\",()=>tl.progress(1))"
+     ]
+    },
+    "css": {
+     "api": [
+      "[data-preloader][hidden]{display:none}"
+     ],
+     "note": "띠는 서버 HTML 에 hidden 으로 들어 있고 JS 가 첫 방문일 때만 연다 — 정지 갈래·재방문에서는 열리지 않는다(아예 그리지 않는다)."
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 아예 그리지 않는다(띠가 hidden 그대로).",
+    "screenReader": "띠는 aria-hidden 장식. 건너뛰기 단추는 키보드로 닿고 이름이 있다. 단추에 초점이 있다가 띠가 닫히면 초점을 h1 로 옮긴다.",
+    "wcag": [
+     "2.2.2 자동 시작 움직임은 정지·건너뛰기 수단",
+     "2.4.3 초점 순서"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "낮음 — 글·히어로 위에 덮지 않고 히어로 등장 줄(s.tl)과 별개의 줄이라 첫 칠과 LCP 요소를 막지 않는다. 전면 덮개형 프리로더는 LCP 를 JS 뒤로 미루므로 금지.",
+    "clsRisk": "없음 — 띠는 고정 위치(레이아웃 밖).",
+    "guards": [
+     "1.2초 상한",
+     "재방문에서는 그리지 않는다",
+     "transform·opacity 만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio"
+    ],
+    "placement": "쪽 맨 위 가장자리 띠(첫 방문 한정)"
+   },
+   "sources": [
+    "https://web.dev/articles/lcp",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage",
+    "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "첫 방문만, 1.2초 이내, 건너뛰기 단추, 전면 덮개 금지. 동작 줄이기에서는 그리지 않는다."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "preloaderIntro(s, band, { maxMs }) + preloaderIntroPlan",
+    "gap": null
+   }
+  },
+  {
+   "id": "blur-to-sharp",
+   "name": "Blur to Sharp",
+   "ko": "흐림에서 선명으로",
+   "what": "대상이 흐린 상태에서 시작해 선명해지며 자리 잡는 등장. 휩 팬의 흐림 값을 재사용하고 글의 불투명도는 건드리지 않는다.",
+   "whereOnWeb": [
+    "히어로 배경 사진·장면 등장",
+    "섹션 대표 그림",
+    "제목 아래 보조 문구(흐림이 작게)"
+   ],
+   "parameters": {
+    "durationMs": {
+     "total": [
+      400,
+      800
+     ],
+     "note": "M2 기준 휩 팬 길이 × 1.6 ≈ 580ms."
+    },
+    "easing": [
+     "cubic-bezier(.16,1,.3,1)"
+    ],
+    "blur": {
+     "fromPx": [
+      3,
+      10
+     ],
+     "toPx": 0,
+     "note": "휩 팬 최대 흐림(18px)의 1/3 = 6px(M2). 강도 배율이 줄이거나 키운다."
+    },
+    "stagger": {
+     "each": [
+      0.04,
+      0.08
+     ],
+     "unit": "s"
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "gsap.from(targets,{filter:'blur(6px)',duration:0.58,ease:'expo.out',clearProps:'filter'})"
+     ]
+    },
+    "css": {
+     "api": [
+      "@keyframes sharpen {from{filter:blur(6px)} to{filter:blur(0)}}"
+     ],
+     "note": "끝나면 filter 를 지워 합성 층을 남기지 않는다."
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 처음부터 선명(흐림 0).",
+    "screenReader": "불투명도·DOM 은 그대로라 읽기 도구에 영향 없음.",
+    "wcag": [
+     "1.4.3 흐린 동안에도 글 대비를 낮추지 않는다(흐림은 짧게)",
+     "2.3.3 상호작용 없는 등장은 reduce 에서 끈다"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "중간 — LCP 요소가 흐린 채 먼저 칠해진다(칠 자체는 막지 않지만 흐린 칠이 LCP 후보). 히어로 글보다 배경·그림에 건다.",
+    "clsRisk": "없음 — filter 는 레이아웃을 바꾸지 않는다.",
+    "guards": [
+     "큰 면적 동시 대상 3개 이하",
+     "끝나면 clearProps filter",
+     "will-change 는 진행 중에만"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "local",
+     "commerce",
+     "saas"
+    ],
+    "placement": "히어로 배경 그림·섹션 대표 그림"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/blur",
+    "https://web.dev/articles/animations-guide",
+    "https://gsap.com/docs/v3/GSAP/gsap.to()/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "글을 숨기지 않는다(불투명도 0 금지), 흐림은 휩 팬 값의 1/3 이내, 끝나면 filter 제거."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "blurToSharp(s, targets) + blurToSharpPlan(whipPlan 흐림 재사용)",
+    "gap": null
+   }
+  },
+  {
+   "id": "lottie-playback",
+   "name": "Lottie Playback",
+   "ko": "로티 재생",
+   "what": "dotLottie·Lottie 벡터 애니메이션을 canvas 로 재생하는 작은 일러스트·아이콘 연출. 재생기는 쓰는 곳에서만 지연 로드한다.",
+   "whereOnWeb": [
+    "빈 상태·완료 화면의 일러스트",
+    "기능 소개 카드의 작은 반복 그림",
+    "로딩·성공 피드백"
+   ],
+   "parameters": {
+    "playback": {
+     "autoplay": true,
+     "loop": "true|false",
+     "note": "무한 반복이거나 한 바퀴가 5초를 넘으면 멈춤 단추 필수."
+    },
+    "sizeKb": {
+     "lottieFile": [
+      5,
+      100
+     ],
+     "note": "파일은 가볍게(100KB 안). 재생기 JS + wasm 은 첫 화면 밖에서 동적 import."
+    },
+    "pause": {
+     "offscreen": true,
+     "hiddenTab": true,
+     "userButton": true
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [],
+     "api": []
+    },
+    "css": {
+     "api": [
+      "canvas{aspect-ratio:1/1;width:100%}"
+     ],
+     "note": "canvas 의 비율을 미리 예약해 CLS 를 막는다."
+    },
+    "webgl": {
+     "note": "재생기(@lottiefiles/dotlottie-web)는 wasm 렌더러. 기본 wasm 주소가 외부 CDN 이므로 엄격 CSP 에서는 같은 출처 주소를 setWasmUrl 로 준다."
+    },
+    "video": null,
+    "lib": {
+     "name": "@lottiefiles/dotlottie-web",
+     "pinned": "0.80.0",
+     "license": "MIT",
+     "note": "선택 설치 항목 motion-lottie — 동적 import 만."
+    }
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 첫 프레임에서 멈춘 그림(autoplay 끔), 재생 단추도 그리지 않는다.",
+    "screenReader": "의미가 있으면 canvas 에 role=img + aria-label, 장식이면 aria-hidden.",
+    "wcag": [
+     "2.2.2 5초 넘는 자동 재생은 정지 수단",
+     "1.1.1 대체 텍스트"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "낮음 — 첫 화면 밖·칠 뒤에 올린다. 첫 화면 히어로 LCP 요소로 쓰지 않는다.",
+    "clsRisk": "canvas 비율을 예약하지 않으면 로드 뒤 밀린다 — aspect-ratio 로 예약.",
+    "guards": [
+     "동적 import(첫 화면 JS 예산 밖)",
+     "화면 밖·숨은 탭에서 멈춤",
+     "src 바뀔 때 destroy()"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "saas",
+     "pwa",
+     "local",
+     "commerce",
+     "brand"
+    ],
+    "placement": "빈 상태·기능 카드·완료 화면"
+   },
+   "sources": [
+    "https://dotlottie.io/",
+    "https://developers.lottiefiles.com/docs/dotlottie-player/dotlottie-web/",
+    "https://github.com/LottieFiles/dotlottie-web",
+    "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+   ],
+   "factoryGate": {
+    "tier": "dynamic",
+    "dashboardPublic": false,
+    "rule": "동적 import 만, 동작 줄이기면 첫 프레임 정지, 화면 밖 정지, 5초 넘는 반복은 멈춤 단추."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "LottiePlayback (motion-lottie, 선택 설치) + lottiePlan",
+    "gap": null
+   }
+  },
+  {
+   "id": "view-transition-page",
+   "name": "View Transition (Page)",
+   "ko": "쪽 전환(View Transitions)",
+   "what": "쪽을 옮길 때 브라우저의 View Transitions API 로 이전·새 화면을 부드럽게 이어 주는 전환. 전환이 끝나면 초점을 새 쪽의 h1 로 옮긴다.",
+   "whereOnWeb": [
+    "쪽 사이 교차 페이드",
+    "목록 → 상세 공유 요소 전환",
+    "앱형 화면 이동"
+   ],
+   "parameters": {
+    "durationMs": {
+     "total": [
+      200,
+      400
+     ],
+     "note": "브라우저 기본 약 250ms. 키트 기본 320ms. 400ms 를 넘기지 않는다."
+    },
+    "easing": [
+     "ease-in-out",
+     "cubic-bezier(.76,0,.24,1)"
+    ],
+    "focus": {
+     "target": "h1",
+     "tabindex": "-1",
+     "note": "전환 뒤(전환이 꺼진 경우도) 초점을 새 쪽 h1 로 — 이전 쪽 링크에 초점이 남지 않게(UX J03)."
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [],
+     "api": []
+    },
+    "css": {
+     "api": [
+      "document.startViewTransition(update)",
+      "@view-transition { navigation: auto }",
+      "::view-transition-old(root), ::view-transition-new(root)"
+     ],
+     "note": "API 가 없는 브라우저는 전환 없이 바로 바꾼다(점진적 향상)."
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 전환을 끄고 바로 바꾼다. 초점 이동은 reduce 에서도 한다.",
+    "screenReader": "새 쪽 h1 로 초점이 가면 읽기 도구가 새 쪽 제목을 읽는다. h1 은 tabindex=-1 로 초점만 받는다(탭 순서에 안 든다).",
+    "wcag": [
+     "2.4.3 초점 순서",
+     "2.3.3 상호작용으로 생기는 모션",
+     "4.1.3 상태 메시지(쪽 바뀜 알림)"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "중간 — 전환 중 스냅샷이 새 쪽 칠을 가린다. 400ms 이내로 짧게, 새 쪽 LCP 요소는 전환 뒤 곧바로 보여야 한다.",
+    "clsRisk": "없음 — 의사 요소 위에서 그려진다.",
+    "guards": [
+     "400ms 이내",
+     "update 는 새 DOM 이 자리 잡았을 때 끝나는 함수",
+     "미지원 브라우저는 즉시 교체"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "pwa",
+     "commerce",
+     "local"
+    ],
+    "placement": "쪽 이동 전역"
+   },
+   "sources": [
+    "https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API",
+    "https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition",
+    "https://developer.chrome.com/docs/web-platform/view-transitions",
+    "https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html"
+   ],
+   "factoryGate": {
+    "tier": "baseline",
+    "dashboardPublic": true,
+    "rule": "400ms 이내, 동작 줄이기에서 끔, 전환 뒤 초점을 새 쪽 h1 로(꺼진 경우 포함)."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "pageTransition(update, { reducedMotion }) + pageTransitionPlan",
+    "gap": "교차 문서 @view-transition 규약·공유 요소 view-transition-name 은 소비자 CSS"
+   }
+  },
+  {
+   "id": "object-swap-3d",
+   "name": "Object Swap 3D",
+   "ko": "3D 오브젝트 교체",
+   "what": "3D 장면 가운데 오브젝트가 다른 오브젝트로 바뀌는 전환 — 나가는 쪽은 줄며 돌고, 들어오는 쪽은 돌며 커진다. 바꿈은 단추·키 조작으로만 일어난다.",
+   "whereOnWeb": [
+    "3D 제품·소품 히어로(색상·모델 바꾸기)",
+    "상품 상세의 3D 보기",
+    "포트폴리오 오브젝트 진열"
+   ],
+   "parameters": {
+    "durationMs": {
+     "total": [
+      600,
+      1000
+     ],
+     "note": "기본 800ms(퇴장 40% · 등장 60%)."
+    },
+    "easing": [
+     "cubic-bezier(.4,0,1,1)",
+     "cubic-bezier(.16,1,.3,1)"
+    ],
+    "items": {
+     "range": [
+      2,
+      6
+     ],
+     "note": "한 개면 바꿀 것이 없어 정지."
+    },
+    "drag": {
+     "pointer": "fine",
+     "rotationPerPx": 0.01,
+     "note": "끌어 돌리기는 고운 포인터에서만. 터치는 스크롤 그대로(touch-action: pan-y)."
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "gsap.timeline().to(out.scale,{x:0.001,y:0.001,z:0.001}).to(out.rotation,{y:\"+=1.57\"})",
+      "gsap.fromTo(into.rotation,{y:a},{y:b})"
+     ]
+    },
+    "css": {
+     "api": [
+      "touch-action: pan-y"
+     ],
+     "note": "포스터 그림이 첫 칠(LCP), 3D 는 칠 뒤에 동적 import."
+    },
+    "webgl": {
+     "note": "three 는 5.7 히어로가 동적 import 한다. 키트 도우미는 three 를 부르지 않고 오브젝트 배열(visible·scale·rotation.y)만 본다."
+    },
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 3D 를 올리지 않고 포스터 그림만 보인다.",
+    "screenReader": "오브젝트 이름 목록·이전/다음 단추를 DOM 에 둔다(캔버스는 role=img + 설명). 스스로 돌지 않아 5초 반복 없음.",
+    "wcag": [
+     "2.5.7 끌기 동작은 단일 포인터 대체(이전/다음 단추)",
+     "2.1.1 키보드",
+     "2.2.2 스스로 도는 것 없음"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "높음 — 3D 캔버스를 LCP 요소로 쓰면 JS·모델 로드 뒤로 밀린다. 포스터 그림이 LCP, 3D 는 그 뒤.",
+    "clsRisk": "캔버스 비율을 예약한다.",
+    "guards": [
+     "three 는 동적 import(첫 화면 JS 예산 밖)",
+     "필요할 때만 그리기(invalidate)",
+     "화면 밖에서는 그리지 않는다"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "brand",
+     "portfolio",
+     "saas",
+     "commerce",
+     "detail"
+    ],
+    "placement": "3D 히어로·상품 상세 보기"
+   },
+   "sources": [
+    "https://threejs.org/docs/#api/en/core/Object3D",
+    "https://gsap.com/docs/v3/GSAP/gsap.to()/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action",
+    "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "포스터가 첫 칠, 동작 줄이기는 포스터만, 끌기는 고운 포인터만이고 단추 대체, 스스로 돌지 않는다."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "objectSwap3d(s, scene, { surface, start }) + objectSwap3dPlan",
+    "gap": null
+   }
+  },
+  {
+   "id": "preview-follow",
+   "name": "Preview Follow",
+   "ko": "미리보기 따라오기",
+   "what": "목록 항목에 마우스를 올리면 그 항목의 미리보기 그림이 포인터를 부드럽게 따라다닌다. 호버가 없는 기기에서는 정지 그림으로 남는다.",
+   "whereOnWeb": [
+    "작업·글 목록(제목 줄 호버)",
+    "메뉴·사례 인덱스",
+    "팀·프로젝트 목록"
+   ],
+   "parameters": {
+    "durationMs": {
+     "follow": [
+      300,
+      600
+     ],
+     "fade": [
+      150,
+      200
+     ],
+     "note": "quickTo 감쇠 0.4초, 나타남 0.2초."
+    },
+    "easing": [
+     "power3.out"
+    ],
+    "distance": {
+     "offsetPx": [
+      12,
+      24
+     ],
+     "note": "포인터에서 우하단으로 떨어뜨려 글을 가리지 않는다."
+    },
+    "media": {
+     "query": "(hover: hover) and (pointer: fine)",
+     "note": "이 조건에서만 붙는다."
+    }
+   },
+   "implementation": {
+    "gsap": {
+     "plugins": [
+      "core"
+     ],
+     "api": [
+      "gsap.quickTo(preview,'x',{duration:0.4,ease:'power3.out'})",
+      "gsap.to(preview,{autoAlpha:1,duration:0.2})"
+     ]
+    },
+    "css": {
+     "api": [
+      "@media (hover: hover) and (pointer: fine)"
+     ],
+     "note": "미리보기 요소는 aria-hidden 장식 사본이고 항목 자체가 링크다."
+    },
+    "webgl": null,
+    "video": null
+   },
+   "a11y": {
+    "reducedMotion": "reduce 이면 따라다니지 않는다(정지 그림 그대로).",
+    "screenReader": "미리보기는 aria-hidden 장식 — 필수 정보를 미리보기에만 두지 않는다. 항목 링크가 이름을 가진다.",
+    "wcag": [
+     "1.4.13 호버로 나타나는 내용",
+     "2.1.1 키보드(항목 링크는 키보드로 열린다)",
+     "2.5.1 탭이 링크를 막지 않는다"
+    ]
+   },
+   "perf": {
+    "lcpRisk": "없음.",
+    "clsRisk": "없음 — 미리보기는 절대 위치.",
+    "guards": [
+     "호버·고운 포인터에서만 리스너",
+     "터치로 바뀌면 속성 모두 되돌림",
+     "preventDefault 를 쓰지 않아 탭·클릭이 링크를 막지 않는다"
+    ]
+   },
+   "fit": {
+    "archetypes": [
+     "portfolio",
+     "brand",
+     "commerce",
+     "saas"
+    ],
+    "placement": "작업·사례 목록"
+   },
+   "sources": [
+    "https://gsap.com/docs/v3/GSAP/gsap.quickTo()/",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer",
+    "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html"
+   ],
+   "factoryGate": {
+    "tier": "signature",
+    "dashboardPublic": false,
+    "rule": "(hover: hover) and (pointer: fine) 에서만, 그 밖은 정지 그림, 탭·클릭을 막지 않는다, 필수 정보를 호버 뒤에만 두지 않는다."
+   },
+   "kit": {
+    "status": "exists",
+    "kitTechnique": "previewFollow(s, list, { offset, damping }) + previewFollowPlan",
+    "gap": null
+   }
+  }
+ ]
+}

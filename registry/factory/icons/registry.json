@@ -1,0 +1,115 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "icons-lucide",
+      "type": "registry:item",
+      "title": "아이콘 lucide",
+      "description": "web-factory 아이콘: 정본 이름 → lucide 어댑터 + Icon(16·20·24, currentColor, 라벨 없으면 aria-hidden)",
+      "files": [
+        {
+          "path": "lucide.ts",
+          "type": "registry:component",
+          "target": "@components/icons/lucide.ts"
+        },
+        {
+          "path": "icon.tsx",
+          "type": "registry:component",
+          "target": "@components/icons/icon.tsx"
+        }
+      ],
+      "dependencies": [
+        "lucide-react@^1.48.0"
+      ],
+      "registryDependencies": [],
+      "css": {
+        "@layer base": {
+          "svg.lucide": {
+            "stroke-width": "var(--icon-stroke, 2)",
+            "stroke-linecap": "var(--icon-linecap, round)",
+            "stroke-linejoin": "var(--icon-linejoin, round)"
+          }
+        }
+      },
+      "meta": {
+        "adapter": "lucide.ts"
+      }
+    },
+    {
+      "name": "icons-phosphor",
+      "type": "registry:item",
+      "title": "아이콘 phosphor",
+      "description": "web-factory 아이콘: 정본 이름 → phosphor 어댑터 + Icon(16·20·24, currentColor, 라벨 없으면 aria-hidden)",
+      "files": [
+        {
+          "path": "phosphor.ts",
+          "type": "registry:component",
+          "target": "@components/icons/phosphor.ts"
+        },
+        {
+          "path": "phosphor-bold.ts",
+          "type": "registry:component",
+          "target": "@components/icons/phosphor-bold.ts"
+        },
+        {
+          "path": "phosphor-light.ts",
+          "type": "registry:component",
+          "target": "@components/icons/phosphor-light.ts"
+        },
+        {
+          "path": "icon.tsx",
+          "type": "registry:component",
+          "target": "@components/icons/icon.tsx"
+        }
+      ],
+      "dependencies": [
+        "@phosphor-icons/react@^2.1.10"
+      ],
+      "registryDependencies": [],
+      "meta": {
+        "adapter": "phosphor.ts",
+        "weights": {
+          "G1": "regular",
+          "G2": "light",
+          "G3": "regular",
+          "G4": "regular",
+          "G5": "bold"
+        }
+      }
+    },
+    {
+      "name": "icons-tabler",
+      "type": "registry:item",
+      "title": "아이콘 tabler",
+      "description": "web-factory 아이콘: 정본 이름 → tabler 어댑터 + Icon(16·20·24, currentColor, 라벨 없으면 aria-hidden)",
+      "files": [
+        {
+          "path": "tabler.ts",
+          "type": "registry:component",
+          "target": "@components/icons/tabler.ts"
+        },
+        {
+          "path": "icon.tsx",
+          "type": "registry:component",
+          "target": "@components/icons/icon.tsx"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react@^3.48.0"
+      ],
+      "registryDependencies": [],
+      "css": {
+        "@layer base": {
+          "svg.tabler-icon": {
+            "stroke-width": "var(--icon-stroke, 2)",
+            "stroke-linecap": "var(--icon-linecap, round)",
+            "stroke-linejoin": "var(--icon-linejoin, round)"
+          }
+        }
+      },
+      "meta": {
+        "adapter": "tabler.ts"
+      }
+    }
+  ]
+}

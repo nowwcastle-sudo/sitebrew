@@ -1,0 +1,13 @@
+{
+  "kind": "nav",
+  "variant": "app-sidebar",
+  "title": "앱 사이드바 — 왼쪽 고정 주 메뉴, 글자 이름표가 보이고 접으면 아이콘 줄",
+  "layout": "side-rail",
+  "density": "comfortable",
+  "archetypes": ["dashboard"],
+  "archetypeKinds": ["app-shell-sidebar", "sidebar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "lg 이상: 왼쪽에 고정된 세로 줄(펼침 16rem·접힘 4.5rem). 처음엔 펼침 — 항목마다 아이콘 + 글자 이름표. 접으면 아이콘 줄이고 이름은 sr-only 로 남아 접근 이름이 같으며 마우스를 올리면 title 말풍선. 지금 쪽 링크 aria-current=page. 접기 단추는 진짜 버튼(aria-expanded + aria-controls). 묶음 이름은 글(p)이고 h1 이 아니다. 좁은 화면(lg 미만)은 위에 붙는 가로 줄(접기 단추 없음). 접힘은 이 화면에서만 기억. 등장 모션 없음"
+}

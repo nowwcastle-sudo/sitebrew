@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-maru-buri",
+  "type": "registry:item",
+  "title": "MaruBuri",
+  "description": "web-factory 폰트 키트: MaruBuri (NAVER Font License (나눔·마루부리·클로바 공통)) — Google Fonts 밖이라 1차 CDN 을 css 로 싣는다. 네이버 한글한글 아름답게 1차 CDN 스타일시트(이 CSS 는 MaruBuri 이름에 Regular 한 면만 등록하고, 다른 굵기는 MaruBuriBold 등 다른 이름이다)",
+  "css": {
+    "@import url(\"https://hangeul.pstatic.net/hangeul_static/css/maru-buri.css\")": {}
+  },
+  "cssVars": {
+    "theme": {
+      "font-maru-buri-wf": "\"MaruBuri\""
+    }
+  },
+  "meta": {
+    "license": "NAVER Font License",
+    "licenseUrl": "https://hangeul.naver.com/font",
+    "source": "https://hangeul.naver.com/font",
+    "family": "MaruBuri",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

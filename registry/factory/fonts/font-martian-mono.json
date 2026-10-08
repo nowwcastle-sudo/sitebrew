@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-martian-mono",
+  "type": "registry:font",
+  "title": "Martian Mono",
+  "description": "web-factory 폰트 키트: Martian Mono (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Martian Mono Variable', monospace",
+    "provider": "google",
+    "import": "Martian_Mono",
+    "variable": "--font-martian-mono-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/martian-mono"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/martianmono/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Martian+Mono",
+    "role": [
+      "display",
+      "mono"
+    ],
+    "korean": false
+  }
+}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>히트 영역 식 — 다섯 높이</title>
+<!-- qa.test.mjs 가 이 파일의 클래스를 Tailwind(@tailwindcss/postcss)로 빌드해 옆에 hit-area-styles.css 로 둔다. -->
+<link rel="stylesheet" href="hit-area-styles.css">
+</head>
+<body class="p-16">
+  <!-- 같은 버튼(히트 영역 식은 registry/factory/ui-src/button.tsx 와 같은 문자열)을 높이만 바꿔 다섯 개 -->
+  <div class="flex flex-col items-start gap-16">
+    <button data-slot="button" data-h="24" class="relative inline-flex items-center px-3 h-6 after:absolute after:inset-y-[min(0px,calc((100%-44px)/2))] after:inset-x-[min(0px,calc((100%-44px)/2))]">24</button>
+    <button data-slot="button" data-h="32" class="relative inline-flex items-center px-3 h-8 after:absolute after:inset-y-[min(0px,calc((100%-44px)/2))] after:inset-x-[min(0px,calc((100%-44px)/2))]">32</button>
+    <button data-slot="button" data-h="36" class="relative inline-flex items-center px-3 h-9 after:absolute after:inset-y-[min(0px,calc((100%-44px)/2))] after:inset-x-[min(0px,calc((100%-44px)/2))]">36</button>
+    <button data-slot="button" data-h="44" class="relative inline-flex items-center px-3 h-11 after:absolute after:inset-y-[min(0px,calc((100%-44px)/2))] after:inset-x-[min(0px,calc((100%-44px)/2))]">44</button>
+    <button data-slot="button" data-h="48" class="relative inline-flex items-center px-3 h-12 after:absolute after:inset-y-[min(0px,calc((100%-44px)/2))] after:inset-x-[min(0px,calc((100%-44px)/2))]">48</button>
+    <!-- 1px 테두리: ::after 는 padding box 기준이라 테두리 안쪽 22px 에서 44px 가 된다 -->
+    <button data-slot="button" data-h="24b" class="relative inline-flex items-center border px-3 h-6 after:absolute after:inset-y-[min(0px,calc((100%-44px)/2))] after:inset-x-[min(0px,calc((100%-44px)/2))]">24 테두리</button>
+    <!-- 음성 대조군: 옛 숫자 확장(h-8 에 맞춘 -inset-[5px])은 24px 버튼에서 44px 가 안 된다 -->
+    <button data-slot="button" data-h="old" class="relative inline-flex items-center px-3 h-6 after:absolute after:-inset-[5px]">옛 식</button>
+  </div>
+</body>
+</html>

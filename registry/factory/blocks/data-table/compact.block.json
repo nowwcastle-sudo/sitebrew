@@ -1,0 +1,14 @@
+{
+  "kind": "data-table",
+  "variant": "compact",
+  "title": "데이터 표 — 작은 표(열 머리 정렬, 전체 보기 링크)",
+  "layout": "dense-top-list",
+  "density": "compact",
+  "archetypes": ["dashboard", "saas", "pwa"],
+  "archetypeKinds": ["recent-list", "data-table"],
+  "states": ["loading", "empty", "error", "ready"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["O7", "X1"],
+  "notes": "대시보드·설정 안에 끼는 「최근 N건」 — 검색·거르기·쪽 이동 없이 열 머리 정렬(버튼 + aria-sort)만, 줄 높이 촘촘. 표에 다 못 담으면 위 N건만 보이고 「전체 M건 보기」 링크가 전체 목록으로 간다. 숫자 열 data-numeric·오른쪽, 덜 중요한 열은 md 미만에서 숨김. 읽기 4상태"
+}

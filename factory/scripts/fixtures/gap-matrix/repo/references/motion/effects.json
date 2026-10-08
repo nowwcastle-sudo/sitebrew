@@ -1,0 +1,14 @@
+{
+  "_schema": 1,
+  "priorities": [],
+  "effects": [
+    {
+      "id": "marquee-strip",
+      "ko": "마키"
+    },
+    {
+      "id": "ease-out",
+      "ko": "이즈 아웃"
+    }
+  ]
+}

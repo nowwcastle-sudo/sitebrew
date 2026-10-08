@@ -1,0 +1,67 @@
+# 무거운 시험 — CI(가벼운 시험 단계)에서 뺀다. 로컬 야간에서 npm run ci:test:heavy 로 돈다.
+# 규칙(P3-8, 2026-10-05): Chrome 을 직접 띄우거나, 파일 하나가 20초를 넘으면 여기에 적는다. 적힌 것 말고는 전부 가벼운 시험이다.
+# 줄 형식: <시험 파일 경로>  # <까닭>. 소스: REL10 직렬 실행 기록(.tmp/rel10-serial.log, 파일별 초) + 이 레인의 Windows 측정.
+# 가드: ci/lib/split.mjs — 목록에 없는 시험이 Chrome 을 직접 부르거나, 목록에 없는 파일이 적혀 있으면 npm run ci:verify 가 실패한다.
+
+factory/qa/qa.test.mjs  # Chrome · REL10 465초
+factory/qa/marketing-gate.test.mjs  # Chrome · REL10 234초
+factory/qa/marketing-site.test.mjs  # Chrome · REL10 221초
+factory/board/block-board/states.test.mjs  # REL10 153초
+factory/qa/ops-gate.browser.test.mjs  # REL10 129초
+factory/qa/ai-tell.test.mjs  # REL10 102초
+factory/scripts/add-recipe-guide.test.mjs  # FV1 EXTDOC — 저장소 사본 만들기 + 안내대로 레시피 1벌을 더해 gen:all 외 4개 명령, 단독 약 2분
+factory/qa/text-boxes.test.mjs  # REL10 101초
+factory/board/block-board/gates.test.mjs  # REL10 100초
+factory/scripts/golden.test.mjs  # REL10 87초
+factory/qa/lang-mix.test.mjs  # REL10 79초
+factory/qa/a11y-gate.test.mjs  # Chrome · REL10 76초
+factory/qa/page-visual.test.mjs  # Chrome · REL10 69초
+factory/qa/clipboard-check.test.mjs  # REL10 52초
+factory/board/recipe-board/board.test.mjs  # REL10 50초
+factory/scripts/axes.test.mjs  # REL10 48초
+factory/scripts/kits.test.mjs  # REL10 47초
+factory/board/block-board/visual.test.mjs  # REL10 35초
+factory/qa/lang-mix-blocks.test.mjs  # REL10 34초
+factory/scripts/blocks.test.mjs  # REL10 30초
+factory/board/recipe-board/board2.behavior.test.mjs  # Chrome · REL10 29초
+factory/board/scene-board/board.behavior.test.mjs  # Chrome · 보드 A2 페이지 동작(헤드리스 Chrome 하나)
+factory/scripts/recipe.test.mjs  # REL10 26초
+factory/board/direction-board/board.behavior.test.mjs  # Chrome · REL10 24초
+factory/scripts/stamp-defer-hydration.test.mjs  # Chrome · REL10 23초
+factory/scripts/style-presets.test.mjs  # REL10 22초
+factory/scripts/install-closure.test.mjs  # REL10 21초
+factory/scripts/motion-boot-stream.test.mjs  # Chrome · REL10 17초
+factory/qa/title-fit-guard.browser.test.mjs  # Chrome · REL10 11초
+factory/board/block-board/contrast-settle.test.mjs  # Chrome · REL10 10초
+factory/board/recipe-board/ssr-flash.test.mjs  # Chrome · REL10 7초
+factory/board/recipe-board/gates.test.mjs  # Chrome · REL10 6초
+factory/board/recipe-board/hero-contrast.test.mjs  # Chrome · REL10 6초
+factory/scripts/split-lines.test.mjs  # Chrome · REL10 4초
+factory/scripts/motion-first-screen.test.mjs  # Chrome · REL10 3초
+factory/scripts/stamp-qfix3-perf-fold.test.mjs  # Chrome · QFIX3-PERF 3초
+factory/qa/rel11-browser.test.mjs  # Chrome · 미측정
+factory/qa/rel11-gallery.test.mjs  # Chrome · 미측정
+factory/qa/rel12-browser.test.mjs  # Chrome · 미측정
+factory/qa/rel12-gallery.test.mjs  # Chrome · 미측정
+factory/qa/bold-safety.browser.test.mjs  # Chrome · 이 레인 실측 45초
+factory/scripts/revise.test.mjs  # 구획 수정 — 실제 06 으로 안마다 사이트를 다시 만든다 · FV1 4.3 실측 23~34초
+factory/scripts/revise-axis-copy.test.mjs  # 축 수정은 안마다 임시 레시피를 컴파일한다 · FV1 4.3 실측 15~18초
+factory/qa/agent-boundary.test.mjs  # Chrome(CLI 를 띄워 연다) · C387 — 부하 아래 120초 초과(10-10 관문)
+factory/qa/session-scene.test.mjs  # Chrome(CLI 를 띄워 연다) · C387 — 부하 아래 120초 초과, 단독 17/17(두 파일 합 500초)
+factory/qa/signed-out-access.test.mjs  # Chrome(CLI 를 띄워 연다) · C387 — 부하 아래 120초 초과
+factory/qa/strict-archetype.browser.test.mjs  # Chrome · C387 — 이름은 browser 인데 가드가 CLI 경유를 못 봐 가벼운 쪽에 남았다
+factory/qa/cdp-close.test.mjs  # Chrome · FV1 5.1 — close() 트리 종료 시험, 시간 초과 시험은 Chrome 을 띄운 채 12초 기다린다(약 20초)
+factory/qa/bfcache.test.mjs  # Chrome · FV1 5.10 — bf-cache 복원 시험(CDP Page.backForwardCacheNotUsed) 단독 40초
+factory/qa/fallback-cls.test.mjs  # Chrome · FV1 5.10 — 대체 글꼴 면 전·후 CLS(느리게 도착하는 Pretendard) 단독 약 15초
+factory/qa/object-3d-orbit.browser.test.mjs  # Chrome · FV1 3D-GEN — 3D 히어로 네 갈래(모델·2.5D·포스터·동작 줄이기) 실제 그림, 갤러리 origin(WF_O3_GALLERY) 필요
+factory/scripts/stamp-qfix3-layout-measure.test.mjs  # Chrome · QFIX3-LAYOUT — 측정 고침 다섯(strict·ux-gate·marketing-site 전환 검사) 실제 Chrome, 약 2분
+factory/qa/final-wf3-gallery.test.mjs  # Chrome · FINAL-WF3 갤러리 배치·접근성 측정(WF3_ORIGIN 서버가 있어야 돈다, 없으면 건너뜀)
+factory/qa/cdp-exit-cleanup.test.mjs  # Chrome · FINAL-WF3 항목 16 — close() 없이 exit 해도 Chrome 트리·임시 프로필 0
+factory/qa/final-wf5-gallery.test.mjs  # Chrome · FINAL-WF5 갤러리 측정 — 격자 열 배치·버튼 포커스 링 대비(15벌)·빈 그림 칸 표지·예약 바 정렬(WF5_ORIGIN 서버가 있어야 돈다, 없으면 건너뜀)
+factory/qa/final-wf5-site.test.mjs  # Chrome · FINAL-WF5 06 사이트 측정 — 쪽 안 DOM id 중복 0·axe landmark 3규칙·하단 바 초점 가림 0(WF5_SITE_ORIGIN 서버가 있어야 돈다, 없으면 건너뜀)
+factory/scripts/stamp-final-wf6-links.test.mjs  # 골든 20 × 3안의 실제 03 고름 + 실제 06 generateSite(사이트 60개) 정적 링크 감사 · FINAL-WF6 약 3분
+factory/qa/final-wf6-gallery.test.mjs  # Chrome · FINAL-WF6 갤러리 측정 — 체크박스 접근 이름(axe aria-toggle-field-name)·lead-capture 이메일 칸 폭 ≥ 240px(WF6_ORIGIN 서버가 있어야 돈다, 없으면 건너뜀)
+factory/qa/final-wf6-checkbox-name.test.mjs  # Chrome · FINAL-WF6 체크박스 블록 서버 HTML 을 Chrome 에서 열어 axe aria-toggle-field-name 0 (C425)
+factory/scripts/revise-values.test.mjs  # 값이 든 수정 요청 — 실제 06(install:false)으로 안마다 임시 레시피를 컴파일한다 · FIT-2 실측 약 70초
+factory/scripts/revise-values-golden.test.mjs  # REVISE_VALUES_GOLDEN=1 일 때만 도는 진짜 06(shadcn add) 왕복 · FIT-2 (잠금 안에서, 템플릿 npm ci 포함)
+factory/scripts/revise-structure.test.mjs  # 구획 더하기·빼기·순서 — 실제 06(install: false)을 제안·왕복으로 여러 번 돈다 · FIT-1 실측 약 25~40초

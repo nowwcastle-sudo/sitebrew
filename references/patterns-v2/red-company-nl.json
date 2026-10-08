@@ -1,0 +1,61 @@
+{
+  "id": "red-company-nl",
+  "archetype": "brand",
+  "sourceGallery": "httpster",
+  "url": "https://www.red-company.nl/",
+  "structure": {
+    "hero": "야경 도시 항공 영상 위 한 줄에 놓인 세 구절 문장이 차례로 나타남",
+    "sections": [
+      "얇은 헤더(붉은 로고·햄버거)",
+      "야경 전면 영상 + 세 구절 선언",
+      "쿠키 카드(좌하단)",
+      "흰 바탕 큰 문장 구획 시작(첫 화면 하단에 걸침)"
+    ]
+  },
+  "type": {
+    "display": "기하 산세리프 중간 굵기, 흰 글자",
+    "body": "같은 산세리프 회색 소형(쿠키)",
+    "scale": "선언 중대형, 흰 구획 큰 문장 대형, 카드 소형"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": "첫 구절이 약 0.25초, 두 번째가 약 0.75초, 세 번째가 약 1.5초에 차례로 선명해짐",
+    "scroll": null,
+    "hover": null,
+    "transition": "영상이 건물 지붕에서 도시 전경으로 약 5초 동안 줌아웃되다 약 5.25초에 해질녘 도시 장면으로 컷 전환됨",
+    "durationsMs": [
+      250,
+      750,
+      1500,
+      5250
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "구절별 등장 시점은 4fps 프레임 기준 추정"
+  },
+  "interaction": [
+    "햄버거 메뉴",
+    "쿠키 수락 또는 필수만"
+  ],
+  "cta": {
+    "pattern": "마룬색 Accept all 쿠키 버튼 외 CTA 없음",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.6
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "선언 문장을 한 줄에 세 구절로 끊어 시차를 두고 띄우면 리듬이 생긴다",
+    "영상 높이를 화면보다 낮게 두어 아래 흰 구획이 보여 스크롤을 유도한다",
+    "붉은 로고 하나만 색을 두고 나머지는 야경 영상의 색에 맡긴다",
+    "모바일은 구절을 세 줄로 쌓고 쿠키 카드가 화면 하단 5분의 1을 덮는다"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-bagel-fat-one",
+  "type": "registry:font",
+  "title": "Bagel Fat One",
+  "description": "web-factory 폰트 키트: Bagel Fat One (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Bagel Fat One', sans-serif",
+    "provider": "google",
+    "import": "Bagel_Fat_One",
+    "variable": "--font-bagel-fat-one-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/bagel-fat-one"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/bagelfatone/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Bagel+Fat+One",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

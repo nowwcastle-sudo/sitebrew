@@ -1,0 +1,61 @@
+{
+  "id": "cobalt-tools",
+  "archetype": "pwa",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://cobalt.tools/",
+  "structure": {
+    "hero": "왼쪽 얇은 세로 메뉴, 가운데 고양이 일러스트와 링크 붙여넣기 입력줄, 그 아래 형식 선택 세 칸",
+    "sections": [
+      "왼쪽 세로 메뉴(저장·리믹스·설정·후원·소식·소개)",
+      "고양이 마스코트 일러스트",
+      "링크 입력줄",
+      "형식 선택 세 칸(자동·오디오·음소거)",
+      "붙여넣기 버튼",
+      "지원 서비스 목록 열기 칩",
+      "하단 약관 안내 한 줄"
+    ]
+  },
+  "type": {
+    "display": "모노스페이스 소문자 라벨",
+    "body": "모노스페이스 12~14px",
+    "scale": "마스코트 약 110px, 입력 글자 약 13px, 메뉴 라벨 약 10px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "링크 붙여넣기 입력줄",
+    "형식 세 칸 전환 버튼",
+    "붙여넣기 버튼",
+    "왼쪽 메뉴 이동",
+    "지원 서비스 목록 칩"
+  ],
+  "cta": {
+    "pattern": "입력줄 하나와 형식 선택, 375는 붙여넣고 내려받기 버튼",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.85
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "첫 화면이 입력줄 하나로 끝나 설명 없이 바로 쓰게 한다.",
+    "흑백 화면에서 마스코트 그림 하나가 유일한 개성이다.",
+    "375에서는 세로 메뉴가 하단 탭 줄로 바뀌고 붙여넣기 버튼이 전폭으로 커진다.",
+    "형식 선택을 입력줄 바로 아래 세 칸으로 두어 옵션이 늘 보인다."
+  ]
+}

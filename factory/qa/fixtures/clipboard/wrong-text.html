@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>복사 예시 — 엉뚱한 글</title></head>
+<body>
+<main>
+<section data-block="referral-invite-panel">
+  <div class="cn-block-share-copy">
+    <input id="a-link" readonly value="https://example.com/r/abc123">
+    <!-- 화면에 보이는 링크와 다른 글을 클립보드에 쓴다 -->
+    <button type="button" data-copy-link onclick="navigator.clipboard.writeText('https://example.com/r/old-link').then(()=>{document.getElementById('a-st').textContent='복사했어요'})">링크 복사</button>
+    <p id="a-st" role="status"></p>
+  </div>
+</section>
+</main>
+</body></html>

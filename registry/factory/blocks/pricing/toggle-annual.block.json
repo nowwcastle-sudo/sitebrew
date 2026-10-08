@@ -1,0 +1,13 @@
+{
+  "kind": "pricing",
+  "variant": "toggle-annual",
+  "title": "요금 — 월·연 전환 + 요금제 줄",
+  "layout": "billing-toggle",
+  "density": "comfortable",
+  "archetypes": ["saas", "pwa", "landing"],
+  "archetypeKinds": ["pricing-plans", "pricing"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "위 전환(ToggleGroup 월 ↔ 연, 할인 배지). 요금제는 가로로 긴 줄(이름·기능 요약 | 금액 | 버튼)로 쌓는다. 연은 한 달 꼴 금액 + 「연 ○○원 한 번에」. 375: 줄 안이 세로로 P3-6 E01·E03: 행동 버튼은 로그인 상태를 따른다(planIds·annualPlanIds·signedInHref·signedIn·currentPlanId). 연 결제 줄은 연 총액에 더해 아끼는 금액을 돈으로 보인다(copy.savingTemplate, data-saving — 연 요금제의 실제 연 총액은 props annualPrices)."
+}

@@ -1,0 +1,32 @@
+{
+  "source": "nowwcastle-sudo/sitebrew",
+  "ref": "v0.1.0",
+  "commit": "0a8a8e65423404796948812054b7d03bf83eacc4",
+  "contractVersion": 2,
+  "files": [
+    {
+      "path": "registry/factory/contract/attribution.ts",
+      "upstreamSha256": "d63cdc247e6a6e7933ba38c6729d934206b6c37685f9471f8c2b49fb4cebaa45",
+      "vendored": "src/web-factory/contract/attribution.ts",
+      "sha256": "1555e3ec346ee5c43c6f6d1e4e76f217c569c0e62089111ddfdc8671eed4e523"
+    },
+    {
+      "path": "registry/factory/contract/block-contract.ts",
+      "upstreamSha256": "18024fb85329141f445c6944ac8c8bc92ffbc2d2bf75108edb67b4933a25cd48",
+      "vendored": "src/web-factory/contract/block-contract.ts",
+      "sha256": "18024fb85329141f445c6944ac8c8bc92ffbc2d2bf75108edb67b4933a25cd48"
+    },
+    {
+      "path": "registry/factory/contract/events.ts",
+      "upstreamSha256": "4b24553fe54c1326c112d4d00eca39ad9ea5daf9a299cb8215aefa1bafd48bcc",
+      "vendored": "src/web-factory/contract/events.ts",
+      "sha256": "4b24553fe54c1326c112d4d00eca39ad9ea5daf9a299cb8215aefa1bafd48bcc"
+    },
+    {
+      "path": "registry/factory/contract/ports.ts",
+      "upstreamSha256": "1fa5beb4d22088e4b36213792a1476a79bd3e182c3df09191183904c6dbceb3d",
+      "vendored": "src/web-factory/contract/ports.ts",
+      "sha256": "5a73e1eb5d9b77623589665490fa99d3027ae768576f7786bb884686e4dee96a"
+    }
+  ]
+}

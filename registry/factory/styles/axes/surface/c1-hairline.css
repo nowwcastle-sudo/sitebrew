@@ -1,0 +1,19 @@
+/* C1 헤어라인 평면 — 중간 계열. 10px 모서리, 1px 링(색은 부품), 그림자 없음, 안 여백 24px(작은 카드 16px). 원천 style_axes.md 축 3. */
+.cn-card {
+  @apply gap-(--card-spacing) rounded-[10px] py-(--card-spacing) text-sm ring-1 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[10px] *:[img:last-child]:rounded-b-[10px] [--card-spacing:--spacing(6)] data-[size=sm]:[--card-spacing:--spacing(4)];
+}
+.cn-card-header {
+  @apply gap-1.5 rounded-t-[10px] px-(--card-spacing) [.border-b]:pb-(--card-spacing);
+}
+.cn-card-title {
+  @apply text-base leading-snug font-semibold group-data-[size=sm]/card:text-sm;
+}
+.cn-card-description {
+  @apply text-sm leading-relaxed;
+}
+.cn-card-content {
+  @apply px-(--card-spacing);
+}
+.cn-card-footer {
+  @apply rounded-b-[10px] border-t px-(--card-spacing) py-4;
+}

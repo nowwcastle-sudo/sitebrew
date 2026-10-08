@@ -1,0 +1,61 @@
+{
+  "id": "hyosung-com",
+  "archetype": "brand",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.hyosung.com/en/index",
+  "structure": {
+    "hero": "푸른 회색으로 눌린 공장 설비 사진이 화면을 꽉 채우고 위에 흰 대형 슬로건과 화살표, 가는 선 아래 슬라이드 화살표와 소식 두 건",
+    "sections": [
+      "투명 머리띠(로고·내비 여섯·검색·언어·Family Sites)",
+      "대형 슬로건과 화살표",
+      "가는 흰 구분선",
+      "슬라이드 화살표와 한 줄 문구",
+      "최신 소식 두 건(날짜·썸네일)"
+    ]
+  },
+  "type": {
+    "display": "넓고 둥근 기하학 산세리프 보통 굵기 흰색 약 72px, 로고는 굵은 세리프 대문자",
+    "body": "중립 산세리프 흰색 소형, 소식 제목은 두 줄로 잘림",
+    "scale": "슬로건 약 72px·한 줄 문구 약 22px·내비 약 16px·소식 약 15px(1440)"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only",
+    "note": "영상 없이 정지 화면 두 장만 봄. 움직임·호버는 판단하지 않았다."
+  },
+  "interaction": [
+    "슬라이드 이전·다음 원형 버튼",
+    "슬로건 끝 화살표 링크",
+    "검색·언어 아이콘",
+    "Family Sites 외곽선 알약 버튼",
+    "모바일 햄버거 메뉴"
+  ],
+  "cta": {
+    "pattern": "슬로건 끝 화살표 링크와 Family Sites 외곽선 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "brand"
+    ],
+    "score": 0.8
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "전폭 산업 사진에 어두운 막을 한 겹 깔아 흰 글자를 읽히게 하면서 설비 사진의 질감은 살린다",
+    "슬로건 끝에 화살표를 붙여 큰 글자 자체가 링크임을 알린다",
+    "가는 흰 선 하나로 위쪽 슬로건과 아래쪽 컨트롤·소식 영역을 나눈다",
+    "최신 소식 두 건을 날짜와 함께 오른쪽 아래에 둬 기업 사이트가 살아 있음을 첫 화면에서 보인다",
+    "모바일은 내비를 햄버거로 접고 소식을 썸네일 없는 글 목록으로 바꿔 사진 위에 세로로 쌓는다"
+  ]
+}

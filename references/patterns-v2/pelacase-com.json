@@ -1,0 +1,67 @@
+{
+  "id": "pelacase-com",
+  "archetype": "detail",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://pelacase.com/products/blubblegum-pink-juicebox-shell",
+  "structure": {
+    "hero": "세로 썸네일 열과 큰 사진, 제목·가격·번들 혜택·색상 원·옵션 토글",
+    "sections": [
+      "회색 상단 줄(브랜드 전환·무료배송·통화)",
+      "헤더(로고·내비 6개·아이콘)",
+      "하늘색 프로모 줄(이전·다음)",
+      "세로 썸네일 열과 대표 사진",
+      "제목·가격",
+      "번들 혜택 두 칸+리본·자동 적용 안내",
+      "색상 원 스와치",
+      "옵션 토글 두 개",
+      "장바구니 버튼",
+      "배송·무료배송 문구",
+      "사양 아이콘 줄",
+      "모바일 전면 팝업"
+    ]
+  },
+  "type": {
+    "display": "세리프 제목, 둥근 산세리프 UI",
+    "body": "산세리프 본문",
+    "scale": "제목 크게, 혜택 라벨 중간"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "세로 썸네일 7개 이상",
+    "번들 혜택을 장바구니 위에 상시 노출",
+    "색상 원 8개",
+    "옵션 토글(번들·단품)",
+    "모바일 「무료 케이스?」 팝업(아이폰/안드로이드)"
+  ],
+  "cta": {
+    "pattern": "연녹색 전폭 Add to Cart 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "detail"
+    ],
+    "score": 0.84
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "번들 혜택 두 칸을 가격 아래에 두고 자동 적용을 안내한다",
+    "색상을 원형 스와치로, 구성은 토글 두 개로 단순화",
+    "장바구니 아래에 「스튜디오에서 2–7일 내 발송」을 써 기대치를 맞춘다",
+    "세로 썸네일 열은 사진 수가 많은 상품에 알맞다",
+    "모바일의 전면 팝업(기종 선택)은 상품을 가리므로 우리 공장에는 맞지 않다"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-cafe24-shiningstar",
+  "type": "registry:item",
+  "title": "Cafe24Shiningstar",
+  "description": "web-factory 폰트 키트: 카페24 빛나는별 Cafe24Shiningstar (OFL-1.1, 카페24 폰트 라이선스) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 공식 웹폰트 URL 이 없어 OFL 재배포 허용에 기대 눈누 미러(jsDelivr)로 싣는다 — 태그 v1.1 의 커밋 149348bb2c5a9b67e26a9f211c330ef9899038af 로 고정. 자체 호스팅은 P3-3. P3-2 Task 15m — 와일드각의 1차 라이선스를 확인하지 못해 컨트롤러 판정대로 대신 넣었다",
+  "fontFace": {
+    "font-family": "\"Cafe24Shiningstar\"",
+    "src": "url(\"https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@149348bb2c5a9b67e26a9f211c330ef9899038af/Cafe24Shiningstar.woff\") format(\"woff\")",
+    "font-weight": "400",
+    "font-style": "normal",
+    "font-display": "swap"
+  },
+  "cssVars": {
+    "theme": {
+      "font-cafe24-shiningstar-wf": "\"Cafe24Shiningstar\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://fonts.cafe24.com/",
+    "source": "https://github.com/projectnoonnu/noonfonts_twelve/tree/149348bb2c5a9b67e26a9f211c330ef9899038af",
+    "family": "Cafe24Shiningstar",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

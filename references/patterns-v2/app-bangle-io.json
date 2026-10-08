@@ -1,0 +1,61 @@
+{
+  "id": "app-bangle-io",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://app.bangle.io/",
+  "structure": {
+    "hero": "좌측 작업공간·파일 사이드바와, 가운데 환영 문구와 시작 버튼의 빈 앱 화면",
+    "sections": [
+      "작업공간 선택기",
+      "검색창(단축키 표시)",
+      "파일 영역(아이콘 도구)",
+      "앱 설치 버튼",
+      "프로젝트 전환기",
+      "상단 바(사이드바·홈)",
+      "환영 빈 상태(로고·문구·버튼 2개)"
+    ]
+  },
+  "type": {
+    "display": "자간 넓은 산세리프 24px 환영 문구",
+    "body": "산세리프 14px",
+    "scale": "환영 24px, 본문 14px, 사이드바 12px"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "작업공간 만들기 버튼",
+    "검색 단축키",
+    "파일 도구 아이콘 4개",
+    "앱 설치 버튼",
+    "사이드바 접기"
+  ],
+  "cta": {
+    "pattern": "작업공간 만들기 버튼 + 앱 설치 버튼",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "pwa"
+    ],
+    "score": 0.95
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "앱 설치 버튼을 사이드바 맨 아래 분홍 칸으로 눈에 띄게 둔다",
+    "빈 상태에 로고, 한 문장, 버튼 둘만 둬 첫 행동이 모인다",
+    "375에서는 사이드바가 접히고 빈 상태가 세로 가운데로 이어진다",
+    "검정 주 버튼과 흰 보조 버튼의 두 단계로 우선순위를 나눈다"
+  ]
+}

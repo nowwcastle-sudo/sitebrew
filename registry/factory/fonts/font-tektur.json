@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-tektur",
+  "type": "registry:font",
+  "title": "Tektur",
+  "description": "web-factory 폰트 키트: Tektur (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Tektur Variable', sans-serif",
+    "provider": "google",
+    "import": "Tektur",
+    "variable": "--font-tektur-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/tektur"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/tektur/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Tektur",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

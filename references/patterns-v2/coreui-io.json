@@ -1,0 +1,62 @@
+{
+  "id": "coreui-io",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://coreui.io/demos/bootstrap/5.1/free/",
+  "structure": {
+    "hero": "남색 사이드바 옆 4색 요약 타일, 아래 대형 트래픽 차트",
+    "sections": [
+      "사이드바(그룹 라벨)",
+      "상단 바",
+      "빵부스러기",
+      "색 요약 타일 4개",
+      "트래픽 차트+기간 전환",
+      "차트 하단 지표 5개",
+      "소셜 색 카드 줄"
+    ]
+  },
+  "type": {
+    "display": "산세리프 24px 카드 제목",
+    "body": "산세리프 14px",
+    "scale": "타일 수치 24px, 카드 제목 24px, 라벨 14px"
+  },
+  "colorLogic": "K8",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "사이드바 그룹 펼침",
+    "일·월·연 기간 세그먼트",
+    "차트 내보내기 버튼",
+    "타일 우측 점 세 개 메뉴",
+    "다크 모드 토글",
+    "사이드바 접기 버튼"
+  ],
+  "cta": {
+    "pattern": "차트 우상단 내려받기 버튼 + 사이드바 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.9
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "요약 타일마다 증감 화살표와 미니 차트(선·영역·막대)를 달아 표시 방식을 나눈다",
+    "큰 차트 아래 지표 5개를 진행 막대로 줄 세운다",
+    "사이드바를 THEME·COMPONENTS·EXTRAS 라벨로 묶어 긴 메뉴를 훑게 한다",
+    "375에서는 타일이 전폭 한 장씩 쌓이고 사이드바는 햄버거 뒤로 숨는다"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "launch-factory",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "template"
+  ],
+  "engines": {
+    "node": ">=24.13.0",
+    "npm": ">=11.6.2"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "test": "node scripts/ci/run-tests.mjs",
+    "ci:verify": "node scripts/ci/verify.mjs",
+    "ci:smoke": "node template/scripts/ci/smoke.mjs",
+    "readme:check": "node scripts/ci/readme-check.mjs",
+    "ci:tools": "node scripts/ci/tools.mjs fetch",
+    "ci:selftest": "node scripts/ci/selftest-tools.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "db:status": "node scripts/db-status.mjs",
+    "env:check": "node scripts/env-check.mjs",
+    "conformance": "node scripts/conformance-all.mjs",
+    "registry:build": "node scripts/gen-registry.mjs",
+    "registry:check": "node scripts/gen-registry.mjs --check",
+    "registry:install": "node --test --test-force-exit --test-timeout=1800000 scripts/registry-install.test.mjs",
+    "typecheck": "tsc -p tsconfig.json && npm run typecheck -w template",
+    "lint": "eslint .",
+    "check:ux-static": "node scripts/ux-static/cli.mjs",
+    "contract:check": "node packages/contract/sync-contract.mjs --check",
+    "contract:sync": "node packages/contract/sync-contract.mjs",
+    "template:check": "node scripts/template-sync.mjs --check",
+    "template:screens": "node scripts/template-screens.mjs",
+    "template:verify": "node --test --import ./scripts/test/no-user-env.mjs --test-force-exit --test-timeout=1800000 template/test/verify.heavy.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.11.0",
+    "globals": "17.12.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.0"
+  }
+}

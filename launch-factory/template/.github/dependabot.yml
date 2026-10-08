@@ -1,0 +1,41 @@
+# 제품 Dependabot(npm + github-actions) — launch-factory 템플릿이 실어 준 것. 키 설명은 launch-factory 의 .github/dependabot.yml 머리 주석과 같다.
+# cooldown 은 버전 업데이트에만 적용되고 보안 업데이트는 늦추지 않는다. 저장소 설정(Dependabot alerts·security updates)은 운영자이 켠다.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    labels:
+      - dependencies
+    groups:
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+      runtime-minor-patch:
+        dependency-type: production
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: Asia/Seoul
+    open-pull-requests-limit: 3
+    cooldown:
+      default-days: 7
+    labels:
+      - dependencies
+    groups:
+      actions:
+        patterns:
+          - "*"

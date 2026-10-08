@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "mascot-greeting",
+  "title": "히어로 — 캐릭터 인사(말풍선 제목) + 상표·저작권 확인 문구",
+  "layout": "mascot-greeting",
+  "density": "comfortable",
+  "archetypes": ["landing", "commerce", "local", "saas", "pwa"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["character"],
+  "motion": ["kinetic-type", "punch-in", "ambient-drift", "rise"],
+  "titleWidth": "column",
+  "boldness": "bold",
+  "boldMode": "motion",
+  "notes": "캐릭터 그림(media character — 생성 허용 칸)이 서고 캐릭터가 건네는 말풍선이 제목(h1)이다. 말풍선 아래 문단·버튼, 맨 아래에 상표·저작권 확인 문구(rightsLabel + rightsNote — 사실이라 블록이 지어내지 않는다, 값이 없으면 06 이 이 블록을 쓰지 않는다). 등장은 캐릭터 펀치 인 → 말풍선이 부푼다(크기만) → 문단·버튼, 유휴는 캐릭터가 떠다닌다(M2~M3, 정지 단추). 원형에 따라 움직임으로 대담(motion). FV1 Task 5.7"
+}

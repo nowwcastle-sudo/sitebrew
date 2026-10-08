@@ -1,0 +1,68 @@
+{
+  "id": "airkorea-or-kr",
+  "archetype": "dashboard",
+  "sourceGallery": "supp-colorlib-exa",
+  "url": "https://www.airkorea.or.kr/",
+  "structure": {
+    "hero": "전면 지도 위에 좌측 범례·우측 정보 패널·상단 탭이 뜬 화면",
+    "sections": [
+      "속보 띠",
+      "플로팅 헤더(메뉴·날씨)",
+      "지도 모드 탭",
+      "좌측 범례·경보 패널",
+      "전면 지도(측정소 점)",
+      "우측 대기정보·예보 패널",
+      "레이어 선택 카드",
+      "퀵 아이콘 레일"
+    ]
+  },
+  "type": {
+    "display": "굵은 고딕 16~18px 패널 제목",
+    "body": "고딕 12~14px",
+    "scale": "패널 제목 18px, 수치 24px, 라벨 12px"
+  },
+  "colorLogic": "K2",
+  "motion": {
+    "entrance": "어두운 로딩 오버레이에 문구가 뜬 뒤 지도와 패널이 한 번에 드러난다",
+    "scroll": "문서 끝까지 내리면 푸터 기관 로고 줄이 지도 아래에서 올라온다",
+    "hover": null,
+    "transition": "어두운 지도 배경이 밝은 지도 타일로 교체",
+    "durationsMs": [
+      2000,
+      500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "로딩 오버레이 약 0.5~2.5초 유지 후 지도 표시"
+  },
+  "interaction": [
+    "지도 레이어 체크박스",
+    "기본/위성/백지/네이버 지도 전환",
+    "시도 선택 드롭다운",
+    "측정소 클러스터 점 클릭",
+    "컬러맵·메뉴숨김 토글",
+    "우측 퀵 아이콘 레일"
+  ],
+  "cta": {
+    "pattern": "지도 상단 모드 탭·검색 아이콘",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "dashboard"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "지도를 바탕 전체로 쓰고 모든 패널을 그 위에 띄워 공간감을 만든다",
+    "대기 등급 4색을 범례·점·카드 라벨에 같은 의미로 반복한다",
+    "로딩 상태를 어두운 오버레이와 한 단어로 분명히 보여 준다",
+    "375 캡처는 언어 선택 게이트라 모바일 대시보드는 확인할 수 없다",
+    "우측 패널과 아이콘 레일이 겹쳐 잘리는 구간이 있어 겹침 관리가 약점이다"
+  ]
+}

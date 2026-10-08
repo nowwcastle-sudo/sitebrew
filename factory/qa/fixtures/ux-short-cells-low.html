@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA fixture — 짧은 표 칸이 흐린 회색(음성 대조: 짧은 글도 대비 7:1 을 못 채우면 실패)</title>
+<style>
+  html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+  nav { position: sticky; top: 0; background: #ffffff; border-bottom: 1px solid #ccc; padding: 12px 16px; }
+  main { padding: 16px; max-width: 720px; min-height: 300vh; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; color: #aaaaaa; }
+</style>
+</head>
+<body>
+  <nav aria-label="fixture nav">관리 목록</nav>
+  <main>
+    <h1>전체 목록</h1>
+    <table>
+      <caption>목록 표</caption>
+      <thead><tr><th scope="col">품목</th><th scope="col">보관 구역</th><th scope="col">재고 수</th></tr></thead>
+      <tbody>
+        <tr><td>라벨 용지</td><td>A구역</td><td>120</td></tr>
+        <tr><td>포장 박스</td><td>B구역</td><td>84</td></tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

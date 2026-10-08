@@ -1,0 +1,902 @@
+{
+  "id": "saas",
+  "purpose": "방문자가 제품이 자기 작업에 맞는지 확인하고 무료 가입(또는 데모 신청)을 시작하게 한다.",
+  "coreTask": "홈에서 시작한 브라우저 에이전트가 ① 요금제별 월 가격을 읽어 돌려주고 ② 무료 가입 폼(또는 데모 신청 폼) 첫 입력란까지 가며 ③ 「○○(예: Slack)와 연동되나」에 예·아니오와 근거 URL로 답한다. 각 과업은 3클릭 안.",
+  "completion": "product",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "home",
+      "route": "/",
+      "sections": [
+        {
+          "kind": "hero",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-baseline-news-app-window",
+            "block-hero-baseline-split",
+            "block-hero-centered-proof-panel",
+            "block-hero-crop-marks-typed-title",
+            "block-hero-inline-chip-title",
+            "block-hero-leaking-app-panel",
+            "block-hero-narrow-title-wide-window",
+            "block-hero-step-band-orbit",
+            "block-hero-stepped-crop-figure",
+            "block-hero-punch-in-statement",
+            "block-hero-object-3d-orbit",
+            "block-hero-illustration-scene",
+            "block-hero-video-montage",
+            "block-hero-screenshot-window"
+          ],
+          "copySlots": [
+            {
+              "id": "headline",
+              "role": "결과를 말하는 H1(§9)",
+              "maxChars": 28
+            },
+            {
+              "id": "subhead",
+              "role": "맥락 한두 문장",
+              "maxChars": null
+            },
+            {
+              "id": "primaryCta",
+              "role": "주 행동(무료 시작·가입)",
+              "maxChars": null
+            },
+            {
+              "id": "secondaryCta",
+              "role": "보조 행동(데모 보기·영업 문의), 다른 채움",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "product-ui",
+              "aspect": "16:10",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "social-proof",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-quote-wall",
+            "block-social-proof-whip-quotes"
+          ],
+          "copySlots": [
+            {
+              "id": "claim",
+              "role": "참인 고객 수·규모(기준일)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "customer-logo",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "workflow-features",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-bento-grid",
+            "block-features-numbered-steps",
+            "block-features-stagger-cards"
+          ],
+          "copySlots": [
+            {
+              "id": "stepTitle",
+              "role": "작업 흐름 한 단계의 이름",
+              "maxChars": null
+            },
+            {
+              "id": "stepBody",
+              "role": "그 단계에서 얻는 것",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "step-ui-crop",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "integrations",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "integrations"
+          ],
+          "allowedVariants": [
+            "block-integrations-hub-diagram",
+            "block-integrations-icon-grid"
+          ],
+          "copySlots": [
+            {
+              "id": "title",
+              "role": "연동·호환 제목",
+              "maxChars": null
+            },
+            {
+              "id": "apiNote",
+              "role": "API·SDK·웹훅 제공 여부와 가져오기 경로",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "integration-logo",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "enterprise",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-compare-table"
+          ],
+          "copySlots": [
+            {
+              "id": "body",
+              "role": "보안·규모·지원·계약 조건(SSO·SLA·인증)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "testimonials",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-quote-wall",
+            "block-social-proof-whip-quotes"
+          ],
+          "copySlots": [
+            {
+              "id": "quote",
+              "role": "실명·직함·소속·구체 결과가 있는 후기",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "person",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "changelog",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "날짜 붙은 새 기능 목록 — 본문 목록",
+            "render": {
+              "as": "list",
+              "heading": {
+                "ko": "새 기능",
+                "en": "What's new"
+              },
+              "from": [
+                "changelog"
+              ],
+              "sort": "-date",
+              "limit": 5,
+              "maxAgeDays": 90,
+              "fields": {
+                "title": "title",
+                "meta": [
+                  "date:date"
+                ],
+                "href": "url"
+              }
+            }
+          },
+          "copySlots": [
+            {
+              "id": "entryTitle",
+              "role": "날짜 붙은 새 기능(최신 3~5개, 90일 넘으면 섹션 제거)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "entry-thumb",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "faq",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-single-accordion",
+            "block-faq-two-column-index"
+          ],
+          "copySlots": [
+            {
+              "id": "qa",
+              "role": "가져오기·이전 지원·해지 뒤 데이터 반출",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "final-cta",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "final-cta"
+          ],
+          "allowedVariants": [
+            "block-final-cta-full-band",
+            "block-final-cta-split-form-hint",
+            "block-final-cta-kinetic-band"
+          ],
+          "copySlots": [
+            {
+              "id": "headline",
+              "role": "다른 H2보다 한 단계 큰 마지막 H2",
+              "maxChars": 28
+            },
+            {
+              "id": "riskReducer",
+              "role": "무료 체험·해지 자유·보증 중 참인 것(§10)",
+              "maxChars": null
+            },
+            {
+              "id": "primaryCta",
+              "role": "무료 시작",
+              "maxChars": null
+            },
+            {
+              "id": "secondaryCta",
+              "role": "영업 문의(영업 병행형)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "route": "/pricing",
+      "sections": [
+        {
+          "kind": "pricing-plans",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "pricing"
+          ],
+          "allowedVariants": [
+            "block-pricing-feature-matrix",
+            "block-pricing-three-tier-cards"
+          ],
+          "copySlots": [
+            {
+              "id": "planName",
+              "role": "요금제 이름",
+              "maxChars": null
+            },
+            {
+              "id": "price",
+              "role": "월 가격·통화(JSON-LD offers와 같은 값)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "faq",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-single-accordion",
+            "block-faq-two-column-index"
+          ],
+          "copySlots": [
+            {
+              "id": "qa",
+              "role": "전환 비용·해지",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "campaign",
+      "route": "/campaign",
+      "sections": [
+        {
+          "kind": "hero",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "hero"
+          ],
+          "allowedVariants": [
+            "block-hero-baseline-news-app-window",
+            "block-hero-baseline-split",
+            "block-hero-centered-proof-panel",
+            "block-hero-crop-marks-typed-title",
+            "block-hero-inline-chip-title",
+            "block-hero-leaking-app-panel",
+            "block-hero-narrow-title-wide-window",
+            "block-hero-step-band-orbit",
+            "block-hero-stepped-crop-figure",
+            "block-hero-object-3d-orbit",
+            "block-hero-illustration-scene",
+            "block-hero-video-montage",
+            "block-hero-screenshot-window"
+          ],
+          "copySlots": [
+            {
+              "id": "headline",
+              "role": "광고 문구와 같은 약속(메시지 일치, §10)",
+              "maxChars": 28
+            }
+          ],
+          "imageSlots": [
+            {
+              "id": "product-ui",
+              "aspect": "16:10",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "how-it-works",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-numbered-steps"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "workflow-features",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-bento-grid",
+            "block-features-numbered-steps"
+          ],
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "step-ui-crop",
+              "aspect": null,
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "testimonials",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "social-proof"
+          ],
+          "allowedVariants": [
+            "block-social-proof-quote-wall"
+          ],
+          "copySlots": [],
+          "imageSlots": [
+            {
+              "id": "person",
+              "aspect": "1:1",
+              "source": "real-required"
+            }
+          ]
+        },
+        {
+          "kind": "integrations",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "integrations"
+          ],
+          "allowedVariants": [
+            "block-integrations-hub-diagram",
+            "block-integrations-icon-grid"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "pricing",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "pricing"
+          ],
+          "allowedVariants": [
+            "block-pricing-feature-matrix",
+            "block-pricing-three-tier-cards"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "faq",
+          "required": true,
+          "importance": 2,
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-single-accordion",
+            "block-faq-two-column-index"
+          ],
+          "copySlots": [
+            {
+              "id": "qa",
+              "role": "가격·나에게 맞나·실패하면(§10)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        },
+        {
+          "kind": "final-cta",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "final-cta"
+          ],
+          "allowedVariants": [
+            "block-final-cta-full-band",
+            "block-final-cta-split-form-hint"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "signup",
+      "route": "/signup",
+      "sections": [
+        {
+          "kind": "auth",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "auth"
+          ],
+          "allowedVariants": [
+            "block-auth-sign-up-consents"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "consent",
+          "required": false,
+          "importance": 3,
+          "blockKinds": [
+            "consent"
+          ],
+          "allowedVariants": [
+            "block-consent-bottom-banner",
+            "block-consent-preference-dialog"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "login",
+      "route": "/login",
+      "sections": [
+        {
+          "kind": "auth",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "auth"
+          ],
+          "allowedVariants": [
+            "block-auth-sign-in"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "onboarding",
+      "route": "/onboarding",
+      "sections": [
+        {
+          "kind": "confirmation",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "confirmation"
+          ],
+          "allowedVariants": [
+            "block-confirmation-signup-complete"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "onboarding",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "onboarding"
+          ],
+          "allowedVariants": [
+            "block-onboarding-setup-wizard",
+            "block-onboarding-checklist-panel",
+            "block-onboarding-empty-first-action"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "account",
+      "route": "/account",
+      "sections": [
+        {
+          "kind": "account",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "account"
+          ],
+          "allowedVariants": [
+            "block-account-profile-settings"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "notification-settings",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "account"
+          ],
+          "allowedVariants": [
+            "block-account-notification-consents"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "billing",
+      "route": "/billing",
+      "sections": [
+        {
+          "kind": "subscription",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "account"
+          ],
+          "allowedVariants": [
+            "block-account-billing-manage"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "paywall",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "paywall"
+          ],
+          "allowedVariants": [
+            "block-paywall-upgrade-modal"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "usage-limit",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "paywall"
+          ],
+          "allowedVariants": [
+            "block-paywall-limit-meter"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "trial-ending",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "paywall"
+          ],
+          "allowedVariants": [
+            "block-paywall-trial-ending"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "payment-failed",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "retention"
+          ],
+          "allowedVariants": [
+            "block-retention-payment-failed-banner"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        },
+        {
+          "kind": "renewal-consent",
+          "required": false,
+          "importance": 2,
+          "blockKinds": [
+            "retention"
+          ],
+          "allowedVariants": [
+            "block-retention-renewal-consent"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "cancel",
+      "route": "/cancel",
+      "sections": [
+        {
+          "kind": "retention",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "retention"
+          ],
+          "allowedVariants": [
+            "block-retention-cancel-flow"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    }
+  ],
+  "sectionOrderTemplates": [
+    {
+      "id": "product-led",
+      "order": [
+        "header",
+        "hero",
+        "social-proof",
+        "workflow-features",
+        "integrations",
+        "testimonials",
+        "changelog",
+        "final-cta",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 linear·resend·raycast 순서",
+        "ChartMogul 100곳(헤드라인 88%가 10단어 미만, 고객 로고 평균 6개)",
+        "OpenTailwind 100곳 — 히어로 아래 사회적 증거 89%(2차)"
+      ]
+    },
+    {
+      "id": "sales-assisted",
+      "order": [
+        "header",
+        "hero",
+        "social-proof",
+        "workflow-features",
+        "integrations",
+        "enterprise",
+        "testimonials",
+        "changelog",
+        "final-cta",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 attio·stripe",
+        "NN/g b2b-vs-b2c(users·choosers)"
+      ]
+    },
+    {
+      "id": "campaign",
+      "order": [
+        "header",
+        "hero",
+        "how-it-works",
+        "workflow-features",
+        "testimonials",
+        "integrations",
+        "pricing",
+        "faq",
+        "final-cta",
+        "footer"
+      ],
+      "evidence": [
+        "관찰 cal.com(히어로 가입 @564, FAQ)",
+        "DESIGN §10 설득 흐름·메시지 일치",
+        "판정 2026-09-26: 요금 섹션은 캠페인 랜딩에만"
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "header",
+      "required": true,
+      "mustContain": [
+        "pricing-link",
+        "docs-link",
+        "login",
+        "primary-cta"
+      ],
+      "evidence": [
+        "1b-s-001",
+        "1b-s-009"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "sitemap",
+        "docs-link",
+        "korean-business-info"
+      ],
+      "evidence": [
+        "1b-s-009",
+        "DESIGN §9"
+      ]
+    }
+  ],
+  "imagePolicy": {
+    "productUi": "real-required — 실제 캡처나 녹화한 <video>, 가짜 <div> UI 금지(§10)",
+    "customerAndIntegrationLogos": "real-required — 실제 고객·실제 연동 제품만",
+    "people": "real-preferred — 초상권 동의된 실사, 없으면 사진 없이 이름·직함만",
+    "abstractConcepts": "illustration",
+    "moodBackground": "generated-ok — 분위기 배경에만, 표기",
+    "note": "실사 사진은 필수가 아니다. 제품 화면이 실물 증거 역할을 한다."
+  },
+  "contentSchemaHints": [
+    "plans[]: { name, monthlyPrice, currency, features[] } → 화면 요금표와 SoftwareApplication.offers를 같은 객체에서 만든다(1b-s-012)",
+    "integrations[]: { name, url, kind: native|api|webhook }",
+    "changelog[]: { date(ISO), title, url } — 최신 날짜가 90일 넘으면 섹션 제거",
+    "testimonials[]: { name, title, company, result }",
+    "workflowSteps[]: { title, body, uiCrop }"
+  ],
+  "references": [
+    {
+      "url": "https://linear.app",
+      "why": "섹션 H2가 제품 작업 단계 순서, 마지막 CTA H2 72px로 페이지를 닫는다(본문 15px는 따르지 않는다)"
+    },
+    {
+      "url": "https://resend.com",
+      "why": "개발자용 SaaS: 두 번째 섹션이 「이번 주말에 연동」, 내비에 프레임워크 목록과 Docs, SoftwareApplication JSON-LD, 본문 18px"
+    },
+    {
+      "url": "https://cal.com",
+      "why": "캠페인형: 히어로 안 가입, 후기 2회와 FAQ로 반론 처리 뒤 마지막 CTA"
+    },
+    {
+      "url": "https://attio.com",
+      "why": "B2B형: SDK·API·MCP 섹션, 규모 섹션, 30,000+ customers, 날짜 붙은 새 기능, 무료 시작 + 영업 문의 CTA"
+    },
+    {
+      "url": "https://stripe.com",
+      "why": "헤더에서 요금과 영업 문의를 나누고 기업 규모별 진입로로 사용자와 결정권자를 가른다"
+    }
+  ],
+  "legalRequirements": [
+    {
+      "basis": "전자상거래법 제10조·시행규칙 제7조",
+      "appliesWhen": "한국에서 온라인 결제로 구독을 판매할 때",
+      "requirement": "초기 화면 푸터에 상호·대표자·주소·전화·이메일·사업자등록번호·통신판매업 신고번호·약관 링크·공정위 사업자정보 조회 링크",
+      "source": "https://www.law.go.kr/LSW/lsLinkCommonInfo.do?lsJoLnkSeq=1022342373"
+    }
+  ],
+  "legal": {
+    "pages": [
+      "privacy",
+      "terms",
+      "refund",
+      "withdrawal"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "전자상거래 등에서의 소비자보호에 관한 법률",
+        "약관의 규제에 관한 법률",
+        "정보통신망 이용촉진 및 정보보호 등에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA",
+        "Paddle Buyer Terms"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "software"
+  },
+  "conversion": [
+    {
+      "event": "checkout_complete"
+    },
+    {
+      "event": "signup_complete"
+    }
+  ]
+}

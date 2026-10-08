@@ -1,0 +1,16 @@
+{
+  "kind": "onboarding",
+  "variant": "empty-first-action",
+  "title": "첫 빈 화면 — 무엇·왜 비었나·주 행동 하나 + 맥락 도움말",
+  "layout": "empty-state-single-action",
+  "density": "spacious",
+  "archetypes": [ "saas", "dashboard", "pwa" ],
+  "archetypeKinds": [ "empty-state", "first-run" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise", "blur-to-sharp" ],
+  "boldness": "bold",
+  "boldMode": "motion",
+  "rules": [ "O7", "O8", "V4", "X1", "M1" ],
+  "notes": "가운데 점선 판: 표지 · h2 · 이 영역이 무엇인지(data-empty-what) · 왜 비었는지(data-empty-why) · 주 행동 버튼 하나(data-primary-action) · 선택 예시 데이터 글 링크. 도움말(선택)은 사용자가 여는 접힘 하나(O8 — 투어 없음). 평점·리뷰 요청 없음(V4). 계측(선택): cta_click. 대담 장면(FV1 Task 5.17 · C1): 등장 때 판이 흐림에서 선명으로(blurToSharp — 불투명도 그대로, 글을 숨기지 않는다). 동작 줄이기·M0 은 정지"
+}

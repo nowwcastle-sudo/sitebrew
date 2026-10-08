@@ -1,0 +1,65 @@
+{
+  "id": "worldtaekwondo-org",
+  "archetype": "public",
+  "sourceGallery": "webaward-kr",
+  "url": "https://www.worldtaekwondo.org/",
+  "structure": {
+    "hero": "경기 사진 위에 공지 팝업과 쿠키 동의 상자가 겹친 국제 연맹 홈, 위에 네이비 내비와 SNS 줄",
+    "sections": [
+      "로고와 SNS·GMS 링크 줄",
+      "메인 내비 9개와 검색·메뉴",
+      "경기 사진 히어로(진행선·정지)",
+      "공지 팝업",
+      "쿠키 동의 상자(허용·선택·거부와 토글)"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 대문자 내비",
+    "body": "산세리프 본문",
+    "scale": "내비 약 14px, 팝업 제목 약 20px"
+  },
+  "colorLogic": "K4",
+  "motion": {
+    "entrance": "첫 프레임은 히어로 사진이 보이고 약 0.5초에 팝업과 어두운 오버레이가 뜨며 쿠키 상자가 따라 올라옴",
+    "scroll": null,
+    "hover": null,
+    "transition": "히어로 사진이 약 7.5초에 다른 경기 장면으로 바뀜",
+    "durationsMs": [
+      500,
+      7500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "8초 영상에서 읽은 값. 팝업·쿠키가 계속 화면을 덮음."
+  },
+  "interaction": [
+    "오늘 하루 열지 않기 체크",
+    "팝업 닫기",
+    "쿠키 세 가지 선택 버튼",
+    "토글 4개",
+    "검색·햄버거 메뉴",
+    "SNS 아이콘 5개"
+  ],
+  "cta": {
+    "pattern": "쿠키 모두 허용 버튼과 상단 GMS 링크",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.75
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "쿠키 동의를 모두 허용·선택 허용·거부 세 버튼과 항목별 토글로 보여 준다.",
+    "팝업에 오늘 하루 열지 않기를 두어 반복 노출을 줄인다.",
+    "진행 중인 대회 일정과 중계 정보를 팝업 한 장으로 알린다.",
+    "내비 항목이 9개로 길어 모바일에서는 햄버거 뒤로 접힌다.",
+    "모바일은 쿠키 상자가 첫 화면 전체를 덮는다."
+  ]
+}

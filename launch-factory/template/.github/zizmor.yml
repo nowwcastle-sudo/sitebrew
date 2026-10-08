@@ -1,0 +1,7 @@
+# zizmor 설정(제품) — 모든 액션은 전체 커밋 해시로 고정(hash-pin). 예외는 `rules.<id>.ignore: 파일:줄` 로만, 줄마다 이유 주석을 단다.
+# launch-factory 가 실어 준 파일이다(template:check 가 지킨다).
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        "*": hash-pin

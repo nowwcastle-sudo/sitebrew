@@ -1,0 +1,83 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "factory-base",
+      "type": "registry:item",
+      "title": "factory-base",
+      "description": "web-factory base: factory-base",
+      "css": {
+        "@layer base": {
+          "html:lang(ko), :lang(ko)": {
+            "word-break": "keep-all",
+            "overflow-wrap": "anywhere"
+          },
+          "body": {
+            "font-size": "1rem",
+            "line-height": "1.7",
+            "font-variant-numeric": "tabular-nums"
+          },
+          "*": {
+            "--wf-danger-text": "color-mix(in oklch, var(--destructive) 40%, var(--foreground))"
+          },
+          "h1, h2, h3": {
+            "text-wrap": "balance",
+            "line-height": "1.2"
+          },
+          ":focus-visible": {
+            "outline": "2px solid var(--ring)",
+            "outline-offset": "2px"
+          },
+          "button, a[href], [role=\"button\"], summary, input[type=\"checkbox\"], input[type=\"radio\"], input[type=\"submit\"], input[type=\"button\"], label": {
+            "touch-action": "manipulation"
+          },
+          "html:has([data-sticky-nav])": {
+            "scroll-padding-top": "5rem"
+          },
+          "@media (prefers-reduced-motion: reduce)": {
+            "*, *::before, *::after": {
+              "animation-duration": "0.01ms !important",
+              "animation-iteration-count": "1 !important",
+              "animation-delay": "0ms !important",
+              "transition-duration": "0.01ms !important",
+              "transition-delay": "0ms !important",
+              "scroll-behavior": "auto !important",
+              "--duration-press": "0ms !important",
+              "--duration-hover": "0ms !important",
+              "--duration-popover": "0ms !important",
+              "--duration-enter": "0ms !important",
+              "--duration-sheet": "0ms !important"
+            }
+          }
+        },
+        "@media print": {
+          "[data-slot=\"site-shell-skip-link\"], [data-slot=\"site-shell-banner\"], [data-slot=\"site-shell-header\"], [data-slot=\"site-shell-footer\"], [data-block^=\"bottom-tab-\"], [data-block^=\"announcement-\"], [data-block=\"consent-bottom-banner\"], [data-print=\"hide\"]": {
+            "display": "none !important"
+          },
+          "html, body, [data-slot=\"site-shell\"]": {
+            "background": "#fff !important",
+            "color": "#000 !important"
+          },
+          "[data-slot=\"site-shell-policy\"] a[href]::after, main a[href^=\"http\"]::after": {
+            "content": "\" (\" attr(href) \")\"",
+            "font-size": "0.875em",
+            "word-break": "break-all"
+          },
+          "*": {
+            "animation": "none !important",
+            "transition": "none !important",
+            "box-shadow": "none !important"
+          },
+          "[data-enter]": {
+            "opacity": "1 !important",
+            "transform": "none !important",
+            "visibility": "visible !important"
+          },
+          "a, button": {
+            "break-inside": "avoid"
+          }
+        }
+      }
+    }
+  ]
+}

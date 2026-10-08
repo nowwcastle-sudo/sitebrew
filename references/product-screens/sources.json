@@ -1,0 +1,1107 @@
+{
+  "version": 1,
+  "origin": "design-rules/ux-audit/references-inbox.md (2026-10-03, 76행) — 병합 뒤에는 이 파일이 정본",
+  "checked": "2026-10-03",
+  "rows": [
+    {
+      "id": "krds-01",
+      "area": "login",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 로그인 > 로그인 안내",
+      "url": "https://www.krds.go.kr/html/site/service/service_03_03.html",
+      "items": [
+        "B04",
+        "B02"
+      ],
+      "summary": "로그인이 필요한 행동을 만나면 하던 일을 끊지 않는 안내창을 띄우고, 로그인 없이 계속할 선택지와 로그인했을 때의 이점을 같이 보여 준다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-02",
+      "area": "login",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 로그인 > 로그인 방식 확인/선택",
+      "url": "https://www.krds.go.kr/html/site/service/service_03_04.html",
+      "items": [
+        "B05",
+        "B06",
+        "B10"
+      ],
+      "summary": "로그인 방식이 둘 이상이면 목록이나 탭으로 견주어 고르게 하고, 인증 방식의 복잡도와 이용 빈도에 맞춰 배치한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-03",
+      "area": "login",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 로그인 > 로그인 정보 입력",
+      "url": "https://www.krds.go.kr/html/site/service/service_03_05.html",
+      "items": [
+        "A03",
+        "B01",
+        "B05"
+      ],
+      "summary": "비밀번호는 기본으로 가리되 보기 토글을 두고, 실패 오류는 원인과 해결 방법을 구체로 알리며 제출 실패 뒤 포커스를 문제 칸으로 돌린다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-04",
+      "area": "login",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 로그인 > 로그인 완료",
+      "url": "https://www.krds.go.kr/html/site/service/service_03_06.html",
+      "items": [
+        "B01",
+        "H05",
+        "N10"
+      ],
+      "summary": "로그인 성공 뒤 사용자 식별 표시·로그아웃 수단·세션 정보를 보이고, 사용자가 원래 가려던 화면으로 돌려보낸다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-05",
+      "area": "login",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 로그인 > 서비스 이용(세션 연장)",
+      "url": "https://www.krds.go.kr/html/site/service/service_03_07.html",
+      "items": [
+        "B07",
+        "N12"
+      ],
+      "summary": "세션 만료 20초 이상 전에 알리고, 연장 버튼과 로그아웃 버튼을 함께 준다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-06",
+      "area": "login",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 로그인 > 로그아웃",
+      "url": "https://www.krds.go.kr/html/site/service/service_03_08.html",
+      "items": [
+        "B03",
+        "B04",
+        "B07"
+      ],
+      "summary": "직접 로그아웃과 세션 만료 자동 로그아웃을 구분해 피드백을 주고, 상황에 맞는 화면으로 보내며 홈 이동·다시 로그인 버튼을 둔다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-07",
+      "area": "contact",
+      "source": "KRDS",
+      "pattern": "기본 패턴 > 도움",
+      "url": "https://www.krds.go.kr/html/site/global/global_02.html",
+      "items": [
+        "K05",
+        "K07",
+        "K08"
+      ],
+      "summary": "이용자 숙련도에 맞는 도움 컴포넌트를 골라 화면 사용법과 업무 절차를 쉽게 이해시킨다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-08",
+      "area": "signup",
+      "source": "KRDS",
+      "pattern": "기본 패턴 > 동의",
+      "url": "https://www.krds.go.kr/html/site/global/global_03.html",
+      "items": [
+        "A04",
+        "A05",
+        "D06",
+        "K04"
+      ],
+      "summary": "일괄 동의와 항목별 동의를 묶어 보이고, 필수 동의와 선택 동의를 눈에 띄게 구분한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-09",
+      "area": "error",
+      "source": "KRDS",
+      "pattern": "기본 패턴 > 오류",
+      "url": "https://www.krds.go.kr/html/site/global/global_07.html",
+      "items": [
+        "H01",
+        "H04",
+        "A02"
+      ],
+      "summary": "오류 메시지는 무엇이 잘못됐는지와 어떻게 고치는지를 예의 있게 알려 빨리 복구하게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-10",
+      "area": "error",
+      "source": "KRDS",
+      "pattern": "기본 패턴 > 입력폼",
+      "url": "https://www.krds.go.kr/html/site/global/global_08.html",
+      "items": [
+        "H06",
+        "A03"
+      ],
+      "summary": "입력폼은 한 열 세로 배치, 충분한 간격, 일관된 버튼 위치, 칸별 오류 메시지 구조로 짠다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-11",
+      "area": "payment",
+      "source": "KRDS",
+      "pattern": "기본 패턴 > 확인",
+      "url": "https://www.krds.go.kr/html/site/global/global_11.html",
+      "items": [
+        "D04",
+        "M03",
+        "M05",
+        "F05"
+      ],
+      "summary": "되돌리기 어렵거나 결과가 큰 행동 앞에 명시적 승인 단계를 둬 사용자가 다시 확인하고 실수를 줄이게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-12",
+      "area": "mail",
+      "source": "KRDS",
+      "pattern": "기본 패턴 > 모바일 알림",
+      "url": "https://www.krds.go.kr/html/site/global/global_12.html",
+      "items": [
+        "G06",
+        "D08"
+      ],
+      "summary": "푸시·앱 내 메시지·알림센터를 중요도 단계로 나눠 보내고, 사용자가 알림 설정을 직접 조절하게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-13",
+      "area": "mail",
+      "source": "KRDS",
+      "pattern": "컴포넌트 > 긴급 공지(Critical alerts)",
+      "url": "https://www.krds.go.kr/html/site/component/component_04_02.html",
+      "items": [
+        "F02",
+        "H03"
+      ],
+      "summary": "본문 위쪽 눈에 띄는 배너로 긴급하거나 중요한 공지를 일관된 모양으로 알린다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-14",
+      "area": "a11y",
+      "source": "KRDS",
+      "pattern": "컴포넌트 > 모달",
+      "url": "https://www.krds.go.kr/html/site/component/component_04_05.html",
+      "items": [
+        "J02",
+        "E04"
+      ],
+      "summary": "모달이 열리면 포커스가 안으로 들어가 머물고, 닫히면 연 버튼으로 돌아가며, 승인이 필요한 모달은 닫기 버튼을 없앤다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-15",
+      "area": "a11y",
+      "source": "KRDS",
+      "pattern": "컴포넌트 > 건너뛰기 링크",
+      "url": "https://www.krds.go.kr/html/site/component/component_03_01.html",
+      "items": [
+        "J01"
+      ],
+      "summary": "키보드·스크린리더 이용자가 반복 영역을 넘어 본문으로 가는 링크를 보이는 형과 잠시 숨김 형으로 제공한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-16",
+      "area": "mobile",
+      "source": "KRDS",
+      "pattern": "스타일 > 레이아웃",
+      "url": "https://www.krds.go.kr/html/site/style/style_05.html",
+      "items": [
+        "J06",
+        "J07"
+      ],
+      "summary": "중단점 단계별 열 수·거터·최소 화면 여백을 정해 화면 크기에 따라 배치가 자연스럽게 바뀌게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-17",
+      "area": "a11y",
+      "source": "KRDS",
+      "pattern": "스타일 > 색상",
+      "url": "https://www.krds.go.kr/html/site/style/style_02.html",
+      "items": [
+        "J08"
+      ],
+      "summary": "색 단계에 대비율을 매긴 번호 체계로 글자·배경 조합이 WCAG 명도 대비를 만족하는지 바로 계산하게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-18",
+      "area": "a11y",
+      "source": "KRDS",
+      "pattern": "소개 > 디지털 포용",
+      "url": "https://www.krds.go.kr/html/site/utility/utility_04.html",
+      "items": [
+        "J09",
+        "J08"
+      ],
+      "summary": "장애인·고령자·아동·외국인까지 이용자로 보고 KWCAG 2.2 와 WCAG 2.1 기준으로 스타일·컴포넌트·패턴을 만든다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "krds-19",
+      "area": "payment",
+      "source": "KRDS",
+      "pattern": "서비스 패턴 > 신청 > 확인·확정",
+      "url": "https://www.krds.go.kr/html/site/service/service_04_06.html",
+      "items": [
+        "E04",
+        "F05",
+        "D04"
+      ],
+      "summary": "제출 전에 핵심 정보를 요약해 보이고, 되돌릴 수 없는 행동은 확정·취소 버튼으로 분명히 알린다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "dgov-01",
+      "area": "a11y",
+      "source": "디지털정부 UI·UX 가이드라인",
+      "pattern": "행정안전부 공공 웹·앱 UI/UX 혁신 소개(KRDS 연계)",
+      "url": "https://www.mois.go.kr/frt/sub/a06/b04/uixInnovation/screen.do",
+      "items": [
+        "A01",
+        "B01",
+        "J09"
+      ],
+      "summary": "가이드라인 개발 경과와 KRDS 2025-01-16 개시, 적용 사례를 소개하는 행안부 안내 페이지다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "dgov-02",
+      "area": "a11y",
+      "source": "디지털정부 UI·UX 가이드라인",
+      "pattern": "2025-08 수정본 배포 공지(본문·신구대비표 첨부)",
+      "url": "https://www.mois.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000045&nttId=120220",
+      "items": [
+        "A01",
+        "B01",
+        "H06",
+        "J09"
+      ],
+      "summary": "2025년 8월 수정본 배포를 알리는 공지이며, 전체 가이드라인 문서와 신구대비표가 첨부로 붙어 있다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "dgov-03",
+      "area": "a11y",
+      "source": "디지털정부 UI·UX 가이드라인",
+      "pattern": "가이드라인 소개(KRDS 내 페이지)",
+      "url": "https://www.krds.go.kr/html/site/utility/utility_07.html",
+      "items": [
+        "J09",
+        "J05"
+      ],
+      "summary": "서비스 패턴 5종과 WCAG 2.1 AA 준수를 기준으로 하며, 모바일 OS 고유 컴포넌트와 앱 전용 화면은 다루지 않는다고 범위를 밝힌다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "kwcag-01",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "고시 원문 KS X OT0003(국립전파연구원, 2022-12-28)",
+      "url": "https://www.rra.go.kr/ko/reference/kcsList_view.do?nb_seq=5247&nb_type=6",
+      "items": [
+        "J01",
+        "J04",
+        "J08",
+        "H06"
+      ],
+      "summary": "한국형 웹 콘텐츠 접근성 지침 2.2 표준 문서와 해설서를 내려받는 공식 게시 페이지다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "kwcag-02",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "NIA 보도자료: 2.2 개정(기존 24항목에 신규 9항목)",
+      "url": "https://www.nia.or.kr/site/nia_kor/ex/bbs/View.do?cbIdx=90549&bcIdx=25083&parentSeq=25083",
+      "items": [
+        "J05",
+        "J09"
+      ],
+      "summary": "2.2 개정에서 키보드·음성 명령·확대 화면·인지 어려움 이용자를 위한 신규 검사항목이 더해졌음을 알린다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "kwcag-03",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "4원칙·33검사항목 전체 목록(민간 게시본, 고시 원문 아님)",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "J09"
+      ],
+      "summary": "인식·운용·이해·견고 4원칙 아래 검사항목 33개의 번호와 이름을 한 페이지에서 대조할 수 있다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-04",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "6.4.1 반복 영역 건너뛰기",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "J01"
+      ],
+      "summary": "반복되는 머리글·메뉴를 건너뛰고 본문으로 갈 수단을 제공해야 한다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-05",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "6.4.2 제목 제공(페이지 제목)",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "J04",
+        "L01"
+      ],
+      "summary": "페이지·프레임에 내용을 알려 주는 제목을 달아야 한다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-06",
+      "area": "error",
+      "source": "KWCAG 2.2",
+      "pattern": "7.3.1 오류 정정 · 7.3.2 입력 레이블 제공",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "H06",
+        "A03"
+      ],
+      "summary": "입력 오류를 알려 고치게 하고, 모든 입력 칸에 무엇을 넣는지 알리는 레이블을 붙인다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-07",
+      "area": "login",
+      "source": "KWCAG 2.2",
+      "pattern": "6.2.1 응답시간 조절",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "B07",
+        "H09"
+      ],
+      "summary": "시간 제한이 있는 콘텐츠는 사용자가 제한을 끄거나 늘릴 수 있어야 한다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-08",
+      "area": "login",
+      "source": "KWCAG 2.2",
+      "pattern": "7.3.3 접근 가능한 인증",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "B10",
+        "C03",
+        "A07"
+      ],
+      "summary": "로그인·인증 때 퍼즐 풀이나 기억·옮겨 적기만으로 통과하게 만들지 말고 대체 수단을 둔다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-09",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "5.4.3 텍스트 콘텐츠의 명도 대비",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "J08"
+      ],
+      "summary": "글자와 배경의 명도 대비가 기준 이상이어야 한다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-10",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "6.1.2 초점 이동",
+      "url": "https://a11ykr.github.io/kwcag22/",
+      "items": [
+        "J02",
+        "J03"
+      ],
+      "summary": "키보드 초점이 논리적 순서로 움직이고 눈에 보여야 한다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 게시본이다. 고시 원문은 kwcag-01(국립전파연구원)이 맡는다."
+    },
+    {
+      "id": "kwcag-11",
+      "area": "a11y",
+      "source": "KWCAG 2.2",
+      "pattern": "웹 접근성 품질마크 법적 근거(민간 인증기관 안내)",
+      "url": "https://www.websoul.co.kr/accessibility/certification.asp",
+      "items": [
+        "J09"
+      ],
+      "summary": "품질인증 제도가 국가정보화기본법 개정으로 법적 근거를 얻은 경과와 인증기관 체계를 설명한다. 장애인차별금지법 언급은 이 페이지에 없었다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "민간 인증기관 안내다. 장애인차별금지법 언급은 이 쪽에 없다."
+    },
+    {
+      "id": "govuk-01",
+      "area": "signup",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Confirm an email address",
+      "url": "https://design-system.service.gov.uk/patterns/confirm-an-email-address/",
+      "items": [
+        "A01",
+        "A10",
+        "A14"
+      ],
+      "summary": "이메일 확인은 사용자를 덜 막는 방식으로 설계하되 확인된 주소로 계정에 들어올 수 있게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-02",
+      "area": "signup",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Create accounts",
+      "url": "https://design-system.service.gov.uk/patterns/create-accounts/",
+      "items": [
+        "A02",
+        "A07",
+        "B02"
+      ],
+      "summary": "계정은 꼭 필요할 때만 만들게 하고, 가입 시점을 늦추며, 가입과 로그인을 시각으로 떼어 놓고 CAPTCHA 같은 장벽을 피한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-03",
+      "area": "payment",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Check answers",
+      "url": "https://design-system.service.gov.uk/patterns/check-answers/",
+      "items": [
+        "E04",
+        "F05"
+      ],
+      "summary": "제출 전에 입력한 내용을 한 화면에서 훑어 고칠 수 있게 해 확신을 주고 실수를 줄인다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-04",
+      "area": "error",
+      "source": "GOV.UK",
+      "pattern": "패턴 > There is a problem with the service pages",
+      "url": "https://design-system.service.gov.uk/patterns/problem-with-the-service-pages/",
+      "items": [
+        "H01",
+        "H04"
+      ],
+      "summary": "예기치 않은 서비스 오류 화면에 지원 경로와 입력 데이터 저장 여부를 함께 알린다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-05",
+      "area": "error",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Recover from validation errors",
+      "url": "https://design-system.service.gov.uk/patterns/validation/",
+      "items": [
+        "H06",
+        "A03"
+      ],
+      "summary": "사용자가 다음으로 진행하려 할 때만 검증하고 서버 검증을 기본으로 하며, 오류 문구는 원인과 해결 방법을 말한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-06",
+      "area": "login",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Passwords",
+      "url": "https://design-system.service.gov.uk/patterns/passwords/",
+      "items": [
+        "A03",
+        "C01"
+      ],
+      "summary": "최소 8자를 두고 최대 길이는 두지 않으며, 붙여넣기를 허용하고 흔한 비밀번호는 막는다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-07",
+      "area": "login",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Password input",
+      "url": "https://design-system.service.gov.uk/components/password-input/",
+      "items": [
+        "A03",
+        "B01",
+        "C01"
+      ],
+      "summary": "보기 토글을 제공하고 가입 때는 새 비밀번호, 로그인 때는 현재 비밀번호 자동완성 값을 쓰며 길이 제한·붙여넣기 차단을 피한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-08",
+      "area": "contact",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Contact a department or service team",
+      "url": "https://design-system.service.gov.uk/patterns/contact-a-department-or-service-team/",
+      "items": [
+        "K05",
+        "K06",
+        "C08"
+      ],
+      "summary": "전화·이메일·웹챗 등 연락 수단과 응답 시간 정보를 이용자가 찾기 쉽게 보여 준다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-09",
+      "area": "contact",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Cookie banner",
+      "url": "https://design-system.service.gov.uk/components/cookie-banner/",
+      "items": [
+        "K04",
+        "J07"
+      ],
+      "summary": "필수가 아닌 쿠키는 수락·거부를 같은 무게로 고르게 하고, 선택 결과를 확인시키며 나중에 바꿀 수 있게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-10",
+      "area": "error",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Page not found pages",
+      "url": "https://design-system.service.gov.uk/patterns/page-not-found-pages/",
+      "items": [
+        "H02"
+      ],
+      "summary": "404 화면은 페이지가 없다는 사실을 분명히 말하고 다음에 할 일을 안내한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-11",
+      "area": "login",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Confirm a phone number",
+      "url": "https://design-system.service.gov.uk/patterns/confirm-a-phone-number/",
+      "items": [
+        "C03",
+        "C04"
+      ],
+      "summary": "문자 보안 코드로 번호를 확인하고 2단계 인증을 구현하는 절차와 문구를 안내한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-12",
+      "area": "error",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Error summary",
+      "url": "https://design-system.service.gov.uk/components/error-summary/",
+      "items": [
+        "H06"
+      ],
+      "summary": "오류가 여럿일 때 화면 위에 목록으로 모으고 각 항목이 해당 입력 칸으로 이동하게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-13",
+      "area": "mail",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Notification banner",
+      "url": "https://design-system.service.gov.uk/components/notification-banner/",
+      "items": [
+        "F02",
+        "A01"
+      ],
+      "summary": "현재 화면 내용과 직접 관련 없는 중요 정보를 제목 앞에 아껴 쓰고, 성공 알림에는 보조기기가 즉시 읽는 역할을 준다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-14",
+      "area": "payment",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Button",
+      "url": "https://design-system.service.gov.uk/components/button/",
+      "items": [
+        "E06"
+      ],
+      "summary": "느린 연결이나 습관으로 생기는 이중 제출을 막는 더블클릭 방지 옵션이 있다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-15",
+      "area": "a11y",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Language navigation",
+      "url": "https://design-system.service.gov.uk/components/language-navigation/",
+      "items": [
+        "I06"
+      ],
+      "summary": "여러 언어판이 있을 때 언어를 바꾸는 탐색을 제공한다. 이 컴포넌트는 시험 단계 표시가 있었다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "이 컴포넌트는 시험 단계 표시가 있다."
+    },
+    {
+      "id": "govuk-16",
+      "area": "account",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Names",
+      "url": "https://design-system.service.gov.uk/patterns/names/",
+      "items": [
+        "D02"
+      ],
+      "summary": "이름은 전체 이름 한 칸을 기본으로 하고 자동완성 속성을 달며, 나중에 고칠 수 있게 하고 호칭은 묻지 않는다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-01",
+      "area": "login",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 3.3.8 Accessible Authentication (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html",
+      "items": [
+        "B10",
+        "C03",
+        "A07"
+      ],
+      "summary": "인증 단계에서 퍼즐 풀기·기억·코드 옮겨 적기에만 의존하지 말고 붙여넣기나 대체 수단을 허용한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-02",
+      "area": "signup",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 3.3.7 Redundant Entry",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html",
+      "items": [
+        "A04",
+        "N11"
+      ],
+      "summary": "여러 단계 과정에서 이미 낸 정보는 다시 묻지 말고 자동 채움이나 선택으로 보여 준다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-03",
+      "area": "error",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 3.3.1 Error Identification",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-identification.html",
+      "items": [
+        "H06",
+        "A03"
+      ],
+      "summary": "오류가 난 칸을 가리키고 오류 내용을 글자로 설명해야 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-04",
+      "area": "mobile",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 2.5.8 Target Size (Minimum)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html",
+      "items": [
+        "J05"
+      ],
+      "summary": "누를 대상은 최소 24×24 CSS 픽셀이거나 주변 간격이 충분해야 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-05",
+      "area": "a11y",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 4.1.3 Status Messages",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html",
+      "items": [
+        "F02",
+        "H06",
+        "B03"
+      ],
+      "summary": "포커스를 옮기지 않고도 보조기기가 상태 메시지를 읽도록 프로그램으로 표시한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-06",
+      "area": "mobile",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 1.4.10 Reflow",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+      "items": [
+        "J06"
+      ],
+      "summary": "320 CSS 픽셀 폭에서 가로 스크롤 없이 읽히게 해 확대 사용자를 돕는다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "w3c-07",
+      "area": "payment",
+      "source": "W3C",
+      "pattern": "WCAG 2.2 Understanding 3.3.4 Error Prevention (Legal, Financial, Data)",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/error-prevention-legal-financial-data.html",
+      "items": [
+        "D04",
+        "E04",
+        "M03"
+      ],
+      "summary": "법적·금전 거래나 데이터 삭제 같은 중요한 제출은 되돌리기·검사·확인 중 하나를 제공한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-01",
+      "area": "signup",
+      "source": "법제처",
+      "pattern": "개인정보 보호법 제22조 동의를 받는 방법",
+      "url": "https://www.law.go.kr/LSW//lsLawLinkInfo.do?lsJoLnkSeq=900077468&lsId=011357&chrClsCd=010202&print=print",
+      "items": [
+        "A04",
+        "A05",
+        "D06",
+        "K04"
+      ],
+      "summary": "목적이 다른 동의는 따로 구분해 받고, 수집 목적·항목 같은 중요한 내용은 알아보기 쉽게 표시한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-02",
+      "area": "contact",
+      "source": "법제처",
+      "pattern": "개인정보 보호법 제30조 개인정보 처리방침의 수립 및 공개",
+      "url": "https://www.law.go.kr/LSW/lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=900078922",
+      "items": [
+        "K01",
+        "K03"
+      ],
+      "summary": "처리 목적·보유 기간·제3자 제공·파기 절차를 담은 처리방침을 정해 정보주체가 쉽게 볼 수 있게 공개한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-03",
+      "area": "account",
+      "source": "법제처",
+      "pattern": "개인정보 보호법 제36조 개인정보의 정정·삭제",
+      "url": "https://www.law.go.kr/LSW//lsLawLinkInfo.do?lsJoLnkSeq=900078747&chrClsCd=010202",
+      "items": [
+        "D03",
+        "D04"
+      ],
+      "summary": "정보주체가 자신의 개인정보 정정·삭제를 요구할 수 있고 처리자는 절차와 예외를 갖춰 대응해야 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-04",
+      "area": "account",
+      "source": "법제처",
+      "pattern": "개인정보 보호법 제21조 개인정보의 파기",
+      "url": "https://www.law.go.kr/LSW//lsLinkCommonInfo.do?lsJoLnkSeq=1020398651&chrClsCd=010202",
+      "items": [
+        "D04",
+        "D09"
+      ],
+      "summary": "불필요해진 개인정보는 지체 없이 복구 불가능하게 파기하고, 법령상 보존 대상은 분리해 보관한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-05",
+      "area": "mail",
+      "source": "법제처",
+      "pattern": "정보통신망법 제50조 영리목적 광고성 정보 전송 제한",
+      "url": "https://www.law.go.kr/LSW/lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=1000688185&lsId=000030",
+      "items": [
+        "G03",
+        "A05",
+        "D07",
+        "G06"
+      ],
+      "summary": "광고성 정보는 사전 동의를 받고, 수신 거부·동의 철회가 쉬운 방법과 전송자 정보를 광고에 밝힌다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-06",
+      "area": "payment",
+      "source": "법제처",
+      "pattern": "전자상거래법 제17조 청약철회등",
+      "url": "https://law.go.kr/LSW/lsLawLinkInfo.do?chrClsCd=010202&lsId=009318&lsJoLnkSeq=1000527255&print=print",
+      "items": [
+        "K01",
+        "E04"
+      ],
+      "summary": "통신판매 소비자는 정해진 기간 안에 청약철회를 할 수 있으므로 환불·철회 안내 쪽이 이를 반영해야 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "law-07",
+      "area": "payment",
+      "source": "법제처",
+      "pattern": "전자상거래법 제13조 신원 및 거래조건 정보의 제공",
+      "url": "https://www.law.go.kr/LSW//lsLawLinkInfo.do?lsJoLnkSeq=1000527501&lsId=009318&chrClsCd=010202&print=print",
+      "items": [
+        "K03",
+        "K01",
+        "E08"
+      ],
+      "summary": "통신판매업자는 상호·대표자·연락처·등록 정보와 가격·배송·환불·분쟁 해결 조건을 계약 전에 밝힌다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "nist-01",
+      "area": "login",
+      "source": "NIST",
+      "pattern": "SP 800-63B-4 인증 및 수명주기 관리",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "items": [
+        "A03",
+        "C01",
+        "C04",
+        "B08"
+      ],
+      "summary": "비밀번호 길이를 우선하고 문자 조합 규칙과 주기적 변경 강요를 하지 않으며, 비밀번호 관리자·붙여넣기를 허용하고 추측 공격에는 횟수 제한을 건다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "rfc-01",
+      "area": "mail",
+      "source": "RFC",
+      "pattern": "RFC 8058 원클릭 수신 거부 신호",
+      "url": "https://www.rfc-editor.org/rfc/rfc8058",
+      "items": [
+        "G03"
+      ],
+      "summary": "메일 머리글에 원클릭 수신 거부 신호를 실어 수신자가 추가 확인 없이 한 번의 요청으로 구독을 끊게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "google-01",
+      "area": "mail",
+      "source": "Google",
+      "pattern": "이메일 발송자 지침(Gmail)",
+      "url": "https://support.google.com/a/answer/81126",
+      "items": [
+        "G03",
+        "G04"
+      ],
+      "summary": "SPF·DKIM·DMARC 인증을 갖추고 대량 발송자는 마케팅 메일에 원클릭 수신 거부를 넣어야 한다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "열면 support.google.com/mail/answer/81126 으로 넘어간다."
+    },
+    {
+      "id": "owasp-01",
+      "area": "login",
+      "source": "OWASP",
+      "pattern": "Forgot Password Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+      "items": [
+        "A02",
+        "C07",
+        "C08",
+        "B08"
+      ],
+      "summary": "비밀번호 재설정은 계정 유무와 상관없이 같은 응답을 주고, 토큰에 만료를 두며, 변경 뒤 기존 세션을 끊는다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "llmstxt-01",
+      "area": "ax",
+      "source": "llmstxt.org",
+      "pattern": "/llms.txt 제안서",
+      "url": "https://llmstxt.org/",
+      "items": [
+        "L03",
+        "L04"
+      ],
+      "summary": "사이트가 에이전트용으로 추린 내용을 마크다운 파일로 루트에 두자는 제안이다. 효과는 논쟁 중이다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "제안서다. 효과는 논쟁 중이다."
+    },
+    {
+      "id": "gsc-01",
+      "area": "ax",
+      "source": "Google Search Central",
+      "pattern": "제목 링크 영향 주기",
+      "url": "https://developers.google.com/search/docs/appearance/title-link",
+      "items": [
+        "L01",
+        "H02"
+      ],
+      "summary": "쪽마다 구분되는 서술형 title 요소를 쓰고 키워드 나열이나 반복 문구를 피한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "webmcp-01",
+      "area": "ax",
+      "source": "W3C WebMCP",
+      "pattern": "WebMCP 커뮤니티 그룹 초안",
+      "url": "https://webmachinelearning.github.io/webmcp/",
+      "items": [
+        "M01",
+        "M02"
+      ],
+      "summary": "웹앱이 기능을 에이전트가 부를 도구로 노출하는 JavaScript API와 권한·프롬프트 주입 위험 모델을 정의한다. toolautosubmit 속성은 읽은 요약에서 확인되지 않았다.",
+      "status": 200,
+      "checked": "2026-10-03",
+      "note": "커뮤니티 그룹 초안이다. toolautosubmit 속성은 확인되지 않았다."
+    },
+    {
+      "id": "govuk-17",
+      "area": "contact",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Cookies page",
+      "url": "https://design-system.service.gov.uk/patterns/cookies-page/",
+      "items": [
+        "K04",
+        "J07"
+      ],
+      "summary": "쓰는 쿠키를 이름·목적·만료·제3자까지 쉬운 말로 나열한 전용 쪽을 두고, 푸터와 쿠키 띠에서 연결하며, 필수 아닌 쿠키의 수락·거부를 라디오로 고르고 저장 결과를 확인시킨다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-18",
+      "area": "error",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Service unavailable pages",
+      "url": "https://design-system.service.gov.uk/patterns/service-unavailable-pages/",
+      "items": [
+        "H01",
+        "H04",
+        "K07"
+      ],
+      "summary": "서비스가 왜 멈췄고 언제 다시 되는지 말하고, 문의처·대체 서비스·오프라인 방법처럼 다른 길을 함께 안내한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-19",
+      "area": "payment",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Confirmation pages",
+      "url": "https://design-system.service.gov.uk/patterns/confirmation-pages/",
+      "items": [
+        "A01",
+        "A08",
+        "F05",
+        "E05"
+      ],
+      "summary": "끝났다는 안심과 함께 접수 번호·다음 단계·문의처·기록 저장 수단을 주고, 북마크로 다시 와도 볼 수 있게 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-20",
+      "area": "error",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Error message",
+      "url": "https://design-system.service.gov.uk/components/error-message/",
+      "items": [
+        "A02",
+        "H04",
+        "H06",
+        "L04"
+      ],
+      "summary": "질문 라벨을 가리키며 무엇이 틀렸고 어떻게 고치는지 쉬운 말로 쓰고, 보조기기용 숨은 「오류」 접두와 입력값 유지를 지킨다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-21",
+      "area": "a11y",
+      "source": "GOV.UK",
+      "pattern": "컴포넌트 > Skip link",
+      "url": "https://design-system.service.gov.uk/components/skip-link/",
+      "items": [
+        "J01"
+      ],
+      "summary": "건너뛰기 링크를 본문 시작 직후(쿠키 띠가 있으면 그 뒤)에 두고, 기본 목표는 본문 영역으로 한다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    },
+    {
+      "id": "govuk-22",
+      "area": "signup",
+      "source": "GOV.UK",
+      "pattern": "패턴 > Email addresses",
+      "url": "https://design-system.service.gov.uk/patterns/email-addresses/",
+      "items": [
+        "A02",
+        "A14"
+      ],
+      "summary": "이메일 칸은 email 입력 형식과 자동완성 속성을 쓰고, 붙여넣기를 허용하며, 제출 전에 입력한 주소를 사용자에게 되비춰 확인시킨다.",
+      "status": 200,
+      "checked": "2026-10-03"
+    }
+  ]
+}

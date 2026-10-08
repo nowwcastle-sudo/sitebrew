@@ -1,0 +1,13 @@
+{
+  "kind": "final-cta",
+  "variant": "quiet-link-row",
+  "title": "마지막 행동 유도 — 조용한 링크 한 줄",
+  "layout": "quiet-link-row",
+  "density": "compact",
+  "archetypes": ["portfolio", "brand", "landing"],
+  "archetypeKinds": ["final-cta", "contact-cta"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "윗선 아래 한 줄: 왼쪽 작은 제목 h2(한 문장), 오른쪽 밑줄 링크 몇 개(→). 색 면·버튼 없음. 375: 제목 아래 링크 줄 바꿈. 등장 모션 없음"
+}

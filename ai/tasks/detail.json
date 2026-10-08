@@ -1,0 +1,994 @@
+{
+  "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
+  "id": "detail",
+  "source": "registry/factory/archetypes/detail.json",
+  "ref": "v0.1.0",
+  "purpose": "모바일 상세 한 장에서 구매 판단에 필요한 정보(가격·배송·반품·고시·리뷰)를 글자로 주고, 구매 바에서 바로 옵션을 고르게 한다.",
+  "coreTask": "390×844 화면에서 상세를 열고 ① 배송비와 무료배송 기준 ② 반품 배송비 부담 주체 ③ 제조국 ④ A/S 연락처를 찾아 DOM 텍스트로 답한다(이미지 OCR 금지). ⑤ 하단 고정 구매 바를 눌러 옵션 시트를 열고 옵션 하나를 고른다(결제는 누르지 않는다). 합격: 네 답이 모두 텍스트 노드에서 나오고 ⑤가 DOM 상태 변화로 확인된다.",
+  "completion": "site",
+  "locales": [
+    "ko",
+    "en"
+  ],
+  "pages": [
+    {
+      "id": "product-detail",
+      "route": "/",
+      "required": [
+        {
+          "kind": "purchase-area",
+          "blockKinds": [
+            "product-list"
+          ],
+          "allowedVariants": [
+            "block-product-list-spec-summary"
+          ]
+        },
+        {
+          "kind": "key-points",
+          "blockKinds": [
+            "features"
+          ],
+          "allowedVariants": [
+            "block-features-compare-table"
+          ]
+        },
+        {
+          "kind": "spec-table",
+          "blockKinds": [
+            "product-info"
+          ],
+          "allowedVariants": [
+            "block-product-info-spec-and-notice"
+          ]
+        },
+        {
+          "kind": "notice-table",
+          "blockKinds": [
+            "product-info"
+          ],
+          "allowedVariants": [
+            "block-product-info-key-facts-first",
+            "block-product-info-notice-table",
+            "block-product-info-spec-and-notice"
+          ]
+        },
+        {
+          "kind": "shipping-returns",
+          "blockKinds": [
+            "shipping-returns"
+          ],
+          "allowedVariants": [
+            "block-shipping-returns-at-a-glance-cards",
+            "block-shipping-returns-policy-tables",
+            "block-shipping-returns-return-steps"
+          ]
+        },
+        {
+          "kind": "review-list",
+          "blockKinds": [
+            "review-list"
+          ],
+          "allowedVariants": [
+            "block-review-list-summary-near-price"
+          ]
+        },
+        {
+          "kind": "qna",
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-grouped-by-topic",
+            "block-faq-two-column-index"
+          ]
+        }
+      ],
+      "optional": [
+        {
+          "kind": "sticky-toc",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "쪽 안 목차 — 본문 앵커",
+            "missing": "쪽 안 목차 — 그려진 섹션의 앵커·이름을 모으는 배선이 없다(06 이 섹션 id 를 모으지 않는다)"
+          }
+        },
+        {
+          "kind": "story",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "문제→해결→근거 서술 — 본문",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "상세 설명",
+                "en": "Details"
+              },
+              "from": [
+                "slices",
+                "images:slice"
+              ],
+              "mode": "stack",
+              "imageSource": "real-required",
+              "fields": {
+                "src": "src",
+                "alt": "altText",
+                "width": "width",
+                "height": "height"
+              }
+            }
+          }
+        },
+        {
+          "kind": "usage-scenes",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "사용 장면 — 본문과 실사",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "사용 장면",
+                "en": "In use"
+              },
+              "from": [
+                "images:scene"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "scale-and-model",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "content",
+            "reason": "크기 비교·모델 컷 — 본문과 실사",
+            "render": {
+              "as": "gallery",
+              "heading": {
+                "ko": "크기와 착용",
+                "en": "Size and fit"
+              },
+              "from": [
+                "images:in-scale",
+                "images:model",
+                "images:closeup"
+              ],
+              "caption": [
+                "slot:caption"
+              ]
+            }
+          }
+        },
+        {
+          "kind": "trust",
+          "blockKinds": [
+            "trust"
+          ],
+          "allowedVariants": [
+            "block-trust-guarantee-strip",
+            "block-trust-verified-business-strip"
+          ]
+        },
+        {
+          "kind": "related",
+          "blockKinds": [],
+          "allowedVariants": [],
+          "noBlock": {
+            "mode": "pending",
+            "reason": "product-list 블록 중 detail 을 적은 것은 spec-summary 뿐이라 관련 상품 목록에 맞는 것이 없다",
+            "register": [
+              "C71"
+            ]
+          }
+        },
+        {
+          "kind": "faq",
+          "blockKinds": [
+            "faq"
+          ],
+          "allowedVariants": [
+            "block-faq-grouped-by-topic",
+            "block-faq-two-column-index"
+          ]
+        }
+      ]
+    }
+  ],
+  "globalSections": [
+    {
+      "kind": "sticky-buy-bar",
+      "required": true,
+      "mustContain": [
+        "buy-now",
+        "add-to-cart",
+        "opens-option-sheet"
+      ]
+    },
+    {
+      "kind": "footer",
+      "required": true,
+      "mustContain": [
+        "상호",
+        "대표자",
+        "주소",
+        "전화",
+        "이메일",
+        "사업자등록번호",
+        "통신판매업 신고번호",
+        "이용약관",
+        "개인정보 처리방침"
+      ]
+    },
+    {
+      "kind": "kakao-channel-button",
+      "required": false,
+      "mustContain": []
+    }
+  ],
+  "sectionOrders": [
+    {
+      "id": "D-A-korean-standard",
+      "order": [
+        "purchase-area",
+        "sticky-toc",
+        "key-points",
+        "story",
+        "usage-scenes",
+        "scale-and-model",
+        "spec-table",
+        "notice-table",
+        "shipping-returns",
+        "review-list",
+        "qna",
+        "related"
+      ]
+    },
+    {
+      "id": "D-B-short-consumable",
+      "order": [
+        "purchase-area",
+        "key-points",
+        "review-list",
+        "spec-table",
+        "notice-table",
+        "shipping-returns"
+      ]
+    },
+    {
+      "id": "D-C-text-first",
+      "order": [
+        "purchase-area",
+        "key-points",
+        "spec-table",
+        "review-list",
+        "faq",
+        "shipping-returns"
+      ]
+    }
+  ],
+  "legal": [
+    {
+      "basis": "상품정보제공 고시(공정위)",
+      "appliesWhen": "통신판매 상품 상세(항상)",
+      "requirement": "품목별 항목(제조자·수입자, 제조국, 품질보증기준, A/S 책임자와 전화번호, KC 인증 대상이면 인증정보)을 HTML 표로",
+      "source": "https://www.law.go.kr/LSW/admRulInfoP.do?admRulSeq=2000000026532"
+    },
+    {
+      "basis": "전자상거래법(청약철회 7일) · DESIGN §9·§15",
+      "appliesWhen": "통신판매 상품 상세(항상)",
+      "requirement": "배송·교환·반품 요약(배송비, 반품 배송비 부담 주체, 7일 청약철회, 불가 사유)을 구매 영역 근처와 하단 양쪽에",
+      "source": "DESIGN.md §9 v3 추가 줄·§15"
+    }
+  ],
+  "legalPages": {
+    "pages": [
+      "privacy",
+      "terms",
+      "refund",
+      "withdrawal"
+    ],
+    "laws": {
+      "ko": [
+        "개인정보 보호법",
+        "전자상거래 등에서의 소비자보호에 관한 법률",
+        "약관의 규제에 관한 법률"
+      ],
+      "en": [
+        "GDPR",
+        "CCPA"
+      ]
+    }
+  },
+  "seo": {
+    "titleTemplate": "%s | {siteName}",
+    "type": "product",
+    "install": {
+      "seoMetadata": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/seo-meta#v0.1.0 -y -o",
+      "jsonLdFor": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/geo-entity#v0.1.0 -y -o"
+    },
+    "usage": "seoMetadata(content, page) → Next Metadata(generateMetadata) · jsonLdFor(content, page) → <script type=\"application/ld+json\">. titleTemplate 의 {siteName} 은 content.site 이름(없으면 원형의 회사·가게·제품·기관 이름)이고, type 은 원형 기본 종류다."
+  },
+  "conversion": [
+    {
+      "event": "cta_click",
+      "match": {
+        "id": "purchase"
+      }
+    }
+  ],
+  "content": {
+    "item": "content-detail",
+    "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/content-detail#v0.1.0 -y -o"
+  },
+  "recipes": {
+    "candidates": [
+      {
+        "id": "r5-celadon",
+        "name": "청자 고요",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r5-celadon#v0.1.0 -y -o"
+      },
+      {
+        "id": "r9-clay",
+        "name": "말랑 점토",
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r9-clay#v0.1.0 -y -o",
+        "condition": "식품·생활·키즈 상품 상세에만 — 둥근 Jua 제목이 배달앱 계열로 읽힌다(재질 상품은 r5-celadon)"
+      }
+    ],
+    "complete": true,
+    "note": "운영자가 레시피 보드(2026-09-27)에서 승인한 레시피 15벌(r1-measure·r10-console·r12-spectrum·r13-folio·r14-concrete·r15-atelier·r16-tonal·r2-signal·r3-woodblock·r4-evidence·r5-celadon·r6-civic·r7-docs·r8-dusk·r9-clay)에서 archetypes 에 이 원형을 적은 것을 모두 뽑았다(결정: factory/board/recipe-decisions.json). condition 이 있는 후보는 그 조건에 맞는 브리프에만 쓴다."
+  },
+  "blocks": {
+    "announcement": [
+      {
+        "item": "block-announcement-launch-banner",
+        "variant": "launch-banner",
+        "layout": "launch-hero-band",
+        "density": "spacious",
+        "sectionKinds": [
+          "launch",
+          "announcement",
+          "event-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-launch-banner#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-announcement-top-bar",
+        "variant": "top-bar",
+        "layout": "slim-top-bar",
+        "density": "compact",
+        "sectionKinds": [
+          "announcement-bar",
+          "notice"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-announcement-top-bar#v0.1.0 -y -o"
+      }
+    ],
+    "bottom-tab": [
+      {
+        "item": "block-bottom-tab-sticky-action-bar",
+        "variant": "sticky-action-bar",
+        "layout": "sticky-action-bar",
+        "density": "comfortable",
+        "sectionKinds": [
+          "sticky-buy-bar",
+          "primary-action-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-bottom-tab-sticky-action-bar#v0.1.0 -y -o"
+      }
+    ],
+    "confirmation": [
+      {
+        "item": "block-confirmation-order-complete",
+        "variant": "order-complete",
+        "layout": "receipt-next-steps",
+        "density": "comfortable",
+        "sectionKinds": [
+          "order-confirmation",
+          "thank-you"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-confirmation-order-complete#v0.1.0 -y -o"
+      }
+    ],
+    "consent": [
+      {
+        "item": "block-consent-bottom-banner",
+        "variant": "bottom-banner",
+        "layout": "fixed-bottom-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "cookie-consent",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-bottom-banner#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-consent-inline-notice",
+        "variant": "inline-notice",
+        "layout": "placeholder-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "consent-placeholder",
+          "directions"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-inline-notice#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-consent-preference-dialog",
+        "variant": "preference-dialog",
+        "layout": "summary-then-dialog",
+        "density": "comfortable",
+        "sectionKinds": [
+          "cookie-settings",
+          "consent-banner"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-consent-preference-dialog#v0.1.0 -y -o"
+      }
+    ],
+    "content": [
+      {
+        "item": "block-content-gallery",
+        "variant": "gallery",
+        "layout": "photo-grid",
+        "density": "comfortable",
+        "sectionKinds": [
+          "gallery",
+          "story",
+          "usage-scenes",
+          "scale-and-model"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-content-gallery#v0.1.0 -y -o"
+      }
+    ],
+    "faq": [
+      {
+        "item": "block-faq-grouped-by-topic",
+        "variant": "grouped-by-topic",
+        "layout": "topic-groups",
+        "density": "compact",
+        "sectionKinds": [
+          "faq",
+          "qna"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-faq-grouped-by-topic#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-faq-two-column-index",
+        "variant": "two-column-index",
+        "layout": "split-index",
+        "density": "comfortable",
+        "sectionKinds": [
+          "faq",
+          "qna"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-faq-two-column-index#v0.1.0 -y -o"
+      }
+    ],
+    "features": [
+      {
+        "item": "block-features-compare-table",
+        "variant": "compare-table",
+        "layout": "compare-table",
+        "density": "compact",
+        "sectionKinds": [
+          "key-points",
+          "enterprise",
+          "business-scope"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-features-compare-table#v0.1.0 -y -o"
+      }
+    ],
+    "final-cta": [
+      {
+        "item": "block-final-cta-split-form-hint",
+        "variant": "split-form-hint",
+        "layout": "split-form-hint",
+        "density": "comfortable",
+        "sectionKinds": [
+          "contact-cta",
+          "final-cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-final-cta-split-form-hint#v0.1.0 -y -o"
+      }
+    ],
+    "floating-action": [
+      {
+        "item": "block-floating-action-chat-launcher",
+        "variant": "chat-launcher",
+        "layout": "corner-pill",
+        "density": "comfortable",
+        "sectionKinds": [
+          "chat-widget",
+          "contact-launcher"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.1.0 -y -o"
+      }
+    ],
+    "footer": [
+      {
+        "item": "block-footer-columns-business",
+        "variant": "columns-business",
+        "layout": "columns-business",
+        "density": "comfortable",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-columns-business#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-footer-stacked-legal",
+        "variant": "stacked-legal",
+        "layout": "stacked-legal",
+        "density": "spacious",
+        "sectionKinds": [
+          "footer",
+          "korean-business-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-footer-stacked-legal#v0.1.0 -y -o"
+      }
+    ],
+    "hero": [
+      {
+        "item": "block-hero-baseline-split",
+        "variant": "baseline-split",
+        "layout": "baseline-split",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "field"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-baseline-split#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-centered-proof-panel",
+        "variant": "centered-proof-panel",
+        "layout": "centered-proof-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-centered-proof-panel#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-ken-burns-stills",
+        "variant": "ken-burns-stills",
+        "layout": "ken-burns-stills",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "stills"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-ken-burns-stills#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-leaking-app-panel",
+        "variant": "leaking-app-panel",
+        "layout": "leaking-app-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-leaking-app-panel#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-object-3d-orbit",
+        "variant": "object-3d-orbit",
+        "layout": "object-3d-orbit",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "scene3d",
+          "image"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-object-3d-orbit#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-punch-in-statement",
+        "variant": "punch-in-statement",
+        "layout": "punch-in-statement",
+        "density": "spacious",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [
+          "punch"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-punch-in-statement#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-step-band-orbit",
+        "variant": "step-band-orbit",
+        "layout": "step-band-orbit",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-step-band-orbit#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-hero-stepped-crop-figure",
+        "variant": "stepped-crop-figure",
+        "layout": "stepped-crop-figure",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hero",
+          "statement"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hero-stepped-crop-figure#v0.1.0 -y -o"
+      }
+    ],
+    "hours-location": [
+      {
+        "item": "block-hours-location-hours-table-map-link",
+        "variant": "hours-table-map-link",
+        "layout": "hours-table-map",
+        "density": "comfortable",
+        "sectionKinds": [
+          "hours-table",
+          "directions",
+          "agency-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-hours-location-hours-table-map-link#v0.1.0 -y -o"
+      }
+    ],
+    "lead-capture": [
+      {
+        "item": "block-lead-capture-cart-exit-offer",
+        "variant": "cart-exit-offer",
+        "layout": "exit-intent-dialog",
+        "density": "comfortable",
+        "sectionKinds": [
+          "exit-intent",
+          "cart-offer"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-lead-capture-cart-exit-offer#v0.1.0 -y -o"
+      }
+    ],
+    "nav": [
+      {
+        "item": "block-nav-inline-links",
+        "variant": "inline-links",
+        "layout": "inline-links",
+        "density": "comfortable",
+        "sectionKinds": [
+          "header",
+          "top-bar"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-nav-inline-links#v0.1.0 -y -o"
+      }
+    ],
+    "product-info": [
+      {
+        "item": "block-product-info-key-facts-first",
+        "variant": "key-facts-first",
+        "layout": "key-facts-then-table",
+        "density": "spacious",
+        "sectionKinds": [
+          "notice-table"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-product-info-key-facts-first#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-product-info-notice-table",
+        "variant": "notice-table",
+        "layout": "full-width-notice-table",
+        "density": "comfortable",
+        "sectionKinds": [
+          "notice-table"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-product-info-notice-table#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-product-info-spec-and-notice",
+        "variant": "spec-and-notice",
+        "layout": "spec-dl-beside-notice-table",
+        "density": "comfortable",
+        "sectionKinds": [
+          "notice-table",
+          "spec-table"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-product-info-spec-and-notice#v0.1.0 -y -o"
+      }
+    ],
+    "product-list": [
+      {
+        "item": "block-product-list-spec-summary",
+        "variant": "spec-summary",
+        "layout": "spec-purchase",
+        "density": "spacious",
+        "sectionKinds": [
+          "spec-table",
+          "product-lineup"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [
+          "thumb",
+          "second-shot"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-product-list-spec-summary#v0.1.0 -y -o"
+      }
+    ],
+    "qna": [
+      {
+        "item": "block-qna-answered-list",
+        "variant": "answered-list",
+        "layout": "category-chips-answer-list",
+        "density": "comfortable",
+        "sectionKinds": [
+          "qna"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-qna-answered-list#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-qna-ask-form",
+        "variant": "ask-form",
+        "layout": "list-beside-ask-form",
+        "density": "comfortable",
+        "sectionKinds": [
+          "qna"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-qna-ask-form#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-qna-search-first",
+        "variant": "search-first",
+        "layout": "search-then-fallback-channels",
+        "density": "compact",
+        "sectionKinds": [
+          "qna"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-qna-search-first#v0.1.0 -y -o"
+      }
+    ],
+    "review-list": [
+      {
+        "item": "block-review-list-distribution-filter",
+        "variant": "distribution-filter",
+        "layout": "bars-filter-list",
+        "density": "comfortable",
+        "sectionKinds": [
+          "reviews",
+          "rating-distribution"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-review-list-distribution-filter#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-review-list-photo-gallery",
+        "variant": "photo-gallery",
+        "layout": "photo-grid-over-text",
+        "density": "comfortable",
+        "sectionKinds": [
+          "reviews",
+          "photo-reviews"
+        ],
+        "states": [],
+        "media": [
+          "review-photo"
+        ],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-review-list-photo-gallery#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-review-list-summary-near-price",
+        "variant": "summary-near-price",
+        "layout": "price-adjacent-summary",
+        "density": "compact",
+        "sectionKinds": [
+          "product-summary",
+          "reviews"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-review-list-summary-near-price#v0.1.0 -y -o"
+      }
+    ],
+    "shipping-returns": [
+      {
+        "item": "block-shipping-returns-at-a-glance-cards",
+        "variant": "at-a-glance-cards",
+        "layout": "three-facts-then-detail-list",
+        "density": "comfortable",
+        "sectionKinds": [
+          "shipping-returns"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-shipping-returns-at-a-glance-cards#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-shipping-returns-policy-tables",
+        "variant": "policy-tables",
+        "layout": "shipping-and-returns-tables",
+        "density": "comfortable",
+        "sectionKinds": [
+          "shipping-returns"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-shipping-returns-policy-tables#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-shipping-returns-return-steps",
+        "variant": "return-steps",
+        "layout": "steps-timeline-with-conditions-table",
+        "density": "spacious",
+        "sectionKinds": [
+          "shipping-returns"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-shipping-returns-return-steps#v0.1.0 -y -o"
+      }
+    ],
+    "social-proof": [
+      {
+        "item": "block-social-proof-rating-summary",
+        "variant": "rating-summary",
+        "layout": "rating-histogram",
+        "density": "comfortable",
+        "sectionKinds": [
+          "reviews",
+          "external-reviews",
+          "social-proof"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-social-proof-rating-summary#v0.1.0 -y -o"
+      }
+    ],
+    "trust": [
+      {
+        "item": "block-trust-author-byline",
+        "variant": "author-byline",
+        "layout": "byline-dl",
+        "density": "compact",
+        "sectionKinds": [
+          "byline",
+          "author-info"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-author-byline#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-trust-guarantee-strip",
+        "variant": "guarantee-strip",
+        "layout": "cta-underline-guarantee",
+        "density": "compact",
+        "sectionKinds": [
+          "guarantee",
+          "trust-strip",
+          "cta"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-guarantee-strip#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-trust-payment-trust-panel",
+        "variant": "payment-trust-panel",
+        "layout": "tinted-lock-panel",
+        "density": "comfortable",
+        "sectionKinds": [
+          "checkout-payment",
+          "payment-trust"
+        ],
+        "states": [
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-payment-trust-panel#v0.1.0 -y -o"
+      },
+      {
+        "item": "block-trust-verified-business-strip",
+        "variant": "verified-business-strip",
+        "layout": "business-facts-strip",
+        "density": "compact",
+        "sectionKinds": [
+          "business-info",
+          "trust-strip"
+        ],
+        "states": [],
+        "media": [],
+        "install": "npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-trust-verified-business-strip#v0.1.0 -y -o"
+      }
+    ]
+  },
+  "blocksNote": "블록 메타 archetypes 에 이 원형을 적은 블록만 종류(kind)별로 모았다. 블록은 레시피 base 하나를 먼저 설치한 뒤(recipes.candidates 의 install) 블록 install 을 받는다 — B안 색·서체는 그 다음에 `<레시피>-alt` 를 -o 로 덮는다. 부품이 레시피 모양으로 깔리므로 블록 항목에는 ui 의존이 없다."
+}

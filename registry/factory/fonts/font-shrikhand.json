@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-shrikhand",
+  "type": "registry:font",
+  "title": "Shrikhand",
+  "description": "web-factory 폰트 키트: Shrikhand (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Shrikhand', sans-serif",
+    "provider": "google",
+    "import": "Shrikhand",
+    "variable": "--font-shrikhand-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/shrikhand"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/shrikhand/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Shrikhand",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

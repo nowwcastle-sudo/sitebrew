@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-do-hyeon",
+  "type": "registry:font",
+  "title": "Do Hyeon",
+  "description": "web-factory 폰트 키트: Do Hyeon (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Do Hyeon', sans-serif",
+    "provider": "google",
+    "import": "Do_Hyeon",
+    "variable": "--font-do-hyeon-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/do-hyeon"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/dohyeon/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Do+Hyeon",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

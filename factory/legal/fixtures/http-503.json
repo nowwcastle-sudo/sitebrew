@@ -1,0 +1,6 @@
+{
+  "synthetic": "HTTP 5xx — 재시도 검사용(실측 아님)",
+  "url": "https://www.law.go.kr/DRF/lawSearch.do?OC=***&target=law&type=JSON&query=%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4%20%EB%B3%B4%ED%98%B8%EB%B2%95",
+  "status": 503,
+  "body": "Service Unavailable"
+}

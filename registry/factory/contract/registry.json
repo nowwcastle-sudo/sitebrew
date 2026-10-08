@@ -1,0 +1,164 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "items": [
+    {
+      "name": "adapter-mock",
+      "type": "registry:lib",
+      "title": "adapter-mock",
+      "description": "web-factory contract: adapter-mock",
+      "files": [
+        {
+          "path": "adapter-mock.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/adapter-mock.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.0",
+        "nowwcastle-sudo/sitebrew/events#v0.1.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.1.0",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.0"
+      ]
+    },
+    {
+      "name": "adapter-static",
+      "type": "registry:lib",
+      "title": "adapter-static",
+      "description": "web-factory contract: adapter-static",
+      "files": [
+        {
+          "path": "adapter-static.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/adapter-static.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.1.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.1.0"
+      ]
+    },
+    {
+      "name": "attribution",
+      "type": "registry:lib",
+      "title": "attribution",
+      "description": "web-factory contract: attribution",
+      "files": [
+        {
+          "path": "attribution.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/attribution.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/ports#v0.1.0"
+      ]
+    },
+    {
+      "name": "block-contract",
+      "type": "registry:lib",
+      "title": "block-contract",
+      "description": "web-factory contract: block-contract",
+      "files": [
+        {
+          "path": "block-contract.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/block-contract.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "contract-conformance",
+      "type": "registry:lib",
+      "title": "contract-conformance",
+      "description": "web-factory contract: contract-conformance",
+      "files": [
+        {
+          "path": "conformance/analytics.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/analytics.ts"
+        },
+        {
+          "path": "conformance/auth.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/auth.ts"
+        },
+        {
+          "path": "conformance/billing.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/billing.ts"
+        },
+        {
+          "path": "conformance/conformance-core.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/conformance-core.ts"
+        },
+        {
+          "path": "conformance/notify.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/notify.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.0",
+        "nowwcastle-sudo/sitebrew/events#v0.1.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.1.0",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.0"
+      ]
+    },
+    {
+      "name": "events",
+      "type": "registry:lib",
+      "title": "events",
+      "description": "web-factory contract: events",
+      "files": [
+        {
+          "path": "events.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/events.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "human-actions",
+      "type": "registry:lib",
+      "title": "human-actions",
+      "description": "web-factory contract: human-actions",
+      "files": [
+        {
+          "path": "human-actions.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/human-actions.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "ports",
+      "type": "registry:lib",
+      "title": "ports",
+      "description": "web-factory contract: ports",
+      "files": [
+        {
+          "path": "ports.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/ports.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.0",
+        "nowwcastle-sudo/sitebrew/events#v0.1.0"
+      ]
+    }
+  ]
+}

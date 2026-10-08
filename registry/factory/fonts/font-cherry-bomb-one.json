@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-cherry-bomb-one",
+  "type": "registry:font",
+  "title": "Cherry Bomb One",
+  "description": "web-factory 폰트 키트: Cherry Bomb One (Google Fonts, OFL-1.1) — P3-2 Task 15m 재료 확장(인기·개성 컨트롤러 선정)",
+  "font": {
+    "family": "'Cherry Bomb One', sans-serif",
+    "provider": "google",
+    "import": "Cherry_Bomb_One",
+    "variable": "--font-cherry-bomb-one-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/cherry-bomb-one"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/cherrybombone/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Cherry+Bomb+One",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

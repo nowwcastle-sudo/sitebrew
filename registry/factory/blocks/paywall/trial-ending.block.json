@@ -1,0 +1,14 @@
+{
+  "kind": "paywall",
+  "archetypeKinds": [ "trial-ending", "upgrade-prompt" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "variant": "trial-ending",
+  "title": "체험 종료 예고 — 남은 날 띠 + 무엇이 일어나나·한 일 | 계속 쓰기 제안",
+  "layout": "countdown-band-split",
+  "density": "comfortable",
+  "archetypes": [ "saas", "pwa", "dashboard" ],
+  "rules": [ "P1", "P2", "P8", "L1", "L3", "L6", "L7", "L8", "M1" ],
+  "notes": "맨 위 띠: 남은 날(DaysLeft — data-countdown·data-ends-at = subscription.trialEnd, endsAt 필수) · 끝나는 날. 아래 두 단: 동의하지 않으면 결제되지 않고 무료로 바뀐다는 안내 + 체험 동안 한 일 | plan-offer(첫 결제일 = 체험 끝, [체험만 쓰고 끝내기][금액으로 계속 쓰기] 대등). 7·3·1일 전 구간에만 보이고, 거절하면 다음 구간까지 쉰다. 체험 중이 아니면 비어 있다. 포트: subscription·plans·checkout·track? Task 10d: 청약철회 제한 고지 + 필수 체크(PlanOffer — 체크해야 checkout 에 withdrawalConsent: true). 폼 제출 보호(copy.notices)."
+}

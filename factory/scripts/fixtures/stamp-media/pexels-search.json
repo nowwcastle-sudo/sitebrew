@@ -1,0 +1,92 @@
+{
+  "$comment": "Pexels /v1/search 녹화 응답(2026-09-30, P3-3 Task 8) — https://api.pexels.com/v1/search?query=ceramic+studio+shelves&per_page=6&page=1&orientation=landscape. 필드는 쓰는 것만 남겼다.",
+  "page": 1,
+  "per_page": 6,
+  "total_results": 8000,
+  "photos": [
+    {
+      "id": 15122649,
+      "width": 6240,
+      "height": 4160,
+      "url": "https://www.pexels.com/photo/artisan-standing-near-shelves-with-bags-15122649/",
+      "photographer": "Pew Nguyen",
+      "photographer_url": "https://www.pexels.com/@nguyendesigner",
+      "avg_color": "#5A5245",
+      "alt": "A focused artisan arranges handcrafted pottery on studio shelves.",
+      "src": {
+        "original": "https://images.pexels.com/photos/15122649/pexels-photo-15122649.jpeg",
+        "large2x": "https://images.pexels.com/photos/15122649/pexels-photo-15122649.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    },
+    {
+      "id": 3094041,
+      "width": 4208,
+      "height": 2366,
+      "url": "https://www.pexels.com/photo/photo-of-ceramic-kitchenware-on-shelves-3094041/",
+      "photographer": "cottonbro studio",
+      "photographer_url": "https://www.pexels.com/@cottonbro",
+      "avg_color": "#655443",
+      "alt": "Explore a rustic pottery workshop with handmade ceramics, showcasing bowls, mugs, and teapots on wooden shelves.",
+      "src": {
+        "original": "https://images.pexels.com/photos/3094041/pexels-photo-3094041.jpeg",
+        "large2x": "https://images.pexels.com/photos/3094041/pexels-photo-3094041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    },
+    {
+      "id": 6611108,
+      "width": 5000,
+      "height": 3338,
+      "url": "https://www.pexels.com/photo/a-bearded-man-stacking-bowls-on-shelves-6611108/",
+      "photographer": "Yan Krukau",
+      "photographer_url": "https://www.pexels.com/@yankrukov",
+      "avg_color": "#998C82",
+      "alt": "Adult man organizing ceramic bowls in pottery workshop, enhancing storage display.",
+      "src": {
+        "original": "https://images.pexels.com/photos/6611108/pexels-photo-6611108.jpeg",
+        "large2x": "https://images.pexels.com/photos/6611108/pexels-photo-6611108.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    },
+    {
+      "id": 37078917,
+      "width": 4000,
+      "height": 3000,
+      "url": "https://www.pexels.com/photo/pottery-workshop-filled-with-artistic-creations-37078917/",
+      "photographer": "Emadul Islam Akash",
+      "photographer_url": "https://www.pexels.com/@eiakash",
+      "avg_color": "#7A6045",
+      "alt": "A diverse collection of pottery and tools in a bustling workshop. Perfect for art enthusiasts.",
+      "src": {
+        "original": "https://images.pexels.com/photos/37078917/pexels-photo-37078917.jpeg",
+        "large2x": "https://images.pexels.com/photos/37078917/pexels-photo-37078917.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    },
+    {
+      "id": 37827277,
+      "width": 6088,
+      "height": 4059,
+      "url": "https://www.pexels.com/photo/young-potter-organizing-ceramic-workshop-shelves-37827277/",
+      "photographer": "Onur Burak Akın",
+      "photographer_url": "https://www.pexels.com/@onurburakakin",
+      "avg_color": "#8B7B6C",
+      "alt": "A potter arranges shelves with ceramic goods in a well-lit workshop, showing creativity and craftsmanship.",
+      "src": {
+        "original": "https://images.pexels.com/photos/37827277/pexels-photo-37827277.jpeg",
+        "large2x": "https://images.pexels.com/photos/37827277/pexels-photo-37827277.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    },
+    {
+      "id": 37827282,
+      "width": 6018,
+      "height": 4012,
+      "url": "https://www.pexels.com/photo/potter-organizing-ceramics-in-studio-workshop-37827282/",
+      "photographer": "Onur Burak Akın",
+      "photographer_url": "https://www.pexels.com/@onurburakakin",
+      "avg_color": "#9F8E7E",
+      "alt": "Young potter arranging ceramics on shelves in a cozy studio setting. Creative workspace with tools.",
+      "src": {
+        "original": "https://images.pexels.com/photos/37827282/pexels-photo-37827282.jpeg",
+        "large2x": "https://images.pexels.com/photos/37827282/pexels-photo-37827282.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    }
+  ]
+}

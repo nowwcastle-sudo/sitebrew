@@ -1,0 +1,44 @@
+{
+  "name": "sitebrew",
+  "version": "0.1.0",
+  "description": "Make a website from a short conversation: Sitebrew turns a few answers into three site candidates to compare, then revises and delivers the one you pick. It includes web-factory (a shadcn registry and site-stamping pipeline) and launch-factory (auth, billing, email and analytics back end) at one pinned release tag. Works without any API key in preview mode.",
+  "author": {
+    "name": "Sitebrew maintainers"
+  },
+  "license": "MIT",
+  "keywords": [
+    "sitebrew",
+    "website",
+    "shadcn",
+    "registry",
+    "nextjs",
+    "web-factory",
+    "launch-factory"
+  ],
+  "hooks": "./hooks/claude-hooks.json",
+  "userConfig": {
+    "PEXELS_API_KEY": {
+      "type": "string",
+      "title": "Pexels API key (optional)",
+      "description": "Free key from pexels.com/api. Leave empty to build sites in preview mode: stock photo slots stay as image-in-progress placeholders.",
+      "sensitive": true
+    },
+    "LAW_API_OC": {
+      "type": "string",
+      "title": "Korean law API ID, LAW_API_OC (optional)",
+      "description": "OC id from an Open API request at open.law.go.kr. Leave empty to build sites in preview mode: legal pages stay unverified and cannot be published.",
+      "sensitive": true
+    },
+    "VERCEL_TOKEN": {
+      "type": "string",
+      "title": "Vercel token (optional)",
+      "description": "Only for online preview links (--deploy-preview). Leave empty if you use vercel login or do not need a preview link.",
+      "sensitive": true
+    },
+    "HIGGSFIELD_DIR": {
+      "type": "directory",
+      "title": "Generated-image folder (optional)",
+      "description": "A folder of images you generated yourself. Leave empty and generated-image slots are written to higgsfield.request.json as requests."
+    }
+  }
+}

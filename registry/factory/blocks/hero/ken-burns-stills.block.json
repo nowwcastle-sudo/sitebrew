@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "ken-burns-stills",
+  "title": "히어로 — 실사 사진 3~5장 켄 번스 몽타주 + 이름표 띠",
+  "layout": "ken-burns-stills",
+  "density": "spacious",
+  "archetypes": ["brand", "commerce", "local", "public", "portfolio", "detail"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["stills"],
+  "motion": ["clip-reveal", "kinetic-type", "lower-third", "ken-burns", "rise", "scrub-timeline"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "motion",
+  "notes": "첫 화면 전체가 사진 무대(stills 3~5장 — 첫 장만 서버 HTML·LCP, 나머지는 첫 칠 뒤): 켄 번스(장 7s·교차 1.2s·확대 1.12·팬 3%, 장마다 방향을 번갈아) + 교차 때 이름표 띠(captions)도 바뀐다. 왼쪽 아래 큰 제목(짙은 막), 오른쪽 아래 바탕색 판에 한 문단 + 버튼 둘. 정지 단추. M1 은 첫 장 정지. MOTKIT(P3-5)"
+}

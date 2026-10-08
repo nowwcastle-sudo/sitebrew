@@ -1,0 +1,24 @@
+{
+  "name": "@launch-factory/billing-gumroad",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Gumroad 대비 BillingPort 어댑터(Paddle 미승인 때) — 호스팅 상품 링크 결제, 판매·구독 알림(공유 비밀 + API 재조회, 중복 제거, 순서 보호, 한 트랜잭션), 같은 구독 표, 요금제 권한 서버 검사 재사용. API 가 없는 관리 동작은 provider_unsupported 로 끝난다.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "fixtures"
+  ],
+  "dependencies": {
+    "@launch-factory/billing-paddle": "0.0.0",
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/email": "0.0.0",
+    "drizzle-orm": "0.45.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0"
+  }
+}

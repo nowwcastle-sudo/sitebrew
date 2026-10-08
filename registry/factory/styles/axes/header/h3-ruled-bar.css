@@ -1,0 +1,33 @@
+/* H3 괘선 도면 바 ★운영자 판정(2026-09-26) — 0 계열. 전폭 56px, 아래 2px 잉크 선(border-foreground, 불투명 — 3:1 이상),
+ * 모서리 0, 링크는 본문 서체 14px 굵게(메뉴 이름은 한글이라 고정폭을 쓰지 않는다, T7-I1), 현재 위치는 2px 밑줄. 반투명 없음. DESIGN §6 「선 구획」 예외 값. 원천 style_axes.md 축 5. */
+.cn-navigation-menu {
+  @apply h-14 max-w-none gap-6 rounded-none border-b-2 border-foreground px-4;
+}
+.cn-navigation-menu-list {
+  @apply gap-0;
+}
+.cn-navigation-menu-trigger-style {
+  @apply h-14 rounded-none px-4 text-sm font-semibold;
+}
+.cn-navigation-menu-link {
+  @apply gap-2 rounded-none px-4 py-2 text-sm font-semibold decoration-2 underline-offset-[6px] data-active:underline in-data-[slot=navigation-menu-content]:rounded-none [&_svg:not([class*='size-'])]:size-4;
+}
+.cn-navigation-menu-popup {
+  @apply rounded-none border-2 border-foreground ring-0;
+}
+.cn-navigation-menu-content {
+  @apply p-1 group-data-[viewport=false]/navigation-menu:rounded-none group-data-[viewport=false]/navigation-menu:border-2 group-data-[viewport=false]/navigation-menu:border-foreground;
+}
+/* 셸(SiteShell): 768px 이상 스티키 56px 괘선 바(아래 2px 잉크 선), 현재 위치는 2px 밑줄. */
+.cn-site-shell-header {
+  @apply border-b-2 border-foreground md:[--site-shell-position:sticky];
+}
+.cn-site-shell-header-inner {
+  @apply min-h-14 gap-x-2 px-4 py-2 md:h-14 md:gap-x-6 md:py-0;
+}
+.cn-site-shell-nav-list {
+  @apply gap-0 md:py-1;
+}
+.cn-site-shell-nav-link {
+  @apply min-h-10 rounded-none px-4 text-sm font-semibold decoration-2 underline-offset-[6px] [--site-shell-current-line:underline];
+}

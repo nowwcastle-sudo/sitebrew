@@ -1,0 +1,13 @@
+{
+  "kind": "nav",
+  "variant": "app-bar-tabs",
+  "title": "앱 바 — 뒤로·화면 제목·행동 아이콘 + 아래 탭 줄",
+  "layout": "app-bar-tabs",
+  "density": "compact",
+  "archetypes": ["pwa", "dashboard"],
+  "archetypeKinds": ["app-bar", "top-bar"],
+  "states": [],
+  "media": [],
+  "motion": [],
+  "notes": "첫 줄: 뒤로 링크(아이콘, 선택) · 화면 제목 · 오른쪽 행동 아이콘 링크 1~3개(이름은 aria-label). 둘째 줄: 탭 모양 링크(현재 탭 굵은 밑줄 aria-current), 넘치면 가로 스크롤. 모든 폭에서 위에 붙는다"
+}

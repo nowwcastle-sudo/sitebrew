@@ -1,0 +1,14 @@
+{
+  "kind": "referral",
+  "variant": "share-sheet",
+  "title": "공유 시트 — 채운 글 미리 보기 + 채널 목록(카카오톡 규격·문자·메일·기기 공유) + 링크 복사",
+  "layout": "channel-sheet",
+  "density": "compact",
+  "archetypes": [ "commerce", "local", "saas", "pwa", "brand" ],
+  "archetypeKinds": [ "share", "referral" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "V2", "X1", "M1" ],
+  "notes": "가운데 좁은 시트: h2 · 보낼 글 미리 보기(data-share-preview — 템플릿 제목 + 채운 글) · 채널 줄 목록(data-share: kakao — §17 템플릿 규격(https 이미지·폭 800 이상·2:1~1.91:1)을 통과할 때만, sms — 채운 글, email — 제목·본문, native — navigator.share 가 있을 때만 하이드레이션 뒤) · 결과 알림(role=status) · 링크 칸 + 복사(막히면 골라 두기). 플랫폼 색·반경 없음. 계측(선택): referral_share(channel)"
+}

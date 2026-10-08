@@ -1,0 +1,12 @@
+{
+  "name": "sitebrew",
+  "interface": { "displayName": "Sitebrew" },
+  "plugins": [
+    {
+      "name": "sitebrew",
+      "source": { "source": "local", "path": "./plugins/sitebrew" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

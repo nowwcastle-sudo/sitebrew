@@ -1,0 +1,14 @@
+{
+  "kind": "hero",
+  "variant": "crosshair-quadrants",
+  "title": "히어로 — 십자 기준선 4분면 + 자주 찾는 서비스",
+  "layout": "crosshair-quadrants",
+  "density": "comfortable",
+  "archetypes": ["public", "local"],
+  "archetypeKinds": ["hero"],
+  "states": [],
+  "media": [],
+  "motion": ["split-text", "rise", "svg-draw", "parallax", "pointer-depth", "view-transition"],
+  "titleWidth": "column",
+  "notes": "1px 기준선 두 개(세로 50% · 가로 44%)와 교차점 「+」가 첫 화면을 넷으로 나눈다(1024 이상). 좌상 처리 현황 면(faces[0]) · 우상 점 격자 원 위 신청 단계 판(접수번호 · 단계 점 · 연결선 · 인장선) · 좌하 두 줄 제목 h1 · 설명 · 버튼 둘 · 우하 「자주 찾는 서비스」 바로가기 칸(면, 누르는 칸은 첫 프레임부터 보인다). 기본 기법 view-transition·svg-draw. P3-1 r6-civic 구성"
+}

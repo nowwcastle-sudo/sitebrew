@@ -1,0 +1,14 @@
+{
+  "kind": "account",
+  "variant": "security",
+  "title": "보안 — 로그인된 기기 목록·끊기와 2단계 인증 켜기·끄기",
+  "layout": "devices-and-two-factor",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard", "pwa", "commerce"],
+  "archetypeKinds": ["security-settings", "session-management", "two-factor-setup"],
+  "states": ["loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["L3", "O2", "X1"],
+  "notes": "위: 로그인된 기기 목록(이 기기는 「이 기기」 표시만 — 끊는 버튼 없음, 다른 기기마다 [로그아웃]·아래 [다른 기기 모두 로그아웃], 결과 role=status). 아래: 2단계 인증 — 켜기는 비밀번호 확인 → 설정 키(QR 없음, otpauth 링크)·백업 코드(한 번만)·첫 코드 확인 뒤에 켜지고, 끄기는 비밀번호 확인 뒤 끈다([취소]·[다음] 대등). 없는 포트 메서드는 props 를 주지 않으면 그 구역이 없다. 포트: session·listSessions?·revokeSession?·revokeOtherSessions?·enableTwoFactor?·disableTwoFactor?·verifyTwoFactor?"
+}

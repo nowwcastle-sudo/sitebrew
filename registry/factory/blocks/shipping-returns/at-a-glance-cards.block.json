@@ -1,0 +1,14 @@
+{
+  "kind": "shipping-returns",
+  "variant": "at-a-glance-cards",
+  "title": "한눈에 + 자세히 — 큰 칸 셋(배송비·출고·청약철회 기간) 아래 나머지 조건 dl",
+  "layout": "three-facts-then-detail-list",
+  "density": "comfortable",
+  "archetypes": [ "detail", "commerce" ],
+  "archetypeKinds": [ "shipping-returns" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "L1", "T3", "X1", "X2" ],
+  "notes": "위: 큰 칸 셋 <dl data-glance>(배송비 · 출고 · 단순 변심 반품 기한 — 아래 조건과 같은 계산에서 나온 같은 글자). 아래: 나머지 항목(배송 방법·도서산간·반품 배송비·불가 사유·하자·환불) <dl data-policy-list>. 값이 없으면 큰 칸에도 「확인 필요」. VAT 포함 안내(data-vat). 대장 A62."
+}

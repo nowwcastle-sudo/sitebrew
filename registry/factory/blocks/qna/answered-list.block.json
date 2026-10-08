@@ -1,0 +1,14 @@
+{
+  "kind": "qna",
+  "variant": "answered-list",
+  "title": "상품 문의 — 종류 칩으로 거르는 판매자 답변 목록 + 문의 채널 링크(서버 없이)",
+  "layout": "category-chips-answer-list",
+  "density": "comfortable",
+  "archetypes": [ "detail", "commerce" ],
+  "archetypeKinds": [ "qna" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "rules": [ "T5", "X1", "X2", "M1" ],
+  "notes": "위: 종류 라디오 칩(「전체」 + 목록에서 나온 종류, fieldset·legend, 선택 하나). 결과 개수(role=status) 아래 문의 목록 <ol>(첫 5건, 「{count}개 더 보기」로 5건씩) — 문의마다 질문 h3 + 판매자 답변(data-seller-reply: 굵은 왼쪽 선·바탕색, 「판매자 답변 · 날짜」 time). 답변은 접히지 않는다(X2). 마지막에 문의 채널 줄(카카오톡 채널 https·전화 tel:·메일 mailto:, 값 있는 것만 — cta_click 계측 선택). 구매자 비밀글 게시판은 v0.2(대장 A62)."
+}

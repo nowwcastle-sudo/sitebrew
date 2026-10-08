@@ -1,0 +1,63 @@
+{
+  "id": "nasa-gov",
+  "archetype": "public",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://www.nasa.gov/",
+  "structure": {
+    "hero": "착수 영상 전체 폭 위에 큰 흰 제목과 빨간 버튼을 놓고, 아래에 임무 링크 셋을 가는 선으로 구분해 나열한 우주국 홈",
+    "sections": [
+      "검은 상단 바(Explore·검색·로고·뉴스·멀티미디어·NASA+)",
+      "영상 히어로(제목·요약·Learn More)",
+      "임무 링크 3개(진행 중·예정 라벨)",
+      "재생·정지·썸네일 원",
+      "주요 뉴스 제목"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 제목",
+    "body": "같은 산세리프와 모노스페이스 대문자 라벨",
+    "scale": "제목 약 72px, 본문 약 16px"
+  },
+  "colorLogic": "K4",
+  "motion": {
+    "entrance": "약 0.5초 동안 검은 화면에 글자만 있다가 영상이 페이드인됨",
+    "scroll": null,
+    "hover": null,
+    "transition": "배경 영상이 낙하산이 바다로 내려오는 장면으로 계속 재생됨",
+    "durationsMs": [
+      500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "8초 영상에서 읽은 값. 요소별 등장 순서 구분 없음."
+  },
+  "interaction": [
+    "영상 재생·정지 버튼",
+    "Learn More 빨간 버튼",
+    "임무 링크 3개(화살표 원)",
+    "내비 드롭다운",
+    "검색 상자"
+  ],
+  "cta": {
+    "pattern": "빨간 Learn More 버튼 하나",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "public"
+    ],
+    "score": 0.9
+  },
+  "boldness": "balanced",
+  "takeaways": [
+    "영상 배경 위 흰 제목과 빨간 버튼 하나만 있어 행동이 단순하다.",
+    "진행 중·예정 임무 세 건을 라벨과 함께 아래에 나란히 둔다.",
+    "영상에 정지 버튼을 달아 움직임을 멈출 수 있게 한다.",
+    "검은 헤더와 흰 본문 두 모드로 영역을 나눈다.",
+    "모바일은 정지 버튼이 제목 위에 있고 임무 링크가 세로로 쌓인다."
+  ]
+}

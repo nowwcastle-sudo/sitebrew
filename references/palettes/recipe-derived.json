@@ -1,0 +1,4157 @@
+{
+ "$comment": "레시피 분해 팔레트(P3-2 Task 16a, J5) — 생성물: factory/scripts/build-presets.mjs. build-palettes.mjs 가 입력(--recipes)으로 읽어 palettes.json 에 싣는다. theme = 레시피 color.light·dark 그대로(왕복 테스트).",
+ "generator": "factory/scripts/build-presets.mjs",
+ "palettes": [
+  {
+   "id": "pal-recipe-r1-measure",
+   "source": "recipe:r1-measure",
+   "weight": 1,
+   "mood": [
+    "계측",
+    "차분",
+    "정확"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F1F2EF",
+    "foreground": "#071629",
+    "primary": "#17345C",
+    "primary-foreground": "#F1F2EF",
+    "accent": "#DDE6F1",
+    "muted": "#E4E7E2",
+    "border": "#7A848D"
+   },
+   "colors": [
+    {
+     "hex": "#F1F2EF",
+     "oklch": [
+      0.9596,
+      0.0041,
+      121.6
+     ]
+    },
+    {
+     "hex": "#071629",
+     "oklch": [
+      0.1985,
+      0.0438,
+      255
+     ]
+    },
+    {
+     "hex": "#17345C",
+     "oklch": [
+      0.3254,
+      0.0794,
+      257
+     ]
+    },
+    {
+     "hex": "#DDE6F1",
+     "oklch": [
+      0.9214,
+      0.0178,
+      253.3
+     ]
+    },
+    {
+     "hex": "#E4E7E2",
+     "oklch": [
+      0.9243,
+      0.0074,
+      132.4
+     ]
+    },
+    {
+     "hex": "#7A848D",
+     "oklch": [
+      0.6081,
+      0.0181,
+      245.2
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.17,
+    "primaryFg_primary": 11.11
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K1",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9596 0.0041 121.56)",
+     "foreground": "oklch(0.1985 0.0438 254.97)",
+     "card": "oklch(0.9865 0.0041 121.56)",
+     "card-foreground": "oklch(0.1985 0.0438 254.97)",
+     "popover": "oklch(0.9865 0.0041 121.56)",
+     "popover-foreground": "oklch(0.1985 0.0438 254.97)",
+     "primary": "oklch(0.3254 0.0794 257.02)",
+     "primary-foreground": "oklch(0.9596 0.0041 121.56)",
+     "secondary": "oklch(0.9243 0.0074 132.42)",
+     "secondary-foreground": "oklch(0.1985 0.0438 254.97)",
+     "muted": "oklch(0.9243 0.0074 132.42)",
+     "muted-foreground": "oklch(0.3937 0.0371 256.14)",
+     "accent": "oklch(0.9214 0.0178 253.34)",
+     "accent-foreground": "oklch(0.3254 0.0794 257.02)",
+     "destructive": "oklch(0.5 0.19 27)",
+     "border": "oklch(0.6081 0.0181 245.24)",
+     "input": "oklch(0.5600 0.0235 248.25)",
+     "ring": "oklch(0.4914 0.1858 263.30)",
+     "success": "oklch(0.5 0.1 155)",
+     "success-foreground": "oklch(0.985 0.005 155)",
+     "warning": "oklch(0.55 0.12 60)",
+     "warning-foreground": "oklch(0.985 0.005 60)",
+     "info": "oklch(0.47 0.15 255)",
+     "info-foreground": "oklch(0.985 0.004 255)"
+    },
+    "dark": {
+     "background": "oklch(0.1873 0.0099 234.39)",
+     "foreground": "oklch(0.9490 0.0051 145.54)",
+     "card": "oklch(0.2260 0.0142 239.34)",
+     "card-foreground": "oklch(0.9490 0.0051 145.54)",
+     "popover": "oklch(0.2260 0.0142 239.34)",
+     "popover-foreground": "oklch(0.9490 0.0051 145.54)",
+     "primary": "oklch(0.7700 0.0517 252.17)",
+     "primary-foreground": "oklch(0.1985 0.0438 254.97)",
+     "secondary": "oklch(0.2510 0.0162 240.71)",
+     "secondary-foreground": "oklch(0.9490 0.0051 145.54)",
+     "muted": "oklch(0.2510 0.0162 240.71)",
+     "muted-foreground": "oklch(0.7933 0.0169 245.14)",
+     "accent": "oklch(0.2847 0.0368 253.76)",
+     "accent-foreground": "oklch(0.9005 0.0342 253.72)",
+     "destructive": "oklch(0.7 0.16 25)",
+     "border": "oklch(0.5072 0.0249 246.16)",
+     "input": "oklch(0.5967 0.0239 246.06)",
+     "ring": "oklch(0.7267 0.1165 262.57)",
+     "success": "oklch(0.74 0.11 155)",
+     "success-foreground": "oklch(0.19 0.02 155)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.12 255)",
+     "info-foreground": "oklch(0.19 0.014 255)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r1-measure-b",
+   "source": "recipe:r1-measure",
+   "weight": 1,
+   "mood": [
+    "계측",
+    "차분",
+    "정확"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#E0E1DC",
+    "foreground": "#0F1B2B",
+    "primary": "#1B2731",
+    "primary-foreground": "#E0E1DC",
+    "accent": "#CDD3D6",
+    "muted": "#D4D6D0",
+    "border": "#66707B"
+   },
+   "colors": [
+    {
+     "hex": "#E0E1DC",
+     "oklch": [
+      0.9076,
+      0.0068,
+      115.7
+     ]
+    },
+    {
+     "hex": "#0F1B2B",
+     "oklch": [
+      0.2197,
+      0.036,
+      255.9
+     ]
+    },
+    {
+     "hex": "#1B2731",
+     "oklch": [
+      0.2662,
+      0.0251,
+      244.1
+     ]
+    },
+    {
+     "hex": "#CDD3D6",
+     "oklch": [
+      0.8631,
+      0.0078,
+      228.9
+     ]
+    },
+    {
+     "hex": "#D4D6D0",
+     "oklch": [
+      0.8728,
+      0.0084,
+      121.7
+     ]
+    },
+    {
+     "hex": "#66707B",
+     "oklch": [
+      0.5406,
+      0.0211,
+      250.8
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 13.18,
+    "primaryFg_primary": 11.57
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K1",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 2(바닥선을 공유하는 두 칸 · 짙은 강철 면 위 치수선) — 강철·구리 새 팔레트(pal-sns-threads-duymesgic-0-5 + 측정 사이트의 짙은 강철·흙갈색), 제목 Tektur·펴진고딕. 색 논리 K1·모션 M1·기법 svg-draw 는 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9076 0.0068 115.72)",
+     "foreground": "oklch(0.2197 0.0360 255.94)",
+     "card": "oklch(0.9379 0.0067 115.71)",
+     "card-foreground": "oklch(0.2197 0.0360 255.94)",
+     "popover": "oklch(0.9379 0.0067 115.71)",
+     "popover-foreground": "oklch(0.2197 0.0360 255.94)",
+     "primary": "oklch(0.2662 0.0251 244.06)",
+     "primary-foreground": "oklch(0.9076 0.0068 115.72)",
+     "secondary": "oklch(0.8728 0.0084 121.65)",
+     "secondary-foreground": "oklch(0.2197 0.0360 255.94)",
+     "muted": "oklch(0.8728 0.0084 121.65)",
+     "muted-foreground": "oklch(0.3619 0.0262 248.55)",
+     "accent": "oklch(0.8631 0.0078 228.87)",
+     "accent-foreground": "oklch(0.2662 0.0251 244.06)",
+     "destructive": "oklch(0.5 0.19 27)",
+     "border": "oklch(0.5406 0.0211 250.75)",
+     "input": "oklch(0.4844 0.0216 250.79)",
+     "ring": "oklch(0.5102 0.1145 46.26)",
+     "success": "oklch(0.5 0.1 155)",
+     "success-foreground": "oklch(0.985 0.005 155)",
+     "warning": "oklch(0.55 0.12 60)",
+     "warning-foreground": "oklch(0.985 0.005 60)",
+     "info": "oklch(0.47 0.15 255)",
+     "info-foreground": "oklch(0.985 0.004 255)"
+    },
+    "dark": {
+     "background": "oklch(0.1845 0.0032 196.88)",
+     "foreground": "oklch(0.9076 0.0068 115.72)",
+     "card": "oklch(0.2192 0.0084 240.29)",
+     "card-foreground": "oklch(0.9076 0.0068 115.72)",
+     "popover": "oklch(0.2192 0.0084 240.29)",
+     "popover-foreground": "oklch(0.9076 0.0068 115.72)",
+     "primary": "oklch(0.8073 0.0240 246.10)",
+     "primary-foreground": "oklch(0.1845 0.0032 196.88)",
+     "secondary": "oklch(0.2477 0.0116 237.16)",
+     "secondary-foreground": "oklch(0.9076 0.0068 115.72)",
+     "muted": "oklch(0.2477 0.0116 237.16)",
+     "muted-foreground": "oklch(0.7589 0.0153 244.78)",
+     "accent": "oklch(0.3471 0.0372 244.57)",
+     "accent-foreground": "oklch(0.9177 0.0156 248.00)",
+     "destructive": "oklch(0.7 0.16 25)",
+     "border": "oklch(0.5041 0.0229 245.93)",
+     "input": "oklch(0.6181 0.0211 248.17)",
+     "ring": "oklch(0.7309 0.1170 49.47)",
+     "success": "oklch(0.74 0.11 155)",
+     "success-foreground": "oklch(0.19 0.02 155)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.12 255)",
+     "info-foreground": "oklch(0.19 0.014 255)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r10-console",
+   "source": "recipe:r10-console",
+   "weight": 1,
+   "mood": [
+    "조밀",
+    "즉답",
+    "절제"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#171216",
+    "foreground": "#E6E5DE",
+    "primary": "#F2C0DD",
+    "primary-foreground": "#25092E",
+    "accent": "#2F212D",
+    "muted": "#1D171C",
+    "border": "#3A3339"
+   },
+   "colors": [
+    {
+     "hex": "#171216",
+     "oklch": [
+      0.19,
+      0.012,
+      330
+     ]
+    },
+    {
+     "hex": "#E6E5DE",
+     "oklch": [
+      0.9207,
+      0.0094,
+      100
+     ]
+    },
+    {
+     "hex": "#F2C0DD",
+     "oklch": [
+      0.8604,
+      0.0681,
+      342.9
+     ]
+    },
+    {
+     "hex": "#25092E",
+     "oklch": [
+      0.2083,
+      0.0751,
+      316.9
+     ]
+    },
+    {
+     "hex": "#2F212D",
+     "oklch": [
+      0.27,
+      0.03,
+      330
+     ]
+    },
+    {
+     "hex": "#1D171C",
+     "oklch": [
+      0.215,
+      0.012,
+      330
+     ]
+    },
+    {
+     "hex": "#3A3339",
+     "oklch": [
+      0.33,
+      0.015,
+      330
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 14.66,
+    "primaryFg_primary": 11.54
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "dark",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9455 0.0067 97.35)",
+     "foreground": "oklch(0.2034 0.0050 325.76)",
+     "card": "oklch(0.9753 0.0040 106.47)",
+     "card-foreground": "oklch(0.2034 0.0050 325.76)",
+     "popover": "oklch(0.9753 0.0040 106.47)",
+     "popover-foreground": "oklch(0.2034 0.0050 325.76)",
+     "primary": "oklch(0.2083 0.0751 316.90)",
+     "primary-foreground": "oklch(0.8604 0.0681 342.94)",
+     "secondary": "oklch(0.9119 0.0081 98.89)",
+     "secondary-foreground": "oklch(0.2034 0.0050 325.76)",
+     "muted": "oklch(0.9119 0.0081 98.89)",
+     "muted-foreground": "oklch(0.3826 0.0159 305.66)",
+     "accent": "oklch(0.8604 0.0681 342.94)",
+     "accent-foreground": "oklch(0.2083 0.0751 316.90)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8479 0.0098 93.59)",
+     "input": "oklch(0.5583 0.0131 308.20)",
+     "ring": "oklch(0.2083 0.0751 316.90)",
+     "success": "oklch(0.5 0.1 160)",
+     "success-foreground": "oklch(0.985 0.005 160)",
+     "warning": "oklch(0.55 0.13 65)",
+     "warning-foreground": "oklch(0.985 0.005 65)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.8600 0.0700 343.00)",
+     "field-1-foreground": "oklch(0.2083 0.0751 316.90)"
+    },
+    "dark": {
+     "background": "oklch(0.1900 0.0120 330.00)",
+     "foreground": "oklch(0.9207 0.0094 99.99)",
+     "card": "oklch(0.2250 0.0130 330.00)",
+     "card-foreground": "oklch(0.9207 0.0094 99.99)",
+     "popover": "oklch(0.2250 0.0130 330.00)",
+     "popover-foreground": "oklch(0.9207 0.0094 99.99)",
+     "primary": "oklch(0.8604 0.0681 342.94)",
+     "primary-foreground": "oklch(0.2083 0.0751 316.90)",
+     "secondary": "oklch(0.2150 0.0120 330.00)",
+     "secondary-foreground": "oklch(0.9207 0.0094 99.99)",
+     "muted": "oklch(0.2150 0.0120 330.00)",
+     "muted-foreground": "oklch(0.7852 0.0090 67.69)",
+     "accent": "oklch(0.2700 0.0300 330.00)",
+     "accent-foreground": "oklch(0.8604 0.0681 342.94)",
+     "destructive": "oklch(0.7 0.16 25)",
+     "border": "oklch(0.3300 0.0150 330.00)",
+     "input": "oklch(0.5859 0.0108 320.56)",
+     "ring": "oklch(0.8604 0.0681 342.94)",
+     "success": "oklch(0.74 0.11 160)",
+     "success-foreground": "oklch(0.19 0.02 160)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.3300 0.1000 330.00)",
+     "field-1-foreground": "oklch(0.9661 0.0246 317.72)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r10-console-b",
+   "source": "recipe:r10-console",
+   "weight": 1,
+   "mood": [
+    "조밀",
+    "즉답",
+    "절제"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#17121C",
+    "foreground": "#EEEAF2",
+    "primary": "#E07BF5",
+    "primary-foreground": "#17121C",
+    "accent": "#2A2033",
+    "muted": "#1E1926",
+    "border": "#342B3F"
+   },
+   "colors": [
+    {
+     "hex": "#17121C",
+     "oklch": [
+      0.1932,
+      0.0212,
+      307.2
+     ]
+    },
+    {
+     "hex": "#EEEAF2",
+     "oklch": [
+      0.9424,
+      0.0115,
+      308.3
+     ]
+    },
+    {
+     "hex": "#E07BF5",
+     "oklch": [
+      0.7392,
+      0.196,
+      320.5
+     ]
+    },
+    {
+     "hex": "#2A2033",
+     "oklch": [
+      0.264,
+      0.0373,
+      308.1
+     ]
+    },
+    {
+     "hex": "#1E1926",
+     "oklch": [
+      0.2254,
+      0.0258,
+      302
+     ]
+    },
+    {
+     "hex": "#342B3F",
+     "oklch": [
+      0.3077,
+      0.0372,
+      304.9
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 15.52,
+    "primaryFg_primary": 7.3
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "dark",
+   "note": "보드 B안(alternates) — DNA 수 1(두 줄 제목 + 같은 기준선 새 소식 + 접힘선 아래 앱 창) — 카드 팔레트 그대로(pal-sns-instagram-dpbpoicj3j4-4 + 측정값) · Antonio + 오르빗. 색 논리 K6·다크 기본·모션 M1·기법 view-transition·svg-draw 는 새 기본과 같다. 선택 보드 3판(2026-09-28)에서 운영자가 B(재단 표시 + 타자 제목)를 pick 하며 「모션 움직임이 좀 단순해. 뭔가 아쉽달까. 좋은데 뭔가 하나 빠진 느낌이야.」라 적어, B가 머리로 올라가고 이 안은 대안으로 남는다. 대안의 모션은 아래 「쓰는 법」의 커서를 따르는 행 강조로 보완했다",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9718 0.0041 301.43)",
+     "foreground": "oklch(0.1193 0.0319 311.41)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.1193 0.0319 311.41)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.1193 0.0319 311.41)",
+     "primary": "oklch(0.4757 0.2048 318.89)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9491 0.0070 304.24)",
+     "secondary-foreground": "oklch(0.1193 0.0319 311.41)",
+     "muted": "oklch(0.9491 0.0070 304.24)",
+     "muted-foreground": "oklch(0.3979 0.0244 304.72)",
+     "accent": "oklch(0.9413 0.0282 318.69)",
+     "accent-foreground": "oklch(0.2634 0.1089 319.24)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8679 0.0159 306.38)",
+     "input": "oklch(0.5508 0.0287 303.11)",
+     "ring": "oklch(0.5276 0.2352 318.43)",
+     "success": "oklch(0.5 0.1 160)",
+     "success-foreground": "oklch(0.985 0.005 160)",
+     "warning": "oklch(0.55 0.13 65)",
+     "warning-foreground": "oklch(0.985 0.005 65)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.4029 0.1661 321.00)",
+     "field-1-foreground": "oklch(0.9661 0.0246 317.72)"
+    },
+    "dark": {
+     "background": "oklch(0.1932 0.0212 307.24)",
+     "foreground": "oklch(0.9424 0.0115 308.33)",
+     "card": "oklch(0.2223 0.0263 305.42)",
+     "card-foreground": "oklch(0.9424 0.0115 308.33)",
+     "popover": "oklch(0.2223 0.0263 305.42)",
+     "popover-foreground": "oklch(0.9424 0.0115 308.33)",
+     "primary": "oklch(0.7392 0.1960 320.52)",
+     "primary-foreground": "oklch(0.1932 0.0212 307.24)",
+     "secondary": "oklch(0.2254 0.0258 301.98)",
+     "secondary-foreground": "oklch(0.9424 0.0115 308.33)",
+     "muted": "oklch(0.2254 0.0258 301.98)",
+     "muted-foreground": "oklch(0.7709 0.0298 305.94)",
+     "accent": "oklch(0.2640 0.0373 308.05)",
+     "accent-foreground": "oklch(0.9165 0.0521 319.03)",
+     "destructive": "oklch(0.7 0.16 25)",
+     "border": "oklch(0.3077 0.0372 304.87)",
+     "input": "oklch(0.5722 0.0353 305.84)",
+     "ring": "oklch(0.7392 0.1960 320.52)",
+     "success": "oklch(0.74 0.11 160)",
+     "success-foreground": "oklch(0.19 0.02 160)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.4029 0.1661 321.00)",
+     "field-1-foreground": "oklch(0.9661 0.0246 317.72)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r12-spectrum",
+   "source": "recipe:r12-spectrum",
+   "weight": 1,
+   "mood": [
+    "분석",
+    "명료",
+    "다색"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F9FAFC",
+    "foreground": "#171B20",
+    "primary": "#005B88",
+    "primary-foreground": "#F9FCFF",
+    "accent": "#EEE2FE",
+    "muted": "#EFF2F5",
+    "border": "#DBDEE2"
+   },
+   "colors": [
+    {
+     "hex": "#F9FAFC",
+     "oklch": [
+      0.985,
+      0.003,
+      250
+     ]
+    },
+    {
+     "hex": "#171B20",
+     "oklch": [
+      0.22,
+      0.012,
+      255
+     ]
+    },
+    {
+     "hex": "#005B88",
+     "oklch": [
+      0.44,
+      0.12,
+      232
+     ]
+    },
+    {
+     "hex": "#F9FCFF",
+     "oklch": [
+      0.99,
+      0.005,
+      232
+     ]
+    },
+    {
+     "hex": "#EEE2FE",
+     "oklch": [
+      0.93,
+      0.04,
+      305
+     ]
+    },
+    {
+     "hex": "#EFF2F5",
+     "oklch": [
+      0.96,
+      0.005,
+      250
+     ]
+    },
+    {
+     "hex": "#DBDEE2",
+     "oklch": [
+      0.9,
+      0.006,
+      250
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.58,
+    "primaryFg_primary": 7.12
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K2",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9850 0.0030 250.00)",
+     "foreground": "oklch(0.2200 0.0120 255.00)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2200 0.0120 255.00)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2200 0.0120 255.00)",
+     "primary": "oklch(0.4400 0.1200 232.00)",
+     "primary-foreground": "oklch(0.9900 0.0050 232.00)",
+     "secondary": "oklch(0.9550 0.0060 250.00)",
+     "secondary-foreground": "oklch(0.2200 0.0120 255.00)",
+     "muted": "oklch(0.9600 0.0050 250.00)",
+     "muted-foreground": "oklch(0.4400 0.0200 250.00)",
+     "accent": "oklch(0.9300 0.0400 305.00)",
+     "accent-foreground": "oklch(0.3000 0.1000 305.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.9000 0.0060 250.00)",
+     "input": "oklch(0.5000 0.0200 250.00)",
+     "ring": "oklch(0.4400 0.1200 232.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)",
+     "chart-1": "oklch(0.5000 0.1300 232.00)",
+     "chart-2": "oklch(0.5600 0.1700 30.00)",
+     "chart-3": "oklch(0.5500 0.1300 150.00)",
+     "chart-4": "oklch(0.6200 0.1400 85.00)",
+     "chart-5": "oklch(0.5200 0.1500 305.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1900 0.0120 255.00)",
+     "foreground": "oklch(0.9500 0.0060 250.00)",
+     "card": "oklch(0.2350 0.0140 255.00)",
+     "card-foreground": "oklch(0.9500 0.0060 250.00)",
+     "popover": "oklch(0.2350 0.0140 255.00)",
+     "popover-foreground": "oklch(0.9500 0.0060 250.00)",
+     "primary": "oklch(0.7600 0.1000 232.00)",
+     "primary-foreground": "oklch(0.1800 0.0300 255.00)",
+     "secondary": "oklch(0.2500 0.0140 255.00)",
+     "secondary-foreground": "oklch(0.9500 0.0060 250.00)",
+     "muted": "oklch(0.2500 0.0140 255.00)",
+     "muted-foreground": "oklch(0.7200 0.0200 255.00)",
+     "accent": "oklch(0.3000 0.0600 305.00)",
+     "accent-foreground": "oklch(0.9300 0.0300 305.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.3300 0.0160 255.00)",
+     "input": "oklch(0.5100 0.0250 255.00)",
+     "ring": "oklch(0.7600 0.1000 232.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)",
+     "chart-1": "oklch(0.7200 0.1200 232.00)",
+     "chart-2": "oklch(0.7200 0.1500 30.00)",
+     "chart-3": "oklch(0.7400 0.1300 150.00)",
+     "chart-4": "oklch(0.8000 0.1300 85.00)",
+     "chart-5": "oklch(0.7200 0.1300 305.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r12-spectrum-b",
+   "source": "recipe:r12-spectrum",
+   "weight": 1,
+   "mood": [
+    "분석",
+    "명료",
+    "다색"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F5F9F7",
+    "foreground": "#0E1817",
+    "primary": "#005E47",
+    "primary-foreground": "#F9FDFB",
+    "accent": "#FFDDD9",
+    "muted": "#EDF1F0",
+    "border": "#D7DCDA"
+   },
+   "colors": [
+    {
+     "hex": "#F5F9F7",
+     "oklch": [
+      0.978,
+      0.004,
+      175
+     ]
+    },
+    {
+     "hex": "#0E1817",
+     "oklch": [
+      0.2,
+      0.015,
+      190
+     ]
+    },
+    {
+     "hex": "#005E47",
+     "oklch": [
+      0.42,
+      0.1,
+      172
+     ]
+    },
+    {
+     "hex": "#F9FDFB",
+     "oklch": [
+      0.99,
+      0.005,
+      172
+     ]
+    },
+    {
+     "hex": "#FFDDD9",
+     "oklch": [
+      0.93,
+      0.045,
+      25
+     ]
+    },
+    {
+     "hex": "#EDF1F0",
+     "oklch": [
+      0.955,
+      0.005,
+      175
+     ]
+    },
+    {
+     "hex": "#D7DCDA",
+     "oklch": [
+      0.89,
+      0.006,
+      175
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.95,
+    "primaryFg_primary": 7.61
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K2",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — 색 논리 K2 는 그대로, 주색을 청록 172°로 옮기고 강조 면을 산호 25°로 바꾼 두 번째 다차원 팔레트(차트 다섯 색상각은 A 그대로). 서체·모션·기법도 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9780 0.0040 175.00)",
+     "foreground": "oklch(0.2000 0.0150 190.00)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2000 0.0150 190.00)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2000 0.0150 190.00)",
+     "primary": "oklch(0.4200 0.1000 172.00)",
+     "primary-foreground": "oklch(0.9900 0.0050 172.00)",
+     "secondary": "oklch(0.9500 0.0060 175.00)",
+     "secondary-foreground": "oklch(0.2000 0.0150 190.00)",
+     "muted": "oklch(0.9550 0.0050 175.00)",
+     "muted-foreground": "oklch(0.4300 0.0250 190.00)",
+     "accent": "oklch(0.9300 0.0450 25.00)",
+     "accent-foreground": "oklch(0.3200 0.1000 25.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.8900 0.0060 175.00)",
+     "input": "oklch(0.5000 0.0250 175.00)",
+     "ring": "oklch(0.4200 0.1000 172.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)",
+     "chart-1": "oklch(0.5000 0.1300 232.00)",
+     "chart-2": "oklch(0.5600 0.1700 30.00)",
+     "chart-3": "oklch(0.5500 0.1300 150.00)",
+     "chart-4": "oklch(0.6200 0.1400 85.00)",
+     "chart-5": "oklch(0.5200 0.1500 305.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1850 0.0120 195.00)",
+     "foreground": "oklch(0.9500 0.0060 175.00)",
+     "card": "oklch(0.2300 0.0140 195.00)",
+     "card-foreground": "oklch(0.9500 0.0060 175.00)",
+     "popover": "oklch(0.2300 0.0140 195.00)",
+     "popover-foreground": "oklch(0.9500 0.0060 175.00)",
+     "primary": "oklch(0.7800 0.1000 172.00)",
+     "primary-foreground": "oklch(0.1700 0.0300 195.00)",
+     "secondary": "oklch(0.2500 0.0150 195.00)",
+     "secondary-foreground": "oklch(0.9500 0.0060 175.00)",
+     "muted": "oklch(0.2500 0.0150 195.00)",
+     "muted-foreground": "oklch(0.7150 0.0250 175.00)",
+     "accent": "oklch(0.3100 0.0600 25.00)",
+     "accent-foreground": "oklch(0.9400 0.0300 25.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.3400 0.0180 195.00)",
+     "input": "oklch(0.5050 0.0300 195.00)",
+     "ring": "oklch(0.7800 0.1000 172.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)",
+     "chart-1": "oklch(0.7200 0.1200 232.00)",
+     "chart-2": "oklch(0.7200 0.1500 30.00)",
+     "chart-3": "oklch(0.7400 0.1300 150.00)",
+     "chart-4": "oklch(0.8000 0.1300 85.00)",
+     "chart-5": "oklch(0.7200 0.1300 305.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r13-folio",
+   "source": "recipe:r13-folio",
+   "weight": 1,
+   "mood": [
+    "문서",
+    "절제",
+    "정돈"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FCFCFC",
+    "foreground": "#161616",
+    "primary": "#2E2E2E",
+    "primary-foreground": "#FCFCFC",
+    "accent": "#EBEBEB",
+    "muted": "#F2F2F2",
+    "border": "#636363"
+   },
+   "colors": [
+    {
+     "hex": "#FCFCFC",
+     "oklch": [
+      0.99,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#161616",
+     "oklch": [
+      0.2,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#2E2E2E",
+     "oklch": [
+      0.3,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#EBEBEB",
+     "oklch": [
+      0.94,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#F2F2F2",
+     "oklch": [
+      0.96,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#636363",
+     "oklch": [
+      0.5,
+      0,
+      0
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 17.59,
+    "primaryFg_primary": 13.25
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K3",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9900 0.0000 0.00)",
+     "foreground": "oklch(0.2000 0.0000 0.00)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2000 0.0000 0.00)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2000 0.0000 0.00)",
+     "primary": "oklch(0.3000 0.0000 0.00)",
+     "primary-foreground": "oklch(0.9900 0.0000 0.00)",
+     "secondary": "oklch(0.9600 0.0000 0.00)",
+     "secondary-foreground": "oklch(0.2000 0.0000 0.00)",
+     "muted": "oklch(0.9600 0.0000 0.00)",
+     "muted-foreground": "oklch(0.4400 0.0000 0.00)",
+     "accent": "oklch(0.9400 0.0000 0.00)",
+     "accent-foreground": "oklch(0.2000 0.0000 0.00)",
+     "destructive": "oklch(0.5000 0.1600 27.00)",
+     "border": "oklch(0.5000 0.0000 0.00)",
+     "input": "oklch(0.5000 0.0000 0.00)",
+     "ring": "oklch(0.3000 0.0000 0.00)",
+     "success": "oklch(0.5000 0.0800 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5200 0.0900 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.4800 0.0700 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0000 0.00)",
+     "foreground": "oklch(0.9400 0.0000 0.00)",
+     "card": "oklch(0.2100 0.0000 0.00)",
+     "card-foreground": "oklch(0.9400 0.0000 0.00)",
+     "popover": "oklch(0.2100 0.0000 0.00)",
+     "popover-foreground": "oklch(0.9400 0.0000 0.00)",
+     "primary": "oklch(0.9200 0.0000 0.00)",
+     "primary-foreground": "oklch(0.1700 0.0000 0.00)",
+     "secondary": "oklch(0.2400 0.0000 0.00)",
+     "secondary-foreground": "oklch(0.9400 0.0000 0.00)",
+     "muted": "oklch(0.2400 0.0000 0.00)",
+     "muted-foreground": "oklch(0.7100 0.0000 0.00)",
+     "accent": "oklch(0.2800 0.0000 0.00)",
+     "accent-foreground": "oklch(0.9400 0.0000 0.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.5100 0.0000 0.00)",
+     "input": "oklch(0.5050 0.0000 0.00)",
+     "ring": "oklch(0.8200 0.0000 0.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r13-folio-b",
+   "source": "recipe:r13-folio",
+   "weight": 1,
+   "mood": [
+    "문서",
+    "절제",
+    "정돈"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FBFAF5",
+    "foreground": "#181512",
+    "primary": "#322C28",
+    "primary-foreground": "#FCFCF9",
+    "accent": "#E9E8E2",
+    "muted": "#F1F0EC",
+    "border": "#65635D"
+   },
+   "colors": [
+    {
+     "hex": "#FBFAF5",
+     "oklch": [
+      0.984,
+      0.006,
+      95
+     ]
+    },
+    {
+     "hex": "#181512",
+     "oklch": [
+      0.2,
+      0.008,
+      70
+     ]
+    },
+    {
+     "hex": "#322C28",
+     "oklch": [
+      0.3,
+      0.012,
+      60
+     ]
+    },
+    {
+     "hex": "#FCFCF9",
+     "oklch": [
+      0.99,
+      0.004,
+      95
+     ]
+    },
+    {
+     "hex": "#E9E8E2",
+     "oklch": [
+      0.93,
+      0.008,
+      95
+     ]
+    },
+    {
+     "hex": "#F1F0EC",
+     "oklch": [
+      0.955,
+      0.006,
+      95
+     ]
+    },
+    {
+     "hex": "#65635D",
+     "oklch": [
+      0.5,
+      0.01,
+      90
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 17.31,
+    "primaryFg_primary": 13.29
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K3",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — 색 논리 K3 는 그대로, 순수 회색을 종이 한 톤(색상각 95°·채도 0.006 이하)과 따뜻한 먹으로 옮긴 변형. 서체·모션 M0·기법은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9840 0.0060 95.00)",
+     "foreground": "oklch(0.2000 0.0080 70.00)",
+     "card": "oklch(0.9980 0.0030 95.00)",
+     "card-foreground": "oklch(0.2000 0.0080 70.00)",
+     "popover": "oklch(0.9980 0.0030 95.00)",
+     "popover-foreground": "oklch(0.2000 0.0080 70.00)",
+     "primary": "oklch(0.3000 0.0120 60.00)",
+     "primary-foreground": "oklch(0.9900 0.0040 95.00)",
+     "secondary": "oklch(0.9500 0.0060 95.00)",
+     "secondary-foreground": "oklch(0.2000 0.0080 70.00)",
+     "muted": "oklch(0.9550 0.0060 95.00)",
+     "muted-foreground": "oklch(0.4400 0.0120 70.00)",
+     "accent": "oklch(0.9300 0.0080 95.00)",
+     "accent-foreground": "oklch(0.2000 0.0080 70.00)",
+     "destructive": "oklch(0.5000 0.1600 27.00)",
+     "border": "oklch(0.5000 0.0100 90.00)",
+     "input": "oklch(0.5000 0.0120 80.00)",
+     "ring": "oklch(0.3000 0.0120 60.00)",
+     "success": "oklch(0.5000 0.0800 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5200 0.0900 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.4800 0.0700 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1750 0.0060 80.00)",
+     "foreground": "oklch(0.9400 0.0060 90.00)",
+     "card": "oklch(0.2150 0.0070 80.00)",
+     "card-foreground": "oklch(0.9400 0.0060 90.00)",
+     "popover": "oklch(0.2150 0.0070 80.00)",
+     "popover-foreground": "oklch(0.9400 0.0060 90.00)",
+     "primary": "oklch(0.9000 0.0080 90.00)",
+     "primary-foreground": "oklch(0.1750 0.0060 80.00)",
+     "secondary": "oklch(0.2450 0.0070 80.00)",
+     "secondary-foreground": "oklch(0.9400 0.0060 90.00)",
+     "muted": "oklch(0.2450 0.0070 80.00)",
+     "muted-foreground": "oklch(0.7150 0.0100 90.00)",
+     "accent": "oklch(0.2850 0.0080 80.00)",
+     "accent-foreground": "oklch(0.9400 0.0060 90.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.5150 0.0080 80.00)",
+     "input": "oklch(0.5050 0.0100 80.00)",
+     "ring": "oklch(0.8200 0.0080 90.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r14-concrete",
+   "source": "recipe:r14-concrete",
+   "weight": 1,
+   "mood": [
+    "거침",
+    "직설",
+    "대비"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F3F2EF",
+    "foreground": "#090909",
+    "primary": "#B20000",
+    "primary-foreground": "#FEFBFB",
+    "accent": "#DEDEDE",
+    "muted": "#E8E8E6",
+    "border": "#090909"
+   },
+   "colors": [
+    {
+     "hex": "#F3F2EF",
+     "oklch": [
+      0.962,
+      0.004,
+      95
+     ]
+    },
+    {
+     "hex": "#090909",
+     "oklch": [
+      0.14,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#B20000",
+     "oklch": [
+      0.465,
+      0.21,
+      28
+     ]
+    },
+    {
+     "hex": "#FEFBFB",
+     "oklch": [
+      0.99,
+      0.003,
+      28
+     ]
+    },
+    {
+     "hex": "#DEDEDE",
+     "oklch": [
+      0.9,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#E8E8E6",
+     "oklch": [
+      0.93,
+      0.003,
+      95
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 17.83,
+    "primaryFg_primary": 7.07
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K4",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9620 0.0040 95.00)",
+     "foreground": "oklch(0.1400 0.0000 0.00)",
+     "card": "oklch(0.9880 0.0020 95.00)",
+     "card-foreground": "oklch(0.1400 0.0000 0.00)",
+     "popover": "oklch(0.9880 0.0020 95.00)",
+     "popover-foreground": "oklch(0.1400 0.0000 0.00)",
+     "primary": "oklch(0.4650 0.2100 28.00)",
+     "primary-foreground": "oklch(0.9900 0.0030 28.00)",
+     "secondary": "oklch(0.9200 0.0030 95.00)",
+     "secondary-foreground": "oklch(0.1400 0.0000 0.00)",
+     "muted": "oklch(0.9300 0.0030 95.00)",
+     "muted-foreground": "oklch(0.3600 0.0000 95.00)",
+     "accent": "oklch(0.9000 0.0000 0.00)",
+     "accent-foreground": "oklch(0.1400 0.0000 0.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.1400 0.0000 0.00)",
+     "input": "oklch(0.1400 0.0000 0.00)",
+     "ring": "oklch(0.4650 0.2100 28.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0000 0.00)",
+     "foreground": "oklch(0.9300 0.0000 0.00)",
+     "card": "oklch(0.2100 0.0000 0.00)",
+     "card-foreground": "oklch(0.9300 0.0000 0.00)",
+     "popover": "oklch(0.2100 0.0000 0.00)",
+     "popover-foreground": "oklch(0.9300 0.0000 0.00)",
+     "primary": "oklch(0.6600 0.2000 28.00)",
+     "primary-foreground": "oklch(0.1400 0.0200 28.00)",
+     "secondary": "oklch(0.2500 0.0000 0.00)",
+     "secondary-foreground": "oklch(0.9300 0.0000 0.00)",
+     "muted": "oklch(0.2500 0.0000 0.00)",
+     "muted-foreground": "oklch(0.7850 0.0000 0.00)",
+     "accent": "oklch(0.3000 0.0000 0.00)",
+     "accent-foreground": "oklch(0.9300 0.0000 0.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.5100 0.0000 0.00)",
+     "input": "oklch(0.5100 0.0000 0.00)",
+     "ring": "oklch(0.6600 0.2000 28.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r14-concrete-b",
+   "source": "recipe:r14-concrete",
+   "weight": 1,
+   "mood": [
+    "거침",
+    "직설",
+    "대비"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F3F2EF",
+    "foreground": "#090909",
+    "primary": "#2C47C7",
+    "primary-foreground": "#FBFCFE",
+    "accent": "#DEDEDE",
+    "muted": "#E8E8E6",
+    "border": "#090909"
+   },
+   "colors": [
+    {
+     "hex": "#F3F2EF",
+     "oklch": [
+      0.962,
+      0.004,
+      95
+     ]
+    },
+    {
+     "hex": "#090909",
+     "oklch": [
+      0.14,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#2C47C7",
+     "oklch": [
+      0.465,
+      0.2,
+      268
+     ]
+    },
+    {
+     "hex": "#FBFCFE",
+     "oklch": [
+      0.99,
+      0.003,
+      268
+     ]
+    },
+    {
+     "hex": "#DEDEDE",
+     "oklch": [
+      0.9,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#E8E8E6",
+     "oklch": [
+      0.93,
+      0.003,
+      95
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 17.83,
+    "primaryFg_primary": 7.2
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K4",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — 색 논리 K4 는 그대로, 강조 빨강 하나를 파랑 268°로 바꾼 변형(여전히 강조 하나). 제목체는 스텐실 라틴(Sirin Stencil)과 굵은 한글(Gasoek One)로 바꾼다. 모션·기법은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9620 0.0040 95.00)",
+     "foreground": "oklch(0.1400 0.0000 0.00)",
+     "card": "oklch(0.9880 0.0020 95.00)",
+     "card-foreground": "oklch(0.1400 0.0000 0.00)",
+     "popover": "oklch(0.9880 0.0020 95.00)",
+     "popover-foreground": "oklch(0.1400 0.0000 0.00)",
+     "primary": "oklch(0.4650 0.2000 268.00)",
+     "primary-foreground": "oklch(0.9900 0.0030 268.00)",
+     "secondary": "oklch(0.9200 0.0030 95.00)",
+     "secondary-foreground": "oklch(0.1400 0.0000 0.00)",
+     "muted": "oklch(0.9300 0.0030 95.00)",
+     "muted-foreground": "oklch(0.3600 0.0000 95.00)",
+     "accent": "oklch(0.9000 0.0000 0.00)",
+     "accent-foreground": "oklch(0.1400 0.0000 0.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.1400 0.0000 0.00)",
+     "input": "oklch(0.1400 0.0000 0.00)",
+     "ring": "oklch(0.4650 0.2000 268.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0000 0.00)",
+     "foreground": "oklch(0.9300 0.0000 0.00)",
+     "card": "oklch(0.2100 0.0000 0.00)",
+     "card-foreground": "oklch(0.9300 0.0000 0.00)",
+     "popover": "oklch(0.2100 0.0000 0.00)",
+     "popover-foreground": "oklch(0.9300 0.0000 0.00)",
+     "primary": "oklch(0.7200 0.1500 268.00)",
+     "primary-foreground": "oklch(0.1400 0.0200 268.00)",
+     "secondary": "oklch(0.2500 0.0000 0.00)",
+     "secondary-foreground": "oklch(0.9300 0.0000 0.00)",
+     "muted": "oklch(0.2500 0.0000 0.00)",
+     "muted-foreground": "oklch(0.7850 0.0000 0.00)",
+     "accent": "oklch(0.3000 0.0000 0.00)",
+     "accent-foreground": "oklch(0.9300 0.0000 0.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.5100 0.0000 0.00)",
+     "input": "oklch(0.5100 0.0000 0.00)",
+     "ring": "oklch(0.7200 0.1500 268.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r15-atelier",
+   "source": "recipe:r15-atelier",
+   "weight": 1,
+   "mood": [
+    "절제된 고급",
+    "지면",
+    "여백"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F8F7F4",
+    "foreground": "#19120D",
+    "primary": "#482E20",
+    "primary-foreground": "#FAF8F4",
+    "accent": "#CBDFC1",
+    "muted": "#F0EEEA",
+    "border": "#D7D4CE"
+   },
+   "colors": [
+    {
+     "hex": "#F8F7F4",
+     "oklch": [
+      0.975,
+      0.004,
+      85
+     ]
+    },
+    {
+     "hex": "#19120D",
+     "oklch": [
+      0.19,
+      0.015,
+      55
+     ]
+    },
+    {
+     "hex": "#482E20",
+     "oklch": [
+      0.33,
+      0.045,
+      50
+     ]
+    },
+    {
+     "hex": "#FAF8F4",
+     "oklch": [
+      0.98,
+      0.006,
+      85
+     ]
+    },
+    {
+     "hex": "#CBDFC1",
+     "oklch": [
+      0.88,
+      0.045,
+      135
+     ]
+    },
+    {
+     "hex": "#F0EEEA",
+     "oklch": [
+      0.95,
+      0.006,
+      85
+     ]
+    },
+    {
+     "hex": "#D7D4CE",
+     "oklch": [
+      0.87,
+      0.008,
+      85
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 17.21,
+    "primaryFg_primary": 11.7
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K5",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9750 0.0040 85.00)",
+     "foreground": "oklch(0.1900 0.0150 55.00)",
+     "card": "oklch(0.9950 0.0030 85.00)",
+     "card-foreground": "oklch(0.1900 0.0150 55.00)",
+     "popover": "oklch(0.9950 0.0030 85.00)",
+     "popover-foreground": "oklch(0.1900 0.0150 55.00)",
+     "primary": "oklch(0.3300 0.0450 50.00)",
+     "primary-foreground": "oklch(0.9800 0.0060 85.00)",
+     "secondary": "oklch(0.9450 0.0060 85.00)",
+     "secondary-foreground": "oklch(0.1900 0.0150 55.00)",
+     "muted": "oklch(0.9500 0.0060 85.00)",
+     "muted-foreground": "oklch(0.3900 0.0150 60.00)",
+     "accent": "oklch(0.8800 0.0450 135.00)",
+     "accent-foreground": "oklch(0.2500 0.0400 140.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.8700 0.0080 85.00)",
+     "input": "oklch(0.5000 0.0200 70.00)",
+     "ring": "oklch(0.3300 0.0450 50.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0120 50.00)",
+     "foreground": "oklch(0.9500 0.0080 85.00)",
+     "card": "oklch(0.2100 0.0140 50.00)",
+     "card-foreground": "oklch(0.9500 0.0080 85.00)",
+     "popover": "oklch(0.2100 0.0140 50.00)",
+     "popover-foreground": "oklch(0.9500 0.0080 85.00)",
+     "primary": "oklch(0.8000 0.0700 135.00)",
+     "primary-foreground": "oklch(0.1700 0.0200 140.00)",
+     "secondary": "oklch(0.2500 0.0150 50.00)",
+     "secondary-foreground": "oklch(0.9500 0.0080 85.00)",
+     "muted": "oklch(0.2500 0.0150 50.00)",
+     "muted-foreground": "oklch(0.7600 0.0150 75.00)",
+     "accent": "oklch(0.3000 0.0300 50.00)",
+     "accent-foreground": "oklch(0.9500 0.0080 85.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.3300 0.0200 50.00)",
+     "input": "oklch(0.5050 0.0250 50.00)",
+     "ring": "oklch(0.8000 0.0700 135.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r15-atelier-b",
+   "source": "recipe:r15-atelier",
+   "weight": 1,
+   "mood": [
+    "절제된 고급",
+    "지면",
+    "여백"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F4F8F8",
+    "foreground": "#0A191A",
+    "primary": "#0B4234",
+    "primary-foreground": "#F5FAF8",
+    "accent": "#BFDEE6",
+    "muted": "#EAF0F0",
+    "border": "#CED6D6"
+   },
+   "colors": [
+    {
+     "hex": "#F4F8F8",
+     "oklch": [
+      0.976,
+      0.004,
+      200
+     ]
+    },
+    {
+     "hex": "#0A191A",
+     "oklch": [
+      0.2,
+      0.02,
+      200
+     ]
+    },
+    {
+     "hex": "#0B4234",
+     "oklch": [
+      0.34,
+      0.06,
+      172
+     ]
+    },
+    {
+     "hex": "#F5FAF8",
+     "oklch": [
+      0.98,
+      0.005,
+      172
+     ]
+    },
+    {
+     "hex": "#BFDEE6",
+     "oklch": [
+      0.88,
+      0.035,
+      215
+     ]
+    },
+    {
+     "hex": "#EAF0F0",
+     "oklch": [
+      0.95,
+      0.006,
+      200
+     ]
+    },
+    {
+     "hex": "#CED6D6",
+     "oklch": [
+      0.87,
+      0.008,
+      200
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.83,
+    "primaryFg_primary": 10.8
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K5",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — 색 논리 K5 는 그대로, 에스프레소 갈색·세이지를 청록 먹·은회색 쪽 팔레트로 옮긴 변형(어두운 면은 깊은 청록). 서체·모션·기법은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9760 0.0040 200.00)",
+     "foreground": "oklch(0.2000 0.0200 200.00)",
+     "card": "oklch(0.9960 0.0020 200.00)",
+     "card-foreground": "oklch(0.2000 0.0200 200.00)",
+     "popover": "oklch(0.9960 0.0020 200.00)",
+     "popover-foreground": "oklch(0.2000 0.0200 200.00)",
+     "primary": "oklch(0.3400 0.0600 172.00)",
+     "primary-foreground": "oklch(0.9800 0.0050 172.00)",
+     "secondary": "oklch(0.9450 0.0060 200.00)",
+     "secondary-foreground": "oklch(0.2000 0.0200 200.00)",
+     "muted": "oklch(0.9500 0.0060 200.00)",
+     "muted-foreground": "oklch(0.3900 0.0200 200.00)",
+     "accent": "oklch(0.8800 0.0350 215.00)",
+     "accent-foreground": "oklch(0.2200 0.0400 215.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.8700 0.0080 200.00)",
+     "input": "oklch(0.5000 0.0200 200.00)",
+     "ring": "oklch(0.3400 0.0600 172.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0140 200.00)",
+     "foreground": "oklch(0.9500 0.0060 200.00)",
+     "card": "oklch(0.2100 0.0160 200.00)",
+     "card-foreground": "oklch(0.9500 0.0060 200.00)",
+     "popover": "oklch(0.2100 0.0160 200.00)",
+     "popover-foreground": "oklch(0.9500 0.0060 200.00)",
+     "primary": "oklch(0.8200 0.0500 195.00)",
+     "primary-foreground": "oklch(0.1700 0.0200 200.00)",
+     "secondary": "oklch(0.2500 0.0160 200.00)",
+     "secondary-foreground": "oklch(0.9500 0.0060 200.00)",
+     "muted": "oklch(0.2500 0.0160 200.00)",
+     "muted-foreground": "oklch(0.7600 0.0150 200.00)",
+     "accent": "oklch(0.3000 0.0300 200.00)",
+     "accent-foreground": "oklch(0.9500 0.0060 200.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.3300 0.0200 200.00)",
+     "input": "oklch(0.5000 0.0250 200.00)",
+     "ring": "oklch(0.8200 0.0500 195.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r16-tonal",
+   "source": "recipe:r16-tonal",
+   "weight": 1,
+   "mood": [
+    "단색",
+    "음영",
+    "정제"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F2F7FF",
+    "foreground": "#09152C",
+    "primary": "#1E4798",
+    "primary-foreground": "#F5F9FF",
+    "accent": "#BFD8FF",
+    "muted": "#E7EFFC",
+    "border": "#C6D2E5"
+   },
+   "colors": [
+    {
+     "hex": "#F2F7FF",
+     "oklch": [
+      0.975,
+      0.012,
+      262
+     ]
+    },
+    {
+     "hex": "#09152C",
+     "oklch": [
+      0.2,
+      0.05,
+      262
+     ]
+    },
+    {
+     "hex": "#1E4798",
+     "oklch": [
+      0.42,
+      0.14,
+      262
+     ]
+    },
+    {
+     "hex": "#F5F9FF",
+     "oklch": [
+      0.98,
+      0.01,
+      262
+     ]
+    },
+    {
+     "hex": "#BFD8FF",
+     "oklch": [
+      0.88,
+      0.07,
+      262
+     ]
+    },
+    {
+     "hex": "#E7EFFC",
+     "oklch": [
+      0.95,
+      0.02,
+      262
+     ]
+    },
+    {
+     "hex": "#C6D2E5",
+     "oklch": [
+      0.86,
+      0.03,
+      262
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.89,
+    "primaryFg_primary": 8.18
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K9",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9750 0.0120 262.00)",
+     "foreground": "oklch(0.2000 0.0500 262.00)",
+     "card": "oklch(0.9950 0.0050 262.00)",
+     "card-foreground": "oklch(0.2000 0.0500 262.00)",
+     "popover": "oklch(0.9950 0.0050 262.00)",
+     "popover-foreground": "oklch(0.2000 0.0500 262.00)",
+     "primary": "oklch(0.4200 0.1400 262.00)",
+     "primary-foreground": "oklch(0.9800 0.0100 262.00)",
+     "secondary": "oklch(0.9300 0.0300 262.00)",
+     "secondary-foreground": "oklch(0.2000 0.0500 262.00)",
+     "muted": "oklch(0.9500 0.0200 262.00)",
+     "muted-foreground": "oklch(0.4300 0.0500 262.00)",
+     "accent": "oklch(0.8800 0.0700 262.00)",
+     "accent-foreground": "oklch(0.2200 0.0600 262.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.8600 0.0300 262.00)",
+     "input": "oklch(0.5000 0.0700 262.00)",
+     "ring": "oklch(0.4200 0.1400 262.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0350 262.00)",
+     "foreground": "oklch(0.9500 0.0150 262.00)",
+     "card": "oklch(0.2100 0.0400 262.00)",
+     "card-foreground": "oklch(0.9500 0.0150 262.00)",
+     "popover": "oklch(0.2100 0.0400 262.00)",
+     "popover-foreground": "oklch(0.9500 0.0150 262.00)",
+     "primary": "oklch(0.7800 0.1100 262.00)",
+     "primary-foreground": "oklch(0.1700 0.0400 262.00)",
+     "secondary": "oklch(0.2600 0.0450 262.00)",
+     "secondary-foreground": "oklch(0.9500 0.0150 262.00)",
+     "muted": "oklch(0.2500 0.0400 262.00)",
+     "muted-foreground": "oklch(0.7100 0.0450 262.00)",
+     "accent": "oklch(0.3400 0.0800 262.00)",
+     "accent-foreground": "oklch(0.9500 0.0150 262.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.3300 0.0500 262.00)",
+     "input": "oklch(0.5050 0.0600 262.00)",
+     "ring": "oklch(0.7800 0.1100 262.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r16-tonal-b",
+   "source": "recipe:r16-tonal",
+   "weight": 1,
+   "mood": [
+    "단색",
+    "음영",
+    "정제"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F0F9F5",
+    "foreground": "#001D10",
+    "primary": "#00583A",
+    "primary-foreground": "#F3FBF7",
+    "accent": "#ACE7CC",
+    "muted": "#E3F3EB",
+    "border": "#C0D8CC"
+   },
+   "colors": [
+    {
+     "hex": "#F0F9F5",
+     "oklch": [
+      0.975,
+      0.012,
+      165
+     ]
+    },
+    {
+     "hex": "#001D10",
+     "oklch": [
+      0.2,
+      0.05,
+      165
+     ]
+    },
+    {
+     "hex": "#00583A",
+     "oklch": [
+      0.4,
+      0.1,
+      165
+     ]
+    },
+    {
+     "hex": "#F3FBF7",
+     "oklch": [
+      0.98,
+      0.01,
+      165
+     ]
+    },
+    {
+     "hex": "#ACE7CC",
+     "oklch": [
+      0.88,
+      0.07,
+      165
+     ]
+    },
+    {
+     "hex": "#E3F3EB",
+     "oklch": [
+      0.95,
+      0.02,
+      165
+     ]
+    },
+    {
+     "hex": "#C0D8CC",
+     "oklch": [
+      0.86,
+      0.03,
+      165
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.61,
+    "primaryFg_primary": 8.12
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K9",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — 색 논리 K9 는 그대로, 남청 262° 한 색상각을 청록 165° 한 색상각으로 옮긴 변형(여전히 한 색상각의 명도 단계만). 제목체는 노토 세리프로 바꾼다. 모션·기법은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9750 0.0120 165.00)",
+     "foreground": "oklch(0.2000 0.0500 165.00)",
+     "card": "oklch(0.9950 0.0050 165.00)",
+     "card-foreground": "oklch(0.2000 0.0500 165.00)",
+     "popover": "oklch(0.9950 0.0050 165.00)",
+     "popover-foreground": "oklch(0.2000 0.0500 165.00)",
+     "primary": "oklch(0.4000 0.1000 165.00)",
+     "primary-foreground": "oklch(0.9800 0.0100 165.00)",
+     "secondary": "oklch(0.9300 0.0300 165.00)",
+     "secondary-foreground": "oklch(0.2000 0.0500 165.00)",
+     "muted": "oklch(0.9500 0.0200 165.00)",
+     "muted-foreground": "oklch(0.4250 0.0500 165.00)",
+     "accent": "oklch(0.8800 0.0700 165.00)",
+     "accent-foreground": "oklch(0.2200 0.0600 165.00)",
+     "destructive": "oklch(0.5200 0.1800 27.00)",
+     "border": "oklch(0.8600 0.0300 165.00)",
+     "input": "oklch(0.5000 0.0700 165.00)",
+     "ring": "oklch(0.4000 0.1000 165.00)",
+     "success": "oklch(0.5200 0.1100 152.00)",
+     "success-foreground": "oklch(0.9850 0.0050 152.00)",
+     "warning": "oklch(0.5500 0.1200 68.00)",
+     "warning-foreground": "oklch(0.9850 0.0050 68.00)",
+     "info": "oklch(0.5000 0.1200 255.00)",
+     "info-foreground": "oklch(0.9850 0.0040 255.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1700 0.0350 165.00)",
+     "foreground": "oklch(0.9500 0.0150 165.00)",
+     "card": "oklch(0.2100 0.0400 165.00)",
+     "card-foreground": "oklch(0.9500 0.0150 165.00)",
+     "popover": "oklch(0.2100 0.0400 165.00)",
+     "popover-foreground": "oklch(0.9500 0.0150 165.00)",
+     "primary": "oklch(0.7800 0.1000 165.00)",
+     "primary-foreground": "oklch(0.1700 0.0400 165.00)",
+     "secondary": "oklch(0.2600 0.0450 165.00)",
+     "secondary-foreground": "oklch(0.9500 0.0150 165.00)",
+     "muted": "oklch(0.2500 0.0400 165.00)",
+     "muted-foreground": "oklch(0.7100 0.0450 165.00)",
+     "accent": "oklch(0.3400 0.0800 165.00)",
+     "accent-foreground": "oklch(0.9500 0.0150 165.00)",
+     "destructive": "oklch(0.7000 0.1500 25.00)",
+     "border": "oklch(0.3300 0.0500 165.00)",
+     "input": "oklch(0.5000 0.0600 165.00)",
+     "ring": "oklch(0.7800 0.1000 165.00)",
+     "success": "oklch(0.7400 0.1100 152.00)",
+     "success-foreground": "oklch(0.1900 0.0200 152.00)",
+     "warning": "oklch(0.8000 0.1200 78.00)",
+     "warning-foreground": "oklch(0.2000 0.0300 78.00)",
+     "info": "oklch(0.7400 0.1000 255.00)",
+     "info-foreground": "oklch(0.1900 0.0150 255.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r2-signal",
+   "source": "recipe:r2-signal",
+   "weight": 1,
+   "mood": [
+    "단정",
+    "대담",
+    "신호"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FCFCFD",
+    "foreground": "#0E0E0E",
+    "primary": "#1A0DF0",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#E9EAF3",
+    "muted": "#F0F4F5",
+    "border": "#858892"
+   },
+   "colors": [
+    {
+     "hex": "#FCFCFD",
+     "oklch": [
+      0.9913,
+      0.0013,
+      286.4
+     ]
+    },
+    {
+     "hex": "#0E0E0E",
+     "oklch": [
+      0.1638,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#1A0DF0",
+     "oklch": [
+      0.4414,
+      0.2923,
+      266.6
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#E9EAF3",
+     "oklch": [
+      0.9389,
+      0.0121,
+      281.1
+     ]
+    },
+    {
+     "hex": "#F0F4F5",
+     "oklch": [
+      0.9644,
+      0.0045,
+      214.3
+     ]
+    },
+    {
+     "hex": "#858892",
+     "oklch": [
+      0.6275,
+      0.0154,
+      272.6
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 18.82,
+    "primaryFg_primary": 8.9
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K7",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9913 0.0013 286.38)",
+     "foreground": "oklch(0.1638 0.0000 0.00)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.1638 0.0000 0.00)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.1638 0.0000 0.00)",
+     "primary": "oklch(0.4414 0.2923 266.56)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9644 0.0045 214.33)",
+     "secondary-foreground": "oklch(0.1638 0.0000 0.00)",
+     "muted": "oklch(0.9644 0.0045 214.33)",
+     "muted-foreground": "oklch(0.3679 0.0143 269.30)",
+     "accent": "oklch(0.9389 0.0121 281.08)",
+     "accent-foreground": "oklch(0.1638 0.0000 0.00)",
+     "destructive": "oklch(0.47 0.16 18)",
+     "border": "oklch(0.6275 0.0154 272.57)",
+     "input": "oklch(0.5422 0.0144 271.14)",
+     "ring": "oklch(0.5303 0.2152 25.45)",
+     "success": "oklch(0.5 0.1 150)",
+     "success-foreground": "oklch(0.985 0.005 150)",
+     "warning": "oklch(0.56 0.12 65)",
+     "warning-foreground": "oklch(0.985 0.005 65)",
+     "info": "oklch(0.48 0.12 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.4500 0.2152 25.45)",
+     "field-1-foreground": "oklch(1.0000 0.0000 0.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1510 0.0064 285.61)",
+     "foreground": "oklch(0.9640 0.0029 264.54)",
+     "card": "oklch(0.1931 0.0080 285.63)",
+     "card-foreground": "oklch(0.9640 0.0029 264.54)",
+     "popover": "oklch(0.1931 0.0080 285.63)",
+     "popover-foreground": "oklch(0.9640 0.0029 264.54)",
+     "primary": "oklch(0.7387 0.1695 283.30)",
+     "primary-foreground": "oklch(0.1510 0.0064 285.61)",
+     "secondary": "oklch(0.2146 0.0099 276.58)",
+     "secondary-foreground": "oklch(0.9640 0.0029 264.54)",
+     "muted": "oklch(0.2146 0.0099 276.58)",
+     "muted-foreground": "oklch(0.7959 0.0144 272.65)",
+     "accent": "oklch(0.2396 0.0230 280.79)",
+     "accent-foreground": "oklch(0.9640 0.0029 264.54)",
+     "destructive": "oklch(0.7 0.13 20)",
+     "border": "oklch(0.4935 0.0163 272.47)",
+     "input": "oklch(0.5780 0.0202 275.41)",
+     "ring": "oklch(0.6946 0.1975 16.76)",
+     "success": "oklch(0.74 0.11 150)",
+     "success-foreground": "oklch(0.19 0.02 150)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.4770 0.1934 25.11)",
+     "field-1-foreground": "oklch(1.0000 0.0000 0.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r2-signal-b",
+   "source": "recipe:r2-signal",
+   "weight": 1,
+   "mood": [
+    "단정",
+    "대담",
+    "신호"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#E6E8F0",
+    "foreground": "#1E1E1E",
+    "primary": "#6629A8",
+    "primary-foreground": "#F1F2F7",
+    "accent": "#DCD6EE",
+    "muted": "#D1D2D9",
+    "border": "#6F7076"
+   },
+   "colors": [
+    {
+     "hex": "#E6E8F0",
+     "oklch": [
+      0.9318,
+      0.011,
+      274.9
+     ]
+    },
+    {
+     "hex": "#1E1E1E",
+     "oklch": [
+      0.235,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#6629A8",
+     "oklch": [
+      0.44,
+      0.1888,
+      300.6
+     ]
+    },
+    {
+     "hex": "#F1F2F7",
+     "oklch": [
+      0.9618,
+      0.0068,
+      277.2
+     ]
+    },
+    {
+     "hex": "#DCD6EE",
+     "oklch": [
+      0.8881,
+      0.0332,
+      297.2
+     ]
+    },
+    {
+     "hex": "#D1D2D9",
+     "oklch": [
+      0.8651,
+      0.0097,
+      279.7
+     ]
+    },
+    {
+     "hex": "#6F7076",
+     "oklch": [
+      0.5463,
+      0.0093,
+      278.5
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 13.63,
+    "primaryFg_primary": 7.67
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K7",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 2(문장 속 칩 + 대괄호 캡션 대칭) — 보라 잉크·민트 면 새 팔레트(pal-sns-instagram-dpbpoicj3j4-2 + 측정 사이트의 회청 바탕·먹 글자), 제목 Dela Gothic One·Moirai One. 색 논리 K7·모션 M1·기법 split-text·oversize-crop 은 A 그대로. 선택 보드 2판(2026-09-28)에서 한 번 머리로 올라갔다가(Task 10f, 커밋 f00aee5), 3판(2026-09-28)에서 운영자가 원래 안을 다시 pick 해 대안으로 돌아왔다",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9318 0.0110 274.89)",
+     "foreground": "oklch(0.2350 0.0000 0.00)",
+     "card": "oklch(0.9618 0.0068 277.16)",
+     "card-foreground": "oklch(0.2350 0.0000 0.00)",
+     "popover": "oklch(0.9618 0.0068 277.16)",
+     "popover-foreground": "oklch(0.2350 0.0000 0.00)",
+     "primary": "oklch(0.4400 0.1888 300.61)",
+     "primary-foreground": "oklch(0.9618 0.0068 277.16)",
+     "secondary": "oklch(0.8651 0.0097 279.67)",
+     "secondary-foreground": "oklch(0.2350 0.0000 0.00)",
+     "muted": "oklch(0.8651 0.0097 279.67)",
+     "muted-foreground": "oklch(0.3211 0.0000 0.00)",
+     "accent": "oklch(0.8881 0.0332 297.16)",
+     "accent-foreground": "oklch(0.2350 0.0000 0.00)",
+     "destructive": "oklch(0.47 0.16 18)",
+     "border": "oklch(0.5463 0.0093 278.50)",
+     "input": "oklch(0.5463 0.0093 278.50)",
+     "ring": "oklch(0.5147 0.1069 162.71)",
+     "success": "oklch(0.5 0.1 150)",
+     "success-foreground": "oklch(0.985 0.005 150)",
+     "warning": "oklch(0.56 0.12 65)",
+     "warning-foreground": "oklch(0.985 0.005 65)",
+     "info": "oklch(0.48 0.12 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.8233 0.1683 161.50)",
+     "field-1-foreground": "oklch(0.1766 0.0228 163.44)"
+    },
+    "dark": {
+     "background": "oklch(0.1840 0.0081 285.58)",
+     "foreground": "oklch(0.9318 0.0110 274.89)",
+     "card": "oklch(0.2205 0.0116 285.41)",
+     "card-foreground": "oklch(0.9318 0.0110 274.89)",
+     "popover": "oklch(0.2205 0.0116 285.41)",
+     "popover-foreground": "oklch(0.9318 0.0110 274.89)",
+     "primary": "oklch(0.7437 0.1150 299.91)",
+     "primary-foreground": "oklch(0.1840 0.0081 285.58)",
+     "secondary": "oklch(0.2338 0.0134 285.32)",
+     "secondary-foreground": "oklch(0.9318 0.0110 274.89)",
+     "muted": "oklch(0.2338 0.0134 285.32)",
+     "muted-foreground": "oklch(0.7777 0.0143 277.00)",
+     "accent": "oklch(0.2763 0.0371 297.70)",
+     "accent-foreground": "oklch(0.9318 0.0110 274.89)",
+     "destructive": "oklch(0.7 0.13 20)",
+     "border": "oklch(0.5050 0.0160 276.80)",
+     "input": "oklch(0.5886 0.0184 278.28)",
+     "ring": "oklch(0.8233 0.1683 161.50)",
+     "success": "oklch(0.74 0.11 150)",
+     "success-foreground": "oklch(0.19 0.02 150)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.7441 0.1516 161.90)",
+     "field-1-foreground": "oklch(0.1680 0.0222 162.07)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r3-woodblock",
+   "source": "recipe:r3-woodblock",
+   "weight": 1,
+   "mood": [
+    "손맛",
+    "인쇄",
+    "장터"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F1F2E8",
+    "foreground": "#2E2910",
+    "primary": "#295442",
+    "primary-foreground": "#F1F2E8",
+    "accent": "#E2E9D8",
+    "muted": "#E7E9DC",
+    "border": "#858970"
+   },
+   "colors": [
+    {
+     "hex": "#F1F2E8",
+     "oklch": [
+      0.9576,
+      0.0133,
+      111.3
+     ]
+    },
+    {
+     "hex": "#2E2910",
+     "oklch": [
+      0.2798,
+      0.0405,
+      98.2
+     ]
+    },
+    {
+     "hex": "#295442",
+     "oklch": [
+      0.4073,
+      0.0573,
+      164.7
+     ]
+    },
+    {
+     "hex": "#E2E9D8",
+     "oklch": [
+      0.9241,
+      0.0238,
+      125.2
+     ]
+    },
+    {
+     "hex": "#E7E9DC",
+     "oklch": [
+      0.9289,
+      0.0174,
+      113.8
+     ]
+    },
+    {
+     "hex": "#858970",
+     "oklch": [
+      0.6197,
+      0.0366,
+      114.9
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 12.91,
+    "primaryFg_primary": 7.68
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K8",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9576 0.0133 111.27)",
+     "foreground": "oklch(0.2798 0.0405 98.23)",
+     "card": "oklch(0.9824 0.0093 113.16)",
+     "card-foreground": "oklch(0.2798 0.0405 98.23)",
+     "popover": "oklch(0.9824 0.0093 113.16)",
+     "popover-foreground": "oklch(0.2798 0.0405 98.23)",
+     "primary": "oklch(0.4073 0.0573 164.73)",
+     "primary-foreground": "oklch(0.9576 0.0133 111.27)",
+     "secondary": "oklch(0.9289 0.0174 113.83)",
+     "secondary-foreground": "oklch(0.2798 0.0405 98.23)",
+     "muted": "oklch(0.9289 0.0174 113.83)",
+     "muted-foreground": "oklch(0.3838 0.0382 99.88)",
+     "accent": "oklch(0.9241 0.0238 125.20)",
+     "accent-foreground": "oklch(0.2798 0.0405 98.23)",
+     "destructive": "oklch(0.5 0.16 32)",
+     "border": "oklch(0.6197 0.0366 114.86)",
+     "input": "oklch(0.5619 0.0388 114.77)",
+     "ring": "oklch(0.4073 0.0573 164.73)",
+     "success": "oklch(0.5 0.11 138)",
+     "success-foreground": "oklch(0.985 0.008 138)",
+     "warning": "oklch(0.55 0.12 70)",
+     "warning-foreground": "oklch(0.985 0.005 70)",
+     "info": "oklch(0.48 0.09 240)",
+     "info-foreground": "oklch(0.985 0.005 240)",
+     "block-1": "oklch(0.4000 0.0707 158.16)",
+     "block-1-foreground": "oklch(0.9689 0.0134 115.83)",
+     "block-2": "oklch(0.6998 0.1702 56.53)",
+     "block-2-foreground": "oklch(0.2186 0.0316 94.21)",
+     "block-3": "oklch(0.7424 0.0750 227.04)",
+     "block-3-foreground": "oklch(0.2465 0.0255 232.49)",
+     "block-4": "oklch(0.5300 0.1176 25.80)",
+     "block-4-foreground": "oklch(0.9804 0.0127 63.93)"
+    },
+    "dark": {
+     "background": "oklch(0.2006 0.0153 113.58)",
+     "foreground": "oklch(0.9503 0.0160 114.38)",
+     "card": "oklch(0.2393 0.0165 112.80)",
+     "card-foreground": "oklch(0.9503 0.0160 114.38)",
+     "popover": "oklch(0.2393 0.0165 112.80)",
+     "popover-foreground": "oklch(0.9503 0.0160 114.38)",
+     "primary": "oklch(0.7947 0.0665 152.94)",
+     "primary-foreground": "oklch(0.2006 0.0153 113.58)",
+     "secondary": "oklch(0.2548 0.0183 116.90)",
+     "secondary-foreground": "oklch(0.9503 0.0160 114.38)",
+     "muted": "oklch(0.2548 0.0183 116.90)",
+     "muted-foreground": "oklch(0.8056 0.0303 113.38)",
+     "accent": "oklch(0.2871 0.0212 115.44)",
+     "accent-foreground": "oklch(0.9503 0.0160 114.38)",
+     "destructive": "oklch(0.7 0.13 32)",
+     "border": "oklch(0.5128 0.0277 115.07)",
+     "input": "oklch(0.5964 0.0355 115.17)",
+     "ring": "oklch(0.7947 0.0665 152.94)",
+     "success": "oklch(0.76 0.11 138)",
+     "success-foreground": "oklch(0.2 0.03 138)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.75 0.08 240)",
+     "info-foreground": "oklch(0.2 0.02 240)",
+     "block-1": "oklch(0.4000 0.0707 158.16)",
+     "block-1-foreground": "oklch(0.9689 0.0134 115.83)",
+     "block-2": "oklch(0.6800 0.1542 57.67)",
+     "block-2-foreground": "oklch(0.2006 0.0153 113.58)",
+     "block-3": "oklch(0.4332 0.0644 230.06)",
+     "block-3-foreground": "oklch(0.9755 0.0075 228.85)",
+     "block-4": "oklch(0.4707 0.1086 25.73)",
+     "block-4-foreground": "oklch(0.9804 0.0127 63.93)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r3-woodblock-b",
+   "source": "recipe:r3-woodblock",
+   "weight": 1,
+   "mood": [
+    "손맛",
+    "인쇄",
+    "장터"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F4F4F2",
+    "foreground": "#1C1C1C",
+    "primary": "#1A305D",
+    "primary-foreground": "#FEFEFE",
+    "accent": "#E4E8F0",
+    "muted": "#ECECEB",
+    "border": "#86857F"
+   },
+   "colors": [
+    {
+     "hex": "#F4F4F2",
+     "oklch": [
+      0.9666,
+      0.0026,
+      106.5
+     ]
+    },
+    {
+     "hex": "#1C1C1C",
+     "oklch": [
+      0.2264,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#1A305D",
+     "oklch": [
+      0.3177,
+      0.0851,
+      262.9
+     ]
+    },
+    {
+     "hex": "#FEFEFE",
+     "oklch": [
+      0.997,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#E4E8F0",
+     "oklch": [
+      0.9303,
+      0.0116,
+      264.5
+     ]
+    },
+    {
+     "hex": "#ECECEB",
+     "oklch": [
+      0.9428,
+      0.0013,
+      106.4
+     ]
+    },
+    {
+     "hex": "#86857F",
+     "oklch": [
+      0.6157,
+      0.009,
+      99
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 15.48,
+    "primaryFg_primary": 12.81
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K8",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 2(나란한 큰 칸 두 장 + 칸 밑 캡션) — 흰 종이·남색 잉크에 모래·산호·하늘·자두 칸의 새 팔레트(pal-sns-instagram-dct4vqjmytn-5 + 측정 사이트의 하늘·모래·먹), 제목 Shrikhand·배민 을지로체. 색 논리 K8·모션 M2·기법 grain·clip-reveal 은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9666 0.0026 106.45)",
+     "foreground": "oklch(0.2264 0.0000 0.00)",
+     "card": "oklch(0.9970 0.0000 0.00)",
+     "card-foreground": "oklch(0.2264 0.0000 0.00)",
+     "popover": "oklch(0.9970 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2264 0.0000 0.00)",
+     "primary": "oklch(0.3177 0.0851 262.88)",
+     "primary-foreground": "oklch(0.9970 0.0000 0.00)",
+     "secondary": "oklch(0.9428 0.0013 106.42)",
+     "secondary-foreground": "oklch(0.2264 0.0000 0.00)",
+     "muted": "oklch(0.9428 0.0013 106.42)",
+     "muted-foreground": "oklch(0.3859 0.0084 97.54)",
+     "accent": "oklch(0.9303 0.0116 264.51)",
+     "accent-foreground": "oklch(0.3177 0.0851 262.88)",
+     "destructive": "oklch(0.5 0.16 32)",
+     "border": "oklch(0.6157 0.0090 98.97)",
+     "input": "oklch(0.5341 0.0078 97.45)",
+     "ring": "oklch(0.3177 0.0851 262.88)",
+     "success": "oklch(0.5 0.11 138)",
+     "success-foreground": "oklch(0.985 0.008 138)",
+     "warning": "oklch(0.55 0.12 70)",
+     "warning-foreground": "oklch(0.985 0.005 70)",
+     "info": "oklch(0.48 0.09 240)",
+     "info-foreground": "oklch(0.985 0.005 240)",
+     "block-1": "oklch(0.8683 0.1062 83.74)",
+     "block-1-foreground": "oklch(0.2548 0.0420 92.04)",
+     "block-2": "oklch(0.7507 0.1279 40.97)",
+     "block-2-foreground": "oklch(0.2155 0.0438 42.89)",
+     "block-3": "oklch(0.7424 0.0615 227.04)",
+     "block-3-foreground": "oklch(0.2465 0.0255 232.49)",
+     "block-4": "oklch(0.6559 0.0866 327.90)",
+     "block-4-foreground": "oklch(0.1898 0.0335 329.32)"
+    },
+    "dark": {
+     "background": "oklch(0.1998 0.0020 106.58)",
+     "foreground": "oklch(0.9428 0.0013 106.42)",
+     "card": "oklch(0.2346 0.0019 106.54)",
+     "card-foreground": "oklch(0.9428 0.0013 106.42)",
+     "popover": "oklch(0.2346 0.0019 106.54)",
+     "popover-foreground": "oklch(0.9428 0.0013 106.42)",
+     "primary": "oklch(0.8000 0.0641 264.11)",
+     "primary-foreground": "oklch(0.1998 0.0020 106.58)",
+     "secondary": "oklch(0.2516 0.0019 106.53)",
+     "secondary-foreground": "oklch(0.9428 0.0013 106.42)",
+     "muted": "oklch(0.2516 0.0019 106.53)",
+     "muted-foreground": "oklch(0.7690 0.0085 98.92)",
+     "accent": "oklch(0.2846 0.0277 263.98)",
+     "accent-foreground": "oklch(0.9110 0.0281 263.43)",
+     "destructive": "oklch(0.7 0.13 32)",
+     "border": "oklch(0.5131 0.0078 97.46)",
+     "input": "oklch(0.5890 0.0076 97.43)",
+     "ring": "oklch(0.8000 0.0641 264.11)",
+     "success": "oklch(0.76 0.11 138)",
+     "success-foreground": "oklch(0.2 0.03 138)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.75 0.08 240)",
+     "info-foreground": "oklch(0.2 0.02 240)",
+     "block-1": "oklch(0.4200 0.0900 80)",
+     "block-1-foreground": "oklch(0.9813 0.0175 81.33)",
+     "block-2": "oklch(0.4800 0.1100 41)",
+     "block-2-foreground": "oklch(0.9741 0.0143 50.81)",
+     "block-3": "oklch(0.5132 0.0644 230.06)",
+     "block-3-foreground": "oklch(0.9755 0.0075 228.85)",
+     "block-4": "oklch(0.4400 0.0800 328)",
+     "block-4-foreground": "oklch(0.9657 0.0210 328.08)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r4-evidence",
+   "source": "recipe:r4-evidence",
+   "weight": 1,
+   "mood": [
+    "근거",
+    "차분",
+    "대화"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FBFCFD",
+    "foreground": "#0B1220",
+    "primary": "#1D4E89",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#EDF1F7",
+    "muted": "#F1F3F6",
+    "border": "#D5DAE2"
+   },
+   "colors": [
+    {
+     "hex": "#FBFCFD",
+     "oklch": [
+      0.9906,
+      0.0017,
+      247.8
+     ]
+    },
+    {
+     "hex": "#0B1220",
+     "oklch": [
+      0.1831,
+      0.0309,
+      263.4
+     ]
+    },
+    {
+     "hex": "#1D4E89",
+     "oklch": [
+      0.4234,
+      0.1112,
+      255.1
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#EDF1F7",
+     "oklch": [
+      0.9568,
+      0.0091,
+      258.3
+     ]
+    },
+    {
+     "hex": "#F1F3F6",
+     "oklch": [
+      0.9635,
+      0.0045,
+      258.3
+     ]
+    },
+    {
+     "hex": "#D5DAE2",
+     "oklch": [
+      0.8869,
+      0.0122,
+      259.8
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 18.23,
+    "primaryFg_primary": 8.39
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K7",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9906 0.0017 247.84)",
+     "foreground": "oklch(0.1831 0.0309 263.38)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.1831 0.0309 263.38)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.1831 0.0309 263.38)",
+     "primary": "oklch(0.4234 0.1112 255.11)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9635 0.0045 258.32)",
+     "secondary-foreground": "oklch(0.1831 0.0309 263.38)",
+     "muted": "oklch(0.9635 0.0045 258.32)",
+     "muted-foreground": "oklch(0.4067 0.0336 260.20)",
+     "accent": "oklch(0.9568 0.0091 258.34)",
+     "accent-foreground": "oklch(0.2508 0.0550 262.40)",
+     "destructive": "oklch(0.52 0.18 27)",
+     "border": "oklch(0.8869 0.0122 259.82)",
+     "input": "oklch(0.5631 0.0309 260.27)",
+     "ring": "oklch(0.4234 0.1112 255.11)",
+     "success": "oklch(0.52 0.11 155)",
+     "success-foreground": "oklch(0.985 0.005 155)",
+     "warning": "oklch(0.55 0.12 62)",
+     "warning-foreground": "oklch(0.985 0.005 62)",
+     "info": "oklch(0.5 0.12 250)",
+     "info-foreground": "oklch(0.985 0.004 250)",
+     "field-1": "oklch(0.7859 0.1674 70.04)",
+     "field-1-foreground": "oklch(0.2508 0.0550 262.40)"
+    },
+    "dark": {
+     "background": "oklch(0.1792 0.0333 274.50)",
+     "foreground": "oklch(0.9556 0.0096 273.36)",
+     "card": "oklch(0.2237 0.0398 272.18)",
+     "card-foreground": "oklch(0.9556 0.0096 273.36)",
+     "popover": "oklch(0.2237 0.0398 272.18)",
+     "popover-foreground": "oklch(0.9556 0.0096 273.36)",
+     "primary": "oklch(0.7787 0.0878 266.34)",
+     "primary-foreground": "oklch(0.1792 0.0333 274.50)",
+     "secondary": "oklch(0.2321 0.0395 272.33)",
+     "secondary-foreground": "oklch(0.9556 0.0096 273.36)",
+     "muted": "oklch(0.2321 0.0395 272.33)",
+     "muted-foreground": "oklch(0.7996 0.0276 271.79)",
+     "accent": "oklch(0.2747 0.0497 269.93)",
+     "accent-foreground": "oklch(0.9556 0.0096 273.36)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3286 0.0524 272.87)",
+     "input": "oklch(0.5895 0.0457 271.46)",
+     "ring": "oklch(0.7787 0.0878 266.34)",
+     "success": "oklch(0.74 0.11 155)",
+     "success-foreground": "oklch(0.19 0.02 155)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 250)",
+     "info-foreground": "oklch(0.19 0.015 250)",
+     "field-1": "oklch(0.7219 0.1433 77.80)",
+     "field-1-foreground": "oklch(0.1792 0.0333 274.50)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r4-evidence-b",
+   "source": "recipe:r4-evidence",
+   "weight": 1,
+   "mood": [
+    "근거",
+    "차분",
+    "대화"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F3F3F8",
+    "foreground": "#110930",
+    "primary": "#6E4BDF",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#ECE8FB",
+    "muted": "#E7E7EF",
+    "border": "#C9CAD8"
+   },
+   "colors": [
+    {
+     "hex": "#F3F3F8",
+     "oklch": [
+      0.9656,
+      0.0066,
+      286.3
+     ]
+    },
+    {
+     "hex": "#110930",
+     "oklch": [
+      0.1815,
+      0.0734,
+      286
+     ]
+    },
+    {
+     "hex": "#6E4BDF",
+     "oklch": [
+      0.5371,
+      0.2129,
+      287.9
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#ECE8FB",
+     "oklch": [
+      0.9397,
+      0.0258,
+      295.6
+     ]
+    },
+    {
+     "hex": "#E7E7EF",
+     "oklch": [
+      0.9303,
+      0.0107,
+      286.2
+     ]
+    },
+    {
+     "hex": "#C9CAD8",
+     "oklch": [
+      0.8425,
+      0.0194,
+      282.7
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 17.18,
+    "primaryFg_primary": 5.62
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K7",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 2(가운데 제목 + 접힘선을 넘는 증거 패널) — 짙은 남보라 잉크·보라 주색·연두 면의 새 팔레트(pal-sns-threads-duymesgic-0-6 + 측정 사이트의 남보라·보라·회보라), 제목 Spectral·서초바탕. 색 논리 K7·모션 M1·기법 clip-reveal·svg-draw 는 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9656 0.0066 286.27)",
+     "foreground": "oklch(0.1815 0.0734 285.96)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.1815 0.0734 285.96)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.1815 0.0734 285.96)",
+     "primary": "oklch(0.5371 0.2129 287.87)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9303 0.0107 286.19)",
+     "secondary-foreground": "oklch(0.1815 0.0734 285.96)",
+     "muted": "oklch(0.9303 0.0107 286.19)",
+     "muted-foreground": "oklch(0.3528 0.0551 290.45)",
+     "accent": "oklch(0.9397 0.0258 295.55)",
+     "accent-foreground": "oklch(0.2566 0.0809 284.17)",
+     "destructive": "oklch(0.52 0.18 27)",
+     "border": "oklch(0.8425 0.0194 282.71)",
+     "input": "oklch(0.5443 0.0434 289.79)",
+     "ring": "oklch(0.5371 0.2129 287.87)",
+     "success": "oklch(0.52 0.11 155)",
+     "success-foreground": "oklch(0.985 0.005 155)",
+     "warning": "oklch(0.55 0.12 62)",
+     "warning-foreground": "oklch(0.985 0.005 62)",
+     "info": "oklch(0.5 0.12 250)",
+     "info-foreground": "oklch(0.985 0.004 250)",
+     "field-1": "oklch(0.9132 0.1174 119.39)",
+     "field-1-foreground": "oklch(0.1815 0.0734 285.96)"
+    },
+    "dark": {
+     "background": "oklch(0.1815 0.0734 285.96)",
+     "foreground": "oklch(0.9461 0.0000 0.00)",
+     "card": "oklch(0.2289 0.0803 284.29)",
+     "card-foreground": "oklch(0.9461 0.0000 0.00)",
+     "popover": "oklch(0.2289 0.0803 284.29)",
+     "popover-foreground": "oklch(0.9461 0.0000 0.00)",
+     "primary": "oklch(0.7689 0.1124 293.46)",
+     "primary-foreground": "oklch(0.1815 0.0734 285.96)",
+     "secondary": "oklch(0.2210 0.0789 285.41)",
+     "secondary-foreground": "oklch(0.9461 0.0000 0.00)",
+     "muted": "oklch(0.2210 0.0789 285.41)",
+     "muted-foreground": "oklch(0.7963 0.0423 293.06)",
+     "accent": "oklch(0.2753 0.0914 283.87)",
+     "accent-foreground": "oklch(0.9461 0.0000 0.00)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3643 0.1001 284.82)",
+     "input": "oklch(0.5918 0.0712 288.90)",
+     "ring": "oklch(0.7689 0.1124 293.46)",
+     "success": "oklch(0.74 0.11 155)",
+     "success-foreground": "oklch(0.19 0.02 155)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 250)",
+     "info-foreground": "oklch(0.19 0.015 250)",
+     "field-1": "oklch(0.8000 0.1100 119.4)",
+     "field-1-foreground": "oklch(0.1815 0.0734 285.96)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r5-celadon",
+   "source": "recipe:r5-celadon",
+   "weight": 1,
+   "mood": [
+    "고요",
+    "재질",
+    "여백"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F2F4F3",
+    "foreground": "#1A1A18",
+    "primary": "#32292F",
+    "primary-foreground": "#F2F4F3",
+    "accent": "#E1EFEC",
+    "muted": "#E9ECEA",
+    "border": "#CDD2CF"
+   },
+   "colors": [
+    {
+     "hex": "#F2F4F3",
+     "oklch": [
+      0.9654,
+      0.0025,
+      165.1
+     ]
+    },
+    {
+     "hex": "#1A1A18",
+     "oklch": [
+      0.217,
+      0.0038,
+      106.7
+     ]
+    },
+    {
+     "hex": "#32292F",
+     "oklch": [
+      0.2933,
+      0.0168,
+      338.4
+     ]
+    },
+    {
+     "hex": "#E1EFEC",
+     "oklch": [
+      0.9408,
+      0.0154,
+      181.8
+     ]
+    },
+    {
+     "hex": "#E9ECEA",
+     "oklch": [
+      0.9402,
+      0.0042,
+      157.2
+     ]
+    },
+    {
+     "hex": "#CDD2CF",
+     "oklch": [
+      0.859,
+      0.0068,
+      160.1
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 15.78,
+    "primaryFg_primary": 12.73
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9654 0.0025 165.08)",
+     "foreground": "oklch(0.2170 0.0038 106.71)",
+     "card": "oklch(0.9871 0.0017 145.56)",
+     "card-foreground": "oklch(0.2170 0.0038 106.71)",
+     "popover": "oklch(0.9871 0.0017 145.56)",
+     "popover-foreground": "oklch(0.2170 0.0038 106.71)",
+     "primary": "oklch(0.2933 0.0168 338.38)",
+     "primary-foreground": "oklch(0.9654 0.0025 165.08)",
+     "secondary": "oklch(0.9402 0.0042 157.17)",
+     "secondary-foreground": "oklch(0.2170 0.0038 106.71)",
+     "muted": "oklch(0.9402 0.0042 157.17)",
+     "muted-foreground": "oklch(0.3869 0.0087 88.72)",
+     "accent": "oklch(0.9408 0.0154 181.77)",
+     "accent-foreground": "oklch(0.2170 0.0038 106.71)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8590 0.0068 160.05)",
+     "input": "oklch(0.5735 0.0085 164.75)",
+     "ring": "oklch(0.4935 0.0683 185.83)",
+     "success": "oklch(0.52 0.1 150)",
+     "success-foreground": "oklch(0.985 0.005 150)",
+     "warning": "oklch(0.54 0.12 60)",
+     "warning-foreground": "oklch(0.985 0.005 60)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.8601 0.0727 187.17)",
+     "field-1-foreground": "oklch(0.2170 0.0038 106.71)"
+    },
+    "dark": {
+     "background": "oklch(0.1920 0.0051 173.79)",
+     "foreground": "oklch(0.9498 0.0045 134.85)",
+     "card": "oklch(0.2305 0.0063 179.07)",
+     "card-foreground": "oklch(0.9498 0.0045 134.85)",
+     "popover": "oklch(0.2305 0.0063 179.07)",
+     "popover-foreground": "oklch(0.9498 0.0045 134.85)",
+     "primary": "oklch(0.9255 0.0242 180.61)",
+     "primary-foreground": "oklch(0.1920 0.0051 173.79)",
+     "secondary": "oklch(0.2338 0.0076 182.27)",
+     "secondary-foreground": "oklch(0.9498 0.0045 134.85)",
+     "muted": "oklch(0.2338 0.0076 182.27)",
+     "muted-foreground": "oklch(0.7849 0.0098 171.72)",
+     "accent": "oklch(0.2739 0.0157 182.80)",
+     "accent-foreground": "oklch(0.9408 0.0154 181.77)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3246 0.0114 178.83)",
+     "input": "oklch(0.5906 0.0127 176.02)",
+     "ring": "oklch(0.8106 0.0834 185.99)",
+     "success": "oklch(0.74 0.11 150)",
+     "success-foreground": "oklch(0.19 0.02 150)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.4200 0.0828 185.92)",
+     "field-1-foreground": "oklch(0.9808 0.0098 181.42)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r6-civic",
+   "source": "recipe:r6-civic",
+   "weight": 1,
+   "mood": [
+    "공식",
+    "명료",
+    "신뢰"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FEFEFE",
+    "foreground": "#1E2124",
+    "primary": "#003DB8",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#C7DDEB",
+    "muted": "#F2F4F6",
+    "border": "#CED3D8"
+   },
+   "colors": [
+    {
+     "hex": "#FEFEFE",
+     "oklch": [
+      0.997,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#1E2124",
+     "oklch": [
+      0.2459,
+      0.0072,
+      248.1
+     ]
+    },
+    {
+     "hex": "#003DB8",
+     "oklch": [
+      0.42,
+      0.2011,
+      261.6
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#C7DDEB",
+     "oklch": [
+      0.8855,
+      0.0305,
+      235.7
+     ]
+    },
+    {
+     "hex": "#F2F4F6",
+     "oklch": [
+      0.9662,
+      0.0034,
+      247.9
+     ]
+    },
+    {
+     "hex": "#CED3D8",
+     "oklch": [
+      0.8645,
+      0.0088,
+      247.9
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.04,
+    "primaryFg_primary": 8.89
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9970 0.0000 0.00)",
+     "foreground": "oklch(0.2459 0.0072 248.12)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2459 0.0072 248.12)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2459 0.0072 248.12)",
+     "primary": "oklch(0.4200 0.2011 261.59)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9662 0.0034 247.86)",
+     "secondary-foreground": "oklch(0.2459 0.0072 248.12)",
+     "muted": "oklch(0.9662 0.0034 247.86)",
+     "muted-foreground": "oklch(0.4137 0.0141 252.24)",
+     "accent": "oklch(0.8855 0.0305 235.67)",
+     "accent-foreground": "oklch(0.2599 0.0604 251.32)",
+     "destructive": "oklch(0.53 0.19 27)",
+     "border": "oklch(0.8645 0.0088 247.93)",
+     "input": "oklch(0.5617 0.0189 250.97)",
+     "ring": "oklch(0.4200 0.2011 261.59)",
+     "success": "oklch(0.52 0.12 150)",
+     "success-foreground": "oklch(0.99 0.005 150)",
+     "warning": "oklch(0.54 0.13 58)",
+     "warning-foreground": "oklch(0.99 0.005 58)",
+     "info": "oklch(0.5 0.11 238)",
+     "info-foreground": "oklch(0.99 0.004 238)",
+     "field-1": "oklch(0.3100 0.0850 260.00)",
+     "field-1-foreground": "oklch(1.0000 0.0000 0.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1861 0.0294 259.81)",
+     "foreground": "oklch(0.9570 0.0063 255.48)",
+     "card": "oklch(0.2256 0.0323 260.34)",
+     "card-foreground": "oklch(0.9570 0.0063 255.48)",
+     "popover": "oklch(0.2256 0.0323 260.34)",
+     "popover-foreground": "oklch(0.9570 0.0063 255.48)",
+     "primary": "oklch(0.7611 0.1216 264.09)",
+     "primary-foreground": "oklch(0.1861 0.0294 259.81)",
+     "secondary": "oklch(0.2422 0.0341 259.57)",
+     "secondary-foreground": "oklch(0.9570 0.0063 255.48)",
+     "muted": "oklch(0.2422 0.0341 259.57)",
+     "muted-foreground": "oklch(0.7919 0.0197 255.55)",
+     "accent": "oklch(0.2914 0.0513 257.90)",
+     "accent-foreground": "oklch(0.8855 0.0305 235.67)",
+     "destructive": "oklch(0.7 0.15 25)",
+     "border": "oklch(0.3369 0.0326 255.75)",
+     "input": "oklch(0.6135 0.0289 259.04)",
+     "ring": "oklch(0.7611 0.1216 264.09)",
+     "success": "oklch(0.74 0.12 150)",
+     "success-foreground": "oklch(0.19 0.02 150)",
+     "warning": "oklch(0.8 0.13 70)",
+     "warning-foreground": "oklch(0.2 0.03 70)",
+     "info": "oklch(0.74 0.1 238)",
+     "info-foreground": "oklch(0.19 0.02 238)",
+     "field-1": "oklch(0.3300 0.0850 262.00)",
+     "field-1-foreground": "oklch(1.0000 0.0000 0.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r6-civic-b",
+   "source": "recipe:r6-civic",
+   "weight": 1,
+   "mood": [
+    "공식",
+    "명료",
+    "신뢰"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FFFFFF",
+    "foreground": "#11171E",
+    "primary": "#1F57F5",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#E2E6FB",
+    "muted": "#F3F5F8",
+    "border": "#CDD1D5"
+   },
+   "colors": [
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#11171E",
+     "oklch": [
+      0.2018,
+      0.0168,
+      252.5
+     ]
+    },
+    {
+     "hex": "#1F57F5",
+     "oklch": [
+      0.5315,
+      0.2423,
+      264.3
+     ]
+    },
+    {
+     "hex": "#E2E6FB",
+     "oklch": [
+      0.9282,
+      0.0288,
+      277.2
+     ]
+    },
+    {
+     "hex": "#F3F5F8",
+     "oklch": [
+      0.9695,
+      0.0045,
+      258.3
+     ]
+    },
+    {
+     "hex": "#CDD1D5",
+     "oklch": [
+      0.8588,
+      0.0071,
+      247.9
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 18.03,
+    "primaryFg_primary": 5.61
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 1(십자 기준선 4분면) — 카드 팔레트 그대로(pal-sns-instagram-dpbpoicj3j4-1 + 측정값) · Unbounded(한글은 Pretendard GOV). 색 논리 K6·모션 M1·기법 view-transition·svg-draw 는 새 기본과 같다. 선택 보드 3판(2026-09-28)에서 운영자가 B(식별 띠 + 짙은 배너 카드)를 pick 하며 「움직임은 단순하지만, 깔끔해서 오히려 좋아」라 적어, B가 머리로 올라가고 이 안은 대안으로 남는다",
+   "theme": {
+    "light": {
+     "background": "oklch(1.0000 0.0000 0.00)",
+     "foreground": "oklch(0.2018 0.0168 252.54)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2018 0.0168 252.54)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2018 0.0168 252.54)",
+     "primary": "oklch(0.5315 0.2423 264.28)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9695 0.0045 258.32)",
+     "secondary-foreground": "oklch(0.2018 0.0168 252.54)",
+     "muted": "oklch(0.9695 0.0045 258.32)",
+     "muted-foreground": "oklch(0.4137 0.0141 252.24)",
+     "accent": "oklch(0.9282 0.0288 277.23)",
+     "accent-foreground": "oklch(0.2018 0.0168 252.54)",
+     "destructive": "oklch(0.53 0.19 27)",
+     "border": "oklch(0.8588 0.0071 247.91)",
+     "input": "oklch(0.5669 0.0203 245.59)",
+     "ring": "oklch(0.5315 0.2423 264.28)",
+     "success": "oklch(0.52 0.12 150)",
+     "success-foreground": "oklch(0.99 0.005 150)",
+     "warning": "oklch(0.54 0.13 58)",
+     "warning-foreground": "oklch(0.99 0.005 58)",
+     "info": "oklch(0.5 0.11 238)",
+     "info-foreground": "oklch(0.99 0.004 238)",
+     "field-1": "oklch(0.3934 0.1505 264.14)",
+     "field-1-foreground": "oklch(1.0000 0.0000 0.00)"
+    },
+    "dark": {
+     "background": "oklch(0.1900 0.0181 259.70)",
+     "foreground": "oklch(0.9573 0.0074 260.73)",
+     "card": "oklch(0.2252 0.0216 260.53)",
+     "card-foreground": "oklch(0.9573 0.0074 260.73)",
+     "popover": "oklch(0.2252 0.0216 260.53)",
+     "popover-foreground": "oklch(0.9573 0.0074 260.73)",
+     "primary": "oklch(0.7321 0.1377 265.76)",
+     "primary-foreground": "oklch(0.1900 0.0181 259.70)",
+     "secondary": "oklch(0.2418 0.0235 259.32)",
+     "secondary-foreground": "oklch(0.9573 0.0074 260.73)",
+     "muted": "oklch(0.2418 0.0235 259.32)",
+     "muted-foreground": "oklch(0.7934 0.0187 261.33)",
+     "accent": "oklch(0.2747 0.0497 269.93)",
+     "accent-foreground": "oklch(0.9282 0.0288 277.23)",
+     "destructive": "oklch(0.7 0.15 25)",
+     "border": "oklch(0.3383 0.0276 259.14)",
+     "input": "oklch(0.6106 0.0270 259.81)",
+     "ring": "oklch(0.7321 0.1377 265.76)",
+     "success": "oklch(0.74 0.12 150)",
+     "success-foreground": "oklch(0.19 0.02 150)",
+     "warning": "oklch(0.8 0.13 70)",
+     "warning-foreground": "oklch(0.2 0.03 70)",
+     "info": "oklch(0.74 0.1 238)",
+     "info-foreground": "oklch(0.19 0.02 238)",
+     "field-1": "oklch(0.3982 0.1415 265.66)",
+     "field-1-foreground": "oklch(1.0000 0.0000 0.00)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r7-docs",
+   "source": "recipe:r7-docs",
+   "weight": 1,
+   "mood": [
+    "문서",
+    "조용",
+    "정돈"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F6F8F6",
+    "foreground": "#051F20",
+    "primary": "#235347",
+    "primary-foreground": "#F6F8F6",
+    "accent": "#DAF1DE",
+    "muted": "#ECF0ED",
+    "border": "#CDD5D1"
+   },
+   "colors": [
+    {
+     "hex": "#F6F8F6",
+     "oklch": [
+      0.9771,
+      0.0034,
+      145.6
+     ]
+    },
+    {
+     "hex": "#051F20",
+     "oklch": [
+      0.2199,
+      0.0317,
+      198.6
+     ]
+    },
+    {
+     "hex": "#235347",
+     "oklch": [
+      0.405,
+      0.0564,
+      174.6
+     ]
+    },
+    {
+     "hex": "#DAF1DE",
+     "oklch": [
+      0.9361,
+      0.0351,
+      150.5
+     ]
+    },
+    {
+     "hex": "#ECF0ED",
+     "oklch": [
+      0.9513,
+      0.0058,
+      153.8
+     ]
+    },
+    {
+     "hex": "#CDD5D1",
+     "oklch": [
+      0.8657,
+      0.0102,
+      164.8
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.09,
+    "primaryFg_primary": 8.2
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9771 0.0034 145.55)",
+     "foreground": "oklch(0.2199 0.0317 198.63)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2199 0.0317 198.63)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2199 0.0317 198.63)",
+     "primary": "oklch(0.4050 0.0564 174.64)",
+     "primary-foreground": "oklch(0.9771 0.0034 145.55)",
+     "secondary": "oklch(0.9513 0.0058 153.77)",
+     "secondary-foreground": "oklch(0.2199 0.0317 198.63)",
+     "muted": "oklch(0.9513 0.0058 153.77)",
+     "muted-foreground": "oklch(0.3894 0.0226 179.08)",
+     "accent": "oklch(0.9361 0.0351 150.54)",
+     "accent-foreground": "oklch(0.2199 0.0317 198.63)",
+     "destructive": "oklch(0.53 0.17 27)",
+     "border": "oklch(0.8657 0.0102 164.83)",
+     "input": "oklch(0.5690 0.0193 173.56)",
+     "ring": "oklch(0.5189 0.0962 168.14)",
+     "success": "oklch(0.52 0.1 150)",
+     "success-foreground": "oklch(0.99 0.004 150)",
+     "warning": "oklch(0.55 0.12 60)",
+     "warning-foreground": "oklch(0.99 0.004 60)",
+     "info": "oklch(0.5 0.1 240)",
+     "info-foreground": "oklch(0.99 0.004 240)",
+     "field-1": "oklch(0.9000 0.0750 152.00)",
+     "field-1-foreground": "oklch(0.2199 0.0317 198.63)"
+    },
+    "dark": {
+     "background": "oklch(0.1599 0.0053 173.58)",
+     "foreground": "oklch(0.9434 0.0083 157.09)",
+     "card": "oklch(0.1989 0.0079 182.06)",
+     "card-foreground": "oklch(0.9434 0.0083 157.09)",
+     "popover": "oklch(0.1989 0.0079 182.06)",
+     "popover-foreground": "oklch(0.9434 0.0083 157.09)",
+     "primary": "oklch(0.7395 0.0580 155.23)",
+     "primary-foreground": "oklch(0.1599 0.0053 173.58)",
+     "secondary": "oklch(0.2108 0.0098 173.15)",
+     "secondary-foreground": "oklch(0.9434 0.0083 157.09)",
+     "muted": "oklch(0.2108 0.0098 173.15)",
+     "muted-foreground": "oklch(0.7855 0.0183 164.52)",
+     "accent": "oklch(0.2426 0.0197 173.53)",
+     "accent-foreground": "oklch(0.9361 0.0351 150.54)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.2983 0.0155 169.05)",
+     "input": "oklch(0.5857 0.0198 169.62)",
+     "ring": "oklch(0.7906 0.1408 159.32)",
+     "success": "oklch(0.74 0.1 150)",
+     "success-foreground": "oklch(0.2 0.02 150)",
+     "warning": "oklch(0.8 0.12 72)",
+     "warning-foreground": "oklch(0.2 0.03 72)",
+     "info": "oklch(0.74 0.09 240)",
+     "info-foreground": "oklch(0.2 0.02 240)",
+     "field-1": "oklch(0.4215 0.0857 167.62)",
+     "field-1-foreground": "oklch(0.9625 0.0198 159.76)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r7-docs-b",
+   "source": "recipe:r7-docs",
+   "weight": 1,
+   "mood": [
+    "문서",
+    "조용",
+    "정돈"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#FBFAF8",
+    "foreground": "#251D1A",
+    "primary": "#203C3D",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#FEDAB8",
+    "muted": "#F3F1EE",
+    "border": "#DDD6CF"
+   },
+   "colors": [
+    {
+     "hex": "#FBFAF8",
+     "oklch": [
+      0.9853,
+      0.0029,
+      84.6
+     ]
+    },
+    {
+     "hex": "#251D1A",
+     "oklch": [
+      0.2392,
+      0.0138,
+      41.6
+     ]
+    },
+    {
+     "hex": "#203C3D",
+     "oklch": [
+      0.3345,
+      0.034,
+      198.6
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#FEDAB8",
+     "oklch": [
+      0.9101,
+      0.0601,
+      65.3
+     ]
+    },
+    {
+     "hex": "#F3F1EE",
+     "oklch": [
+      0.9588,
+      0.0045,
+      78.3
+     ]
+    },
+    {
+     "hex": "#DDD6CF",
+     "oklch": [
+      0.8797,
+      0.0123,
+      67.7
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 15.86,
+    "primaryFg_primary": 11.83
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 2(4칸 제목 + 8칸 앱 창 + 창 위 공지 알약) — 먹 글자·깊은 청록 주색·살구 면·복숭아 accent 의 새 팔레트(pal-sns-instagram-dp8ni9wkfhu-4 + 측정 사이트의 먹·테라코타·탠), 제목 Libre Caslon Display·자연산스. 색 논리 K6·모션 M2·기법 view-transition·sticky-stack 은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9853 0.0029 84.56)",
+     "foreground": "oklch(0.2392 0.0138 41.61)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2392 0.0138 41.61)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2392 0.0138 41.61)",
+     "primary": "oklch(0.3345 0.0340 198.61)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9588 0.0045 78.30)",
+     "secondary-foreground": "oklch(0.2392 0.0138 41.61)",
+     "muted": "oklch(0.9588 0.0045 78.30)",
+     "muted-foreground": "oklch(0.4064 0.0224 48.15)",
+     "accent": "oklch(0.9101 0.0601 65.33)",
+     "accent-foreground": "oklch(0.2392 0.0138 41.61)",
+     "destructive": "oklch(0.53 0.17 27)",
+     "border": "oklch(0.8797 0.0123 67.67)",
+     "input": "oklch(0.5497 0.0175 54.72)",
+     "ring": "oklch(0.5459 0.1072 44.81)",
+     "success": "oklch(0.52 0.1 150)",
+     "success-foreground": "oklch(0.99 0.004 150)",
+     "warning": "oklch(0.55 0.12 60)",
+     "warning-foreground": "oklch(0.99 0.004 60)",
+     "info": "oklch(0.5 0.1 240)",
+     "info-foreground": "oklch(0.99 0.004 240)",
+     "field-1": "oklch(0.8500 0.1100 68.00)",
+     "field-1-foreground": "oklch(0.2392 0.0138 41.61)"
+    },
+    "dark": {
+     "background": "oklch(0.2042 0.0076 48.33)",
+     "foreground": "oklch(0.9461 0.0103 67.70)",
+     "card": "oklch(0.2354 0.0096 53.00)",
+     "card-foreground": "oklch(0.9461 0.0103 67.70)",
+     "popover": "oklch(0.2354 0.0096 53.00)",
+     "popover-foreground": "oklch(0.9461 0.0103 67.70)",
+     "primary": "oklch(0.7823 0.0555 190.24)",
+     "primary-foreground": "oklch(0.2042 0.0076 48.33)",
+     "secondary": "oklch(0.2354 0.0096 53.00)",
+     "secondary-foreground": "oklch(0.9461 0.0103 67.70)",
+     "muted": "oklch(0.2354 0.0096 53.00)",
+     "muted-foreground": "oklch(0.8032 0.0203 60.10)",
+     "accent": "oklch(0.3007 0.0295 53.29)",
+     "accent-foreground": "oklch(0.9101 0.0601 65.33)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3240 0.0145 54.05)",
+     "input": "oklch(0.5819 0.0211 56.98)",
+     "ring": "oklch(0.7592 0.0897 48.92)",
+     "success": "oklch(0.74 0.1 150)",
+     "success-foreground": "oklch(0.2 0.02 150)",
+     "warning": "oklch(0.8 0.12 72)",
+     "warning-foreground": "oklch(0.2 0.03 72)",
+     "info": "oklch(0.74 0.09 240)",
+     "info-foreground": "oklch(0.2 0.02 240)",
+     "field-1": "oklch(0.4200 0.0900 58.00)",
+     "field-1-foreground": "oklch(0.9730 0.0178 64.94)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r8-dusk",
+   "source": "recipe:r8-dusk",
+   "weight": 1,
+   "mood": [
+    "저녁",
+    "숲",
+    "느림"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F4F4F3",
+    "foreground": "#1C1712",
+    "primary": "#2A525C",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#FEF3B1",
+    "muted": "#EAEAE6",
+    "border": "#D2CFC8"
+   },
+   "colors": [
+    {
+     "hex": "#F4F4F3",
+     "oklch": [
+      0.9669,
+      0.0013,
+      106.4
+     ]
+    },
+    {
+     "hex": "#1C1712",
+     "oklch": [
+      0.2088,
+      0.0125,
+      67
+     ]
+    },
+    {
+     "hex": "#2A525C",
+     "oklch": [
+      0.4144,
+      0.0479,
+      215.6
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#FEF3B1",
+     "oklch": [
+      0.9575,
+      0.0844,
+      99.8
+     ]
+    },
+    {
+     "hex": "#EAEAE6",
+     "oklch": [
+      0.9359,
+      0.0053,
+      106.5
+     ]
+    },
+    {
+     "hex": "#D2CFC8",
+     "oklch": [
+      0.8549,
+      0.0101,
+      87.5
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 16.16,
+    "primaryFg_primary": 8.51
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9669 0.0013 106.42)",
+     "foreground": "oklch(0.2088 0.0125 67.05)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2088 0.0125 67.05)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2088 0.0125 67.05)",
+     "primary": "oklch(0.4144 0.0479 215.62)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9359 0.0053 106.50)",
+     "secondary-foreground": "oklch(0.2088 0.0125 67.05)",
+     "muted": "oklch(0.9359 0.0053 106.50)",
+     "muted-foreground": "oklch(0.3840 0.0197 73.33)",
+     "accent": "oklch(0.9575 0.0844 99.79)",
+     "accent-foreground": "oklch(0.2088 0.0125 67.05)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8549 0.0101 87.48)",
+     "input": "oklch(0.5519 0.0130 71.79)",
+     "ring": "oklch(0.4144 0.0479 215.62)",
+     "success": "oklch(0.5 0.1 165)",
+     "success-foreground": "oklch(0.985 0.005 165)",
+     "warning": "oklch(0.54 0.12 60)",
+     "warning-foreground": "oklch(0.985 0.005 60)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.8400 0.0700 250.00)",
+     "field-1-foreground": "oklch(0.2217 0.0412 259.27)",
+     "field-2": "oklch(0.4000 0.0850 55.00)",
+     "field-2-foreground": "oklch(0.9701 0.0215 69.79)"
+    },
+    "dark": {
+     "background": "oklch(0.1924 0.0257 266.62)",
+     "foreground": "oklch(0.9548 0.0058 264.53)",
+     "card": "oklch(0.2315 0.0310 264.84)",
+     "card-foreground": "oklch(0.9548 0.0058 264.53)",
+     "popover": "oklch(0.2315 0.0310 264.84)",
+     "popover-foreground": "oklch(0.9548 0.0058 264.53)",
+     "primary": "oklch(0.7916 0.0430 211.53)",
+     "primary-foreground": "oklch(0.1924 0.0257 266.62)",
+     "secondary": "oklch(0.2189 0.0291 266.20)",
+     "secondary-foreground": "oklch(0.9548 0.0058 264.53)",
+     "muted": "oklch(0.2189 0.0291 266.20)",
+     "muted-foreground": "oklch(0.7972 0.0212 264.45)",
+     "accent": "oklch(0.2686 0.0249 94.06)",
+     "accent-foreground": "oklch(0.9575 0.0844 99.79)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3248 0.0345 263.91)",
+     "input": "oklch(0.6091 0.0307 265.31)",
+     "ring": "oklch(0.7474 0.1337 73.98)",
+     "success": "oklch(0.74 0.11 165)",
+     "success-foreground": "oklch(0.19 0.02 165)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.4000 0.1000 255.00)",
+     "field-1-foreground": "oklch(0.9688 0.0091 258.34)",
+     "field-2": "oklch(0.4000 0.0850 55.00)",
+     "field-2-foreground": "oklch(0.9701 0.0215 69.79)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r8-dusk-b",
+   "source": "recipe:r8-dusk",
+   "weight": 1,
+   "mood": [
+    "저녁",
+    "숲",
+    "느림"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#EEF0F1",
+    "foreground": "#0D281C",
+    "primary": "#004C37",
+    "primary-foreground": "#EEF0F1",
+    "accent": "#DDE3DC",
+    "muted": "#E4E8E7",
+    "border": "#C3CAC6"
+   },
+   "colors": [
+    {
+     "hex": "#EEF0F1",
+     "oklch": [
+      0.9539,
+      0.0025,
+      228.8
+     ]
+    },
+    {
+     "hex": "#0D281C",
+     "oklch": [
+      0.2515,
+      0.0405,
+      162.2
+     ]
+    },
+    {
+     "hex": "#004C37",
+     "oklch": [
+      0.3696,
+      0.0758,
+      167
+     ]
+    },
+    {
+     "hex": "#DDE3DC",
+     "oklch": [
+      0.9093,
+      0.0114,
+      141.3
+     ]
+    },
+    {
+     "hex": "#E4E8E7",
+     "oklch": [
+      0.9277,
+      0.0045,
+      179.7
+     ]
+    },
+    {
+     "hex": "#C3CAC6",
+     "oklch": [
+      0.8324,
+      0.0094,
+      161.3
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 13.74,
+    "primaryFg_primary": 8.79
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K6",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 1(보이는 12칸 세로선 + 바닥에 걸친 응축 대문자) — 카드 팔레트(pal-sns-instagram-dbdclihjjlc-1 + 측정값) · Big Shoulders + 고운바탕. 색 논리 K6·모션 M3·기법 split-text·clip-reveal·sticky-stack 은 새 기본과 같다. 선택 보드 3판(2026-09-28)에서 운영자가 B(세로쓰기 한글 제목 + 슬라이드 눈금)를 pick 하며 「모든 레시피 중에 가장 마음에 드는 실사 움직임 및 영상」이라 적어, B가 머리로 올라가고 이 안은 대안으로 남는다",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9539 0.0025 228.78)",
+     "foreground": "oklch(0.2515 0.0405 162.20)",
+     "card": "oklch(0.9784 0.0011 197.14)",
+     "card-foreground": "oklch(0.2515 0.0405 162.20)",
+     "popover": "oklch(0.9784 0.0011 197.14)",
+     "popover-foreground": "oklch(0.2515 0.0405 162.20)",
+     "primary": "oklch(0.3696 0.0758 166.97)",
+     "primary-foreground": "oklch(0.9539 0.0025 228.78)",
+     "secondary": "oklch(0.9277 0.0045 179.73)",
+     "secondary-foreground": "oklch(0.2515 0.0405 162.20)",
+     "muted": "oklch(0.9277 0.0045 179.73)",
+     "muted-foreground": "oklch(0.3948 0.0205 167.45)",
+     "accent": "oklch(0.9093 0.0114 141.26)",
+     "accent-foreground": "oklch(0.2515 0.0405 162.20)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8324 0.0094 161.31)",
+     "input": "oklch(0.5687 0.0152 166.81)",
+     "ring": "oklch(0.3696 0.0758 166.97)",
+     "success": "oklch(0.5 0.1 165)",
+     "success-foreground": "oklch(0.985 0.005 165)",
+     "warning": "oklch(0.54 0.12 60)",
+     "warning-foreground": "oklch(0.985 0.005 60)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "field-1": "oklch(0.4019 0.0830 166.36)",
+     "field-1-foreground": "oklch(0.9590 0.0085 145.51)",
+     "field-2": "oklch(0.4250 0.0998 256.49)",
+     "field-2-foreground": "oklch(0.9688 0.0091 258.34)"
+    },
+    "dark": {
+     "background": "oklch(0.1855 0.0148 172.00)",
+     "foreground": "oklch(0.9439 0.0085 145.51)",
+     "card": "oklch(0.2295 0.0207 168.57)",
+     "card-foreground": "oklch(0.9439 0.0085 145.51)",
+     "popover": "oklch(0.2295 0.0207 168.57)",
+     "popover-foreground": "oklch(0.9439 0.0085 145.51)",
+     "primary": "oklch(0.7966 0.0919 130.14)",
+     "primary-foreground": "oklch(0.1855 0.0148 172.00)",
+     "secondary": "oklch(0.2422 0.0205 168.78)",
+     "secondary-foreground": "oklch(0.9439 0.0085 145.51)",
+     "muted": "oklch(0.2422 0.0205 168.78)",
+     "muted-foreground": "oklch(0.7883 0.0190 160.99)",
+     "accent": "oklch(0.2693 0.0232 167.85)",
+     "accent-foreground": "oklch(0.9188 0.0221 138.98)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3319 0.0243 166.26)",
+     "input": "oklch(0.5911 0.0223 164.11)",
+     "ring": "oklch(0.7966 0.0919 130.14)",
+     "success": "oklch(0.74 0.11 165)",
+     "success-foreground": "oklch(0.19 0.02 165)",
+     "warning": "oklch(0.8 0.12 75)",
+     "warning-foreground": "oklch(0.2 0.03 75)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "field-1": "oklch(0.3890 0.0803 166.40)",
+     "field-1-foreground": "oklch(0.9554 0.0133 152.60)",
+     "field-2": "oklch(0.4283 0.0996 257.89)",
+     "field-2-foreground": "oklch(0.9627 0.0120 259.82)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r9-clay",
+   "source": "recipe:r9-clay",
+   "weight": 1,
+   "mood": [
+    "말랑",
+    "친근",
+    "손끝"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F7F8FB",
+    "foreground": "#192A56",
+    "primary": "#192A56",
+    "primary-foreground": "#F7D794",
+    "accent": "#FFE6F4",
+    "muted": "#EEF0F5",
+    "border": "#D3D8E4"
+   },
+   "colors": [
+    {
+     "hex": "#F7F8FB",
+     "oklch": [
+      0.9792,
+      0.0041,
+      271.4
+     ]
+    },
+    {
+     "hex": "#192A56",
+     "oklch": [
+      0.2971,
+      0.0827,
+      265.7
+     ]
+    },
+    {
+     "hex": "#F7D794",
+     "oklch": [
+      0.891,
+      0.0919,
+      85.1
+     ]
+    },
+    {
+     "hex": "#FFE6F4",
+     "oklch": [
+      0.9491,
+      0.0327,
+      342.9
+     ]
+    },
+    {
+     "hex": "#EEF0F5",
+     "oklch": [
+      0.955,
+      0.007,
+      268.6
+     ]
+    },
+    {
+     "hex": "#D3D8E4",
+     "oklch": [
+      0.882,
+      0.0173,
+      267.8
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 13.12,
+    "primaryFg_primary": 10.02
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K8",
+   "defaultTheme": "light",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9792 0.0041 271.37)",
+     "foreground": "oklch(0.2971 0.0827 265.71)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2971 0.0827 265.71)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2971 0.0827 265.71)",
+     "primary": "oklch(0.2971 0.0827 265.71)",
+     "primary-foreground": "oklch(0.8910 0.0919 85.10)",
+     "secondary": "oklch(0.9550 0.0070 268.55)",
+     "secondary-foreground": "oklch(0.2971 0.0827 265.71)",
+     "muted": "oklch(0.9550 0.0070 268.55)",
+     "muted-foreground": "oklch(0.4115 0.0493 267.67)",
+     "accent": "oklch(0.9491 0.0327 342.94)",
+     "accent-foreground": "oklch(0.2299 0.0919 10.87)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8820 0.0173 267.78)",
+     "input": "oklch(0.5759 0.0493 270.85)",
+     "ring": "oklch(0.2971 0.0827 265.71)",
+     "success": "oklch(0.52 0.1 155)",
+     "success-foreground": "oklch(0.985 0.005 155)",
+     "warning": "oklch(0.55 0.13 55)",
+     "warning-foreground": "oklch(0.985 0.005 55)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "block-1": "oklch(0.7886 0.1536 345.87)",
+     "block-1-foreground": "oklch(0.2299 0.0919 10.87)",
+     "block-2": "oklch(0.8910 0.0919 85.10)",
+     "block-2-foreground": "oklch(0.2971 0.0827 265.71)",
+     "block-3": "oklch(0.8396 0.0664 170.29)",
+     "block-3-foreground": "oklch(0.2297 0.0233 149.79)",
+     "block-4": "oklch(0.7959 0.0824 23.72)",
+     "block-4-foreground": "oklch(0.2299 0.0919 10.87)"
+    },
+    "dark": {
+     "background": "oklch(0.1958 0.0260 290.85)",
+     "foreground": "oklch(0.9619 0.0073 312.30)",
+     "card": "oklch(0.2334 0.0307 292.46)",
+     "card-foreground": "oklch(0.9619 0.0073 312.30)",
+     "popover": "oklch(0.2334 0.0307 292.46)",
+     "popover-foreground": "oklch(0.9619 0.0073 312.30)",
+     "primary": "oklch(0.8910 0.0919 85.10)",
+     "primary-foreground": "oklch(0.2971 0.0827 265.71)",
+     "secondary": "oklch(0.2269 0.0270 290.63)",
+     "secondary-foreground": "oklch(0.9619 0.0073 312.30)",
+     "muted": "oklch(0.2269 0.0270 290.63)",
+     "muted-foreground": "oklch(0.7929 0.0285 297.19)",
+     "accent": "oklch(0.2727 0.0416 302.52)",
+     "accent-foreground": "oklch(0.9176 0.0551 342.26)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3253 0.0458 290.68)",
+     "input": "oklch(0.5879 0.0457 292.58)",
+     "ring": "oklch(0.8910 0.0919 85.10)",
+     "success": "oklch(0.74 0.11 155)",
+     "success-foreground": "oklch(0.19 0.02 155)",
+     "warning": "oklch(0.8 0.12 70)",
+     "warning-foreground": "oklch(0.2 0.03 70)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "block-1": "oklch(0.7350 0.1522 345.68)",
+     "block-1-foreground": "oklch(0.1826 0.0732 7.78)",
+     "block-2": "oklch(0.7958 0.0986 85.60)",
+     "block-2-foreground": "oklch(0.2971 0.0827 265.71)",
+     "block-3": "oklch(0.7449 0.0694 170.47)",
+     "block-3-foreground": "oklch(0.2034 0.0235 154.62)",
+     "block-4": "oklch(0.7300 0.0868 24.01)",
+     "block-4-foreground": "oklch(0.1826 0.0732 7.78)"
+    }
+   }
+  },
+  {
+   "id": "pal-recipe-r9-clay-b",
+   "source": "recipe:r9-clay",
+   "weight": 1,
+   "mood": [
+    "말랑",
+    "친근",
+    "손끝"
+   ],
+   "harmony": null,
+   "role_source": "recipe",
+   "roles": {
+    "background": "#F4F7F8",
+    "foreground": "#152017",
+    "primary": "#8C3715",
+    "primary-foreground": "#FFFFFF",
+    "accent": "#DCE9EC",
+    "muted": "#E8EEF0",
+    "border": "#C9D6D6"
+   },
+   "colors": [
+    {
+     "hex": "#F4F7F8",
+     "oklch": [
+      0.9741,
+      0.0035,
+      219.5
+     ]
+    },
+    {
+     "hex": "#152017",
+     "oklch": [
+      0.2297,
+      0.0233,
+      149.8
+     ]
+    },
+    {
+     "hex": "#8C3715",
+     "oklch": [
+      0.45,
+      0.125,
+      40
+     ]
+    },
+    {
+     "hex": "#FFFFFF",
+     "oklch": [
+      1,
+      0,
+      0
+     ]
+    },
+    {
+     "hex": "#DCE9EC",
+     "oklch": [
+      0.9251,
+      0.0145,
+      213.1
+     ]
+    },
+    {
+     "hex": "#E8EEF0",
+     "oklch": [
+      0.9451,
+      0.007,
+      219.6
+     ]
+    },
+    {
+     "hex": "#C9D6D6",
+     "oklch": [
+      0.8662,
+      0.0141,
+      196.9
+     ]
+    }
+   ],
+   "contrast": {
+    "fg_bg": 15.59,
+    "primaryFg_primary": 7.87
+   },
+   "bans": [],
+   "use": "recipe",
+   "colorLogic": "K8",
+   "defaultTheme": "light",
+   "note": "보드 B안(alternates) — DNA 수 2(층층 평면 풍경 + 가운데 뭉툭한 로고타입) — 하늘·세이지·숲·녹 주황 칸의 새 팔레트(pal-sns-threads-ddo1vakdqal-1 + 측정 사이트의 세이지·숲·녹 주황), 제목 Titan One·동글. 색 논리 K8·모션 M2·기법 split-text·tilt-3d·clip-reveal 은 A 그대로",
+   "theme": {
+    "light": {
+     "background": "oklch(0.9741 0.0035 219.53)",
+     "foreground": "oklch(0.2297 0.0233 149.79)",
+     "card": "oklch(1.0000 0.0000 0.00)",
+     "card-foreground": "oklch(0.2297 0.0233 149.79)",
+     "popover": "oklch(1.0000 0.0000 0.00)",
+     "popover-foreground": "oklch(0.2297 0.0233 149.79)",
+     "primary": "oklch(0.4500 0.1250 40.00)",
+     "primary-foreground": "oklch(1.0000 0.0000 0.00)",
+     "secondary": "oklch(0.9451 0.0070 219.56)",
+     "secondary-foreground": "oklch(0.2297 0.0233 149.79)",
+     "muted": "oklch(0.9451 0.0070 219.56)",
+     "muted-foreground": "oklch(0.3943 0.0209 172.94)",
+     "accent": "oklch(0.9251 0.0145 213.10)",
+     "accent-foreground": "oklch(0.2297 0.0233 149.79)",
+     "destructive": "oklch(0.52 0.17 27)",
+     "border": "oklch(0.8662 0.0141 196.90)",
+     "input": "oklch(0.5704 0.0220 180.58)",
+     "ring": "oklch(0.5369 0.0428 208.60)",
+     "success": "oklch(0.52 0.1 155)",
+     "success-foreground": "oklch(0.985 0.005 155)",
+     "warning": "oklch(0.55 0.13 55)",
+     "warning-foreground": "oklch(0.985 0.005 55)",
+     "info": "oklch(0.5 0.1 245)",
+     "info-foreground": "oklch(0.985 0.004 245)",
+     "block-1": "oklch(0.8600 0.0630 235.00)",
+     "block-1-foreground": "oklch(0.1970 0.0141 140.42)",
+     "block-2": "oklch(0.7800 0.0630 175.00)",
+     "block-2-foreground": "oklch(0.1970 0.0141 140.42)",
+     "block-3": "oklch(0.4400 0.1300 40.00)",
+     "block-3-foreground": "oklch(0.9741 0.0143 50.81)",
+     "block-4": "oklch(0.4200 0.0500 165.00)",
+     "block-4-foreground": "oklch(0.9638 0.0091 161.35)"
+    },
+    "dark": {
+     "background": "oklch(0.2007 0.0097 234.31)",
+     "foreground": "oklch(0.9595 0.0066 160.07)",
+     "card": "oklch(0.2421 0.0117 225.65)",
+     "card-foreground": "oklch(0.9595 0.0066 160.07)",
+     "popover": "oklch(0.2421 0.0117 225.65)",
+     "popover-foreground": "oklch(0.9595 0.0066 160.07)",
+     "primary": "oklch(0.7143 0.1208 47.24)",
+     "primary-foreground": "oklch(0.2007 0.0097 234.31)",
+     "secondary": "oklch(0.2365 0.0122 214.61)",
+     "secondary-foreground": "oklch(0.9595 0.0066 160.07)",
+     "muted": "oklch(0.2365 0.0122 214.61)",
+     "muted-foreground": "oklch(0.8021 0.0164 176.96)",
+     "accent": "oklch(0.2950 0.0202 175.40)",
+     "accent-foreground": "oklch(0.9251 0.0145 213.10)",
+     "destructive": "oklch(0.7 0.14 25)",
+     "border": "oklch(0.3352 0.0188 185.62)",
+     "input": "oklch(0.6069 0.0228 181.40)",
+     "ring": "oklch(0.7517 0.0759 248.87)",
+     "success": "oklch(0.74 0.11 155)",
+     "success-foreground": "oklch(0.19 0.02 155)",
+     "warning": "oklch(0.8 0.12 70)",
+     "warning-foreground": "oklch(0.2 0.03 70)",
+     "info": "oklch(0.74 0.1 245)",
+     "info-foreground": "oklch(0.19 0.015 245)",
+     "block-1": "oklch(0.7200 0.0630 235.00)",
+     "block-1-foreground": "oklch(0.1859 0.0101 220.10)",
+     "block-2": "oklch(0.7200 0.0630 175.00)",
+     "block-2-foreground": "oklch(0.1841 0.0101 172.88)",
+     "block-3": "oklch(0.4300 0.1300 40.00)",
+     "block-3-foreground": "oklch(0.9741 0.0143 50.81)",
+     "block-4": "oklch(0.3600 0.0500 165.00)",
+     "block-4-foreground": "oklch(0.9638 0.0091 161.35)"
+    }
+   }
+  }
+ ]
+}

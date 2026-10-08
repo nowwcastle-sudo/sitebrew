@@ -1,0 +1,13 @@
+{
+  "kind": "faq",
+  "variant": "two-column-index",
+  "title": "FAQ — 왼쪽 질문 목록·오른쪽 답",
+  "layout": "split-index",
+  "density": "comfortable",
+  "archetypes": ["saas", "local", "detail", "landing"],
+  "archetypeKinds": ["faq", "qna"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "넓은 화면: 왼쪽 번호 색인(붙어 따라오고, 질문 8개 이상이면 목록만 스크롤)·오른쪽 질문 h3 + 답. 375: 색인을 접고 질문·답을 차례로"
+}

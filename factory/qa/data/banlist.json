@@ -1,0 +1,43 @@
+{
+  "$comment": "금지 목록(데이터) — 분기마다 이 파일만 바꾼다. 정본: DESIGN.md §13 「조정 없는 기본 서체」·§14-D. 읽는 곳: factory/scripts/recipe.mjs lintRecipe(banlist 규칙). untunedOnly: true 는 「조정 없이 쓰면 금지」 — 레시피 fonts.<역할>.tuned 에 무엇을 조정했는지 적으면 통과한다(운영자 판정: Inter). false 는 조정해도 금지. roles 가 있으면 그 역할(display·body·mono)에 쓸 때만 건다.",
+  "fonts": [
+    { "family": "Inter", "untunedOnly": true, "why": "§13 조정 없는 기본 서체 — 금지 목록 표기 「Inter(무조정)」(§14-D, 2026-09-26 대표)" },
+    { "family": "Geist", "untunedOnly": true, "why": "§13 조정 없는 기본 서체" },
+    { "family": "Manrope", "untunedOnly": true, "why": "§13 조정 없는 기본 서체" },
+    { "family": "DM Sans", "untunedOnly": true, "why": "§13 조정 없는 기본 서체" },
+    { "family": "Plus Jakarta Sans", "untunedOnly": true, "why": "§13 조정 없는 기본 서체" },
+    { "family": "Space Grotesk", "untunedOnly": true, "why": "§13 조정 없는 기본 서체" },
+    { "family": "Poppins", "untunedOnly": true, "why": "§13 조정 없는 기본 서체" },
+    { "family": "Fraunces", "untunedOnly": true, "roles": ["display"], "why": "§13 세리프 디스플레이 기본값 — 브랜드 지정·편집 성격을 tuned 에 한 줄로" },
+    { "family": "Instrument Serif", "untunedOnly": true, "roles": ["display"], "why": "§13 세리프 디스플레이 기본값" },
+    { "family": "Playfair Display", "untunedOnly": true, "why": "§13 세리프 디스플레이·본문 세리프 기본값" },
+    { "family": "Cormorant", "untunedOnly": true, "roles": ["display"], "why": "§13 세리프 디스플레이 기본값" },
+    { "family": "Lora", "untunedOnly": true, "roles": ["display", "body"], "why": "§13 세리프 디스플레이·본문 세리프 기본값" },
+    { "family": "Merriweather", "untunedOnly": true, "roles": ["body"], "why": "§13 본문 세리프 기본값" },
+    { "family": "Roboto", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Open Sans", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Lato", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Source Sans 3", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값(Source Sans)" },
+    { "family": "Nunito", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Montserrat", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Raleway", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Work Sans", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Arial", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Helvetica", "untunedOnly": true, "roles": ["display"], "why": "§13 디스플레이 기본값" },
+    { "family": "Courier New", "untunedOnly": true, "roles": ["mono"], "why": "§13 모노 기본값" },
+    { "family": "Consolas", "untunedOnly": true, "roles": ["mono"], "why": "§13 모노 기본값" },
+    { "family": "system-ui", "untunedOnly": false, "why": "§14-D system-ui 는 기본값으로 두지 않는다 — 서체를 고른다" }
+  ],
+  "colors": [
+    { "id": "indigo-violet-gradient", "check": "G129", "hex": ["#6366f1", "#8b5cf6", "#a855f7", "#7c3aed"], "tailwind": ["indigo", "violet", "purple", "fuchsia"], "hue": [255, 320], "minChroma": 0.1, "why": "§13 보라→남색·보라→파랑 그라디언트 — OKLCH 색조 255~320·채도 0.1 이상인 서로 다른 두 색(색조 차 10 이상)을 한 그라디언트에 쓰면 건다. 읽는 곳: factory/qa/ai-tell.mjs" },
+    { "id": "near-black-neon", "check": "G130", "maxL": 0.2, "minChroma": 0.15, "why": "§13 거의 검정 + 형광 초록·주홍 한 점 — 페이지 배경 L 0.2 미만에 채도 0.15 이상 색이 딱 하나" }
+  ],
+  "layouts": [
+    { "id": "card-clone-run", "check": "G136", "min": 3, "why": "§13 가운데 히어로 → 아이콘 카드 3장 → CTA — 같은 구조 카드가 min 장 이상 연속" },
+    { "id": "split-streak", "check": "G134", "min": 3, "why": "§4 이미지–텍스트 분할 섹션이 min 개 이상 연속" },
+    { "id": "stat-row", "check": "G103", "min": 3, "why": "§13 큰 숫자(40px 이상) + 작은 라벨 통계가 min 개 이상" },
+    { "id": "section-clone", "check": "G018", "min": 3, "why": "A21 같은 구조 서명(자식 수·그리드 열·이미지 위치)의 섹션이 min 개 이상" },
+    { "id": "fake-traffic-lights", "check": "G101", "min": 3, "why": "§13 가짜 브라우저 바 — 지름이 같은 원 min 개가 나란히" }
+  ],
+  "updated": "2026-09-26"
+}

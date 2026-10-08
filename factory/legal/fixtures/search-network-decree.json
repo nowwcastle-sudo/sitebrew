@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-09-30T12:31:33.695Z",
+  "url": "https://www.law.go.kr/DRF/lawSearch.do?OC=***&target=law&type=JSON&query=%EC%A0%95%EB%B3%B4%ED%86%B5%EC%8B%A0%EB%A7%9D+%EC%9D%B4%EC%9A%A9%EC%B4%89%EC%A7%84+%EB%B0%8F+%EC%A0%95%EB%B3%B4%EB%B3%B4%ED%98%B8+%EB%93%B1%EC%97%90+%EA%B4%80%ED%95%9C+%EB%B2%95%EB%A5%A0+%EC%8B%9C%ED%96%89%EB%A0%B9",
+  "status": 200,
+  "body": {
+    "LawSearch": {
+      "law": {
+        "현행연혁코드": "현행",
+        "법령일련번호": "288033",
+        "자법타법여부": "",
+        "법령상세링크": "/DRF/lawService.do?OC=***&target=law&MST=288033&type=HTML&mobileYn=&efYd=20260707",
+        "법령명한글": "정보통신망 이용촉진 및 정보보호 등에 관한 법률 시행령",
+        "법령구분명": "대통령령",
+        "소관부처명": "과학기술정보통신부,방송미디어통신위원회",
+        "공포번호": "36502",
+        "제개정구분명": "일부개정",
+        "소관부처코드": "1571000,1721000",
+        "id": "1",
+        "법령ID": "004797",
+        "공동부령정보": "",
+        "시행일자": "20260707",
+        "공포일자": "20260707",
+        "법령약칭명": "정보통신망법 시행령"
+      },
+      "resultMsg": "success",
+      "키워드": "정보통신망 이용촉진 및 정보보호 등에 관한 법률 시행령",
+      "page": "1",
+      "resultCode": "00",
+      "target": "law",
+      "totalCnt": "1",
+      "section": "lawNm",
+      "numOfRows": "1"
+    }
+  }
+}

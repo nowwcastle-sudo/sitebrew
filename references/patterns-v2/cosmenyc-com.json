@@ -1,0 +1,59 @@
+{
+  "id": "cosmenyc-com",
+  "archetype": "local",
+  "sourceGallery": "supp-exa-lists",
+  "url": "https://cosmenyc.com/",
+  "structure": {
+    "hero": "적갈색 면 안에 흑백 식당 사진 한 장을 넣고 오른쪽에 90도 눕힌 거대한 워드마크를 세운 식당 홈",
+    "sections": [
+      "햄버거 메뉴(모바일은 예약 링크 포함)",
+      "흑백 사진 패널",
+      "세로 회전 워드마크",
+      "쿠키 안내 상자",
+      "접근성 도구 버튼"
+    ]
+  },
+  "type": {
+    "display": "굵은 둥근 기하학 산세리프(90도 회전 워드마크)",
+    "body": "세리프 본문과 모노스페이스 대문자 메뉴",
+    "scale": "워드마크 높이 약 820px, 본문 약 14px"
+  },
+  "colorLogic": "K6",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "햄버거 메뉴",
+    "쿠키 수락 링크",
+    "접근성 설정 버튼",
+    "모바일 상단 예약 링크"
+  ],
+  "cta": {
+    "pattern": "모바일 상단 예약 텍스트 링크",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "local"
+    ],
+    "score": 0.9
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "워드마크를 세로로 눕혀 오른쪽 가장자리를 채우는 실험적 구도다.",
+    "적갈색 면과 흑백 사진 두 가지로 색을 줄인다.",
+    "접근성 도구 버튼을 화면 모서리에 늘 둔다.",
+    "모바일에서는 왼쪽 위에 예약 링크 글자가 나타나 예약 접근이 데스크톱보다 앞선다.",
+    "쿠키 상자가 데스크톱에서는 사진 아래를 덮고 모바일에서는 사진 아래 따로 놓인다."
+  ]
+}

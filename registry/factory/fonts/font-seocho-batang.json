@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-seocho-batang",
+  "type": "registry:item",
+  "title": "SeochoBatang",
+  "description": "web-factory 폰트 키트: SeochoBatang (OFL-1.1) — Google Fonts 밖이라 1차 CDN 파일을 @font-face 로 싣는다 — 면은 registry:file CSS(소비자 styles/wf-fonts/)로 가고 css 필드는 그 @import 만 단다(Task 15 — M8). 제작자 GitHub 저장소 파일을 jsDelivr 로, main 브랜치 대신 커밋 acdbe07748d6b5b59b74a69c13c2c213cadb445a 로 고정",
+  "fontFace": {
+    "font-family": "\"SeochoBatang\"",
+    "src": "url(\"https://cdn.jsdelivr.net/gh/iwantanid/SeochoBatang-Font@acdbe07748d6b5b59b74a69c13c2c213cadb445a/fonts/SeochoBatang-Regular.woff2\") format(\"woff2\")",
+    "font-weight": "400",
+    "font-style": "normal",
+    "font-display": "swap"
+  },
+  "cssVars": {
+    "theme": {
+      "font-seocho-batang-wf": "\"SeochoBatang\""
+    }
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/iwantanid/SeochoBatang-Font",
+    "source": "https://github.com/iwantanid/SeochoBatang-Font/tree/acdbe07748d6b5b59b74a69c13c2c213cadb445a",
+    "family": "SeochoBatang",
+    "weight": [
+      "400"
+    ],
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

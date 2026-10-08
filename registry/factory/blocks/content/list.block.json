@@ -1,0 +1,13 @@
+{
+  "kind": "content",
+  "variant": "list",
+  "title": "날짜 붙은 목록 — 날짜 칸·제목 링크·한 줄 설명·작은 썸네일",
+  "layout": "dated-rows",
+  "density": "comfortable",
+  "archetypes": [ "brand", "public", "saas", "local" ],
+  "archetypeKinds": [ "news", "press-list", "sustainability", "news-tabs", "changelog", "departments" ],
+  "states": [],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "원형 noBlock content 섹션 렌더러(대장 C70). items 의 값은 콘텐츠 $ref — 첫 meta 가 왼쪽 날짜 칸(<time data-numeric>), 나머지는 제목 아래 줄. 바깥 링크는 새 창 + ExternalLink 아이콘 + 읽기 도구 글자(units.external). 썸네일이 비면 「실제 사진 필요」·「이미지 준비 중」 틀."
+}

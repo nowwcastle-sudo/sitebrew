@@ -1,0 +1,16 @@
+{
+  "kind": "hero",
+  "variant": "kinetic-type-video",
+  "title": "히어로 — 실사 영상 배경 + 키네틱 제목 + 로어 서드",
+  "layout": "kinetic-type-video",
+  "density": "spacious",
+  "archetypes": ["brand", "commerce", "local", "portfolio", "landing"],
+  "archetypeKinds": ["hero", "statement"],
+  "states": [],
+  "media": ["video"],
+  "motion": ["punch-in", "kinetic-type", "lower-third", "ken-burns", "rise", "scrub-timeline", "pointer-depth"],
+  "titleWidth": "full",
+  "boldness": "bold",
+  "boldMode": "motion",
+  "notes": "첫 화면 위 78% 무대에 실사 영상(media video — 포스터가 첫 칠·LCP, 소리 없는 반복, 정지 단추) + 아래에서 올라오는 짙은 막 위 큰 제목(글자 단위 키네틱 등장 → 등장 뒤 물결·마지막 낱말 펀치) + 이름표 띠(로어 서드 captions — 둘 이상이면 차례로 바뀐다). 무대 아래 띠에 한 문단 + 버튼 둘. 사진만 받으면 한 장 켄 번스(정지 단추), 그림이 없으면 muted 무대. MOTKIT(P3-5)"
+}

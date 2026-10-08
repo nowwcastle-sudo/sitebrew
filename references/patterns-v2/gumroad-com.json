@@ -1,0 +1,63 @@
+{
+  "id": "gumroad-com",
+  "archetype": "saas",
+  "sourceGallery": "supp-replace-a",
+  "url": "https://gumroad.com/",
+  "structure": {
+    "hero": "연회색 바탕 가장자리에 분홍 G 동전 그림이 흩어지고, 가운데 큰 한 줄 제목과 설명, 검은 시작 버튼, 마켓 검색창",
+    "sections": [
+      "상단 로고·메뉴·로그인·검정 시작 버튼",
+      "제목과 설명",
+      "검은 판매 시작 버튼과 마켓 검색창",
+      "분홍 G 동전 그림",
+      "아래 카드 3장(판매·예시·길)"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 중앙 정렬",
+    "body": "산세리프 14~16px",
+    "scale": "제목 약 48px, 설명 약 14px, 메뉴 약 12px"
+  },
+  "colorLogic": "K1",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": "상단 시작 버튼이 약 4.5초에 검정에서 분홍으로 바뀜",
+    "transition": "분홍 G 동전이 약 5.5초부터 천천히 돌며 자리를 옮김",
+    "durationsMs": [
+      4500,
+      5500
+    ],
+    "easing": null,
+    "measured": "video-frames",
+    "note": "8초 영상에서 읽은 값. 첫 4초는 거의 정지 화면."
+  },
+  "interaction": [
+    "판매 시작 버튼",
+    "마켓 검색창",
+    "상단 메뉴(발견·블로그·가격·기능)",
+    "로그인 링크",
+    "아래 카드 3장"
+  ],
+  "cta": {
+    "pattern": "검은 시작 버튼 하나와 마켓 검색창 하나",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "saas"
+    ],
+    "score": 0.8
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "분홍 G 동전을 화면 가장자리에 흩어 로고 하나로 첫 화면 분위기를 만든다.",
+    "한 줄 약속 제목과 검정 버튼 하나만 두어 행동을 줄인다.",
+    "마켓 검색창을 시작 버튼 옆에 두어 사려는 사람과 팔려는 사람의 입구를 나눈다.",
+    "375에서는 동전이 줄어 제목 뒤로 물러서고 버튼이 전폭으로 커진다."
+  ]
+}

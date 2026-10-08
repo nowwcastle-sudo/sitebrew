@@ -1,0 +1,14 @@
+{
+  "kind": "auth",
+  "variant": "two-factor",
+  "title": "2단계 인증 — 안내 | 코드 칸 두 단",
+  "layout": "intro-code-split",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard", "commerce"],
+  "archetypeKinds": ["two-factor"],
+  "states": ["submit-ok", "submit-field-error", "submit-server-error", "submit-pending"],
+  "media": [],
+  "motion": ["rise"],
+  "rules": ["O2", "X1", "M1"],
+  "notes": "왼쪽 자물쇠·제목·도움 링크 | 오른쪽 코드 판: 6자리(숫자 자판·one-time-code) ↔ 백업 코드 바꾸기, 이 기기 묻지 않기(선택, 해제로 시작), [인증하고 로그인하기]. 포트: verifyTwoFactor({code, method, trustDevice})·track?"
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>히트 영역 — 현재 쪽 표식(예시)</title>
+<style>
+  body { font: 16px/1.7 sans-serif; padding: 48px; }
+  .col { display: flex; flex-direction: column; gap: 0; margin-bottom: 64px; }
+  /* breadcrumb-link 와 같은 44 식: 높이 24px → 위아래 -10px (눌림 영역이 아래 이웃의 윗자리를 덮는다) */
+  .lnk { position: relative; display: block; width: 88px; height: 24px; }
+  .lnk::after { content: ""; position: absolute; inset: min(0px, calc((100% - 44px) / 2)); }
+  .cur { display: block; width: 88px; height: 24px; background: #eee; }
+</style>
+</head>
+<body>
+  <!-- 음성 대조: 현재 쪽이 아닌 span[role=link] 는 누를 수 있는 타깃이라, 윗 링크의 ::after 가 윗자리를 가져가면 겹침 실패 -->
+  <div class="col" data-slot="breadcrumb">
+    <a class="lnk" data-slot="breadcrumb-link" href="#a">윗 링크 가</a>
+    <span class="cur" data-slot="breadcrumb-page" role="link" aria-disabled="true">누를 수 있는 쪽 가</span>
+  </div>
+  <!-- 양성 대조: 현재 쪽 표식(aria-current=page + aria-disabled=true)은 누르는 대상이 아니라 겹침에 안 든다 -->
+  <div class="col" data-slot="breadcrumb">
+    <a class="lnk" data-slot="breadcrumb-link" href="#b">윗 링크 나</a>
+    <span class="cur" data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page">현재 쪽 나</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-dela-gothic-one",
+  "type": "registry:font",
+  "title": "Dela Gothic One",
+  "description": "web-factory 폰트 키트: Dela Gothic One (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Dela Gothic One', sans-serif",
+    "provider": "google",
+    "import": "Dela_Gothic_One",
+    "variable": "--font-dela-gothic-one-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/dela-gothic-one"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/delagothicone/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Dela+Gothic+One",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

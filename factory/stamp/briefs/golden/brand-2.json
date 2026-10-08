@@ -1,0 +1,31 @@
+{
+  "topic": "Small-batch tea company brand site — story, news, careers (fictional business — example)",
+  "archetype": "brand",
+  "locale": "en",
+  "conditions": [
+    "food"
+  ],
+  "facts": {
+    "name": "Fernwick Tea Co.",
+    "legalName": "Fernwick Tea Co. Ltd.",
+    "representative": "Amara Ellis",
+    "address": "8 Example Lane, Seoul",
+    "phone": "+82-2-1234-5678",
+    "founded": "Founded in 2021",
+    "story": "We blend loose-leaf teas from two family gardens and ship them in reusable tins",
+    "scale": "Twelve blends, sold in 30 independent cafes",
+    "claim": "Every blend is named for the hour it is best drunk",
+    "notice": "The autumn blend, Dusk No. 4, is back this week",
+    "news": "2026-09-10 Dusk No. 4 is back for autumn https://example.com/news/dusk-no-4 ; 2026-06-02 Our tins now ship to 30 independent cafes https://example.com/news/ship-to-30-cafes ; 2026-03-15 A second family garden joins the harvest https://example.com/news/second-garden",
+    "history": "2021 Founded with one blend from one garden ; 2023 Added a second family garden ; 2025 Twelve blends now sit in 30 independent cafes",
+    "leaders": "Amara Ellis | Founder and CEO | Blends every tea herself and visits both gardens each season ; Jun Park | Head of Sourcing | Works with the two family gardens all year",
+    "email": "hello@example.com",
+    "bizNo": "123-45-67890",
+    "audience": "Independent cafe owners and home tea drinkers who like small-batch loose-leaf tea",
+    "action": "Order a tasting set or ask about stocking our tins",
+    "mood": "calm",
+    "reports": "2025 Sourcing Report: how we choose and pay our two family gardens | 8 pages | 1.2MB | https://example.com/reports/2025-sourcing.pdf",
+    "careersUrl": "https://example.com/careers"
+  },
+  "seed": 5
+}

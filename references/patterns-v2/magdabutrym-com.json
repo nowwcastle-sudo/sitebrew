@@ -1,0 +1,59 @@
+{
+  "id": "magdabutrym-com",
+  "archetype": "commerce",
+  "sourceGallery": "httpster",
+  "url": "https://www.magdabutrym.com/kr-en",
+  "structure": {
+    "hero": "풀스크린 영상 위 아주 큰 워드마크가 인트로로 보이다가 헤더 로고로 줄어듦",
+    "sections": [
+      "공지띠(무료 배송·반품)",
+      "3열 헤더(좌 내비·중앙 로고·우 지역·부티크·백)",
+      "풀스크린 영상 히어로",
+      "쿠키 동의 하단 시트"
+    ]
+  },
+  "type": {
+    "display": "가는 세리프 대문자 워드마크",
+    "body": "둥근 기하학 산세리프 본문과 이탤릭 세리프 보조",
+    "scale": "로고만 큼직하고 나머지는 작게 절제"
+  },
+  "colorLogic": "K5",
+  "motion": {
+    "entrance": "풍경 영상 위 큰 워드마크가 1.5초 뒤 헤더 로고로 축소",
+    "scroll": null,
+    "hover": null,
+    "transition": "영상 컷이 0.75~1.5초 간격으로 가죽 공예 클로즈업 사이를 오감",
+    "durationsMs": [
+      750,
+      1500
+    ],
+    "easing": null,
+    "measured": "video-frames"
+  },
+  "interaction": [
+    "큰 로고가 헤더 로고로 축소",
+    "쿠키 하단 시트(필수만·설정·모두 수락)",
+    "지역/통화 선택"
+  ],
+  "cta": {
+    "pattern": "쿠키 수락 버튼 하나(검정 와이드)",
+    "count": 1
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "commerce"
+    ],
+    "score": 0.55
+  },
+  "boldness": "bold",
+  "takeaways": [
+    "큰 워드마크가 헤더 로고로 접히는 인트로는 브랜드 인지를 만드는 전형",
+    "제품 대신 공예 장면 영상으로 장인정신을 전달하는 패션 브랜드 어휘",
+    "쿠키 시트를 하단 전폭으로 두어 히어로 중앙을 비운다",
+    "첫 화면에 구매 CTA가 없다. 상품 목록은 내비를 통해서만 진입"
+  ]
+}

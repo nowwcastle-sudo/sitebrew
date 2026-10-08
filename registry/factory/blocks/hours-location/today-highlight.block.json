@@ -1,0 +1,13 @@
+{
+  "kind": "hours-location",
+  "variant": "today-highlight",
+  "title": "영업시간 — 「지금 영업 중」 큰 표시 + 오늘 시간",
+  "layout": "today-status",
+  "density": "spacious",
+  "archetypes": ["local", "pwa"],
+  "archetypeKinds": ["hours-table", "directions"],
+  "states": [],
+  "media": [],
+  "motion": ["rise"],
+  "notes": "큰 칸: 지금 상태(큰 글자) · 오늘 시간 · 다음 바뀌는 때 · 주소 + 전화 걸기·길찾기 두 행동. 아래 주간 띠(넓으면 7칸 한 줄, 좁으면 두 열). 상태는 서울 시각"
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "paywall",
+  "archetypeKinds": [ "usage-limit", "upgrade-prompt" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "variant": "limit-meter",
+  "title": "사용량 한도 — 막대 + 80% 인라인 제안 · 100% 부드러운 막음",
+  "layout": "usage-bar-inline-offer",
+  "density": "compact",
+  "archetypes": [ "saas", "dashboard", "pwa" ],
+  "rules": [ "P1", "P2", "P7", "P9", "P14", "L1", "L3", "M1" ],
+  "notes": "막대(data-limit=ok|warn|blocked, subscription().usage[limitKey]). 80% 이상: 한 줄 제안 + [N일 동안 안 보기(data-snooze)][요금제 살펴보기] → 그 자리 plan-offer. 100%: 무엇을 못 하고 무엇은 되나 + 무료로 계속할 길(data-free-path 링크) + plan-offer(거절 = 무료로 계속 링크). 목표 요금제는 한도가 더 큰 첫 요금제. 포트: subscription·plans·checkout·track? Task 10d: 청약철회 제한 고지 + 필수 체크(PlanOffer — 체크해야 checkout 에 withdrawalConsent: true). 폼 제출 보호(copy.notices)."
+}

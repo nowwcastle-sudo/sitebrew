@@ -1,0 +1,62 @@
+{
+  "id": "tools-sagasu-art",
+  "archetype": "pwa",
+  "sourceGallery": "supp-webappfinder",
+  "url": "https://tools.sagasu.art/en/",
+  "structure": {
+    "hero": "다크 바탕 중앙 대형 제목, 도구 수 배지, 요약 카드 4개",
+    "sections": [
+      "로고+메뉴+언어",
+      "도구 수 배지",
+      "대형 제목+설명+변환 횟수",
+      "특징 점 3개",
+      "툴킷 소개",
+      "기능 요약 카드 4개",
+      "쿠키 안내 띠",
+      "언어 변경 토스트"
+    ]
+  },
+  "type": {
+    "display": "굵은 산세리프 64px 제목",
+    "body": "산세리프 16~18px",
+    "scale": "제목 64px, 섹션 24px, 본문 16px"
+  },
+  "colorLogic": "K3",
+  "motion": {
+    "entrance": null,
+    "scroll": null,
+    "hover": null,
+    "transition": null,
+    "durationsMs": [],
+    "easing": null,
+    "measured": "stills-only"
+  },
+  "interaction": [
+    "도구·변환·단위·위키 메뉴",
+    "언어 전환",
+    "쿠키 수락 버튼",
+    "언어 변경 토스트 버튼"
+  ],
+  "cta": {
+    "pattern": "쿠키 수락 버튼 + 언어 변경 토스트",
+    "count": 2
+  },
+  "perf": {
+    "lcpMs": null,
+    "weightKb": null
+  },
+  "fit": {
+    "archetypes": [
+      "landing",
+      "pwa"
+    ],
+    "score": 0.5
+  },
+  "boldness": "safe",
+  "takeaways": [
+    "오프라인 PWA 동작을 카드 한 줄로 알리지만 설치 버튼은 없다",
+    "변환 횟수와 도구 수 같은 숫자로 규모를 보여 신뢰를 만든다",
+    "쿠키 띠와 언어 토스트가 하단에서 겹쳐 서로 가린다",
+    "375에서는 제목이 두 줄로 나뉘고 토스트가 화면 하단을 덮는다"
+  ]
+}

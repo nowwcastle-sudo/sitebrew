@@ -1,0 +1,33 @@
+{
+  "name": "feature-consents",
+  "title": "동의 — 마케팅 수신·동의 이력",
+  "description": "채널별 마케팅 수신 동의(NotifyPort — 기본 거부·바꿀 때마다 이력)와 본인 동의 이력 읽기 서버 액션. 가입 때의 약관·개인정보·만 14세 동의 기록은 인증 항목이 남기고, 이 항목은 그 이력을 이어 쓴다.",
+  "npm": ["@launch-factory/consent", "@launch-factory/db", "@launch-factory/email", "@launch-factory/i18n", "drizzle-orm", "@launch-factory/auth", "@launch-factory/security"],
+  "registryDependencies": ["feature-auth-betterauth", "feature-email-resend"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "BETTER_AUTH_SECRET", "CRON_SECRET", "LF_MARKETING_NIGHT_GUARD"],
+  "files": [
+    "files/lib/launch/consents.ts",
+    "files/app/actions/consents.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "files/lib/launch/marketing.ts",
+    "files/app/api/marketing/unsubscribe/route.ts",
+    "files/app/api/marketing/keep/route.ts",
+    "files/app/api/cron/consents/route.ts",
+    "../_shared/lib/launch/link-secret.ts",
+    "../_shared/lib/launch/cron.ts"
+  ],
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(consent_records·marketing_consents 표는 인증 항목의 db/ 한 줄기가 만든다 — 이 항목은 표를 더하지 않는다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. 만 14세 확인은 가입 때 인증 항목이 요구한다(기본 켬 — 개인정보 보호법 제22조의2제1항). 끄려면 createAuth 의 requireAgeOver14 를 제품이 정한다. 동의 기록은 UPDATE·TRUNCATE 가 DB 트리거로 막혀 있다(증빙 무결성).",
+    "3. 설정 화면은 getMarketingConsents() 로 현재 값을 읽고 setMarketingConsents({ email: true, confirmed: true }) 로 바꾼다(confirmed: true 는 사람이 확인했다는 입력 — 없으면 아무것도 바꾸지 않고 code confirmation_required). 준 채널만 바뀐다. 모르는 채널 이름·boolean 아닌 값은 fieldErrors 로 돌려준다.",
+    "4. 처리 결과 통지(정보통신망법 제50조제7항·시행령 제62조의2 — 의사를 표시한 날부터 14일 안에 전송자 명칭·의사 표시 사실과 날짜·처리 결과)는 이 항목이 보낸다: setMarketingConsents 로 동의·거부·철회를 표시할 때마다(같은 값을 다시 표시해도) 그 사람의 메일로 marketingConsentNotice 메일이 나간다. 전송자 명칭은 config.ts 의 PRODUCT_NAME 이다 — 법적 상호로 바꾼다. 보내기가 실패해도 설정 저장은 되돌리지 않는다 — 실패한 통지는 발신함(marketing_notice_outbox)에 남고 인증 항목의 /api/cron/notices 가 늘어나는 간격으로 다시 보낸다(한 통은 한 번만 나가고, 시도를 다 쓰면 멈추고 로그로 알린다. 대장 D210). 카카오처럼 이메일이 없는 계정은 통지 메일을 보낼 수 없으니 그런 계정에 마케팅을 켜기 전에 다른 통지 수단을 정한다. 메일 발송은 이메일 항목(RESEND_API_KEY·EMAIL_FROM)이 필요하다.",
+    "5. 결제 직전 청약철회 제한 동의는 결제 항목의 startCheckout 이 같은 이력에 남긴다. 개인정보 수집·국외 이전 고지 표의 데이터는 @launch-factory/consent 의 privacyCollections·overseasTransfers 로 만든다(화면은 제품이 그린다).",
+    "6. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.",
+    "7. 광고성 메일(LFMAIL — G03·G07): 광고성 메일은 lib/launch/marketing.ts 의 sendMarketingEmail(userId, { subject, heading, paragraphs, cta }) 로만 보낸다. 동의·2년 재확인·야간(한국 21~08시) 점검을 거치고, 메일러가 제목 「(광고)」·전송자 명칭·이메일·전화·주소·한글·영문 수신거부 안내·로그인 없는 수신거부 링크·List-Unsubscribe 헤더(RFC 8058)를 단다. 사업자 값은 LF_BUSINESS_NAME·EMAIL·PHONE·ADDRESS 에서만 온다 — 비어 있으면 던진다. 야간 점검은 LF_MARKETING_NIGHT_GUARD=off 로 끈다(전자우편은 법상 야간 동의 대상이 아니다).",
+    "8. 수신거부·재확인 링크: /api/marketing/unsubscribe(GET 즉시 철회 · POST 한 번에 수신거부)·/api/marketing/keep(GET 은 /email 확인 화면으로, POST 가 동의 갱신). 결과·확인 화면 app/(product)/email/page.tsx 는 제품이 만든다(템플릿에 있다). 서명 비밀은 BETTER_AUTH_SECRET 에서 파생한다.",
+    "9. 2년 재확인(A16 — 정보통신망법 제50조제8항·시행령 제62조의3): vercel.json 에 { \"path\": \"/api/cron/consents\", \"schedule\": \"20 5 * * *\" } 를 더한다. 동의한 지 2년이 지난 이메일 수신자에게 전송자·동의 사실과 날짜·계속 받기/수신거부 링크를 담은 메일을 한 통씩 보내고 mail_ledger 에 기록한다. 답이 없는 사람에게는 계속 보낸다(규칙에 끊는다는 문구가 없다 — 법무 확인 필요). 재확인 메일을 아직 못 보낸 2년 넘은 동의에는 보내지 않는다(canSendMarketing)."
+  ]
+}

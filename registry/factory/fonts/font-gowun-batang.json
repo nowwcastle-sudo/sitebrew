@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-gowun-batang",
+  "type": "registry:font",
+  "title": "Gowun Batang",
+  "description": "web-factory 폰트 키트: Gowun Batang (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Gowun Batang', serif",
+    "provider": "google",
+    "import": "Gowun_Batang",
+    "variable": "--font-gowun-batang-wf",
+    "weight": [
+      "400",
+      "700"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/gowun-batang"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/gowunbatang/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Gowun+Batang",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}

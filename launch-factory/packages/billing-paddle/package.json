@@ -1,0 +1,24 @@
+{
+  "name": "@launch-factory/billing-paddle",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Paddle Billing BillingPort 어댑터 — 웹훅(서명 검증·중복 제거·재조회·순서 보호·한 트랜잭션), 기간 끝 요금제 변경 예약(Cron), 요금제 권한 서버 검사.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "fixtures"
+  ],
+  "dependencies": {
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/email": "0.0.0",
+    "@paddle/paddle-node-sdk": "3.10.0",
+    "drizzle-orm": "0.45.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0"
+  }
+}

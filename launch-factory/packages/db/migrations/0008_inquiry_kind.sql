@@ -1,0 +1,2 @@
+ALTER TABLE "inquiries" ADD COLUMN "kind" text DEFAULT 'general' NOT NULL;--> statement-breakpoint
+ALTER TABLE "inquiries" ADD CONSTRAINT "inquiries_kind_check" CHECK ("inquiries"."kind" in ('general', 'consultation', 'quote', 'complaint', 'dispute'));

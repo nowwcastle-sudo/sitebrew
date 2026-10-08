@@ -1,0 +1,13 @@
+{
+  "kind": "integrations",
+  "variant": "category-tabs",
+  "title": "연동 — 분류 탭 + 목록",
+  "layout": "category-tabs",
+  "density": "comfortable",
+  "archetypes": ["saas", "dashboard"],
+  "archetypeKinds": ["integrations"],
+  "states": [],
+  "media": ["integration-logo"],
+  "motion": ["rise"],
+  "notes": "위 탭(밑줄형, 좁으면 그 줄 안에서 가로 밀림)으로 분류를 고르고 아래 한 줄 목록(표지·이름·설명·방식 배지·「<제품> 연결 방법」 링크). 분류 1개면 탭 없이 목록"
+}

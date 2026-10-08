@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-alegreya",
+  "type": "registry:font",
+  "title": "Alegreya",
+  "description": "web-factory 폰트 키트: Alegreya (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Alegreya Variable', serif",
+    "provider": "google",
+    "import": "Alegreya",
+    "variable": "--font-alegreya-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/alegreya"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/alegreya/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Alegreya",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

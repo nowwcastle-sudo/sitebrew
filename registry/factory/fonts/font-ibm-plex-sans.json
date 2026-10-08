@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-ibm-plex-sans",
+  "type": "registry:font",
+  "title": "IBM Plex Sans",
+  "description": "web-factory 폰트 키트: IBM Plex Sans (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'IBM Plex Sans Variable', sans-serif",
+    "provider": "google",
+    "import": "IBM_Plex_Sans",
+    "variable": "--font-ibm-plex-sans-wf",
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource-variable/ibm-plex-sans"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/ibmplexsans/OFL.txt",
+    "source": "https://fonts.google.com/specimen/IBM+Plex+Sans",
+    "role": [
+      "display"
+    ],
+    "korean": false
+  }
+}

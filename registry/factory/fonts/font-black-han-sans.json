@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-black-han-sans",
+  "type": "registry:font",
+  "title": "Black Han Sans",
+  "description": "web-factory 폰트 키트: Black Han Sans (Google Fonts, OFL-1.1)",
+  "font": {
+    "family": "'Black Han Sans', sans-serif",
+    "provider": "google",
+    "import": "Black_Han_Sans",
+    "variable": "--font-black-han-sans-wf",
+    "weight": [
+      "400"
+    ],
+    "subsets": [
+      "latin"
+    ],
+    "dependency": "@fontsource/black-han-sans"
+  },
+  "meta": {
+    "license": "OFL-1.1",
+    "licenseUrl": "https://github.com/google/fonts/blob/main/ofl/blackhansans/OFL.txt",
+    "source": "https://fonts.google.com/specimen/Black+Han+Sans",
+    "role": [
+      "display"
+    ],
+    "korean": true
+  }
+}
