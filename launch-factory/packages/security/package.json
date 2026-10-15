@@ -20,7 +20,7 @@
   "dependencies": {
     "@better-auth/core": "1.7.7",
     "@launch-factory/i18n": "0.0.0",
-    "nosecone": "1.13.0"
+    "nosecone": "1.14.1"
   },
   "devDependencies": {
     "@types/node": "24.19.1"

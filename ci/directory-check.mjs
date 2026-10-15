@@ -57,11 +57,13 @@ export function attributeLines(text) {
 }
 
 // Attributes that make the checked-out file differ from the committed bytes: a filter (Git LFS included), $Id$ expansion, a re-encoding, and line-ending
-// conversion (text, eol, crlf). Unsetting one (-text, !eol) or `binary` (-diff -merge -text) changes nothing and is allowed.
+// conversion (text, eol, crlf). The directory counts these in any stated form, unset included: v0.1.1 had only `*.png binary` (= -diff -merge -text)
+// reaching the plugin icon and the portal still refused it (2026-10-15). Only `!name` (back to unspecified) and attributes outside the list are allowed.
+const REWRITING = ['filter', 'ident', 'working-tree-encoding', 'eol', 'text', 'crlf']
 export function rewritesContent(attr) {
-  if (/^[-!]/.test(attr)) return false
-  const name = attr.split('=')[0]
-  return ['filter', 'ident', 'working-tree-encoding', 'eol', 'text', 'crlf'].includes(name)
+  if (attr.startsWith('!')) return false
+  if (attr === 'binary') return true
+  return REWRITING.includes(attr.replace(/^-/, '').split('=')[0])
 }
 
 /**
