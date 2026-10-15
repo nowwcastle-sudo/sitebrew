@@ -1,51 +1,13 @@
 name: ci
 
 # P3-8 — web-factory CI. 병합 관문은 로컬(컨트롤러가 병합 전에 같은 `npm run ci:verify` 를 돌린다)이고, 이 워크플로는 main 푸시 뒤의 이중 확인이다.
-# 문서만·생성물만 바뀐 푸시는 건너뛴다(paths-ignore) — 생성물 손편집은 로컬 ci:verify 의 check:regen 이 잡는다(분 절약: 비공개 저장소 월 무료 분 한도).
+# 문서만·생성물만 바뀐 푸시·PR 은 건너뛴다(changes 작업이 바뀐 파일을 보고 verify 를 건너뛴다 — 건너뛴 작업은 필수 검사에서 통과로 센다) — 생성물 손편집은 로컬 ci:verify 의 check:regen 이 잡는다(분 절약: 비공개 저장소 월 무료 분 한도).
 # 수동 실행(workflow_dispatch)은 분·메모리 실측용이다. 시각 회귀(blocks:visual)·Chrome 시험은 여기서 돌리지 않는다(로컬·릴리스·야간).
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - 'launch-factory/**'
-      - 'plugins/**'
-      - 'packages/**'
-      - 'install.ps1'
-      - '.claude-plugin/**'
-      - '.agents/**'
-      - 'docs/**'
-      - '**/*.md'
-      - '.superpowers/**'
-      - 'public/media/**'
-      - 'ai/**'
-      - 'registry/factory/r/**'
-      - 'registry/factory/ui/**'
-      - 'registry/factory/blocks/_compiled/**'
-      - 'registry/factory/*/registry.json'
-      - 'references/styles/presets.json'
-      - 'references/palettes/recipe-derived.json'
-      - 'references/fonts/pairs.json'
   pull_request:
     branches: [main]
-    paths-ignore:
-      - 'launch-factory/**'
-      - 'plugins/**'
-      - 'packages/**'
-      - 'install.ps1'
-      - '.claude-plugin/**'
-      - '.agents/**'
-      - 'docs/**'
-      - '**/*.md'
-      - '.superpowers/**'
-      - 'public/media/**'
-      - 'ai/**'
-      - 'registry/factory/r/**'
-      - 'registry/factory/ui/**'
-      - 'registry/factory/blocks/_compiled/**'
-      - 'registry/factory/*/registry.json'
-      - 'references/styles/presets.json'
-      - 'references/palettes/recipe-derived.json'
-      - 'references/fonts/pairs.json'
   workflow_dispatch:
 
 permissions:
@@ -60,8 +22,57 @@ env:
   CI_TEST_CONCURRENCY: '2'
 
 jobs:
+  changes:
+    name: web-factory changes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      run: ${{ steps.diff.outputs.run }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: diff
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.sha }}
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          if [ "$EVENT" = workflow_dispatch ] || [ -z "$BASE" ] || [ "$BASE" = 0000000000000000000000000000000000000000 ] || ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif git diff --quiet "$BASE" "$HEAD" -- \
+            '.' \
+            ':(exclude,glob)launch-factory/**' \
+            ':(exclude,glob)plugins/**' \
+            ':(exclude,glob)packages/**' \
+            ':(exclude,glob)install.ps1' \
+            ':(exclude,glob).claude-plugin/**' \
+            ':(exclude,glob).agents/**' \
+            ':(exclude,glob)docs/**' \
+            ':(exclude,glob)**/*.md' \
+            ':(exclude,glob).superpowers/**' \
+            ':(exclude,glob)public/media/**' \
+            ':(exclude,glob)ai/**' \
+            ':(exclude,glob)registry/factory/r/**' \
+            ':(exclude,glob)registry/factory/ui/**' \
+            ':(exclude,glob)registry/factory/blocks/_compiled/**' \
+            ':(exclude,glob)registry/factory/*/registry.json' \
+            ':(exclude,glob)references/styles/presets.json' \
+            ':(exclude,glob)references/palettes/recipe-derived.json' \
+            ':(exclude,glob)references/fonts/pairs.json'; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   verify:
-    name: verify
+    name: web-factory verify
+    needs: changes
+    if: needs.changes.outputs.run == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:

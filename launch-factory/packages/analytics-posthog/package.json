@@ -19,14 +19,14 @@
   "dependencies": {
     "@launch-factory/contract": "0.0.0",
     "@launch-factory/security": "0.0.0",
-    "posthog-js": "1.434.18",
-    "posthog-node": "5.54.1"
+    "posthog-js": "1.438.2",
+    "posthog-node": "5.55.0"
   },
   "peerDependencies": {
     "react": "^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "24.19.0",
+    "@types/node": "24.19.1",
     "@types/react": "19.3.0",
     "react": "19.3.0"
   }

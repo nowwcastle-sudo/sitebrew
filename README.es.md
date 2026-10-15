@@ -2,16 +2,32 @@
 
 # Sitebrew
 
-Sitebrew responde a unas pocas preguntas con tres candidatos de sitio web. Comparas los tres uno al lado del otro y eliges uno. Lo ajustas y lo recibes en tu propia carpeta. Funciona como plugin dentro de Claude Code o Codex, y no hace falta saber programar.
+**Responde unas pocas preguntas. Recibe tres sitios web terminados. Quédate con el que te guste.**
 
-Versión actual `v0.1.0`.
+Sitebrew es un plugin para Claude Code y Codex. Describes tu sitio con palabras sencillas. Construye tres candidatos distintos, eliges uno, lo ajustas en la conversación y te llevas el código a tu propia carpeta. No necesitas saber programar ni una clave de API para empezar.
 
-- Hace 10 tipos de sitios: marca, negocio local, tienda en línea, detalle de producto, página de evento o lista de espera, portafolio, oficina pública, SaaS, app móvil (PWA) y panel de administración.
-- Hace sitios en coreano y en inglés. Los sitios de negocio local y de oficina pública son solo en coreano.
-- Los servicios que necesitan registro y pagos se conectan al kit launch-factory del mismo repositorio.
-- Está hecho y probado en Windows 10 y 11.
+Versión actual `v0.1.0` · licencia MIT · Windows 10 y 11
 
-## Qué necesitas
+## Por qué Sitebrew
+
+- **Tres opciones reales, no una suposición.** Comparas tres candidatos terminados uno al lado del otro en lugar de reescribir el mismo prompt una y otra vez.
+- **Código que es tuyo.** El resultado es un proyecto de Next.js y shadcn/ui en tu carpeta. No hay un constructor alojado ni dependencia de un proveedor.
+- **Nada inventado.** Un dato que no diste, como un número de teléfono, queda como un hueco marcado. Las páginas legales siguen marcadas hasta que se revisan.
+- **Funciona sin claves.** Sin claves, el sitio se crea en modo de vista previa. Las claves opcionales añaden fotos reales, páginas legales revisadas y enlaces de vista previa.
+- **10 tipos de sitios.** Marca, negocio local, tienda en línea, detalle de producto, página de evento o lista de espera, portafolio, oficina pública, SaaS, app móvil (PWA) y panel de administración, en coreano o inglés.
+- **Un back end cuando lo necesites.** El kit launch-factory del mismo repositorio añade registro, pagos, correo y analítica.
+
+## Cómo funciona
+
+1. **Preguntar.** `/sitebrew:new` pregunta el nombre, el público, los datos de contacto y el estilo. Puedes saltarte lo que no sepas.
+2. **Estampar.** La fábrica combina piezas probadas (bloques, ejes de estilo, recetas y arquetipos) en tres candidatos. Cada candidato pasa controles de calidad de diseño, accesibilidad y textos.
+3. **Elegir.** El tablero muestra los tres candidatos uno al lado del otro, y eliges uno.
+4. **Revisar.** `/sitebrew:revise` cambia una sección, los colores, la tipografía, el movimiento o un texto.
+5. **Entregar.** `/sitebrew:deliver` copia el sitio elegido a tu carpeta con una lista de lo que debes completar antes de publicar.
+
+## Instalación
+
+### Qué necesitas
 
 | Elemento | Versión | Obligatorio | Instalar en Windows |
 |---|---|---|---|
@@ -21,22 +37,41 @@ Versión actual `v0.1.0`.
 | Git | Última | Sí | `winget install Git.Git` |
 | Chrome | Última | No | `winget install Google.Chrome` |
 
-- El instalador de abajo encuentra lo que falta y te lo dice. Pregunta antes de instalar cualquier cosa y no instala nada hasta que respondes.
-- Claude Code y Codex requieren iniciar sesión con una cuenta de ese servicio.
-- Sin Chrome solo se omiten algunas comprobaciones de pantalla. Los sitios se hacen igual.
-- Para abrir PowerShell, busca "PowerShell" en el menú Inicio. No lo abras como administrador: el instalador se detiene en una ventana de administrador.
+Cada instalador de abajo detecta lo que falta y te lo dice. Pregunta antes de instalar cualquier cosa. Abre PowerShell como usuario normal, no como administrador.
 
-## Instalación
+### Elige una de cinco formas
 
-### Instalación en una línea (recomendada)
+| Forma | Úsala cuando |
+|---|---|
+| 1. npm | Ya tienes Node |
+| 2. npx | Ya tienes Node y prefieres npx |
+| 3. PowerShell | Quieres una sola línea que también revise Node y Git |
+| 4. Plugin | Solo quieres añadir el plugin a Claude Code o Codex |
+| 5. Tu agente de IA | Quieres que Claude Code o Codex haga la instalación por ti |
 
-Pega la línea de abajo en PowerShell. El instalador descarga Sitebrew en una carpeta `sitebrew` dentro de la carpeta actual e instala el plugin en el agente que elijas.
+Las cinco terminan igual: Sitebrew en una carpeta `sitebrew` y el plugin en tu agente.
+
+#### 1. npm
+
+```powershell
+npm create sitebrew@0.1.0 sitebrew
+```
+
+#### 2. npx
+
+```powershell
+npx create-sitebrew@0.1.0 sitebrew
+```
+
+Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nada, `--yes` responde que sí a todas las preguntas y `--tool` elige `claude`, `codex` o `both`.
+
+#### 3. PowerShell
 
 ```powershell
 irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
 ```
 
-Para ver qué haría sin instalar nada, ejecuta esto:
+Para ver lo que haría sin instalar nada:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
@@ -44,21 +79,7 @@ irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | 
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
-Para elegir tú el agente o la carpeta, usa la forma que acepta opciones. `-Tool` es uno de `claude`, `codex` o `both`. `-Yes` responde sí a todas las preguntas. `-WhatIf` solo muestra una vista previa.
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/install.ps1).TrimStart([char]0xFEFF))) -Tool claude -Folder "$HOME\sitebrew"
-```
-
-### Instalar con npx
-
-Si ya tienes Node, esto también funciona. Descarga el repositorio, muestra los dos comandos de instalación del plugin y los ejecuta cuando respondes sí.
-
-```powershell
-npx create-sitebrew@0.1.0 sitebrew
-```
-
-### Instalar solo el plugin
+#### 4. Plugin
 
 En Claude Code:
 
@@ -74,76 +95,30 @@ codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.0
 codex plugin add sitebrew@sitebrew
 ```
 
-Para comprobar la instalación, ejecuta `claude plugin list`.
+#### 5. Tu agente de IA
 
-## Haz tu primer sitio
+Pega esto en Claude Code o Codex. El agente sigue [AGENT_INSTALL.md](AGENT_INSTALL.md), una guía paso a paso escrita para agentes.
 
-1. Abre Claude Code en una carpeta vacía para los archivos del sitio.
-2. Ejecuta `/sitebrew:doctor` para ver qué falta. Cada elemento que falta trae una línea con la forma de arreglarlo.
-3. Ejecuta `/sitebrew:new` y responde las preguntas: nombre, público, datos de contacto, estilo, etc. Puedes dejar en blanco lo que no sepas.
-4. Compara los tres candidatos y elige uno.
-5. Para cambiar algo, usa `/sitebrew:revise` para una sección, los colores, la tipografía o el movimiento, o un texto.
-6. Usa `/sitebrew:deliver` para recibir el sitio elegido en tu propia carpeta. La guía que lo acompaña indica qué completar antes de publicar.
+```text
+Install Sitebrew for me. Read https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/main/AGENT_INSTALL.md and follow it step by step. Ask me before you install any program, and ask me which agent to use. At the end, show me the last lines of the installer output.
+```
+
+Si una instalación se detiene, su código de salida y lo que debes hacer están en [AGENT_INSTALL.md](AGENT_INSTALL.md).
+
+## Crea tu primer sitio
+
+Abre Claude Code en una carpeta vacía y ejecuta:
 
 ```text
 /sitebrew:doctor
 /sitebrew:new
 ```
 
-En Codex, di "haz un sitio con la skill new de sitebrew". Para un sitio en inglés, di "sitio en inglés" al principio.
-
-## Modo de vista previa y espacios en blanco
-
-Puedes empezar sin ninguna clave. Sin claves, el sitio se hace en modo de vista previa y se marca como "no publicable". Una línea explica qué falta en cada motivo.
-
-- "Por confirmar": un dato que dejaste en blanco en las preguntas (teléfono, datos del negocio, etc.). Se deja en blanco, nunca se inventa. Lo completas tú.
-- "Se necesita una foto real": un lugar donde solo cabe una foto real, como la tienda o la pantalla del producto. Pones tu foto.
-- "Revisión legal pendiente": los borradores de términos y de política de privacidad aún no se han contrastado con la ley.
-
-Todos los valores de abajo son opcionales. Claude Code los pide al activar el plugin. Si instalaste desde la línea de comandos no los pide, así que añádelos con `/plugin configure sitebrew@sitebrew`. Nunca pegues una clave en el chat.
-
-| Nombre | Qué añade |
-|---|---|
-| `PEXELS_API_KEY` | Fotos de stock reales en lugar de huecos vacíos |
-| `LAW_API_OC` | Páginas legales coreanas contrastadas con el texto legal vigente |
-| `VERCEL_TOKEN` | Enlaces de vista previa en línea |
-| `HIGGSFIELD_DIR` | Una carpeta con tus propias imágenes y modelos 3D |
-
-```text
-/plugin configure sitebrew@sitebrew
-```
-
-La portada con objeto 3D (`object-3d-orbit`) empieza con una imagen: imagen → GLB (modelo 3D) → se muestra en pantalla. Sin las herramientas, pasa a una imagen 2.5D y luego a un póster. Sin ninguna imagen, no se elige esta portada.
-
-## Palabras usadas aquí
-
-| Palabra | Significado |
-|---|---|
-| Candidato | Una versión del sitio hecha con las mismas respuestas. Tres a la vez |
-| Tablero | La pantalla donde pones los candidatos uno al lado del otro y eliges |
-| Estampar | Hacer un sitio a partir de tus respuestas (`npm run stamp`) |
-| Modo de vista previa | Un sitio hecho mientras faltan claves o datos. Sirve para elegir, no para publicar |
-| No publicable | Una marca de que hay que completar algo antes de publicar. Viene con el motivo |
-| Doctor | Una comprobación que dice qué falta en tu equipo y cómo arreglarlo |
-| Banco de inspección | Una pantalla para desarrolladores que muestra piezas y bloques uno por uno (`npm run dev`) |
-
-## Cuando la instalación se detiene
-
-El instalador deja su resultado en `$LASTEXITCODE`. Si se ejecuta fuera de una terminal, toma todas las preguntas como respondidas con "no".
-
-| Código | Significado | Qué hacer |
-|---|---|---|
-| 0 | Terminado, o vista previa | Sigue el siguiente paso de la última línea |
-| 1 | Falló una descarga, una clonación o un comando del plugin | Revisa la conexión a internet y ejecuta la misma línea otra vez |
-| 2 | Una opción o carpeta incorrecta | Revisa la ruta de `-Folder`. Las carpetas dentro de Windows o Program Files se rechazan |
-| 3 | Falta algo o hace falta tu respuesta | Ejecuta el comando de instalación que aparece, o vuelve a ejecutar con `-Yes` |
-| 4 | Se negó a empezar | En una ventana de administrador, vuelve a ejecutar en una ventana normal de PowerShell |
-
-Con `-Yes` también responde sí a guardar la carpeta de Sitebrew en la variable de entorno de usuario `SITEBREW_DIR`.
+`/sitebrew:doctor` muestra lo que falta, con una línea sobre cómo arreglar cada cosa. En Codex, di "crea un sitio con la skill sitebrew new". Las claves opcionales y la lista completa de skills están en la [guía del plugin](plugins/sitebrew/README.md).
 
 ## Para desarrolladores
 
-El repositorio tiene tres partes. `factory/` y `registry/` son la fábrica de sitios (web-factory), y `launch-factory/` es el kit de registro, pagos, correo y analítica. `plugins/sitebrew/` es el plugin y `packages/create-sitebrew/` es el instalador de npx.
+El repositorio tiene tres partes: la fábrica de sitios (web-factory) en la raíz, el kit de back end en `launch-factory/` y el plugin en `plugins/sitebrew/`.
 
 ```bash
 git clone https://github.com/nowwcastle-sudo/sitebrew.git
@@ -152,20 +127,18 @@ npm run setup
 npm run dev
 ```
 
-- `npm run setup` revisa el entorno e instala las dependencias si hace falta. `npm run dev` abre el banco de inspección.
-- La comprobación antes de fusionar es una línea: `npm run ci:verify`.
-- La guía completa para agentes es [docs/agents/agent-guide.md](docs/agents/agent-guide.md).
-- Cómo añadir una receta o un bloque está en [docs/guides/add-recipe.md](docs/guides/add-recipe.md).
-- Cómo usar launch-factory está en [launch-factory/README.md](launch-factory/README.md).
-- Los pasos de publicación están en [docs/RELEASING.md](docs/RELEASING.md). Las licencias de fuentes están en [docs/qa/font-licenses.md](docs/qa/font-licenses.md).
+La comprobación antes de una fusión es `npm run ci:verify`. La guía para agentes es [docs/agents/agent-guide.md](docs/agents/agent-guide.md), y el kit de lanzamiento se describe en [launch-factory/README.md](launch-factory/README.md).
 
-También puedes instalar solo las piezas en otro proyecto Next.js. Añade siempre la etiqueta a la dirección.
+También puedes añadir las piezas a otro proyecto de Next.js. Fija siempre la etiqueta:
 
 ```bash
 npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.0 -y -o
 npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.0 -y -o
 ```
+
+## Contribuir
+
+Las contribuciones son bienvenidas: reportes de errores, ideas, recetas o bloques nuevos y traducciones. Lee [CONTRIBUTING.md](CONTRIBUTING.md) para empezar. Es corto.
 
 ## Licencia
 

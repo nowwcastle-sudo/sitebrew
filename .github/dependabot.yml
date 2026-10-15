@@ -94,6 +94,8 @@ updates:
     # the same ignore rules as launch-factory's own .github/dependabot.yml (shadcn moves only with a release: install commands, template lock and README pin 4.21.0;
     # @types/node follows the Node 24 engine; typescript-eslint does not support TypeScript 7 yet)
     ignore:
+      # the workspace's own packages are not published to npm; looking them up ends every update job in a registry 404
+      - dependency-name: '@launch-factory/*'
       - dependency-name: shadcn
       - dependency-name: '@types/node'
         update-types: [version-update:semver-major]

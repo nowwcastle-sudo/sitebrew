@@ -2,16 +2,32 @@
 
 # Sitebrew
 
-Sitebrew answers a few questions with three website candidates. You compare the three side by side and pick one. You adjust it, then get it in your own folder. It runs as a plugin inside Claude Code or Codex, and you do not need to know how to code.
+**Answer a few questions. Get three finished websites. Keep the one you like.**
 
-Current version `v0.1.0`.
+Sitebrew is a plugin for Claude Code and Codex. You describe your site in plain words. It builds three different candidates, you pick one, you adjust it in the conversation, and you take the code into your own folder. You do not need to know how to code, and you do not need an API key to start.
 
-- It makes 10 kinds of sites: brand, local business, online store, product detail, event or waitlist landing page, portfolio, public office, SaaS, mobile app (PWA) and admin dashboard.
-- It makes Korean and English sites. Local business and public office sites are Korean only.
-- Services that need sign-up and payments connect to the launch-factory kit in the same repository.
-- It is built and tested on Windows 10 and 11.
+Current version `v0.1.0` · MIT license · Windows 10 and 11
 
-## What you need
+## Why Sitebrew
+
+- **Three real options, not one guess.** You compare three finished candidates side by side instead of rewriting one prompt again and again.
+- **Code you own.** The result is a Next.js and shadcn/ui project in your folder. There is no hosted builder and no lock-in.
+- **Nothing made up.** A fact you did not give, such as a phone number, stays a marked blank. Legal pages stay marked until they are checked.
+- **Works without keys.** Without keys the site is made in preview mode. Optional keys add real photos, checked legal pages and preview links.
+- **10 kinds of sites.** Brand, local business, online store, product detail, event or waitlist page, portfolio, public office, SaaS, mobile app (PWA) and admin dashboard, in Korean or English.
+- **A back end when you need it.** The launch-factory kit in the same repository adds sign-up, payments, email and analytics.
+
+## How it works
+
+1. **Ask.** `/sitebrew:new` asks for the name, the audience, the contact details and the mood. You can skip what you do not know.
+2. **Stamp.** The factory combines tested parts (blocks, style axes, recipes and archetypes) into three candidates. Each candidate goes through quality gates for layout, accessibility and copy.
+3. **Pick.** The board shows the three candidates side by side, and you choose one.
+4. **Revise.** `/sitebrew:revise` changes one section, the colors, the type, the motion or one piece of copy.
+5. **Deliver.** `/sitebrew:deliver` copies the chosen site into your folder with a list of what to fill in before you publish.
+
+## Install
+
+### What you need
 
 | Item | Version | Required | Install on Windows |
 |---|---|---|---|
@@ -21,22 +37,41 @@ Current version `v0.1.0`.
 | Git | Latest | Yes | `winget install Git.Git` |
 | Chrome | Latest | No | `winget install Google.Chrome` |
 
-- The installer below finds what is missing and tells you. It asks before it installs anything, and installs nothing until you answer.
-- Claude Code and Codex need you to sign in with an account of that service.
-- Without Chrome, only some screen checks are skipped. Sites are still made.
-- To open PowerShell, search for "PowerShell" in the Start menu. Do not open it as administrator: the installer stops in an administrator window.
+Every installer below finds what is missing and tells you. It asks before it installs anything. Open PowerShell as a normal user, not as administrator.
 
-## Install
+### Pick one of five ways
 
-### One-line install (recommended)
+| Way | Use it when |
+|---|---|
+| 1. npm | You already have Node |
+| 2. npx | You already have Node and prefer npx |
+| 3. PowerShell | You want one line that also checks Node and Git |
+| 4. Plugin | You only want to add the plugin to Claude Code or Codex |
+| 5. Your AI agent | You want Claude Code or Codex to do the install for you |
 
-Paste the line below into PowerShell. The installer gets Sitebrew into a `sitebrew` folder under the current folder and installs the plugin into the agent you choose.
+All five end in the same place: Sitebrew in a `sitebrew` folder and the plugin in your agent.
+
+#### 1. npm
+
+```powershell
+npm create sitebrew@0.1.0 sitebrew
+```
+
+#### 2. npx
+
+```powershell
+npx create-sitebrew@0.1.0 sitebrew
+```
+
+Both take the same options: `--dry-run` shows the plan and changes nothing, `--yes` answers yes to every question, and `--tool` chooses `claude`, `codex` or `both`.
+
+#### 3. PowerShell
 
 ```powershell
 irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
 ```
 
-To see what it would do without installing anything, run this:
+To see what it would do without installing anything:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
@@ -44,21 +79,7 @@ irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | 
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
-To choose the agent or the folder yourself, use the form that takes options. `-Tool` is one of `claude`, `codex` or `both`. `-Yes` answers yes to every question. `-WhatIf` only previews.
-
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/install.ps1).TrimStart([char]0xFEFF))) -Tool claude -Folder "$HOME\sitebrew"
-```
-
-### Install with npx
-
-If you already have Node, this also works. It gets the repository, shows the two plugin install commands and runs them when you answer yes.
-
-```powershell
-npx create-sitebrew@0.1.0 sitebrew
-```
-
-### Install only the plugin
+#### 4. Plugin
 
 In Claude Code:
 
@@ -74,76 +95,30 @@ codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.0
 codex plugin add sitebrew@sitebrew
 ```
 
-To check the install, run `claude plugin list`.
+#### 5. Your AI agent
+
+Paste this into Claude Code or Codex. The agent follows [AGENT_INSTALL.md](AGENT_INSTALL.md), a step-by-step guide written for agents.
+
+```text
+Install Sitebrew for me. Read https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/main/AGENT_INSTALL.md and follow it step by step. Ask me before you install any program, and ask me which agent to use. At the end, show me the last lines of the installer output.
+```
+
+If an install stops, its exit code and what to do are in [AGENT_INSTALL.md](AGENT_INSTALL.md).
 
 ## Make your first site
 
-1. Open Claude Code in an empty folder for the site files.
-2. Run `/sitebrew:doctor` to see what is missing. Each missing item comes with one line on how to fix it.
-3. Run `/sitebrew:new` and answer the questions: name, audience, contact details, mood and so on. You can leave out what you do not know.
-4. Compare the three candidates and pick one.
-5. To change something, use `/sitebrew:revise` for one section, the colors, type or motion, or one piece of copy.
-6. Use `/sitebrew:deliver` to get the chosen site in your own folder. The guide that comes with it lists what to fill in before you publish.
+Open Claude Code in an empty folder and run:
 
 ```text
 /sitebrew:doctor
 /sitebrew:new
 ```
 
-In Codex, say "make a site with the sitebrew new skill". For an English site, say "English site" at the start.
-
-## Preview mode and blanks
-
-You can start without any key. Without keys the site is made in preview mode and marked "not publishable". One line says what is missing for each reason.
-
-- "To be confirmed": a fact you left out in the questions (phone number, business details and so on). It is left blank, never made up. You fill it in.
-- "Real photo needed": a place where only a real photo fits, such as the shop or the product screen. You add your photo.
-- "Legal review pending": the terms and privacy policy drafts are not yet checked against the law.
-
-All values below are optional. Claude Code asks for them when you enable the plugin. If you installed from the command line it does not ask, so add them with `/plugin configure sitebrew@sitebrew`. Never paste a key into the chat.
-
-| Name | What it adds |
-|---|---|
-| `PEXELS_API_KEY` | Real stock photos instead of empty photo places |
-| `LAW_API_OC` | Korean legal pages checked against the current statute text |
-| `VERCEL_TOKEN` | Online preview links |
-| `HIGGSFIELD_DIR` | A folder of your own images and 3D models |
-
-```text
-/plugin configure sitebrew@sitebrew
-```
-
-The 3D object hero (`object-3d-orbit`) starts from an image: image → GLB (3D model) → shown on screen. Without the tools it falls back to a 2.5D image, then to a poster. With no image at all, this hero is not picked.
-
-## Words used here
-
-| Word | Meaning |
-|---|---|
-| Candidate | One version of the site made from the same answers. Three at a time |
-| Board | The screen where you put the candidates side by side and pick |
-| Stamp | Making a site from your answers (`npm run stamp`) |
-| Preview mode | A site made while keys or facts are missing. Good for choosing, not for publishing |
-| Not publishable | A mark that something must be filled in before you publish. The reason comes with it |
-| Doctor | A check that says what is missing on your computer and how to fix it |
-| Inspection bench | A developer screen that shows parts and blocks one by one (`npm run dev`) |
-
-## When the install stops
-
-The installer leaves its result in `$LASTEXITCODE`. Run outside a terminal, it treats every question as answered "no".
-
-| Code | Meaning | What to do |
-|---|---|---|
-| 0 | Done, or preview | Follow the next step on the last line |
-| 1 | A download, clone or plugin command failed | Check the internet connection and run the same line again |
-| 2 | A wrong option or folder | Check the `-Folder` path. Folders under Windows or Program Files are refused |
-| 3 | Something is missing or needs your answer | Run the install command shown, or run again with `-Yes` |
-| 4 | Refused to start | In an administrator window, run again in a normal PowerShell window |
-
-With `-Yes` it also answers yes to saving the Sitebrew folder in the user environment variable `SITEBREW_DIR`.
+`/sitebrew:doctor` lists what is missing, with one line on how to fix each item. In Codex, say "make a site with the sitebrew new skill". The optional keys and the full skill list are in the [plugin guide](plugins/sitebrew/README.md).
 
 ## For developers
 
-The repository has three parts. `factory/` and `registry/` are the site factory (web-factory), and `launch-factory/` is the sign-up, payment, email and analytics kit. `plugins/sitebrew/` is the plugin and `packages/create-sitebrew/` is the npx installer.
+The repository has three parts: the site factory (web-factory) at the root, the back-end kit in `launch-factory/` and the plugin in `plugins/sitebrew/`.
 
 ```bash
 git clone https://github.com/nowwcastle-sudo/sitebrew.git
@@ -152,20 +127,18 @@ npm run setup
 npm run dev
 ```
 
-- `npm run setup` checks the environment and installs the dependencies if needed. `npm run dev` opens the inspection bench.
-- The check before a merge is one line: `npm run ci:verify`.
-- The full guide for agents is [docs/agents/agent-guide.md](docs/agents/agent-guide.md).
-- How to add a recipe or a block is in [docs/guides/add-recipe.md](docs/guides/add-recipe.md).
-- How to use launch-factory is in [launch-factory/README.md](launch-factory/README.md).
-- The release steps are in [docs/RELEASING.md](docs/RELEASING.md). Font licenses are in [docs/qa/font-licenses.md](docs/qa/font-licenses.md).
+The check before a merge is `npm run ci:verify`. The guide for agents is [docs/agents/agent-guide.md](docs/agents/agent-guide.md), and the launch kit is described in [launch-factory/README.md](launch-factory/README.md).
 
-You can also install only the parts into another Next.js project. Always add the tag to the address.
+You can also add the parts to another Next.js project. Always pin the tag:
 
 ```bash
 npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.0 -y -o
 npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.0 -y -o
 ```
+
+## Contributing
+
+Contributions are welcome: bug reports, ideas, new recipes or blocks, and translations. Read [CONTRIBUTING.md](CONTRIBUTING.md) to start. It is short.
 
 ## License
 

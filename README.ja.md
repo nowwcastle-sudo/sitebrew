@@ -2,16 +2,32 @@
 
 # Sitebrew
 
-Sitebrew は、いくつかの質問に答えるとウェブサイトの候補を三つ作るツールです。三つを並べて比べ、一つを選びます。調整したあと、自分のフォルダーに受け取ります。Claude Code または Codex の中でプラグインとして使い、コードの知識はいりません。
+**いくつかの質問に答えるだけ。完成したウェブサイトが三つできます。気に入った一つを残してください。**
 
-現在のバージョン `v0.1.0`。
+Sitebrew は Claude Code と Codex で使うプラグインです。作りたいサイトをふだんの言葉で説明すると、違う候補を三つ作ります。一つを選び、会話で直して、コードを自分のフォルダーに持ち帰ります。コードの知識も、始めるときの API キーもいりません。
 
-- 作れるサイトは 10 種類です：ブランド、地域の店舗、オンラインショップ、商品詳細、イベント・ウェイトリストのランディングページ、ポートフォリオ、公共機関、SaaS、モバイルアプリ（PWA）、管理画面。
-- 韓国語のサイトと英語のサイトを作ります。地域の店舗と公共機関は韓国語のみです。
-- 会員登録や決済が必要なサービスは、同じリポジトリの launch-factory キットにつなぎます。
-- Windows 10・11 で作り、テストしています。
+現在のバージョン `v0.1.0` · MIT ライセンス · Windows 10 と 11
 
-## 必要なもの
+## なぜ Sitebrew なのか
+
+- **当て推量一つではなく、本物の選択肢が三つ。** 同じプロンプトを何度も書き直す代わりに、完成した候補三つを並べて比べます。
+- **自分のものになるコード。** 結果は自分のフォルダーに入る Next.js と shadcn/ui のプロジェクトです。ホスト型のビルダーも、囲い込みもありません。
+- **作り話をしません。** 電話番号など、伝えていない事実は印の付いた空欄のまま残します。法務ページは確認されるまで印が付いたままです。
+- **キーがなくても動きます。** キーがなければプレビューモードで作ります。任意のキーを入れると、実写の写真、確認済みの法務ページ、プレビューリンクが加わります。
+- **10 種類のサイト。** ブランド、地域のお店、オンラインショップ、商品詳細、イベントやウェイティングリストのページ、ポートフォリオ、公共機関、SaaS、モバイルアプリ（PWA）、管理ダッシュボードを、韓国語か英語で作ります。
+- **必要になればバックエンドも。** 同じリポジトリの launch-factory キットが、会員登録、決済、メール、分析を加えます。
+
+## しくみ
+
+1. **質問する。** `/sitebrew:new` が名前、対象、連絡先、雰囲気を聞きます。わからないことは飛ばせます。
+2. **つくる。** 工場が検証済みの部品（ブロック、スタイル軸、レシピ、原型）を組み合わせて候補を三つ作ります。候補ごとに、レイアウト・アクセシビリティ・文章の品質ゲートを通します。
+3. **選ぶ。** ボードが候補三つを並べて見せ、その中から一つを選びます。
+4. **直す。** `/sitebrew:revise` で、セクション一つ、色、書体、動き、文章一つを変えます。
+5. **受け取る。** `/sitebrew:deliver` が選んだサイトを自分のフォルダーへ移し、公開前に埋めるものの一覧を添えます。
+
+## インストール
+
+### 必要なもの
 
 | 項目 | バージョン | 必須 | Windows でのインストール |
 |---|---|---|---|
@@ -21,22 +37,41 @@ Sitebrew は、いくつかの質問に答えるとウェブサイトの候補�
 | Git | 最新 | はい | `winget install Git.Git` |
 | Chrome | 最新 | いいえ | `winget install Google.Chrome` |
 
-- 下のインストーラーが足りないものを見つけて知らせます。何かをインストールする前に必ず聞き、答えるまで何もインストールしません。
-- Claude Code と Codex は、それぞれのサービスのアカウントでログインして使います。
-- Chrome がなくても、画面チェックの一部を飛ばすだけです。サイトはそのまま作られます。
-- PowerShell の開き方：スタートメニューで「PowerShell」を検索して開きます。管理者として開かないでください。管理者ウィンドウではインストーラーが止まります。
+下のどのインストール方法も、足りないものを見つけて知らせます。何かをインストールする前に必ず確認します。PowerShell は管理者ではなく、ふつうのユーザーとして開いてください。
 
-## インストール
+### 五つの方法から一つを選ぶ
 
-### 一行インストール（おすすめ）
+| 方法 | こんなとき |
+|---|---|
+| 1. npm | Node がすでにある |
+| 2. npx | Node がすでにあり、npx を使いたい |
+| 3. PowerShell | Node と Git の確認も一緒に済む一行がほしい |
+| 4. プラグイン | Claude Code か Codex にプラグインだけを加えたい |
+| 5. AI エージェント | Claude Code か Codex に代わりにインストールしてほしい |
 
-下の一行を PowerShell に貼り付けます。インストーラーは今のフォルダーの下の `sitebrew` フォルダーに Sitebrew を取得し、選んだエージェントにプラグインをインストールします。
+五つとも行き着く先は同じです。`sitebrew` フォルダーに Sitebrew が入り、エージェントにプラグインが入ります。
+
+#### 1. npm
+
+```powershell
+npm create sitebrew@0.1.0 sitebrew
+```
+
+#### 2. npx
+
+```powershell
+npx create-sitebrew@0.1.0 sitebrew
+```
+
+どちらも同じオプションを使えます。`--dry-run` は何も変えずに計画だけを表示し、`--yes` はすべての質問に「はい」と答え、`--tool` は `claude`、`codex`、`both` から選びます。
+
+#### 3. PowerShell
 
 ```powershell
 irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
 ```
 
-何もインストールせずに、何をするかだけ見るには次のように実行します。
+何もインストールせずに、することだけを見るには:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
@@ -44,106 +79,46 @@ irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | 
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
-エージェントやフォルダーを自分で決めるには、オプションを付ける形を使います。`-Tool` は `claude`、`codex`、`both` のどれかです。`-Yes` はすべての質問に「はい」と答えます。`-WhatIf` はプレビューだけです。
+#### 4. プラグイン
 
-```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/install.ps1).TrimStart([char]0xFEFF))) -Tool claude -Folder "$HOME\sitebrew"
-```
-
-### npx でインストール
-
-Node がすでにあれば、この方法も使えます。リポジトリを取得したあと、プラグインのインストールコマンド二行を表示し、「はい」と答えるとすぐに実行します。
-
-```powershell
-npx create-sitebrew@0.1.0 sitebrew
-```
-
-### プラグインだけインストール
-
-Claude Code の中で：
+Claude Code で:
 
 ```text
 /plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.0
 /plugin install sitebrew@sitebrew
 ```
 
-Codex で：
+Codex で:
 
 ```powershell
 codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.0
 codex plugin add sitebrew@sitebrew
 ```
 
-インストールを確かめるには `claude plugin list` を実行します。
+#### 5. AI エージェント
 
-## 最初のサイトを作る
+下の文を Claude Code か Codex に貼り付けてください。エージェントは、エージェント向けに書いた手順書 [AGENT_INSTALL.md](AGENT_INSTALL.md) に従ってインストールします。
 
-1. サイトのファイルを置く空のフォルダーで Claude Code を開きます。
-2. `/sitebrew:doctor` で足りないものを確かめます。足りない項目ごとに直し方が一行ずつ出ます。
-3. `/sitebrew:new` を実行して質問に答えます。名前、対象の顧客、連絡先、雰囲気などを聞きます。わからないことは空けておいてかまいません。
-4. 三つの候補を比べて一つを選びます。
-5. 変えたいところがあれば、`/sitebrew:revise` で一つの区画、色・書体・動き、または一つの文言を変えます。
-6. `/sitebrew:deliver` で選んだサイトを自分のフォルダーに受け取ります。一緒に届く案内ファイルに、公開前に埋めることが書いてあります。
+```text
+Install Sitebrew for me. Read https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/main/AGENT_INSTALL.md and follow it step by step. Ask me before you install any program, and ask me which agent to use. At the end, show me the last lines of the installer output.
+```
+
+インストールが途中で止まったときの終了コードと対処は [AGENT_INSTALL.md](AGENT_INSTALL.md) にあります。
+
+## 最初のサイトをつくる
+
+空のフォルダーで Claude Code を開いて、次を実行します。
 
 ```text
 /sitebrew:doctor
 /sitebrew:new
 ```
 
-Codex では「sitebrew の new スキルでサイトを作って」と言います。英語のサイトが欲しいときは、最初に「英語のサイト」と言います。
-
-## プレビューモードと空欄
-
-キーがなくても始められます。キーがないと、サイトはプレビューモードで作られ、「公開不可」の印が付きます。理由ごとに何が足りないかが一行で出ます。
-
-- 「要確認」：質問で空けた事実（電話番号、事業者情報など）です。作り話はせず空欄のままにします。自分で埋めます。
-- 「実際の写真が必要」：店舗や製品の画面のように、本物の写真しか使えない場所です。自分の写真を入れます。
-- 「法務確認が未完了」：利用規約とプライバシーポリシーの下書きが、まだ法律の条文と照らし合わされていません。
-
-下の値はすべて任意です。プラグインを有効にするとき Claude Code が聞きます。コマンドラインでインストールした場合は聞かないので、`/plugin configure sitebrew@sitebrew` で入れます。キーの値をチャットに貼り付けないでください。
-
-| 名前 | 入れると増えるもの |
-|---|---|
-| `PEXELS_API_KEY` | 空の写真の場所の代わりに本物のストック写真 |
-| `LAW_API_OC` | 韓国語の法定ページを現行の法律条文と照合 |
-| `VERCEL_TOKEN` | オンラインのプレビューリンク |
-| `HIGGSFIELD_DIR` | 自分で作った画像と 3D モデルのフォルダー |
-
-```text
-/plugin configure sitebrew@sitebrew
-```
-
-3D オブジェクトのファーストビュー（`object-3d-orbit`）は画像から始まります。画像 → GLB（3D モデル）→ 画面に表示、の順です。ツールがなければ 2.5D の画像、次にポスターへ下がります。画像がまったくなければ、このファーストビューは選ばれません。
-
-## ここで使う言葉
-
-| 言葉 | 意味 |
-|---|---|
-| 候補 | 同じ答えから作った、サイトの案の一つ。一度に三つ |
-| ボード | 候補を並べて選ぶ画面 |
-| スタンプ | 答えからサイトを作る工程（`npm run stamp`） |
-| プレビューモード | キーや事実が足りないまま作ったサイト。選ぶには十分だが、公開してはいけない |
-| 公開不可 | 公開前に埋めるものが残っているという印。理由も一緒に出る |
-| ドクター | パソコンに足りないものと直し方を教えるチェック |
-| 検品台 | 部品とブロックを一つずつ表示する開発者向けの画面（`npm run dev`） |
-
-## インストールが止まったとき
-
-インストーラーは結果を `$LASTEXITCODE` に残します。ターミナル以外で実行すると、すべての質問に「いいえ」と答えたものとみなします。
-
-| コード | 意味 | すること |
-|---|---|---|
-| 0 | 完了、またはプレビュー | 最後の行に出る次の手順に従います |
-| 1 | ダウンロード・クローン・プラグインのコマンドが失敗 | インターネット接続を確かめ、同じ行をもう一度実行します |
-| 2 | オプションかフォルダーが間違っている | `-Folder` のパスを確かめます。Windows や Program Files の下は使えません |
-| 3 | 足りないものがあるか、答えが必要 | 画面に出たインストールコマンドを実行するか、`-Yes` を付けて実行し直します |
-| 4 | 開始を拒否 | 管理者ウィンドウなら、通常の PowerShell ウィンドウで実行し直します |
-
-`-Yes` で実行すると、Sitebrew フォルダーの場所をユーザー環境変数 `SITEBREW_DIR` に保存することにも「はい」と答えます。
+`/sitebrew:doctor` は足りないものを、直し方の一行と一緒に示します。Codex では「sitebrew new スキルでサイトを作って」と言ってください。任意のキーとスキルの一覧は[プラグインの案内](plugins/sitebrew/README.md)にあります。
 
 ## 開発者向け
 
-リポジトリは三つの部分でできています。`factory/` と `registry/` はサイト工場（web-factory）で、`launch-factory/` は会員登録・決済・メール・分析のキットです。`plugins/sitebrew/` はプラグイン、`packages/create-sitebrew/` は npx インストーラーです。
+リポジトリは三つの部分でできています。ルートのサイト工場（web-factory）、`launch-factory/` のバックエンドキット、`plugins/sitebrew/` のプラグインです。
 
 ```bash
 git clone https://github.com/nowwcastle-sudo/sitebrew.git
@@ -152,24 +127,22 @@ npm run setup
 npm run dev
 ```
 
-- `npm run setup` は環境を点検し、必要なら依存関係をインストールします。`npm run dev` は検品台を開きます。
-- マージ前のチェックは一行です：`npm run ci:verify`。
-- エージェント向けの全体の案内は [docs/agents/agent-guide.md](docs/agents/agent-guide.md) です。
-- レシピやブロックを追加する方法は [docs/guides/add-recipe.md](docs/guides/add-recipe.md) にあります。
-- launch-factory の使い方は [launch-factory/README.md](launch-factory/README.md) にあります。
-- リリース手順は [docs/RELEASING.md](docs/RELEASING.md) です。書体のライセンスは [docs/qa/font-licenses.md](docs/qa/font-licenses.md) にあります。
+マージ前のチェックは `npm run ci:verify` です。エージェント向けの案内は [docs/agents/agent-guide.md](docs/agents/agent-guide.md)、ローンチキットの説明は [launch-factory/README.md](launch-factory/README.md) にあります。
 
-部品だけを別の Next.js プロジェクトにインストールすることもできます。アドレスには必ずタグを付けます。
+部品だけを別の Next.js プロジェクトに入れることもできます。アドレスには必ずタグを付けてください。
 
 ```bash
 npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.0 -y -o
 npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.0 -y -o
 ```
+
+## コントリビュート
+
+コントリビュートを歓迎します。バグ報告、アイデア、新しいレシピやブロック、翻訳、どれもうれしいです。まず [CONTRIBUTING.md](CONTRIBUTING.md) を読んでください。短い文書です。
 
 ## ライセンス
 
-MIT です。[LICENSE](LICENSE) と [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を見てください。
+MIT。[LICENSE](LICENSE) と [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) を見てください。
 
 ## リリース履歴
 

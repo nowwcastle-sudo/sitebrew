@@ -14,7 +14,7 @@
     "@launch-factory/contract": "0.0.0",
     "@launch-factory/i18n": "0.0.0",
     "@launch-factory/security": "0.0.0",
-    "react-email": "6.11.0",
+    "react-email": "6.11.1",
     "resend": "6.30.0"
   },
   "peerDependencies": {
@@ -22,7 +22,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "24.19.0",
+    "@types/node": "24.19.1",
     "@types/react": "19.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
