@@ -2,7 +2,7 @@
   "blocks": {
     "source": "nowwcastle-sudo/sitebrew",
     "ref": "v0.1.0",
-    "commit": "a7d27ad1a6e1f1f7ee7004f20b418cc4b9e155f1",
+    "commit": "d6da4ce88a0ddd8d5c8f6c2ea4ce5f41c22fe70d",
     "shadcn": "4.21.0",
     "items": [
       "r1-measure",
@@ -598,7 +598,7 @@
     {
       "path": ".github/workflows/ci.yml",
       "from": "launch-factory-ci",
-      "sha256": "a935321fe41c11c140ea039c2651351c3eaeb8b8edaabb6beaa9cdca8bf5ed88"
+      "sha256": "38e212931653d8f41c7f5d39b913d40b11f77d590c96252701d3fbcec30ca33c"
     },
     {
       "path": ".github/zizmor.yml",

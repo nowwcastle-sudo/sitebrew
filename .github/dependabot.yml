@@ -38,6 +38,22 @@ updates:
           - '@next/*'
           - react
           - react-dom
+    ignore:
+      # shadcn 은 설치 명령(`npx shadcn@<고정판> …`)·템플릿 잠금·README 5개 언어·pincheck 가 모두 같은 정확한 판에 고정돼 있어 출시 단위로 함께 올린다. 단독 PR 은 받지 않는다.
+      - dependency-name: shadcn
+      # 실행 환경이 Node 24(engines)라 @types/node 는 24.x 안에서만 올린다. 25 이상 major 는 받지 않는다.
+      - dependency-name: '@types/node'
+        update-types:
+          - version-update:semver-major
+      # typescript 7 은 받지 않는다: typescript-eslint 가 TS 7 을 지원하지 않아(`>=4.8.4 <6.1.0`, 실행하면 "typescript-eslint does not support TS 7.0" 로 lint 가 멈춘다) 지원이 나올 때까지 7 이상을 막는다.
+      - dependency-name: typescript
+        versions:
+          - '>=7'
+      # eslint 10 은 받지 않는다: eslint-config-next 가 끌어오는 eslint-plugin-react 7.37.5 가 ESLint 10 에서 규칙을 못 불러오고
+      # ("contextOrFilename.getFilename is not a function", https://github.com/vercel/next.js/issues/89764) 플러그인 peer 범위도 eslint 9 까지다.
+      - dependency-name: eslint
+        versions:
+          - '>=10'
     labels:
       - dependencies
 
@@ -75,6 +91,14 @@ updates:
       semver-major-days: 14
     labels:
       - dependencies
+    # the same ignore rules as launch-factory's own .github/dependabot.yml (shadcn moves only with a release: install commands, template lock and README pin 4.21.0;
+    # @types/node follows the Node 24 engine; typescript-eslint does not support TypeScript 7 yet)
+    ignore:
+      - dependency-name: shadcn
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
     groups:
       dev-tooling:
         dependency-type: development

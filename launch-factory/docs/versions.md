@@ -31,11 +31,11 @@
 
 | 패키지 | 고정 판 | 판 공개일 | 라이선스 | 고정 이유 | 출처 | 확인일 |
 |---|---|---|---|---|---|---|
-| `typescript` | **6.0.3** | 2026-04-16 | Apache-2.0 | latest는 7.0.2지만 `typescript-eslint@8.71.0`의 peer가 `>=4.8.4 <6.1.0`이라 6.0 계열 최신을 쓴다 | https://www.npmjs.com/package/typescript/v/6.0.3 | 2026-09-30 |
-| `eslint` | **10.11.0** | 2026-09-18 | MIT | 현재 latest | https://www.npmjs.com/package/eslint/v/10.11.0 | 2026-09-30 |
+| `typescript` | **6.0.3** | 2026-04-16 | Apache-2.0 | latest는 7.0.2지만 `typescript-eslint@8.71.1`의 peer가 `>=4.8.4 <6.1.0`이라 6.0 계열 최신을 쓴다 | https://www.npmjs.com/package/typescript/v/6.0.3 | 2026-09-30 |
+| `eslint` | **10.12.0** | 2026-10-02 | MIT | 현재 latest(Dependabot 갱신, 2026-10-15 확인) | https://www.npmjs.com/package/eslint/v/10.12.0 | 2026-10-15 |
 | `@eslint/js` | **10.0.1** | 2026-02-06 | MIT | 현재 latest | https://www.npmjs.com/package/@eslint/js/v/10.0.1 | 2026-09-30 |
-| `typescript-eslint` | **8.71.0** | 2026-09-28 | MIT | 현재 latest. peer eslint `^8.57.0 \|\| ^9.0.0 \|\| ^10.0.0` | https://www.npmjs.com/package/typescript-eslint/v/8.71.0 | 2026-09-30 |
-| `globals` | **17.12.0** | 2026-09-01 | MIT | 현재 latest(eslint Node 전역) | https://www.npmjs.com/package/globals/v/17.12.0 | 2026-09-30 |
+| `typescript-eslint` | **8.71.1** | 2026-10-05 | MIT | 8.71.x 최신(Dependabot 갱신, 2026-10-15 확인; 8.71.2 가 있으나 갱신 PR 의 판을 따랐다). peer eslint `^8.57.0 \|\| ^9.0.0 \|\| ^10.0.0`, typescript `>=4.8.4 <6.1.0` | https://www.npmjs.com/package/typescript-eslint/v/8.71.1 | 2026-10-15 |
+| `globals` | **17.13.0** | 2026-10-01 | MIT | 현재 latest(eslint Node 전역, 2026-10-15 확인) | https://www.npmjs.com/package/globals/v/17.13.0 | 2026-10-15 |
 | `@types/node` | **24.19.0** | 2026-09-25 | MIT | 런타임 Node 24.13.0에 맞춘 24.x 최신(latest 26.6.3은 Node 26용). `@launch-factory/env`·`security`·`db`의 devDependencies에 넣었다(루트 `package.json`은 그대로). TypeScript 6은 `types` 기본값이 빈 목록이라 `tsconfig.base.json`에 `"types": ["node"]`를 한 번 둔다(D17, 2026-10-05 — 파일 머리의 참조 줄은 지웠다) | https://www.npmjs.com/package/@types/node/v/24.19.0 | 2026-09-30 |
 
 ## 실행 환경
@@ -56,7 +56,7 @@
 | 항목 | 값 |
 |---|---|
 | 원본 | `nowwcastle-sudo/sitebrew` |
-| 고정 | 태그 `v0.1.0`(커밋 `a7d27ad1a6e1` — 태그가 만들어지면 최종 커밋으로 바뀐다; v0.0.11 `94c6d9e926c1` 을 모두 포함. 2026-10-08 레인 LFPIN12 에서 올림 — 계약 4파일·적합성 묶음은 **바뀌지 않았고**(검사 173 그대로) 블록 9개·공유 조각 2개(폼 `method="post"`·`port-form` 경주 고침·`verify-email` `initialWait`·`notification-consents` `channels`·업그레이드 대화상자 단추 글 한 덩어리)만 바뀌었다 → 잠금 파일 213개 그대로(새 파일 없음); 같은 날 `contract:sync --from <sitebrew checkout> --ref a7d27ad` 와 `template-sync blocks` 로 놓았다. 자세히 `docs/qa/lfpin-v012.md`. 앞 고정: 태그 `v0.0.11`(커밋 `94c6d9e926c1`; v0.0.10 `8f199e48cfaf` 를 모두 포함. 2026-10-05 레인 LFPIN11 에서 올림 — 계약 잠금·템플릿·어댑터 적합성 묶음 로더 `scripts/lib/wf-conformance.mjs` 가 모두 이 태그다. v0.0.10 → v0.0.11 에서 **계약 판은 2 그대로**이고 선택 추가만 늘었다: 승인 행동 확인 입력 `HumanConfirmation`(`confirmed?: true`)·`ActionFailureCode` 6개(`confirmation_required` 등)·`human-actions` 표; 적합성 묶음은 옵션 `requireConfirmation` 이 늘어(켜면 `*.confirmation.*` 8개) LF 는 billing-paddle·consent/notify 에서 켠다 → 검사 165 → **170**; 잠금 파일 → 190개; 새 공유 조각 4개(`consent-open-attrs`·`human-approval`·`pinned-bar-space`·`scroll-hint`)·계약 부품 1개(`human-actions`). `contract:sync --from <sitebrew checkout> --ref v0.0.11` 과 `template-sync blocks --from <sitebrew checkout> --ref v0.0.11` 로 놓았다(대장 D10). 자세히 `docs/qa/lfpin-v011.md`) |
+| 고정 | 태그 `v0.1.0`(커밋 `d6da4ce88a0d` — 태그가 만들어지면 최종 커밋으로 바뀐다; v0.0.11 `94c6d9e926c1` 을 모두 포함. 2026-10-08 레인 LFPIN12 에서 올림 — 계약 4파일·적합성 묶음은 **바뀌지 않았고**(검사 173 그대로) 블록 9개·공유 조각 2개(폼 `method="post"`·`port-form` 경주 고침·`verify-email` `initialWait`·`notification-consents` `channels`·업그레이드 대화상자 단추 글 한 덩어리)만 바뀌었다 → 잠금 파일 213개 그대로(새 파일 없음); 같은 날 `contract:sync --from <sitebrew checkout> --ref d6da4ce` 와 `template-sync blocks` 로 놓았다. 자세히 `docs/qa/lfpin-v012.md`. 앞 고정: 태그 `v0.0.11`(커밋 `94c6d9e926c1`; v0.0.10 `8f199e48cfaf` 를 모두 포함. 2026-10-05 레인 LFPIN11 에서 올림 — 계약 잠금·템플릿·어댑터 적합성 묶음 로더 `scripts/lib/wf-conformance.mjs` 가 모두 이 태그다. v0.0.10 → v0.0.11 에서 **계약 판은 2 그대로**이고 선택 추가만 늘었다: 승인 행동 확인 입력 `HumanConfirmation`(`confirmed?: true`)·`ActionFailureCode` 6개(`confirmation_required` 등)·`human-actions` 표; 적합성 묶음은 옵션 `requireConfirmation` 이 늘어(켜면 `*.confirmation.*` 8개) LF 는 billing-paddle·consent/notify 에서 켠다 → 검사 165 → **170**; 잠금 파일 → 190개; 새 공유 조각 4개(`consent-open-attrs`·`human-approval`·`pinned-bar-space`·`scroll-hint`)·계약 부품 1개(`human-actions`). `contract:sync --from <sitebrew checkout> --ref v0.0.11` 과 `template-sync blocks --from <sitebrew checkout> --ref v0.0.11` 로 놓았다(대장 D10). 자세히 `docs/qa/lfpin-v011.md`) |
 | 계약 판 | `CONTRACT_VERSION = 2` (`CONTRACT_VERSION_EXPECTED = 2`) — 판 2 안의 선택 추가만 늘었다 |
 | 잠금 | `packages/contract/contract.lock.json`(계약 4파일), `template/template.lock.json`(템플릿의 web-factory 블록·레시피·목 파일과 이 저장소 기능 번들 파일의 sha256) |
 
