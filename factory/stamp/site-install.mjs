@@ -30,17 +30,25 @@ export const shTimeoutMs = (env = process.env) => { const n = Number(env.WF_SH_T
  */
 export const sh = (cmd, cwd, log, { env, append = false, timeoutMs = shTimeoutMs() } = {}) => new Promise((res) => {
   const out = createWriteStream(log, append ? { flags: 'a' } : undefined)
-  const p = spawn(cmd, { cwd, shell: true, env: { ...envWithoutSecrets(process.env), ...(env ?? {}) } })
+  // POSIX 에서는 셸(/bin/sh)과 그 자식을 한 프로세스 묶음으로 띄운다 — 셸만 죽이면 자식(npm·node)이 출력 파이프를 쥔 채 남아 close 가 오지 않았다(리눅스 CI 실측)
+  const posix = process.platform !== 'win32'
+  const p = spawn(cmd, { cwd, shell: true, detached: posix, env: { ...envWithoutSecrets(process.env), ...(env ?? {}) } })
+  const killTree = () => {
+    if (!posix) return void spawnSync('taskkill', ['/PID', String(p.pid), '/T', '/F'], { stdio: 'ignore' })
+    try { process.kill(-p.pid, 'SIGKILL') } catch { p.kill('SIGKILL') }
+  }
+  // 묶음으로 떼어 띄우면 부모가 끝나도 함께 끝나지 않는다 — 부모가 먼저 끝나면 묶음을 거둔다
+  const onParentExit = () => { try { process.kill(-p.pid, 'SIGKILL') } catch {} }
+  if (posix) process.once('exit', onParentExit)
   p.stdout.pipe(out)
   p.stderr.pipe(out)
   let timedOut = false
   const timer = setTimeout(() => {
     timedOut = true
     out.write(`\n[시간 제한 ${Math.round(timeoutMs / 1000)}초를 넘겨 중단했다 — WF_SH_TIMEOUT_MS 로 늘린다]\n`)
-    if (process.platform === 'win32') spawnSync('taskkill', ['/PID', String(p.pid), '/T', '/F'], { stdio: 'ignore' })
-    else p.kill('SIGKILL')
+    killTree()
   }, timeoutMs)
-  p.on('close', (code) => { clearTimeout(timer); out.end(() => res(timedOut ? 124 : code)) })
+  p.on('close', (code) => { clearTimeout(timer); if (posix) process.off('exit', onParentExit); out.end(() => res(timedOut ? 124 : code)) })
 })
 
 export { failMessage, tailLog }

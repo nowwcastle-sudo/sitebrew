@@ -17,7 +17,8 @@ const archs = await loadArchetypes()
 const library = loadLibrary()
 // 브리프 로고는 저장소 기준 절대 경로로 풀려 01 출력에 실린다 — 저장소 뿌리를 <repo> 로 바꿔 재야 clone 자리·CI 와 무관한 기준이 된다
 const REPO = fileURLToPath(new URL('../../', import.meta.url)).replace(/[\\/]$/, '')
-const portable = (o) => [REPO, REPO.replaceAll('\\', '/')].reduce((s, r) => s.split(JSON.stringify(r).slice(1, -1)).join('<repo>'), JSON.stringify(o))
+// 뿌리 다음의 경로 구분자도 OS 마다 다르다(Windows `\` · Linux `/`) — JSON 안의 역슬래시를 / 로 맞춘다
+const portable = (o) => [REPO, REPO.replaceAll('\\', '/')].reduce((s, r) => s.split(JSON.stringify(r).slice(1, -1)).join('<repo>'), JSON.stringify(o)).replaceAll('\\\\', '/')
 const hash = (o) => createHash('sha256').update(portable(o)).digest('hex').slice(0, 12)
 const probe = (mood) => ({ topic: '동네 빵집', archetype: 'local', locale: 'ko', facts: { name: '새벽빵', audience: '출근길 직장인', action: '전화 예약', ...(mood === undefined ? {} : { mood }), hours: '매일 07:00-20:00' }, previewOnly: true })
 const run = (brief, seed = 0) => pickDirections({ brief, archetype: archs[brief.archetype], seed })

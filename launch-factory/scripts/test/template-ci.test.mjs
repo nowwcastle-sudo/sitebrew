@@ -36,20 +36,25 @@ test("제품 ci.yml 은 launch-factory 와 같은 규칙을 지킨다: 해시 �
   }
 })
 
-/** 임시 복사본(template/ 통째 + scripts/ci 원천)을 만들어 mutate 한 뒤 check 문제 목록을 돌려준다 */
+/**
+ * 임시 복사본(template/ 통째 + scripts/ci 원천)을 만들어 mutate 한 뒤 check 문제 목록을 돌려준다.
+ * 복사본은 <임시 뿌리>/launch-factory/ 에 둔다 — 조립 저장소(뿌리 아래 launch-factory/)와 같은 모양이라, 그 모양에서 잠금이 저장소 뿌리 파일을 비교할 때도 한 칸 위가 시스템 임시 폴더가 되지 않는다.
+ */
 function planted(mutate) {
-  const tmp = mkdtempSync(join(tmpdir(), "lf-tplci-"))
+  const outer = mkdtempSync(join(tmpdir(), "lf-tplci-"))
+  const tmp = join(outer, "launch-factory")
   try {
     cpSync(join(ROOT, "template"), join(tmp, "template"), { recursive: true, filter: (s) => !/node_modules|\.next/.test(s) })
     cpSync(join(ROOT, "scripts", "ci"), join(tmp, "scripts", "ci"), { recursive: true })
     cpSync(join(ROOT, "registry", "dist"), join(tmp, "registry", "dist"), { recursive: true })
+    for (const f of lockOf(join(ROOT, "template")).blocks?.rootFiles ?? []) cpSync(join(ROOT, "..", f.path), join(outer, f.path))
     const base = { template: join(tmp, "template"), root: tmp }
     assert.deepEqual(check({ ...base, lock: lockOf(base.template), root: ROOT }).problems, [], "심기 전에는 통과해야 한다(기준)")
     const lock = lockOf(base.template)
     const out = mutate({ tmp, template: base.template, lock })
     return check({ template: base.template, root: out?.root ?? tmp, lock: out?.lock ?? lock })
   } finally {
-    rmSync(tmp, { recursive: true, force: true })
+    rmSync(outer, { recursive: true, force: true })
   }
 }
 

@@ -1,4 +1,4 @@
 {
-  "max": 13,
-  "reason": "In CI there is no web-factory checkout, so 10 conformance tests are skipped; 3 more tests that assert text of internal documents are skipped in the public export. A local PC with a checkout at the pinned tag skips only the 3. Lower this number when the count drops (ratchet)."
+  "max": 3,
+  "reason": "The web-factory part is the root of this repository, so the conformance tests run on every machine (launch-factory/scripts/lib/wf-conformance.mjs reads the root files). Only 3 tests that assert text of internal documents are skipped in the public export - the same count on Linux (CI) and Windows (measured 2026-10-15). Lower this number when the count drops (ratchet)."
 }

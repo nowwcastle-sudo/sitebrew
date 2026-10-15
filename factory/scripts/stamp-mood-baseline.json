@@ -3,7 +3,7 @@
  "cases": {
   "brand-1": {
    "seed": 1,
-   "hash": "5499f7795acd"
+   "hash": "1644eedada85"
   },
   "brand-2": {
    "seed": 5,
@@ -15,7 +15,7 @@
   },
   "commerce-2": {
    "seed": 2,
-   "hash": "4f68675f49d1"
+   "hash": "7713aeb15fad"
   },
   "dashboard-1": {
    "seed": 4,
