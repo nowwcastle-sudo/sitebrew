@@ -19,7 +19,7 @@
   "dependencies": {
     "@launch-factory/contract": "0.0.0",
     "@launch-factory/security": "0.0.0",
-    "posthog-js": "1.434.18",
+    "posthog-js": "1.438.2",
     "posthog-node": "5.54.1"
   },
   "peerDependencies": {
