@@ -6,9 +6,9 @@
 ## 설치
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier#v0.1.0        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier-theme#v0.1.0  # 색만(registry:theme)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier-alt#v0.1.0    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier#v0.1.1        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier-theme#v0.1.1  # 색만(registry:theme)
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r15-atelier-alt#v0.1.1    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
 ```
 
 부품은 `r15-atelier-<부품>`(예: `r15-atelier-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r15-atelier/r15-atelier.css` 를 붙인다.

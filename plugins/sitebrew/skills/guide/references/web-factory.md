@@ -1,13 +1,13 @@
-# web-factory at `v0.1.0`
+# web-factory at `v0.1.1`
 
 ## Get the repository
 
 ```bash
-git clone --branch v0.1.0 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.1.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 cd sitebrew
 npm run setup
 npm run check:regen
-npm run registry:pincheck -- v0.1.0
+npm run registry:pincheck -- v0.1.1
 npm run typecheck
 npm run dev
 ```
@@ -24,9 +24,9 @@ Run the commands in the project you are installing into.
 
 ```bash
 npx shadcn@4.21.0 init -t next -b base -p nova -n <project-name> -y --no-monorepo
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.0 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.1 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.1 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.1 -y -o
 ```
 
 - Pass every option to `init` so it does not stop at a prompt.

@@ -6,7 +6,7 @@
 
 Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 싶은 사이트를 평소 말로 설명하면, 서로 다른 후보 세 개를 만듭니다. 하나를 고르고, 대화로 고친 뒤, 코드를 내 폴더로 가져갑니다. 코딩을 몰라도 되고, 처음 시작할 때 API 키도 필요 없습니다.
 
-현재 버전 `v0.1.0` · MIT 라이선스 · Windows 10·11
+현재 버전 `v0.1.1` · MIT 라이선스 · Windows 10·11
 
 ## 왜 Sitebrew인가
 
@@ -15,6 +15,7 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 - **지어내지 않습니다.** 전화번호처럼 알려 주지 않은 사실은 표시된 빈칸으로 남깁니다. 법률 문서는 검토되기 전까지 표시가 붙습니다.
 - **키 없이도 돌아갑니다.** 키가 없으면 미리보기 모드로 만듭니다. 선택 키를 넣으면 실사 사진, 검토된 법률 문서, 미리보기 링크가 더해집니다.
 - **10가지 사이트.** 브랜드, 지역 가게, 온라인 쇼핑몰, 상품 상세, 행사·대기 신청 페이지, 포트폴리오, 공공기관, SaaS, 모바일 앱(PWA), 관리자 대시보드를 한국어나 영어로 만듭니다.
+- **움직임과 3D.** 히어로가 움직일 수 있고, 3D 오브젝트 히어로는 이미지 한 장에서 시작합니다(이미지 → 3D 모델). 도구가 없으면 2.5D 이미지로, 그다음 포스터로 물러납니다.
 - **필요할 때 뒷단까지.** 같은 저장소의 launch-factory 키트가 회원가입, 결제, 메일, 분석을 붙입니다.
 
 ## 어떻게 돌아가나
@@ -54,13 +55,13 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.1.0 sitebrew
+npm create sitebrew@0.1.1 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.1.0 sitebrew
+npx create-sitebrew@0.1.1 sitebrew
 ```
 
 두 방식은 옵션이 같습니다. `--dry-run` 은 아무것도 바꾸지 않고 할 일만 보여 줍니다. `--yes` 는 모든 질문에 「예」로 답합니다. `--tool` 은 `claude`, `codex`, `both` 중에서 고릅니다.
@@ -68,14 +69,14 @@ npx create-sitebrew@0.1.0 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
 ```
 
 아무것도 설치하지 않고 할 일만 보려면:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -84,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code에서:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.0
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
 /plugin install sitebrew@sitebrew
 ```
 
 Codex에서:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.0
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -132,8 +133,8 @@ npm run dev
 부품만 다른 Next.js 프로젝트에 넣을 수도 있습니다. 주소에는 늘 태그를 붙이세요.
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.0 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.1 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.1 -y -o
 ```
 
 ## 기여하기
@@ -148,4 +149,5 @@ MIT. [LICENSE](LICENSE)와 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)를 �
 
 | 태그 | 날짜 | 바뀐 것 | 기록 |
 |---|---|---|---|
+| `v0.1.1` | 2026-10-15 | Claude 플러그인 디렉터리 등록 준비: 줄바꿈 규칙이 더 이상 `plugins/sitebrew`에 닿지 않음, 플러그인 아이콘, 더 분명한 doctor 안내, 설치 방법 5가지, AGENT_INSTALL.md와 CONTRIBUTING.md | — |
 | `v0.1.0` | 2026-10-15 | 첫 공개 릴리스 · web-factory v0.0.13 + launch-factory v0.1.2 (내부 버전) | — |

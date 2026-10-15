@@ -8,15 +8,15 @@ sitebrew 는 스킬 다섯 개를 담은 Claude Code 플러그인이다. 스킬�
 
 | 부분 | 태그 |
 |---|---|
-| web-factory | `v0.1.0` |
-| launch-factory | `v0.1.0` |
+| web-factory | `v0.1.1` |
+| launch-factory | `v0.1.1` |
 
 ## 설치
 
 이 저장소의 마켓플레이스로 설치한다.
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.0
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew 는 스킬 다섯 개를 담은 Claude Code 플러그인이다. 스킬�
 Codex 에서는 마켓플레이스를 먼저 추가한 뒤 플러그인을 설치한다 (두 명령은 `codex plugin --help` 에 나온다).
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.0
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -67,7 +67,7 @@ codex plugin add sitebrew@sitebrew
 
 ## sitebrew 가 하는 일
 
-- `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.0 -y -o` 로 web-factory 부품을 Next.js 프로젝트에 설치한다.
+- `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.1 -y -o` 로 web-factory 부품을 Next.js 프로젝트에 설치한다.
 - 브리프를 사이트 후보로 바꾸는 `npm run stamp` 를 단계별로 안내한다.
 - launch-factory 템플릿을 mock 모드로 켜고, live 모드에 필요한 것을 정리해 준다.
 - 직접 만들어야 하는 키를 알려 준다. 이름만 알려 주고 값은 묻지 않는다.

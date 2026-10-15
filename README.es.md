@@ -6,7 +6,7 @@
 
 Sitebrew es un plugin para Claude Code y Codex. Describes tu sitio con palabras sencillas. Construye tres candidatos distintos, eliges uno, lo ajustas en la conversación y te llevas el código a tu propia carpeta. No necesitas saber programar ni una clave de API para empezar.
 
-Versión actual `v0.1.0` · licencia MIT · Windows 10 y 11
+Versión actual `v0.1.1` · licencia MIT · Windows 10 y 11
 
 ## Por qué Sitebrew
 
@@ -15,6 +15,7 @@ Versión actual `v0.1.0` · licencia MIT · Windows 10 y 11
 - **Nada inventado.** Un dato que no diste, como un número de teléfono, queda como un hueco marcado. Las páginas legales siguen marcadas hasta que se revisan.
 - **Funciona sin claves.** Sin claves, el sitio se crea en modo de vista previa. Las claves opcionales añaden fotos reales, páginas legales revisadas y enlaces de vista previa.
 - **10 tipos de sitios.** Marca, negocio local, tienda en línea, detalle de producto, página de evento o lista de espera, portafolio, oficina pública, SaaS, app móvil (PWA) y panel de administración, en coreano o inglés.
+- **Movimiento y 3D.** Las cabeceras pueden moverse, y la cabecera con objeto 3D parte de una sola imagen (imagen → modelo 3D). Sin las herramientas, pasa a una imagen 2.5D y después a un póster.
 - **Un back end cuando lo necesites.** El kit launch-factory del mismo repositorio añade registro, pagos, correo y analítica.
 
 ## Cómo funciona
@@ -54,13 +55,13 @@ Las cinco terminan igual: Sitebrew en una carpeta `sitebrew` y el plugin en tu a
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.1.0 sitebrew
+npm create sitebrew@0.1.1 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.1.0 sitebrew
+npx create-sitebrew@0.1.1 sitebrew
 ```
 
 Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nada, `--yes` responde que sí a todas las preguntas y `--tool` elige `claude`, `codex` o `both`.
@@ -68,14 +69,14 @@ Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nad
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
 ```
 
 Para ver lo que haría sin instalar nada:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.0/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -84,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 En Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.0
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
 /plugin install sitebrew@sitebrew
 ```
 
 En Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.0
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -132,8 +133,8 @@ La comprobación antes de una fusión es `npm run ci:verify`. La guía para agen
 También puedes añadir las piezas a otro proyecto de Next.js. Fija siempre la etiqueta:
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.0 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.0 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.1 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.1 -y -o
 ```
 
 ## Contribuir
@@ -148,4 +149,5 @@ MIT. Consulta [LICENSE](LICENSE) y [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.
 
 | Etiqueta | Fecha | Cambios | Registro |
 |---|---|---|---|
+| `v0.1.1` | 2026-10-15 | Lista para el directorio de plugins de Claude: las reglas de fin de línea ya no tocan `plugins/sitebrew`, icono del plugin, aviso de doctor más claro, cinco formas de instalar, AGENT_INSTALL.md y CONTRIBUTING.md | — |
 | `v0.1.0` | 2026-10-15 | Primera versión pública · web-factory v0.0.13 + launch-factory v0.1.2 (versiones internas) | — |

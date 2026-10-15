@@ -13,6 +13,7 @@ on:
       - '.agents/**'
       - 'ci/check-single-version.mjs'
       - 'ci/bump-version.mjs'
+      - 'ci/directory-check.mjs'
       - '.github/workflows/plugin-checks.yml'
   push:
     branches: [main]
@@ -24,6 +25,7 @@ on:
       - '.agents/**'
       - 'ci/check-single-version.mjs'
       - 'ci/bump-version.mjs'
+      - 'ci/directory-check.mjs'
       - '.github/workflows/plugin-checks.yml'
   workflow_dispatch:
 
@@ -52,3 +54,6 @@ jobs:
         run: node ci/check-single-version.mjs
       - name: plugin contract tests
         run: node --test --test-force-exit --test-timeout=300000 "plugins/sitebrew/test/*.test.mjs"
+      # the automated rules of Anthropic's plugin directory (submit with plugin path plugins/sitebrew): a finding that blocks the portal fails here first
+      - name: plugin directory rules
+        run: node ci/directory-check.mjs --repo . --plugin plugins/sitebrew

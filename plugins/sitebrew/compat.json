@@ -2,6 +2,9 @@
   "schema": 1,
   "engines": { "node": ">=24.13.0", "npm": ">=11.6.2" },
   "guides": {
+    "0.1.1": {
+      "sitebrew": { "tag": "v0.1.1", "status": "pending-release", "range": ">=0.1.0 <0.2.0" }
+    },
     "0.1.0": {
       "sitebrew": { "tag": "v0.1.0", "status": "pending-release", "range": ">=0.1.0 <0.2.0" }
     }

@@ -78,7 +78,10 @@ describe('the guides say what is true', () => {
     if (JSON.stringify(compat).includes('{{')) return t.skip('compat.json still has {{...}} placeholders (the source form, not a built plugin)')
     const guide = read(PLUGIN, 'skills', 'guide', 'SKILL.md')
     assert.ok(guide.includes(`Node \`${compat.engines.node}\``) && guide.includes(`npm \`${compat.engines.npm}\``), 'the guide names other Node/npm minimums than compat.json')
-    for (const [, entry] of Object.entries(compat.guides)) assert.ok(guide.includes(entry.sitebrew.tag))
+    // only this plugin version's row: the rows of older plugin versions stay in the table (ci/bump-version.mjs) and name older tags
+    const version = JSON.parse(read(PLUGIN, '.claude-plugin', 'plugin.json')).version
+    assert.ok(compat.guides[version], `compat.json has no row for plugin version ${version}`)
+    assert.ok(guide.includes(compat.guides[version].sitebrew.tag), `the guide does not name ${compat.guides[version].sitebrew.tag}`)
     const shadcn = new Set(walk(PLUGIN).filter((f) => /\.md$/.test(f)).flatMap((f) => [...read(f).matchAll(/shadcn@(\d+\.\d+\.\d+)/g)].map((m) => m[1])))
     assert.ok(shadcn.size === 1, `the guides name more than one shadcn version: ${[...shadcn].join(', ')}`)
   })

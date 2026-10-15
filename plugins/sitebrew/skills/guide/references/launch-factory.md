@@ -1,11 +1,11 @@
-# launch-factory at `v0.1.0`
+# launch-factory at `v0.1.1`
 
-launch-factory owns the back end (auth, data, payments, email, analytics, jobs). A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages. This release is the `launch-factory/` folder of Sitebrew `v0.1.0`.
+launch-factory owns the back end (auth, data, payments, email, analytics, jobs). A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages. This release is the `launch-factory/` folder of Sitebrew `v0.1.1`.
 
 ## Get the repository and start in mock mode
 
 ```bash
-git clone --branch v0.1.0 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.1.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 cd sitebrew/launch-factory
 npm run setup
 npm run ci:verify
@@ -30,7 +30,7 @@ $env:LF_MODE = "mock"; npm run dev -w template
 
 ## It sits in the same repository as web-factory
 
-- launch-factory is the `launch-factory/` folder of the Sitebrew clone, and web-factory is the clone root. One tag (`v0.1.0`) covers both, so the two parts always match.
+- launch-factory is the `launch-factory/` folder of the Sitebrew clone, and web-factory is the clone root. One tag (`v0.1.1`) covers both, so the two parts always match.
 - `launch-factory/` has its own `package.json` and lock file. `npm ci` at the clone root does not install it, and `npm ci` inside it does not install the root.
 - The conformance tests (`npm run conformance`) read the web-factory part of the same clone. `LF_WF_REPO` and `WF_HOME` default to the clone root; set them only to point at a different Sitebrew checkout.
 - The vendored contract is locked in `packages/contract/contract.lock.json`. Check it offline with `npm run contract:check`.

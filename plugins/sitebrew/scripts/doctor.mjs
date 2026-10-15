@@ -141,9 +141,14 @@ function kitResult({ tag, range, args, env, cwd, allowDev }) {
     `Sitebrew is at ${atEn}. This plugin works with ${range} and the pinned tag is ${tag} - mixed versions break installs and stamping. Run git -C "${dir}" fetch --tags then git -C "${dir}" checkout ${tag}.`)
 }
 
-// The launch-factory kit is optional: it adds sign-in, billing and mail to a product site.
+// The launch-factory kit is optional: it adds sign-in, billing and mail to a product site. `dir` is the clone that was found, whatever its version
+// (a clone on the wrong version still has or lacks the folder); null only when no clone was found, and then nothing could be checked.
 function launchResult(dir) {
-  if (dir && hasLaunchKit(dir)) return ok('launch-factory', 'launch-factory/ folder present in the clone')
+  if (!dir) {
+    return off('note', 'launch-factory', '선택: 클론을 찾지 못해서 launch-factory/ 폴더는 확인하지 못했어요 — 위 sitebrew 줄대로 클론을 준비하면 다음 점검에서 확인해요.',
+      'optional: not checked - no clone was found (see the sitebrew line above); the next check looks for the launch-factory/ folder once the clone is there.')
+  }
+  if (hasLaunchKit(dir)) return ok('launch-factory', 'launch-factory/ folder present in the clone')
   return off('note', 'launch-factory', '선택: 클론 안의 launch-factory/ 폴더를 찾지 못했어요 — 로그인·결제·메일이 필요한 제품(saas·pwa)의 백엔드 연결만 빠져요. 소개 사이트 만들기는 돼요.',
     'optional: the launch-factory/ folder was not found in the clone - only the back-end hookup for products with sign-in, billing and mail (saas, pwa) is missing; site building still works.')
 }
@@ -246,7 +251,8 @@ export function diagnose({ args = {}, env = process.env, cwd = process.cwd(), ex
   results.push(browserResult(env, exists))
   const kit = kitResult({ tag, range, args, env, cwd, allowDev })
   results.push(kit)
-  results.push(launchResult(kit.status === 'ok' || kit.id === 'sitebrew' && kit.status === 'note' ? findKit({ arg: args.kit, env, cwd, pluginRoot: ROOT, range }).dir : null))
+  // the folder the kit check found, also when that check failed on the version: the launch-factory line reports what is in it, not the version verdict
+  results.push(launchResult(findKit({ arg: args.kit, env, cwd, pluginRoot: ROOT, range }).dir ?? null))
   results.push(...keyResults(env, strict))
   results.push(...bridgeResults({ env, args }))
   return { guide: manifest.version, tag, strict, results }

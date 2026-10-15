@@ -17,7 +17,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -36,7 +36,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -55,7 +55,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/phone#v0.1.0"
+        "nowwcastle-sudo/sitebrew/phone#v0.1.1"
       ]
     },
     {
@@ -74,7 +74,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -93,7 +93,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -112,7 +112,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -131,7 +131,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -150,7 +150,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -169,7 +169,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -188,7 +188,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -207,7 +207,7 @@
         "zod@^4.6.5"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1"
       ]
     },
     {
@@ -224,8 +224,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.0",
-        "nowwcastle-sudo/sitebrew/content-local#v0.1.0"
+        "nowwcastle-sudo/sitebrew/content-core#v0.1.1",
+        "nowwcastle-sudo/sitebrew/content-local#v0.1.1"
       ]
     }
   ]

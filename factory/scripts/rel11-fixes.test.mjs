@@ -14,7 +14,7 @@ const read = (p) => readFileSync(join(root, p), 'utf8')
 const semver = (v) => v.split('.').map(Number)
 const gte = (a, b) => { const [x, y] = [semver(a), semver(b)]; for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i]; return true }
 
-// next 바닥 판: 16.3.6(REL11 — GHSA-vcvr-r3jv-pc5j) → 16.3.8(v0.1.0 — 2026-10-08 공개 6건: GHSA-39w2-rjm5-chcv · 3w37-wq28-93x7 · 4jqv-mc3x-m676 · cjq9-62q9-8jv4(CVSS 8.3) · f87g-xv8r-7p7x · mcj8-r9mp-w47p, OSV 가 잡았다)
+// next 바닥 판: 16.3.6(REL11 — GHSA-vcvr-r3jv-pc5j) → 16.3.8(v0.1.1 — 2026-10-08 공개 6건: GHSA-39w2-rjm5-chcv · 3w37-wq28-93x7 · 4jqv-mc3x-m676 · cjq9-62q9-8jv4(CVSS 8.3) · f87g-xv8r-7p7x · mcj8-r9mp-w47p, OSV 가 잡았다)
 const NEXT_FLOOR = '16.3.8'
 
 test('REL11-1: next 는 알려진 보안 공지가 고쳐진 바닥 판(NEXT_FLOOR) 이상이고, eslint-config-next·잠금 파일과 같은 고정 판이다', () => {
