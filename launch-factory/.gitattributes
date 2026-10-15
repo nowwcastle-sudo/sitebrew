@@ -1,2 +1,18 @@
 # 계약 잠금(contract.lock.json)은 파일 바이트의 sha256 을 적는다 — 줄끝이 바뀌면 --check 가 깨진다.
 * text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.mp4 binary
+*.webm binary

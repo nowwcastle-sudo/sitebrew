@@ -127,9 +127,13 @@ export function check({ repo, ref = 'HEAD', plugin = '', archiveBytes }) {
     const text = show('git', repo, ref, e.path)
     if (/\bexport-(ignore|subst)\b/.test(text)) add('stops', "Couldn't validate that repository", `${e.path} uses export-ignore or export-subst`)
     const dir = e.path.replace(/\/?\.gitattributes$/, '')
+    // The checklist names the files, not the reach of their lines: "at the repository root, above the plugin folder, and inside it". The portal refused
+    // a root file whose rewriting lines were all scoped away from the plugin (2026-10-15 17:37), so in those files every such line counts.
+    const dirSlash = dir ? `${dir}/` : ''
+    const governing = pre.startsWith(dirSlash) || dirSlash.startsWith(pre)
     for (const { line, pattern, attrs } of attributeLines(text)) {
       const rewriting = attrs.filter(rewritesContent)
-      if (rewriting.length && reachesPlugin(dir, pattern, pre)) add('stops', 'A .gitattributes filter rewrites files at checkout', `${e.path}: "${line}" sets ${rewriting.join(', ')} on files of the plugin folder - scope it away from ${pre || 'the plugin'} or remove it`)
+      if (rewriting.length && (governing || reachesPlugin(dir, pattern, pre))) add('stops', 'A .gitattributes filter rewrites files at checkout', `${e.path}: "${line}" sets ${rewriting.join(', ')} - a .gitattributes at the root, above ${pre || 'the plugin'} or inside it must not hold content-rewriting attributes; move the rule into the .gitattributes of the folders it is for`)
     }
   }
 

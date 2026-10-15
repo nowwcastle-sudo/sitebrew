@@ -1,7 +1,7 @@
 // (Sitebrew: 기본은 저장소 뿌리의 지금 파일을 읽는다. 아래 고정 커밋은 공개 이력에 없는 스냅샷이라 LF_WF_CONFORMANCE_COMMIT 로 다른 커밋을 따로 요청할 때만 git 으로 읽는다.)
 // web-factory 적합성 묶음 네 개(billing·auth·analytics·notify)를 **한 커밋에 고정해** 임시 폴더로 꺼내 불러온다.
 // 계약 잠금(packages/contract/contract.lock.json)에는 적합성 묶음 파일이 아직 없다(sync-contract 의 가져올 목록에 conformance/ 가 없다). 영구 가져오기는 대장 D45 에서 하고 그때 이 파일을 지운다.
-// 묶음 파일은 태그 v0.1.1(537ca12)에 고정한다. v0.0.11(94c6d9e)에서 v0.1.1 까지는 묶음 파일(conformance/*·lib/retention-offer.ts)과 계약 4파일이 바뀌지 않았다(검사 수 173 그대로 — docs/qa/lfpin-v012.md §2). v0.0.10(8f199e4)에서 v0.0.11 까지 바뀐 것: 묶음 옵션 `requireConfirmation`(P3-7 AXC, G11(d)) — 켜면 `*.confirmation.*` 검사 8개(billing 4·auth 3·notify 1)가 더 돌고 기존 검사의 승인 행동 호출에 confirmed: true 가 자동으로 실린다. 기본(끔)은 v0.0.10 과 같은 165개다. LF 는 billing-paddle·consent/notify 만 켠다(docs/qa/lfpin-v011.md §3). v0.0.9(b4d3f23)에서 v0.0.10 까지는 묶음 파일(conformance/*·lib/retention-offer.ts)이 바뀌지 않았다(계약 쪽은 block-contract.ts 의 ActionFailureCode 에 signInRequired·AsyncState error 에 code? 가 늘었을 뿐 — 검사 수 165 그대로). v0.0.8(391778d)에서 v0.0.9 까지 바뀐 것: conformance/auth.ts 에 resetPassword 시나리오 둘(reset-password-unknown-token·reset-password-empty-token — 선택 메서드라 없는 어댑터는 통과, D236)·ports.ts 에 선택 AuthPort.resetPassword·lib/retention-offer.ts 는 그대로. v0.0.7(30ae7d5)에서 v0.0.8 까지는 묶음 파일이 바뀌지 않았다. b2fb648(P3-3 Task 15)에서 v0.0.7 까지 바뀐 것: analytics.ts SAMPLE_EVENTS 에 web_vital·app_install 예시 둘(4febd6e·840924e), lib/retention-offer.ts 문구 — 검사 수는 그대로다.
+// 묶음 파일은 태그 v0.1.1(cfa3826)에 고정한다. v0.0.11(94c6d9e)에서 v0.1.1 까지는 묶음 파일(conformance/*·lib/retention-offer.ts)과 계약 4파일이 바뀌지 않았다(검사 수 173 그대로 — docs/qa/lfpin-v012.md §2). v0.0.10(8f199e4)에서 v0.0.11 까지 바뀐 것: 묶음 옵션 `requireConfirmation`(P3-7 AXC, G11(d)) — 켜면 `*.confirmation.*` 검사 8개(billing 4·auth 3·notify 1)가 더 돌고 기존 검사의 승인 행동 호출에 confirmed: true 가 자동으로 실린다. 기본(끔)은 v0.0.10 과 같은 165개다. LF 는 billing-paddle·consent/notify 만 켠다(docs/qa/lfpin-v011.md §3). v0.0.9(b4d3f23)에서 v0.0.10 까지는 묶음 파일(conformance/*·lib/retention-offer.ts)이 바뀌지 않았다(계약 쪽은 block-contract.ts 의 ActionFailureCode 에 signInRequired·AsyncState error 에 code? 가 늘었을 뿐 — 검사 수 165 그대로). v0.0.8(391778d)에서 v0.0.9 까지 바뀐 것: conformance/auth.ts 에 resetPassword 시나리오 둘(reset-password-unknown-token·reset-password-empty-token — 선택 메서드라 없는 어댑터는 통과, D236)·ports.ts 에 선택 AuthPort.resetPassword·lib/retention-offer.ts 는 그대로. v0.0.7(30ae7d5)에서 v0.0.8 까지는 묶음 파일이 바뀌지 않았다. b2fb648(P3-3 Task 15)에서 v0.0.7 까지 바뀐 것: analytics.ts SAMPLE_EVENTS 에 web_vital·app_install 예시 둘(4febd6e·840924e), lib/retention-offer.ts 문구 — 검사 수는 그대로다.
 // 저장소는 환경 변수로 바꾼다: LF_WF_REPO(기본 <sitebrew checkout>), LF_WF_CONFORMANCE_COMMIT(기본 아래 고정값 — 커밋 해시나 태그).
 // 적합성 묶음을 꺼내는 곳은 여기 하나다(대장 D195 — 결제·인증·계측·알림 시험과 일괄이 모두 이 로더를 부른다). 패키지 시험 안에 자기 로더를 다시 만들지 않는다.
 import { execFileSync } from "node:child_process"
@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 
 // web-factory is the root of this repository (launch-factory/scripts/lib -> three folders up)
 const WF_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..")
-export const WF_CONFORMANCE_COMMIT = "537ca12a8aac18a36b91f29f4669e1c5a1bfd259"
+export const WF_CONFORMANCE_COMMIT = "cfa38266bf72a034b48b6d5efe617b9e440d2b6a"
 const BASE = "registry/factory/contract/conformance"
 const FILES = {
   "billing.ts": `${BASE}/billing.ts`,

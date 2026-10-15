@@ -1,0 +1,20 @@
+# Sitebrew: the repository-wide rules live in each top-level folder (not at the root): the plugin directory refuses content-rewriting
+# attributes in a .gitattributes at the root, above the plugin folder or inside it. Written by the export (_tools/gitattributes.mjs).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.pdf binary
+*.zip binary
+*.mp4 binary
+*.webm binary

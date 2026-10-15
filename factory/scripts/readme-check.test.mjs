@@ -142,7 +142,7 @@ test("양성 대조: 실제 README 한 언어의 현재 버전을 낮추면 실�
 test("양성 대조: 실제 README 한 언어의 코드 블록 한 줄을 바꾸면 실패한다", () => {
   const input = gather()
   const rs = { ...input.readmes }
-  const changed = rs.es.replace(/```(bash|powershell)\n/, "```$1\n# 바뀜\n")
+  const changed = rs.es.replace(/```(bash|powershell)(\r?\n)/, "```$1$2# 바뀜$2")
   assert.notEqual(changed, rs.es, "바꿀 코드 블록을 찾았다")
   rs.es = changed
   has(checkAll({ ...input, readmes: rs }), /^README\.es\.md: \d+번째 코드 블록이 README\.ko\.md 와 바이트가 다르다/)
