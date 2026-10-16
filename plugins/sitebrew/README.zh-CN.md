@@ -8,15 +8,15 @@ sitebrew 是包含五个技能的 Claude Code 插件。这些技能带你使用 
 
 | 部分 | 标签 |
 |---|---|
-| web-factory | `v0.1.1` |
-| launch-factory | `v0.1.1` |
+| web-factory | `v0.1.2` |
+| launch-factory | `v0.1.2` |
 
 ## 安装
 
 通过本仓库的插件市场安装：
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew 是包含五个技能的 Claude Code 插件。这些技能带你使用 
 在 Codex 中，先添加市场，再安装插件（两条命令见 `codex plugin --help`）：
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -65,9 +65,21 @@ codex plugin add sitebrew@sitebrew
 
 3D 物体主视觉（`object-3d-orbit`）从一张图片开始：图片 → GLB 模型 → 显示。没有相应工具时，会降级为 2.5D，再降级为海报；如果完全没有图片，套件就不会选择这个主视觉。
 
+## 网络调用
+
+插件不会向维护者发送任何内容。插件驱动的工具包只在你设置了对应密钥时才调用外部服务:
+
+| 服务 | 何时 | 发送的内容 |
+|---|---|---|
+| Pexels | 设置了 `PEXELS_API_KEY`（第 05 步，媒体） | 图库照片和视频的搜索词 |
+| 韩国法令 API (law.go.kr) | 设置了 `LAW_API_OC`（法律页面审核） | 要核对的法令名称 |
+| Vercel | 设置了 `VERCEL_TOKEN` 并加上 `--deploy-preview` | 构建好的网站文件 |
+
+准备工具包时会从 GitHub 下载仓库、从 npm 注册表下载软件包。launch-factory 工具包在你连接自己的服务之前以模拟（mock）模式运行。
+
 ## sitebrew 的作用
 
-- 用 `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.1 -y -o` 把 web-factory 的组件装进 Next.js 项目。
+- 用 `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.2 -y -o` 把 web-factory 的组件装进 Next.js 项目。
 - 逐步带你运行 `npm run stamp`，把一份需求简述变成站点候选方案。
 - 以 mock 模式启动 launch-factory 模板，再列出 live 模式所需的内容。
 - 告诉你哪些密钥需要自己创建。只列出名称，从不向你索要具体值。

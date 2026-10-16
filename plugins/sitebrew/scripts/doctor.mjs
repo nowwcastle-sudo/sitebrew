@@ -103,20 +103,24 @@ function browserResult(env, exists) {
 const OWNER = 'nowwcastle-sudo'
 export const OWNER_UNSET = OWNER === ['__', 'OWNER__'].join('')
 
-/** The clone command, or null while the account is still the placeholder (the messages then say that the owner is not set). */
-function cloneCommand(tag) {
-  return OWNER_UNSET ? null : `git clone --branch ${tag} --depth 1 https://github.com/${OWNER}/${KIT.name}.git`
+/**
+ * The clone command, or null while the account is still the placeholder (the messages then say that the owner is not set).
+ * The address comes from compat.json (`repository`), a data file: the doctor itself names no remote host.
+ */
+function cloneCommand(tag, repository) {
+  return OWNER_UNSET || !repository ? null : `git clone --branch ${tag} --depth 1 ${repository}`
 }
 
 // One clone holds web-factory (its root) and the launch-factory kit (its launch-factory/ folder), so one release covers both. The clone is accepted when it is
 // on the pinned tag, on another release tag of the range in compat.json (the same 0.x minor), or without git metadata with a package.json version in that range.
 // A commit that is not a tag (a contributor's clone, main) fails unless --allow-dev or SITEBREW_DEV=1: then it is only a note.
-function kitResult({ tag, range, args, env, cwd, allowDev }) {
+function kitResult({ tag, range, repository, args, env, cwd, allowDev }) {
   const found = findKit({ arg: args.kit, env, cwd, pluginRoot: ROOT, range })
   if (found.missing) {
     const odd = found.rejected?.length
-    return off('fail', 'sitebrew', `Sitebrew 클론을 찾지 못했어요 — 사이트 만들기·수정·전달이 모두 멈춰요. ${cloneCommand(tag) ? `고정 태그로 내려받아요: ${cloneCommand(tag)} 그리고 그 폴더 안에서 npm run setup.` : '이 플러그인은 소유자 미정 판이라 내려받을 주소를 알려 줄 수 없어요 — 설치 안내의 주소를 써요.'} 다른 곳에 있으면 ${KIT.flag} <폴더> 또는 환경 변수 ${KIT.env} 로 알려요.${odd ? ` (현재 폴더의 ${KIT.name} 비슷한 폴더는 ${range} 판의 Sitebrew 가 아니라서 쓰지 않았어요.)` : ''}`,
-      `Sitebrew clone not found - creating, revising and delivering sites all stop. ${cloneCommand(tag) ? `Clone the pinned tag: ${cloneCommand(tag)} then run npm run setup inside it.` : 'This plugin build has no owner set, so it cannot print a clone address - use the address in the install instructions.'} If it lives elsewhere, pass ${KIT.flag} <folder> or set the environment variable ${KIT.env}.${odd ? ` (A Sitebrew-like folder in the current directory was not used: it is not a Sitebrew ${range} release.)` : ''}`)
+    const clone = cloneCommand(tag, repository)
+    return off('fail', 'sitebrew', `Sitebrew 클론을 찾지 못했어요 — 사이트 만들기·수정·전달이 모두 멈춰요. ${clone ? `고정 태그로 내려받아요: ${clone} 그리고 그 폴더 안에서 npm run setup.` : '이 플러그인은 소유자 미정 판이라 내려받을 주소를 알려 줄 수 없어요 — 설치 안내의 주소를 써요.'} 다른 곳에 있으면 ${KIT.flag} <폴더> 또는 환경 변수 ${KIT.env} 로 알려요.${odd ? ` (현재 폴더의 ${KIT.name} 비슷한 폴더는 ${range} 판의 Sitebrew 가 아니라서 쓰지 않았어요.)` : ''}`,
+      `Sitebrew clone not found - creating, revising and delivering sites all stop. ${clone ? `Clone the pinned tag: ${clone} then run npm run setup inside it.` : 'This plugin build has no owner set, so it cannot print a clone address - use the address in the install instructions.'} If it lives elsewhere, pass ${KIT.flag} <folder> or set the environment variable ${KIT.env}.${odd ? ` (A Sitebrew-like folder in the current directory was not used: it is not a Sitebrew ${range} release.)` : ''}`)
   }
   const dir = found.dir
   const where = shownFolder(dir, cwd)
@@ -249,7 +253,7 @@ export function diagnose({ args = {}, env = process.env, cwd = process.cwd(), ex
     : off('fail', 'git', 'git 을 찾지 못했어요 — 키트를 고정 태그로 내려받을 수 없어요. git-scm.com 에서 설치해요 (Windows: winget install Git.Git, macOS: brew install git, Linux: sudo apt install git).', 'git was not found - the kit cannot be cloned at the pinned tag. Install it from git-scm.com (Windows: winget install Git.Git, macOS: brew install git, Linux: sudo apt install git).'))
 
   results.push(browserResult(env, exists))
-  const kit = kitResult({ tag, range, args, env, cwd, allowDev })
+  const kit = kitResult({ tag, range, repository: compat.repository, args, env, cwd, allowDev })
   results.push(kit)
   // the folder the kit check found, also when that check failed on the version: the launch-factory line reports what is in it, not the version verdict
   results.push(launchResult(findKit({ arg: args.kit, env, cwd, pluginRoot: ROOT, range }).dir ?? null))

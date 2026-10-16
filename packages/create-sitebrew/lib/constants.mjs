@@ -1,5 +1,5 @@
-// Values that change between releases live here (the export step renders v0.1.1).
-export const TAG = 'v0.1.1'
+// Values that change between releases live here (the export step renders v0.1.2).
+export const TAG = 'v0.1.2'
 // The GitHub account that hosts Sitebrew. In the sources it is a placeholder (underscores are not allowed in a GitHub name); while it is left, the CLI stops before it downloads anything.
 export const DEFAULT_OWNER = 'nowwcastle-sudo'
 // compared with a split literal so that the fill-in cannot change the comparison

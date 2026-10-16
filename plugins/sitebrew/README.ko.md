@@ -8,15 +8,15 @@ sitebrew 는 스킬 다섯 개를 담은 Claude Code 플러그인이다. 스킬�
 
 | 부분 | 태그 |
 |---|---|
-| web-factory | `v0.1.1` |
-| launch-factory | `v0.1.1` |
+| web-factory | `v0.1.2` |
+| launch-factory | `v0.1.2` |
 
 ## 설치
 
 이 저장소의 마켓플레이스로 설치한다.
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew 는 스킬 다섯 개를 담은 Claude Code 플러그인이다. 스킬�
 Codex 에서는 마켓플레이스를 먼저 추가한 뒤 플러그인을 설치한다 (두 명령은 `codex plugin --help` 에 나온다).
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -65,9 +65,21 @@ codex plugin add sitebrew@sitebrew
 
 3D 오브젝트 히어로(`object-3d-orbit`)는 이미지에서 시작한다. 이미지 → GLB 모델 → 화면 표시 순서다. 그 도구가 없으면 2.5D 로, 그다음은 포스터로 내려가고, 이미지가 하나도 없으면 키트는 이 히어로를 고르지 않는다.
 
+## 네트워크 호출
+
+플러그인은 관리자에게 아무것도 보내지 않는다. 플러그인이 부르는 킷은 해당 키를 넣었을 때만 외부 서비스를 부른다:
+
+| 서비스 | 언제 | 보내는 것 |
+|---|---|---|
+| Pexels | `PEXELS_API_KEY` 를 넣었을 때 (05단계, 미디어) | 스톡 사진·영상 검색어 |
+| 국가법령정보 API (law.go.kr) | `LAW_API_OC` 를 넣었을 때 (법정 쪽 검토) | 대조할 법령 이름 |
+| Vercel | `VERCEL_TOKEN` 을 넣고 `--deploy-preview` 를 붙였을 때 | 빌드한 사이트 파일 |
+
+킷을 준비할 때 GitHub 에서 저장소를, npm 레지스트리에서 패키지를 내려받는다. launch-factory 킷은 직접 서비스를 연결하기 전까지 모의(mock) 모드로 돈다.
+
 ## sitebrew 가 하는 일
 
-- `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.1 -y -o` 로 web-factory 부품을 Next.js 프로젝트에 설치한다.
+- `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.2 -y -o` 로 web-factory 부품을 Next.js 프로젝트에 설치한다.
 - 브리프를 사이트 후보로 바꾸는 `npm run stamp` 를 단계별로 안내한다.
 - launch-factory 템플릿을 mock 모드로 켜고, live 모드에 필요한 것을 정리해 준다.
 - 직접 만들어야 하는 키를 알려 준다. 이름만 알려 주고 값은 묻지 않는다.

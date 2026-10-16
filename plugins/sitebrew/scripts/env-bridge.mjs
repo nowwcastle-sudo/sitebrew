@@ -4,7 +4,7 @@
 // It does not hand them to the shell commands Claude runs later (node doctor.mjs, npm run stamp, ...), and the kit reads plain environment
 // variables. This hook closes the gap: it appends `export NAME='value'` lines to the file named by CLAUDE_ENV_FILE, which Claude Code runs
 // before every Bash command of the session (and, in Claude Code v2.1.296 or later, copies into PowerShell commands when every line is a plain
-// assignment - https://code.claude.com/docs/en/hooks, "Persisted variables in PowerShell commands").
+// assignment - Claude Code hooks reference, "Persisted variables in PowerShell commands").
 // Rules: only the four names the plugin declares; a variable the user already set (non-empty) wins; an empty variable does not;
 // empty, multi-line and single-quote-containing values are skipped one by one (a quote would need the form 'a'\''b', which is not a plain assignment,
 // and PowerShell would then receive none of the variables); values are trimmed and single-quoted; a line that is already in the file is not written

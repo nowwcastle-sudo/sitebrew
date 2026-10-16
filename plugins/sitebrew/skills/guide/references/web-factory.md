@@ -1,13 +1,13 @@
-# web-factory at `v0.1.1`
+# web-factory at `v0.1.2`
 
 ## Get the repository
 
 ```bash
-git clone --branch v0.1.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.1.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 cd sitebrew
 npm run setup
 npm run check:regen
-npm run registry:pincheck -- v0.1.1
+npm run registry:pincheck -- v0.1.2
 npm run typecheck
 npm run dev
 ```
@@ -24,16 +24,16 @@ Run the commands in the project you are installing into.
 
 ```bash
 npx shadcn@4.21.0 init -t next -b base -p nova -n <project-name> -y --no-monorepo
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.1 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.1 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.1 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.2 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.2 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/alert-dialog#v0.1.2 -y -o
 ```
 
 - Pass every option to `init` so it does not stop at a prompt.
 - Add the theme (`factory-default`) and the baseline rules (`factory-base`) first, then the parts.
 - Always add `-y -o` to `add`. `init` creates the official `button.tsx` first, and `-o` lets this registry overwrite it. Without `-o` the command stops at the overwrite prompt, writes nothing in a non-interactive shell and still exits 0.
 - Item names match the file names in `registry/factory/ui/` (`alert-dialog`, `button`, `dialog`, and so on). Other items are `utils` (lib) and `use-mobile` (hooks).
-- In CI there is no `gh` login. Use a fine-grained read-only `GH_TOKEN` when the registry repository is private. Never print it.
+- This registry is public, so `add` needs no sign-in. A private copy of it needs read access set up in your CI provider's secret settings.
 - A recipe installs its typefaces as `font-<name>` items. Typeface files are not stored in the repository; the licenses and primary sources are in `docs/qa/font-licenses.md`.
 
 ## Stamp a site

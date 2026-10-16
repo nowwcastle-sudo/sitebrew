@@ -6,7 +6,7 @@
 
 Sitebrew es un plugin para Claude Code y Codex. Describes tu sitio con palabras sencillas. Construye tres candidatos distintos, eliges uno, lo ajustas en la conversación y te llevas el código a tu propia carpeta. No necesitas saber programar ni una clave de API para empezar.
 
-Versión actual `v0.1.1` · licencia MIT · Windows 10 y 11
+Versión actual `v0.1.2` · licencia MIT · Windows 10 y 11
 
 ## Por qué Sitebrew
 
@@ -55,13 +55,13 @@ Las cinco terminan igual: Sitebrew en una carpeta `sitebrew` y el plugin en tu a
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.1.1 sitebrew
+npm create sitebrew@0.1.2 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.1.1 sitebrew
+npx create-sitebrew@0.1.2 sitebrew
 ```
 
 Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nada, `--yes` responde que sí a todas las preguntas y `--tool` elige `claude`, `codex` o `both`.
@@ -69,14 +69,14 @@ Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nad
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
 ```
 
 Para ver lo que haría sin instalar nada:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 En Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
 /plugin install sitebrew@sitebrew
 ```
 
 En Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ La comprobación antes de una fusión es `npm run ci:verify`. La guía para agen
 También puedes añadir las piezas a otro proyecto de Next.js. Fija siempre la etiqueta:
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.1 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.1 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.2 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.2 -y -o
 ```
 
 ## Contribuir
@@ -149,5 +149,6 @@ MIT. Consulta [LICENSE](LICENSE) y [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.
 
 | Etiqueta | Fecha | Cambios | Registro |
 |---|---|---|---|
+| `v0.1.2` | 2026-10-16 | Revisión del directorio de plugins: doctor lee la dirección del clon desde compat.json, el README del plugin lista sus llamadas de red, la guía de versiones añade el paso de release de GitHub; lucide-react 1.53.0 en el kit de lanzamiento | — |
 | `v0.1.1` | 2026-10-15 | Lista para el directorio de plugins de Claude: las reglas de fin de línea ya no tocan `plugins/sitebrew`, icono del plugin, aviso de doctor más claro, cinco formas de instalar, AGENT_INSTALL.md y CONTRIBUTING.md | — |
 | `v0.1.0` | 2026-10-15 | Primera versión pública · web-factory v0.0.13 + launch-factory v0.1.2 (versiones internas) | — |

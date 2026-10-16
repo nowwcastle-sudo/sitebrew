@@ -2,7 +2,7 @@
 
 You are an AI coding agent (Claude Code, Codex or similar) and a person asked you to install Sitebrew for them. Follow the steps in order. Each step has a command, how to tell it worked, and what to do when it did not. Run every command in **PowerShell** unless a step says otherwise.
 
-Sitebrew version: `v0.1.1` · npm package: `create-sitebrew@0.1.1` · repository: `https://github.com/nowwcastle-sudo/sitebrew`
+Sitebrew version: `v0.1.2` · npm package: `create-sitebrew@0.1.2` · repository: `https://github.com/nowwcastle-sudo/sitebrew`
 
 ## Rules for you
 
@@ -10,7 +10,7 @@ Sitebrew version: `v0.1.1` · npm package: `create-sitebrew@0.1.1` · repository
 - **Ask the person which agent to set up**: `claude`, `codex` or `both`. Do not pick for them.
 - **Never ask for, read or print an API key or token.** Sitebrew works without keys. Keys are added later by the person with `/plugin configure sitebrew@sitebrew`, not in chat.
 - **Do not run anything as administrator.** The installer refuses to start in an administrator window.
-- **Pin the version.** Use `create-sitebrew@0.1.1` and the tag `v0.1.1` exactly as written here. Do not use `@latest` or the `main` branch for the install.
+- **Pin the version.** Use `create-sitebrew@0.1.2` and the tag `v0.1.2` exactly as written here. Do not use `@latest` or the `main` branch for the install.
 - When a step fails twice for the same reason, stop and tell the person the command, the exit code and the last 20 lines of output.
 
 ## Step 1 — Check the operating system
@@ -64,17 +64,17 @@ Test-Path "$HOME\sitebrew"
 Replace `<tool>` with the person's answer (`claude`, `codex` or `both`). This changes nothing.
 
 ```powershell
-npx --yes create-sitebrew@0.1.1 sitebrew --dry-run --tool <tool>
+npx --yes create-sitebrew@0.1.2 sitebrew --dry-run --tool <tool>
 ```
 
-- **Works:** exit code `0` and lines that start with `[dry-run] would run:`. The first one clones `--branch v0.1.1`.
+- **Works:** exit code `0` and lines that start with `[dry-run] would run:`. The first one clones `--branch v0.1.2`.
 - Lines that start with `[dry-run] would ask:` are the installer's own questions (for example, whether to save the folder in `SITEBREW_DIR`). In Step 5, `--yes` answers them with yes.
 - Show the planned lines to the person and ask: "Install now?" Continue only on a clear yes.
 
 ## Step 5 — Install
 
 ```powershell
-npx --yes create-sitebrew@0.1.1 sitebrew --yes --tool <tool>
+npx --yes create-sitebrew@0.1.2 sitebrew --yes --tool <tool>
 "exit=$LASTEXITCODE"
 ```
 
@@ -124,11 +124,11 @@ Then show them the last lines of the installer output.
 If `npx` cannot be used, the same install is available as:
 
 ```powershell
-npm create sitebrew@0.1.1 sitebrew -- --yes --tool <tool>
+npm create sitebrew@0.1.2 sitebrew -- --yes --tool <tool>
 ```
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.1/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
 ```
 
 The second one asks its questions in the terminal, so it suits a person typing, not an agent. More about Sitebrew is in [README.md](README.md).
