@@ -181,7 +181,7 @@ test("소셜 로그인 배선: auth.ts 는 키가 둘 다 있는 공급자만 cr
 test("템플릿 잠금: 가져온 파일이 잠금과 같고, 기능 번들이 지금 registry/dist 와 같다", () => {
   const r = check()
   assert.deepEqual(r.problems, [])
-  assert.match(r.blocks ?? "", /^cfa3826/, "web-factory 는 태그 v0.1.1(커밋 cfa3826)에 고정한다 — 다음 태그로 올릴 때만 바꾼다(대장 D10)")
+  assert.match(r.blocks ?? "", /^098e330/, "web-factory 는 태그 v0.1.2(커밋 098e330)에 고정한다 — 다음 태그로 올릴 때만 바꾼다(대장 D10)")
 })
 
 // ── UXOK: 가입·로그인 성공을 알려 준다 ─────────────────────────────────────────

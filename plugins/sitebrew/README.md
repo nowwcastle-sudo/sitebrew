@@ -8,15 +8,15 @@ sitebrew is a Claude Code plugin with five skills. They guide you through web-fa
 
 | Part | Tag |
 |---|---|
-| web-factory | `v0.1.1` |
-| launch-factory | `v0.1.1` |
+| web-factory | `v0.1.2` |
+| launch-factory | `v0.1.2` |
 
 ## Install
 
 From the marketplace in this repository:
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ To try it without installing, start Claude Code with `claude --plugin-dir <path>
 In Codex, add the marketplace first and then the plugin (`codex plugin --help` lists both commands):
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -65,9 +65,21 @@ Claude Code keeps the three keys in its secure credential store, not in a settin
 
 The 3D object hero (`object-3d-orbit`) starts from an image: image → GLB model → shown. Without the tools for that, it falls back to 2.5D, then to a poster, and with no image at all the kit does not pick this hero.
 
+## Network calls
+
+The plugin sends nothing to its maintainers. The kit it drives calls an outside service only when you set the matching key:
+
+| Service | When | What is sent |
+|---|---|---|
+| Pexels | `PEXELS_API_KEY` is set (step 05, media) | search words for stock photos and videos |
+| Korean statute API (law.go.kr) | `LAW_API_OC` is set (legal review) | the names of the statutes to check |
+| Vercel | `VERCEL_TOKEN` is set and you pass `--deploy-preview` | the built site files |
+
+Setting up the kit downloads the repository from GitHub and packages from the npm registry. The launch-factory kit stays in mock mode until you connect services of your own.
+
 ## What sitebrew does
 
-- Installs web-factory parts into a Next.js project with `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.1 -y -o`.
+- Installs web-factory parts into a Next.js project with `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.2 -y -o`.
 - Walks you through `npm run stamp`, which turns a brief into site candidates.
 - Starts the launch-factory template in mock mode, then lists what live mode needs.
 - Tells you which keys you must create yourself. It lists names only and never asks you for a value.

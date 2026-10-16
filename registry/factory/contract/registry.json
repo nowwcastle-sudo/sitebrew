@@ -15,10 +15,10 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.1",
-        "nowwcastle-sudo/sitebrew/events#v0.1.1",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.1",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.1"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
+        "nowwcastle-sudo/sitebrew/events#v0.1.2",
+        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.2"
       ]
     },
     {
@@ -35,9 +35,9 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.1",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.1",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.1"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
+        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
+        "nowwcastle-sudo/sitebrew/ports#v0.1.2"
       ]
     },
     {
@@ -54,7 +54,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/ports#v0.1.1"
+        "nowwcastle-sudo/sitebrew/ports#v0.1.2"
       ]
     },
     {
@@ -106,10 +106,10 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.1",
-        "nowwcastle-sudo/sitebrew/events#v0.1.1",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.1",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.1"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
+        "nowwcastle-sudo/sitebrew/events#v0.1.2",
+        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.2"
       ]
     },
     {
@@ -156,8 +156,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.1",
-        "nowwcastle-sudo/sitebrew/events#v0.1.1"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
+        "nowwcastle-sudo/sitebrew/events#v0.1.2"
       ]
     }
   ]

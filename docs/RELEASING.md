@@ -12,6 +12,7 @@ The shadcn CLI reads dependency addresses without a tag from the default branch,
 4. **Check the single version.** `node ci/check-single-version.mjs --tag vX.Y.Z` must print `ok`.
 5. **Run the gates.** In the root, `npm run ci:verify` must exit 0. In `launch-factory/`, `npm run ci:verify`, `npm run conformance` and `npm run template:verify` must all exit 0. For the plugin, `node --test "plugins/sitebrew/test/*.test.mjs"` must exit 0 (Node 24 does not take a folder after `--test`: pass the glob).
 6. **Commit and tag.** `git commit -m "chore(release): vX.Y.Z"`, then `git tag -a vX.Y.Z -m "<summary>"`. Write the tag summary in the same words as the release history row.
-7. **Push.** `git push origin main`, then `git push origin vX.Y.Z`.
-8. **Publish the packages.** Publish the `@launch-factory/*` packages and `create-sitebrew` only after the tag is pushed and you have checked the result.
-9. **Test data cleanup (once per release gate).** In `launch-factory/`, `node scripts/test-data/list.mjs` writes a candidate list for your own preview project. Review the list before you pass it to `node scripts/test-data/clean.mjs`.
+7. **Push.** `git push origin main`, then `git push origin vX.Y.Z`. A push to `main` also reaches the plugin directory and the claude.ai organization sync through their GitHub webhook, so push to `main` only what you mean to release.
+8. **Publish the GitHub release.** `gh release create vX.Y.Z --verify-tag --title "Sitebrew vX.Y.Z" --notes-file <file>`, with the tag summary as the notes. A tag alone shows no entry on the Releases page.
+9. **Publish the packages.** Publish the `@launch-factory/*` packages and `create-sitebrew` only after the tag is pushed and you have checked the result.
+10. **Test data cleanup (once per release gate).** In `launch-factory/`, `node scripts/test-data/list.mjs` writes a candidate list for your own preview project. Review the list before you pass it to `node scripts/test-data/clean.mjs`.

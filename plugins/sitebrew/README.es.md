@@ -8,15 +8,15 @@ sitebrew es un plugin de Claude Code con cinco skills. Te guían en el uso de we
 
 | Parte | Etiqueta |
 |---|---|
-| web-factory | `v0.1.1` |
-| launch-factory | `v0.1.1` |
+| web-factory | `v0.1.2` |
+| launch-factory | `v0.1.2` |
 
 ## Instalación
 
 Desde el marketplace de este repositorio:
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ Para probarlo sin instalar, inicia Claude Code con `claude --plugin-dir <path>`,
 En Codex, añade primero el marketplace y después el plugin (`codex plugin --help` muestra ambos comandos):
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -65,9 +65,21 @@ Claude Code guarda las tres claves en su almacén seguro de credenciales, no en 
 
 El héroe de objeto 3D (`object-3d-orbit`) parte de una imagen: imagen → modelo GLB → se muestra. Sin las herramientas para ello, baja a 2.5D y después a un póster; si no hay ninguna imagen, el kit no elige este héroe.
 
+## Llamadas de red
+
+El plugin no envía nada a sus mantenedores. El kit que maneja llama a un servicio externo solo cuando configuras la clave correspondiente:
+
+| Servicio | Cuándo | Qué se envía |
+|---|---|---|
+| Pexels | `PEXELS_API_KEY` está configurada (paso 05, medios) | palabras de búsqueda de fotos y vídeos de stock |
+| API de leyes de Corea (law.go.kr) | `LAW_API_OC` está configurada (revisión legal) | los nombres de las leyes que se comprueban |
+| Vercel | `VERCEL_TOKEN` está configurada y pasas `--deploy-preview` | los archivos del sitio construido |
+
+Al preparar el kit se descarga el repositorio desde GitHub y los paquetes desde el registro de npm. El kit launch-factory funciona en modo simulado (mock) hasta que conectas tus propios servicios.
+
 ## Qué hace sitebrew
 
-- Instala piezas de web-factory en un proyecto Next.js con `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.1 -y -o`.
+- Instala piezas de web-factory en un proyecto Next.js con `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.2 -y -o`.
 - Te acompaña paso a paso con `npm run stamp`, que convierte un brief en candidatos de sitio.
 - Arranca la plantilla de launch-factory en modo mock y después enumera lo que necesita el modo live.
 - Te dice qué claves debes crear tú. Solo da nombres y nunca te pide un valor.
