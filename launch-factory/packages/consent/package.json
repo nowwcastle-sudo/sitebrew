@@ -16,6 +16,6 @@
     "@launch-factory/db": "0.0.0",
     "@launch-factory/i18n": "0.0.0",
     "@launch-factory/security": "0.0.0",
-    "zod": "4.6.5"
+    "zod": "4.6.6"
   }
 }
