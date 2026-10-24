@@ -13,6 +13,7 @@ import { appUrl, DEFAULT_LOCALE, PRODUCT_NAME } from "@/lib/launch/config"
 import { database } from "@/lib/launch/db"
 import { env, optional, required } from "@/lib/launch/env"
 import { mailer } from "@/lib/launch/mailer"
+import { afterPurge, purgers } from "@/lib/launch/purgers"
 
 /**
  * 탈퇴 접수 메일(D09). 새 요청일 때만 보낸다(두 번 눌러도 한 통). 메일이 실패해도 탈퇴는 이미 기록됐다 — 던지지 않고 이름만 로그로 남긴다(주소가 섞일 수 있어 메시지는 싣지 않는다).
@@ -73,5 +74,14 @@ export function analyticsEraser(): AnalyticsEraser {
 
 /** 파기 Cron 본체. SUBJECT_REF_KEY(32자 이상)로 거래기록의 가명 참조를 만든다 — 바꾸면 이미 남긴 기록을 이메일로 찾을 수 없다 */
 export async function purge(): Promise<PurgeReport> {
-  return runPurge({ db: await database(), billingFor: await billingPorts(), subjectKey: required("SUBJECT_REF_KEY"), analytics: analyticsEraser() })
+  const report = await runPurge({ db: await database(), billingFor: await billingPorts(), subjectKey: required("SUBJECT_REF_KEY"), analytics: analyticsEraser(), purgers })
+  // 커밋된 뒤의 정리(예: 올린 파일 객체 삭제). 실패해도 파기는 끝났다 — 이름만 남기고, 못 지운 것은 각 기능의 Cron 이 다시 한다
+  if (report.purged > 0) {
+    try {
+      await afterPurge()
+    } catch (e) {
+      console.error(`[account] after-purge cleanup failed: ${e instanceof Error ? e.name : "unknown"}`)
+    }
+  }
+  return report
 }

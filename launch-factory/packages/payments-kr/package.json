@@ -1,0 +1,20 @@
+{
+  "name": "@launch-factory/payments-kr",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "한국 결제 중개 어댑터 — 인터페이스 PaymentGateway { prepare, verify, cancel } + 구현 둘(PortOne V2, 키 없는 mock) + 웹훅 서명 확인. DB·주문을 모른다(주문 규칙은 commerce 패키지 몫).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/contract": "0.0.0",
+    "@portone/server-sdk": "0.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

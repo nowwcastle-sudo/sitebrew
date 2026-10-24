@@ -1,0 +1,38 @@
+{
+  "name": "feature-admin-console",
+  "title": "관리 화면 — 구획 등록부·접근 규칙·서버 액션",
+  "description": "관리 화면의 셸(계획 3d): 구획 모듈(주문·예약·문의·후기·뉴스레터·사용자)을 꽂는 등록부와 콘솔 조립, 요청당 한 번 읽는 신원(세션 + 사용자 행), 서버 액션 다섯(구획 목록·개요·표·기록·행동). 모든 입구가 세션을 먼저 읽고, 행동은 요청 제한과 사람 확인 입력(confirmed: true)을 지난다. 화면(/admin)은 web-factory 블록으로 템플릿이 짠다.",
+  "npm": [
+    "@launch-factory/admin-console",
+    "@launch-factory/db",
+    "@launch-factory/security",
+    "drizzle-orm"
+  ],
+  "registryDependencies": [
+    "feature-auth-betterauth",
+    "feature-security"
+  ],
+  "envVars": [
+    "LF_MODE",
+    "DATABASE_URL"
+  ],
+  "files": [
+    "files/lib/launch/admin-identity.ts",
+    "files/lib/launch/admin-console.ts",
+    "files/app/actions/admin-console.ts",
+    "files/content/copy.admin-messages.en.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts"
+  ],
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목과 보안 항목이 함께 설치된다. 이 항목 자체는 표를 더하지 않는다. 구획(주문·예약 …)은 각자 자기 부품이 싣는다.",
+    "2. 구획을 더하는 법: lib/launch/admin-sections/<id>.ts 에 구획을 선언하고 lib/launch/admin-console.ts 의 등록부에 한 줄을 더한다. 구획은 세션을 보지 못한다 — 신원(lib/launch/admin-identity.ts)을 읽어 접근 규칙(관리자 · 소유자)을 정하는 일은 콘솔이 한다. 전문: docs/guides/admin-sections.md.",
+    "3. 서버 액션 5개(app/actions/admin-console.ts)는 로그인한 사람만 부를 수 있고, 행동(adminAct)은 요청 제한(RATE_LIMIT_DEFAULTS.adminAct, 60초 60번)을 먼저 지난다. 입력의 role·userId 는 읽지 않는다.",
+    "4. 첫 관리자는 DB 에서 user.role 을 'admin' 으로 바꿔 만든다(화면으로는 만들지 않는다) — 운영자 할 일. 관리자는 2단계 인증을 켠 사람만 들어온다(lib/launch/features.ts 의 AUTH_FEATURES 를 { twoFactor: true, admin: true } 로).",
+    "5. 던진 구획 오류는 화면에 DB 글·개인정보 없이 일반 문구로만 나가고, 서버 로그에는 오류 이름만 남는다.",
+    "6. 화면(/admin, /admin/<구획>, /admin/<구획>/<기록 id>)은 템플릿이 web-factory 블록으로 짠다 — 레지스트리는 화면을 싣지 않는다. 검색엔진에 올리지 않는다(noindex).",
+    "7. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

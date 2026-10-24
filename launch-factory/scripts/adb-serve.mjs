@@ -8,11 +8,12 @@ import { createRequire } from "node:module"
 import net from "node:net"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
+import { MOCK_ONLY_NAMES } from "@launch-factory/env"
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url))
 const TEMPLATE = join(ROOT, "template")
 const WIN = process.platform === "win32"
-const PROVIDER_ENV = ["DATABASE_URL", "BETTER_AUTH_SECRET", "PADDLE_API_KEY", "PADDLE_WEBHOOK_SECRET", "RESEND_API_KEY", "POSTHOG_PROJECT_KEY", "SENTRY_DSN", "TURNSTILE_SECRET_KEY", "EMAIL_FROM", "NEXT_PUBLIC_APP_URL", "CRON_SECRET", "SUBJECT_REF_KEY", "TURNSTILE_SITE_KEY", "INQUIRY_OWNER_EMAIL", "PADDLE_CLIENT_TOKEN", "LF_MODE", "POSTHOG_HOST", "LF_MOCK_SUB", "NODE_ENV", "WF_SESSION"]
+const PROVIDER_ENV = ["DATABASE_URL", "BETTER_AUTH_SECRET", "PADDLE_API_KEY", "PADDLE_WEBHOOK_SECRET", "RESEND_API_KEY", "POSTHOG_PROJECT_KEY", "SENTRY_DSN", "TURNSTILE_SECRET_KEY", "EMAIL_FROM", "NEXT_PUBLIC_APP_URL", "CRON_SECRET", "SUBJECT_REF_KEY", "TURNSTILE_SITE_KEY", "INQUIRY_OWNER_EMAIL", "PADDLE_CLIENT_TOKEN", "LF_MODE", "POSTHOG_HOST", ...MOCK_ONLY_NAMES, "NODE_ENV", "WF_SESSION"]
 const cleanEnv = (extra = {}) => {
   const env = { ...process.env, NEXT_TELEMETRY_DISABLED: "1", CI: "1" }
   for (const n of PROVIDER_ENV) delete env[n]

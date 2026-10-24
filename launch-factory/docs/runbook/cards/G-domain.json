@@ -1,0 +1,18 @@
+{
+  "service": "Domain registrar (domain seller)",
+  "role": "domain",
+  "need": "always",
+  "cost": [
+    "one-time"
+  ],
+  "after": [
+    "G-hosting"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "호스팅이 준 임시 주소로만 열려요. 내 이름의 주소가 없고, 로그인·메일 링크도 그 임시 주소를 써요.",
+    "en": "The site opens only on the temporary address the host gave you. There is no address with your own name, and sign-in and email links use that temporary address."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

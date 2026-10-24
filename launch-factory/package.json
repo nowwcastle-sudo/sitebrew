@@ -1,7 +1,7 @@
 {
   "name": "launch-factory",
   "private": true,
-  "version": "0.1.2",
+  "version": "0.2.0",
   "type": "module",
   "workspaces": [
     "packages/*",
@@ -16,6 +16,7 @@
     "test": "node scripts/ci/run-tests.mjs",
     "ci:verify": "node scripts/ci/verify.mjs",
     "ci:smoke": "node template/scripts/ci/smoke.mjs",
+    "e2e:admin": "node scripts/e2e-admin/run.mjs",
     "readme:check": "node scripts/ci/readme-check.mjs",
     "ci:tools": "node scripts/ci/tools.mjs fetch",
     "ci:selftest": "node scripts/ci/selftest-tools.mjs",
@@ -25,6 +26,11 @@
     "conformance": "node scripts/conformance-all.mjs",
     "registry:build": "node scripts/gen-registry.mjs",
     "registry:check": "node scripts/gen-registry.mjs --check",
+    "outcomes:gen": "node scripts/gen-outcomes.mjs",
+    "outcomes:check": "node scripts/gen-outcomes.mjs --check",
+    "runbook:gen": "node scripts/runbook/runbook.mjs gen",
+    "runbook:check": "node scripts/runbook/runbook.mjs check",
+    "runbook:verify": "node scripts/runbook/runbook.mjs gen --check && node scripts/runbook/runbook.mjs check",
     "registry:install": "node --test --test-force-exit --test-timeout=1800000 scripts/registry-install.test.mjs",
     "typecheck": "tsc -p tsconfig.json && npm run typecheck -w template",
     "lint": "eslint .",
@@ -33,13 +39,16 @@
     "contract:sync": "node packages/contract/sync-contract.mjs",
     "template:check": "node scripts/template-sync.mjs --check",
     "template:screens": "node scripts/template-screens.mjs",
-    "template:verify": "node --test --import ./scripts/test/no-user-env.mjs --test-force-exit --test-timeout=1800000 template/test/verify.heavy.mjs"
+    "template:verify": "node --test --import ./scripts/test/no-user-env.mjs --test-force-exit --test-timeout=1800000 template/test/verify.heavy.mjs",
+    "compose": "node scripts/compose/compose-product.mjs",
+    "compose:verify": "node --test --import ./scripts/test/no-user-env.mjs --test-force-exit --test-timeout=2400000 scripts/test/compose-product.heavy.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "eslint": "10.12.0",
     "globals": "17.13.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.71.1"
+    "typescript-eslint": "8.71.1",
+    "yaml": "^2.9.1"
   }
 }

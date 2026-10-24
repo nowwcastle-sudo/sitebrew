@@ -8,6 +8,7 @@
   "files": [
     "files/lib/launch/account.ts",
     "files/lib/launch/account-billing.ts",
+    "files/lib/launch/purgers.ts",
     "files/app/actions/account.ts",
     "files/app/api/cron/purge/route.ts",
     "../_shared/lib/launch/db.ts",
@@ -23,7 +24,7 @@
     "4. Paddle 이 아닌 결제를 쓰면 lib/launch/account-billing.ts 만 그 결제 포트로 바꾼다(대장 D200). 결제가 없으면 구독이 없다고 답하는 포트를 돌려주고, Paddle 항목은 설치하지 않는 쪽이 맞다 — 그때는 registryDependencies 에서 빼고 설치한다.",
     "5. 서버 액션: deleteAccount()·exportMyData(). 탈퇴 화면은 유예 안내(graceUntil)를 보이고, 유예 중 다시 로그인하면 탈퇴가 취소된다(구독은 자동으로 되살리지 않는다). 탈퇴를 접수하면 접수 메일(accountDeletionRequested — 지워지는 날·취소하는 법)이 나간다(D09) — 메일 실패는 탈퇴를 막지 않는다.",
     "6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/purge\", \"schedule\": \"0 5 * * *\" }] }. CRON_SECRET 이 없으면 401 이다.",
-    "7. 개인 식별 칸이 있는 새 표를 제품이 만들면 파기 트랜잭션에 지우는 함수(runPurge 의 purgers)를 더해야 한다 — lib/launch/account.ts 의 purge() 에 넘긴다. 안 더하면 탈퇴한 사람의 정보가 그 표에 남는다.",
+    "7. 개인 식별 칸이 있는 표를 가진 기능(후기·올린 파일·제품이 만든 표)을 쓰면 lib/launch/purgers.ts(제품 것)의 purgers 에 파기 트랜잭션 안에서 할 일을 한 줄씩 더한다 — 후기: anonymizeUserReviews(tx, userId) (@launch-factory/reviews, 작성자 이름을 가리고 연결을 끊는다), 올린 파일: scheduleUserFilesForPurge(tx, userId) (@launch-factory/storage, 장부에서 지울 때로 당긴다). 객체 삭제처럼 트랜잭션 밖에서 할 일은 같은 파일의 afterPurge() 에 둔다(파기가 끝난 뒤 한 번, 실패해도 파기는 유효). 안 더하면 탈퇴한 사람의 정보가 그 표에 남는다. 기본 파일은 비어 있다.",
     "8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
   ]
 }

@@ -14,8 +14,8 @@ const read = (p) => readFileSync(join(root, p), 'utf8')
 const semver = (v) => v.split('.').map(Number)
 const gte = (a, b) => { const [x, y] = [semver(a), semver(b)]; for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i]; return true }
 
-// next 바닥 판: 16.3.6(REL11 — GHSA-vcvr-r3jv-pc5j) → 16.3.8(v0.1.2 — 2026-10-08 공개 6건: GHSA-39w2-rjm5-chcv · 3w37-wq28-93x7 · 4jqv-mc3x-m676 · cjq9-62q9-8jv4(CVSS 8.3) · f87g-xv8r-7p7x · mcj8-r9mp-w47p, OSV 가 잡았다)
-const NEXT_FLOOR = '16.3.8'
+// next 바닥 판: 16.3.6(REL11 — GHSA-vcvr-r3jv-pc5j) → 16.3.8(v0.0.13 — 2026-10-08 공개 6건: GHSA-39w2-rjm5-chcv · 3w37-wq28-93x7 · 4jqv-mc3x-m676 · cjq9-62q9-8jv4(CVSS 8.3) · f87g-xv8r-7p7x · mcj8-r9mp-w47p, OSV 가 잡았다)
+const NEXT_FLOOR = '16.4.3' // v0.0.14 (2026-10-24): 16.4.0 의 공지 3건(GHSA-2464-fhr4-w9xw · 673q-mjm6-r5xr · p3m5-59mp-jv5r, 최고 9.5)이 16.4.3 에서 고쳐졌다 — npm audit 가 알려 준 고친 판
 
 test('REL11-1: next 는 알려진 보안 공지가 고쳐진 바닥 판(NEXT_FLOOR) 이상이고, eslint-config-next·잠금 파일과 같은 고정 판이다', () => {
   const pkg = JSON.parse(read('package.json'))

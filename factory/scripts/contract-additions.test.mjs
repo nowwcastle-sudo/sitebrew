@@ -24,6 +24,16 @@ function transpile(file, name) {
   writeFileSync(path, out)
   return path
 }
+// conformance/*.ts 는 타입 import 만 상대/별칭 경로로 부르고(런타임 import 는 ./conformance-core 뿐) — 변환본 폴더에 함께 놓는다
+function transpileConf(name) {
+  const confOut = join(OUT, 'conformance')
+  mkdirSync(confOut, { recursive: true })
+  for (const f of ['conformance-core', name]) {
+    const out = js(readFileSync(join(DIR, 'conformance', `${f}.ts`), 'utf8'))
+    writeFileSync(join(confOut, `${f}.mjs`), out.replace(/from "\.\/conformance-core"/g, 'from "./conformance-core.mjs"'))
+  }
+  return join(confOut, `${name}.mjs`)
+}
 const load = (name) => import(pathToFileURL(transpile(join(DIR, `${name}.ts`), name)).href)
 const mock = await load('adapter-mock')
 const events = await load('events')
@@ -42,6 +52,34 @@ test('판은 그대로 2다: 추가는 선택 칸뿐이라 CONTRACT_VERSION 이 
   const ports = readFileSync(join(DIR, 'ports.ts'), 'utf8')
   // 옛 메서드 이름은 모두 그대로(판을 올리지 않는 근거) — 선택이 아닌 메서드가 줄지 않았다
   for (const m of ['session()', 'methods()', 'signIn(', 'signUp(', 'verifyTwoFactor(', 'requestPasswordReset(', 'signOut()', 'plans()', 'subscription()', 'checkout(', 'changePlan(', 'cancel(', 'pause(', 'resume()', 'updatePaymentMethod()', 'acceptPriceChange(', 'applyRetentionOffer(', 'consents()', 'setConsents(', 'track<', 'consent()', 'setConsent(', 'upload(']) assert.ok(ports.includes(m), `${m} 가 빠졌다`)
+})
+
+// 계획 3a(판매·결제): 이벤트 셋 + 사람 승인 행동 둘. 판은 그대로 2다(더하기만).
+test('판매 이벤트 add_to_cart·begin_checkout·purchase 는 EVENTS 끝에 더해졌고 SAMPLE_EVENTS 가 같은 이름을 모두 갖는다 — 개인정보 칸 없이 최소 단위 정수 금액만', async () => {
+  for (const e of ['add_to_cart', 'begin_checkout', 'purchase']) assert.ok(events.EVENTS.includes(e), `${e} 가 EVENTS 에 없다`)
+  assert.deepEqual(events.EVENTS.slice(-3), ['add_to_cart', 'begin_checkout', 'purchase'])
+  const conf = await import(pathToFileURL(transpileConf('analytics')).href)
+  assert.deepEqual(Object.keys(conf.SAMPLE_EVENTS).sort(), [...events.EVENTS].sort())
+  assert.deepEqual(conf.SAMPLE_EVENTS.add_to_cart, { productId: 'sku-1', quantity: 2 })
+  assert.deepEqual(conf.SAMPLE_EVENTS.begin_checkout, { amount: 31_000, currency: 'KRW' })
+  assert.deepEqual(conf.SAMPLE_EVENTS.purchase, { orderId: 'order-1', amount: 31_000, currency: 'KRW' })
+  assert.deepEqual(conf.piiPaths(conf.SAMPLE_EVENTS), [])
+  const src = readFileSync(join(DIR, 'events.ts'), 'utf8')
+  assert.match(src, /purchase: \{ orderId: string; amount: number; currency: /)
+})
+
+test('사람 승인 행동 표에 place-order·cancel-order 가 있다 — 포트 메서드 placeOrder·cancelOrder, 승인 단계, 이유 한 줄, 블록 cart/checkout-form·account/order-detail 이 각 행에 적혀 있다', async () => {
+  const table = await import(pathToFileURL(transpile(join(DIR, 'human-actions.ts'), 'human-actions')).href)
+  for (const [id, port] of [['place-order', 'placeOrder'], ['cancel-order', 'cancelOrder']]) {
+    const a = table.AGENT_ACTIONS.find((x) => x.id === id)
+    assert.ok(a, `${id} 가 표에 없다`)
+    assert.equal(a.tier, 'human-approval')
+    assert.deepEqual([...a.ports], [port])
+    assert.ok(a.why.length > 4)
+    assert.ok(table.HUMAN_APPROVAL_ACTIONS.includes(id))
+  }
+  assert.deepEqual([...table.AGENT_ACTIONS.find((x) => x.id === 'place-order').blocks], ['cart/checkout-form'])
+  assert.deepEqual([...table.AGENT_ACTIONS.find((x) => x.id === 'cancel-order').blocks], ['account/order-detail'])
 })
 
 test('새 메서드는 모두 선택(?)이다 — 어댑터가 하나도 구현하지 않아도 계약을 지킨다', () => {
@@ -336,7 +374,7 @@ test('tsc: ports-additions.typetest.ts 는 통과하고, @ts-expect-error 줄을
     if (/^\s*\/\/ @ts-expect-error/.test(l)) expected.add(kept.length + 1)
     else kept.push(l)
   })
-  assert.equal(expected.size, 10, '고정물의 @ts-expect-error 는 열 줄이다(만 14세·청약철회 false, retryAfter 문자열, 성공 결과의 code, 푸시 키 없음, identify 특성, web_vital 지표·name, 확인 칸 false·confirmEmail 숫자 — P3-7 AXC)')
+  assert.equal(expected.size, 19, '고정물의 @ts-expect-error 는 열아홉 줄이다(만 14세·청약철회 false, retryAfter 문자열, 성공 결과의 code, 푸시 키 없음, identify 특성, web_vital 지표·name, 확인 칸 false·confirmEmail 숫자 — P3-7 AXC, 별점 6·정렬값·문의 요약·스니펫 html·뉴스레터 동의 false·올리기 종류 — p3-3c)')
   const neg = join(OUT, 'tsc-neg')
   rmSync(neg, { recursive: true, force: true })
   mkdirSync(neg, { recursive: true })

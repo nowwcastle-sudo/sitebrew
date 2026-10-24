@@ -1,0 +1,13 @@
+{
+  "kind": "account",
+  "variant": "order-history",
+  "title": "주문 내역 — 주문번호 | 주문일 | 상품 | 결제 금액(총액·VAT) | 상태 배지 | 자세히 보기",
+  "layout": "table-list",
+  "density": "comfortable",
+  "archetypes": [ "commerce" ],
+  "archetypeKinds": [ "orders", "order-history" ],
+  "states": [ "loading", "empty", "error", "ready" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "내 주문을 새것부터 표로: 주문번호(행 머리) | 주문일 | 상품(첫 상품 이름 + 「외 N건」) | 결제 금액(합계 먼저·VAT 문구) | 상태 배지(글 + 기계가 읽는 data-status) | 자세히 보기 링크(copy.detail.href 의 {id} 에 주문번호). 읽기 전용이라 승인 행동이 없다 — 취소는 account/order-detail. 로그아웃·만료면 ReadError 가 로그인 링크를 보인다. 좁은 화면은 줄 단위로 쌓는다(cn-block-stack-table). 포트: orders. 상태 글(copy.status)·상품 요약 틀·VAT 문구는 모두 copy 다."
+}

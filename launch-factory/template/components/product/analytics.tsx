@@ -59,6 +59,18 @@ export interface ProductAnalyticsProps {
   children: ReactNode
 }
 
+/**
+ * 분석을 고르지 않은 제품(enabled.json 에 analytics-posthog 없음)의 뿌리 — 계측 공급자(ProductAnalytics)를 올리지 않고 꺼진 포트만 준다.
+ * 블록의 계측 훅(useBlockTrack)은 뿌리가 없으면 던지므로 뿌리 자리는 남기되 아무것도 보내지 않는다
+ */
+export function AnalyticsOff({ children }: { children: ReactNode }) {
+  return (
+    <EnabledContext.Provider value={false}>
+      <OffBridge>{children}</OffBridge>
+    </EnabledContext.Provider>
+  )
+}
+
 export function ProductAnalytics({ mode, projectKey, host, children }: ProductAnalyticsProps) {
   const enabled = analyticsEnabled(mode, host, projectKey)
   if (!enabled) {

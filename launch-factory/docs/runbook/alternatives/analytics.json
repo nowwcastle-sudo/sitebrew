@@ -1,0 +1,32 @@
+[
+  {
+    "service": "Umami",
+    "tags": ["free"],
+    "support": "code",
+    "switchCost": {
+      "ko": "키트에는 어댑터가 없어요. 계측 포트를 구현하는 어댑터 코드를 새로 써야 하고, 동의 전에는 아무것도 보내지 않는 동작도 직접 지켜야 해요.",
+      "en": "The kit has no adapter for it. You have to write a new adapter that implements the analytics port, and keep the rule of sending nothing before consent yourself."
+    },
+    "note": {
+      "ko": "클라우드에 무료 플랜이 있고, 오픈소스라 직접 설치(셀프 호스팅)해 쓰면 무료예요. 서버는 미국과 유럽에 있고 쿠키를 쓰지 않는다고 안내해요.",
+      "en": "The cloud service has a free plan, and the open-source version is free to self-host. It says its servers are in the US and the EU and that it does not use cookies."
+    },
+    "home": "https://umami.is",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Plausible",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "키트에는 어댑터가 없어요. 계측 포트를 구현하는 어댑터 코드를 새로 써야 해요.",
+      "en": "The kit has no adapter for it. You have to write a new adapter that implements the analytics port."
+    },
+    "note": {
+      "ko": "무료 플랜은 안내되지 않고 무료 체험이 있어요. 유럽에서 운영하고 쿠키를 쓰지 않는다고 안내해요. 코드는 공개되어 있어 직접 설치할 수 있어요.",
+      "en": "No free plan is listed, but there is a free trial. It says it is hosted in the EU and uses no cookies. The code is public and can be self-hosted."
+    },
+    "home": "https://plausible.io",
+    "checked": "2026-10-22"
+  }
+]

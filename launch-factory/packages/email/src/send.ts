@@ -4,6 +4,9 @@
 // 콘솔 줄은 @launch-factory/security 의 maskPii 로 가린다(받는 주소·전화·토큰).
 // 광고성 템플릿(kinds.ts)은 어댑터가 법정 표시를 책임진다(G03): 제품 설정의 사업자 정보(상호·이메일·전화·주소)와 로그인 없는 수신거부 링크가 없으면 보내지 않고 던지며(MarketingComplianceError),
 // 있으면 본문 바닥글에 싣고 수신거부 헤더 List-Unsubscribe·List-Unsubscribe-Post(RFC 8058 — 한 번 눌러 수신거부)를 단다. 헤더가 DKIM 서명 대상(h=)에 들어가는지는 Resend 몫이다(문서: 확인 안 됨).
+import { randomUUID } from "node:crypto"
+import { appendFileSync, mkdirSync } from "node:fs"
+import { dirname } from "node:path"
 import { Resend } from "resend"
 import { maskPii } from "@launch-factory/security"
 import { renderEmail, type TemplateInputs, type TemplateName } from "./render.ts"
@@ -36,6 +39,8 @@ export interface MailerOptions {
   replyTo?: string
   /** mock 콘솔 출력 대상(기본 console.info) */
   log?: (line: string) => void
+  /** mock 전용(LF_MOCK_OUTBOX): 이 파일에 메일마다 한 줄(JSONL — id·template·to·subject·at, 본문 없음)을 덧붙인다. 뒤 시험이 보낸 메일 수를 센다. live 는 무시 */
+  outbox?: string
   /** 테스트·다른 공급자 주입용. 주면 apiKey 는 쓰지 않는다 */
   client?: ResendLike
   /** 광고성 템플릿을 보내려면 필요하다(없으면 광고성 메일은 보내지 않고 던진다) */
@@ -153,6 +158,16 @@ function mockMailer(options: MailerOptions): Mailer {
       const mail = await renderEmail(request.template, input)
       n += 1
       const id = `mock_${n}`
+      if (options.outbox) {
+        // 줄 id 는 프로세스·인스턴스를 넘어 유일하다(여러 서버가 한 파일에 덧붙일 수 있다)
+        const line = JSON.stringify({ id: randomUUID(), template: request.template, to: request.to, subject: mail.subject, at: new Date().toISOString() })
+        try {
+          mkdirSync(dirname(options.outbox), { recursive: true })
+          appendFileSync(options.outbox, `${line}\n`)
+        } catch (cause) {
+          throw new Error(`LF_MOCK_OUTBOX: cannot write ${options.outbox}`, { cause })
+        }
+      }
       log(
         maskPii(
           [

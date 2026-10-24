@@ -248,6 +248,81 @@ export interface PushSubscriptionInput {
   keys: { p256dh: string; auth: string }
 }
 
+/** 예약 상태. requested 는 운영자 확인 대기, confirmed 는 확정, 그 뒤 cancelled(취소)·completed(방문 완료)·no_show(오지 않음)로 끝난다. 직접 취소는 requested·confirmed 일 때만 */
+export type BookingStatus = "requested" | "confirmed" | "cancelled" | "completed" | "no_show"
+
+/** 시간 칸 하나. available 은 남은 자리 수(0 이면 마감 — 칸은 그대로 보여 주고 고를 수 없게 한다) */
+export interface BookingSlot {
+  startsAt: IsoDate
+  available: number
+}
+
+/** 하루의 시간 칸. date 는 그 업장 시간대의 날짜(YYYY-MM-DD). 칸이 없는 날도 올 수 있다(휴무·지난 시각) */
+export interface BookingDay {
+  date: string
+  slots: BookingSlot[]
+}
+
+/**
+ * 예약 접수 입력. 폼 칸 그대로라 값은 모두 문자열이다(partySize 도 숫자 문자열 — 폼이 보내는 모양). contact 는 이메일 또는 전화번호 하나다.
+ * idempotencyKey·봇 확인 토큰은 블록이 만들지 않는다 — 폼을 여는 조립하는 쪽이 숨은 입력으로 더한다(포트 폼 규칙과 같다).
+ */
+export type BookingRequest = {
+  service: string
+  startsAt: IsoDate
+  partySize?: string
+  name?: string
+  contact: string
+  note?: string
+}
+
+/** 예약 접수 결과. id 는 예약 번호 — 조회·취소에 쓰므로 화면에 보여 준다 */
+export interface BookingReceipt {
+  id: string
+  startsAt: IsoDate
+  status: Extract<BookingStatus, "requested" | "confirmed">
+  message: string
+}
+
+/** 예약 번호 + 연락처. 조회·취소는 이 둘이 함께 맞아야 한다(로그인 없이 예약한 사람이 자기 예약을 찾는 길) */
+export type BookingLookup = { reference: string; contact: string }
+
+/**
+ * 예약 번호 + 연락처가 맞는 사람에게 보이는 예약. 연락처는 돌려주지 않는다(이미 아는 값이다).
+ * canCancel 은 지금 직접 취소할 수 있는가(자리를 차지하는 상태 + 취소 마감 전), cancelBy 는 직접 취소할 수 있는 마지막 시각이다.
+ */
+export interface ManagedBooking {
+  id: string
+  service: string
+  serviceName: string
+  startsAt: IsoDate
+  endsAt: IsoDate
+  partySize: number
+  status: BookingStatus
+  canCancel: boolean
+  cancelBy: IsoDate
+}
+
+/** 상태 바뀜(취소)의 결과 */
+export interface BookingChange {
+  id: string
+  status: BookingStatus
+  message: string
+}
+
+/**
+ * 예약 포트(계약 판 2 안의 선택 추가 — sitebrew v0.2.0 계획 3b). 모든 메서드는 거부하지 않고 ActionResult 로 끝난다. 어댑터가 하나도 구현하지 않아도 다른 포트의 계약은 그대로다.
+ * 실패 코드(ActionFailureCode): book 은 칸 오류(fieldErrors)·slot_taken·deposit_failed, lookup·cancel 은 틀린 조합이 모두 같은 not_found(번호를 모르는 경우와 연락처가 틀린 경우를
+ * 구별하지 않는다 — 예약 존재 여부를 흘리지 않는다), cancel 은 이미 끝난 예약이면 invalid_state, 취소 기한이 지났으면 cancel_closed 다.
+ */
+export interface BookingPort {
+  /** from 은 YYYY-MM-DD(업장 시간대), days 는 며칠치인지(선택 — 기본·상한은 어댑터가 정한다) */
+  slots(input: { service: string; from: string; days?: number }): Promise<ActionResult<{ days: BookingDay[] }>>
+  book(input: BookingRequest): Promise<ActionResult<BookingReceipt>>
+  lookup(input: BookingLookup): Promise<ActionResult<ManagedBooking>>
+  cancel(input: BookingLookup): Promise<ActionResult<BookingChange>>
+}
+
 /**
  * 계측 출처 태그(접합면 J2 판 2 — 「공장이 배운다」, §9 Q15). 이벤트가 어느 블록·레시피·문구 변형·실험 갈래에서 났는지 적는다 —
  * 학습 집계기가 태그별 전환을 읽어 다음 찍어내기의 순서를 정한다. blockId 는 "<kind>-<variant>"(블록 뿌리 data-block 과 같다), recipeId 는 레시피 id.
@@ -280,6 +355,170 @@ export interface AnalyticsPort {
   setConsent(next: Pick<ConsentState, "analytics" | "marketing">): void
 }
 
+/** 파일 종류. 크기·형식 한도는 종류마다 서버 정책이 정한다(launch-factory storage policy) */
+export type StorageKind = "avatar" | "attachment" | "image"
+
+/** 올리기 티켓(선택 메서드 createTicket 의 결과): 브라우저가 url 로 method(PUT) 요청을 headers 와 함께 보내면 파일이 저장소에 직접 올라간다 */
+export interface UploadTicket {
+  id: string
+  /** 저장소 안 위치. 사용자 파일 이름은 키에 넣지 않는다 */
+  key: string
+  method: "PUT"
+  url: string
+  headers: Record<string, string>
+  expiresAt: IsoDate
+  /** 서버 정책의 최대 바이트 — 이보다 크면 complete 가 거절한다 */
+  maxBytes: number
+}
+
 export interface StoragePort {
-  upload(file: File | Blob, opts: { kind: "avatar" | "attachment" | "image" }): Promise<ActionResult<{ url: string; key: string }>>
+  upload(file: File | Blob, opts: { kind: StorageKind }): Promise<ActionResult<{ url: string; key: string }>>
+  /**
+   * 올리기 티켓 받기(선택, 계약 판 2 안의 추가 — p3-3c). upload 한 번을 티켓 → 저장소로 직접 PUT → complete 세 걸음으로 나눈 것이다.
+   * 종류·크기·형식이 정책을 어기면 fieldErrors, avatar 는 로그인이 필요하다(code: sign_in_required)
+   */
+  createTicket?(input: { kind: StorageKind; contentType: string; size: number; fileName?: string }): Promise<ActionResult<UploadTicket>>
+  /** 올리기 마침(선택). 서버가 저장된 객체의 크기·형식을 다시 확인한 뒤 ready 로 바꾼다. 비공개 파일의 url 은 짧게 열리는 내려받기 주소다 */
+  complete?(input: { id: string }): Promise<ActionResult<{ url: string; key: string }>>
+}
+
+/**
+ * 후기·상품 문의 포트(p3-3c, 선택 추가 — 판 2 그대로). 형태는 블록 조각 review-kit 의 Review·RatingSummary 와 같은 필드이되 계약이 블록을 부르지 않도록 여기 따로 둔다.
+ * 읽기는 게시된 것만 돌려주고 작성자는 이미 가려진 이름이다(실명·연락처 없음). 쓰기는 요청 제한·봇 확인을 거치며 실패는 ActionResult 의 code 로 말한다.
+ */
+export type ReviewRating = 1 | 2 | 3 | 4 | 5
+export type ReviewKind = "review" | "question"
+export type ReviewSort = "latest" | "rating_desc" | "rating_asc"
+
+export interface Review {
+  id: string
+  rating: ReviewRating
+  title?: string
+  body: string
+  /** 가린 이름(예: 「김**」) */
+  author: string
+  /** YYYY-MM-DD */
+  date: IsoDate
+  /** 실제로 산 사람의 후기(구매 기록과 잇는 것은 어댑터 몫) */
+  verified?: boolean
+  option?: string
+  /** 판매자·운영자 답변 */
+  reply?: { author: string; body: string; date: IsoDate }
+}
+
+/** 상품 문의: 별점·제목 없이 질문과 공개 답변만 있다 */
+export interface Question {
+  id: string
+  body: string
+  author: string
+  date: IsoDate
+  reply?: { author: string; body: string; date: IsoDate }
+}
+
+export interface RatingSummary {
+  avg: number
+  count: number
+  /** 이 숫자의 기준일(YYYY-MM-DD) */
+  asOf: IsoDate
+  /** 별점별 후기 수 — 합이 count 와 같다 */
+  distribution: Record<ReviewRating, number>
+}
+
+export interface ReviewListInput {
+  /** 후기가 달리는 대상. 종류와 id 는 제품이 정한다(예 subjectType "product") */
+  subjectType: string
+  subjectId: string
+  /** 기본 review */
+  kind?: ReviewKind
+  /** 기본 latest */
+  sort?: ReviewSort
+  /** 별점으로 거르기(review 만) */
+  rating?: ReviewRating
+  page?: number
+  pageSize?: number
+}
+
+interface ReviewPageInfo {
+  total: number
+  page: number
+  pageCount: number
+}
+
+/** kind 로 갈리는 목록 결과. 요약(summary)은 후기에만 있고 게시된 후기 전체로 센 값이다(거르기·쪽과 무관) */
+export type ReviewListResult = ({ kind: "review"; items: Review[]; summary: RatingSummary } | { kind: "question"; items: Question[] }) & ReviewPageInfo
+
+export interface ReviewSubmitInput {
+  subjectType: string
+  subjectId: string
+  /** 기본 review */
+  kind?: ReviewKind
+  /** review 는 필수 */
+  rating?: ReviewRating
+  title?: string
+  body: string
+  /** 로그인 없이 쓰는 문의의 표시 이름(서버가 가려서 저장한다) */
+  authorName?: string
+  locale?: "ko" | "en"
+}
+
+export interface ReviewsPort {
+  list(input: ReviewListInput): Promise<ActionResult<ReviewListResult>>
+  /** 같은 사람이 같은 대상에 후기는 한 번(중복은 fieldErrors). 사전 검수(moderation before)면 status 가 pending 이고 목록에는 아직 없다 */
+  submit(input: ReviewSubmitInput): Promise<ActionResult<{ id: string; status: "published" | "pending" }>>
+}
+
+/**
+ * 사이트 검색 포트(p3-3c). 하이라이트는 HTML 이 아니라 범위 배열이다 — 블록이 text 를 잘라 <mark> 로 감싼다(문자열을 HTML 로 꽂지 않는다, XSS 방지).
+ * ranges 의 각 [start, end) 는 snippet.text 안의 UTF-16 코드 유닛 위치다. 빈 질의는 오류가 아니라 빈 결과다.
+ */
+export interface SearchInput {
+  q: string
+  /** 문서 종류로 좁히기(예 "page"·"product"·"post") */
+  kinds?: string[]
+  locale?: "ko" | "en"
+  page?: number
+  pageSize?: number
+}
+
+export interface SearchHit {
+  kind: string
+  ref: string
+  title: string
+  url: string
+  snippet: { text: string; ranges: [number, number][] }
+}
+
+export interface SearchResult {
+  items: SearchHit[]
+  total: number
+  page: number
+  pageCount: number
+}
+
+export interface SearchPort {
+  search(input: SearchInput): Promise<ActionResult<SearchResult>>
+}
+
+/**
+ * 뉴스레터 구독 포트(p3-3c). 동의는 기본 꺼짐이라 consent 는 true 만 받는다(체크하지 않으면 칸을 뺀다 — 정보통신망법 제50조, 전자상거래법 §21-2①2).
+ * 이미 구독 중인 주소도 같은 응답이다(주소가 구독자인지 알리지 않는다). 확인 메일의 링크를 눌러야 구독이 시작된다(해지 링크는 메일에 있다).
+ */
+export interface NewsletterPort {
+  subscribe(input: { email: string; consent: true; source?: string; locale?: "ko" | "en" }): Promise<ActionResult<{ confirmationSent: true }>>
+}
+
+/** 내 신청 내역(문의 접수) 한 줄. 연락처·내용은 앞 40자까지 가린 미리보기만 싣는다 */
+export type MyRequestStatus = "received" | "in_progress" | "done"
+export interface MyRequest {
+  /** 접수 번호 */
+  reference: string
+  kind: string
+  status: MyRequestStatus
+  receivedAt: IsoDate
+  preview: string
+}
+
+export interface MyRequestsPort {
+  /** 로그인한 사람 자기 것만. 로그아웃이면 code: sign_in_required */
+  list(input?: { page?: number; pageSize?: number }): Promise<ActionResult<{ items: MyRequest[]; total: number; page: number; pageCount: number }>>
 }

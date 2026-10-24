@@ -6,6 +6,7 @@ import { CONTRACT_VERSION_EXPECTED } from "./expected.ts"
 export * from "./web-factory/contract/events.ts"
 export * from "./web-factory/contract/ports.ts"
 export * from "./web-factory/contract/attribution.ts"
+export type * from "./web-factory/contract/commerce.ts"
 export type * from "./web-factory/contract/block-contract.ts"
 export { CONTRACT_VERSION_EXPECTED }
 

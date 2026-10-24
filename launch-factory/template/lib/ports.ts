@@ -46,7 +46,8 @@ export async function currentMockScene(): Promise<MockScene | null> {
   }
 }
 
-const mockInput = (scene: MockScene | null) => ({ scene, defaultSub: process.env.LF_MOCK_SUB || "active", getName: () => globals.__lfMockName })
+// 메일러는 mock 일 때만 불러온다(live 는 lib/ports.live.ts 가 쓴다). mock 메일은 LF_MOCK_OUTBOX 파일에 남는다
+const mockInput = async (scene: MockScene | null) => ({ scene, defaultSub: process.env.LF_MOCK_SUB || "active", getName: () => globals.__lfMockName, mail: (await import("@/lib/launch/mailer")).mailer() })
 
 /**
  * 목 포트. LF_MOCK_SCENES=1 이 아니면 서버 프로세스에 하나다(로그인 상태가 요청 사이에 이어진다 — 방문자끼리 세션을 나눠 쓰므로 mock 은 개발 전용이다.
@@ -55,8 +56,8 @@ const mockInput = (scene: MockScene | null) => ({ scene, defaultSub: process.env
  */
 async function mockPorts(): Promise<ProductPorts> {
   const scene = effectiveScene(await currentMockScene(), process.env.LF_MOCK_SCENES === "1")
-  if (scene) return buildMockPorts(mockInput(scene))
-  return (globals.__lfMockPorts ??= buildMockPorts(mockInput(null)))
+  if (scene) return buildMockPorts(await mockInput(scene))
+  return (globals.__lfMockPorts ??= buildMockPorts(await mockInput(null)))
 }
 
 /**

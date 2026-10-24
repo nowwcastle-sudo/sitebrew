@@ -1,8 +1,9 @@
 // LFRUNNER 시험 — mock 모드 세션 장면(web-factory G1 계약 `wf_session`)과 화면 관문 러너(scripts/template-screens/)의 순수 부분. 빌드·서버·Chrome 없이 돈다.
 // 실제 화면 관문은 `npm run template:screens` 가 서버를 띄워 돌린다(docs/qa/template-screens.md).
 import assert from "node:assert/strict"
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs"
 import { registerHooks } from "node:module"
+import { tmpdir } from "node:os"
 import { join } from "node:path"
 import test from "node:test"
 import { fileURLToPath, pathToFileURL } from "node:url"
@@ -11,8 +12,11 @@ const T = fileURLToPath(new URL("..", import.meta.url))
 const read = (p) => readFileSync(join(T, p), "utf8")
 
 // `@/…` 별칭을 파일로 푼다(Next 가 tsconfig paths 로 하는 일) + next/headers 는 확장자 있는 이름으로
+// 쿼리에 ?spy-mailer 가 붙은 mailer.ts 사본만 @launch-factory/email 대신 염탐용 모듈을 받는다 — createMailer 가 받은 옵션을 globalThis 에 남긴다
+const SPY_MAILER = "data:text/javascript," + encodeURIComponent('export const createMailer = (options) => { globalThis.__lfMailerOptions = options; return { mode: "mock", send: async () => ({ ok: true, mode: "mock", id: "spy_1" }) } }')
 registerHooks({
   resolve: (spec, ctx, next) => {
+    if (spec === "@launch-factory/email" && ctx.parentURL?.includes("?spy-mailer")) return { url: SPY_MAILER, shortCircuit: true }
     if (spec.startsWith("@/")) {
       for (const ext of [".ts", "/index.ts"]) {
         const file = join(T, spec.slice(2) + ext)
@@ -140,6 +144,82 @@ test("F6 mock 사용자 이름은 영어 화면 언어다 — 장면 있음·없
 test("계정 화면이 저장한 이름은 장면 세션에도 덮어 보인다", async () => {
   const s = await ports("signed-in", "active", () => "Pat").auth.session()
   assert.equal(s.data.name, "Pat")
+})
+
+// ── mock 메일(LF_MOCK_OUTBOX 시험 배선) ─────────────────────────────────────────────────
+
+const recordingMail = () => {
+  const sent = []
+  return { sent, mail: { mode: "mock", send: async (request) => (sent.push(request), { ok: true, mode: "mock", id: `mock_${sent.length}` }) } }
+}
+const withMail = (mail, defaultSub = "none") => buildMockPorts({ scene: null, defaultSub, getName: () => undefined, mail })
+const SIGN_UP = { method: "password", email: "new-person@example.com", password: "correct horse battery", consents: { terms: true, privacy: true, ageOver14: true, marketing: {} } }
+
+test("mock 메일: mail 을 주면 가입 성공 뒤 verifyEmail 한 통, 결제 성공 뒤 orderConfirmation 한 통 — 받는 사람은 목 세션 이메일", async () => {
+  const { sent, mail } = recordingMail()
+  const p = withMail(mail)
+  assert.equal((await p.auth.signUp(SIGN_UP)).ok, true)
+  assert.deepEqual(sent.map((r) => r.template), ["verifyEmail"])
+  assert.equal((await p.billing.checkout({ planId: "pro", trial: false, withdrawalConsent: true })).ok, true)
+  assert.deepEqual(sent.map((r) => [r.template, r.to]), [["verifyEmail", "kim@example.com"], ["orderConfirmation", "kim@example.com"]])
+})
+
+test("mock 메일: 거절된 가입·결제는 메일을 보내지 않고, mail 이 없으면 아무 일도 없다", async () => {
+  const { sent, mail } = recordingMail()
+  const p = withMail(mail)
+  assert.equal((await p.auth.signUp({ ...SIGN_UP, email: "taken@example.com" })).ok, false)
+  assert.equal((await p.billing.checkout({ planId: "pro" })).ok, false, "청약철회 동의가 없으면 거절")
+  assert.equal((await p.billing.checkout({ planId: "nope", withdrawalConsent: true })).ok, false)
+  assert.deepEqual(sent, [])
+  const bare = buildMockPorts({ scene: null, defaultSub: "none", getName: () => undefined })
+  assert.equal((await bare.auth.signUp(SIGN_UP)).ok, true)
+})
+
+test("mock 메일러: LF_MOCK_OUTBOX 가 빈 문자열이면 mailer 는 outbox 를 undefined 로 넘기고 파일을 만들지 않는다", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "lf-empty-outbox-"))
+  const cwd = process.cwd()
+  const saved = { LF_MODE: process.env.LF_MODE, LF_MOCK_OUTBOX: process.env.LF_MOCK_OUTBOX }
+  process.env.LF_MODE = "mock"
+  process.env.LF_MOCK_OUTBOX = ""
+  delete globalThis.__lfMailerOptions
+  try {
+    process.chdir(dir) // 빈 경로가 상대 경로로 새어 파일이 생기면 여기서 보인다
+    const { mailer } = await import("../lib/launch/mailer.ts?spy-mailer") // mailer() 는 처음 만든 것을 기억하므로 새 모듈 사본 + 염탐 메일 모듈
+    const p = withMail(mailer())
+    assert.equal((await p.auth.signUp(SIGN_UP)).ok, true)
+    assert.ok(globalThis.__lfMailerOptions, "createMailer 가 불렸다")
+    assert.equal(globalThis.__lfMailerOptions.outbox, undefined, "빈 문자열이 아니라 undefined")
+    assert.deepEqual(readdirSync(dir), [], "outbox 파일도 폴더도 없다")
+  } finally {
+    process.chdir(cwd)
+    delete globalThis.__lfMailerOptions
+    for (const [k, v] of Object.entries(saved)) {
+      if (v === undefined) delete process.env[k]
+      else process.env[k] = v
+    }
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+test("mock 메일러: LF_MOCK_OUTBOX 파일이 있으면 가입 확인 메일이 한 줄로 남는다(ports.ts 가 부르는 mailer())", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "lf-outbox-"))
+  const file = join(dir, "outbox.jsonl")
+  const saved = { LF_MODE: process.env.LF_MODE, LF_MOCK_OUTBOX: process.env.LF_MOCK_OUTBOX }
+  process.env.LF_MODE = "mock"
+  process.env.LF_MOCK_OUTBOX = file
+  try {
+    const { mailer } = await import("../lib/launch/mailer.ts")
+    const p = withMail(mailer())
+    assert.equal((await p.auth.signUp(SIGN_UP)).ok, true)
+    const lines = readFileSync(file, "utf8").trim().split("\n").map((l) => JSON.parse(l))
+    assert.deepEqual(lines.map((l) => [l.template, l.to]), [["verifyEmail", "kim@example.com"]])
+  } finally {
+    for (const [k, v] of Object.entries(saved)) {
+      if (v === undefined) delete process.env[k]
+      else process.env[k] = v
+    }
+    rmSync(dir, { recursive: true, force: true })
+  }
 })
 
 // ── live 는 쿠키를 읽지 않는다(위조 방지) ──────────────────────────────────────────────

@@ -1,7 +1,7 @@
 {
   "source": "nowwcastle-sudo/sitebrew",
-  "ref": "v0.1.2",
-  "commit": "098e330fd478eadbbcea6c39f8ac1fc53292d025",
+  "ref": "v0.2.0",
+  "commit": "f2174f6ed94a60f6ccd1b3deda50a3190a883413",
   "contractVersion": 2,
   "files": [
     {
@@ -12,21 +12,39 @@
     },
     {
       "path": "registry/factory/contract/block-contract.ts",
-      "upstreamSha256": "18024fb85329141f445c6944ac8c8bc92ffbc2d2bf75108edb67b4933a25cd48",
+      "upstreamSha256": "da578964b614047d6fdf2a17ca26a9ab9576c81e8c2ed0f5b1d307f987daf5ff",
       "vendored": "src/web-factory/contract/block-contract.ts",
-      "sha256": "18024fb85329141f445c6944ac8c8bc92ffbc2d2bf75108edb67b4933a25cd48"
+      "sha256": "da578964b614047d6fdf2a17ca26a9ab9576c81e8c2ed0f5b1d307f987daf5ff"
+    },
+    {
+      "path": "registry/factory/contract/commerce.ts",
+      "upstreamSha256": "b1524368fc4bf87d1fa3f6cb6a6dbc536b3b0aff44d29bed7cb81023ba84e760",
+      "vendored": "src/web-factory/contract/commerce.ts",
+      "sha256": "17700d2e435933f649fdf16b6f0554b87d3f43fdc62cebe24a6a08bb086fec02"
+    },
+    {
+      "path": "registry/factory/contract/conformance/commerce.ts",
+      "upstreamSha256": "bba09b8ff36c6e33c87a7e7b2785ad13e0961c0a44dc680d864396f3bc65293f",
+      "vendored": "src/web-factory/contract/conformance/commerce.ts",
+      "sha256": "836f62f190f8b5de6a614c781211974889d80978179625dbb039c90f502e219d"
+    },
+    {
+      "path": "registry/factory/contract/conformance/conformance-core.ts",
+      "upstreamSha256": "ff4fbe312823ab98ace7acb7a0dc490172103aaae9ada2d86cffe37170043211",
+      "vendored": "src/web-factory/contract/conformance/conformance-core.ts",
+      "sha256": "ff4fbe312823ab98ace7acb7a0dc490172103aaae9ada2d86cffe37170043211"
     },
     {
       "path": "registry/factory/contract/events.ts",
-      "upstreamSha256": "4b24553fe54c1326c112d4d00eca39ad9ea5daf9a299cb8215aefa1bafd48bcc",
+      "upstreamSha256": "c63fffb6b9b843f6580f9f72b0b1758e238e096c3cddd9f741b33756f99babab",
       "vendored": "src/web-factory/contract/events.ts",
-      "sha256": "4b24553fe54c1326c112d4d00eca39ad9ea5daf9a299cb8215aefa1bafd48bcc"
+      "sha256": "c63fffb6b9b843f6580f9f72b0b1758e238e096c3cddd9f741b33756f99babab"
     },
     {
       "path": "registry/factory/contract/ports.ts",
-      "upstreamSha256": "1fa5beb4d22088e4b36213792a1476a79bd3e182c3df09191183904c6dbceb3d",
+      "upstreamSha256": "e5d075e76fb4367b509b134ed015f48f47c5dc438392b379a05f36e793809133",
       "vendored": "src/web-factory/contract/ports.ts",
-      "sha256": "5a73e1eb5d9b77623589665490fa99d3027ae768576f7786bb884686e4dee96a"
+      "sha256": "bcc4abb41e4b4668ffbdb9bd6fe4afca19ec53fc628ec32b51eeac5734e9451f"
     }
   ]
 }

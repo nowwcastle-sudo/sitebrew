@@ -31,7 +31,7 @@ export function OnboardingEmptyFirstAction({ copy, track, id = "empty-first-acti
     blurToSharp(s, s.q("[data-enter]"), { at: 0 }) // 대담 장면(5.17): 판이 흐림에서 선명으로 — 흐림만 걷히고 글은 숨기지 않는다
   })
   return (
-    <section ref={ref} id={id} data-block="onboarding-empty-first-action" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="onboarding-empty-first-action" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <div data-enter data-empty-state="" className="mx-auto flex w-full max-w-2xl flex-col items-center gap-4 rounded-lg border-2 border-dashed px-5 py-10 text-center md:px-10 md:py-14">
         <span aria-hidden="true" className="flex size-14 items-center justify-center rounded-full bg-muted">
           <Plus className="size-7 text-primary" />

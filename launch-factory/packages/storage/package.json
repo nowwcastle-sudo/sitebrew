@@ -1,0 +1,23 @@
+{
+  "name": "@launch-factory/storage",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "파일 올리기 — S3 호환(R2·MinIO·S3) presigned PUT(SigV4 를 node:crypto 로 직접), 종류별 정책(크기·형식·공개 여부·보유 기간), 올린 뒤 실제 크기·형식 확인, 보유 기간·미완료 파기. 가짜 모드는 로컬 폴더 드라이버. web-factory StoragePort.upload 모양의 브라우저 헬퍼 포함.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./local": "./src/driver-local.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/security": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

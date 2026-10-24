@@ -69,7 +69,7 @@ export function ConsentPreferenceDialog({ copy, locale, timeZone, consent, setCo
   }
   const state = (on: boolean) => (!current.decidedAt ? copy.summary.undecided : on ? copy.summary.on : copy.summary.off)
   return (
-    <section ref={ref} id={id} data-block="consent-preference-dialog" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="consent-preference-dialog" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <div data-enter className="grid max-w-3xl grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-x-5 gap-y-5">
         <Settings aria-hidden="true" className="size-10 border p-2" />
         <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />

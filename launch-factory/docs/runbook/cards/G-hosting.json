@@ -1,0 +1,18 @@
+{
+  "service": "Vercel",
+  "role": "hosting",
+  "need": "always",
+  "cost": [
+    "free-tier",
+    "monthly"
+  ],
+  "after": [],
+  "home": "https://vercel.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "사이트가 인터넷에 올라가지 않아요. 진짜 주소가 없어서 도메인·로그인·결제·메일 설정을 이어 갈 수 없어요.",
+    "en": "The site is not on the internet. Without a real address you cannot continue with the domain, sign-in, payment and email setup."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

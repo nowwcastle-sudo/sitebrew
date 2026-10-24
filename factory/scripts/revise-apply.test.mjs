@@ -1,4 +1,4 @@
-// 구획 단위 수정(factory v1 Task 4.3 → FV1 5.3) — 고르기(applyRevision)의 세 갈래: axis(레시피 머리 갈아 끼우기) · copy(04 본문 칸 바꾸기) · section(03 + 새 블록의 빈 화면 문구 칸 요청).
+// 구획 단위 수정(factory v1 Task 4.3 → FV1 5.3) — 고르기(applyRevision)의 세 갈래: design(레시피 머리 갈아 끼우기) · copy(04 본문 칸 바꾸기) · section(03 + 새 블록의 빈 화면 문구 칸 요청).
 // 가벼운 시험: 06 을 돌리지 않는다 — revise-fixtures.mjs 의 fixtureRevisionRun 이 revise() 가 남기는 보드·임시 레시피 머리·안의 04 요청을 손으로 놓는다.
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
@@ -23,16 +23,16 @@ const readJ = (f) => JSON.parse(readFileSync(f, 'utf8'))
 const sha = (f) => createHash('sha256').update(readFileSync(f)).digest('hex')
 const copyOf = (content) => Object.fromEntries(content.slots.copy.map((c, i) => [`${i}:${c.id}`, c.text]))
 
-// ── axis ────────────────────────────────────────────────────────────────────
+// ── design ────────────────────────────────────────────────────────────────────
 
-test('axis 고르기는 후보 레시피 머리를 바꾸고 01 의 후보 칸을 brand 로 고치고 06·07 을 낡게 한다', async () => {
-  const run = fixtureRevisionRun({ scope: 'axis' })
-  const value = run.variantData.value // 모션 M2·M3 중 린트를 통과한 첫 값
+test('design 고르기는 후보 레시피 머리를 바꾸고 01 의 후보 칸을 brand 로 고치고 06·07 을 낡게 한다', async () => {
+  const run = fixtureRevisionRun({ scope: 'design' })
+  const value = run.variantData.changes[0].to // 모션 한 단계 위
   assert.equal(typeof run.before.direction.recipe, 'string', '고르기 전 후보는 라이브러리 레시피 id 다')
   assert.equal(existsSync(join(run.cand, 'recipe', 'DESIGN.md')), false, '라이브러리 후보는 레시피 폴더가 없다')
   const r = await applyRevision(run.dir, 'a', run.index, run.variant, opts())
   assert.equal(r.applied, true)
-  assert.equal(r.scope, 'axis')
+  assert.equal(r.scope, 'design')
   assert.deepEqual(r.stale, ['06', '07'])
   assert.equal(r.waitingCopy, undefined)
   // 후보 폴더 recipe/DESIGN.md = 고른 안의 임시 레시피 머리
@@ -53,8 +53,8 @@ test('axis 고르기는 후보 레시피 머리를 바꾸고 01 의 후보 칸�
   assert.equal(readJ(join(run.cand, '09-revise', String(run.index), 'board.json')).picked.id, 'v1')
 })
 
-test('axis 고르기: 안의 레시피 머리 파일이 없으면 아무것도 바꾸지 않고 던진다', async () => {
-  const run = fixtureRevisionRun({ scope: 'axis' })
+test('design 고르기: 안의 레시피 머리 파일이 없으면 아무것도 바꾸지 않고 던진다', async () => {
+  const run = fixtureRevisionRun({ scope: 'design' })
   rmSync(join(run.dir, 'a', '09-revise', '1', 'v1'), { recursive: true, force: true })
   const before = sha(join(run.cand, '01-direction.json'))
   await assert.rejects(() => applyRevision(run.dir, 'a', run.index, run.variant, opts()), /DESIGN\.md/)
@@ -142,7 +142,7 @@ test('--revise-pick: 문구 칸 요청이 남으면 경로를 출력하고 종�
   assert.match(lines.join('\n'), /04-content\.request\.json/)
   assert.match(lines.join('\n'), /대기/)
 
-  const axis = fixtureRevisionRun({ scope: 'axis' })
+  const axis = fixtureRevisionRun({ scope: 'design' })
   const a = await runReviseCommand({ run: axis.dir, pick: 'a', revisePick: { index: axis.index, id: axis.variant } }, { say: () => {} })
   assert.equal(a.code, EXIT.done)
   assert.match(a.lines.join('\n'), /motion/)

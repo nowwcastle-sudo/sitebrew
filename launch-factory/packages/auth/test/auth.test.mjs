@@ -111,6 +111,27 @@ test(`web-factory authConformance 를 통과한다(가져온 계약 — 고정 �
   assert.deepEqual(results.filter((r) => !r.ok), [])
 })
 
+test("세션 읽기는 요청 제한을 받지 않는다 — 같은 주소에서 한도(10초 100번)를 넘겨도 200", async () => {
+  const auth = createAuth(baseOptions())
+  const io = memoryIO()
+  let limited = 0
+  for (let i = 0; i < 130; i++) if ((await raw(auth, io, "GET", "/get-session")).status === 429) limited++
+  assert.equal(limited, 0)
+})
+
+test("서버 안 세션 읽기는 요청 제한이 믿는 방문자 주소 머리도 넘긴다 — 안 넘기면 모두 한 통에 쌓인다", async () => {
+  const seen = []
+  const fake = {
+    handler: async (r) => (seen.push(Object.fromEntries(r.headers)), new Response("null", { status: 200 })),
+    options: { baseURL: BASE_URL, advanced: { ipAddress: { ipAddressHeaders: ["x-lf-client-ip"] } } },
+  }
+  const io = { headers: () => new Headers({ "x-lf-client-ip": "198.18.7.7", "x-forwarded-for": "198.18.7.8", cookie: "a=b", "x-other": "no" }), setCookies() {} }
+  await authAdapter(fake, io, quiet).session()
+  assert.equal(seen[0]["x-lf-client-ip"], "198.18.7.7")
+  assert.equal(seen[0]["x-forwarded-for"], "198.18.7.8")
+  assert.equal(seen[0]["x-other"], undefined, "그 밖의 머리는 넘기지 않는다")
+})
+
 test("2단계를 끈 설정에서 verifyTwoFactor(totp·backup-code)는 정해진 오류다 — 요청을 보내지 않는다", async () => {
   const auth = createAuth(baseOptions())
   let calls = 0

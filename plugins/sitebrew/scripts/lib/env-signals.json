@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "note": "Signals that tell a skill where it runs. Names only, never values. A row with verified:false comes from experience, not from documentation: it can only push the answer to chatbot mode, never to agent mode. Open: a Codex cloud task has no signal of its own in this table (no documented variable was found), so it looks like a local Codex session; the setup skill therefore also asks the user before every install.",
+  "agent": [
+    { "kind": "env", "name": "CLAUDE_CODE_CHILD_SESSION", "host": "claude-code", "verified": true, "source": "Claude Code sets it for subprocesses of its Bash tool (v2.1.172 and later)" },
+    { "kind": "env", "name": "CODEX_THREAD_ID", "host": "codex", "verified": true, "source": "Codex puts it into the environment of the commands it spawns" }
+  ],
+  "remote": [
+    { "kind": "env", "name": "CLAUDE_CODE_REMOTE", "host": "claude-code", "verified": true, "source": "Claude Code sets it to true in cloud sessions: the tool runs commands, but not on the user's computer" }
+  ],
+  "sandbox": [
+    { "kind": "path", "name": "/mnt/user-data", "host": "claude-ai-sandbox", "verified": false, "source": "seen in the claude.ai code-execution sandbox; not in the official docs" },
+    { "kind": "path", "name": "/mnt/skills", "host": "claude-ai-sandbox", "verified": false, "source": "seen in the claude.ai code-execution sandbox; not in the official docs" }
+  ]
+}

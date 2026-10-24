@@ -1,0 +1,38 @@
+{
+  "name": "feature-booking",
+  "title": "예약 접수",
+  "description": "예약 서버: 요청 제한(DB) → 멱등 키 → 입력 검사(영업시간·휴무일·마감) → Turnstile → 수용량 잠금 안에서 저장 → 확인 메일. 조회·취소는 예약 번호와 연락처가 모두 맞아야 한다. 시작 전 안내는 Cron, 보유 기간이 지난 예약은 Cron 이 파기한다. 영업시간·서비스는 설정 데이터(lib/launch/booking-config.ts).",
+  "npm": ["@launch-factory/booking", "@launch-factory/db", "@launch-factory/env", "@launch-factory/i18n", "@launch-factory/security", "drizzle-orm", "postgres"],
+  "registryDependencies": ["feature-auth-betterauth", "feature-email-resend"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "BOOKING_OWNER_EMAIL", "TURNSTILE_SECRET_KEY", "TURNSTILE_SITE_KEY", "CRON_SECRET"],
+  "files": [
+    "files/lib/launch/booking.ts",
+    "files/lib/launch/booking-config.ts",
+    "files/lib/launch/booking-notify.ts",
+    "files/lib/launch/booking-deposit.ts",
+    "files/lib/launch/booking-session.ts",
+    "files/app/api/booking/route.ts",
+    "files/app/api/booking/slots/route.ts",
+    "files/app/api/cron/booking/route.ts",
+    "files/app/actions/booking.ts",
+    "files/lib/launch/admin-sections/bookings.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": ["booking.ts"],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(예약 표가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. lib/launch/booking-config.ts(제품 것)에서 서비스·영업시간·휴무일·수용량·취소 마감·안내 시각을 정한다. 코드가 아니라 이 데이터가 예약 가능 시간을 정한다. mode \"instant\" 는 접수하면 바로 확정, \"request\" 는 운영자이 관리 화면의 예약 구획에서 확정해야 확정된다. 설정이 틀리면 켜질 때 멈춘다.",
+    "3. 폼에 숨은 입력 둘을 더한다: Turnstile 토큰 cf-turnstile-response(사이트 키 TURNSTILE_SITE_KEY), 폼을 열 때 만든 idempotencyKey. BOOKING_OWNER_EMAIL 은 새 예약을 받을 운영자 메일이다(개인정보 — 저장소에 적지 않는다).",
+    "4. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/booking\", \"schedule\": \"*/30 * * * *\" }] }. 시작 전 안내와 기간이 지난 예약 파기를 이 Cron 이 한다. CRON_SECRET 이 없으면 401 이다.",
+    "5. live 에서 BOOKING_OWNER_EMAIL 이 없으면 **사이트는 켜지고 예약 접수만 꺼진다**(문의 창구와 같은 규칙): bookingEnabled() 가 false 라 쪽이 폼 대신 안내를 그리고, 접수는 code provider_unavailable·retryable false 로 거절된다. 이미 받은 예약의 조회·취소·안내·파기는 그대로 된다. mock 에서는 없어도 가짜 주소로 켜진다. 값이 있는데 이메일 형식이 아니면 켜질 때 멈춘다.",
+    "6. 확정·대신 취소: 관리 화면(feature-admin-console) 의 「bookings」 구획(lib/launch/admin-sections/bookings.ts)이 한다 — 예약 서비스(listForStaff·getForStaff·confirm·cancelAs)를 직접 부르고 서버 액션은 없다. 대상 = 확인된 이메일이 BOOKING_OWNER_EMAIL 과 같은 사람(운영자) 또는 2단계 인증을 켠 관리자(user.role 에 admin). 입력의 isOwner·role 은 읽지 않고, 대리 로그인 세션·정지된 사람은 막힌다. 구획을 켜려면 lib/launch/admin-console.ts 의 ADMIN_SECTIONS 에 bookingsSection 을 등록한다. 취소는 확인 단계(confirmed: true)를 거치고, 결제된 예약금의 환불이 실패하면 취소하지 않고 거절로 끝난다.",
+    "7. 예약금은 이 항목만으로는 켜지지 않는다 — 설정의 서비스에 deposit(원)을 적으면 예약금 훅이 있어야 접수를 받는다(없으면 provider_unavailable). 훅은 feature-booking-deposit 가 lib/launch/booking-deposit.ts 를 대신해 넘긴다. 결제 대기 시간이 지난 예약은 이 항목의 Cron 이 닫는다. 카카오 알림톡·문자 통로는 feature-notify-kr 를 함께 설치하면 lib/launch/booking-notify.ts 를 그 항목의 것이 대신한다(전화번호로 예약한 사람에게 간다).",
+    "8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

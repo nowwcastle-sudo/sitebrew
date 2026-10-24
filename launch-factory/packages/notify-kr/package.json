@@ -1,0 +1,21 @@
+{
+  "name": "@launch-factory/notify-kr",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "한국 알림 발송(계획 3b) — Solapi 로 카카오 알림톡(정보성)과 문자(SMS 대체·광고성)를 보낸다. 가짜 모드는 외부 호출 없이 기록만. 광고성은 동의·야간·수신거부 표시를 지키지 못하면 보내지 않는다.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/consent": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/security": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "schema": 1,
+  "note": "Install items of the setup skill. Commands are argv arrays: no shell, no user value. {tag}, {repository} and {nodeMin} are filled from compat.json. manualOnly steps (administrator rights, shell functions) are shown, never run.",
+  "items": {
+    "node": {
+      "say": {
+        "ko": "Node.js 가 없거나 너무 낮아요. 사이트 도구가 Node.js {nodeMin} 이상에서 돌아요.",
+        "en": "Node.js is missing or too old. The site tools need Node.js {nodeMin} or newer."
+      },
+      "win32": {
+        "needs": "winget",
+        "steps": [
+          {
+            "argv": [
+              "winget",
+              "install",
+              "--id",
+              "OpenJS.NodeJS.LTS",
+              "-e",
+              "--source",
+              "winget",
+              "--accept-package-agreements",
+              "--accept-source-agreements",
+              "--scope",
+              "user"
+            ],
+            "fallbackArgv": [
+              "winget",
+              "install",
+              "--id",
+              "OpenJS.NodeJS.LTS",
+              "-e",
+              "--source",
+              "winget",
+              "--accept-package-agreements",
+              "--accept-source-agreements"
+            ],
+            "admin": false,
+            "say": {
+              "ko": "winget 으로 Node.js LTS 를 설치해요.",
+              "en": "Install Node.js LTS with winget."
+            },
+            "fallbackOnExit": [
+              2316632080,
+              -1978335216
+            ]
+          }
+        ],
+        "manual": {
+          "ko": "winget 이 없어요. nodejs.org/en/download 에서 LTS 설치 파일을 받아 실행해요.",
+          "en": "winget is not available. Download the LTS installer from nodejs.org/en/download and run it."
+        }
+      },
+      "darwin": {
+        "needs": "brew",
+        "steps": [
+          {
+            "argv": [
+              "brew",
+              "install",
+              "node"
+            ],
+            "admin": false,
+            "say": {
+              "ko": "brew 로 Node.js 를 설치해요.",
+              "en": "Install Node.js with brew."
+            }
+          }
+        ],
+        "manual": {
+          "ko": "brew 가 없어요. nodejs.org/en/download 에서 LTS 설치 파일을 받아 실행해요.",
+          "en": "brew is not available. Download the LTS installer from nodejs.org/en/download and run it."
+        }
+      },
+      "linux": {
+        "steps": [
+          {
+            "argv": [
+              "nvm",
+              "install",
+              "{nodeMin}"
+            ],
+            "admin": false,
+            "manualOnly": true,
+            "say": {
+              "ko": "nvm 이 있으면 이 명령을 터미널에 붙여 넣어요. 없으면 nodejs.org/en/download 에서 받아요.",
+              "en": "If you have nvm, paste this command into the terminal. Otherwise download from nodejs.org/en/download."
+            }
+          }
+        ]
+      },
+      "verify": {
+        "exe": {
+          "win32": "node.exe",
+          "default": "node"
+        },
+        "known": {
+          "win32": [
+            "C:/Program Files/nodejs/node.exe",
+            "{LOCALAPPDATA}/Programs/nodejs/node.exe"
+          ],
+          "darwin": [
+            "/opt/homebrew/bin/node",
+            "/usr/local/bin/node"
+          ],
+          "linux": [
+            "/usr/bin/node",
+            "/usr/local/bin/node"
+          ]
+        }
+      },
+      "success": {
+        "ko": "새 터미널을 열고 `node --version` 을 쳐요. {nodeMin} 이상 숫자가 나오면 돼요. npm 은 Node.js 와 함께 와요.",
+        "en": "Open a new terminal and type `node --version`. A number of {nodeMin} or higher means it worked. npm comes with Node.js."
+      }
+    },
+    "npm": {
+      "say": {
+        "ko": "npm 이 없거나 너무 낮아요. npm 은 Node.js 와 함께 와요.",
+        "en": "npm is missing or too old. npm comes with Node.js."
+      },
+      "all": {
+        "steps": [
+          {
+            "argv": [
+              "npm",
+              "install",
+              "-g",
+              "npm@latest"
+            ],
+            "admin": false,
+            "manualOnly": true,
+            "say": {
+              "ko": "npm 만 낮으면 이 명령을 터미널에 붙여 넣어요. npm 이 아예 없으면 Node.js 를 다시 설치해요.",
+              "en": "If only npm is old, paste this command into the terminal. If npm is missing, reinstall Node.js."
+            }
+          }
+        ]
+      }
+    },
+    "git": {
+      "say": {
+        "ko": "git 이 없어요. 정해진 태그로 Sitebrew 를 내려받는 데 필요해요.",
+        "en": "git is missing. It is needed to download Sitebrew at its pinned tag."
+      },
+      "win32": {
+        "needs": "winget",
+        "steps": [
+          {
+            "argv": [
+              "winget",
+              "install",
+              "--id",
+              "Git.Git",
+              "-e",
+              "--source",
+              "winget",
+              "--accept-package-agreements",
+              "--accept-source-agreements",
+              "--scope",
+              "user"
+            ],
+            "fallbackArgv": [
+              "winget",
+              "install",
+              "--id",
+              "Git.Git",
+              "-e",
+              "--source",
+              "winget",
+              "--accept-package-agreements",
+              "--accept-source-agreements"
+            ],
+            "admin": false,
+            "say": {
+              "ko": "winget 으로 Git 을 설치해요.",
+              "en": "Install Git with winget."
+            },
+            "fallbackOnExit": [
+              2316632080,
+              -1978335216
+            ]
+          }
+        ],
+        "manual": {
+          "ko": "winget 이 없어요. git-scm.com/download/win 에서 설치 파일을 받아 실행해요.",
+          "en": "winget is not available. Download the installer from git-scm.com/download/win and run it."
+        }
+      },
+      "darwin": {
+        "needs": "brew",
+        "steps": [
+          {
+            "argv": [
+              "brew",
+              "install",
+              "git"
+            ],
+            "admin": false,
+            "say": {
+              "ko": "brew 로 Git 을 설치해요.",
+              "en": "Install Git with brew."
+            }
+          }
+        ],
+        "manual": {
+          "ko": "brew 가 없어요. 터미널에서 xcode-select --install 을 실행하거나 git-scm.com 에서 받아요.",
+          "en": "brew is not available. Run xcode-select --install in the terminal, or download from git-scm.com."
+        }
+      },
+      "linux": {
+        "steps": [
+          {
+            "argv": [
+              "sudo",
+              "apt",
+              "install",
+              "git"
+            ],
+            "admin": true,
+            "manualOnly": true,
+            "say": {
+              "ko": "관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이에요.",
+              "en": "This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command."
+            }
+          }
+        ]
+      },
+      "verify": {
+        "exe": {
+          "win32": "git.exe",
+          "default": "git"
+        },
+        "known": {
+          "win32": [
+            "C:/Program Files/Git/cmd/git.exe",
+            "{LOCALAPPDATA}/Programs/Git/cmd/git.exe"
+          ],
+          "darwin": [
+            "/opt/homebrew/bin/git",
+            "/usr/local/bin/git",
+            "/usr/bin/git"
+          ],
+          "linux": [
+            "/usr/bin/git"
+          ]
+        }
+      },
+      "success": {
+        "ko": "새 터미널을 열고 `git --version` 을 쳐요. 버전 숫자가 나오면 돼요.",
+        "en": "Open a new terminal and type `git --version`. A version number means it worked."
+      }
+    },
+    "browser": {
+      "say": {
+        "ko": "Chrome 또는 Edge 를 찾지 못했어요. 품질 검사와 보드 사진에 필요해요.",
+        "en": "Chrome or Edge was not found. The quality checks and board photos need one."
+      },
+      "manualReasons": {
+        "bad-path": {
+          "ko": "환경 변수 CHROME_PATH 가 없는 파일을 가리켜요. 설치할 것은 없어요. 경로를 chrome.exe 또는 msedge.exe 의 전체 경로로 고치거나 비워요.",
+          "en": "The environment variable CHROME_PATH points to a file that does not exist. Nothing needs to be installed: set it to the full path of chrome.exe or msedge.exe, or unset it."
+        },
+        "elsewhere": {
+          "ko": "Chrome 은 설치되어 있지만 키트가 찾는 자리에 없어요. 설치할 것은 없어요. 환경 변수 CHROME_PATH 에 그 전체 경로를 넣어요.",
+          "en": "Chrome is installed but not where the kit looks. Nothing needs to be installed: set the environment variable CHROME_PATH to its full path."
+        }
+      },
+      "win32": {
+        "needs": "winget",
+        "steps": [
+          {
+            "argv": [
+              "winget",
+              "install",
+              "--id",
+              "Google.Chrome",
+              "-e",
+              "--source",
+              "winget",
+              "--accept-package-agreements",
+              "--accept-source-agreements"
+            ],
+            "admin": false,
+            "say": {
+              "ko": "winget 으로 Chrome 을 설치해요.",
+              "en": "Install Chrome with winget."
+            }
+          }
+        ],
+        "manual": {
+          "ko": "winget 이 없어요. google.com/chrome 에서 설치 파일을 받아요. Windows 11 에는 Edge 가 이미 있어요.",
+          "en": "winget is not available. Download the installer from google.com/chrome. Windows 11 already ships Edge."
+        }
+      },
+      "darwin": {
+        "needs": "brew",
+        "steps": [
+          {
+            "argv": [
+              "brew",
+              "install",
+              "--cask",
+              "google-chrome"
+            ],
+            "admin": false,
+            "say": {
+              "ko": "brew 로 Chrome 을 설치해요.",
+              "en": "Install Chrome with brew."
+            }
+          }
+        ],
+        "manual": {
+          "ko": "brew 가 없어요. google.com/chrome 에서 설치 파일을 받아요.",
+          "en": "brew is not available. Download the installer from google.com/chrome."
+        }
+      },
+      "linux": {
+        "steps": [
+          {
+            "argv": [
+              "sudo",
+              "apt",
+              "install",
+              "chromium"
+            ],
+            "admin": true,
+            "manualOnly": true,
+            "say": {
+              "ko": "관리자 암호가 필요해서 직접 실행해요. 패키지 이름이 배포판마다 달라요(chromium 또는 chromium-browser).",
+              "en": "This needs the administrator password, so run it yourself. The package name differs by distribution (chromium or chromium-browser)."
+            }
+          }
+        ]
+      },
+      "verify": {
+        "known": {
+          "win32": [
+            "C:/Program Files/Google/Chrome/Application/chrome.exe",
+            "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+          ],
+          "darwin": [
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+          ],
+          "linux": [
+            "/usr/bin/chromium",
+            "/usr/bin/chromium-browser",
+            "/usr/bin/google-chrome"
+          ]
+        }
+      },
+      "success": {
+        "ko": "시작 메뉴에서 Chrome 이 열리면 돼요.",
+        "en": "It worked if Chrome opens from the start menu or the applications folder."
+      }
+    },
+    "kit-clone": {
+      "say": {
+        "ko": "Sitebrew 폴더가 없어요. 고정 태그 {tag} 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.",
+        "en": "There is no Sitebrew folder. Download it at the pinned tag {tag}. A sitebrew folder is created in the current folder."
+      },
+      "blocked": {
+        "ko": "이 플러그인은 소유자 미정 판이라 내려받을 주소가 없어요. 설치 안내에 적힌 주소를 써요.",
+        "en": "This plugin build has no owner set, so there is no address to clone from. Use the address in the install instructions."
+      },
+      "all": {
+        "steps": [
+          {
+            "argv": [
+              "git",
+              "clone",
+              "--branch",
+              "{tag}",
+              "--depth",
+              "1",
+              "{repository}"
+            ],
+            "admin": false,
+            "cwd": "here",
+            "say": {
+              "ko": "고정 태그로 Sitebrew 를 내려받아요.",
+              "en": "Clone Sitebrew at the pinned tag."
+            }
+          }
+        ]
+      },
+      "rejectedNote": {
+        "ko": "현재 폴더에 Sitebrew 비슷한 폴더가 있지만 {tag} 와 같은 0.x 판이 아니라서 쓰지 않았어요. 그 폴더는 건드리지 않아요. 다른 빈 폴더에서 내려받거나, 그 폴더를 직접 고정 태그로 맞춰요.",
+        "en": "A Sitebrew-like folder is in the current folder, but it is not a release of the same 0.x line as {tag}, so it was not used. That folder is left alone. Clone into another empty folder, or move that folder to the pinned tag yourself."
+      },
+      "success": {
+        "ko": "현재 폴더 안에 `sitebrew` 폴더가 생겨요.",
+        "en": "A `sitebrew` folder appears in the current folder."
+      },
+      "explicitNote": {
+        "ko": "--kit 이나 환경 변수 SITEBREW_DIR 이 가리킨 폴더에 Sitebrew 가 없어요. 폴더를 맞게 고치거나 그 설정을 지워요. 새로 내려받지 않아요.",
+        "en": "The folder named by --kit or the environment variable SITEBREW_DIR does not hold Sitebrew. Fix the folder or remove that setting. Nothing is downloaded."
+      }
+    },
+    "kit-checkout": {
+      "say": {
+        "ko": "Sitebrew 가 다른 판에 있어요. 고정 태그 {tag} 로 맞춰요.",
+        "en": "Sitebrew is on another version. Move it to the pinned tag {tag}."
+      },
+      "devNote": {
+        "ko": "Sitebrew 가 태그가 아닌 커밋에 있어요. 작업 중인 클론일 수 있어서 바꾸지 않아요. 직접 맞추려면 아래 명령을 쓰고, 개발용이면 --allow-dev 를 붙여요.",
+        "en": "Sitebrew is on a commit that is not a tag. It may be your own work, so nothing is changed. To move it yourself use the commands below; for a development clone add --allow-dev."
+      },
+      "all": {
+        "steps": [
+          {
+            "argv": [
+              "git",
+              "fetch",
+              "--tags"
+            ],
+            "admin": false,
+            "cwd": "kit",
+            "say": {
+              "ko": "태그 목록을 받아요.",
+              "en": "Fetch the tags."
+            }
+          },
+          {
+            "argv": [
+              "git",
+              "checkout",
+              "{tag}"
+            ],
+            "admin": false,
+            "cwd": "kit",
+            "say": {
+              "ko": "고정 태그로 옮겨요.",
+              "en": "Check out the pinned tag."
+            }
+          }
+        ]
+      },
+      "notGitNote": {
+        "ko": "이 Sitebrew 폴더는 자기 git 저장소의 맨 위가 아니거나 git 정보가 없어요. 다른 저장소를 건드리지 않도록 직접 하는 단계로만 보여 줘요. 폴더를 열고 아래 명령을 실행해요.",
+        "en": "This Sitebrew folder is not the top of its own git repository, or has no git data. The steps are shown for you to run, so that no other repository is touched. Open the folder and run them."
+      }
+    },
+    "kit-setup": {
+      "say": {
+        "ko": "Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.",
+        "en": "Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet."
+      },
+      "win32": {
+        "steps": [
+          {
+            "argv": [
+              "cmd",
+              "/d",
+              "/s",
+              "/c",
+              "npm run setup"
+            ],
+            "admin": false,
+            "cwd": "kit",
+            "timeoutMs": 1800000,
+            "say": {
+              "ko": "키트 폴더에서 npm run setup 을 실행해요.",
+              "en": "Run npm run setup in the kit folder."
+            },
+            "show": "npm.cmd run setup"
+          }
+        ]
+      },
+      "all": {
+        "steps": [
+          {
+            "argv": [
+              "npm",
+              "run",
+              "setup"
+            ],
+            "admin": false,
+            "cwd": "kit",
+            "timeoutMs": 1800000,
+            "say": {
+              "ko": "키트 폴더에서 npm run setup 을 실행해요.",
+              "en": "Run npm run setup in the kit folder."
+            }
+          }
+        ]
+      },
+      "success": {
+        "ko": "오류 없이 끝나요. 처음에는 몇 분 걸려요. 빨간 오류 글이 보이면 그 글을 그대로 알려 줘요.",
+        "en": "It ends without an error. The first run takes a few minutes. If red error text appears, tell me that text as it is."
+      }
+    }
+  }
+}

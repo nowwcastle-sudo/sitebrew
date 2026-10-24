@@ -106,7 +106,7 @@ test('원천 규칙: usePortForm·useFormFlow 를 부르는 블록은 모두 not
   assert.ok(users.length >= 20, `폼 블록 ${users.length}개`)
   assert.deepEqual(noticeProblems(files), [])
   // 음성 대조: notices 를 지운 사본은 잡힌다
-  const broken = users.map((f) => ({ ...f, src: f.src.replace(/notices: (?:copy|a|copy\.form)\.notices,? ?/g, '').replace(/, notices: copy\.form\.notices/g, '') }))
+  const broken = users.map((f) => ({ ...f, src: f.src.replace(/notices: (?:copy|a|copy\.form)\??\.notices,? ?/g, '').replace(/, notices: copy\.form\.notices/g, '') }))
   const calls = users.reduce((n, f) => n + (f.src.match(/usePortForm\(\{|useFormFlow\(submit/g) ?? []).length, 0) // 한 블록에 폼 훅이 둘 이상일 수 있다(Task 7b)
   assert.equal(noticeProblems(broken).length, calls, '모든 사용처가 잡혀야 한다')
 })

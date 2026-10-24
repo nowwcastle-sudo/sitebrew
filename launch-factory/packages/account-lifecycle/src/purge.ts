@@ -11,11 +11,13 @@
 //   4. 계측: 계측 식별자(PostHog distinct id = 내부 사용자 id)를 지운다. 실패하면 다음 Cron 이 다시 한다.
 //   5. 마무리: 계측까지 끝나면 completed_at 을 적고 요청 행의 user_id 를 비운다.
 //   6. 기간이 지난 보존 거래기록·접속기록을 지운다(sweepExpired).
+//   7. 사용자 없는 주문 중 거래가 끝난 것의 배송지를 비운다(deidentifyOrphanOrders — 주문 처리는 orders.ts).
 // 남기는 것(법정 보존): retained_transactions(가명), access_logs(고시 제8조 — 처리자 접속기록, 1·2년), admin_actions(관리자 처리 기록).
 import { and, eq, isNotNull, isNull, lte, or, sql } from "drizzle-orm"
 import { accountDeletions, invitation, rateLimits, user, verification, type AccessLogRetention, type Database } from "@launch-factory/db"
 import { LIVE_SUBSCRIPTION_STATUSES, type DeletionDeps } from "./delete.ts"
 import { DEFAULT_COLLECTORS, retainTransaction, sweepExpired, type RetentionCollector, type SweepReport, type Tx } from "./retention.ts"
+import { anonymizeUserOrders, deidentifyOrphanOrders } from "./orders.ts"
 import { assertSubjectKey, subjectRef } from "./subject.ts"
 
 /** 계측 공급자의 사람·이벤트 삭제(PostHog bulk_delete 등). 실패는 던진다 */
@@ -53,6 +55,8 @@ export interface PurgeReport {
   completed: number
   failures: PurgeFailure[]
   swept: SweepReport
+  /** 이번 정리에서 배송지를 비운 주문 수(탈퇴 때 진행 중이던 주문이 끝난 것) */
+  ordersDeidentified: number
 }
 
 /** 오류는 이름과 짧은 코드만 남긴다(메시지에 이메일이 섞일 수 있다) */
@@ -65,7 +69,7 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
   const now = (deps.now ?? (() => new Date()))()
   const batch = deps.batchSize ?? 50
   const collectors = deps.collectors ?? DEFAULT_COLLECTORS
-  const report: PurgeReport = { claimed: 0, purged: 0, analyticsErased: 0, completed: 0, failures: [], swept: { retained: { advertising: 0, contract: 0, payment: 0, dispute: 0 }, accessLogs: 0 } }
+  const report: PurgeReport = { claimed: 0, purged: 0, analyticsErased: 0, completed: 0, failures: [], swept: { retained: { advertising: 0, contract: 0, payment: 0, dispute: 0 }, accessLogs: 0 }, ordersDeidentified: 0 }
   const fail = async (id: string, stage: PurgeFailure["stage"], e: unknown) => {
     const code = `${stage}:${typeof e === "string" ? e : errorCode(e)}`
     report.failures.push({ deletionId: id, stage, error: code })
@@ -122,6 +126,8 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
           await tx.delete(verification).where(or(eq(verification.value, userId), sql`position(lower(${u.email}) in lower(${verification.value})) > 0`, sql`position(lower(${u.email}) in lower(${verification.identifier})) > 0`))
           await tx.delete(invitation).where(sql`lower(${invitation.email}) = lower(${u.email})`)
           await tx.delete(rateLimits).where(sql`position(${userId} in ${rateLimits.key}) > 0`)
+          // 주문은 지우지 않는다(5년 보존). 거래가 끝난 주문의 배송지만 비우고, user_id 는 아래 user 삭제가 끊는다(코어 — 제품이 빠뜨릴 수 없다)
+          await anonymizeUserOrders(tx, userId)
           for (const purge of deps.purgers ?? []) await purge(tx, { userId, email: u.email })
           await tx.delete(user).where(eq(user.id, userId))
         }
@@ -162,6 +168,8 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
   // 트리거는 DB 의 실제 시각으로 막으므로, 앞당긴 now(시험·재처리)로 지우려 하면 트랜잭션이 깨진다 — 실제 시각을 넘기지 않는다.
   const wall = new Date()
   report.swept = await sweepExpired(db, now > wall ? wall : now, deps.accessLogRetention)
+  // 7. 탈퇴 때 진행 중이던 주문이 끝났으면 배송지를 비운다
+  report.ordersDeidentified = await deidentifyOrphanOrders(db)
   return report
 }
 

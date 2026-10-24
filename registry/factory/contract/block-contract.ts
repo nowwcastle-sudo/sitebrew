@@ -15,10 +15,19 @@
  *   sign_in_required — 로그인이 먼저다(retryable false). `signInRequired` 는 같은 뜻의 옛 표기(P3-6 B04)다 — 블록은 둘 다 로그인 행동으로 그린다(읽기 오류 화면 _shared/port-read ReadError)
  *   provider_unavailable — 공급자·서버에 닿지 못했거나 일시 실패(retryable true) · invalid_input — 칸 오류(fieldErrors, retryable false) · invalid_credentials — 이메일·비밀번호가 맞지 않음(retryable false)
  *   action_failed — 위에 없는 실패(마지막 보루, retryable false)
+ *   예약 포트(BookingPort — 판 2 안의 선택 추가, sitebrew v0.2.0 계획 3b)가 쓰는 코드. 모두 retryable false 다(같은 요청을 다시 보내도 같은 결과)
+ *   slot_taken — 고른 시간 칸이 이미 찼다(다른 칸을 고르게 한다)
+ *   not_found — 예약 번호 + 연락처 조합에 맞는 예약이 없다. 번호를 모르는 경우와 연락처가 틀린 경우를 구별하지 않는다(예약 존재 여부를 흘리지 않는다)
+ *   cancel_closed — 직접 취소할 수 있는 기한(ManagedBooking.cancelBy)이 지났다(업장에 연락하게 한다)
+ *   invalid_state — 지금 상태에서 할 수 없는 동작이다(이미 취소된 예약을 또 취소 등)
+ *   forbidden — 이 행위자가 할 수 없는 동작이다(권한 없음)
+ *   deposit_failed — 예약금 결제가 실패해 예약이 잡히지 않았다
+ *   two_factor_required — 관리자인데 2단계 인증이 꺼져 있다(관리 화면 — contract/admin)
+ *   impersonation_blocked — 대리 로그인 세션은 관리 화면을 열 수 없다(contract/admin)
  *   두 「지원 안 함」 값은 오류가 아니라 정해진 결과다 — manageUrl 이 있으면 블록이 손님을 그 화면으로 보낸다.
  * 시간 초과(timeout)는 서버 값이 아니다 — 응답이 안 오는 것이라 폼이 15초 뒤에 스스로 판단한다(_shared/submit-guard).
  */
-export type ActionFailureCode = "rate_limited" | "bot_check_failed" | "bot_check_unavailable" | "in_progress" | "provider_unsupported" | "scenario_unsupported" | "invalid_token" | "signInRequired" | "sign_in_required" | "approval_required" | "confirmation_required" | "provider_unavailable" | "invalid_input" | "invalid_credentials" | "action_failed"
+export type ActionFailureCode = "rate_limited" | "bot_check_failed" | "bot_check_unavailable" | "in_progress" | "provider_unsupported" | "scenario_unsupported" | "invalid_token" | "signInRequired" | "sign_in_required" | "approval_required" | "confirmation_required" | "provider_unavailable" | "invalid_input" | "invalid_credentials" | "action_failed" | "slot_taken" | "not_found" | "cancel_closed" | "invalid_state" | "forbidden" | "deposit_failed" | "two_factor_required" | "impersonation_blocked"
 
 /** 서버 액션·정적 어댑터·목 어댑터가 모두 돌려주는 결과. next-safe-action 결과와 1:1 변환 가능 */
 export type ActionResult<TData> =

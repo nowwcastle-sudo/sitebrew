@@ -3,10 +3,11 @@ import type { Metadata, Viewport } from "next"
 import { headers } from "next/headers"
 import { MotionBoot } from "@/components/motion/motion-boot"
 import { ConsentBanner } from "@/components/product/product-blocks"
-import { ProductAnalytics } from "@/components/product/analytics"
+import { AnalyticsOff, ProductAnalytics } from "@/components/product/analytics"
 import { PRODUCT_NAME } from "@/content/copy.en"
 import { metaCopy } from "@/content/copy.ux.en"
 import { appUrl } from "@/lib/launch/config"
+import { hasPart } from "@/lib/launch/enabled"
 import { env } from "@/lib/launch/env"
 import { analyticsEnabled, sentryDsn } from "@/lib/observability"
 import { currentMockScene } from "@/lib/ports"
@@ -39,7 +40,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // 분석·오류 수집은 선택이다(LFOBS · 운영자 결정 2026-10-05): POSTHOG_HOST·POSTHOG_PROJECT_KEY·SENTRY_DSN 이 없으면 그 기능만 꺼지고 사이트는 켜진다. 켜짐 여부는 <html> 표지로 알린다 — 배포 확인(scripts/deploy-preview/ci.mjs)이 읽어 경고한다
   const host = process.env.POSTHOG_HOST || undefined
   const projectKey = process.env.POSTHOG_PROJECT_KEY || undefined // 호스트처럼 선택(LFOBS2) — 둘 중 하나라도 없으면 분석이 꺼진다
-  const analyticsOn = analyticsEnabled(e.LF_MODE, host, projectKey)
+  // 분석 부품을 고르지 않은 제품(enabled.json 에 analytics-posthog 없음)은 계측 공급자와 동의 띠를 아예 올리지 않는다 — 템플릿 그대로면 늘 참이다
+  const analyticsPart = hasPart("analytics-posthog")
+  const analyticsOn = analyticsPart && analyticsEnabled(e.LF_MODE, host, projectKey)
   const errorsOn = Boolean(sentryDsn())
   return (
     <html lang="en" suppressHydrationWarning data-wf-session={scene?.canonical} data-analytics={analyticsOn ? "enabled" : "disabled"} data-error-reporting={errorsOn ? "enabled" : "disabled"}>
@@ -47,10 +50,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <MotionBoot nonce={nonce} />
       </head>
       <body>
-        <ProductAnalytics mode={e.LF_MODE} projectKey={projectKey} host={host}>
-          {children}
-          <ConsentBanner />
-        </ProductAnalytics>
+        {analyticsPart ? (
+          <ProductAnalytics mode={e.LF_MODE} projectKey={projectKey} host={host}>
+            {children}
+            <ConsentBanner />
+          </ProductAnalytics>
+        ) : (
+          <AnalyticsOff>{children}</AnalyticsOff>
+        )}
       </body>
     </html>
   )

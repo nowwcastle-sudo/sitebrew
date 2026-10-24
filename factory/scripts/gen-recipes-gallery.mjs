@@ -15,7 +15,7 @@ import { readFileSync, writeFileSync, rmSync, mkdirSync, existsSync } from 'node
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
-import { ALT_AXES, HERO_IDS, recipeIds, parseRecipe, fontStacks, recipeMarkers, R_DIR, RECIPES_DIR, isKorean, FONT_ROLES, singleWeightRules, singleWeightFaces, titleSlotStack, TITLE_SLOTS, headingWeightVars, HEADING_WEIGHT_VAR, HEADING_WEIGHT_DEFAULT, HEADING_WEIGHT_KO_VAR, HEADING_WEIGHT_VALUE, headingWeightKo, faceRules, faceKeys, applyAlternate, shapeVars, recipeMotionLevel } from './recipe.mjs'
+import { ALT_AXES, HERO_IDS, recipeIds, parseRecipe, fontStacks, recipeMarkers, R_DIR, RECIPES_DIR, isKorean, FONT_ROLES, singleWeightRules, singleWeightFaces, titleSlotStack, TITLE_SLOTS, headingWeightVars, HEADING_WEIGHT_VAR, HEADING_WEIGHT_DEFAULT, HEADING_WEIGHT_KO_VAR, HEADING_WEIGHT_VALUE, headingWeightKo, faceRules, faceKeys, applyAlternate, shapeVars, spacingVarsOf, recipeMotionLevel } from './recipe.mjs'
 import { loadSources, faces, faceRule } from './gen-fonts.mjs'
 import { iconVars, iconAdapter, STROKE_SELECTOR, STROKE_DECLS, motionVars } from './gen-kits.mjs'
 import { fontVar } from './lib/registry-lib.mjs'
@@ -55,7 +55,7 @@ export function scopedCss(r, kit = cssKitFonts()) {
   const dark = `.dark${sel}, .dark ${sel}`
   const block = (s, vars) => `${s} {\n${Object.entries(vars).map(([k, v]) => `  --${k}: ${v};`).join('\n')}\n}`
   return [
-    block(sel, { ...r.color.light, ...kitVars(r, kit), ...fontStacks(r.fonts), ...iconVars(r.icons?.weight), ...motionVars(r.motion), ...recipeMarkers(r), ...headingWeightVars(r), ...shapeVars(r) }),
+    block(sel, { ...r.color.light, ...kitVars(r, kit), ...fontStacks(r.fonts), ...iconVars(r.icons?.weight), ...motionVars(r.motion), ...recipeMarkers(r), ...headingWeightVars(r), ...spacingVarsOf(r), ...shapeVars(r) }),
     // 제목 굵기(recipe.mjs headingWeightRules): 소비자와 같은 기본 층 — 부품 제목 칸의 굵기 유틸리티가 이긴다.
     `@layer base { ${sel} .font-heading { font-weight: ${HEADING_WEIGHT_VALUE}; } }`,
     `@layer base { ${sel} .font-heading-ko { font-weight: ${HEADING_WEIGHT_VALUE}; } }`,

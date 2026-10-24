@@ -24,19 +24,21 @@ export type DataTableAdminListProps = BlockBase<DataTableAdminListCopy> & {
   pageSize?: number
   initialQuery?: Partial<TableQuery>
   onQueryChange?: (query: TableQuery) => void
+  // 검색어를 서버가 처리할 때(조립하는 쪽이 onQueryChange 로 다시 읽는다) true — 받은 행을 보이는 칸으로 다시 거르지 않는다(선택, 없으면 예전 그대로)
+  serverSearch?: boolean
 }
 
-export function DataTableAdminList({ copy, locale, state, pageSize = 10, initialQuery, onQueryChange, id = "admin-list", className }: DataTableAdminListProps) {
+export function DataTableAdminList({ copy, locale, state, pageSize = 10, initialQuery, onQueryChange, serverSearch, id = "admin-list", className }: DataTableAdminListProps) {
   const ref = React.useRef<HTMLElement>(null)
   useGsapScene(ref, (s) => {
     rise(s, s.q("[data-enter]"))
   })
   const api = useTableQuery(initialQuery, onQueryChange)
   const data = state.status === "ready" && state.data.rows.length ? state.data : null
-  const matched = data ? applyQuery(data, api.query) : []
+  const matched = data ? applyQuery(data, api.query, { serverSearch }) : []
   const page = pageOf(matched, api.query.page, pageSize)
   return (
-    <section ref={ref} id={id} data-block="data-table-admin-list" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="data-table-admin-list" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
       <div data-enter className="flex flex-col gap-4">
         <TableStatus state={state} copy={copy} rows={Math.min(pageSize, 8)} />

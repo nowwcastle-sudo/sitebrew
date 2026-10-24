@@ -7,10 +7,29 @@ description: Guides the use of Sitebrew (a shadcn registry of components, recipe
 
 Help the user use one repository, Sitebrew, that holds two parts which work together. Pin every install and clone to its release tag. Never use `main`.
 
+<!-- env-block:start -->
+## Where this runs (read first)
+
+Do not assume you can run commands on the user's computer. Check first:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/setup.mjs" detect
+```
+
+The JSON says `mode`.
+
+- `agent`: you have a tool that runs commands on the user's own computer. Follow this skill as written.
+- `chatbot`: you cannot run commands for the user (a chat window, a cloud sandbox). Run nothing and do not say you ran anything. Follow the "Chatbot mode" section of this skill: ask the same questions, and give the user the command to paste into their own terminal and what they should see when it works.
+- `remote` is `true`: this is a cloud session, not the user's computer. Install nothing here; say so and use the chatbot steps.
+- `unsure` is `true`: ask once, in the user's language, "Can this window run commands on your own computer?" Then add `--as agent` or `--as chatbot` to the command. The user can always choose `chatbot`.
+
+If this command cannot run at all (no command tool, or `${CLAUDE_PLUGIN_ROOT}` is not filled in), you are in chatbot mode. In Codex use the folder two levels above this `SKILL.md` file instead of `${CLAUDE_PLUGIN_ROOT}`.
+<!-- env-block:end -->
+
 | Part | Where | Pinned tag | Role |
 |---|---|---|---|
-| web-factory | the repository root | `v0.1.2` | A shadcn registry. It holds the official shadcn components rebuilt on Base UI with baseline UI rules, recipes (visual styles), blocks (page sections), archetypes (site types) and a `stamp` command that turns a short brief into site candidates. |
-| launch-factory | the `launch-factory/` folder | `v0.1.2` | The back-end launch kit: auth, data, payments, email, analytics and jobs as `@launch-factory/*` packages, plus a `template/` Next.js app. It has its own `package.json` and `npm ci`; installing the root does not install it. |
+| web-factory | the repository root | `v0.2.0` | A shadcn registry. It holds the official shadcn components rebuilt on Base UI with baseline UI rules, recipes (visual styles), blocks (page sections), archetypes (site types) and a `stamp` command that turns a short brief into site candidates. |
+| launch-factory | the `launch-factory/` folder | `v0.2.0` | The back-end launch kit: auth, data, payments, email, analytics and jobs as `@launch-factory/*` packages, plus a `template/` Next.js app. It has its own `package.json` and `npm ci`; installing the root does not install it. |
 
 The install addresses in this guide name the GitHub account that hosts the Sitebrew repository. Use them as written.
 
@@ -19,11 +38,11 @@ The install addresses in this guide name the GitHub account that hosts the Siteb
 1. Install web-factory parts into an existing or new Next.js project: follow "Use Sitebrew as a registry" in `references/web-factory.md`.
 2. Generate a whole site from a brief: use the `new` skill (conversation, then three candidates). `revise` changes one part of a built site, `deliver` copies the chosen site to the user's folder, `doctor` lists what is missing. For the raw `stamp` command line, follow "Stamp a site" in `references/web-factory.md`. No key is needed to start: the kit builds in preview mode.
 3. Start a product with auth, billing and mail: follow `references/launch-factory.md` (the `launch-factory/` folder of the clone). Start in mock mode.
-4. Find out which keys exist: read `references/keys.md`. It lists names only. For site making every key is optional; each row says what turns off when the name is missing. The Windows way to set a name is in its first section.
+4. Find out which keys exist: read `references/keys.md`. It lists names only. For site making every key is optional; each row says what turns off when the name is missing. The Windows way to set a name is in its first section. `keys.md` is only a reference list of names, not the procedure: how to get an account and set up a real site is the runbook (the `runbook` skill).
 
 ## Rules to follow in every case
 
-- Pin to the tag. Write install addresses as `nowwcastle-sudo/sitebrew/<item>#v0.1.2`. An address without `#tag` reads the default branch and mixes versions.
+- Pin to the tag. Write install addresses as `nowwcastle-sudo/sitebrew/<item>#v0.2.0`. An address without `#tag` reads the default branch and mixes versions.
 - Check the Node version first: Node `>=24.13.0` and npm `>=11.6.2`. `npm run setup` reports what is missing and prints the install command for the user's OS. It does not install system software.
 - Confirm shadcn CLI syntax in the repository README before you change a command. The READMEs pin `npx shadcn@4.21.0`.
 - Never ask the user to paste a key value into the chat, and never print one. Tell the user which environment variable name to set and let them set it. Report only whether a name is set and its length (`node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs"` does exactly that).
@@ -47,3 +66,7 @@ State these limits before the user starts, because they decide what works.
 - A part that arrives as the latest version means the address had no `#tag`.
 - `npm run doctor -- --stage dev` (launch-factory) and `node factory/doctor.mjs --stage <stamp|legal|media|publish|learn>` (web-factory) report which key or tool is missing without printing values.
 - `node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs"` checks Node, npm, git, the Sitebrew clone at the pinned tag and the key names before any of that (see `doctor`). `compat.json` in the plugin folder lists which Sitebrew tag this plugin version pins.
+
+## Chatbot mode
+
+Use this when the block "Where this runs" says `chatbot`. The guide is text, so it works as written. Every command in it is for the user's own terminal: show it in a code block, never say it was run, and never ask for a key or token value. For installing Node.js, Git or the clone, give the steps of the `setup` skill (its install guide).

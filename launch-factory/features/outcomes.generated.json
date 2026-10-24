@@ -1,0 +1,1215 @@
+{
+  "version": 1,
+  "hash": "a6af29bb9b65",
+  "outcomes": [
+    {
+      "id": "signup",
+      "order": 1,
+      "say": {
+        "ko": "회원가입·로그인",
+        "en": "Sign-up and log-in"
+      },
+      "question": {
+        "ko": "방문자가 회원가입·로그인을 해야 하나요?",
+        "en": "Do visitors need to sign up and log in?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "public",
+        "dashboard",
+        "landing",
+        "local",
+        "brand",
+        "detail",
+        "portfolio"
+      ],
+      "parts": [
+        "auth"
+      ],
+      "requires": [],
+      "closure": [
+        "account-lifecycle",
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "KAKAO_CLIENT_ID",
+        "KAKAO_CLIENT_SECRET",
+        "NAVER_CLIENT_ID",
+        "NAVER_CLIENT_SECRET",
+        "NEXT_PUBLIC_APP_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PERSONAL_API_KEY",
+        "POSTHOG_PROJECT_ID",
+        "SUBJECT_REF_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-auth",
+        "G-db"
+      ],
+      "product": true
+    },
+    {
+      "id": "payments",
+      "order": 2,
+      "say": {
+        "ko": "카드 결제·정기구독",
+        "en": "Card payments and subscriptions"
+      },
+      "question": {
+        "ko": "카드로 결제·정기구독을 받아야 하나요?",
+        "en": "Do you need card payments or subscriptions?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "landing"
+      ],
+      "parts": [
+        "billing-paddle"
+      ],
+      "requires": [
+        "signup"
+      ],
+      "closure": [
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "LF_EU_SALES",
+        "LF_PADDLE_LIVE",
+        "LF_PAYMENT_FAILED_EMAIL",
+        "NEXT_PUBLIC_APP_URL",
+        "PADDLE_API_KEY",
+        "PADDLE_CLIENT_TOKEN",
+        "PADDLE_WEBHOOK_SECRET",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-billing",
+        "G-db",
+        "G-email"
+      ],
+      "product": true
+    },
+    {
+      "id": "shop",
+      "order": 3,
+      "say": {
+        "ko": "상품 판매·카드·간편결제",
+        "en": "Sell products with card and easy pay"
+      },
+      "question": {
+        "ko": "상품을 팔고 카드·간편결제로 결제받아야 하나요?",
+        "en": "Do you need to sell products and take card or easy-pay payments?"
+      },
+      "archetypes": [
+        "commerce",
+        "detail"
+      ],
+      "parts": [
+        "commerce",
+        "payments-kr"
+      ],
+      "requires": [
+        "signup"
+      ],
+      "closure": [
+        "db",
+        "email",
+        "i18n",
+        "payments-kr",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "NEXT_PUBLIC_APP_URL",
+        "NEXT_PUBLIC_PORTONE_CHANNEL_KEY",
+        "NEXT_PUBLIC_PORTONE_STORE_ID",
+        "PORTONE_API_SECRET",
+        "PORTONE_WEBHOOK_SECRET",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-commerce",
+        "G-db",
+        "G-email",
+        "G-payments-kr"
+      ],
+      "product": true
+    },
+    {
+      "id": "inquiry",
+      "order": 4,
+      "say": {
+        "ko": "문의·상담 메일 알림",
+        "en": "Inquiry email alerts"
+      },
+      "question": {
+        "ko": "문의나 상담 신청을 받아서 메일로 알림받고 싶나요?",
+        "en": "Should inquiries come to you by email?"
+      },
+      "archetypes": [
+        "brand",
+        "commerce",
+        "detail",
+        "landing",
+        "local",
+        "portfolio",
+        "public",
+        "saas",
+        "pwa"
+      ],
+      "parts": [
+        "inquiry"
+      ],
+      "requires": [],
+      "closure": [
+        "analytics-posthog",
+        "consent",
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "INQUIRY_OWNER_EMAIL",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "LF_MARKETING_NIGHT_GUARD",
+        "NEXT_PUBLIC_APP_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-inquiry",
+        "G-db",
+        "G-email"
+      ],
+      "product": false
+    },
+    {
+      "id": "marketing",
+      "order": 5,
+      "say": {
+        "ko": "마케팅 메일 수신 동의",
+        "en": "Marketing email consent"
+      },
+      "question": {
+        "ko": "마케팅 메일 수신 동의를 받아야 하나요?",
+        "en": "Do you need marketing email consent?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "landing"
+      ],
+      "parts": [
+        "consent"
+      ],
+      "requires": [],
+      "closure": [
+        "analytics-posthog",
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "LF_MARKETING_NIGHT_GUARD",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-consent"
+      ],
+      "product": false
+    },
+    {
+      "id": "analytics",
+      "order": 6,
+      "say": {
+        "ko": "방문자 수 통계",
+        "en": "Visitor statistics"
+      },
+      "question": {
+        "ko": "방문자 수와 많이 본 쪽을 보고 싶나요?",
+        "en": "Do you want visitor counts?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "public",
+        "dashboard",
+        "landing",
+        "local",
+        "brand",
+        "detail",
+        "portfolio"
+      ],
+      "parts": [
+        "analytics-posthog"
+      ],
+      "requires": [],
+      "closure": [
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-analytics"
+      ],
+      "product": false
+    },
+    {
+      "id": "reviews",
+      "order": 7,
+      "say": {
+        "ko": "후기·상품 문의",
+        "en": "Reviews and product questions"
+      },
+      "question": {
+        "ko": "방문자가 후기나 상품 문의를 남길 수 있게 하고 싶나요?",
+        "en": "Should visitors be able to leave reviews and product questions?"
+      },
+      "archetypes": [
+        "commerce",
+        "detail",
+        "local",
+        "brand",
+        "saas",
+        "pwa"
+      ],
+      "parts": [
+        "reviews"
+      ],
+      "requires": [],
+      "closure": [
+        "analytics-posthog",
+        "consent",
+        "db",
+        "email",
+        "i18n",
+        "inquiry",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "INQUIRY_OWNER_EMAIL",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "LF_MARKETING_NIGHT_GUARD",
+        "NEXT_PUBLIC_APP_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "RESEND_API_KEY",
+        "REVIEWS_MODERATION",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-reviews",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "search",
+      "order": 8,
+      "say": {
+        "ko": "사이트 안 검색",
+        "en": "Site search"
+      },
+      "question": {
+        "ko": "방문자가 사이트 안에서 쪽이나 상품을 검색해서 찾을 수 있게 하고 싶나요?",
+        "en": "Should visitors be able to search your pages and products?"
+      },
+      "archetypes": [
+        "public",
+        "commerce",
+        "brand",
+        "detail"
+      ],
+      "parts": [
+        "search"
+      ],
+      "requires": [],
+      "closure": [
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-search",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "my-requests",
+      "order": 9,
+      "say": {
+        "ko": "내 신청 내역 확인",
+        "en": "My requests"
+      },
+      "question": {
+        "ko": "방문자가 보낸 문의·신청의 진행 상태를 직접 확인하게 하나요?",
+        "en": "Should visitors be able to check the status of their own requests?"
+      },
+      "archetypes": [
+        "public"
+      ],
+      "parts": [
+        "inquiry"
+      ],
+      "requires": [
+        "signup",
+        "inquiry"
+      ],
+      "closure": [
+        "analytics-posthog",
+        "consent",
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "INQUIRY_OWNER_EMAIL",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "LF_MARKETING_NIGHT_GUARD",
+        "NEXT_PUBLIC_APP_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-inquiry",
+        "G-db",
+        "G-email"
+      ],
+      "product": false
+    },
+    {
+      "id": "uploads",
+      "order": 10,
+      "say": {
+        "ko": "사진·파일 올리기",
+        "en": "Photo and file uploads"
+      },
+      "question": {
+        "ko": "방문자가 사진이나 파일을 올릴 수 있어야 하나요?",
+        "en": "Should visitors be able to upload photos or files?"
+      },
+      "archetypes": [
+        "public",
+        "local",
+        "brand",
+        "saas"
+      ],
+      "parts": [
+        "storage"
+      ],
+      "requires": [],
+      "closure": [
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "STORAGE_ACCESS_KEY_ID",
+        "STORAGE_BUCKET",
+        "STORAGE_ENDPOINT",
+        "STORAGE_PATH_STYLE",
+        "STORAGE_PUBLIC_BASE_URL",
+        "STORAGE_REGION",
+        "STORAGE_SECRET_ACCESS_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-storage",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "newsletter",
+      "order": 11,
+      "say": {
+        "ko": "뉴스레터 구독",
+        "en": "Newsletter subscriptions"
+      },
+      "question": {
+        "ko": "방문자에게 뉴스레터 구독 신청을 받아야 하나요?",
+        "en": "Should visitors be able to subscribe to a newsletter?"
+      },
+      "archetypes": [
+        "landing",
+        "brand",
+        "commerce",
+        "saas",
+        "portfolio"
+      ],
+      "parts": [
+        "newsletter"
+      ],
+      "requires": [],
+      "closure": [
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "NEXT_PUBLIC_APP_URL",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-newsletter",
+        "G-email",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "booking",
+      "order": 12,
+      "say": {
+        "ko": "예약 접수",
+        "en": "Booking"
+      },
+      "question": {
+        "ko": "방문자가 날짜와 시간을 골라 예약해야 하나요?",
+        "en": "Do visitors need to book a date and time?"
+      },
+      "archetypes": [
+        "local",
+        "brand",
+        "detail",
+        "landing",
+        "portfolio",
+        "public",
+        "saas"
+      ],
+      "parts": [
+        "booking"
+      ],
+      "requires": [],
+      "closure": [
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BOOKING_OWNER_EMAIL",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "NEXT_PUBLIC_APP_URL",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-booking",
+        "G-db",
+        "G-email"
+      ],
+      "product": false
+    },
+    {
+      "id": "booking-deposit",
+      "order": 13,
+      "say": {
+        "ko": "예약금 받기",
+        "en": "Booking deposits"
+      },
+      "question": {
+        "ko": "예약할 때 예약금을 먼저 받아야 하나요?",
+        "en": "Should visitors pay a deposit when they book?"
+      },
+      "archetypes": [
+        "local",
+        "brand",
+        "detail",
+        "landing",
+        "portfolio",
+        "public",
+        "saas"
+      ],
+      "parts": [
+        "booking-deposit"
+      ],
+      "requires": [
+        "booking"
+      ],
+      "closure": [
+        "booking",
+        "db",
+        "email",
+        "i18n",
+        "payments-kr",
+        "security"
+      ],
+      "needs": [
+        "BOOKING_OWNER_EMAIL",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "NEXT_PUBLIC_APP_URL",
+        "NEXT_PUBLIC_PORTONE_CHANNEL_KEY",
+        "NEXT_PUBLIC_PORTONE_STORE_ID",
+        "PORTONE_API_SECRET",
+        "PORTONE_WEBHOOK_SECRET",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-booking",
+        "G-payments-kr",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "kakao-alerts",
+      "order": 14,
+      "say": {
+        "ko": "카카오 알림톡·문자 안내",
+        "en": "Kakao and SMS alerts"
+      },
+      "question": {
+        "ko": "예약 확정·취소 안내를 카카오 알림톡이나 문자로도 보내야 하나요?",
+        "en": "Should booking notices also go out by Kakao or SMS?"
+      },
+      "archetypes": [
+        "local",
+        "brand",
+        "detail",
+        "landing",
+        "portfolio",
+        "public"
+      ],
+      "parts": [
+        "notify-kr"
+      ],
+      "requires": [
+        "booking"
+      ],
+      "closure": [
+        "analytics-posthog",
+        "consent",
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "LF_MARKETING_NIGHT_GUARD",
+        "LF_MOCK_NOTIFY_OUTBOX",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "SOLAPI_API_KEY",
+        "SOLAPI_API_SECRET",
+        "SOLAPI_KAKAO_PFID",
+        "SOLAPI_SENDER",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-notify",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "push",
+      "order": 15,
+      "say": {
+        "ko": "웹 푸시 알림",
+        "en": "Web push notifications"
+      },
+      "question": {
+        "ko": "로그인한 사용자에게 웹 푸시 알림을 보내야 하나요?",
+        "en": "Should signed-in users get web push notifications?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "dashboard"
+      ],
+      "parts": [
+        "push"
+      ],
+      "requires": [
+        "signup"
+      ],
+      "closure": [
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY",
+        "VAPID_PRIVATE_KEY",
+        "VAPID_PUBLIC_KEY",
+        "VAPID_SUBJECT"
+      ],
+      "guides": [
+        "G-push",
+        "G-db"
+      ],
+      "product": false
+    }
+  ],
+  "pages": [
+    {
+      "file": "app/(product)/sign-in/page.tsx",
+      "url": "/sign-in",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/sign-up/page.tsx",
+      "url": "/sign-up",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/forgot-password/page.tsx",
+      "url": "/forgot-password",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/reset-password/page.tsx",
+      "url": "/reset-password",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/verify-email/page.tsx",
+      "url": "/verify-email",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/account/page.tsx",
+      "url": "/account",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/pricing/page.tsx",
+      "url": "/pricing",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/upgrade/page.tsx",
+      "url": "/upgrade",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/billing/return/page.tsx",
+      "url": "/billing/return",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/billing/page.tsx",
+      "url": "/account/billing",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/billing/cancel/page.tsx",
+      "url": "/account/billing/cancel",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/billing/price-change/page.tsx",
+      "url": "/account/billing/price-change",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/cancel/page.tsx",
+      "url": "/account/cancel",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(legal)/refund/page.tsx",
+      "url": "/refund",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/contact/page.tsx",
+      "url": "/contact",
+      "owners": [
+        "inquiry"
+      ]
+    },
+    {
+      "file": "app/(product)/book/page.tsx",
+      "url": "/book",
+      "owners": [
+        "booking"
+      ]
+    },
+    {
+      "file": "app/(product)/book/manage/page.tsx",
+      "url": "/book/manage",
+      "owners": [
+        "booking"
+      ]
+    },
+    {
+      "file": "app/(product)/book/return/page.tsx",
+      "url": "/book/return",
+      "owners": [
+        "booking-deposit"
+      ]
+    },
+    {
+      "file": "app/(product)/account/notifications/page.tsx",
+      "url": "/account/notifications",
+      "owners": [
+        "push"
+      ]
+    },
+    {
+      "file": "app/(product)/products/page.tsx",
+      "url": "/products",
+      "owners": [
+        "commerce"
+      ]
+    },
+    {
+      "file": "app/(product)/cart/page.tsx",
+      "url": "/cart",
+      "owners": [
+        "commerce"
+      ]
+    },
+    {
+      "file": "app/(product)/checkout/page.tsx",
+      "url": "/checkout",
+      "owners": [
+        "commerce"
+      ]
+    },
+    {
+      "file": "app/(product)/checkout/return/page.tsx",
+      "url": "/checkout/return",
+      "owners": [
+        "commerce"
+      ]
+    },
+    {
+      "file": "app/(product)/orders/page.tsx",
+      "url": "/orders",
+      "owners": [
+        "commerce"
+      ]
+    },
+    {
+      "file": "app/(product)/orders/[id]/page.tsx",
+      "url": "/orders/[id]",
+      "owners": [
+        "commerce"
+      ]
+    },
+    {
+      "file": "app/(product)/email/page.tsx",
+      "url": "/email",
+      "owners": [
+        "auth",
+        "consent"
+      ]
+    },
+    {
+      "file": "app/(product)/admin/page.tsx",
+      "url": "/admin",
+      "owners": [
+        "admin-console",
+        "auth",
+        "commerce",
+        "booking",
+        "inquiry",
+        "reviews",
+        "newsletter"
+      ]
+    },
+    {
+      "file": "app/(product)/admin/[section]/page.tsx",
+      "url": "/admin/[section]",
+      "owners": [
+        "admin-console",
+        "auth",
+        "commerce",
+        "booking",
+        "inquiry",
+        "reviews",
+        "newsletter"
+      ]
+    },
+    {
+      "file": "app/(product)/admin/[section]/[id]/page.tsx",
+      "url": "/admin/[section]/[id]",
+      "owners": [
+        "admin-console",
+        "auth",
+        "commerce",
+        "booking",
+        "inquiry",
+        "reviews",
+        "newsletter"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "file": "app/api/account/not-me/route.ts",
+      "url": "/api/account/not-me",
+      "owners": [
+        "auth"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/auth/[...all]/route.ts",
+      "url": "/api/auth/[...all]",
+      "owners": [
+        "auth"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/booking/route.ts",
+      "url": "/api/booking",
+      "owners": [
+        "booking"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/booking/slots/route.ts",
+      "url": "/api/booking/slots",
+      "owners": [
+        "booking"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/cron/billing/route.ts",
+      "url": "/api/cron/billing",
+      "owners": [
+        "billing-paddle"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/booking/route.ts",
+      "url": "/api/cron/booking",
+      "owners": [
+        "booking"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/commerce/route.ts",
+      "url": "/api/cron/commerce",
+      "owners": [
+        "commerce"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/consents/route.ts",
+      "url": "/api/cron/consents",
+      "owners": [
+        "consent"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/inquiry/route.ts",
+      "url": "/api/cron/inquiry",
+      "owners": [
+        "inquiry"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/newsletter/route.ts",
+      "url": "/api/cron/newsletter",
+      "owners": [
+        "newsletter"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/notices/route.ts",
+      "url": "/api/cron/notices",
+      "owners": [
+        "auth"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/purge/route.ts",
+      "url": "/api/cron/purge",
+      "owners": [
+        "account-lifecycle"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/search/route.ts",
+      "url": "/api/cron/search",
+      "owners": [
+        "search"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/security/route.ts",
+      "url": "/api/cron/security",
+      "owners": [
+        "security"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/storage/route.ts",
+      "url": "/api/cron/storage",
+      "owners": [
+        "storage"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/inquiry/route.ts",
+      "url": "/api/inquiry",
+      "owners": [
+        "inquiry"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/marketing/keep/route.ts",
+      "url": "/api/marketing/keep",
+      "owners": [
+        "consent"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/marketing/unsubscribe/route.ts",
+      "url": "/api/marketing/unsubscribe",
+      "owners": [
+        "consent"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/newsletter/confirm/route.ts",
+      "url": "/api/newsletter/confirm",
+      "owners": [
+        "newsletter"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/newsletter/route.ts",
+      "url": "/api/newsletter",
+      "owners": [
+        "newsletter"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/newsletter/unsubscribe/route.ts",
+      "url": "/api/newsletter/unsubscribe",
+      "owners": [
+        "newsletter"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/reviews/route.ts",
+      "url": "/api/reviews",
+      "owners": [
+        "reviews"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/search/route.ts",
+      "url": "/api/search",
+      "owners": [
+        "search"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/storage/complete/route.ts",
+      "url": "/api/storage/complete",
+      "owners": [
+        "storage"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/storage/local/[...key]/route.ts",
+      "url": "/api/storage/local/[...key]",
+      "owners": [
+        "storage"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/storage/ticket/route.ts",
+      "url": "/api/storage/ticket",
+      "owners": [
+        "storage"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/webhooks/paddle/route.ts",
+      "url": "/api/webhooks/paddle",
+      "owners": [
+        "billing-paddle"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/webhooks/portone/route.ts",
+      "url": "/api/webhooks/portone",
+      "owners": [
+        "commerce"
+      ],
+      "cron": false
+    }
+  ]
+}

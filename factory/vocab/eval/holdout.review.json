@@ -1,0 +1,366 @@
+{
+  "reviewedAt": "2026-10-16T12:26:00.000Z",
+  "source": "owner chat 2026-10-16 21:26 KST: 검수 끝났고, 모두 너가 이해한대로야 (all 120 ok)",
+  "verdicts": {
+    "hold-001": {
+      "verdict": "ok"
+    },
+    "hold-002": {
+      "verdict": "ok"
+    },
+    "hold-003": {
+      "verdict": "ok"
+    },
+    "hold-004": {
+      "verdict": "ok"
+    },
+    "hold-005": {
+      "verdict": "ok"
+    },
+    "hold-006": {
+      "verdict": "ok"
+    },
+    "hold-007": {
+      "verdict": "ok"
+    },
+    "hold-008": {
+      "verdict": "ok"
+    },
+    "hold-009": {
+      "verdict": "ok"
+    },
+    "hold-010": {
+      "verdict": "ok"
+    },
+    "hold-011": {
+      "verdict": "ok"
+    },
+    "hold-012": {
+      "verdict": "ok"
+    },
+    "hold-013": {
+      "verdict": "ok"
+    },
+    "hold-014": {
+      "verdict": "ok"
+    },
+    "hold-015": {
+      "verdict": "ok"
+    },
+    "hold-016": {
+      "verdict": "ok"
+    },
+    "hold-017": {
+      "verdict": "ok"
+    },
+    "hold-018": {
+      "verdict": "ok"
+    },
+    "hold-019": {
+      "verdict": "ok"
+    },
+    "hold-020": {
+      "verdict": "ok"
+    },
+    "hold-021": {
+      "verdict": "ok"
+    },
+    "hold-022": {
+      "verdict": "ok"
+    },
+    "hold-023": {
+      "verdict": "ok"
+    },
+    "hold-024": {
+      "verdict": "ok"
+    },
+    "hold-025": {
+      "verdict": "ok"
+    },
+    "hold-026": {
+      "verdict": "ok"
+    },
+    "hold-027": {
+      "verdict": "ok"
+    },
+    "hold-028": {
+      "verdict": "ok"
+    },
+    "hold-029": {
+      "verdict": "ok"
+    },
+    "hold-030": {
+      "verdict": "ok"
+    },
+    "hold-031": {
+      "verdict": "ok"
+    },
+    "hold-032": {
+      "verdict": "ok"
+    },
+    "hold-033": {
+      "verdict": "ok"
+    },
+    "hold-034": {
+      "verdict": "ok"
+    },
+    "hold-035": {
+      "verdict": "ok"
+    },
+    "hold-036": {
+      "verdict": "ok"
+    },
+    "hold-037": {
+      "verdict": "ok"
+    },
+    "hold-038": {
+      "verdict": "ok"
+    },
+    "hold-039": {
+      "verdict": "ok"
+    },
+    "hold-040": {
+      "verdict": "ok"
+    },
+    "hold-041": {
+      "verdict": "ok"
+    },
+    "hold-042": {
+      "verdict": "ok"
+    },
+    "hold-043": {
+      "verdict": "ok"
+    },
+    "hold-044": {
+      "verdict": "ok"
+    },
+    "hold-045": {
+      "verdict": "ok"
+    },
+    "hold-046": {
+      "verdict": "ok"
+    },
+    "hold-047": {
+      "verdict": "ok"
+    },
+    "hold-048": {
+      "verdict": "ok"
+    },
+    "hold-049": {
+      "verdict": "ok"
+    },
+    "hold-050": {
+      "verdict": "ok"
+    },
+    "hold-051": {
+      "verdict": "ok"
+    },
+    "hold-052": {
+      "verdict": "ok"
+    },
+    "hold-053": {
+      "verdict": "ok"
+    },
+    "hold-054": {
+      "verdict": "ok"
+    },
+    "hold-055": {
+      "verdict": "ok"
+    },
+    "hold-056": {
+      "verdict": "ok"
+    },
+    "hold-057": {
+      "verdict": "ok"
+    },
+    "hold-058": {
+      "verdict": "ok"
+    },
+    "hold-059": {
+      "verdict": "ok"
+    },
+    "hold-060": {
+      "verdict": "ok"
+    },
+    "hold-061": {
+      "verdict": "ok"
+    },
+    "hold-062": {
+      "verdict": "ok"
+    },
+    "hold-063": {
+      "verdict": "ok"
+    },
+    "hold-064": {
+      "verdict": "ok"
+    },
+    "hold-065": {
+      "verdict": "ok"
+    },
+    "hold-066": {
+      "verdict": "ok"
+    },
+    "hold-067": {
+      "verdict": "ok"
+    },
+    "hold-068": {
+      "verdict": "ok"
+    },
+    "hold-069": {
+      "verdict": "ok"
+    },
+    "hold-070": {
+      "verdict": "ok"
+    },
+    "hold-071": {
+      "verdict": "ok"
+    },
+    "hold-072": {
+      "verdict": "ok"
+    },
+    "hold-073": {
+      "verdict": "ok"
+    },
+    "hold-074": {
+      "verdict": "ok"
+    },
+    "hold-075": {
+      "verdict": "ok"
+    },
+    "hold-076": {
+      "verdict": "ok"
+    },
+    "hold-077": {
+      "verdict": "ok"
+    },
+    "hold-078": {
+      "verdict": "ok"
+    },
+    "hold-079": {
+      "verdict": "ok"
+    },
+    "hold-080": {
+      "verdict": "ok"
+    },
+    "hold-081": {
+      "verdict": "ok"
+    },
+    "hold-082": {
+      "verdict": "ok"
+    },
+    "hold-083": {
+      "verdict": "ok"
+    },
+    "hold-084": {
+      "verdict": "ok"
+    },
+    "hold-085": {
+      "verdict": "ok"
+    },
+    "hold-086": {
+      "verdict": "ok"
+    },
+    "hold-087": {
+      "verdict": "ok"
+    },
+    "hold-088": {
+      "verdict": "ok"
+    },
+    "hold-089": {
+      "verdict": "ok"
+    },
+    "hold-090": {
+      "verdict": "ok"
+    },
+    "hold-091": {
+      "verdict": "ok"
+    },
+    "hold-092": {
+      "verdict": "ok"
+    },
+    "hold-093": {
+      "verdict": "ok"
+    },
+    "hold-094": {
+      "verdict": "ok"
+    },
+    "hold-095": {
+      "verdict": "ok"
+    },
+    "hold-096": {
+      "verdict": "ok"
+    },
+    "hold-097": {
+      "verdict": "ok"
+    },
+    "hold-098": {
+      "verdict": "ok"
+    },
+    "hold-099": {
+      "verdict": "ok"
+    },
+    "hold-100": {
+      "verdict": "ok"
+    },
+    "hold-101": {
+      "verdict": "ok"
+    },
+    "hold-102": {
+      "verdict": "ok"
+    },
+    "hold-103": {
+      "verdict": "ok"
+    },
+    "hold-104": {
+      "verdict": "ok"
+    },
+    "hold-105": {
+      "verdict": "ok"
+    },
+    "hold-106": {
+      "verdict": "ok"
+    },
+    "hold-107": {
+      "verdict": "ok"
+    },
+    "hold-108": {
+      "verdict": "ok"
+    },
+    "hold-109": {
+      "verdict": "ok"
+    },
+    "hold-110": {
+      "verdict": "ok"
+    },
+    "hold-111": {
+      "verdict": "ok"
+    },
+    "hold-112": {
+      "verdict": "ok"
+    },
+    "hold-113": {
+      "verdict": "ok"
+    },
+    "hold-114": {
+      "verdict": "ok"
+    },
+    "hold-115": {
+      "verdict": "ok"
+    },
+    "hold-116": {
+      "verdict": "ok"
+    },
+    "hold-117": {
+      "verdict": "ok"
+    },
+    "hold-118": {
+      "verdict": "ok"
+    },
+    "hold-119": {
+      "verdict": "ok"
+    },
+    "hold-120": {
+      "verdict": "ok"
+    }
+  }
+}

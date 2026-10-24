@@ -91,7 +91,7 @@ test("LFENV 환경 검사: INQUIRY_OWNER_EMAIL 이 없어도 live 가 켜진다(
     SUBJECT_REF_KEY: "s".repeat(32),
     TURNSTILE_SITE_KEY: "site",
   }
-  assert.deepEqual(TEMPLATE_OPTIONAL_NAMES, ["INQUIRY_OWNER_EMAIL", "POSTHOG_HOST", "POSTHOG_PROJECT_KEY", "SENTRY_DSN"], "문의 메일(LFENV)·분석 호스트·Sentry DSN(LFOBS)·분석 프로젝트 키(LFOBS2) 는 선택이다")
+  assert.deepEqual(TEMPLATE_OPTIONAL_NAMES, ["INQUIRY_OWNER_EMAIL", "BOOKING_OWNER_EMAIL", "POSTHOG_HOST", "POSTHOG_PROJECT_KEY", "SENTRY_DSN", "STORAGE_ENDPOINT", "STORAGE_BUCKET", "STORAGE_REGION", "STORAGE_ACCESS_KEY_ID", "STORAGE_SECRET_ACCESS_KEY", "STORAGE_PATH_STYLE", "STORAGE_PUBLIC_BASE_URL", "NEXT_PUBLIC_PORTONE_STORE_ID", "NEXT_PUBLIC_PORTONE_CHANNEL_KEY", "PORTONE_API_SECRET", "PORTONE_WEBHOOK_SECRET"], "문의 메일(LFENV)·분석 호스트·Sentry DSN(LFOBS)·분석 프로젝트 키(LFOBS2)·파일 올리기 저장소(3c) 는 선택이다")
   assert.ok(!TEMPLATE_LIVE_NAMES.includes("INQUIRY_OWNER_EMAIL"), "필수 목록에 없다 — 없으면 사이트 전체가 500 이던 사고(LFENV)")
   // 재현: 다른 이름이 모두 있고 이 이름만 없는 live. 고치기 전에는 EnvError(없음 1개: INQUIRY_OWNER_EMAIL)로 던졌다
   assert.doesNotThrow(() => templateEnv(live))
@@ -105,6 +105,32 @@ test("LFENV 환경 검사: INQUIRY_OWNER_EMAIL 이 없어도 live 가 켜진다(
   )
   // 필수 이름이 빠지면 여전히 켜지지 않는다(이 변경이 다른 이름의 보호를 풀지 않았다)
   assert.throws(() => templateEnv({ ...live, CRON_SECRET: undefined }), (e) => e instanceof EnvError && e.missing.length === 1 && e.missing[0] === "CRON_SECRET")
+})
+
+test("상점 환경 검사: PortOne 값 넷이 모두 없어도 live 가 켜진다(상점만 꺼진다) — 있으면 공백 섞인 값은 켜질 때 멈추고, 값은 메시지에 싣지 않는다", async () => {
+  const { templateEnv } = await import("../lib/live-env.ts")
+  const { EnvError } = await import("@launch-factory/env")
+  const live = {
+    LF_MODE: "live",
+    DATABASE_URL: "postgres://u:p@h/db",
+    BETTER_AUTH_SECRET: "a".repeat(32),
+    PADDLE_API_KEY: "k",
+    PADDLE_WEBHOOK_SECRET: "k",
+    RESEND_API_KEY: "k",
+    TURNSTILE_SECRET_KEY: "k",
+    EMAIL_FROM: "Name <hello@example.test>",
+    NEXT_PUBLIC_APP_URL: "https://preview.example.test",
+    CRON_SECRET: "c".repeat(16),
+    SUBJECT_REF_KEY: "s".repeat(32),
+    TURNSTILE_SITE_KEY: "site",
+  }
+  assert.doesNotThrow(() => templateEnv(live), "넷 모두 없어도 켜진다")
+  assert.doesNotThrow(() => templateEnv({ ...live, PORTONE_API_SECRET: "", NEXT_PUBLIC_PORTONE_STORE_ID: "" }), "빈 값은 없는 값")
+  assert.equal(templateEnv({ ...live, NEXT_PUBLIC_PORTONE_STORE_ID: "store-test" }).NEXT_PUBLIC_PORTONE_STORE_ID, "store-test")
+  assert.throws(
+    () => templateEnv({ ...live, PORTONE_API_SECRET: "has space" }),
+    (e) => e instanceof EnvError && e.invalid.includes("PORTONE_API_SECRET") && !String(e.message).includes("has space"),
+  )
 })
 
 test("블록 쪽 코드는 모드를 모른다:제품 페이지·잎에 공급자·LF_MODE 참조가 없다(포트는 서버 액션으로만 온다)", () => {
@@ -181,7 +207,10 @@ test("소셜 로그인 배선: auth.ts 는 키가 둘 다 있는 공급자만 cr
 test("템플릿 잠금: 가져온 파일이 잠금과 같고, 기능 번들이 지금 registry/dist 와 같다", () => {
   const r = check()
   assert.deepEqual(r.problems, [])
-  assert.match(r.blocks ?? "", /^098e330/, "web-factory 는 태그 v0.1.2(커밋 098e330)에 고정한다 — 다음 태그로 올릴 때만 바꾼다(대장 D10)")
+  // 고정 값의 정본은 잠금이다 — 값을 또 적지 않고, 잠금의 커밋 앞 8자가 README 고정 줄에 적혀 있는지만 본다(출시 전 커밋 고정 → 계획 7 에서 태그로)
+  const readme = readFileSync(new URL("../../README.md", import.meta.url), "utf8")
+  assert.match(r.blocks ?? "", /^[0-9a-f]{40}$/, "web-factory 고정은 40자 커밋이다")
+  assert.ok(readme.split("\n").some((l) => l.includes("web-factory pin") && l.includes(`\`${r.blocks.slice(0, 8)}\``)), "README 고정 줄에 잠금 커밋 앞 8자가 있다")
 })
 
 // ── UXOK: 가입·로그인 성공을 알려 준다 ─────────────────────────────────────────

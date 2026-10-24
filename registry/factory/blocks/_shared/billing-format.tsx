@@ -45,9 +45,10 @@ export function formatFrom(iso: IsoDate, locale?: string, timeZone?: string): st
 export function formatUntil(iso: IsoDate, locale?: string, timeZone?: string): string {
   return dateFormat(locale, timeZone).format(new Date(new Date(iso).getTime() - 1))
 }
-/** 금액 글자(12,900원). 부가세 표기는 따로(vatLabel) */
-export function formatMoney(m: Money): string {
-  return formatPrice(m.currency === "USD" || m.currency === "EUR" ? m.amount / 100 : m.amount, m.currency)
+/** 금액 글자(12,900원). 부가세 표기는 따로(vatLabel). locale 을 주면 그 로캘 표기(en → ₩12,900) — 안 주면 예전 글자 그대로다(판매 블록이 영어 사이트에서 넘긴다) */
+export function formatMoney(m: Money, locale?: string): string {
+  const amount = m.currency === "USD" || m.currency === "EUR" ? m.amount / 100 : m.amount
+  return locale ? formatPrice(amount, m.currency, { locale: intlLocale(locale) }) : formatPrice(amount, m.currency)
 }
 /** 「VAT 포함」 또는 「부가세 별도」(문구에서) */
 export function vatLabel(m: Money, copy: { vatIncluded: string; vatExcluded: string }): string {
@@ -78,10 +79,10 @@ export function fillText(template: string, vars: Record<string, string | number>
  * 금액 한 칸(data-numeric). price 로 이 금액의 역할을 적는다 — billed 는 실제 청구 총액(가장 크게, 마케팅 규칙 P1),
  * equivalent 는 환산가(하루·한 달 꼴 — 보조 크기), 그 밖은 비교·안내용. 크기는 부르는 쪽 훅이 정한다.
  */
-export function MoneyText({ money, price, className }: { money: Money; price?: "billed" | "equivalent" | "before" | "after" | "plain"; className?: string }) {
+export function MoneyText({ money, price, className, locale }: { money: Money; price?: "billed" | "equivalent" | "before" | "after" | "plain"; className?: string; locale?: string }) {
   return (
     <span data-numeric data-price={price} className={cn("cn-block-money", className)}>
-      {formatMoney(money)}
+      {formatMoney(money, locale)}
     </span>
   )
 }

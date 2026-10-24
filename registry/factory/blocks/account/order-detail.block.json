@@ -1,0 +1,13 @@
+{
+  "kind": "account",
+  "variant": "order-detail",
+  "title": "주문 상세 — 상태 배지·상태 한 줄·송장번호 + 상품 줄·합계 + 받는 분 + 주문 취소(승인 행동 cancel-order)",
+  "layout": "detail-sections",
+  "density": "comfortable",
+  "archetypes": [ "commerce" ],
+  "archetypeKinds": [ "order-detail", "orders" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "주문번호 + 상태 배지(data-status) + 상태에 맞는 날짜가 든 한 줄(role=status) + 송장번호(있으면, 배송 조회 링크 선택) → 주문 상품(작은 사진·이름·수량·줄 금액) + 합계(결제할 금액이 맨 위·VAT) → 받는 분·주소 → 주문 취소. 취소할 수 있는 상태(결제 전·결제 완료·상품 준비 중)에만 [주문 취소하기]가 있고, 누르면 확인 칸(결제 완료면 환불 안내, 사유는 선택)이 열린다. [돌아가기][취소 확정] 두 선택지는 대등하고 [취소 확정]만 cancelOrder({ orderId, reason?, confirmed: true }) 를 부른다 — 승인 행동(cancel-order)이라 안내 글(copy.humanHint)과 data-requires-human 이 있다. 성공하면 돌려준 주문으로 화면이 바뀌고 상태 줄에 초점이 간다. 배송 중·완료는 취소 단추 없이 안내 글만 있다. 없는 주문(not_found)은 빈 상태. 포트: order·cancelOrder·track?. 조립하는 쪽이 주소의 주문번호를 orderId 로 넘긴다."
+}

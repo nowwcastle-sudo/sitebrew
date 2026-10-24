@@ -7,9 +7,9 @@
       "title": "모션 키트",
       "description": "web-factory 모션: 이징 5·길이 5 토큰(@theme), 프리셋 wf-fade-rise·wf-sheet-in·wf-breathe, 동작 줄이기에서 끔, 화면 밖·탭 숨김 정지 훅",
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/use-pause-offscreen#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-recipe-motion#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.1.2"
+        "nowwcastle-sudo/sitebrew/use-pause-offscreen#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-recipe-motion#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.2.0"
       ],
       "cssVars": {
         "theme": {
@@ -161,7 +161,7 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/motion-core#v0.1.2"
+        "nowwcastle-sudo/sitebrew/motion-core#v0.2.0"
       ]
     },
     {
@@ -180,8 +180,8 @@
         "@lottiefiles/dotlottie-web@0.80.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/motion-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2"
+        "nowwcastle-sudo/sitebrew/motion-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0"
       ]
     }
   ]

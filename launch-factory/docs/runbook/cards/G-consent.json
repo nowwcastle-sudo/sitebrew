@@ -1,0 +1,20 @@
+{
+  "service": "Launch Factory consent",
+  "role": "consent",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-auth",
+    "G-email",
+    "G-security"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "마케팅 메일 수신 동의를 받고 기록할 수 없어요. 동의 없이 광고 메일을 보내지 않도록, 이 기능 없이는 광고 메일도 보내지 마세요.",
+    "en": "You cannot collect or record marketing email consent. Do not send marketing mail without this feature, so that nothing goes out without consent."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

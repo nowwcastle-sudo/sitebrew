@@ -1,0 +1,18 @@
+{
+  "service": "사이트 검색 (이 키트에 내장, Postgres)",
+  "role": "search",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "검색 결과가 비어 있어요. 색인 작업을 한 번 돌리기 전에는 아무것도 나오지 않아요.",
+    "en": "Search results stay empty. Nothing shows until the index job has run once."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

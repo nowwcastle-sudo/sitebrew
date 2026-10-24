@@ -1,0 +1,47 @@
+[
+  {
+    "service": "Vercel Domains",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "호스팅과 같은 곳에서 도메인을 살 수 있어요. 가격과 연결 단계가 줄어드는지는 [확인 안 됨].",
+      "en": "You can buy a domain at the same place as the host. Price and whether it shortens the connection steps are [not verified]."
+    },
+    "note": {
+      "ko": "이 키트는 도메인을 파는 곳을 가리지 않아요. 어디서 사든 연결 방법은 같은 장을 따라요.",
+      "en": "This kit does not care where you buy the domain. The connection steps in the same chapter apply wherever you buy."
+    },
+    "home": "https://vercel.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Cloudflare Registrar",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "다른 곳에서 산 도메인을 옮기는 절차는 [확인 안 됨]. 새로 사서 연결하는 방법은 같은 장을 따라요.",
+      "en": "The steps for moving a domain bought elsewhere are [not verified]. For a new purchase, follow the connection steps in the same chapter."
+    },
+    "note": {
+      "ko": "가격과 기능은 [확인 안 됨] — 비교하지 않았어요.",
+      "en": "Price and features are [not verified] — they were not compared."
+    },
+    "home": "https://www.cloudflare.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Gabia (Korean domain seller)",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "한국어 화면과 결제 방법이 필요한 분은 국내 도메인 업체를 고를 수 있어요. 연결 방법은 같은 장을 따라요.",
+      "en": "If you need Korean screens and Korean payment methods, you can choose a Korean domain seller. The connection steps in the same chapter apply."
+    },
+    "note": {
+      "ko": "가격과 기능, 한국어 지원 범위는 [확인 안 됨].",
+      "en": "Price, features and the extent of Korean support are [not verified]."
+    },
+    "home": "https://www.gabia.com",
+    "checked": "2026-10-22"
+  }
+]

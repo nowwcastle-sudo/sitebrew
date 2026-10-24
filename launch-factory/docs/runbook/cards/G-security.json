@@ -1,0 +1,19 @@
+{
+  "service": "Cloudflare Turnstile",
+  "role": "security",
+  "need": "feature",
+  "cost": [
+    "free-tier"
+  ],
+  "after": [
+    "G-hosting"
+  ],
+  "home": "https://www.cloudflare.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "가입·문의 폼의 봇 확인이 꺼지고, 예약된 정리 작업(Cron)이 거절돼요. 운영 중인 사이트에서는 폼과 Cron 이 켜지지 않을 수 있어요.",
+    "en": "The bot check on sign-up and inquiry forms is off, and scheduled cleanup jobs (Cron) are rejected. On a live site the forms and Cron jobs may not start."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

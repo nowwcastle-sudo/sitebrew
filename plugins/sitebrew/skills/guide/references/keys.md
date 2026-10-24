@@ -5,6 +5,12 @@ Sources: `.env.example`, `factory/doctor.mjs`, `packages/env`, `.github/workflow
 
 **You need no key to start.** Without any key `npm run stamp` builds in preview mode (stock photo slots stay "image in progress" placeholders, generated-image slots become `higgsfield.request.json` requests, Korean legal pages stay "unverified" and the result is marked not publishable). Every row below says what turns off when a name is missing.
 
+## Contents
+
+- How values are read
+- web-factory (the repository root)
+- launch-factory (the launch-factory/ folder)
+
 ## How values are read
 
 - Only from the process environment. The old Windows user-environment fallback is **off** unless `FACTORY_USER_ENV=1` is set (covered by `factory/scripts/secret-env-optin.test.mjs` and `packages/env/test/user-env-optin.test.mjs`).
@@ -39,6 +45,7 @@ A key that is **set but wrong** always fails the doctor, in every mode.
 | `HIGGSFIELD_DIR` | `factory/doctor.mjs` (stages `media`, `stamp`), `factory/media/build-media.mjs` | Optional. A folder of images you generated yourself. | Generated-image slots are not produced; they are written to `higgsfield.request.json`. A path that is set but does not exist fails the doctor. | Yes. The maintainers' generated-video folder is not part of the export. |
 | `WF_REQUIRE_KEYS` | `factory/doctor.mjs` | Optional. `1` = strict mode (same as `--strict`). | Nothing. Default is preview mode. With `1`, a missing `LAW_API_OC`, `PEXELS_API_KEY` or `HIGGSFIELD_DIR` fails the doctor and `stamp` does not start. | You choose. |
 | `WF_DESIGN_RULES_DIR` | `factory/lib/design-rules.mjs` | Optional. A folder of reference material (visual baselines for the regression gates, source collections). | Without it (and without a repository copy) those inputs are skipped with one line; the factory still runs. | Yes, your own folder. |
+| `LF_DIR` | `factory/intake/resolve-lf.mjs` | Optional. Points the feature questions at a launch-factory folder. Usually not needed: the kit finds the launch-factory/ folder inside the clone by itself. | Nothing. Without a launch-factory folder the feature questions are skipped. | Only if your launch-factory is somewhere else. |
 | `WF_CODEX_IMAGES` | `factory/stamp/object-media.mjs` | Optional. `1` lets the 3D object hero make its source image with the Codex CLI. | The hero falls back to a 2.5D image, then to a poster; with no image at all the kit does not pick that hero. | Needs `codex` installed and signed in. |
 | `WF_GLTF_TOOLS` | `factory/media/optimize-glb.mjs` | Optional. Folder where you installed gltf-transform. | GLB models over 2 MB are not shrunk. | Yes. |
 | `WF_MEDIA_PREVIEW` | `factory/stamp/media.mjs` | Optional. `1` fills photo slots with stock images marked "preview only". | Slots stay placeholders; the site stays not publishable either way. | You choose. |
@@ -105,6 +112,8 @@ A key that is **set but wrong** always fails the doctor, in every mode.
 
 | Name | Meaning |
 |---|---|
+| `LF_MOCK_OUTBOX` | Optional. A file path. In mock mode each mail the site would send is also written there as one JSON line (used by the loop test). Without it, mock mail is printed to the console only. |
+| `WF_DIR` | Optional, maintainer tests only. Points the compose build test at a web-factory folder for its link check. Without it the test looks for `../web-factory` or `../web-factory-main`, and skips the link check with a reason if neither exists. |
 | `LF_WF_REPO` | Optional. A different Sitebrew checkout for the conformance tests to read. The default is the repository root of the clone you are working in, so you normally leave it unset. |
 | `LF_WF_CONFORMANCE_COMMIT` | Commit or tag in that checkout. Default is the pinned commit. |
 | `WF_HOME` | Optional. A different Sitebrew checkout for `template:screens` to read. The default is the repository root of the clone you are working in. |

@@ -1,0 +1,467 @@
+{
+  "version": 1,
+  "hash": "d4d0c274c1b0",
+  "outcomes": [
+    {
+      "id": "signup",
+      "order": 1,
+      "say": {
+        "ko": "회원가입·로그인",
+        "en": "Sign-up and log-in"
+      },
+      "question": {
+        "ko": "방문자가 회원가입·로그인을 해야 하나요?",
+        "en": "Do visitors need to sign up and log in?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "public",
+        "dashboard",
+        "landing",
+        "local",
+        "brand",
+        "detail",
+        "portfolio"
+      ],
+      "parts": [
+        "auth"
+      ],
+      "requires": [],
+      "closure": [
+        "account-lifecycle",
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "NEXT_PUBLIC_APP_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PERSONAL_API_KEY",
+        "POSTHOG_PROJECT_ID",
+        "SUBJECT_REF_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-auth",
+        "G-db"
+      ],
+      "product": true
+    },
+    {
+      "id": "payments",
+      "order": 2,
+      "say": {
+        "ko": "카드 결제·정기구독",
+        "en": "Card payments and subscriptions"
+      },
+      "question": {
+        "ko": "카드로 결제·정기구독을 받아야 하나요?",
+        "en": "Do you need card payments or subscriptions?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "landing"
+      ],
+      "parts": [
+        "billing-paddle"
+      ],
+      "requires": [
+        "signup"
+      ],
+      "closure": [
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "LF_EU_SALES",
+        "LF_PAYMENT_FAILED_EMAIL",
+        "NEXT_PUBLIC_APP_URL",
+        "PADDLE_API_KEY",
+        "PADDLE_WEBHOOK_SECRET",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-billing",
+        "G-db",
+        "G-email"
+      ],
+      "product": true
+    },
+    {
+      "id": "inquiry",
+      "order": 3,
+      "say": {
+        "ko": "문의·상담 메일 알림",
+        "en": "Inquiry email alerts"
+      },
+      "question": {
+        "ko": "문의나 상담 신청을 받아서 메일로 알림받고 싶나요?",
+        "en": "Should inquiries come to you by email?"
+      },
+      "archetypes": [
+        "brand",
+        "commerce",
+        "detail",
+        "landing",
+        "local",
+        "portfolio",
+        "public",
+        "saas",
+        "pwa"
+      ],
+      "parts": [
+        "inquiry"
+      ],
+      "requires": [],
+      "closure": [
+        "analytics-posthog",
+        "consent",
+        "db",
+        "email",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "EMAIL_FROM",
+        "INQUIRY_OWNER_EMAIL",
+        "LF_BUSINESS_ADDRESS",
+        "LF_BUSINESS_EMAIL",
+        "LF_BUSINESS_NAME",
+        "LF_BUSINESS_PHONE",
+        "LF_MARKETING_NIGHT_GUARD",
+        "NEXT_PUBLIC_APP_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "RESEND_API_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-inquiry",
+        "G-db",
+        "G-email"
+      ],
+      "product": false
+    },
+    {
+      "id": "marketing",
+      "order": 4,
+      "say": {
+        "ko": "마케팅 메일 수신 동의",
+        "en": "Marketing email consent"
+      },
+      "question": {
+        "ko": "마케팅 메일 수신 동의를 받아야 하나요?",
+        "en": "Do you need marketing email consent?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "landing"
+      ],
+      "parts": [
+        "consent"
+      ],
+      "requires": [],
+      "closure": [
+        "analytics-posthog",
+        "db",
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "BETTER_AUTH_SECRET",
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "LF_MARKETING_NIGHT_GUARD",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-consent"
+      ],
+      "product": false
+    },
+    {
+      "id": "analytics",
+      "order": 5,
+      "say": {
+        "ko": "방문자 수 통계",
+        "en": "Visitor statistics"
+      },
+      "question": {
+        "ko": "방문자 수와 많이 본 쪽을 보고 싶나요?",
+        "en": "Do you want visitor counts?"
+      },
+      "archetypes": [
+        "saas",
+        "pwa",
+        "commerce",
+        "public",
+        "dashboard",
+        "landing",
+        "local",
+        "brand",
+        "detail",
+        "portfolio"
+      ],
+      "parts": [
+        "analytics-posthog"
+      ],
+      "requires": [],
+      "closure": [
+        "i18n",
+        "security"
+      ],
+      "needs": [
+        "CRON_SECRET",
+        "DATABASE_URL",
+        "POSTHOG_HOST",
+        "POSTHOG_PROJECT_KEY",
+        "TURNSTILE_SECRET_KEY",
+        "TURNSTILE_SITE_KEY"
+      ],
+      "guides": [
+        "G-analytics"
+      ],
+      "product": false
+    }
+  ],
+  "pages": [
+    {
+      "file": "app/(product)/sign-in/page.tsx",
+      "url": "/sign-in",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/sign-up/page.tsx",
+      "url": "/sign-up",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/forgot-password/page.tsx",
+      "url": "/forgot-password",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/reset-password/page.tsx",
+      "url": "/reset-password",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/verify-email/page.tsx",
+      "url": "/verify-email",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/account/page.tsx",
+      "url": "/account",
+      "owners": [
+        "auth"
+      ]
+    },
+    {
+      "file": "app/(product)/pricing/page.tsx",
+      "url": "/pricing",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/upgrade/page.tsx",
+      "url": "/upgrade",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/billing/return/page.tsx",
+      "url": "/billing/return",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/billing/page.tsx",
+      "url": "/account/billing",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/billing/cancel/page.tsx",
+      "url": "/account/billing/cancel",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/billing/price-change/page.tsx",
+      "url": "/account/billing/price-change",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/account/cancel/page.tsx",
+      "url": "/account/cancel",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(legal)/refund/page.tsx",
+      "url": "/refund",
+      "owners": [
+        "billing-paddle"
+      ]
+    },
+    {
+      "file": "app/(product)/contact/page.tsx",
+      "url": "/contact",
+      "owners": [
+        "inquiry"
+      ]
+    },
+    {
+      "file": "app/(product)/email/page.tsx",
+      "url": "/email",
+      "owners": [
+        "auth",
+        "consent"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "file": "app/api/account/not-me/route.ts",
+      "url": "/api/account/not-me",
+      "owners": [
+        "auth"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/auth/[...all]/route.ts",
+      "url": "/api/auth/[...all]",
+      "owners": [
+        "auth"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/cron/billing/route.ts",
+      "url": "/api/cron/billing",
+      "owners": [
+        "billing-paddle"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/consents/route.ts",
+      "url": "/api/cron/consents",
+      "owners": [
+        "consent"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/inquiry/route.ts",
+      "url": "/api/cron/inquiry",
+      "owners": [
+        "inquiry"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/notices/route.ts",
+      "url": "/api/cron/notices",
+      "owners": [
+        "auth"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/purge/route.ts",
+      "url": "/api/cron/purge",
+      "owners": [
+        "account-lifecycle"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/cron/security/route.ts",
+      "url": "/api/cron/security",
+      "owners": [
+        "security"
+      ],
+      "cron": true
+    },
+    {
+      "file": "app/api/inquiry/route.ts",
+      "url": "/api/inquiry",
+      "owners": [
+        "inquiry"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/marketing/keep/route.ts",
+      "url": "/api/marketing/keep",
+      "owners": [
+        "consent"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/marketing/unsubscribe/route.ts",
+      "url": "/api/marketing/unsubscribe",
+      "owners": [
+        "consent"
+      ],
+      "cron": false
+    },
+    {
+      "file": "app/api/webhooks/paddle/route.ts",
+      "url": "/api/webhooks/paddle",
+      "owners": [
+        "billing-paddle"
+      ],
+      "cron": false
+    }
+  ]
+}

@@ -1,14 +1,13 @@
-// 구획 단위 수정(factory v1 Task 4.3)의 축·문구 갈래와 명령줄 — 축: 레시피 머리 사본으로 전체를 다시 조립(구조 유지) · 문구: 요청 파일을 내고 멈춘다(LLM 호출 없음), 응답이 오면 검사해 안을 만든다.
-// 실제 06(generateSite, install: false)과 레시피 컴파일을 쓴다(축 갈래는 안마다 임시 레시피를 컴파일해서 구획 시험보다 느리다).
+// 구획 단위 수정(factory v1 Task 4.3)의 문구 갈래와 명령줄 — 문구: 요청 파일을 내고 멈춘다(LLM 호출 없음), 응답이 오면 검사해 안을 만든다.
+// 실제 06(generateSite, install: false)을 쓴다.
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, beforeEach, test } from 'node:test'
-import { applyRevision, axisHeads, parseRevision, revise } from '../stamp/revise.mjs'
+import { applyRevision, parseRevision, revise } from '../stamp/revise.mjs'
 import { runReviseCommand, EXIT } from '../stamp/stamp.mjs'
-import { loadLibrary } from './style-presets.mjs'
-import { fixtureCand, fixtureRun, fixtureSite } from './lib/revise-fixtures.mjs'
+import { fixtureRun, fixtureSite } from './lib/revise-fixtures.mjs'
 import { root } from './lib/stamp-site-fixtures.mjs'
 
 const TMP = join(root, '.tmp', 'revise-axis-test')
@@ -23,65 +22,6 @@ const tree = (d) => readdirSync(d, { recursive: true }).map(String).sort().join(
 const site = fixtureSite()
 const guardFiles = (run) => ['03-variants.json', '04-content.json', 'site/content/site.json'].map((f) => sha(join(run, 'a', f)))
 const readSite = (run, v) => JSON.parse(readFileSync(join(run, v.siteRel, 'content', 'site.json'), 'utf8'))
-
-// ── 축 ──────────────────────────────────────────────────────────────────────
-
-test('axisHeads: 모션은 더 대담하게 = 높은 단계만, 더 차분하게 = 낮은 단계만, 린트를 통과하는 값만', () => {
-  const head = loadLibrary().find((r) => r.id === fixtureCand().recipe)
-  assert.equal(head.motion, 'M1')
-  const up = axisHeads(head, 'motion', 'bolder', 2)
-  assert.ok(up.length >= 1 && up.every((h) => ['M2', 'M3'].includes(h.value) && h.head.motion === h.value))
-  assert.ok(axisHeads(head, 'motion', 'calmer', 2).every((h) => h.value === 'M0'), '낮은 쪽만 — M0 이 린트(정지 기법만)에 걸리면 비어도 좋다')
-  const both = axisHeads(head, 'motion', 'different', 3).map((h) => h.value)
-  assert.ok(both.includes('M2'))
-  assert.ok(!both.includes('M1'), '지금 값은 안에 넣지 않는다')
-  assert.equal(axisHeads(head, 'color', 'different', 2)[0].value, 'B')
-  assert.deepEqual(axisHeads(head, 'nothing', 'different', 2), [])
-})
-
-test('축 수정(색): 구조 유지 — 모든 구획의 블록·props 가 그대로이고 레시피만 바뀐다. 지금 사이트·03·04 는 그대로', async () => {
-  const run = fixtureRun()
-  const before = guardFiles(run)
-  const baseRecipe = JSON.parse(readFileSync(join(run, 'a', 'site', 'lib', 'build.json'), 'utf8')).recipeId
-  const r = parseRevision('색을 바꿔줘', site)
-  const out = await revise(run, 'a', r, { install: false })
-  assert.equal(out.status, 'ready')
-  assert.deepEqual(out.variants.map((v) => v.value), ['B', 'dark'])
-  assert.deepEqual(guardFiles(run), before)
-  for (const v of out.variants) {
-    const s = readSite(run, v)
-    assert.deepEqual(s.sections, site.sections, '구조 유지')
-    assert.equal(v.diff.sameStructure, true)
-    assert.deepEqual(v.diff.sections, [])
-    const recipeId = JSON.parse(readFileSync(join(run, v.siteRel, 'lib', 'build.json'), 'utf8')).recipeId
-    assert.notEqual(recipeId, baseRecipe)
-    assert.match(recipeId, /^x-/, '머리를 고친 사본은 임시 레시피로 컴파일된다')
-    assert.ok(v.diff.files.includes('lib/build.json'))
-  }
-  const board = JSON.parse(readFileSync(out.boardFile, 'utf8'))
-  assert.deepEqual([board.scope, board.target, board.status, board.routes.length > 5], ['axis', 'color', 'ready', true])
-  // 축 수정의 반영(FV1 5.3): 고르면 진짜 revise() 가 남긴 임시 레시피 머리가 후보 폴더로 옮겨지고 01 의 후보 칸이 brand 가 된다 — 03·04 와 학습 기록은 그대로
-  const applied = await applyRevision(run, 'a', out.index, 'v1', { userFile: join(dir, 'p.json'), seedFile: join(dir, 'no.json') })
-  assert.deepEqual(applied.stale, ['06', '07'])
-  assert.equal(applied.scope, 'axis')
-  const d01 = JSON.parse(readFileSync(join(run, 'a', '01-direction.json'), 'utf8')).data
-  assert.equal(d01.source, 'brand')
-  assert.match(d01.recipe.id, /^x-/)
-  assert.match(readFileSync(join(run, 'a', 'recipe', 'DESIGN.md'), 'utf8'), new RegExp(`id: ${d01.recipe.id}`))
-  assert.equal(sha(join(run, 'a', '03-variants.json')), before[0], '03 은 그대로')
-  assert.equal(existsSync(join(dir, 'p.json')), false, '축 선택은 학습에 기록하지 않는다')
-})
-
-test('축 수정(모션): 낮출 단계가 린트에 걸리면 빈 안과 까닭 — 거짓 안을 채우지 않는다 · 높이면 안이 나온다', async () => {
-  const run = fixtureRun()
-  const calm = await revise(run, 'a', parseRevision('모션 강도를 낮춰줘', site), { install: false })
-  assert.equal(calm.status, 'empty')
-  assert.equal(calm.variants.length, 0)
-  assert.match(calm.notes.join(' '), /motion 축에서 쓸 수 있는 값이 0개/)
-  const up = await revise(run, 'a', parseRevision('모션을 더 강하게', site), { install: false })
-  assert.equal(up.status, 'ready')
-  assert.ok(up.variants.length >= 1 && up.variants.every((v) => ['M2', 'M3'].includes(v.value) && v.diff.sameStructure))
-})
 
 // ── 문구 ────────────────────────────────────────────────────────────────────
 
@@ -174,7 +114,7 @@ test('runReviseCommand: 되묻기는 종료 3·아무것도 안 바뀜, 안 만�
   assert.match(lines.join('\n'), /질문: .*아무것도 바꾸지 않았다/s)
   assert.equal(tree(run), before)
 
-  const made = await runReviseCommand({ run, pick: 'a', revise: '히어로를 더 대담하게' }, { say: () => {}, revOpts: { install: false } })
+  const made = await runReviseCommand({ run, pick: 'a', revise: '히어로를 더 차분하게' }, { say: () => {}, revOpts: { install: false } })
   assert.equal(made.code, EXIT.done)
   assert.equal(made.result.variants.length, 2)
   assert.match(made.lines.join('\n'), /--revise-pick 1:<안>/)

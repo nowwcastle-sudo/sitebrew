@@ -7,6 +7,11 @@
     { "path": "/api/cron/consents", "schedule": "20 5 * * *" },
     { "path": "/api/cron/security", "schedule": "30 4 * * *" },
     { "path": "/api/cron/inquiry", "schedule": "0 4 * * *" },
-    { "path": "/api/cron/notices", "schedule": "10 * * * *" }
+    { "path": "/api/cron/booking", "schedule": "*/30 * * * *" },
+    { "path": "/api/cron/notices", "schedule": "10 * * * *" },
+    { "path": "/api/cron/search", "schedule": "20 4 * * *" },
+    { "path": "/api/cron/storage", "schedule": "40 4 * * *" },
+    { "path": "/api/cron/newsletter", "schedule": "30 4 * * *" },
+    { "path": "/api/cron/commerce", "schedule": "*/10 * * * *" }
   ]
 }

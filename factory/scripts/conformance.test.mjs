@@ -24,6 +24,7 @@ function transpile(file, name) {
   const out = js(readFileSync(file, 'utf8'))
     .replace(/(from\s+)(["'])@\/registry\/factory\/lib\/([a-z-]+)\2/g, (_, kw, q, lib) =>
       `${kw}${q}${pathToFileURL(transpile(join(root, 'registry', 'factory', 'lib', `${lib}.ts`), `lib-${lib}`)).href}${q}`)
+    .replace(/(from\s+)(["'])@\/registry\/factory\/contract\/([a-z-]+)\2/g, (_, kw, q, c) => `${kw}${q}${pathToFileURL(transpile(join(DIR, `${c}.ts`), c)).href}${q}`)
     .replace(/(from\s+)(["'])\.\/([a-z-]+)\2/g, (_, kw, q, m) => `${kw}${q}./conf-${m}.mjs${q}`)
   assert.doesNotMatch(out, /@\/registry\//, `${name}: 변환본에 계약 경로 import 가 남았다(타입 import 여야 한다)`)
   const path = join(OUT, `${name}.mjs`)
@@ -39,13 +40,21 @@ const { billingConformance, BILLING_SCENARIO_IDS } = await conf('billing')
 const { authConformance, AUTH_SCENARIO_IDS } = await conf('auth')
 const { notifyConformance, NOTIFY_CHANNELS } = await conf('notify')
 const { analyticsConformance, SAMPLE_EVENTS, piiPaths } = await conf('analytics')
+const { commerceConformance, COMMERCE_ORDER_STATES } = await conf('commerce')
+const { bookingConformance, BOOKING_SCENARIO_IDS } = await conf('booking')
+const { adminConformance, ADMIN_DENIED_SCENES } = await conf('admin')
 const { runCheck, failures } = await conf('conformance-core')
+const mockCommerceMod = await import(pathToFileURL(transpile(join(DIR, 'adapter-mock-commerce.ts'), 'adapter-mock-commerce')).href)
+const mockAdminMod = await import(pathToFileURL(transpile(join(DIR, 'adapter-mock-admin.ts'), 'adapter-mock-admin')).href)
 
 // 목 어댑터를 묶음의 make 로(launch-factory 는 여기에 실제 어댑터를 끼운다).
 const mockMakers = {
   billing: ({ sub, retentionOffers }) => mock.mockBilling(`?sub=${sub}`, retentionOffers ? { retentionOffers } : {}),
   auth: ({ auth }) => (auth === 'error' ? mock.mockAuth('?state=error') : mock.mockAuth(`?auth=${auth}`)),
   notify: () => mock.mockNotify(''),
+  commerce: ({ cart, stock, order }) => mockCommerceMod.mockCommerce(`?cart=${cart}&stock=${stock}&order=${order}`),
+  booking: ({ scenario }) => mock.mockBooking(`?booking=${scenario}`),
+  admin: ({ scene }) => mockAdminMod.mockAdmin(`?admin=${scene}`),
   analytics: ({ consent }) => {
     const port = mock.mockAnalytics(`?consent=${consent}`)
     return { port, sent: () => port.events }
@@ -59,15 +68,43 @@ test('scenario tables mirror adapter-mock: ?sub= 7 states + pending-price-change
   assert.deepEqual([...BILLING_SCENARIO_IDS], [...mock.MOCK_SUBS, ...mock.MOCK_SUB_SCENARIOS])
   for (const a of AUTH_SCENARIO_IDS.filter((a) => a !== 'error')) assert.ok(mock.MOCK_AUTHS.includes(a), a)
   assert.deepEqual([...NOTIFY_CHANNELS].sort(), ['email', 'kakao', 'push', 'sms'])
+  assert.deepEqual([...BOOKING_SCENARIO_IDS], [...mock.MOCK_BOOKINGS])
   assert.deepEqual(Object.keys(SAMPLE_EVENTS).sort(), [...events.EVENTS].sort())
+  assert.deepEqual(COMMERCE_ORDER_STATES.map((r) => r.status), [...mockCommerceMod.MOCK_ORDER_STATUSES], '판매 시나리오 표(주문 상태 일곱)가 목의 ?order= 값과 같다')
+  assert.deepEqual(ADMIN_DENIED_SCENES, mockAdminMod.MOCK_ADMIN_DENIALS, '관리 시나리오 표(막히는 장면 넷과 이유)가 목의 ?admin= 값과 같다')
+  assert.deepEqual(['admin', ...Object.keys(ADMIN_DENIED_SCENES)], [...mockAdminMod.MOCK_ADMINS])
 })
 
+// 판매 포트 묶음(계획 3a Task A4)의 검사 id — 순서와 이름이 계획 표다(`commerce.<무엇>.<경우>`)
+const COMMERCE_IDS = [
+  'commerce.catalog.shape', 'commerce.catalog.limited-stock',
+  'commerce.cart.empty', 'commerce.cart.filled-totals', 'commerce.cart.set-line.add', 'commerce.cart.set-line.update', 'commerce.cart.set-line.remove',
+  'commerce.cart.set-line.unknown-product', 'commerce.cart.set-line.bad-quantity', 'commerce.cart.stock.over-limit', 'commerce.cart.stock.at-limit',
+  'commerce.place.empty-cart', 'commerce.place.address-required', 'commerce.place.pending', 'commerce.place.stock-reserved', 'commerce.place.out-of-stock',
+  'commerce.confirm.paid', 'commerce.confirm.idempotent', 'commerce.confirm.wrong-payment-id', 'commerce.confirm.unknown-order',
+  'commerce.cancel.flow-pending', 'commerce.cancel.flow-paid', 'commerce.order.read', 'commerce.order.unknown',
+  ...['pending_payment', 'paid', 'preparing', 'shipped', 'delivered', 'canceled', 'refunded'].flatMap((st) => [`commerce.state.${st}`, `commerce.cancel.${st}`]),
+]
+
+// 관리 포트 묶음(계획 3d)의 검사 id — 순서와 이름이 계획 표다(`admin.<무엇>.<경우>`)
+const ADMIN_IDS = [
+  'admin.sections.shape', 'admin.overview.shape',
+  'admin.table.shape', 'admin.table.contact-masked', 'admin.record.contact-masked', 'admin.table.limit', 'admin.table.search', 'admin.table.unknown-section',
+  'admin.record.shape', 'admin.record.unknown', 'admin.record.empty-id',
+  'admin.access.signed-out', 'admin.access.forbidden', 'admin.access.two-factor-required', 'admin.access.impersonation',
+  'admin.act.unknown-target', 'admin.act.unknown-action', 'admin.act.listed-action', 'admin.act.save',
+  'admin.confirm.wall', 'admin.confirm.confirmed', 'admin.confirm.again-invalid-state',
+]
+
 // ② 자기 일관성: 목은 자기 묶음을 모두 통과한다 ─────────────────────────────
-test('the mock passes its own conformance suite — billing, auth, notify, analytics — with unique ids', async () => {
+test('the mock passes its own conformance suite — billing, auth, notify, booking, commerce, admin, analytics — with unique ids', async () => {
   const all = {
     billing: await billingConformance(mockMakers.billing),
     auth: await authConformance(mockMakers.auth),
     notify: await notifyConformance(mockMakers.notify),
+    commerce: await commerceConformance(mockMakers.commerce),
+    booking: await bookingConformance(mockMakers.booking),
+    admin: await adminConformance(mockMakers.admin),
     analytics: await analyticsConformance(mockMakers.analytics),
   }
   for (const [port, results] of Object.entries(all)) {
@@ -89,10 +126,13 @@ test('the mock passes its own conformance suite — billing, auth, notify, analy
     'billing.trial.trial-on', 'billing.trial.trial-off', 'billing.trial.trial-unavailable',
     'auth.signed-in.session', 'auth.signed-out.session', 'auth.error.session', 'auth.signed-out.reset-password-unknown-token', 'auth.signed-out.reset-password-empty-token',
     'notify.consents.default-false', 'notify.set-consents.partial',
+    'booking.slots.shape', 'booking.book.happy-path', 'booking.lookup.indistinguishable', 'booking.cancel.again-invalid-state', 'booking.cancel.releases-slot', 'booking.book.holds-slot', 'booking.book.invalid-input', 'booking.full.book-slot-taken',
+    ...COMMERCE_IDS,
+    ...ADMIN_IDS,
     'analytics.track.dropped-without-consent', 'analytics.meta.attribution-passthrough', ...events.EVENTS.map((e) => `analytics.props.no-pii.${e}`),
   ]) assert.ok(ids.includes(id), `묶음에 ${id} 가 없다`)
   // 검사 수(표가 늘면 여기도 고친다): billing 요금제 짝 1 + 장면 8 + 해지 11 + 대칭 2 + 체험 5 + 가격 변경 3 + 해지 대안 10
-  assert.deepEqual(Object.fromEntries(Object.entries(all).map(([k, v]) => [k, v.length])), { billing: 40, auth: 9, notify: 4, analytics: 6 + events.EVENTS.length })
+  assert.deepEqual(Object.fromEntries(Object.entries(all).map(([k, v]) => [k, v.length])), { billing: 40, auth: 9, notify: 4, booking: 15, commerce: 38, admin: ADMIN_IDS.length, analytics: 6 + events.EVENTS.length })
 })
 
 // ③ 음성 대조: 일부러 틀린 목은 정해진 id 에서만 떨어진다 ─────────────────────
@@ -151,20 +191,155 @@ test('negative control: an auth adapter whose error scenario still answers fails
   assert.deepEqual(failedIds(await authConformance(make)), ['auth.error.session'])
 })
 
+// 판매 포트(계획 3a): 어딘가 하나만 틀린 목은 정해진 id 에서만 떨어진다
+const withCommerce = (patch) => (setup) => {
+  const inner = mockMakers.commerce(setup)
+  return patch(inner, setup)
+}
+test('commerce suite: ids come out in the plan order and are all unique; every order state of the table is covered (state + cancel)', async () => {
+  const ids = (await commerceConformance(mockMakers.commerce)).map((r) => r.id)
+  assert.deepEqual(ids, COMMERCE_IDS)
+  assert.deepEqual(COMMERCE_ORDER_STATES.map((r) => r.status), ['pending_payment', 'paid', 'preparing', 'shipped', 'delivered', 'canceled', 'refunded'])
+})
+
+test('negative control: a commerce adapter that lets you add more than the stock fails commerce.cart.stock.over-limit only', async () => {
+  const make = withCommerce((inner) => ({
+    ...inner,
+    setCartLine: async (input) => {
+      const r = await inner.setCartLine(input)
+      return !r.ok && r.code === 'out_of_stock' ? { ok: true, data: (await inner.cart()).data } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await commerceConformance(make)), ['commerce.cart.stock.over-limit'])
+})
+
+test('negative control: a commerce adapter whose total forgets the shipping fee fails the totals checks (cart + order) and nothing about stock or states', async () => {
+  const noShipping = (c) => ({ ...c, total: { ...c.subtotal } })
+  const make = withCommerce((inner) => ({
+    ...inner,
+    cart: async () => { const r = await inner.cart(); return r.ok ? { ok: true, data: noShipping(r.data) } : r },
+    setCartLine: async (i) => { const r = await inner.setCartLine(i); return r.ok ? { ok: true, data: noShipping(r.data) } : r },
+    orders: async () => { const r = await inner.orders(); return r.ok ? { ok: true, data: r.data.map(noShipping) } : r },
+  }))
+  const failed = failedIds(await commerceConformance(make))
+  assert.ok(failed.includes('commerce.cart.filled-totals') && failed.includes('commerce.cart.set-line.add'), failed.join(', '))
+  assert.ok(failed.every((id) => /^commerce\.(cart|state|order)\./.test(id) || id === 'commerce.place.pending' || id.startsWith('commerce.confirm.') || id.startsWith('commerce.cancel.flow')), failed.join(', '))
+  assert.ok(!failed.some((id) => id.includes('stock')), failed.join(', '))
+})
+
+test('negative control: a commerce adapter that keeps the cart after ordering fails commerce.place.pending only', async () => {
+  const make = withCommerce((inner) => ({
+    ...inner,
+    placeOrder: async (input) => {
+      const before = (await inner.cart()).data.lines
+      const r = await inner.placeOrder(input)
+      if (r.ok) for (const l of before) await inner.setCartLine({ productId: l.productId, quantity: l.quantity })
+      return r
+    },
+  }))
+  assert.deepEqual(failedIds(await commerceConformance(make)), ['commerce.place.pending'])
+})
+
+test('negative control: a commerce adapter that confirms any payment id (ignores the id it is given) fails commerce.confirm.wrong-payment-id only', async () => {
+  const make = withCommerce((inner) => {
+    const paid = new Map() // 주문 → 진짜 결제 번호(placeOrder 가 알려 준 것)
+    return {
+      ...inner,
+      placeOrder: async (input) => {
+        const r = await inner.placeOrder(input)
+        if (r.ok) paid.set(r.data.order.id, r.data.payment.paymentId)
+        return r
+      },
+      confirmPayment: ({ orderId, paymentId }) => inner.confirmPayment({ orderId, paymentId: paid.get(orderId) ?? paymentId }),
+    }
+  })
+  assert.deepEqual(failedIds(await commerceConformance(make)), ['commerce.confirm.wrong-payment-id'])
+})
+
+test('negative control: a commerce adapter that lets you cancel a shipped order fails commerce.cancel.shipped only', async () => {
+  const make = withCommerce((inner) => ({
+    ...inner,
+    cancelOrder: async (input) => {
+      const o = await inner.order({ orderId: input.orderId })
+      return o.ok && o.data.status === 'shipped' ? { ok: true, data: { ...o.data, status: 'refunded' } } : inner.cancelOrder(input)
+    },
+  }))
+  assert.deepEqual(failedIds(await commerceConformance(make)), ['commerce.cancel.shipped'])
+})
+
+// ③c 예약 포트(계약 판 2 안의 선택 추가) — 일부러 틀린 어댑터는 정해진 검사에서만 떨어진다 ─────────────────
+// 예약 번호를 기억해 두었다가 「번호는 맞고 연락처만 틀린」 조회를 알아보는 감싸개(번호를 새로 알려 주는 어댑터를 흉내 낸다)
+const bookingSpy = (port) => {
+  const known = new Set()
+  return {
+    known,
+    book: async (input) => { const r = await port.book(input); if (r.ok) known.add(r.data.id); return r },
+  }
+}
+const bookingWithLookup = (rewrite) => ({ scenario }) => {
+  const port = mock.mockBooking(`?booking=${scenario}`)
+  const spy = bookingSpy(port)
+  return { ...port, book: spy.book, lookup: async (input) => { const r = await port.lookup(input); return !r.ok && spy.known.has(input.reference) ? rewrite(r) : r } }
+}
+
+test('negative control: a booking adapter that answers a wrong contact with a different code than an unknown reference fails booking.lookup.wrong-contact and booking.lookup.indistinguishable only', async () => {
+  const leaking = bookingWithLookup((r) => ({ ...r, code: 'forbidden' }))
+  assert.deepEqual(failedIds(await bookingConformance(leaking)), ['booking.lookup.indistinguishable', 'booking.lookup.wrong-contact'])
+})
+
+test('negative control: a booking adapter whose not_found message names which part was wrong fails booking.lookup.indistinguishable only', async () => {
+  const chatty = bookingWithLookup((r) => ({ ...r, formError: '연락처가 달라요.' }))
+  assert.deepEqual(failedIds(await bookingConformance(chatty)), ['booking.lookup.indistinguishable'])
+})
+
+test('negative control: a booking adapter that cancels twice without invalid_state fails booking.cancel.again-invalid-state only', async () => {
+  const forgiving = ({ scenario }) => {
+    const port = mock.mockBooking(`?booking=${scenario}`)
+    return { ...port, cancel: async (input) => { const r = await port.cancel(input); return !r.ok && r.code === 'invalid_state' ? { ok: true, data: { id: input.reference, status: 'cancelled', message: '취소했어요.' } } : r } }
+  }
+  assert.deepEqual(failedIds(await bookingConformance(forgiving)), ['booking.cancel.again-invalid-state'])
+})
+
+test('negative control: a booking adapter whose slot list ignores existing bookings fails booking.book.holds-slot only', async () => {
+  const stale = ({ scenario }) => {
+    const port = mock.mockBooking(`?booking=${scenario}`)
+    return { ...port, slots: (input) => mock.mockBooking(`?booking=${scenario}`).slots(input) } // 늘 새 목을 읽는다 — 예약이 반영되지 않는다
+  }
+  assert.deepEqual(failedIds(await bookingConformance(stale)), ['booking.book.holds-slot'])
+})
+
+test('negative control: a booking adapter that accepts a booking without a contact fails booking.book.invalid-input only', async () => {
+  const lax = ({ scenario }) => {
+    const port = mock.mockBooking(`?booking=${scenario}`)
+    return { ...port, book: async (input) => (input.contact ? port.book(input) : { ok: true, data: { id: 'B-0001', startsAt: input.startsAt || '2026-10-05T01:00:00.000Z', status: 'requested', message: '접수했어요.' } }) }
+  }
+  assert.deepEqual(failedIds(await bookingConformance(lax)), ['booking.book.invalid-input'])
+})
+
+test('negative control: a full-scenario adapter that still takes the booking fails booking.full.book-slot-taken only', async () => {
+  const overbooks = ({ scenario }) => {
+    const port = mock.mockBooking(`?booking=${scenario}`)
+    return { ...port, book: scenario === 'full' ? mock.mockBooking('?booking=open').book : port.book }
+  }
+  assert.deepEqual(failedIds(await bookingConformance(overbooks)), ['booking.full.book-slot-taken'])
+})
+
 // ③b 승인 행동 확인 입력(G11(d), P3-7 AXC) — options.requireConfirmation 인 어댑터만 받는다 ───────────────────────
 const confirmMakers = {
   billing: ({ sub, retentionOffers }) => mock.mockBilling(`?sub=${sub}`, { requireConfirmation: true, ...(retentionOffers ? { retentionOffers } : {}) }),
   auth: ({ auth }) => (auth === 'error' ? mock.mockAuth('?state=error') : mock.mockAuth(`?auth=${auth}`, { requireConfirmation: true })),
   notify: () => mock.mockNotify('', { requireConfirmation: true }),
+  commerce: ({ cart, stock, order }) => mockCommerceMod.mockCommerce(`?cart=${cart}&stock=${stock}&order=${order}`, { requireConfirmation: true }),
 }
 const CONFIRM_IDS = {
   billing: ['billing.confirmation.change-plan', 'billing.confirmation.cancel', 'billing.confirmation.apply-retention-offer', 'billing.confirmation.accept-price-change'],
   auth: ['auth.confirmation.change-email', 'auth.confirmation.delete-account', 'auth.confirmation.export-my-data'],
   notify: ['notify.confirmation.set-consents'],
+  commerce: ['commerce.confirmation.place-order', 'commerce.confirmation.cancel-order'],
 }
 
 test('confirmation checks run only when options.requireConfirmation is set — the default suite is unchanged (existing adapters keep passing)', async () => {
-  for (const [port, run] of [['billing', billingConformance], ['auth', authConformance], ['notify', notifyConformance]]) {
+  for (const [port, run] of [['billing', billingConformance], ['auth', authConformance], ['notify', notifyConformance], ['commerce', commerceConformance]]) {
     const off = await run(mockMakers[port])
     assert.equal(off.some((r) => r.id.includes('.confirmation.')), false, `${port}: 옵션이 없는데 확인 검사가 돌았다`)
     assert.deepEqual(failedIds(off), [], `${port}\n${explain(off)}`)
@@ -173,14 +348,14 @@ test('confirmation checks run only when options.requireConfirmation is set — t
 
 test('a mock with requireConfirmation passes its own suite with requireConfirmation on: old checks auto-confirm, the new checks pass (positive control)', async () => {
   const opts = { requireConfirmation: true }
-  const all = { billing: await billingConformance(confirmMakers.billing, opts), auth: await authConformance(confirmMakers.auth, opts), notify: await notifyConformance(confirmMakers.notify, opts) }
+  const all = { billing: await billingConformance(confirmMakers.billing, opts), auth: await authConformance(confirmMakers.auth, opts), notify: await notifyConformance(confirmMakers.notify, opts), commerce: await commerceConformance(confirmMakers.commerce, opts) }
   for (const [port, results] of Object.entries(all)) {
     assert.deepEqual(failedIds(results), [], `${port}\n${explain(results)}`)
     const ids = results.map((r) => r.id)
     assert.equal(new Set(ids).size, ids.length, `${port}: 검사 id 가 겹친다`)
     for (const id of CONFIRM_IDS[port]) assert.ok(ids.includes(id), `${id} 가 묶음에 없다`)
   }
-  assert.deepEqual(Object.fromEntries(Object.entries(all).map(([k, v]) => [k, v.length])), { billing: 44, auth: 12, notify: 5 })
+  assert.deepEqual(Object.fromEntries(Object.entries(all).map(([k, v]) => [k, v.length])), { billing: 44, auth: 12, notify: 5, commerce: 40 })
 })
 
 test('negative control: an adapter that does not require confirmation fails every *.confirmation.* check (and only those) when requireConfirmation is on', async () => {
@@ -188,6 +363,7 @@ test('negative control: an adapter that does not require confirmation fails ever
   assert.deepEqual(failedIds(await billingConformance(mockMakers.billing, opts)), [...CONFIRM_IDS.billing].sort())
   assert.deepEqual(failedIds(await authConformance(mockMakers.auth, opts)), [...CONFIRM_IDS.auth].sort())
   assert.deepEqual(failedIds(await notifyConformance(mockMakers.notify, opts)), [...CONFIRM_IDS.notify].sort())
+  assert.deepEqual(failedIds(await commerceConformance(mockMakers.commerce, opts)), [...CONFIRM_IDS.commerce].sort())
 })
 
 test('negative control: refusing with the right code but changing state first fails only that confirmation check (billing.cancel · notify.setConsents · auth.deleteAccount)', async () => {
@@ -259,9 +435,9 @@ test('registry: contract-conformance is one registry:lib item bundling conforman
   assert.ok(it)
   assert.equal(it.type, 'registry:lib')
   assert.deepEqual(it.files, CONF_FILES.map((f) => ({ path: `conformance/${f}`, type: 'registry:lib', target: `@components/contract/conformance/${f}` })))
-  assert.deepEqual(CONF_FILES, ['analytics.ts', 'auth.ts', 'billing.ts', 'conformance-core.ts', 'notify.ts'])
+  assert.deepEqual(CONF_FILES, ['admin.ts', 'analytics.ts', 'auth.ts', 'billing.ts', 'booking.ts', 'commerce.ts', 'conformance-core.ts', 'notify.ts'])
   assert.deepEqual(it.dependencies, [])
-  assert.deepEqual(it.registryDependencies, ['block-contract', 'events', 'ports', 'retention-offer'].map((d) => `${REPO}/${d}#v9.9.9`))
+  assert.deepEqual(it.registryDependencies, ['admin', 'block-contract', 'commerce', 'events', 'ports', 'retention-offer'].map((d) => `${REPO}/${d}#v9.9.9`))
   // 커밋된 생성물에도 같은 항목(고정 태그는 package.json 판)
   const gen = JSON.parse(readFileSync(join(DIR, 'registry.json'), 'utf8')).items.find((i) => i.name === 'contract-conformance')
   assert.deepEqual(gen.files.map((f) => f.target), it.files.map((f) => f.target))
@@ -271,4 +447,121 @@ test('registry: contract-conformance is one registry:lib item bundling conforman
   assert.deepEqual(r, { unresolved: [], undeclared: [], missing: [] })
   // 프레임워크 중립: 실행기를 부르지 않는다
   for (const f of CONF_FILES) assert.doesNotMatch(readFileSync(join(CONF, f), 'utf8'), /from\s+["'](node:test|vitest|jest|@jest\/|mocha|node:assert)/, f)
+})
+
+// 관리 포트(계획 3d): 어딘가 하나만 틀린 어댑터는 정해진 id 에서만 떨어진다
+const withAdmin = (patch) => (setup) => patch(mockMakers.admin(setup), setup)
+test('admin suite: ids come out in the plan order and are all unique', async () => {
+  assert.deepEqual((await adminConformance(mockMakers.admin)).map((r) => r.id), ADMIN_IDS)
+})
+
+test('negative control: an admin adapter with no confirmation wall fails admin.confirm.wall only', async () => {
+  // 확인 입력을 무시하고 늘 실행한다 — 확인 단계가 화면 쪽에만 있는 어댑터
+  const make = withAdmin((inner) => ({ ...inner, act: (input) => inner.act({ ...input, confirmed: true }) }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.confirm.wall'])
+})
+
+test('negative control: a "forbidden" session that is really an admin fails admin.access.forbidden only', async () => {
+  const make = (setup) => mockMakers.admin({ scene: setup.scene === 'forbidden' ? 'admin' : setup.scene })
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.access.forbidden'])
+})
+
+test('negative control: a signed-out adapter that believes the role in the input fails admin.access.signed-out only', async () => {
+  const make = withAdmin((denied, setup) => {
+    if (setup.scene !== 'signed-out') return denied
+    const admin = mockMakers.admin({ scene: 'admin' })
+    const pick = (input, name) => (input && input.role === 'admin' ? admin : denied)[name](input)
+    return { ...denied, table: (i) => pick(i, 'table'), record: (i) => pick(i, 'record'), act: (i) => pick(i, 'act') }
+  })
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.access.signed-out'])
+})
+
+test('negative control: a table with two primary columns fails admin.table.shape only; a total below the row count too', async () => {
+  const twoPrimary = withAdmin((inner) => ({
+    ...inner,
+    table: async (input) => {
+      const r = await inner.table(input)
+      return r.ok ? { ...r, data: { ...r.data, columns: r.data.columns.map((c) => ({ ...c, primary: true })) } } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(twoPrimary)), ['admin.table.shape'])
+  const smallTotal = withAdmin((inner) => ({
+    ...inner,
+    table: async (input) => {
+      const r = await inner.table(input)
+      return r.ok ? { ...r, data: { ...r.data, total: 0 } } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(smallTotal)), ['admin.table.shape'])
+})
+
+test('negative control: a record() that invents a record for an unknown id fails admin.record.unknown only', async () => {
+  const make = withAdmin((inner) => ({
+    ...inner,
+    record: async (input) => {
+      const r = await inner.record(input)
+      if (r.ok || input.id !== 'conf-no-such-record' || input.section === 'conf-no-such-section') return r
+      const [first] = (await inner.table({ section: input.section })).data.rows
+      return inner.record({ section: input.section, id: first.id })
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.record.unknown'])
+})
+
+test('negative control: an overview that lists warnings before critical fails admin.overview.shape only', async () => {
+  const make = withAdmin((inner) => ({
+    ...inner,
+    overview: async () => {
+      const r = await inner.overview()
+      return r.ok ? { ...r, data: { ...r.data, todo: [...r.data.todo].reverse() } } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.overview.shape'])
+})
+
+test('negative control: a danger action that succeeds twice fails admin.confirm.again-invalid-state only', async () => {
+  const make = withAdmin((inner) => ({
+    ...inner,
+    act: async (input) => {
+      const r = await inner.act(input)
+      return !r.ok && r.code === 'invalid_state' ? { ok: true, data: {} } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.confirm.again-invalid-state'])
+})
+
+test('negative control: a danger action also listed among the plain actions (skips the confirm step) fails admin.record.shape only', async () => {
+  const make = withAdmin((inner) => ({
+    ...inner,
+    record: async (input) => {
+      const r = await inner.record(input)
+      return r.ok && r.data.danger ? { ...r, data: { ...r.data, actions: [...r.data.actions, r.data.danger] } } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.record.shape'])
+})
+
+test('negative control: an admin table that sends contact cells unmasked fails admin.table.contact-masked only', async () => {
+  const raw = { 'ord-1003': '010-0000-1111', 'ord-1002': 'kim@example.com' }
+  const make = withAdmin((inner) => ({
+    ...inner,
+    table: async (input) => {
+      const r = await inner.table(input)
+      if (!r.ok) return r
+      const col = r.data.columns.find((c) => c.kind === 'contact')
+      return col ? { ...r, data: { ...r.data, rows: r.data.rows.map((row) => ({ ...row, cells: { ...row.cells, [col.id]: raw[row.id] ?? '010-0000-9999' } })) } } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.table.contact-masked'])
+})
+
+test('negative control: an admin record that sends a contact summary unmasked fails admin.record.contact-masked only', async () => {
+  const make = withAdmin((inner) => ({
+    ...inner,
+    record: async (input) => {
+      const r = await inner.record(input)
+      return r.ok ? { ...r, data: { ...r.data, summary: r.data.summary.map((i) => (i.kind === 'contact' ? { ...i, value: '010-0000-1111' } : i)) } } : r
+    },
+  }))
+  assert.deepEqual(failedIds(await adminConformance(make)), ['admin.record.contact-masked'])
 })

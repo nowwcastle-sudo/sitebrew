@@ -89,10 +89,16 @@ export function checkReadme({ readme, lang = BASE_LANG, pkg, tags = [], locks, e
     if (!refs.length) problems.push("README 에 설치 주소 `#vX.Y.Z` 가 하나도 없다")
     for (const r of new Set(refs)) if (r !== version) problems.push(`설치 주소 #v${r} ≠ package.json ${version}`)
   } else {
+    const pinLine = new RegExp(`${esc(L.pin)}[^\\n]*`).exec(prose)?.[0] ?? ""
     const pin = new RegExp(`${esc(L.pin)}[^\\n]*?\`v${V}\``).exec(prose)?.[1]
     if (!pin) problems.push(`README 에 「${L.pin} \`vX.Y.Z\`」 문장이 없다`)
     else
-      for (const [name, ref] of Object.entries(locks ?? {})) if (ref !== `v${pin}`) problems.push(`README web-factory 고정 v${pin} ≠ ${name} 잠금 ${ref}`)
+      for (const [name, ref] of Object.entries(locks ?? {})) {
+        // 출시 전 커밋 고정(잠금 ref 가 40자 해시)은 태그와 비교하지 않고, 같은 줄에 해시 앞 8자를 `…` 로 적어 맞춘다
+        if (/^[0-9a-f]{40}$/.test(ref)) {
+          if (!pinLine.includes(`\`${ref.slice(0, 8)}\``)) problems.push(`README web-factory 고정 줄에 ${name} 잠금 커밋 \`${ref.slice(0, 8)}\` 이 없다`)
+        } else if (ref !== `v${pin}`) problems.push(`README web-factory 고정 v${pin} ≠ ${name} 잠금 ${ref}`)
+      }
   }
   return problems
 }

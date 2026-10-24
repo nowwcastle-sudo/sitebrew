@@ -1,0 +1,2429 @@
+# 디자인 어휘 사전 원본(설계 5.2~5.5, 5.9). 도구와 스킬 레퍼런스가 모두 이 파일에서 나온다. 규칙은 factory/vocab/lexicon.mjs 가 검사한다.
+#   axes   : 12개 고정. label = 사용자에게 쓰는 이름, ends = 방향 id 둘 [마이너스 끝, 플러스 끝](reading 의 direction 은 이 둘 중 하나), endLabels = 그 끝의 사용자 표기,
+#            order = 축 값 순서(세기 +1 = 한 칸, +2 = 두 칸 또는 끝). 색(color-hue)·글꼴(type-family)은 ends 가 없고 reading 에 direction 대신 value 를 쓴다.
+#            valueLabels = value 를 쓰는 축의 값 id → 사용자 표기(reading 이 쓰는 value 는 모두 있어야 한다).
+#            rank = 등급형 축의 값 → 등급(같은 등급은 같은 칸, 낮은 쪽 = ends[0]). order 와 함께 두지 않는다.
+#            names = 사용자가 이 축을 이름으로 부르는 말(정규식 원문 · 대소문자 무시) — 구획 이름과 함께 나온 「색」「서체」처럼 축만 말한 문장을 알아본다(방향 낱말과 별개).
+#            sectionIntent = 구획 교체로 실행할 때 방향(ends) → 구획 의도(bolder|calmer 또는 { density: … }). 칸이 없는 축은 구획만 바꿀 수 없다.
+#            strength 는 0..2 크기다(부호는 direction 이 지닌다).
+#   entries: kind(modifier|reference|diagnosis|impression|axis) 하나씩. reading 축은 1~4개, 낱말은 한 항목에만, 두 항목이 축 3개 이상 겹치면 합친다.
+#   confidence low 항목은 reading 대신 causes 두 개(보여 주며 묻기, 5.10).
+#   expansions: 막는 말(not)과 「덜 ~」 낱말의 틀. 반복되는 말은 낱말마다 적지 않고 틀로 둔다 — 항목의 copyWords·dislikeStems·cardNames·lessStems·lessLite 가 재료다. 아래 expansions 주석을 본다.
+axes:
+  color-hue: { label: 색, names: ["색상", "색감", "컬러", "배색", "팔레트", "(?<![검탐사])색(?![다인출])", "(?<![a-z])colou?rs?(?![a-z])", "(?<![a-z])palette(?![a-z])", "(?<![a-z])hue(?![a-z])"], valueLabels: { red: 빨강, orange: 주황, yellow: 노랑, green: 초록, teal: 청록, blue: 파랑, navy: 남색, purple: 보라, pink: 분홍, brown: 갈색, beige: 베이지, black: 검정, gray: 회색, white: 흰색, gold: 금색, sky: 하늘색, coral: 산호색, lavender: 연보라, olive: 올리브색, burgundy: 진한 와인색, away-from-indigo-violet: 보라·남색에서 먼 색 } }
+  color-lightness: { label: 밝기, ends: [dark, bright], endLabels: [어둡게, 밝게] }
+  color-saturation: { label: 색의 진하기, ends: [muted, vivid], endLabels: [흐리게, 쨍하게] }
+  color-temperature: { label: 색 온도, ends: [cool, warm], endLabels: [차갑게, 따뜻하게] }
+  palette-count: { label: 색 가짓수, ends: [fewer, more], endLabels: [적게, 많게], rank: { K3: 0, K9: 0, K1: 1, K5: 1, K4: 2, K7: 2, K2: 3, K6: 3, K8: 4 } }
+  contrast: { label: 대비, ends: [soft, crisp], endLabels: [은은하게, 또렷하게], rank: { C3: 0, C5: 0, C1: 1, C4: 1, C2: 2, C6: 3, C8: 3 }, sectionIntent: { crisp: bolder, soft: calmer } }
+  type-family: { label: 글꼴, names: ["서체", "글꼴", "폰트", "글자체", "타이포", "(?<![a-z])typefaces?(?![a-z])", "(?<![a-z])fonts?(?![a-z])", "(?<![a-z])typography(?![a-z])"], valueLabels: { distinctive: 흔하지 않은 글꼴, rounded-sans: 둥근 고딕, serif-or-thin-sans: 명조나 가는 고딕, clear-sans: 또박또박한 고딕, serif-or-slab: 옛 느낌의 명조, serif: 명조, sans: 고딕, handwriting: 손글씨, mono: 고정폭 글꼴 } }
+  type-scale: { label: 글자 크기, ends: [smaller, larger], endLabels: [작게, 크게], order: [D1, D2, D3], sectionIntent: { larger: bolder, smaller: calmer } }
+  spacing: { label: 여백, ends: [tight, airy], endLabels: [빽빽하게, 시원하게], order: [tight, normal, airy], sectionIntent: { airy: { density: spacious }, tight: { density: compact } } }
+  shape: { label: 모서리, ends: [sharp, round], endLabels: [각지게, 둥글게], order: [R0, R1, R2, R3] }
+  depth: { label: 입체감, ends: [flat, lifted], endLabels: [납작하게, 떠 보이게], rank: { S0: 0, S1: 1, S2: 1, S3: 2 }, sectionIntent: { lifted: bolder, flat: calmer } }
+  motion: { label: 움직임, names: ["모션", "움직임", "애니메이션", "(?<![a-z])animations?(?![a-z])", "(?<![a-z])motion(?![a-z])", "(?<![a-z])movement(?![a-z])"], ends: [static, dynamic], endLabels: [정적으로, 역동적으로], order: [M0, M1, M2, M3], sectionIntent: { dynamic: bolder, static: calmer } }
+
+revise:
+  # 말 → 구획·쪽 이름표(설계 5.10). 이 사전이 유일본이다(revise-parse.mjs 가 읽어 구조 조작에도 넘긴다).
+  #   sections / extraSections: kind = 사이트 구획 kind 에 맞추는 정규식 원문, words = 그 구획을 가리키는 말. extraSections 는 구조 조작(구획 더하기·빼기·옮기기)만 쓰는 이름표다.
+  #   pages: 쪽 키 → 쪽을 가리키는 말.
+  sections:
+    - { kind: "^hero", words: ["히어로", "첫 화면", "첫화면", "메인 배너", "상단 배너", "대문", "메인 화면", "메인 비주얼", "맨 위", "hero", "banner", "above the fold", "main visual"] }
+    - { kind: "^(?:faq|qna)$", words: ["자주 묻는 질문", "질문", "q&a", "faq", "questions"] }
+    - { kind: "^(?:pricing|paywall|plans?)(?:-|$)", words: ["요금제", "요금", "가격", "플랜", "구독료", "pricing", "prices", "price", "plans", "plan"] }
+    - { kind: "(?:^|-)features?$", words: ["기능", "특징", "장점", "features", "feature", "benefits"] }
+    - { kind: "^(?:social-proof|testimonials?|reviews?|external-reviews|review-list)$", words: ["후기", "리뷰", "고객 평가", "추천사", "사용 후기", "testimonials", "reviews", "social proof"] }
+    - { kind: "^footer", words: ["푸터", "바닥글", "맨 아래", "하단 정보", "footer"] }
+    - { kind: "^(?:final-cta|cta)$", words: ["마지막 행동", "최종 행동", "행동 유도", "하단 버튼", "final cta", "call to action", "cta"] }
+    - { kind: "^contact-form$", words: ["문의 폼", "문의", "연락", "contact"] }
+    - { kind: "^menu", words: ["메뉴", "가격표", "menu"] }
+    - { kind: "^hours", words: ["영업시간", "운영 시간", "hours", "opening hours"] }
+    - { kind: "^directions$", words: ["오시는 길", "찾아오는 길", "지도", "directions", "map", "location"] }
+    - { kind: "^gallery$", words: ["갤러리", "사진", "gallery", "photos"] }
+    - { kind: "^integrations?$", words: ["연동", "통합", "integrations", "integration"] }
+    - { kind: "^(?:how-it-works|workflow)", words: ["사용 방법", "이용 방법", "진행 방식", "작동 방식", "how it works"] }
+    - { kind: "^(?:notice|announcement)", words: ["공지", "알림 띠", "announcement", "notice"] }
+    - { kind: "^auth$", words: ["가입 폼", "로그인 폼", "인증", "sign-in form", "sign-up form"] }
+  extraSections:
+    - { kind: "^directions$", words: ["위치", "약도"] }
+    - { kind: "^hours", words: ["영업 시간", "운영시간"] }
+    - { kind: "^branches$", words: ["지점", "매장", "branches", "branch"] }
+    - { kind: "^departments$", words: ["진료과", "진료 과목", "departments", "department"] }
+    - { kind: "^doctors$", words: ["의료진", "doctors"] }
+    - { kind: "^enterprise$", words: ["엔터프라이즈", "기업용", "enterprise"] }
+    - { kind: "^changelog$", words: ["변경 내역", "업데이트 내역", "changelog", "release notes"] }
+  pages:
+    home: ["홈", "메인 페이지", "홈페이지", "home", "homepage"]
+    campaign: ["캠페인", "campaign"]
+    pricing: ["요금제 쪽", "가격 쪽", "pricing page"]
+    signup: ["가입 쪽", "signup page", "sign-up page"]
+    login: ["로그인 쪽", "login page"]
+
+expansions:
+  # 막는 말(not)과 「덜 ~」 낱말의 틀. loadLexicon 이 항목의 copyWords·dislikeStems·cardNames·lessStems 와 짝지어 펼친다(factory/vocab/expand.mjs). {n}·{w}·{s}·{a}·{b} 가 자리표시자다.
+  #   copy      「문구 더 따뜻」 — 글 속 말투를 가리키는 말은 색 얘기가 아니다. 글 이름(nouns) × forms × 항목의 copyWords 를 그 항목의 not 에 보탠다.
+  #   dislike   「답답해서 싫」 — 진단 낱말 뒤의 싫다는 말은 그 낱말을 고치라는 뜻이라 따로 읽지 않는다. 항목의 dislikeStems 를 not 에 보탠다.
+  #   reference 모든 참고 카드는 기능 이름(「스타일 결제」)을 막고, pairs 로 묶인 카드 둘은 서로의 이름을 접속어로 이은 말(「애플이나토스」)을 막는다(cardNames 를 쓴다).
+  #   less      「덜 ~」·「~한 거 줄」 — 항목의 lessStems(true = match.ko 의 띄어쓰기 없는 낱말 전부, minStem 글자 이상 · 목록 = 그 낱말만)는 forms 꼴로, lessLite(반대쪽 항목이 나머지 꼴을 갖고 있는 축 낱말)는 liteForms 꼴로
+  #             낱말을 만들어 into 항목의 match.ko 에 넣는다. 다른 항목이 이미 가진 낱말은 뺀다. 새 인상·축 낱말은 match.ko 에 보태기만 하면 lessStems: true 항목에서는 따라온다.
+  copy:
+    nouns: ["문구", "문장", "카피", "멘트", "말투", "글투", "문체", "소개글", "소개 글", "소개 문구", "설명 글", "설명 문구", "글이", "글을", "슬로건", "캐치프레이즈", "인사말", "소개말", "안내문", "안내 문구", "광고 문구", "홍보 문구"]
+    forms: ["{n} {w}", "{n}도 {w}", "{n}만 {w}", "{n} 더 {w}", "{n} 조금 {w}", "{n} 조금 더 {w}", "{n} 너무 {w}", "{n} 훨씬 {w}", "{n} 더욱 {w}", "{n} 아주 {w}"]
+  dislike: ["{w} 싫", "{w}서 싫", "{w} 질색"]
+  reference:
+    features:
+      styles: ["스타일", "디자인", "ui", "ux"]
+      nouns: ["잔디", "그래프", "기능", "결제", "송금", "주문", "예약", "알림", "로그인", "채팅", "피드", "목록", "구독", "인증", "검색", "추천", "쿠폰", "장바구니", "배송"]
+      forms: ["{s} {n}"]
+    pairs: [["ref-toss", "ref-apple"], ["ref-notion", "ref-slack"], ["ref-kakao", "ref-naver"], ["ref-daangn", "ref-airbnb"], ["ref-coupang", "ref-musinsa"], ["ref-instagram", "ref-youtube"], ["ref-netflix", "ref-youtube"]]
+    pairForms: ["{a}이나{b}", "{a}이랑{b}", "{a}랑{b}", "{a}하고{b}", "{a}와{b}", "{a}과{b}", "{a}나{b}", "{a}, {b}", "{a}·{b}", "{a} 그리고 {b}", "{a} and {b}", "{a} or {b}", "{a} 또는 {b}", "{a} 아니면 {b}"]
+  less:
+    into: less-blocker
+    minStem: 2
+    forms: ["{w}한 거 줄", "{w}한 건 줄", "{w}한 걸 줄", "{w}함 줄", "{w}한 것 줄", "{w} 줄여", "덜 {w}"]
+    liteForms: ["덜 {w}"]
+
+entries:
+
+  - id: warm
+    kind: impression
+    label: 따뜻함
+    copyWords: ["따뜻", "포근", "아늑", "정겨", "훈훈", "푸근"]
+    lessStems: true
+    match:
+      ko: ["따뜻", "포근", "아늑", "정겨", "정감", "훈훈", "푸근"]
+      en: ["warm", "cozy", "homey", "snug", "homely", "warmer"]
+    not: ["따뜻한 커피", "따뜻한 차", "따뜻한 국물", "따뜻한 라떼", "따뜻한 음료", "덜 따뜻", "덜 따스"]
+    reading:
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "색을 따뜻한 쪽으로, 모서리를 부드러운 쪽으로 이해했어요."
+      en: "I read this as warmer colours and softer corners."
+    confidence: high
+    mood:
+      tokens: ["warm", "earthy", "cozy", "sunset", "sunshine"]
+      recipeTokens: ["손맛", "저녁", "장터", "인쇄", "숲", "친근", "말랑", "손끝"]
+
+  - id: friendly
+    kind: impression
+    label: 친근함
+    copyWords: ["친근", "친절", "다정", "상냥", "캐주얼"]
+    lessStems: true
+    match:
+      ko: ["친근", "친절", "다정", "상냥", "정다", "살가", "캐주얼"]
+      en: ["friendly", "welcoming", "approachable", "gentle", "inviting", "casual", "friendlier"]
+    not: ["친절 상담", "친절한 직원"]
+    reading:
+      - { axis: shape, direction: round, strength: 1 }
+      - { axis: type-family, value: rounded-sans, strength: 1 }
+      - { axis: contrast, direction: soft, strength: 1 }
+    say:
+      ko: "모서리를 둥글게, 글꼴을 둥근 쪽으로, 대비를 은은하게 이해했어요."
+      en: "I read this as rounder shapes, a rounder typeface and softer contrast."
+    confidence: high
+    mood:
+      tokens: ["warm", "soft", "approachable", "inviting", "cheerful", "pastel"]
+      recipeTokens: ["친근", "말랑", "손끝"]
+
+  - id: bold
+    kind: impression
+    label: 대담함
+    lessStems: true
+    match:
+      ko: ["대담", "과감", "강렬", "도전", "파격", "묵직", "임팩트"]
+      en: ["bold", "strong", "intense", "daring", "powerful", "dramatic", "bolder", "louder", "stronger", "striking"]
+    not: ["과감한 할인", "파격 할인", "도전 정신"]
+    reading:
+      - { axis: contrast, direction: crisp, strength: 2 }
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+    say:
+      ko: "대비를 또렷하게, 색을 쨍하게, 제목을 크게 이해했어요."
+      en: "I read this as sharper contrast, punchier colour and bigger headings."
+    confidence: high
+    mood:
+      tokens: ["bold", "neon", "vibrant", "intense", "dramatic", "high-contrast"]
+      recipeTokens: ["대담", "거침", "직설", "대비", "신호"]
+
+  - id: lively
+    kind: impression
+    label: 활기참
+    copyWords: ["활기", "발랄", "경쾌", "유쾌"]
+    lessStems: true
+    match:
+      ko: ["활기", "활발", "생동", "경쾌", "발랄", "신나", "유쾌", "에너지", "화려"]
+      en: ["lively", "energetic", "playful", "fun", "cheerful", "upbeat", "vivid"]
+    not: ["에너지 드링크", "에너지 절약", "에너지 효율", "에너지 음료", "에너지 바"]
+    reading:
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+      - { axis: motion, direction: dynamic, strength: 1 }
+      - { axis: palette-count, direction: more, strength: 1 }
+    say:
+      ko: "색을 쨍하게, 움직임을 더하고 색 가짓수를 늘리는 쪽으로 이해했어요."
+      en: "I read this as punchier colour, more motion and a wider palette."
+    confidence: high
+    mood:
+      tokens: ["energetic", "vibrant", "playful", "cheerful", "bright", "energy"]
+      recipeTokens: ["신호", "말랑", "대담"]
+
+  - id: calm
+    kind: impression
+    label: 차분함
+    copyWords: ["차분"]
+    lessStems: true
+    match:
+      ko: ["차분", "고요", "조용", "평온", "잔잔", "편안", "평화", "절제", "힐링", "덜 화려", "화려한 거 줄", "화려한 건 줄", "화려한 걸 줄", "화려함 줄", "덜 튀", "튀는 거 줄", "튀는 건 줄", "덜 요란"]
+      en: ["calm", "quiet", "serene", "peaceful", "tranquil", "relaxed", "calmer", "quieter"]
+    not: ["조용한 동네", "평화 시장"]
+    reading:
+      - { axis: motion, direction: static, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: contrast, direction: soft, strength: 1 }
+    say:
+      ko: "움직임을 줄이고, 색을 흐리게, 대비를 은은하게 이해했어요."
+      en: "I read this as less motion, muted colour and softer contrast."
+    confidence: high
+    mood:
+      tokens: ["calm", "muted", "cool", "soft", "hush", "balanced"]
+      recipeTokens: ["차분", "고요", "조용", "느림", "절제"]
+
+  - id: neat
+    kind: impression
+    label: 단정함
+    copyWords: ["간결", "깔끔", "심플", "명료", "명쾌", "군더더기"]
+    lessStems: true
+    match:
+      ko: ["단정", "깔끔", "정갈", "정돈", "심플", "간결", "미니멀", "명료", "명쾌", "깨끗", "말끔", "청결", "군더더기", "덜 복잡", "복잡한 거 줄", "복잡한 건 줄", "복잡함 줄", "덜 지저분"]
+      en: ["neat", "clean", "simple", "minimal", "minimalist", "tidy", "clear", "crisp", "simpler"]
+    not: ["정리 정돈 서비스", "깨끗한 주방"]
+    reading:
+      - { axis: spacing, direction: airy, strength: 1 }
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "여백을 넓히고 색 가짓수를 줄이며 대비를 또렷하게 이해했어요."
+      en: "I read this as more breathing room, fewer colours and crisper contrast."
+    confidence: high
+    mood:
+      tokens: ["minimal", "minimalist", "monochrome", "muted", "balanced", "clarity"]
+      recipeTokens: ["단정", "정돈", "명료", "절제", "여백"]
+
+  - id: refined
+    kind: impression
+    label: 고급스러움
+    copyWords: ["고급", "세련"]
+    lessStems: true
+    match:
+      ko: ["고급", "세련", "우아", "품격", "격조", "럭셔리", "프리미엄", "있어 보이", "비싸 보이", "명품", "귀티"]
+      en: ["luxury", "luxurious", "premium", "elegant", "refined", "sophisticated", "classy", "upscale"]
+    not: ["고급 원두", "고급 재료", "프리미엄 요금제", "프리미엄 회원"]
+    reading:
+      - { axis: spacing, direction: airy, strength: 1 }
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: type-family, value: serif-or-thin-sans, strength: 1 }
+    say:
+      ko: "여백을 넓히고 색 가짓수를 줄이는 쪽으로 이해했어요."
+      en: "I read this as more breathing room and fewer colours."
+    confidence: high
+    mood:
+      tokens: ["luxe", "luxury", "quiet luxury", "elegant", "premium", "refined", "editorial"]
+      recipeTokens: ["절제된 고급", "정제", "지면", "여백"]
+
+  - id: trust
+    kind: impression
+    label: 신뢰감
+    copyWords: ["신뢰", "믿음", "전문"]
+    lessStems: true
+    match:
+      ko: ["신뢰","믿음","든든","안정","공신","안심","프로페셔널","안전한 느낌","안전 느낌","전문","비즈니스 느낌","비즈니스 스타일","비즈니스 룩","믿음직"]
+      en: ["trust", "trustworthy", "reliable", "stable", "professional", "serious", "dependable"]
+    not: ["전문 강사", "전문가 상담", "안전 점검", "전문점", "전문 업체", "전문가", "전문의", "신뢰가 안 가", "믿음이 안 가", "신뢰감이 없", "신뢰감이 안"]
+    reading:
+      - { axis: contrast, direction: crisp, strength: 1 }
+      - { axis: color-temperature, direction: cool, strength: 1 }
+      - { axis: type-family, value: clear-sans, strength: 1 }
+    say:
+      ko: "대비를 또렷하게, 색을 차갑게, 글꼴을 또박또박한 고딕으로 이해했어요."
+      en: "I read this as crisp contrast, cooler colour and a clear sans-serif."
+    confidence: high
+    mood:
+      tokens: ["trust", "reliability", "stable", "professional", "balanced", "clarity"]
+      recipeTokens: ["신뢰", "공식", "명료", "근거", "정확"]
+
+  - id: fresh
+    kind: impression
+    label: 산뜻함
+    lessStems: true
+    match:
+      ko: ["산뜻", "청량", "상쾌", "싱그", "맑", "청명", "상큼"]
+      en: ["fresh", "airy", "light", "bright", "refreshing", "breezy"]
+    not: ["맑은 물", "맑은 날씨"]
+    reading:
+      - { axis: color-lightness, direction: bright, strength: 1 }
+      - { axis: color-temperature, direction: cool, strength: 1 }
+      - { axis: spacing, direction: airy, strength: 1 }
+    say:
+      ko: "색을 밝고 시원하게, 여백을 넓히는 쪽으로 이해했어요."
+      en: "I read this as lighter, cooler colour with more space."
+    confidence: high
+    mood:
+      tokens: ["fresh", "cool", "pastel", "bright", "light", "nordic", "marine"]
+      recipeTokens: ["명료", "여백"]
+
+  - id: natural
+    kind: impression
+    label: 자연스러움
+    lessStems: true
+    match:
+      ko: ["자연", "내추럴", "소박", "투박", "흙", "숲", "순박", "수수", "친환경", "유기농", "에코 느낌", "에코 감성", "에코 스타일", "에코 프렌들리"]
+      en: ["natural", "organic", "rustic", "earthy", "humble", "handmade"]
+    not: ["자연 재료", "자연 식품", "숲속 펜션", "수수료", "에코백", "자연스럽게 바꿔", "자연스럽게 해", "자연스럽게 만들", "자연스럽게 고쳐", "자연스럽게 연결", "자연스럽게 넘어", "수수께끼"]
+    reading:
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "색을 따뜻하고 차분하게, 그림자를 줄여 납작하게 이해했어요."
+      en: "I read this as warm, muted colour with flatter surfaces."
+    confidence: high
+    mood:
+      tokens: ["earthy", "nature", "organic", "green", "forest", "botanical", "muted"]
+      recipeTokens: ["숲", "재질", "손끝", "손맛"]
+
+  - id: retro
+    kind: impression
+    label: 복고
+    lessStems: true
+    match:
+      ko: ["복고", "레트로", "빈티지", "클래식", "고전적", "고전풍", "고전미", "앤티크", "추억"]
+      en: ["retro", "vintage", "classic", "nostalgic", "timeless", "antique"]
+    not: ["클래식 음악", "클래식 기타", "클래식 피아노", "클래식 공연"]
+    reading:
+      - { axis: type-family, value: serif-or-slab, strength: 1 }
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "글꼴을 옛 느낌으로, 색을 따뜻하고 흐리게 이해했어요."
+      en: "I read this as a vintage typeface with warm, muted colour."
+    confidence: high
+    mood:
+      tokens: ["retro", "vintage", "classic", "timeless"]
+      recipeTokens: ["인쇄", "손맛", "장터"]
+
+  - id: dark
+    kind: impression
+    label: 어둡고 묵직함
+    lessStems: true
+    match:
+      ko: ["시크", "어두", "도회", "미래", "몽환", "밤"]
+      en: ["sleek", "dark", "moody", "futuristic", "urban", "night"]
+    not: ["밤 영업", "밤 산책", "미래 교육", "미래 설계", "어두워", "어두운데", "어두운 것 같", "너무 어두", "어두운 거 줄", "어두운 건 줄", "덜 어두", "덜 어둡"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+      - { axis: depth, direction: lifted, strength: 1 }
+    say:
+      ko: "배경을 어둡게, 대비를 또렷하게, 떠 보이는 느낌으로 이해했어요."
+      en: "I read this as a darker look with crisp contrast and more depth."
+    confidence: high
+    mood:
+      tokens: ["dark", "night", "deep", "futuristic", "tech", "modern", "cosmic"]
+      recipeTokens: ["저녁", "대비"]
+
+  - id: playful
+    kind: impression
+    label: 발랄함
+    copyWords: ["재미", "유머", "익살"]
+    lessStems: true
+    match:
+      ko: ["귀여", "장난", "유머", "재미", "앙증", "아기자기", "귀엽", "깜찍", "귀욤", "익살"]
+      en: ["cute", "quirky", "whimsical", "humorous"]
+    not: ["귀여운 강아지", "귀여운 고양이", "장난감"]
+    reading:
+      - { axis: shape, direction: round, strength: 2 }
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+      - { axis: motion, direction: dynamic, strength: 1 }
+    say:
+      ko: "모서리를 많이 둥글게, 색을 쨍하게, 움직임을 더하는 쪽으로 이해했어요."
+      en: "I read this as very round shapes, punchier colour and more motion."
+    confidence: high
+    mood:
+      tokens: ["playful", "pastel", "cheerful", "vibrant", "soft"]
+      recipeTokens: ["말랑", "친근"]
+
+  # 「모던」은 깔끔한 쪽과 어둡고 세련된 쪽이 모두 맞는 말이라 어느 묶음에도 넣지 않고 보여 주며 묻는다(설계 5.5·5.10).
+  - id: modern
+    kind: impression
+    label: 모던
+    lessStems: true
+    match:
+      ko: ["모던"]
+      en: ["modern"]
+    not: ["모던 코리안", "모던 바"]
+    causes:
+      - reading:
+          - { axis: spacing, direction: airy, strength: 1 }
+          - { axis: palette-count, direction: fewer, strength: 1 }
+          - { axis: contrast, direction: crisp, strength: 1 }
+        say: "깔끔하고 정돈된 쪽으로 이해했어요."
+        sayEn: "I read this as tidy and uncluttered."
+      - reading:
+          - { axis: color-lightness, direction: dark, strength: 2 }
+          - { axis: contrast, direction: crisp, strength: 1 }
+        say: "어둡고 세련된 쪽으로 이해했어요."
+        sayEn: "I read this as dark and sleek."
+    confidence: low
+
+  # ---- 인상 낱말(갈래 B) 새 묶음 · mood 표(MOOD_TABLE)에는 넣지 않는다 — 방향 고르기 가중은 그대로 둔다. ----
+
+  - id: hip
+    kind: impression
+    label: 힙함
+    lessStems: true
+    match:
+      ko: ["힙", "힙하", "힙한", "힙해", "힙스터", "스트릿"]
+      en: ["hip", "hipster", "streetwear"]
+    not: ["스트릿 댄스", "스트릿 푸드", "힙합 수업"]
+    reading:
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+      - { axis: shape, direction: sharp, strength: 1 }
+    say:
+      ko: "색을 쨍하게, 제목을 크게, 모서리를 각지게 이해했어요."
+      en: "I read this as punchy colour, bigger headings and sharper corners."
+    confidence: high
+
+  - id: emotional
+    kind: impression
+    label: 감성
+    lessStems: true
+    match:
+      ko: ["감성", "감각적", "분위기 있", "분위기있", "무드 있", "무드 좋", "무드 느낌"]
+      en: ["emotional", "aesthetic"]
+    not: ["감성 지능", "감성 교육", "감성팔이"]
+    reading:
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: contrast, direction: soft, strength: 1 }
+    say:
+      ko: "색을 따뜻하고 흐리게, 대비를 은은하게 이해했어요."
+      en: "I read this as warm, muted colour with soft contrast."
+    confidence: high
+
+  - id: trendy
+    kind: impression
+    label: 트렌디
+    lessStems: true
+    match:
+      ko: ["트렌디", "트렌드", "유행", "요즘 스타일", "요즘 느낌", "요즘 디자인", "요즘 감성", "최신 스타일", "최신 느낌", "핫한 느낌", "핫한 스타일", "핫한 디자인"]
+      en: ["trendy", "fashionable"]
+    not: ["트렌드 분석", "트렌드 리포트", "최신 소식", "유행어"]
+    reading:
+      - { axis: type-scale, direction: larger, strength: 1 }
+      - { axis: spacing, direction: airy, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "제목을 크게, 여백을 넓게, 모서리를 둥글게 이해했어요."
+      en: "I read this as bigger headings, more space and rounder corners."
+    confidence: high
+
+  - id: soft
+    kind: impression
+    label: 부드러움
+    copyWords: ["부드럽", "부드러"]
+    lessStems: true
+    match:
+      ko: ["부드럽", "부드러", "보드라", "순한", "말랑", "나긋", "덜 딱딱", "딱딱한 거 줄", "딱딱한 건 줄"]
+      en: ["soft", "softer", "smooth"]
+    not: ["부드러운 식감", "부드러운 빵", "순한 맛", "모서리 부드럽", "모서리 부드러", "부드러운 모서리", "대비 부드럽", "대비를 부드럽"]
+    reading:
+      - { axis: shape, direction: round, strength: 1 }
+      - { axis: contrast, direction: soft, strength: 1 }
+    say:
+      ko: "모서리를 둥글게, 대비를 은은하게 이해했어요."
+      en: "I read this as rounder corners and softer contrast."
+    confidence: high
+
+  - id: youthful
+    kind: impression
+    label: 젊음
+    lessStems: true
+    match:
+      ko: ["젊어 보", "어려 보", "청춘 느낌", "청춘 감성", "청춘 스타일", "청춘 분위기", "젊은 느낌", "젊은 감성", "젊은 분위기", "젊은 스타일", "젊은 디자인"]
+      en: ["youthful", "young", "mz"]
+    not: ["청춘 영화"]
+    reading:
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+      - { axis: type-family, value: rounded-sans, strength: 1 }
+    say:
+      ko: "색을 쨍하게, 모서리를 둥글게, 글꼴을 둥근 쪽으로 이해했어요."
+      en: "I read this as punchy colour, round shapes and a rounded typeface."
+    confidence: high
+
+  - id: mature
+    kind: impression
+    label: 점잖음
+    lessStems: true
+    match:
+      ko: ["점잖", "중후", "진중", "성숙", "무게감"]
+      en: ["mature", "dignified"]
+    not: ["성숙기 시장", "성숙 단계", "성숙기", "진중권"]
+    reading:
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: color-lightness, direction: dark, strength: 1 }
+      - { axis: type-family, value: serif, strength: 1 }
+    say:
+      ko: "색을 흐리고 어둡게, 글꼴을 명조 쪽으로 이해했어요."
+      en: "I read this as muted, darker colour with a serif typeface."
+    confidence: high
+
+  - id: techy
+    kind: impression
+    label: 테크
+    lessStems: true
+    match:
+      ko: ["스타트업 느낌", "스타트업 스타일", "스타트업 감성", "스타트업처럼", "테크 느낌", "테크 감성", "테크 스타일", "첨단 느낌", "첨단 스타일", "사이버 느낌", "사이버 감성"]
+      en: ["tech", "techy", "cyber"]
+    not: ["스타트업 대상", "스타트업 고객", "기술적 지원"]
+    reading:
+      - { axis: color-temperature, direction: cool, strength: 1 }
+      - { axis: shape, direction: sharp, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "색을 차갑게, 모서리를 각지게, 대비를 또렷하게 이해했어요."
+      en: "I read this as cooler colour, sharper corners and crisp contrast."
+    confidence: high
+
+  - id: romantic
+    kind: impression
+    label: 로맨틱
+    lessStems: true
+    match:
+      ko: ["로맨틱", "러블리", "낭만", "소녀 감성", "소녀 느낌", "소녀풍", "감미로"]
+      en: ["romantic", "lovely", "dreamy"]
+    not: ["로맨틱 코미디", "소녀시대"]
+    reading:
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "색을 따뜻하고 흐리게, 모서리를 둥글게 이해했어요."
+      en: "I read this as warm, muted colour with rounded corners."
+    confidence: high
+
+  - id: rugged
+    kind: impression
+    label: 거침
+    lessStems: true
+    match:
+      ko: ["남성적", "남자다", "터프", "거친", "강인"]
+      en: ["rugged", "tough", "masculine"]
+    not: ["거친 피부", "거친 손"]
+    reading:
+      - { axis: shape, direction: sharp, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "모서리를 각지게, 대비를 또렷하게, 색을 흐리게 이해했어요."
+      en: "I read this as sharp corners, crisp contrast and muted colour."
+    confidence: high
+
+  - id: formal
+    kind: impression
+    label: 격식
+    copyWords: ["정중", "격식", "포멀", "공식"]
+    lessStems: true
+    match:
+      ko: ["정중", "격식", "엄숙", "관공서", "포멀", "공식적", "공식 느낌", "공식 분위기", "공식 스타일"]
+      en: ["formal", "official", "corporate"]
+    not: ["공식 몰", "공식 홈페이지", "공식 대리점", "공식 인스타", "공식 계정", "비공식"]
+    reading:
+      - { axis: type-family, value: clear-sans, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: motion, direction: static, strength: 1 }
+    say:
+      ko: "글꼴을 또박또박한 고딕으로, 색을 흐리게, 움직임을 줄이는 쪽으로 이해했어요."
+      en: "I read this as a clear sans-serif, muted colour and less motion."
+    confidence: high
+
+  - id: unique
+    kind: impression
+    label: 독특함
+    lessStems: true
+    match:
+      ko: ["독특", "개성", "유니크", "차별화", "남다른"]
+      en: ["unique", "distinctive"]
+    not: ["독특한 맛", "독특한 향"]
+    causes:
+      - reading:
+          - { axis: color-saturation, direction: vivid, strength: 1 }
+          - { axis: palette-count, direction: more, strength: 1 }
+        say: "색을 쨍하고 다채롭게 이해했어요."
+        sayEn: "I read this as punchier, more varied colour."
+      - reading:
+          - { axis: type-family, value: handwriting, strength: 1 }
+          - { axis: type-scale, direction: larger, strength: 1 }
+        say: "글꼴을 손글씨 쪽으로, 제목을 크게 이해했어요."
+        sayEn: "I read this as a handwriting typeface with bigger headings."
+    confidence: low
+
+  - id: sporty
+    kind: impression
+    label: 활동적
+    lessStems: true
+    match:
+      ko: ["스포티", "활동적", "다이내믹", "다이나믹", "에너제틱", "역동"]
+      en: ["sporty", "athletic", "dynamic"]
+    not: ["활동적인 시니어", "활동적 프로그램"]
+    reading:
+      - { axis: motion, direction: dynamic, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+    say:
+      ko: "움직임을 더하고, 대비를 또렷하게, 제목을 크게 이해했어요."
+      en: "I read this as more motion, crisp contrast and bigger headings."
+    confidence: high
+
+  - id: kids
+    kind: impression
+    label: 어린이
+    lessStems: true
+    match:
+      ko: ["어린이", "키즈", "동심", "유아용", "유아 느낌", "유아 스타일"]
+      en: ["kids", "children"]
+    not: ["어린이 보호구역", "키즈 모델"]
+    reading:
+      - { axis: shape, direction: round, strength: 2 }
+      - { axis: color-lightness, direction: bright, strength: 1 }
+      - { axis: motion, direction: dynamic, strength: 1 }
+    say:
+      ko: "모서리를 많이 둥글게, 색을 밝게, 움직임을 더하는 쪽으로 이해했어요."
+      en: "I read this as very round shapes, light colour and more motion."
+    confidence: high
+
+  - id: readable
+    kind: impression
+    label: 읽기 편함
+    lessStems: true
+    match:
+      ko: ["가독성", "읽기 편", "읽기 쉽", "읽기 좋", "글씨 안 보", "글자 안 보", "잘 안 보", "노안", "큼직큼직", "어르신 보기", "어르신 보시기", "어르신들 보기", "어르신들 보시기", "어르신용", "어르신 눈"]
+      en: ["readable", "legible"]
+    not: ["어르신 도시락", "어르신 일자리", "잘 보이는 간판", "어르신 프로그램", "어르신 사진"]
+    reading:
+      - { axis: type-scale, direction: larger, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "글자를 키우고 대비를 또렷하게 이해했어요."
+      en: "I read this as bigger text with crisper contrast."
+    confidence: high
+
+  - id: traditional
+    kind: impression
+    label: 전통
+    lessStems: true
+    match:
+      ko: ["전통", "한국적", "한옥", "동양적", "고풍", "단아", "고즈넉"]
+      en: ["traditional", "oriental"]
+    not: ["전통 시장", "전통 한과"]
+    reading:
+      - { axis: type-family, value: serif, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "글꼴을 명조 쪽으로, 색을 흐리게 이해했어요."
+      en: "I read this as a serif typeface with muted colour."
+    confidence: high
+
+  - id: artistic
+    kind: impression
+    label: 예술적
+    lessStems: true
+    match:
+      ko: ["예술", "아티스틱", "작품 같", "미술관 느낌", "갤러리 느낌", "전시회 느낌", "전시회 같"]
+      en: ["artistic"]
+    not: ["예술 치료", "예술 수업", "예술 작품 판매", "예술 교육", "예술 입시", "예술가"]
+    reading:
+      - { axis: spacing, direction: airy, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "여백을 넓히고 대비를 또렷하게 이해했어요."
+      en: "I read this as more space and crisp contrast."
+    confidence: high
+
+  # ---- 축 낱말(갈래 A): 12축 × 양 끝 + 값 지정(색·글꼴). 축 이름(색감·글꼴·모션)은 방향 낱말과 붙은 말(「움직임 줄」「색 줄」)로만 쓴다 — 이름만으로는 방향을 모른다. ----
+
+  - id: larger
+    kind: axis
+    label: 크게
+    lessLite: ["크게", "키워", "커지", "큼직", "크면", "확대"]
+    match:
+      ko: ["크게","키워","커지","큼직","크면","확대","글씨 작아","글씨 작은","글씨 작네","글씨 작다","글씨 작어","글자 작아","글자 작은","글자 작네","글자 작다","글자 작어","폰트 작아","폰트 작은","큰 글씨","큰 글자","글씨 너무 작아","글씨 너무 작은","글자 너무 작아","글자 너무 작은","크면 좋"]
+      en: ["bigger", "larger", "enlarge"]
+    reading:
+      - { axis: type-scale, direction: larger, strength: 1 }
+    say:
+      ko: "글자를 키우는 쪽으로 이해했어요."
+      en: "I read this as bigger text."
+    confidence: high
+
+  - id: rounder
+    kind: axis
+    label: 둥글게
+    lessLite: ["둥근", "동그라", "동그랗", "몽글", "곡선"]
+    match:
+      ko: ["둥글","둥근","동글","동그라","동그랗","몽글","곡선","모서리 부드럽","모서리 부드러","부드러운 모서리","라운드 모서리","라운드 버튼","라운드 처리","라운드 디자인","모서리 라운드","둥글둥글", "덜 각", "덜 날카", "날카로운 거 줄", "날카로운 건 줄"]
+      en: ["round", "rounder", "rounded"]
+    not: ["백그라운드"]
+    reading:
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "모서리를 둥글게 이해했어요."
+      en: "I read this as rounder corners."
+    confidence: high
+
+  - id: cooler
+    kind: axis
+    label: 차갑게
+    copyWords: ["차갑", "차가"]
+    lessLite: ["서늘", "쿨톤", "푸른빛", "푸르스름", "블루톤"]
+    match:
+      ko: ["차갑", "차가운", "차가워", "서늘", "쿨톤", "푸른빛", "푸르스름", "블루톤", "덜 따뜻", "덜 따스"]
+      en: ["cold", "chilly", "cooler"]
+    not: ["차가워 보이네", "차가워 보여", "차가워 보이는데", "차가워 보인"]
+    reading:
+      - { axis: color-temperature, direction: cool, strength: 1 }
+    say:
+      ko: "색을 차가운 쪽으로 이해했어요."
+      en: "I read this as cooler colours."
+    confidence: high
+
+  - id: brighter
+    kind: axis
+    label: 밝게
+    lessLite: ["환하", "화사"]
+    match:
+      ko: ["밝","환하","화사","밝았으면","밝으면","밝았음","라이트 모드","라이트 테마","밝게","밝게 해", "덜 어둡", "덜 어두", "덜 칙칙", "어두운 거 줄", "어두운 건 줄", "어둡기 줄"]
+      en: ["lighter", "brighter", "brighten"]
+    not: ["밝아서", "밝아요", "밝네", "밝은데", "눈부", "너무 밝아", "하이라이트", "덜 밝"]
+    reading:
+      - { axis: color-lightness, direction: bright, strength: 1 }
+    say:
+      ko: "색을 밝게 이해했어요."
+      en: "I read this as lighter colours."
+    confidence: high
+
+  - id: darker
+    kind: axis
+    label: 어둡게
+    lessLite: ["컴컴", "다크"]
+    match:
+      ko: ["어둡", "컴컴", "다크", "덜 밝", "밝은 거 줄", "밝은 건 줄", "밝기 줄", "밝기 낮"]
+      en: ["darker", "darken"]
+    not: ["다크초콜릿", "다크 초콜릿"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 1 }
+    say:
+      ko: "색을 어둡게 이해했어요."
+      en: "I read this as darker colours."
+    confidence: high
+
+  - id: dark-mode
+    kind: axis
+    label: 다크 모드
+    lessLite: ["다크모드", "다크테마", "블랙모드", "야간모드"]
+    match:
+      ko: ["다크모드", "다크테마", "블랙모드", "야간모드"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+    say:
+      ko: "배경을 아주 어둡게 이해했어요."
+      en: "I read this as a full dark theme."
+    confidence: high
+
+  - id: light-bg
+    kind: axis
+    label: 하얀 배경
+    match:
+      ko: ["배경 흰", "배경 하얗", "배경 하얀", "배경 화이트", "배경색 흰", "배경색 하얗", "배경색 하얀", "배경색 화이트"]
+    reading:
+      - { axis: color-lightness, direction: bright, strength: 2 }
+    say:
+      ko: "배경을 아주 밝게 이해했어요."
+      en: "I read this as a very light background."
+    confidence: high
+
+  - id: dark-bg
+    kind: axis
+    label: 검은 배경
+    match:
+      ko: ["배경 검", "배경 까맣", "배경 까만", "배경 블랙", "배경색 검", "배경색 까", "배경색 블랙"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+    say:
+      ko: "배경을 아주 어둡게 이해했어요."
+      en: "I read this as a very dark background."
+    confidence: high
+
+  - id: vivid
+    kind: axis
+    label: 쨍하게
+    lessLite: ["비비드", "원색"]
+    match:
+      ko: ["쨍하", "쨍한", "선명", "비비드", "채도 높게", "채도를 높", "채도 올", "채도 키", "원색", "색 진하", "색상 진하", "색깔 진하", "색을 진하", "진한 색", "진한 컬러", "덜 탁", "덜 연하", "덜 흐리", "덜 칙칙한 색"]
+      en: ["punchy", "punchier", "saturated", "vibrant"]
+    reading:
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+    say:
+      ko: "색을 쨍하게 이해했어요."
+      en: "I read this as punchier colours."
+    confidence: high
+
+  - id: neon
+    kind: axis
+    label: 네온
+    lessLite: ["네온", "형광"]
+    match:
+      ko: ["네온", "형광"]
+      en: ["neon", "fluorescent"]
+    reading:
+      - { axis: color-saturation, direction: vivid, strength: 2 }
+    say:
+      ko: "색을 아주 쨍하게 이해했어요."
+      en: "I read this as very punchy, neon-like colours."
+    confidence: high
+
+  - id: muted
+    kind: axis
+    label: 흐리게
+    lessLite: ["톤다운", "연한", "옅은", "옅게", "빛바랜"]
+    match:
+      ko: ["톤다운", "톤 다운", "채도 낮게", "채도를 낮", "채도 낮춰", "채도 줄여", "탁한", "연하", "연한", "옅은", "옅게", "빛바랜", "색 은은", "색감 은은", "색상 은은", "색깔 은은", "덜 쨍", "덜 진하", "덜 선명", "진한 거 줄", "쨍한 거 줄", "쨍한 건 줄", "선명한 거 줄", "선명한 건 줄", "비비드한 거 줄"]
+      en: ["muted", "desaturated"]
+    reading:
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "색을 흐리게 이해했어요."
+      en: "I read this as softer, more muted colours."
+    confidence: high
+
+  - id: pastel
+    kind: axis
+    label: 파스텔
+    lessLite: ["파스텔"]
+    match:
+      ko: ["파스텔"]
+      en: ["pastel"]
+    reading:
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: color-lightness, direction: bright, strength: 1 }
+    say:
+      ko: "색을 흐리고 밝게 이해했어요."
+      en: "I read this as light, pastel colours."
+    confidence: high
+
+  - id: warmer
+    kind: axis
+    label: 따뜻한 색
+    lessLite: ["웜톤", "붉은기", "붉은빛", "노란빛", "주황빛"]
+    match:
+      ko: ["웜톤", "따스", "붉은기", "붉은빛", "노란빛", "주황빛", "덜 차갑", "덜 차가", "차가운 거 줄", "차가운 건 줄", "덜 쌀쌀"]
+    reading:
+      - { axis: color-temperature, direction: warm, strength: 1 }
+    say:
+      ko: "색을 따뜻한 쪽으로 이해했어요."
+      en: "I read this as warmer colours."
+    confidence: high
+
+  - id: fewer-colors
+    kind: axis
+    label: 색 적게
+    match:
+      ko: ["색 줄", "색을 줄", "색상 줄", "색깔 줄", "컬러 줄", "팔레트 줄", "색 수 줄", "색 가짓수 줄", "색 너무 많", "색이 너무 많", "색깔 너무 많", "색상 너무 많", "컬러 너무 많", "색 적게", "색 통일", "색을 통일", "색 정리", "알록달록한 거 줄", "알록달록한 건 줄", "컬러풀한 거 줄", "다채로운 거 줄", "덜 알록달록", "덜 컬러풀", "덜 다채"]
+      en: ["fewer"]
+    not: ["너무 많지", "너무 많진"]
+    reading:
+      - { axis: palette-count, direction: fewer, strength: 1 }
+    say:
+      ko: "색 가짓수를 줄이는 쪽으로 이해했어요."
+      en: "I read this as fewer colours."
+    confidence: high
+
+  - id: more-colors
+    kind: axis
+    label: 색 많게
+    match:
+      ko: ["색 늘", "색을 늘", "색 더 많", "색 더 넣", "색 추가", "색 다양", "색상 다양", "컬러 다양", "다양한 색", "여러 색", "여러 가지 색", "다채", "알록달록", "컬러풀", "색이 너무 적", "색 너무 적"]
+      en: ["colorful", "colourful", "multicolor"]
+    not: ["너무 적지", "너무 적진"]
+    reading:
+      - { axis: palette-count, direction: more, strength: 1 }
+    say:
+      ko: "색 가짓수를 늘리는 쪽으로 이해했어요."
+      en: "I read this as more colours."
+    confidence: high
+
+  - id: monochrome
+    kind: axis
+    label: 한 가지 색
+    lessLite: ["모노톤", "모노크롬", "단색으로", "흑백으로"]
+    match:
+      ko: ["한 가지 색", "한가지 색", "모노톤", "모노크롬", "단색으로", "단색 느낌", "흑백으로", "흑백 느낌"]
+      en: ["monochrome", "monotone"]
+    not: ["단색화", "흑백사진"]
+    reading:
+      - { axis: palette-count, direction: fewer, strength: 2 }
+    say:
+      ko: "색을 한두 가지로 줄이는 쪽으로 이해했어요."
+      en: "I read this as a one-colour look."
+    confidence: high
+
+  - id: crisp-contrast
+    kind: axis
+    label: 또렷하게
+    match:
+      ko: ["또렷", "뚜렷", "대비 높게", "대비를 높", "대비 높여", "대비 올려", "대비를 올", "대비 강하게", "대비 키워", "대비 세게", "대비 선명하게", "은은한 거 줄", "은은한 건 줄", "덜 은은"]
+      en: ["contrasty"]
+    reading:
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "대비를 또렷하게 이해했어요."
+      en: "I read this as crisper contrast."
+    confidence: high
+
+  - id: soft-contrast
+    kind: axis
+    label: 은은하게
+    match:
+      ko: ["은은", "대비 낮게", "대비를 낮", "대비 낮춰", "대비 약하게", "대비 줄여", "대비 줄이", "대비 부드럽", "또렷한 거 줄", "또렷한 건 줄", "뚜렷한 거 줄", "덜 또렷", "덜 뚜렷"]
+      en: ["subtle", "mellow"]
+    reading:
+      - { axis: contrast, direction: soft, strength: 1 }
+    say:
+      ko: "대비를 은은하게 이해했어요."
+      en: "I read this as softer contrast."
+    confidence: high
+
+  - id: font-serif
+    kind: axis
+    label: 명조
+    match:
+      ko: ["명조", "세리프", "바탕체"]
+      en: ["serif"]
+    reading:
+      - { axis: type-family, value: serif, strength: 1 }
+    say:
+      ko: "글꼴을 명조 쪽으로 이해했어요."
+      en: "I read this as a serif typeface."
+    confidence: high
+
+  - id: font-sans
+    kind: axis
+    label: 고딕
+    match:
+      ko: ["고딕", "산세리프", "산스"]
+      en: ["sans", "sans-serif", "gothic"]
+    reading:
+      - { axis: type-family, value: sans, strength: 1 }
+    say:
+      ko: "글꼴을 고딕 쪽으로 이해했어요."
+      en: "I read this as a sans-serif typeface."
+    confidence: high
+
+  - id: font-handwriting
+    kind: axis
+    label: 손글씨
+    match:
+      ko: ["손글씨", "필기체", "캘리그라피", "붓글씨", "캘리"]
+      en: ["handwriting", "handwritten", "calligraphy"]
+    reading:
+      - { axis: type-family, value: handwriting, strength: 1 }
+    say:
+      ko: "글꼴을 손글씨 쪽으로 이해했어요."
+      en: "I read this as a handwriting typeface."
+    confidence: high
+
+  - id: font-mono
+    kind: axis
+    label: 고정폭 글꼴
+    match:
+      ko: ["고정폭", "모노스페이스"]
+      en: ["mono", "monospace"]
+    reading:
+      - { axis: type-family, value: mono, strength: 1 }
+    say:
+      ko: "글꼴을 고정폭 쪽으로 이해했어요."
+      en: "I read this as a monospace typeface."
+    confidence: high
+
+  - id: font-rounded
+    kind: axis
+    label: 둥근 글꼴
+    match:
+      ko: ["둥근 고딕", "둥근 폰트", "둥근 글씨", "둥근 글꼴", "둥근 서체", "둥근 글자", "라운드 폰트", "라운드 글꼴"]
+    reading:
+      - { axis: type-family, value: rounded-sans, strength: 1 }
+    say:
+      ko: "글꼴을 둥근 고딕 쪽으로 이해했어요."
+      en: "I read this as a rounded typeface."
+    confidence: high
+
+  - id: smaller
+    kind: axis
+    label: 작게
+    lessLite: ["작게", "작아지", "축소"]
+    match:
+      ko: ["작게", "작아지", "글씨 줄", "글자 줄", "폰트 줄", "축소"]
+      en: ["smaller", "shrink"]
+    reading:
+      - { axis: type-scale, direction: smaller, strength: 1 }
+    say:
+      ko: "글자를 줄이는 쪽으로 이해했어요."
+      en: "I read this as smaller text."
+    confidence: high
+
+  - id: airy
+    kind: axis
+    label: 시원하게
+    lessLite: ["여백", "넓게", "넓혀", "넓히", "넓은", "널찍", "시원", "숨통", "숨쉴", "띄워", "느슨", "여유롭"]
+    match:
+      ko: ["여백", "넓게", "넓혀", "넓히", "넓은", "널찍", "시원", "숨통", "숨쉴", "간격 넓게", "간격 넓혀", "간격 넓히", "간격을 넓", "간격 키워", "간격 크게", "줄간격 넓", "띄워", "느슨", "여유롭", "여유 있", "덜 빽빽", "덜 촘촘", "빽빽한 거 줄", "빽빽한 건 줄", "촘촘한 거 줄", "촘촘한 건 줄", "조밀한 거 줄"]
+      en: ["spacious", "roomier", "airier", "roomy", "cramped"]
+    not: ["넓은 주차장", "넓은 매장", "시원한 아이스", "시원한 음료", "시원한 커피", "시원섭섭"]
+    reading:
+      - { axis: spacing, direction: airy, strength: 1 }
+    say:
+      ko: "여백을 넓히는 쪽으로 이해했어요."
+      en: "I read this as more breathing room."
+    confidence: high
+
+  - id: tight
+    kind: axis
+    label: 빽빽하게
+    lessLite: ["조밀", "좁게", "좁히", "좁혀", "콤팩트"]
+    match:
+      ko: ["빽빽", "촘촘", "조밀", "여백 줄", "여백을 줄", "여백 좁게", "여백 좁혀", "여백 좁히", "여백 없애", "여백 없이", "여백 빼", "여백 너무 많", "여백이 너무 많", "여백이 많아", "여백이 많은", "여백 많아", "좁게", "좁히", "좁혀", "간격 좁게", "간격 좁혀", "간격 좁히", "간격을 좁", "간격 줄여", "간격 줄이", "간격을 줄", "콤팩트"]
+      en: ["compact", "denser", "dense"]
+    not: ["빽빽해", "촘촘해", "빽빽하네", "촘촘하네", "빽빽하다", "너무 빽빽", "너무 촘촘", "빽빽한데", "빽빽해서", "촘촘해서", "너무 많지", "너무 많진"]
+    reading:
+      - { axis: spacing, direction: tight, strength: 1 }
+    say:
+      ko: "여백을 좁히는 쪽으로 이해했어요."
+      en: "I read this as tighter spacing."
+    confidence: high
+
+  - id: pill
+    kind: axis
+    label: 완전 둥글게
+    lessLite: ["알약형", "원형으로"]
+    match:
+      ko: ["완전 동그랗", "완전 둥글", "완전 둥근", "최대한 둥글", "알약 모양", "알약형", "원형 버튼", "원형으로"]
+      en: ["pill", "circular"]
+    not: ["원형탈모"]
+    reading:
+      - { axis: shape, direction: round, strength: 2 }
+    say:
+      ko: "모서리를 아주 둥글게 이해했어요."
+      en: "I read this as fully rounded corners."
+    confidence: high
+
+  - id: sharper
+    kind: axis
+    label: 각지게
+    lessLite: ["뾰족", "모나", "칼각", "샤프한", "직각으로"]
+    match:
+      ko: ["날카로운", "날카롭", "각지", "각진", "뾰족", "모나", "칼각", "샤프한", "직각으로", "직각 모서리", "직각 느낌", "덜 둥글", "덜 동글", "둥근 거 줄", "둥근 건 줄"]
+      en: ["sharp", "sharper", "angular", "boxy"]
+    not: ["모나미", "모나리자", "샤프심", "뾰족구두"]
+    reading:
+      - { axis: shape, direction: sharp, strength: 1 }
+    say:
+      ko: "모서리를 각지게 이해했어요."
+      en: "I read this as sharper corners."
+    confidence: high
+
+  - id: lifted
+    kind: axis
+    label: 떠 보이게
+    lessLite: ["떠있", "그림자", "도톰", "볼록", "엠보"]
+    match:
+      ko: ["입체", "떠 보", "떠있", "그림자", "도톰", "볼록", "엠보", "납작한 거 줄", "평평한 거 줄", "덜 납작", "덜 평평"]
+      en: ["shadow", "shadows", "elevated", "raised", "embossed"]
+    not: ["볼록거울", "엠보싱", "그림자놀이"]
+    reading:
+      - { axis: depth, direction: lifted, strength: 1 }
+    say:
+      ko: "입체감을 더하는 쪽으로 이해했어요."
+      en: "I read this as more depth."
+    confidence: high
+
+  - id: deep-shadow
+    kind: axis
+    label: 그림자 진하게
+    match:
+      ko: ["그림자 진하게", "그림자 강하게", "그림자 세게", "그림자 크게", "그림자 확실하게"]
+    reading:
+      - { axis: depth, direction: lifted, strength: 2 }
+    say:
+      ko: "그림자를 확실하게 이해했어요."
+      en: "I read this as a stronger shadow."
+    confidence: high
+
+  - id: flatter
+    kind: axis
+    label: 납작하게
+    lessLite: ["평면"]
+    match:
+      ko: ["납작", "평평", "평면", "그림자 없애", "그림자 없이", "그림자 없게", "그림자 빼", "그림자 지우", "그림자 지워", "그림자 줄여", "그림자 줄이", "그림자 약하게", "그림자 제거", "그림자 끄", "플랫 디자인", "플랫 스타일", "플랫 느낌", "입체감 줄", "입체감을 줄", "입체감 낮", "입체적인 거 줄", "덜 입체", "덜 떠 보"]
+      en: ["flat", "flatter"]
+    not: ["플랫폼", "평면도"]
+    reading:
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "그림자를 줄여 납작하게 이해했어요."
+      en: "I read this as flatter surfaces."
+    confidence: high
+
+  - id: more-motion
+    kind: axis
+    label: 움직임 더
+    lessLite: ["꿈틀", "톡톡", "움직이게", "움직이도록", "움직여"]
+    match:
+      ko: ["모션 넣", "모션 더 넣", "모션 추가", "모션 더 추가", "모션 늘", "모션 더 늘", "모션 살려", "모션 더 살려", "움직임 넣", "움직임 더 넣", "움직임 추가", "움직임 더 추가", "움직임 늘", "움직임 더 늘", "움직임 살려", "움직임 더 살려", "애니메이션 넣", "애니메이션 더 넣", "애니메이션 추가", "애니메이션 더 추가", "애니메이션 늘", "애니메이션 더 늘", "애니메이션 살려", "애니메이션 더 살려", "꿈틀", "톡톡", "살아 움직", "움직이게", "움직이도록", "움직여"]
+      en: ["animated", "animate", "bouncy"]
+    reading:
+      - { axis: motion, direction: dynamic, strength: 1 }
+    say:
+      ko: "움직임을 더하는 쪽으로 이해했어요."
+      en: "I read this as more motion."
+    confidence: high
+
+  - id: less-motion
+    kind: axis
+    label: 움직임 덜
+    lessLite: ["가만히", "멈춰", "멈춘", "정적인", "정적으로"]
+    match:
+      ko: ["모션 줄", "모션 더 줄", "모션 빼", "모션 더 빼", "모션 없애", "모션 더 없애", "모션 끄", "모션 더 끄", "모션 꺼", "모션 더 꺼", "모션 약하게", "모션 더 약하게", "모션 너무 많", "모션 더 너무 많", "움직임 줄", "움직임 더 줄", "움직임 빼", "움직임 더 빼", "움직임 없애", "움직임 더 없애", "움직임 끄", "움직임 더 끄", "움직임 꺼", "움직임 더 꺼", "움직임 약하게", "움직임 더 약하게", "움직임 너무 많", "움직임 더 너무 많", "애니메이션 줄", "애니메이션 더 줄", "애니메이션 빼", "애니메이션 더 빼", "애니메이션 없애", "애니메이션 더 없애", "애니메이션 끄", "애니메이션 더 끄", "애니메이션 꺼", "애니메이션 더 꺼", "애니메이션 약하게", "애니메이션 더 약하게", "애니메이션 너무 많", "애니메이션 더 너무 많", "움직임이 너무 많", "움직임이 많아", "모션이 너무 많", "애니메이션이 너무 많", "가만히", "멈춰", "멈춘", "정적인", "정적으로", "정적 느낌"]
+      en: ["static", "frozen"]
+    not: ["열정적", "긍정적", "부정적", "감정적", "너무 많지", "너무 많진"]
+    reading:
+      - { axis: motion, direction: static, strength: 1 }
+    say:
+      ko: "움직임을 줄이는 쪽으로 이해했어요."
+      en: "I read this as less motion."
+    confidence: high
+
+  - id: hue-red
+    kind: axis
+    label: 빨강
+    match:
+      ko: ["빨강", "빨간", "빨갛", "붉은", "레드"]
+      en: ["red"]
+    not: ["레드 와인", "레드벨벳", "레드불"]
+    reading:
+      - { axis: color-hue, value: red, strength: 1 }
+    say:
+      ko: "색을 빨강 쪽으로 이해했어요."
+      en: "I read this as a red main colour."
+    confidence: high
+
+  - id: hue-orange
+    kind: axis
+    label: 주황
+    match:
+      ko: ["주황", "오렌지"]
+      en: ["orange"]
+    not: ["오렌지 주스", "오렌지 에이드"]
+    reading:
+      - { axis: color-hue, value: orange, strength: 1 }
+    say:
+      ko: "색을 주황 쪽으로 이해했어요."
+      en: "I read this as an orange main colour."
+    confidence: high
+
+  - id: hue-yellow
+    kind: axis
+    label: 노랑
+    match:
+      ko: ["노랑", "노란", "옐로"]
+      en: ["yellow"]
+    reading:
+      - { axis: color-hue, value: yellow, strength: 1 }
+    say:
+      ko: "색을 노랑 쪽으로 이해했어요."
+      en: "I read this as a yellow main colour."
+    confidence: high
+
+  - id: hue-green
+    kind: axis
+    label: 초록
+    match:
+      ko: ["초록", "녹색", "연두", "그린색", "그린톤", "그린 계열", "그린으로"]
+      en: ["green"]
+    not: ["그린 티", "그린티", "손으로 그린", "직접 그린", "연두부", "녹색어머니", "초록우산"]
+    reading:
+      - { axis: color-hue, value: green, strength: 1 }
+    say:
+      ko: "색을 초록 쪽으로 이해했어요."
+      en: "I read this as a green main colour."
+    confidence: high
+
+  - id: hue-teal
+    kind: axis
+    label: 청록
+    match:
+      ko: ["청록", "민트"]
+      en: ["teal", "mint"]
+    not: ["민트 초코", "민트초코", "민트 라떼"]
+    reading:
+      - { axis: color-hue, value: teal, strength: 1 }
+    say:
+      ko: "색을 청록 쪽으로 이해했어요."
+      en: "I read this as a teal main colour."
+    confidence: high
+
+  - id: hue-blue
+    kind: axis
+    label: 파랑
+    match:
+      ko: ["파랑", "파란", "푸른", "블루"]
+      en: ["blue"]
+    not: ["블루투스", "블루베리", "파랑새"]
+    reading:
+      - { axis: color-hue, value: blue, strength: 1 }
+    say:
+      ko: "색을 파랑 쪽으로 이해했어요."
+      en: "I read this as a blue main colour."
+    confidence: high
+
+  - id: hue-navy
+    kind: axis
+    label: 남색
+    match:
+      ko: ["남색", "네이비"]
+      en: ["navy"]
+    reading:
+      - { axis: color-hue, value: navy, strength: 1 }
+    say:
+      ko: "색을 남색 쪽으로 이해했어요."
+      en: "I read this as a navy main colour."
+    confidence: high
+
+  - id: hue-purple
+    kind: axis
+    label: 보라
+    match:
+      ko: ["보라색", "보라빛", "보랏빛", "보라로", "보라톤", "퍼플", "바이올렛"]
+      en: ["purple", "violet"]
+    reading:
+      - { axis: color-hue, value: purple, strength: 1 }
+    say:
+      ko: "색을 보라 쪽으로 이해했어요."
+      en: "I read this as a purple main colour."
+    confidence: high
+
+  - id: hue-pink
+    kind: axis
+    label: 분홍
+    match:
+      ko: ["분홍", "핑크"]
+      en: ["pink"]
+    not: ["핑크퐁"]
+    reading:
+      - { axis: color-hue, value: pink, strength: 1 }
+    say:
+      ko: "색을 분홍 쪽으로 이해했어요."
+      en: "I read this as a pink main colour."
+    confidence: high
+
+  - id: hue-brown
+    kind: axis
+    label: 갈색
+    match:
+      ko: ["갈색", "브라운", "고동"]
+      en: ["brown"]
+    not: ["브라운 슈가", "브라운 버터"]
+    reading:
+      - { axis: color-hue, value: brown, strength: 1 }
+    say:
+      ko: "색을 갈색 쪽으로 이해했어요."
+      en: "I read this as a brown main colour."
+    confidence: high
+
+  - id: hue-beige
+    kind: axis
+    label: 베이지
+    match:
+      ko: ["베이지", "아이보리", "크림색"]
+      en: ["beige", "ivory"]
+    reading:
+      - { axis: color-hue, value: beige, strength: 1 }
+    say:
+      ko: "색을 베이지 쪽으로 이해했어요."
+      en: "I read this as a beige main colour."
+    confidence: high
+
+  - id: hue-black
+    kind: axis
+    label: 검정
+    match:
+      ko: ["검정", "검은", "까만", "까맣", "블랙"]
+      en: ["black"]
+    not: ["블랙 프라이데이", "블랙 커피", "블랙리스트", "검정고시"]
+    reading:
+      - { axis: color-hue, value: black, strength: 1 }
+    say:
+      ko: "색을 검정 쪽으로 이해했어요."
+      en: "I read this as a black main colour."
+    confidence: high
+
+  - id: hue-gray
+    kind: axis
+    label: 회색
+    match:
+      ko: ["회색", "그레이", "잿빛"]
+      en: ["gray", "grey"]
+    not: ["그레이스"]
+    reading:
+      - { axis: color-hue, value: gray, strength: 1 }
+    say:
+      ko: "색을 회색 쪽으로 이해했어요."
+      en: "I read this as a gray main colour."
+    confidence: high
+
+  - id: hue-white
+    kind: axis
+    label: 흰색
+    match:
+      ko: ["흰색", "하양", "하얀", "하얗", "화이트"]
+      en: ["white"]
+    not: ["화이트데이", "화이트 초콜릿", "하얀 거짓말"]
+    reading:
+      - { axis: color-hue, value: white, strength: 1 }
+    say:
+      ko: "색을 흰색 쪽으로 이해했어요."
+      en: "I read this as a white main colour."
+    confidence: high
+
+  - id: hue-gold
+    kind: axis
+    label: 금색
+    match:
+      ko: ["금색", "골드"]
+      en: ["gold", "golden"]
+    not: ["골드 회원", "골드 요금제", "골드바"]
+    reading:
+      - { axis: color-hue, value: gold, strength: 1 }
+    say:
+      ko: "색을 금색 쪽으로 이해했어요."
+      en: "I read this as a gold main colour."
+    confidence: high
+
+  - id: hue-sky
+    kind: axis
+    label: 하늘색
+    match:
+      ko: ["하늘색", "스카이"]
+      en: ["sky"]
+    reading:
+      - { axis: color-hue, value: sky, strength: 1 }
+    say:
+      ko: "색을 하늘색 쪽으로 이해했어요."
+      en: "I read this as a sky main colour."
+    confidence: high
+
+  - id: hue-coral
+    kind: axis
+    label: 산호색
+    match:
+      ko: ["코랄", "살구"]
+      en: ["coral", "peach"]
+    not: ["살구 잼", "살구 케이크"]
+    reading:
+      - { axis: color-hue, value: coral, strength: 1 }
+    say:
+      ko: "색을 산호색 쪽으로 이해했어요."
+      en: "I read this as a coral main colour."
+    confidence: high
+
+  - id: hue-lavender
+    kind: axis
+    label: 연보라
+    match:
+      ko: ["라벤더", "연보라"]
+      en: ["lavender", "lilac"]
+    not: ["라벤더 티", "라벤더 향"]
+    reading:
+      - { axis: color-hue, value: lavender, strength: 1 }
+    say:
+      ko: "색을 연보라 쪽으로 이해했어요."
+      en: "I read this as a lavender main colour."
+    confidence: high
+
+  - id: hue-olive
+    kind: axis
+    label: 올리브색
+    match:
+      ko: ["올리브", "카키"]
+      en: ["olive", "khaki"]
+    not: ["올리브 오일", "올리브유"]
+    reading:
+      - { axis: color-hue, value: olive, strength: 1 }
+    say:
+      ko: "색을 올리브색 쪽으로 이해했어요."
+      en: "I read this as an olive main colour."
+    confidence: high
+
+  - id: hue-burgundy
+    kind: axis
+    label: 진한 와인색
+    match:
+      ko: ["버건디", "와인색"]
+      en: ["burgundy", "maroon"]
+    reading:
+      - { axis: color-hue, value: burgundy, strength: 1 }
+    say:
+      ko: "색을 진한 와인색 쪽으로 이해했어요."
+      en: "I read this as a burgundy main colour."
+    confidence: high
+
+  # ---- 진단 낱말(갈래 C) · 불만 말은 축을 말하지 않는다 — 원인 후보 둘을 2안으로 보이고, 하나뿐이면 물어본다(설계 5.6). ----
+  #   causes 순서 = 흔한 원인 순서. 해석기는 앞의 둘만 2안으로 쓴다(셋째 이후는 문서용).
+  #   부정형(「촌스럽지 않게」)은 not 으로 막는다 — 상한(cap)이 진단에 붙으면 고쳐 달라는 말이 거꾸로 읽힌다.
+  #   근거: 대표 디자인 지침의 13장(AI 티 표)과 kill-ai-slop 스킬의 35개 목록. 원인 옆 번호가 그 목록의 번호다.
+
+  - id: looks-ai-made
+    kind: diagnosis
+    label: AI가 만든 듯함
+    dislikeStems: ["ai 티", "에이아이 티", "ai가 만든 것 같", "ai로 만든 것 같", "ai가 만든 티", "ai로 만든 티", "ai 냄새", "ai 슬롭", "기계가 만든 것 같", "기계가 쓴 것 같", "기계가 만든 티", "템플릿 같", "템플릿 느낌이 나", "템플릿처럼 보", "뻔한 느낌", "뻔한 디자인", "흔한 느낌", "흔한 디자인", "어디서 많이 본", "복붙 같", "찍어낸"]
+    match:
+      ko: ["ai 티", "에이아이 티", "ai가 만든 것 같", "ai로 만든 것 같", "ai가 만든 티", "ai로 만든 티", "ai 냄새", "ai 슬롭", "기계가 만든 것 같", "기계가 쓴 것 같", "기계가 만든 티", "템플릿 같", "템플릿 느낌이 나", "템플릿처럼 보", "뻔해", "뻔한 느낌", "뻔한 디자인", "흔해", "흔한 느낌", "흔한 디자인", "어디서 많이 본", "복붙 같", "찍어낸"]
+      en: ["ai-slop", "cookie-cutter", "templatey", "cliche", "cliched"]
+    not: ["ai 티켓", "ai 티칭", "ai 티처", "ai 티어", "ai 티 나지 않", "ai 티가 나지 않", "ai 티 안 나지 않", "템플릿 같지 않", "뻔하지 않", "흔하지 않", "뻔한 느낌이 아니", "흔한 느낌이 아니", "뻔한 디자인이 아니", "흔한 디자인이 아니", "찍어낸 것 같지 않", "어디서 많이 본 것 같지 않"]
+    causes:
+      - reading: [{ axis: type-family, value: distinctive, strength: 1 }]   # 33 Inter everywhere, 07·08 세리프·기울임 한 단어
+        say: "글꼴이 너무 흔해 보인다고 이해했어요."
+        sayEn: "I read this as the typeface looking too common."
+      - reading: [{ axis: color-hue, value: away-from-indigo-violet, strength: 1 }]   # 01 남보라 그라디언트, 04 기본 의미색
+        say: "보라·남색 계열 색이 기본값처럼 보인다고 이해했어요."
+        sayEn: "I read this as the purple-indigo colours looking like a default."
+      - reading: [{ axis: motion, direction: dynamic, strength: 1 }]   # 26 똑같은 호버, 32 간격 하나
+        say: "움직임이 없어서 밋밋하다고 이해했어요."
+        sayEn: "I read this as too little movement."
+      - reading: [{ axis: depth, direction: flat, strength: 1 }]   # 19·20 둥근 카드 + 큰 그림자
+        say: "카드마다 같은 그림자가 깔려 있다고 이해했어요."
+        sayEn: "I read this as the same soft shadow on every card."
+    ask: "어디가 가장 그래 보여요? 1) 글꼴 2) 색 3) 배치"
+    askEn: "Which part looks most like that? 1) the typeface 2) the colours 3) the layout"
+
+  - id: cramped
+    kind: diagnosis
+    label: 답답함
+    dislikeStems: ["답답해", "답답해요", "답답하네", "답답하네요", "답답한 느낌", "답답한 디자인", "답답하게 느껴", "갑갑해", "갑갑해요", "갑갑하네", "갑갑한 느낌", "숨막혀", "숨막히", "숨 막혀", "숨이 막혀", "꽉 막힌 느낌", "꽉 막혀"]
+    match:
+      ko: ["답답해", "답답해요", "답답하네", "답답하네요", "답답한 느낌", "답답한 디자인", "답답하게 느껴", "갑갑해", "갑갑해요", "갑갑하네", "갑갑한 느낌", "숨막혀", "숨막히", "숨 막혀", "숨이 막혀", "꽉 막힌 느낌", "꽉 막혀", "답답합니다", "답답했어요", "답답하더라고요", "답답하군요", "답답해서", "답답한데요", "갑갑합니다"]
+      en: ["stuffy", "suffocating"]
+    not: ["답답하지 않", "답답해 보이지 않", "답답한 느낌이 아니", "답답한 디자인이 아니", "답답하게 느껴지지 않", "갑갑하지 않", "숨막히지 않", "숨 막히지 않", "꽉 막힌 느낌이 아니", "답답한 마음", "답답한 심정", "답답한 속"]
+    causes:
+      - reading: [{ axis: spacing, direction: airy, strength: 1 }]
+        say: "여백이 좁아서 답답하다고 이해했어요."
+        sayEn: "I read this as too little breathing room."
+      - reading: [{ axis: type-scale, direction: smaller, strength: 1 }]
+        say: "글자가 커서 화면이 꽉 차 보인다고 이해했어요."
+        sayEn: "I read this as the text being too big for the space."
+    ask: "어디가 가장 답답해 보여요? 1) 여백 2) 글자 크기 3) 색"
+    askEn: "Which part feels cramped? 1) the spacing 2) the text size 3) the colours"
+
+  - id: cluttered
+    kind: diagnosis
+    label: 산만함
+    copyWords: ["복잡", "산만"]
+    dislikeStems: ["산만해", "산만하네", "산만한 느낌", "산만한 디자인", "어수선", "정신없어", "정신없네", "정신없는 느낌", "정신없는 디자인", "정신사나", "정신 사나", "어지러워 보", "어지러운 느낌", "복잡해", "복잡하네", "복잡해 보", "복잡한 느낌", "복잡한 디자인"]
+    match:
+      ko: ["산만해", "산만하네", "산만한 느낌", "산만한 디자인", "정신없어", "정신없네", "정신없는 느낌", "정신없는 디자인", "정신사나", "정신 사나", "어지러워 보", "어지러운 느낌", "복잡해", "복잡하네", "복잡해 보", "복잡한 느낌", "복잡한 디자인", "난잡", "산만합니다", "산만해요", "산만하네요", "산만했어요", "산만하더라고요", "복잡합니다", "복잡해요", "복잡하네요", "복잡했어요", "복잡하더라고요", "정신없습니다", "정신없어요", "정신없네요", "어수선해", "어수선하네", "어수선해 보", "어수선한 느낌", "어수선한 디자인", "어수선합니다", "어수선해요"]
+      en: ["cluttered", "chaotic"]
+    not: ["산만하지 않", "산만해 보이지 않", "산만한 느낌이 아니", "어수선하지 않", "정신없지 않", "정신없는 느낌이 아니", "복잡하지 않", "복잡해 보이지 않", "복잡한 느낌이 아니", "복잡한 디자인이 아니", "어지러워 보이지 않", "덜 복잡", "덜 산만", "복잡한 절차", "복잡한 서류", "복잡한 신청", "복잡한 설명", "복잡한 내용", "복잡한 제도", "not cluttered", "not chaotic"]
+    causes:
+      - reading: [{ axis: palette-count, direction: fewer, strength: 1 }]
+        say: "색이 너무 많아서 산만하다고 이해했어요."
+        sayEn: "I read this as too many colours."
+      - reading: [{ axis: motion, direction: static, strength: 1 }]
+        say: "움직임이 많아서 산만하다고 이해했어요."
+        sayEn: "I read this as too much movement."
+    ask: "어디가 가장 산만해 보여요? 1) 색 2) 움직임 3) 배치"
+    askEn: "Which part feels scattered? 1) the colours 2) the movement 3) the layout"
+
+  - id: dull
+    kind: diagnosis
+    label: 밋밋함
+    copyWords: ["밋밋", "지루", "심심", "단조"]
+    dislikeStems: ["밋밋해", "밋밋하네", "밋밋한 느낌", "밋밋한 디자인", "밋밋하다", "심심해 보", "심심한 느낌", "심심한 디자인", "지루해 보", "지루한 느낌", "지루한 디자인", "지루하네", "단조로워", "단조로운 느낌", "단조로운 디자인", "단조롭게 보", "재미없어", "재미없네", "재미가 없어", "재미 없어 보", "개성이 없어", "개성 없어 보", "특색이 없어", "특색 없어 보"]
+    match:
+      ko: ["밋밋해", "밋밋하네", "밋밋한 느낌", "밋밋한 디자인", "밋밋하다", "심심해 보", "심심한 느낌", "심심한 디자인", "지루해 보", "지루한 느낌", "지루한 디자인", "지루하네", "단조로워", "단조로운 느낌", "단조로운 디자인", "단조롭게 보", "재미없어", "재미없네", "재미가 없어", "재미 없어 보", "개성이 없어", "개성 없어 보", "특색이 없어", "특색 없어 보", "밋밋합니다", "밋밋해요", "밋밋했어요", "밋밋하네요", "밋밋하더라고요", "밋밋한데요", "밋밋해서", "밋밋하군요", "밋밋한 것 같", "밋밋한 편", "지루합니다", "심심합니다"]
+      en: ["boring", "bland", "dull"]
+    not: ["밋밋하지 않", "밋밋해 보이지 않", "밋밋한 느낌이 아니", "심심하지 않", "지루하지 않", "지루해 보이지 않", "지루한 느낌이 아니", "단조롭지 않", "단조로워 보이지 않", "재미없지 않", "not boring", "not bland", "not dull", "never boring"]
+    causes:
+      - reading: [{ axis: contrast, direction: crisp, strength: 1 }]   # 12 납작한 위계
+        say: "강약이 없어서 밋밋하다고 이해했어요."
+        sayEn: "I read this as no strong contrast between things."
+      - reading: [{ axis: color-saturation, direction: vivid, strength: 1 }]
+        say: "색이 흐려서 밋밋하다고 이해했어요."
+        sayEn: "I read this as the colours being too faint."
+    ask: "어디가 가장 밋밋해 보여요? 1) 대비 2) 색의 진하기 3) 입체감"
+    askEn: "Which part looks flat? 1) the contrast 2) the colour strength 3) the depth"
+
+  - id: dated
+    kind: diagnosis
+    label: 촌스러움
+    copyWords: ["촌스러", "촌스럽"]
+    dislikeStems: ["촌스러워", "촌스럽네", "촌스럽다", "촌스럽게 보", "촌스럽게 느껴", "촌스러운 느낌", "촌스러운 디자인이에요", "촌스러운 디자인 같", "촌스러운 것 같", "촌스러운데", "구식이야", "구식이네", "구식이라", "구식이에요", "구식 같", "구닥다리", "고리타분", "올드해", "올드해 보", "올드한 느낌이 나", "낡아 보", "낡은 느낌이 들", "오래돼 보", "옛날 티"]
+    match:
+      ko: ["촌스러워", "촌스럽네", "촌스럽다", "촌스럽게 보", "촌스럽게 느껴", "촌스러운 느낌", "촌스러운 디자인이에요", "촌스러운 디자인 같", "촌스러운 것 같", "촌스럽지", "촌스러워 보이지", "촌스러운데", "촌티", "구식이야", "구식이네", "구식이라", "구식이에요", "구식 같", "구닥다리", "고리타분", "올드해", "올드해 보", "올드한 느낌이 나", "낡아 보", "낡은 느낌이 들", "오래돼 보", "옛날 티", "촌스럽습니다", "촌스럽네요", "촌스러웠", "촌스럽더라고요", "촌스럽군요"]
+      en: ["outdated", "old-fashioned", "corny", "tacky"]
+    not: ["촌스럽지만", "촌스럽지도", "촌스러운 느낌이 아니", "촌스러운 디자인이 아니", "촌스럽게 보이지 않", "촌스러워지지 않", "촌티 나지 않", "촌티가 나지 않", "올드해 보이지 않", "올드해지지 않", "구식이 아니", "낡아 보이지 않", "오래돼 보이지 않", "not outdated", "not tacky", "not corny"]
+    causes:
+      - reading: [{ axis: palette-count, direction: fewer, strength: 1 }, { axis: color-saturation, direction: muted, strength: 1 }]   # 04·05 사탕 같은 기본 의미색
+        say: "색이 많고 튀어서 촌스럽다고 이해했어요."
+        sayEn: "I read this as too many loud colours."
+      - reading: [{ axis: type-family, value: clear-sans, strength: 1 }]   # 33 기본 서체 그대로
+        say: "글꼴이 옛날 느낌이라 촌스럽다고 이해했어요."
+        sayEn: "I read this as the typeface looking old."
+    ask: "어디가 가장 촌스러워 보여요? 1) 색 2) 글꼴 3) 모양"
+    askEn: "Which part looks dated? 1) the colours 2) the typeface 3) the shapes"
+
+  - id: cheap-looking
+    kind: diagnosis
+    label: 싸 보임
+    copyWords: ["허접", "조잡", "엉성"]
+    dislikeStems: ["싸 보여", "싸 보이", "싸구려 같", "싸구려 느낌", "싸구려처럼", "저렴해 보", "저렴해서 별로", "저렴한 느낌이 나", "허접해 보", "허접한 느낌", "조잡해 보", "조잡한 느낌", "엉성해 보", "엉성한 느낌", "허술해 보", "어설퍼 보", "아마추어 같", "아마추어 느낌", "아마추어처럼"]
+    match:
+      ko: ["싸 보여", "싸 보이", "싸구려 같", "싸구려 느낌", "싸구려처럼", "저렴해 보", "저렴해서 별로", "저렴한 느낌이 나", "허접해 보", "허접한 느낌", "조잡해 보", "조잡한 느낌", "엉성해 보", "엉성한 느낌", "허술해 보", "어설퍼 보", "아마추어 같", "아마추어 느낌", "아마추어처럼", "싸 보입니다", "싸 보이네요"]
+      en: ["cheap-looking", "amateurish"]
+    not: ["싸 보이지 않", "싸 보이게", "저렴해 보이지 않", "저렴한 느낌이 아니", "허접해 보이지 않", "조잡해 보이지 않", "엉성해 보이지 않", "아마추어 같지 않", "어설퍼 보이지 않", "아마추어 느낌이 아니", "싸구려 같지 않", "싸구려 느낌이 아니"]
+    causes:
+      - reading: [{ axis: palette-count, direction: fewer, strength: 1 }, { axis: color-saturation, direction: muted, strength: 1 }]   # 04·05 무지개 사탕, 한 색 세 투명도
+        say: "색이 너무 많고 튀어서 싸 보인다고 이해했어요."
+        sayEn: "I read this as too many loud colours."
+      - reading: [{ axis: depth, direction: flat, strength: 1 }]   # 20 작은 카드의 큰 그림자, 19 유리 효과
+        say: "그림자가 과해서 싸 보인다고 이해했어요."
+        sayEn: "I read this as shadows that are too heavy."
+    ask: "어디가 가장 싸 보여요? 1) 색 2) 그림자 3) 글꼴"
+    askEn: "Which part looks cheap? 1) the colours 2) the shadows 3) the typeface"
+
+  - id: gloomy
+    kind: diagnosis
+    label: 칙칙함
+    dislikeStems: ["우중충", "어두침침", "어두컴컴해 보", "생기가 없어", "생기 없어 보"]
+    match:
+      ko: ["칙칙해", "칙칙하네", "칙칙한 느낌", "칙칙한 디자인", "칙칙해 보", "칙칙합니다", "칙칙해서", "디자인이 칙칙", "화면이 칙칙", "색이 칙칙", "전체가 칙칙", "우중충해", "우중충하네", "우중충한 느낌", "우중충한 디자인", "우중충합니다", "음침해", "음침한 느낌", "음침한 디자인", "어두침침해", "어두침침한 느낌", "어두컴컴해 보", "생기 없어 보여", "생기가 없어 보여"]
+      en: ["gloomy", "drab", "dreary", "murky"]
+    not: ["칙칙하지 않", "칙칙해 보이지 않", "칙칙한 느낌이 아니", "우중충하지 않", "음침하지 않", "음침한 느낌이 아니", "우중충한 느낌이 아니", "not gloomy", "not drab", "덜 칙칙"]
+    causes:
+      - reading: [{ axis: color-lightness, direction: bright, strength: 1 }]
+        say: "전체가 어두워서 칙칙하다고 이해했어요."
+        sayEn: "I read this as the whole page being too dark."
+      - reading: [{ axis: color-saturation, direction: vivid, strength: 1 }]
+        say: "색이 탁해서 칙칙하다고 이해했어요."
+        sayEn: "I read this as the colours looking dull."
+    ask: "어디가 가장 칙칙해 보여요? 1) 밝기 2) 색의 진하기 3) 배경"
+    askEn: "Which part looks gloomy? 1) the brightness 2) the colour strength 3) the background"
+
+  - id: garish
+    kind: diagnosis
+    label: 요란함
+    dislikeStems: ["요란한 느낌", "요란해 보", "요란하네", "요란해요", "요란스러", "번쩍번쩍해", "번쩍번쩍하네", "번쩍거려", "눈이 아파", "눈 아파", "눈이 아플 정도", "눈이 너무 아프", "눈부셔", "눈이 부셔", "눈에 거슬려", "너무 튀어", "너무 튀네", "너무 튀는 느낌"]
+    match:
+      ko: ["요란한 느낌", "요란해 보", "요란하네", "요란해요", "요란스러", "번쩍번쩍해", "번쩍번쩍하네", "번쩍거려", "눈이 아파", "눈 아파", "눈이 아플 정도", "눈이 너무 아프", "눈부셔", "눈이 부셔", "눈에 거슬려", "너무 튀어", "너무 튀네", "너무 튀는 느낌", "요란합니다", "요란했어요"]
+      en: ["garish", "gaudy", "eyesore"]
+    not: ["요란하지 않", "요란해 보이지 않", "요란한 느낌이 아니", "눈이 아프지 않", "눈 아프지 않", "눈이 아파지 않", "눈부시지 않", "눈에 거슬리지 않", "not garish", "not gaudy"]
+    causes:
+      - reading: [{ axis: color-saturation, direction: muted, strength: 1 }]
+        say: "색이 너무 쨍해서 눈이 피곤하다고 이해했어요."
+        sayEn: "I read this as the colours being too strong."
+      - reading: [{ axis: palette-count, direction: fewer, strength: 1 }]
+        say: "색 가짓수가 너무 많다고 이해했어요."
+        sayEn: "I read this as too many colours."
+    ask: "무엇이 가장 눈에 거슬려요? 1) 색의 진하기 2) 색 가짓수 3) 움직임"
+    askEn: "What bothers your eyes most? 1) the colour strength 2) the number of colours 3) the movement"
+
+  - id: faint
+    kind: diagnosis
+    label: 흐릿함
+    dislikeStems: ["흐릿해", "흐릿하네", "흐릿한 느낌", "흐릿한 디자인", "흐리멍덩해", "뿌옇게 보", "뿌예 보", "희미해 보", "흐려 보", "맹숭맹숭"]
+    match:
+      ko: ["흐릿해", "흐릿하네", "흐릿한 느낌", "흐릿한 디자인", "흐리멍덩해", "뿌옇게 보", "뿌예 보", "희미해 보", "흐려 보", "맹숭맹숭", "흐릿합니다", "흐릿했어요", "흐릿하네요"]
+      en: ["washed-out", "faded"]
+    not: ["흐릿하지 않", "흐릿해 보이지 않", "뿌옇지 않", "희미하지 않", "흐려 보이지 않", "희미하게 보이지 않"]
+    causes:
+      - reading: [{ axis: contrast, direction: crisp, strength: 1 }]
+        say: "대비가 약해서 흐릿하다고 이해했어요."
+        sayEn: "I read this as the contrast being too weak."
+      - reading: [{ axis: color-saturation, direction: vivid, strength: 1 }]
+        say: "색이 연해서 흐릿하다고 이해했어요."
+        sayEn: "I read this as the colours being too pale."
+    ask: "어디가 가장 흐릿해 보여요? 1) 글자 2) 색 3) 배경"
+    askEn: "Which part looks faint? 1) the text 2) the colours 3) the background"
+
+  - id: heavy
+    kind: diagnosis
+    label: 무거움
+    dislikeStems: ["무거워 보", "무거운 느낌", "무거운 디자인", "무겁게 느껴"]
+    match:
+      ko: ["무거워 보", "무거운 느낌", "무거운 디자인", "무겁게 느껴", "둔탁", "둔중", "무겁게 보", "무거워 보입니다"]
+      en: ["heavy-looking", "clunky"]
+    not: ["무겁지 않", "무거워 보이지 않", "무거운 느낌이 아니", "무거운 디자인이 아니", "무겁게 느껴지지 않", "둔탁하지 않", "무거운 물건", "무거운 짐", "무거운 가구"]
+    causes:
+      - reading: [{ axis: color-lightness, direction: bright, strength: 1 }]
+        say: "색이 어두워서 무거워 보인다고 이해했어요."
+        sayEn: "I read this as the colours being too dark."
+      - reading: [{ axis: depth, direction: flat, strength: 1 }]
+        say: "그림자가 짙어서 무거워 보인다고 이해했어요."
+        sayEn: "I read this as the shadows being too heavy."
+    ask: "어디가 가장 무거워 보여요? 1) 색 2) 그림자 3) 글자"
+    askEn: "Which part looks heavy? 1) the colours 2) the shadows 3) the text"
+
+  - id: empty-feeling
+    kind: diagnosis
+    label: 허전함
+    dislikeStems: ["허전해", "허전하네", "허전한 느낌", "허전한 디자인", "허전해 보", "휑하네", "휑해 보", "썰렁해", "썰렁하네", "썰렁해 보", "썰렁한 느낌", "텅 비어 보", "텅 빈 느낌", "빈약해 보"]
+    match:
+      ko: ["허전해", "허전하네", "허전한 느낌", "허전한 디자인", "허전해 보", "휑해", "휑하네", "휑해 보", "썰렁해", "썰렁하네", "썰렁해 보", "썰렁한 느낌", "텅 비어 보", "텅 빈 느낌", "빈약해 보", "허전합니다", "허전했어요", "휑합니다", "썰렁합니다", "썰렁했어요"]
+      en: ["empty-looking", "barren"]
+    not: ["허전하지 않", "허전해 보이지 않", "허전한 느낌이 아니", "휑하지 않", "썰렁하지 않", "썰렁해 보이지 않", "텅 비어 보이지 않", "허전한 마음", "허전한 속"]
+    causes:
+      - reading: [{ axis: spacing, direction: tight, strength: 1 }]
+        say: "여백이 너무 넓어서 비어 보인다고 이해했어요."
+        sayEn: "I read this as too much empty space."
+      - reading: [{ axis: type-scale, direction: larger, strength: 1 }]
+        say: "글자가 작아서 휑하다고 이해했어요."
+        sayEn: "I read this as the text being too small for the space."
+    ask: "어디가 가장 허전해 보여요? 1) 여백 2) 글자 크기 3) 색"
+    askEn: "Which part feels empty? 1) the spacing 2) the text size 3) the colours"
+
+  - id: lifeless
+    kind: diagnosis
+    label: 삭막함
+    copyWords: ["딱딱", "삭막"]
+    dislikeStems: ["삭막해", "삭막하네", "삭막한 느낌", "삭막한 디자인", "삭막해 보", "정이 안 가", "정 없어 보", "정이 없어 보", "인간미가 없어 보", "인간미 없어 보", "딱딱해 보", "딱딱한 느낌", "딱딱한 디자인", "딱딱하네"]
+    match:
+      ko: ["삭막해", "삭막하네", "삭막한 느낌", "삭막한 디자인", "삭막해 보", "정 없어 보", "정이 없어 보", "인간미가 없어 보", "인간미 없어 보", "딱딱해 보", "딱딱한 느낌", "딱딱한 디자인", "딱딱하네", "삭막합니다", "삭막했어요", "딱딱합니다", "딱딱해요", "정이 안 가요", "정이 안 가네", "정이 안 가는 디자인", "정이 안 가는 느낌", "정이 안 가는 사이트"]
+      en: ["sterile", "lifeless"]
+    not: ["삭막하지 않", "삭막해 보이지 않", "삭막한 느낌이 아니", "딱딱하지 않", "딱딱해 보이지 않", "딱딱한 느낌이 아니", "문구가 딱딱", "문구는 딱딱", "말투가 딱딱", "말투는 딱딱", "글투가 딱딱", "문장이 딱딱", "설명이 딱딱", "소개가 딱딱", "문체가 딱딱", "글씨가 딱딱"]
+    causes:
+      - reading: [{ axis: color-temperature, direction: warm, strength: 1 }]
+        say: "색이 차가워서 정이 안 간다고 이해했어요."
+        sayEn: "I read this as the colours being too cold."
+      - reading: [{ axis: shape, direction: round, strength: 1 }]
+        say: "모서리가 딱딱해 보인다고 이해했어요."
+        sayEn: "I read this as the corners looking stiff."
+    ask: "어디가 가장 딱딱해 보여요? 1) 색 2) 모서리 3) 글꼴"
+    askEn: "Which part feels stiff? 1) the colours 2) the corners 3) the typeface"
+
+  - id: childish
+    kind: diagnosis
+    label: 유치함
+    copyWords: ["유치"]
+    dislikeStems: ["유치해", "유치하네", "유치한 느낌", "유치한 디자인", "유치해 보", "애들 같아", "애들 같은 느낌", "애들 같네", "초딩 같", "어린애 같", "장난감 같아", "장난감 같은 느낌"]
+    match:
+      ko: ["유치해", "유치하네", "유치한 느낌", "유치한 디자인", "유치해 보", "애들 같아", "애들 같은 느낌", "애들 같네", "초딩 같", "어린애 같", "장난감 같아", "장난감 같은 느낌", "유치합니다", "유치했어요"]
+      en: ["childish", "immature"]
+    not: ["유치하지 않", "유치해 보이지 않", "유치한 느낌이 아니", "유치한 디자인이 아니", "애들 같지 않", "초딩 같지 않", "장난감 같지 않", "not childish"]
+    causes:
+      - reading: [{ axis: color-saturation, direction: muted, strength: 1 }]
+        say: "색이 너무 알록달록해서 유치하다고 이해했어요."
+        sayEn: "I read this as the colours being too bright and candy-like."
+      - reading: [{ axis: shape, direction: sharp, strength: 1 }]
+        say: "모서리가 너무 둥글어서 유치하다고 이해했어요."
+        sayEn: "I read this as the corners being too round."
+    ask: "어디가 가장 유치해 보여요? 1) 색 2) 모서리 3) 글꼴"
+    askEn: "Which part looks childish? 1) the colours 2) the corners 3) the typeface"
+
+  - id: harsh
+    kind: diagnosis
+    label: 날카로워 보임
+    dislikeStems: ["날카로워 보", "날카로워요", "날카로워서", "각져 보", "각져서 별로", "뾰족해 보", "뾰족해서"]
+    match:
+      ko: ["날카로워 보", "날카로워요", "날카로워서", "각져 보", "각져서 별로", "뾰족해 보", "뾰족해서", "날카롭네요", "날카롭습니다"]
+      en: ["harsh-looking", "jagged"]
+    not: ["날카롭지 않", "날카로워 보이지 않", "각져 보이지 않", "뾰족해 보이지 않", "날카로워지지 않", "not harsh"]
+    causes:
+      - reading: [{ axis: shape, direction: round, strength: 1 }]
+        say: "모서리가 뾰족해서 날카롭다고 이해했어요."
+        sayEn: "I read this as the corners being too sharp."
+      - reading: [{ axis: contrast, direction: soft, strength: 1 }]
+        say: "대비가 세서 날카롭다고 이해했어요."
+        sayEn: "I read this as the contrast being too harsh."
+    ask: "어디가 가장 날카로워 보여요? 1) 모서리 2) 대비 3) 글꼴"
+    askEn: "Which part looks sharp? 1) the corners 2) the contrast 3) the typeface"
+
+  - id: hard-to-grasp
+    kind: diagnosis
+    label: 눈에 안 들어옴
+    dislikeStems: ["눈에 안 들어", "눈에 잘 안 들어", "한눈에 안 들어", "한눈에 안 보", "뭐가 중요한지", "어디부터 봐야", "어디를 봐야", "위계가 없", "글자 크기가 다 비슷", "크기가 다 비슷"]
+    match:
+      ko: ["눈에 안 들어", "눈에 잘 안 들어", "한눈에 안 들어", "한눈에 안 보", "위계가 없", "글자 크기가 다 비슷", "크기가 다 비슷", "뭐가 중요한지 모르겠", "뭐가 중요한지 안 보", "뭐가 중요한지 잘 안", "뭐가 중요한지 한눈에 안", "어디부터 봐야 할지 모르겠", "어디부터 봐야 할지 헷갈", "어디를 봐야 할지 모르겠"]
+      en: ["hierarchy"]
+    not: ["눈에 안 들어오지 않", "한눈에 안 들어오지 않", "눈에 안 들어오는 곳"]
+    causes:
+      - reading: [{ axis: type-scale, direction: larger, strength: 1, scope: "element:제목" }]   # 12 납작한 글자 위계
+        say: "제목이 작아서 눈에 안 띈다고 이해했어요."
+        sayEn: "I read this as the title being too small to stand out."
+      - reading: [{ axis: contrast, direction: crisp, strength: 1 }]
+        say: "대비가 약해서 중요한 곳이 안 보인다고 이해했어요."
+        sayEn: "I read this as weak contrast hiding what matters."
+    ask: "어디가 안 보여요? 1) 제목 2) 버튼 3) 중요한 문장"
+    askEn: "What is hard to notice? 1) the title 2) the button 3) the key sentence"
+
+  - id: untrustworthy
+    kind: diagnosis
+    label: 믿음이 안 감
+    dislikeStems: ["믿음이 안", "신뢰가 안", "신뢰감이 없", "신뢰감이 안", "못 믿겠", "믿음직하지 않", "미덥지", "못 미더", "불안해 보여", "수상해 보여", "사기 같은 느낌", "사기꾼 같", "의심스러워 보여", "의심스러운 느낌"]
+    match:
+      ko: ["믿음이 안 가요", "믿음이 안 가네", "믿음이 안 갑니다", "믿음이 안 가는 느낌", "믿음이 안 가는 디자인", "믿음이 안 가는 사이트", "신뢰가 안 가요", "신뢰가 안 가네", "신뢰가 안 갑니다", "신뢰가 안 가는 느낌", "신뢰가 안 가는 디자인", "신뢰가 안 가는 사이트", "신뢰감이 없어 보", "신뢰감이 없어요", "신뢰감이 없네", "못 믿겠", "믿음직하지 않아 보", "미덥지 않아 보", "미덥지 못해 보", "불안해 보여", "수상해 보여", "사기 같은 느낌", "사기꾼 같", "의심스러워 보여", "의심스러운 느낌"]
+      en: ["sketchy", "shady"]
+    not: ["믿음이 안 가는 것 같지 않", "신뢰가 안 가지 않", "불안해 보이지 않", "수상해 보이지 않", "믿음직하지 않게", "의심스러워 보이지 않", "not sketchy", "not shady"]
+    causes:
+      - reading: [{ axis: contrast, direction: crisp, strength: 1 }, { axis: type-family, value: clear-sans, strength: 1 }]
+        say: "글꼴과 대비가 흐트러져서 믿음이 안 간다고 이해했어요."
+        sayEn: "I read this as the typeface and contrast looking unsure."
+      - reading: [{ axis: color-temperature, direction: cool, strength: 1 }, { axis: palette-count, direction: fewer, strength: 1 }]
+        say: "색이 정돈되지 않아서 믿음이 안 간다고 이해했어요."
+        sayEn: "I read this as the colours looking untidy."
+    ask: "어디가 가장 믿음이 안 가요? 1) 글꼴 2) 색 3) 사진·문구"
+    askEn: "Which part feels untrustworthy? 1) the typeface 2) the colours 3) the photos or wording"
+
+  - id: samey
+    kind: diagnosis
+    label: 너무 비슷함
+    dislikeStems: ["똑같아", "똑같네", "똑같은데", "똑같아 보", "똑같은 느낌", "다 똑같아", "다 똑같네", "다 똑같은", "다 비슷해", "다 비슷하네", "비슷비슷", "비슷해 보", "비슷한 느낌", "차이가 없어", "차이가 안 나", "구분이 안 가", "구분이 안 돼"]
+    match:
+      ko: ["똑같아", "똑같네", "똑같은데", "똑같아 보", "똑같은 느낌", "다 똑같아", "다 똑같네", "다 똑같은", "다 비슷해", "다 비슷하네", "비슷비슷", "비슷해 보", "비슷한 느낌", "차이가 없어", "차이가 안 나", "구분이 안 가", "구분이 안 돼", "똑같습니다"]
+      en: ["samey", "identical"]
+    not: ["똑같지 않", "똑같아 보이지 않", "똑같은 느낌이 아니", "비슷하지 않", "비슷해 보이지 않", "비슷한 느낌이 아니", "구분이 안 가지 않"]
+    causes:
+      - reading: [{ axis: type-family, value: distinctive, strength: 1 }]
+        say: "글꼴이 다 비슷해서 똑같아 보인다고 이해했어요."
+        sayEn: "I read this as the typefaces all being alike."
+    ask: "어디가 가장 똑같아 보여요? 1) 글꼴 2) 모서리 모양 3) 여백"
+    askEn: "Which part looks the same? 1) the typeface 2) the corner shapes 3) the spacing"
+
+  - id: too-simple
+    kind: diagnosis
+    label: 단순해 보임
+    dislikeStems: ["단순함이", "단순해 보", "단순해서", "단순한 느낌", "너무 단순", "디자인이 단순"]
+    match:
+      ko: ["단순함이", "단순해 보", "단순해서", "단순한 느낌", "너무 단순", "디자인이 단순", "단순합니다"]
+      en: ["too-simple"]
+    not: ["단순하지 않", "단순해 보이지 않", "단순한 느낌이 아니", "단순함이 없", "단순하게", "단순한 느낌으로", "단순함을 유지", "단순함이 좋"]
+    causes:
+      - reading: [{ axis: motion, direction: dynamic, strength: 1 }]
+        say: "움직임이나 꾸밈이 적어서 단순해 보인다고 이해했어요."
+        sayEn: "I read this as too little movement or decoration."
+    ask: "어디가 가장 단순해 보여요? 1) 색 2) 움직임 3) 그림·그래프 4) 배치"
+    askEn: "Which part looks too plain? 1) the colours 2) the movement 3) the graphics 4) the layout"
+
+  - id: poor-quality
+    kind: diagnosis
+    label: 완성도가 낮음
+    dislikeStems: ["형편 없", "형편없", "퀄리티가 낮", "퀄리티가 별로", "퀄리티 낮", "수준이 낮"]
+    match:
+      ko: ["형편 없", "형편없", "엉망", "퀄리티가 낮", "퀄리티가 별로", "퀄리티 낮", "수준이 낮"]
+      en: ["terrible", "awful"]
+    not: ["형편없지 않", "엉망이 아니", "엉망이 되지 않", "엉망진창이 되지 않", "퀄리티가 낮지 않", "엉망이지 않"]
+    causes:
+      - reading: [{ axis: contrast, direction: crisp, strength: 1 }]
+        say: "그림이나 사진이 흐릿해서 완성도가 낮아 보인다고 이해했어요."
+        sayEn: "I read this as the images looking low quality."
+    ask: "어느 부분이 가장 아쉬워요? 1) 그림·사진 2) 색 3) 글꼴 4) 배치"
+    askEn: "Which part disappoints you most? 1) the images 2) the colours 3) the typeface 4) the layout"
+
+  # ---- 참조 카드(갈래 D) · 이름 + 참조 신호(처럼·느낌·스타일·참고 …)로만 맞춘다 — 이름만 나오면 내용 말이다(「유튜브 영상 넣어줘」). ----
+  #   카드는 그 서비스 화면에서 관찰한 사실(색 코드·글꼴 계열·여백·모서리)만 적는다. 로고·문구·이미지는 가져오지 않는다(설계 5.7). 관찰 사실은 카드 위 주석.
+  #   카드에 없는 이름은 질문(「그 사이트의 어떤 점이 좋았어요?」)으로 떨어진다. 「N번 시안처럼」·「아까 게」는 ctx.candidates 처리가 필요해 아직 없다.
+
+  # 관찰: 흰 바탕 · 파랑 강조색(#3182F6) · 아주 큰 굵은 고딕 제목 · 모서리가 둥근 큰 카드 · 한 화면에 한 가지 말
+  - id: ref-toss
+    kind: reference
+    label: 토스 같은 느낌
+    cardNames: ["토스", "toss"]
+    match:
+      ko: ["토스느낌", "토스 느낌", "토스스타일", "토스 스타일", "토스풍으로", "토스 풍으로", "토스참고", "토스 참고", "토스기준", "토스 기준", "토스디자인", "토스 디자인", "토스ui", "토스 ui", "토스ux", "토스 ux", "토스룩", "토스 룩", "토스분위기", "토스 분위기", "토스감성", "토스 감성", "토스의ui", "토스 의ui", "토스의디자인", "토스 의디자인", "토스테마", "토스 테마", "토스색감", "토스 색감", "토스컨셉", "토스 컨셉", "toss느낌", "toss 느낌", "toss스타일", "toss 스타일", "toss풍으로", "toss 풍으로", "toss참고", "toss 참고", "toss기준", "toss 기준", "toss디자인", "toss 디자인", "tossui", "toss ui", "tossux", "toss ux", "toss룩", "toss 룩", "toss분위기", "toss 분위기", "toss감성", "toss 감성", "toss의ui", "toss 의ui", "toss의디자인", "toss 의디자인", "toss테마", "toss 테마", "toss색감", "toss 색감", "toss컨셉", "toss 컨셉", "it like toss", "more like toss", "something like toss", "looks like toss", "look like toss", "feels like toss", "feel like toss", "similar to toss", "inspired by toss", "based on toss", "same as toss", "toss style", "toss vibe", "toss look", "toss feel", "toss-like", "toss-style", "toss theme", "toss colors", "toss colours", "토스 같은 느낌", "토스같은느낌", "토스 같은 스타일", "토스같은스타일", "토스 같은 디자인", "토스같은디자인", "토스 같은 분위기", "토스같은분위기", "토스 같은 색감", "토스같은색감", "토스 같은 룩", "토스같은룩", "토스 같은 테마", "토스같은테마", "토스 같은 감성", "토스같은감성", "토스 같은 컨셉", "토스같은컨셉", "토스 같은 ui", "토스같은ui", "토스 같은 ux", "토스같은ux", "토스처럼 해", "토스처럼해", "토스처럼 하자", "토스처럼하자", "토스처럼 만들", "토스처럼만들", "토스처럼 바꿔", "토스처럼바꿔", "토스처럼 바꾸", "토스처럼바꾸", "토스처럼 보이", "토스처럼보이", "토스처럼 꾸", "토스처럼꾸", "토스처럼 가자", "토스처럼가자", "toss 같은 느낌", "toss같은느낌", "toss 같은 스타일", "toss같은스타일", "toss 같은 디자인", "toss같은디자인", "toss 같은 분위기", "toss같은분위기", "toss 같은 색감", "toss같은색감", "toss 같은 룩", "toss같은룩", "toss 같은 테마", "toss같은테마", "toss 같은 감성", "toss같은감성", "toss 같은 컨셉", "toss같은컨셉", "toss 같은 ui", "toss같은ui", "toss 같은 ux", "toss같은ux", "toss처럼 해", "toss처럼해", "toss처럼 하자", "toss처럼하자", "toss처럼 만들", "toss처럼만들", "toss처럼 바꿔", "toss처럼바꿔", "toss처럼 바꾸", "toss처럼바꾸", "toss처럼 보이", "toss처럼보이", "toss처럼 꾸", "toss처럼꾸", "toss처럼 가자", "toss처럼가자"]
+    reading:
+      - { axis: color-hue, value: blue, strength: 1 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "주된 색을 파랑으로, 글자를 크게, 모서리를 둥글게 이해했어요."
+      en: "I read this as a blue main colour, larger text and rounder corners."
+    confidence: high
+
+  # 관찰: 흰색·연회색 또는 검정 바탕 · 큰 제품 사진 · 가는 고딕의 큰 제목 · 강조색은 파랑 하나 · 여백이 아주 넓음
+  - id: ref-apple
+    kind: reference
+    label: 애플 같은 느낌
+    cardNames: ["애플", "apple"]
+    match:
+      ko: ["애플느낌", "애플 느낌", "애플스타일", "애플 스타일", "애플풍으로", "애플 풍으로", "애플참고", "애플 참고", "애플기준", "애플 기준", "애플디자인", "애플 디자인", "애플ui", "애플 ui", "애플ux", "애플 ux", "애플룩", "애플 룩", "애플분위기", "애플 분위기", "애플감성", "애플 감성", "애플의ui", "애플 의ui", "애플의디자인", "애플 의디자인", "애플테마", "애플 테마", "애플색감", "애플 색감", "애플컨셉", "애플 컨셉", "apple느낌", "apple 느낌", "apple스타일", "apple 스타일", "apple풍으로", "apple 풍으로", "apple참고", "apple 참고", "apple기준", "apple 기준", "apple디자인", "apple 디자인", "appleui", "apple ui", "appleux", "apple ux", "apple룩", "apple 룩", "apple분위기", "apple 분위기", "apple감성", "apple 감성", "apple의ui", "apple 의ui", "apple의디자인", "apple 의디자인", "apple테마", "apple 테마", "apple색감", "apple 색감", "apple컨셉", "apple 컨셉", "it like apple", "more like apple", "something like apple", "looks like apple", "look like apple", "feels like apple", "feel like apple", "similar to apple", "inspired by apple", "based on apple", "same as apple", "apple style", "apple vibe", "apple look", "apple feel", "apple-like", "apple-style", "apple theme", "apple colors", "apple colours", "애플 같은 느낌", "애플같은느낌", "애플 같은 스타일", "애플같은스타일", "애플 같은 디자인", "애플같은디자인", "애플 같은 분위기", "애플같은분위기", "애플 같은 색감", "애플같은색감", "애플 같은 룩", "애플같은룩", "애플 같은 테마", "애플같은테마", "애플 같은 감성", "애플같은감성", "애플 같은 컨셉", "애플같은컨셉", "애플 같은 ui", "애플같은ui", "애플 같은 ux", "애플같은ux", "애플처럼 해", "애플처럼해", "애플처럼 하자", "애플처럼하자", "애플처럼 만들", "애플처럼만들", "애플처럼 바꿔", "애플처럼바꿔", "애플처럼 바꾸", "애플처럼바꾸", "애플처럼 보이", "애플처럼보이", "애플처럼 꾸", "애플처럼꾸", "애플처럼 가자", "애플처럼가자", "apple 같은 느낌", "apple같은느낌", "apple 같은 스타일", "apple같은스타일", "apple 같은 디자인", "apple같은디자인", "apple 같은 분위기", "apple같은분위기", "apple 같은 색감", "apple같은색감", "apple 같은 룩", "apple같은룩", "apple 같은 테마", "apple같은테마", "apple 같은 감성", "apple같은감성", "apple 같은 컨셉", "apple같은컨셉", "apple 같은 ui", "apple같은ui", "apple 같은 ux", "apple같은ux", "apple처럼 해", "apple처럼해", "apple처럼 하자", "apple처럼하자", "apple처럼 만들", "apple처럼만들", "apple처럼 바꿔", "apple처럼바꿔", "apple처럼 바꾸", "apple처럼바꾸", "apple처럼 보이", "apple처럼보이", "apple처럼 꾸", "apple처럼꾸", "apple처럼 가자", "apple처럼가자"]
+    reading:
+      - { axis: spacing, direction: airy, strength: 2 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+      - { axis: type-family, value: clear-sans, strength: 1 }
+    say:
+      ko: "여백을 아주 넓게, 글자를 크게, 또박또박한 고딕으로 이해했어요."
+      en: "I read this as very roomy spacing, larger text and a clean sans-serif."
+    confidence: high
+
+  # 관찰: 흰색·아주 옅은 회색 바탕 · 거의 검정인 글자 · 색을 거의 쓰지 않음 · 옅은 회색 선 · 그림자 거의 없음
+  - id: ref-notion
+    kind: reference
+    label: 노션 같은 느낌
+    cardNames: ["노션", "notion"]
+    match:
+      ko: ["노션느낌", "노션 느낌", "노션스타일", "노션 스타일", "노션풍으로", "노션 풍으로", "노션참고", "노션 참고", "노션기준", "노션 기준", "노션디자인", "노션 디자인", "노션ui", "노션 ui", "노션ux", "노션 ux", "노션룩", "노션 룩", "노션분위기", "노션 분위기", "노션감성", "노션 감성", "노션의ui", "노션 의ui", "노션의디자인", "노션 의디자인", "노션테마", "노션 테마", "노션색감", "노션 색감", "노션컨셉", "노션 컨셉", "notion느낌", "notion 느낌", "notion스타일", "notion 스타일", "notion풍으로", "notion 풍으로", "notion참고", "notion 참고", "notion기준", "notion 기준", "notion디자인", "notion 디자인", "notionui", "notion ui", "notionux", "notion ux", "notion룩", "notion 룩", "notion분위기", "notion 분위기", "notion감성", "notion 감성", "notion의ui", "notion 의ui", "notion의디자인", "notion 의디자인", "notion테마", "notion 테마", "notion색감", "notion 색감", "notion컨셉", "notion 컨셉", "it like notion", "more like notion", "something like notion", "looks like notion", "look like notion", "feels like notion", "feel like notion", "similar to notion", "inspired by notion", "based on notion", "same as notion", "notion style", "notion vibe", "notion look", "notion feel", "notion-like", "notion-style", "notion theme", "notion colors", "notion colours", "노션 같은 느낌", "노션같은느낌", "노션 같은 스타일", "노션같은스타일", "노션 같은 디자인", "노션같은디자인", "노션 같은 분위기", "노션같은분위기", "노션 같은 색감", "노션같은색감", "노션 같은 룩", "노션같은룩", "노션 같은 테마", "노션같은테마", "노션 같은 감성", "노션같은감성", "노션 같은 컨셉", "노션같은컨셉", "노션 같은 ui", "노션같은ui", "노션 같은 ux", "노션같은ux", "노션처럼 해", "노션처럼해", "노션처럼 하자", "노션처럼하자", "노션처럼 만들", "노션처럼만들", "노션처럼 바꿔", "노션처럼바꿔", "노션처럼 바꾸", "노션처럼바꾸", "노션처럼 보이", "노션처럼보이", "노션처럼 꾸", "노션처럼꾸", "노션처럼 가자", "노션처럼가자", "notion 같은 느낌", "notion같은느낌", "notion 같은 스타일", "notion같은스타일", "notion 같은 디자인", "notion같은디자인", "notion 같은 분위기", "notion같은분위기", "notion 같은 색감", "notion같은색감", "notion 같은 룩", "notion같은룩", "notion 같은 테마", "notion같은테마", "notion 같은 감성", "notion같은감성", "notion 같은 컨셉", "notion같은컨셉", "notion 같은 ui", "notion같은ui", "notion 같은 ux", "notion같은ux", "notion처럼 해", "notion처럼해", "notion처럼 하자", "notion처럼하자", "notion처럼 만들", "notion처럼만들", "notion처럼 바꿔", "notion처럼바꿔", "notion처럼 바꾸", "notion처럼바꾸", "notion처럼 보이", "notion처럼보이", "notion처럼 꾸", "notion처럼꾸", "notion처럼 가자", "notion처럼가자"]
+    reading:
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "색을 적게, 색을 차분하게, 그림자를 없애 납작하게 이해했어요."
+      en: "I read this as fewer colours, muted colour and flat surfaces."
+    confidence: high
+
+  # 관찰: 짙은 자주색 옆 메뉴(#4A154B 계열) · 여러 색의 포인트 · 둥근 버튼과 카드 · 밝고 친근한 일러스트
+  - id: ref-slack
+    kind: reference
+    label: 슬랙 같은 느낌
+    cardNames: ["슬랙", "slack"]
+    match:
+      ko: ["슬랙느낌", "슬랙 느낌", "슬랙스타일", "슬랙 스타일", "슬랙풍으로", "슬랙 풍으로", "슬랙참고", "슬랙 참고", "슬랙기준", "슬랙 기준", "슬랙디자인", "슬랙 디자인", "슬랙ui", "슬랙 ui", "슬랙ux", "슬랙 ux", "슬랙룩", "슬랙 룩", "슬랙분위기", "슬랙 분위기", "슬랙감성", "슬랙 감성", "슬랙의ui", "슬랙 의ui", "슬랙의디자인", "슬랙 의디자인", "슬랙테마", "슬랙 테마", "슬랙색감", "슬랙 색감", "슬랙컨셉", "슬랙 컨셉", "slack느낌", "slack 느낌", "slack스타일", "slack 스타일", "slack풍으로", "slack 풍으로", "slack참고", "slack 참고", "slack기준", "slack 기준", "slack디자인", "slack 디자인", "slackui", "slack ui", "slackux", "slack ux", "slack룩", "slack 룩", "slack분위기", "slack 분위기", "slack감성", "slack 감성", "slack의ui", "slack 의ui", "slack의디자인", "slack 의디자인", "slack테마", "slack 테마", "slack색감", "slack 색감", "slack컨셉", "slack 컨셉", "it like slack", "more like slack", "something like slack", "looks like slack", "look like slack", "feels like slack", "feel like slack", "similar to slack", "inspired by slack", "based on slack", "same as slack", "slack style", "slack vibe", "slack look", "slack feel", "slack-like", "slack-style", "slack theme", "slack colors", "slack colours", "슬랙 같은 느낌", "슬랙같은느낌", "슬랙 같은 스타일", "슬랙같은스타일", "슬랙 같은 디자인", "슬랙같은디자인", "슬랙 같은 분위기", "슬랙같은분위기", "슬랙 같은 색감", "슬랙같은색감", "슬랙 같은 룩", "슬랙같은룩", "슬랙 같은 테마", "슬랙같은테마", "슬랙 같은 감성", "슬랙같은감성", "슬랙 같은 컨셉", "슬랙같은컨셉", "슬랙 같은 ui", "슬랙같은ui", "슬랙 같은 ux", "슬랙같은ux", "슬랙처럼 해", "슬랙처럼해", "슬랙처럼 하자", "슬랙처럼하자", "슬랙처럼 만들", "슬랙처럼만들", "슬랙처럼 바꿔", "슬랙처럼바꿔", "슬랙처럼 바꾸", "슬랙처럼바꾸", "슬랙처럼 보이", "슬랙처럼보이", "슬랙처럼 꾸", "슬랙처럼꾸", "슬랙처럼 가자", "슬랙처럼가자", "slack 같은 느낌", "slack같은느낌", "slack 같은 스타일", "slack같은스타일", "slack 같은 디자인", "slack같은디자인", "slack 같은 분위기", "slack같은분위기", "slack 같은 색감", "slack같은색감", "slack 같은 룩", "slack같은룩", "slack 같은 테마", "slack같은테마", "slack 같은 감성", "slack같은감성", "slack 같은 컨셉", "slack같은컨셉", "slack 같은 ui", "slack같은ui", "slack 같은 ux", "slack같은ux", "slack처럼 해", "slack처럼해", "slack처럼 하자", "slack처럼하자", "slack처럼 만들", "slack처럼만들", "slack처럼 바꿔", "slack처럼바꿔", "slack처럼 바꾸", "slack처럼바꾸", "slack처럼 보이", "slack처럼보이", "slack처럼 꾸", "slack처럼꾸", "slack처럼 가자", "slack처럼가자"]
+    reading:
+      - { axis: color-hue, value: purple, strength: 1 }
+      - { axis: palette-count, direction: more, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "주된 색을 보라로, 색을 여러 가지로, 모서리를 둥글게 이해했어요."
+      en: "I read this as a purple main colour, more colours and rounder corners."
+    confidence: high
+
+  # 관찰: 어두운 갈회색 바탕(#282828) · 따뜻하고 흐린 빨강·주황·노랑·초록 포인트 · 크림색 글자(#ebdbb2) · 레트로 느낌의 낮은 채도
+  - id: ref-gruvbox
+    kind: reference
+    label: gruvbox 색감
+    match:
+      ko: ["그루브박스느낌", "그루브박스 느낌", "그루브박스스타일", "그루브박스 스타일", "그루브박스풍으로", "그루브박스 풍으로", "그루브박스참고", "그루브박스 참고", "그루브박스기준", "그루브박스 기준", "그루브박스디자인", "그루브박스 디자인", "그루브박스ui", "그루브박스 ui", "그루브박스ux", "그루브박스 ux", "그루브박스룩", "그루브박스 룩", "그루브박스분위기", "그루브박스 분위기", "그루브박스감성", "그루브박스 감성", "그루브박스의ui", "그루브박스 의ui", "그루브박스의디자인", "그루브박스 의디자인", "그루브박스테마", "그루브박스 테마", "그루브박스색감", "그루브박스 색감", "그루브박스컨셉", "그루브박스 컨셉", "그루브박스", "gruvbox느낌", "gruvbox 느낌", "gruvbox스타일", "gruvbox 스타일", "gruvbox풍으로", "gruvbox 풍으로", "gruvbox참고", "gruvbox 참고", "gruvbox기준", "gruvbox 기준", "gruvbox디자인", "gruvbox 디자인", "gruvboxui", "gruvbox ui", "gruvboxux", "gruvbox ux", "gruvbox룩", "gruvbox 룩", "gruvbox분위기", "gruvbox 분위기", "gruvbox감성", "gruvbox 감성", "gruvbox의ui", "gruvbox 의ui", "gruvbox의디자인", "gruvbox 의디자인", "gruvbox테마", "gruvbox 테마", "gruvbox색감", "gruvbox 색감", "gruvbox컨셉", "gruvbox 컨셉", "gruvbox", "it like gruvbox", "more like gruvbox", "something like gruvbox", "looks like gruvbox", "look like gruvbox", "feels like gruvbox", "feel like gruvbox", "similar to gruvbox", "inspired by gruvbox", "based on gruvbox", "same as gruvbox", "gruvbox style", "gruvbox vibe", "gruvbox look", "gruvbox feel", "gruvbox-like", "gruvbox-style", "gruvbox theme", "gruvbox colors", "gruvbox colours", "그루브박스 같은 느낌", "그루브박스같은느낌", "그루브박스 같은 스타일", "그루브박스같은스타일", "그루브박스 같은 디자인", "그루브박스같은디자인", "그루브박스 같은 분위기", "그루브박스같은분위기", "그루브박스 같은 색감", "그루브박스같은색감", "그루브박스 같은 룩", "그루브박스같은룩", "그루브박스 같은 테마", "그루브박스같은테마", "그루브박스 같은 감성", "그루브박스같은감성", "그루브박스 같은 컨셉", "그루브박스같은컨셉", "그루브박스 같은 ui", "그루브박스같은ui", "그루브박스 같은 ux", "그루브박스같은ux", "그루브박스처럼 해", "그루브박스처럼해", "그루브박스처럼 하자", "그루브박스처럼하자", "그루브박스처럼 만들", "그루브박스처럼만들", "그루브박스처럼 바꿔", "그루브박스처럼바꿔", "그루브박스처럼 바꾸", "그루브박스처럼바꾸", "그루브박스처럼 보이", "그루브박스처럼보이", "그루브박스처럼 꾸", "그루브박스처럼꾸", "그루브박스처럼 가자", "그루브박스처럼가자", "gruvbox 같은 느낌", "gruvbox같은느낌", "gruvbox 같은 스타일", "gruvbox같은스타일", "gruvbox 같은 디자인", "gruvbox같은디자인", "gruvbox 같은 분위기", "gruvbox같은분위기", "gruvbox 같은 색감", "gruvbox같은색감", "gruvbox 같은 룩", "gruvbox같은룩", "gruvbox 같은 테마", "gruvbox같은테마", "gruvbox 같은 감성", "gruvbox같은감성", "gruvbox 같은 컨셉", "gruvbox같은컨셉", "gruvbox 같은 ui", "gruvbox같은ui", "gruvbox 같은 ux", "gruvbox같은ux", "gruvbox처럼 해", "gruvbox처럼해", "gruvbox처럼 하자", "gruvbox처럼하자", "gruvbox처럼 만들", "gruvbox처럼만들", "gruvbox처럼 바꿔", "gruvbox처럼바꿔", "gruvbox처럼 바꾸", "gruvbox처럼바꾸", "gruvbox처럼 보이", "gruvbox처럼보이", "gruvbox처럼 꾸", "gruvbox처럼꾸", "gruvbox처럼 가자", "gruvbox처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 1 }
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "배경을 어둡게, 색을 따뜻하게, 색을 흐리게 이해했어요."
+      en: "I read this as a dark background with warm, muted colours."
+    confidence: high
+
+  # 관찰: 노랑(#FEE500)과 짙은 갈색 글자 · 모서리가 둥근 말풍선과 버튼 · 밝고 친근한 인상
+  - id: ref-kakao
+    kind: reference
+    label: 카카오 같은 느낌
+    cardNames: ["카카오"]
+    match:
+      ko: ["카카오느낌", "카카오 느낌", "카카오스타일", "카카오 스타일", "카카오풍으로", "카카오 풍으로", "카카오참고", "카카오 참고", "카카오기준", "카카오 기준", "카카오디자인", "카카오 디자인", "카카오ui", "카카오 ui", "카카오ux", "카카오 ux", "카카오룩", "카카오 룩", "카카오분위기", "카카오 분위기", "카카오감성", "카카오 감성", "카카오의ui", "카카오 의ui", "카카오의디자인", "카카오 의디자인", "카카오테마", "카카오 테마", "카카오색감", "카카오 색감", "카카오컨셉", "카카오 컨셉", "카카오 같은 느낌", "카카오같은느낌", "카카오 같은 스타일", "카카오같은스타일", "카카오 같은 디자인", "카카오같은디자인", "카카오 같은 분위기", "카카오같은분위기", "카카오 같은 색감", "카카오같은색감", "카카오 같은 룩", "카카오같은룩", "카카오 같은 테마", "카카오같은테마", "카카오 같은 감성", "카카오같은감성", "카카오 같은 컨셉", "카카오같은컨셉", "카카오 같은 ui", "카카오같은ui", "카카오 같은 ux", "카카오같은ux", "카카오처럼 해", "카카오처럼해", "카카오처럼 하자", "카카오처럼하자", "카카오처럼 만들", "카카오처럼만들", "카카오처럼 바꿔", "카카오처럼바꿔", "카카오처럼 바꾸", "카카오처럼바꾸", "카카오처럼 보이", "카카오처럼보이", "카카오처럼 꾸", "카카오처럼꾸", "카카오처럼 가자", "카카오처럼가자"]
+    reading:
+      - { axis: color-hue, value: yellow, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+      - { axis: color-temperature, direction: warm, strength: 1 }
+    say:
+      ko: "주된 색을 노랑으로, 모서리를 둥글게, 색을 따뜻하게 이해했어요."
+      en: "I read this as a yellow main colour, rounder corners and warmer colour."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 초록(#03C75A) 강조색 · 한 화면에 칸이 많고 글자가 작아 촘촘함 · 또렷한 글자색
+  - id: ref-naver
+    kind: reference
+    label: 네이버 같은 느낌
+    cardNames: ["네이버"]
+    match:
+      ko: ["네이버느낌", "네이버 느낌", "네이버스타일", "네이버 스타일", "네이버풍으로", "네이버 풍으로", "네이버참고", "네이버 참고", "네이버기준", "네이버 기준", "네이버디자인", "네이버 디자인", "네이버ui", "네이버 ui", "네이버ux", "네이버 ux", "네이버룩", "네이버 룩", "네이버분위기", "네이버 분위기", "네이버감성", "네이버 감성", "네이버의ui", "네이버 의ui", "네이버의디자인", "네이버 의디자인", "네이버테마", "네이버 테마", "네이버색감", "네이버 색감", "네이버컨셉", "네이버 컨셉", "네이버 같은 느낌", "네이버같은느낌", "네이버 같은 스타일", "네이버같은스타일", "네이버 같은 디자인", "네이버같은디자인", "네이버 같은 분위기", "네이버같은분위기", "네이버 같은 색감", "네이버같은색감", "네이버 같은 룩", "네이버같은룩", "네이버 같은 테마", "네이버같은테마", "네이버 같은 감성", "네이버같은감성", "네이버 같은 컨셉", "네이버같은컨셉", "네이버 같은 ui", "네이버같은ui", "네이버 같은 ux", "네이버같은ux", "네이버처럼 해", "네이버처럼해", "네이버처럼 하자", "네이버처럼하자", "네이버처럼 만들", "네이버처럼만들", "네이버처럼 바꿔", "네이버처럼바꿔", "네이버처럼 바꾸", "네이버처럼바꾸", "네이버처럼 보이", "네이버처럼보이", "네이버처럼 꾸", "네이버처럼꾸", "네이버처럼 가자", "네이버처럼가자"]
+    reading:
+      - { axis: color-hue, value: green, strength: 1 }
+      - { axis: spacing, direction: tight, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "주된 색을 초록으로, 간격을 촘촘하게, 대비를 또렷하게 이해했어요."
+      en: "I read this as a green main colour, tighter spacing and crisper contrast."
+    confidence: high
+
+  # 관찰: 주황(#FF6F0F) 강조색 · 흰 바탕 · 여백이 넉넉함 · 따뜻하고 이웃 같은 인상
+  - id: ref-daangn
+    kind: reference
+    label: 당근 같은 느낌
+    cardNames: ["당근마켓", "당근"]
+    match:
+      ko: ["당근마켓느낌", "당근마켓 느낌", "당근마켓스타일", "당근마켓 스타일", "당근마켓풍으로", "당근마켓 풍으로", "당근마켓참고", "당근마켓 참고", "당근마켓기준", "당근마켓 기준", "당근마켓디자인", "당근마켓 디자인", "당근마켓ui", "당근마켓 ui", "당근마켓ux", "당근마켓 ux", "당근마켓룩", "당근마켓 룩", "당근마켓분위기", "당근마켓 분위기", "당근마켓감성", "당근마켓 감성", "당근마켓의ui", "당근마켓 의ui", "당근마켓의디자인", "당근마켓 의디자인", "당근마켓테마", "당근마켓 테마", "당근마켓색감", "당근마켓 색감", "당근마켓컨셉", "당근마켓 컨셉", "당근느낌", "당근 느낌", "당근스타일", "당근 스타일", "당근풍으로", "당근 풍으로", "당근참고", "당근 참고", "당근기준", "당근 기준", "당근디자인", "당근 디자인", "당근ui", "당근 ui", "당근ux", "당근 ux", "당근룩", "당근 룩", "당근분위기", "당근 분위기", "당근감성", "당근 감성", "당근의ui", "당근 의ui", "당근의디자인", "당근 의디자인", "당근테마", "당근 테마", "당근색감", "당근 색감", "당근컨셉", "당근 컨셉", "당근마켓 같은 느낌", "당근마켓같은느낌", "당근마켓 같은 스타일", "당근마켓같은스타일", "당근마켓 같은 디자인", "당근마켓같은디자인", "당근마켓 같은 분위기", "당근마켓같은분위기", "당근마켓 같은 색감", "당근마켓같은색감", "당근마켓 같은 룩", "당근마켓같은룩", "당근마켓 같은 테마", "당근마켓같은테마", "당근마켓 같은 감성", "당근마켓같은감성", "당근마켓 같은 컨셉", "당근마켓같은컨셉", "당근마켓 같은 ui", "당근마켓같은ui", "당근마켓 같은 ux", "당근마켓같은ux", "당근마켓처럼 해", "당근마켓처럼해", "당근마켓처럼 하자", "당근마켓처럼하자", "당근마켓처럼 만들", "당근마켓처럼만들", "당근마켓처럼 바꿔", "당근마켓처럼바꿔", "당근마켓처럼 바꾸", "당근마켓처럼바꾸", "당근마켓처럼 보이", "당근마켓처럼보이", "당근마켓처럼 꾸", "당근마켓처럼꾸", "당근마켓처럼 가자", "당근마켓처럼가자", "당근 같은 느낌", "당근같은느낌", "당근 같은 스타일", "당근같은스타일", "당근 같은 디자인", "당근같은디자인", "당근 같은 분위기", "당근같은분위기", "당근 같은 색감", "당근같은색감", "당근 같은 룩", "당근같은룩", "당근 같은 테마", "당근같은테마", "당근 같은 감성", "당근같은감성", "당근 같은 컨셉", "당근같은컨셉", "당근 같은 ui", "당근같은ui", "당근 같은 ux", "당근같은ux", "당근처럼 해", "당근처럼해", "당근처럼 하자", "당근처럼하자", "당근처럼 만들", "당근처럼만들", "당근처럼 바꿔", "당근처럼바꿔", "당근처럼 바꾸", "당근처럼바꾸", "당근처럼 보이", "당근처럼보이", "당근처럼 꾸", "당근처럼꾸", "당근처럼 가자", "당근처럼가자"]
+    reading:
+      - { axis: color-hue, value: orange, strength: 1 }
+      - { axis: color-temperature, direction: warm, strength: 1 }
+      - { axis: spacing, direction: airy, strength: 1 }
+    say:
+      ko: "주된 색을 주황으로, 색을 따뜻하게, 여백을 넓게 이해했어요."
+      en: "I read this as an orange main colour, warmer colour and roomy spacing."
+    confidence: high
+
+  # 관찰: 흰 바탕에 상품 사진 격자가 빽빽함 · 가격과 할인은 굵은 빨강 · 색 배지와 띠가 많음
+  - id: ref-coupang
+    kind: reference
+    label: 쿠팡 같은 느낌
+    cardNames: ["쿠팡"]
+    match:
+      ko: ["쿠팡느낌", "쿠팡 느낌", "쿠팡스타일", "쿠팡 스타일", "쿠팡풍으로", "쿠팡 풍으로", "쿠팡참고", "쿠팡 참고", "쿠팡기준", "쿠팡 기준", "쿠팡디자인", "쿠팡 디자인", "쿠팡ui", "쿠팡 ui", "쿠팡ux", "쿠팡 ux", "쿠팡룩", "쿠팡 룩", "쿠팡분위기", "쿠팡 분위기", "쿠팡감성", "쿠팡 감성", "쿠팡의ui", "쿠팡 의ui", "쿠팡의디자인", "쿠팡 의디자인", "쿠팡테마", "쿠팡 테마", "쿠팡색감", "쿠팡 색감", "쿠팡컨셉", "쿠팡 컨셉", "쿠팡 같은 느낌", "쿠팡같은느낌", "쿠팡 같은 스타일", "쿠팡같은스타일", "쿠팡 같은 디자인", "쿠팡같은디자인", "쿠팡 같은 분위기", "쿠팡같은분위기", "쿠팡 같은 색감", "쿠팡같은색감", "쿠팡 같은 룩", "쿠팡같은룩", "쿠팡 같은 테마", "쿠팡같은테마", "쿠팡 같은 감성", "쿠팡같은감성", "쿠팡 같은 컨셉", "쿠팡같은컨셉", "쿠팡 같은 ui", "쿠팡같은ui", "쿠팡 같은 ux", "쿠팡같은ux", "쿠팡처럼 해", "쿠팡처럼해", "쿠팡처럼 하자", "쿠팡처럼하자", "쿠팡처럼 만들", "쿠팡처럼만들", "쿠팡처럼 바꿔", "쿠팡처럼바꿔", "쿠팡처럼 바꾸", "쿠팡처럼바꾸", "쿠팡처럼 보이", "쿠팡처럼보이", "쿠팡처럼 꾸", "쿠팡처럼꾸", "쿠팡처럼 가자", "쿠팡처럼가자"]
+    reading:
+      - { axis: spacing, direction: tight, strength: 1 }
+      - { axis: palette-count, direction: more, strength: 1 }
+    say:
+      ko: "간격을 촘촘하게, 색을 여러 가지로 이해했어요."
+      en: "I read this as tighter spacing and more colours."
+    confidence: high
+
+  # 관찰: 민트(#2AC1BC) 포인트 · 굵고 둥글둥글한 손글씨풍 제목 글꼴 · 밝고 장난기 있는 인상
+  - id: ref-baemin
+    kind: reference
+    label: 배민 같은 느낌
+    match:
+      ko: ["배민느낌", "배민 느낌", "배민스타일", "배민 스타일", "배민풍으로", "배민 풍으로", "배민참고", "배민 참고", "배민기준", "배민 기준", "배민디자인", "배민 디자인", "배민ui", "배민 ui", "배민ux", "배민 ux", "배민룩", "배민 룩", "배민분위기", "배민 분위기", "배민감성", "배민 감성", "배민의ui", "배민 의ui", "배민의디자인", "배민 의디자인", "배민테마", "배민 테마", "배민색감", "배민 색감", "배민컨셉", "배민 컨셉", "배달의민족느낌", "배달의민족 느낌", "배달의민족스타일", "배달의민족 스타일", "배달의민족풍으로", "배달의민족 풍으로", "배달의민족참고", "배달의민족 참고", "배달의민족기준", "배달의민족 기준", "배달의민족디자인", "배달의민족 디자인", "배달의민족ui", "배달의민족 ui", "배달의민족ux", "배달의민족 ux", "배달의민족룩", "배달의민족 룩", "배달의민족분위기", "배달의민족 분위기", "배달의민족감성", "배달의민족 감성", "배달의민족의ui", "배달의민족 의ui", "배달의민족의디자인", "배달의민족 의디자인", "배달의민족테마", "배달의민족 테마", "배달의민족색감", "배달의민족 색감", "배달의민족컨셉", "배달의민족 컨셉", "배민 같은 느낌", "배민같은느낌", "배민 같은 스타일", "배민같은스타일", "배민 같은 디자인", "배민같은디자인", "배민 같은 분위기", "배민같은분위기", "배민 같은 색감", "배민같은색감", "배민 같은 룩", "배민같은룩", "배민 같은 테마", "배민같은테마", "배민 같은 감성", "배민같은감성", "배민 같은 컨셉", "배민같은컨셉", "배민 같은 ui", "배민같은ui", "배민 같은 ux", "배민같은ux", "배민처럼 해", "배민처럼해", "배민처럼 하자", "배민처럼하자", "배민처럼 만들", "배민처럼만들", "배민처럼 바꿔", "배민처럼바꿔", "배민처럼 바꾸", "배민처럼바꾸", "배민처럼 보이", "배민처럼보이", "배민처럼 꾸", "배민처럼꾸", "배민처럼 가자", "배민처럼가자", "배달의민족 같은 느낌", "배달의민족같은느낌", "배달의민족 같은 스타일", "배달의민족같은스타일", "배달의민족 같은 디자인", "배달의민족같은디자인", "배달의민족 같은 분위기", "배달의민족같은분위기", "배달의민족 같은 색감", "배달의민족같은색감", "배달의민족 같은 룩", "배달의민족같은룩", "배달의민족 같은 테마", "배달의민족같은테마", "배달의민족 같은 감성", "배달의민족같은감성", "배달의민족 같은 컨셉", "배달의민족같은컨셉", "배달의민족 같은 ui", "배달의민족같은ui", "배달의민족 같은 ux", "배달의민족같은ux", "배달의민족처럼 해", "배달의민족처럼해", "배달의민족처럼 하자", "배달의민족처럼하자", "배달의민족처럼 만들", "배달의민족처럼만들", "배달의민족처럼 바꿔", "배달의민족처럼바꿔", "배달의민족처럼 바꾸", "배달의민족처럼바꾸", "배달의민족처럼 보이", "배달의민족처럼보이", "배달의민족처럼 꾸", "배달의민족처럼꾸", "배달의민족처럼 가자", "배달의민족처럼가자"]
+    reading:
+      - { axis: color-hue, value: teal, strength: 1 }
+      - { axis: type-family, value: rounded-sans, strength: 1 }
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+    say:
+      ko: "주된 색을 청록으로, 글꼴을 둥근 고딕으로, 색을 쨍하게 이해했어요."
+      en: "I read this as a teal main colour, a rounded typeface and vivid colour."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 정사각 사진 격자가 중심 · 가는 선 아이콘 · 글자와 색은 거의 없음
+  - id: ref-instagram
+    kind: reference
+    label: 인스타그램 같은 느낌
+    cardNames: ["인스타그램", "인스타", "instagram"]
+    match:
+      ko: ["인스타그램느낌", "인스타그램 느낌", "인스타그램스타일", "인스타그램 스타일", "인스타그램풍으로", "인스타그램 풍으로", "인스타그램참고", "인스타그램 참고", "인스타그램기준", "인스타그램 기준", "인스타그램디자인", "인스타그램 디자인", "인스타그램ui", "인스타그램 ui", "인스타그램ux", "인스타그램 ux", "인스타그램룩", "인스타그램 룩", "인스타그램분위기", "인스타그램 분위기", "인스타그램의ui", "인스타그램 의ui", "인스타그램의디자인", "인스타그램 의디자인", "인스타그램테마", "인스타그램 테마", "인스타그램색감", "인스타그램 색감", "인스타그램컨셉", "인스타그램 컨셉", "인스타느낌", "인스타 느낌", "인스타스타일", "인스타 스타일", "인스타풍으로", "인스타 풍으로", "인스타참고", "인스타 참고", "인스타기준", "인스타 기준", "인스타디자인", "인스타 디자인", "인스타ui", "인스타 ui", "인스타ux", "인스타 ux", "인스타룩", "인스타 룩", "인스타분위기", "인스타 분위기", "인스타의ui", "인스타 의ui", "인스타의디자인", "인스타 의디자인", "인스타테마", "인스타 테마", "인스타색감", "인스타 색감", "인스타컨셉", "인스타 컨셉", "instagram느낌", "instagram 느낌", "instagram스타일", "instagram 스타일", "instagram풍으로", "instagram 풍으로", "instagram참고", "instagram 참고", "instagram기준", "instagram 기준", "instagram디자인", "instagram 디자인", "instagramui", "instagram ui", "instagramux", "instagram ux", "instagram룩", "instagram 룩", "instagram분위기", "instagram 분위기", "instagram의ui", "instagram 의ui", "instagram의디자인", "instagram 의디자인", "instagram테마", "instagram 테마", "instagram색감", "instagram 색감", "instagram컨셉", "instagram 컨셉", "it like instagram", "more like instagram", "something like instagram", "looks like instagram", "look like instagram", "feels like instagram", "feel like instagram", "similar to instagram", "inspired by instagram", "based on instagram", "same as instagram", "instagram style", "instagram vibe", "instagram look", "instagram feel", "instagram-like", "instagram-style", "instagram theme", "instagram colors", "instagram colours", "인스타그램 같은 느낌", "인스타그램같은느낌", "인스타그램 같은 스타일", "인스타그램같은스타일", "인스타그램 같은 디자인", "인스타그램같은디자인", "인스타그램 같은 분위기", "인스타그램같은분위기", "인스타그램 같은 색감", "인스타그램같은색감", "인스타그램 같은 룩", "인스타그램같은룩", "인스타그램 같은 테마", "인스타그램같은테마", "인스타그램 같은 컨셉", "인스타그램같은컨셉", "인스타그램 같은 ui", "인스타그램같은ui", "인스타그램 같은 ux", "인스타그램같은ux", "인스타그램처럼 해", "인스타그램처럼해", "인스타그램처럼 하자", "인스타그램처럼하자", "인스타그램처럼 만들", "인스타그램처럼만들", "인스타그램처럼 바꿔", "인스타그램처럼바꿔", "인스타그램처럼 바꾸", "인스타그램처럼바꾸", "인스타그램처럼 보이", "인스타그램처럼보이", "인스타그램처럼 꾸", "인스타그램처럼꾸", "인스타그램처럼 가자", "인스타그램처럼가자", "인스타 같은 느낌", "인스타같은느낌", "인스타 같은 스타일", "인스타같은스타일", "인스타 같은 디자인", "인스타같은디자인", "인스타 같은 분위기", "인스타같은분위기", "인스타 같은 색감", "인스타같은색감", "인스타 같은 룩", "인스타같은룩", "인스타 같은 테마", "인스타같은테마", "인스타 같은 컨셉", "인스타같은컨셉", "인스타 같은 ui", "인스타같은ui", "인스타 같은 ux", "인스타같은ux", "인스타처럼 해", "인스타처럼해", "인스타처럼 하자", "인스타처럼하자", "인스타처럼 만들", "인스타처럼만들", "인스타처럼 바꿔", "인스타처럼바꿔", "인스타처럼 바꾸", "인스타처럼바꾸", "인스타처럼 보이", "인스타처럼보이", "인스타처럼 꾸", "인스타처럼꾸", "인스타처럼 가자", "인스타처럼가자", "instagram 같은 느낌", "instagram같은느낌", "instagram 같은 스타일", "instagram같은스타일", "instagram 같은 디자인", "instagram같은디자인", "instagram 같은 분위기", "instagram같은분위기", "instagram 같은 색감", "instagram같은색감", "instagram 같은 룩", "instagram같은룩", "instagram 같은 테마", "instagram같은테마", "instagram 같은 컨셉", "instagram같은컨셉", "instagram 같은 ui", "instagram같은ui", "instagram 같은 ux", "instagram같은ux", "instagram처럼 해", "instagram처럼해", "instagram처럼 하자", "instagram처럼하자", "instagram처럼 만들", "instagram처럼만들", "instagram처럼 바꿔", "instagram처럼바꿔", "instagram처럼 바꾸", "instagram처럼바꾸", "instagram처럼 보이", "instagram처럼보이", "instagram처럼 꾸", "instagram처럼꾸", "instagram처럼 가자", "instagram처럼가자"]
+    reading:
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+      - { axis: color-lightness, direction: bright, strength: 1 }
+    say:
+      ko: "색을 적게, 납작하게, 밝게 이해했어요."
+      en: "I read this as fewer colours, flat surfaces and a brighter page."
+    confidence: high
+
+  # 관찰: 흰색 또는 짙은 회색 바탕 · 빨강(#FF0000) 강조 · 썸네일 격자가 촘촘함 · 글자는 작음
+  - id: ref-youtube
+    kind: reference
+    label: 유튜브 같은 느낌
+    cardNames: ["유튜브", "youtube"]
+    match:
+      ko: ["유튜브느낌", "유튜브 느낌", "유튜브스타일", "유튜브 스타일", "유튜브풍으로", "유튜브 풍으로", "유튜브참고", "유튜브 참고", "유튜브기준", "유튜브 기준", "유튜브디자인", "유튜브 디자인", "유튜브ui", "유튜브 ui", "유튜브ux", "유튜브 ux", "유튜브룩", "유튜브 룩", "유튜브분위기", "유튜브 분위기", "유튜브감성", "유튜브 감성", "유튜브의ui", "유튜브 의ui", "유튜브의디자인", "유튜브 의디자인", "유튜브테마", "유튜브 테마", "유튜브색감", "유튜브 색감", "유튜브컨셉", "유튜브 컨셉", "youtube느낌", "youtube 느낌", "youtube스타일", "youtube 스타일", "youtube풍으로", "youtube 풍으로", "youtube참고", "youtube 참고", "youtube기준", "youtube 기준", "youtube디자인", "youtube 디자인", "youtubeui", "youtube ui", "youtubeux", "youtube ux", "youtube룩", "youtube 룩", "youtube분위기", "youtube 분위기", "youtube감성", "youtube 감성", "youtube의ui", "youtube 의ui", "youtube의디자인", "youtube 의디자인", "youtube테마", "youtube 테마", "youtube색감", "youtube 색감", "youtube컨셉", "youtube 컨셉", "it like youtube", "more like youtube", "something like youtube", "looks like youtube", "look like youtube", "feels like youtube", "feel like youtube", "similar to youtube", "inspired by youtube", "based on youtube", "same as youtube", "youtube style", "youtube vibe", "youtube look", "youtube feel", "youtube-like", "youtube-style", "youtube theme", "youtube colors", "youtube colours", "유튜브 같은 느낌", "유튜브같은느낌", "유튜브 같은 스타일", "유튜브같은스타일", "유튜브 같은 디자인", "유튜브같은디자인", "유튜브 같은 분위기", "유튜브같은분위기", "유튜브 같은 색감", "유튜브같은색감", "유튜브 같은 룩", "유튜브같은룩", "유튜브 같은 테마", "유튜브같은테마", "유튜브 같은 감성", "유튜브같은감성", "유튜브 같은 컨셉", "유튜브같은컨셉", "유튜브 같은 ui", "유튜브같은ui", "유튜브 같은 ux", "유튜브같은ux", "유튜브처럼 해", "유튜브처럼해", "유튜브처럼 하자", "유튜브처럼하자", "유튜브처럼 만들", "유튜브처럼만들", "유튜브처럼 바꿔", "유튜브처럼바꿔", "유튜브처럼 바꾸", "유튜브처럼바꾸", "유튜브처럼 보이", "유튜브처럼보이", "유튜브처럼 꾸", "유튜브처럼꾸", "유튜브처럼 가자", "유튜브처럼가자", "youtube 같은 느낌", "youtube같은느낌", "youtube 같은 스타일", "youtube같은스타일", "youtube 같은 디자인", "youtube같은디자인", "youtube 같은 분위기", "youtube같은분위기", "youtube 같은 색감", "youtube같은색감", "youtube 같은 룩", "youtube같은룩", "youtube 같은 테마", "youtube같은테마", "youtube 같은 감성", "youtube같은감성", "youtube 같은 컨셉", "youtube같은컨셉", "youtube 같은 ui", "youtube같은ui", "youtube 같은 ux", "youtube같은ux", "youtube처럼 해", "youtube처럼해", "youtube처럼 하자", "youtube처럼하자", "youtube처럼 만들", "youtube처럼만들", "youtube처럼 바꿔", "youtube처럼바꿔", "youtube처럼 바꾸", "youtube처럼바꾸", "youtube처럼 보이", "youtube처럼보이", "youtube처럼 꾸", "youtube처럼꾸", "youtube처럼 가자", "youtube처럼가자"]
+    reading:
+      - { axis: color-hue, value: red, strength: 1 }
+      - { axis: spacing, direction: tight, strength: 1 }
+      - { axis: type-scale, direction: smaller, strength: 1 }
+    say:
+      ko: "주된 색을 빨강으로, 간격을 촘촘하게, 글자를 작게 이해했어요."
+      en: "I read this as a red main colour, tighter spacing and smaller text."
+    confidence: high
+
+  # 관찰: 검정 바탕(#141414) · 빨강(#E50914) 강조 · 큰 영상 이미지 · 흰 굵은 제목
+  - id: ref-netflix
+    kind: reference
+    label: 넷플릭스 같은 느낌
+    cardNames: ["넷플릭스", "netflix"]
+    match:
+      ko: ["넷플릭스느낌", "넷플릭스 느낌", "넷플릭스스타일", "넷플릭스 스타일", "넷플릭스풍으로", "넷플릭스 풍으로", "넷플릭스참고", "넷플릭스 참고", "넷플릭스기준", "넷플릭스 기준", "넷플릭스디자인", "넷플릭스 디자인", "넷플릭스ui", "넷플릭스 ui", "넷플릭스ux", "넷플릭스 ux", "넷플릭스룩", "넷플릭스 룩", "넷플릭스분위기", "넷플릭스 분위기", "넷플릭스감성", "넷플릭스 감성", "넷플릭스의ui", "넷플릭스 의ui", "넷플릭스의디자인", "넷플릭스 의디자인", "넷플릭스테마", "넷플릭스 테마", "넷플릭스색감", "넷플릭스 색감", "넷플릭스컨셉", "넷플릭스 컨셉", "netflix느낌", "netflix 느낌", "netflix스타일", "netflix 스타일", "netflix풍으로", "netflix 풍으로", "netflix참고", "netflix 참고", "netflix기준", "netflix 기준", "netflix디자인", "netflix 디자인", "netflixui", "netflix ui", "netflixux", "netflix ux", "netflix룩", "netflix 룩", "netflix분위기", "netflix 분위기", "netflix감성", "netflix 감성", "netflix의ui", "netflix 의ui", "netflix의디자인", "netflix 의디자인", "netflix테마", "netflix 테마", "netflix색감", "netflix 색감", "netflix컨셉", "netflix 컨셉", "it like netflix", "more like netflix", "something like netflix", "looks like netflix", "look like netflix", "feels like netflix", "feel like netflix", "similar to netflix", "inspired by netflix", "based on netflix", "same as netflix", "netflix style", "netflix vibe", "netflix look", "netflix feel", "netflix-like", "netflix-style", "netflix theme", "netflix colors", "netflix colours", "넷플릭스 같은 느낌", "넷플릭스같은느낌", "넷플릭스 같은 스타일", "넷플릭스같은스타일", "넷플릭스 같은 디자인", "넷플릭스같은디자인", "넷플릭스 같은 분위기", "넷플릭스같은분위기", "넷플릭스 같은 색감", "넷플릭스같은색감", "넷플릭스 같은 룩", "넷플릭스같은룩", "넷플릭스 같은 테마", "넷플릭스같은테마", "넷플릭스 같은 감성", "넷플릭스같은감성", "넷플릭스 같은 컨셉", "넷플릭스같은컨셉", "넷플릭스 같은 ui", "넷플릭스같은ui", "넷플릭스 같은 ux", "넷플릭스같은ux", "넷플릭스처럼 해", "넷플릭스처럼해", "넷플릭스처럼 하자", "넷플릭스처럼하자", "넷플릭스처럼 만들", "넷플릭스처럼만들", "넷플릭스처럼 바꿔", "넷플릭스처럼바꿔", "넷플릭스처럼 바꾸", "넷플릭스처럼바꾸", "넷플릭스처럼 보이", "넷플릭스처럼보이", "넷플릭스처럼 꾸", "넷플릭스처럼꾸", "넷플릭스처럼 가자", "넷플릭스처럼가자", "netflix 같은 느낌", "netflix같은느낌", "netflix 같은 스타일", "netflix같은스타일", "netflix 같은 디자인", "netflix같은디자인", "netflix 같은 분위기", "netflix같은분위기", "netflix 같은 색감", "netflix같은색감", "netflix 같은 룩", "netflix같은룩", "netflix 같은 테마", "netflix같은테마", "netflix 같은 감성", "netflix같은감성", "netflix 같은 컨셉", "netflix같은컨셉", "netflix 같은 ui", "netflix같은ui", "netflix 같은 ux", "netflix같은ux", "netflix처럼 해", "netflix처럼해", "netflix처럼 하자", "netflix처럼하자", "netflix처럼 만들", "netflix처럼만들", "netflix처럼 바꿔", "netflix처럼바꿔", "netflix처럼 바꾸", "netflix처럼바꾸", "netflix처럼 보이", "netflix처럼보이", "netflix처럼 꾸", "netflix처럼꾸", "netflix처럼 가자", "netflix처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+      - { axis: color-hue, value: red, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "배경을 아주 어둡게, 주된 색을 빨강으로, 대비를 또렷하게 이해했어요."
+      en: "I read this as a very dark page with a red main colour and crisp contrast."
+    confidence: high
+
+  # 관찰: 짙은 회색·검정 바탕(#121212) · 초록(#1DB954) 강조 · 둥근 버튼과 앨범 카드 · 굵은 제목
+  - id: ref-spotify
+    kind: reference
+    label: 스포티파이 같은 느낌
+    match:
+      ko: ["스포티파이느낌", "스포티파이 느낌", "스포티파이스타일", "스포티파이 스타일", "스포티파이풍으로", "스포티파이 풍으로", "스포티파이참고", "스포티파이 참고", "스포티파이기준", "스포티파이 기준", "스포티파이디자인", "스포티파이 디자인", "스포티파이ui", "스포티파이 ui", "스포티파이ux", "스포티파이 ux", "스포티파이룩", "스포티파이 룩", "스포티파이분위기", "스포티파이 분위기", "스포티파이감성", "스포티파이 감성", "스포티파이의ui", "스포티파이 의ui", "스포티파이의디자인", "스포티파이 의디자인", "스포티파이테마", "스포티파이 테마", "스포티파이색감", "스포티파이 색감", "스포티파이컨셉", "스포티파이 컨셉", "spotify느낌", "spotify 느낌", "spotify스타일", "spotify 스타일", "spotify풍으로", "spotify 풍으로", "spotify참고", "spotify 참고", "spotify기준", "spotify 기준", "spotify디자인", "spotify 디자인", "spotifyui", "spotify ui", "spotifyux", "spotify ux", "spotify룩", "spotify 룩", "spotify분위기", "spotify 분위기", "spotify감성", "spotify 감성", "spotify의ui", "spotify 의ui", "spotify의디자인", "spotify 의디자인", "spotify테마", "spotify 테마", "spotify색감", "spotify 색감", "spotify컨셉", "spotify 컨셉", "it like spotify", "more like spotify", "something like spotify", "looks like spotify", "look like spotify", "feels like spotify", "feel like spotify", "similar to spotify", "inspired by spotify", "based on spotify", "same as spotify", "spotify style", "spotify vibe", "spotify look", "spotify feel", "spotify-like", "spotify-style", "spotify theme", "spotify colors", "spotify colours", "스포티파이 같은 느낌", "스포티파이같은느낌", "스포티파이 같은 스타일", "스포티파이같은스타일", "스포티파이 같은 디자인", "스포티파이같은디자인", "스포티파이 같은 분위기", "스포티파이같은분위기", "스포티파이 같은 색감", "스포티파이같은색감", "스포티파이 같은 룩", "스포티파이같은룩", "스포티파이 같은 테마", "스포티파이같은테마", "스포티파이 같은 감성", "스포티파이같은감성", "스포티파이 같은 컨셉", "스포티파이같은컨셉", "스포티파이 같은 ui", "스포티파이같은ui", "스포티파이 같은 ux", "스포티파이같은ux", "스포티파이처럼 해", "스포티파이처럼해", "스포티파이처럼 하자", "스포티파이처럼하자", "스포티파이처럼 만들", "스포티파이처럼만들", "스포티파이처럼 바꿔", "스포티파이처럼바꿔", "스포티파이처럼 바꾸", "스포티파이처럼바꾸", "스포티파이처럼 보이", "스포티파이처럼보이", "스포티파이처럼 꾸", "스포티파이처럼꾸", "스포티파이처럼 가자", "스포티파이처럼가자", "spotify 같은 느낌", "spotify같은느낌", "spotify 같은 스타일", "spotify같은스타일", "spotify 같은 디자인", "spotify같은디자인", "spotify 같은 분위기", "spotify같은분위기", "spotify 같은 색감", "spotify같은색감", "spotify 같은 룩", "spotify같은룩", "spotify 같은 테마", "spotify같은테마", "spotify 같은 감성", "spotify같은감성", "spotify 같은 컨셉", "spotify같은컨셉", "spotify 같은 ui", "spotify같은ui", "spotify 같은 ux", "spotify같은ux", "spotify처럼 해", "spotify처럼해", "spotify처럼 하자", "spotify처럼하자", "spotify처럼 만들", "spotify처럼만들", "spotify처럼 바꿔", "spotify처럼바꿔", "spotify처럼 바꾸", "spotify처럼바꾸", "spotify처럼 보이", "spotify처럼보이", "spotify처럼 꾸", "spotify처럼꾸", "spotify처럼 가자", "spotify처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+      - { axis: color-hue, value: green, strength: 1 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+    say:
+      ko: "배경을 아주 어둡게, 주된 색을 초록으로, 글자를 크게 이해했어요."
+      en: "I read this as a very dark page with a green main colour and larger text."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 파랑·빨강·노랑·초록 기본색 · 카드마다 옅은 그림자 · 둥근 버튼 · 또렷한 고딕
+  - id: ref-material
+    kind: reference
+    label: 구글 머티리얼 같은 느낌
+    match:
+      ko: ["머티리얼느낌", "머티리얼 느낌", "머티리얼스타일", "머티리얼 스타일", "머티리얼풍으로", "머티리얼 풍으로", "머티리얼참고", "머티리얼 참고", "머티리얼기준", "머티리얼 기준", "머티리얼디자인", "머티리얼 디자인", "머티리얼ui", "머티리얼 ui", "머티리얼ux", "머티리얼 ux", "머티리얼룩", "머티리얼 룩", "머티리얼분위기", "머티리얼 분위기", "머티리얼감성", "머티리얼 감성", "머티리얼의ui", "머티리얼 의ui", "머티리얼의디자인", "머티리얼 의디자인", "머티리얼테마", "머티리얼 테마", "머티리얼색감", "머티리얼 색감", "머티리얼컨셉", "머티리얼 컨셉", "머터리얼느낌", "머터리얼 느낌", "머터리얼스타일", "머터리얼 스타일", "머터리얼풍으로", "머터리얼 풍으로", "머터리얼참고", "머터리얼 참고", "머터리얼기준", "머터리얼 기준", "머터리얼디자인", "머터리얼 디자인", "머터리얼ui", "머터리얼 ui", "머터리얼ux", "머터리얼 ux", "머터리얼룩", "머터리얼 룩", "머터리얼분위기", "머터리얼 분위기", "머터리얼감성", "머터리얼 감성", "머터리얼의ui", "머터리얼 의ui", "머터리얼의디자인", "머터리얼 의디자인", "머터리얼테마", "머터리얼 테마", "머터리얼색감", "머터리얼 색감", "머터리얼컨셉", "머터리얼 컨셉", "구글느낌", "구글 느낌", "구글스타일", "구글 스타일", "구글풍으로", "구글 풍으로", "구글참고", "구글 참고", "구글기준", "구글 기준", "구글디자인", "구글 디자인", "구글ui", "구글 ui", "구글ux", "구글 ux", "구글룩", "구글 룩", "구글분위기", "구글 분위기", "구글감성", "구글 감성", "구글의ui", "구글 의ui", "구글의디자인", "구글 의디자인", "구글테마", "구글 테마", "구글색감", "구글 색감", "구글컨셉", "구글 컨셉", "material design", "material you", "머티리얼 같은 느낌", "머티리얼같은느낌", "머티리얼 같은 스타일", "머티리얼같은스타일", "머티리얼 같은 디자인", "머티리얼같은디자인", "머티리얼 같은 분위기", "머티리얼같은분위기", "머티리얼 같은 색감", "머티리얼같은색감", "머티리얼 같은 룩", "머티리얼같은룩", "머티리얼 같은 테마", "머티리얼같은테마", "머티리얼 같은 감성", "머티리얼같은감성", "머티리얼 같은 컨셉", "머티리얼같은컨셉", "머티리얼 같은 ui", "머티리얼같은ui", "머티리얼 같은 ux", "머티리얼같은ux", "머티리얼처럼 해", "머티리얼처럼해", "머티리얼처럼 하자", "머티리얼처럼하자", "머티리얼처럼 만들", "머티리얼처럼만들", "머티리얼처럼 바꿔", "머티리얼처럼바꿔", "머티리얼처럼 바꾸", "머티리얼처럼바꾸", "머티리얼처럼 보이", "머티리얼처럼보이", "머티리얼처럼 꾸", "머티리얼처럼꾸", "머티리얼처럼 가자", "머티리얼처럼가자", "머터리얼 같은 느낌", "머터리얼같은느낌", "머터리얼 같은 스타일", "머터리얼같은스타일", "머터리얼 같은 디자인", "머터리얼같은디자인", "머터리얼 같은 분위기", "머터리얼같은분위기", "머터리얼 같은 색감", "머터리얼같은색감", "머터리얼 같은 룩", "머터리얼같은룩", "머터리얼 같은 테마", "머터리얼같은테마", "머터리얼 같은 감성", "머터리얼같은감성", "머터리얼 같은 컨셉", "머터리얼같은컨셉", "머터리얼 같은 ui", "머터리얼같은ui", "머터리얼 같은 ux", "머터리얼같은ux", "머터리얼처럼 해", "머터리얼처럼해", "머터리얼처럼 하자", "머터리얼처럼하자", "머터리얼처럼 만들", "머터리얼처럼만들", "머터리얼처럼 바꿔", "머터리얼처럼바꿔", "머터리얼처럼 바꾸", "머터리얼처럼바꾸", "머터리얼처럼 보이", "머터리얼처럼보이", "머터리얼처럼 꾸", "머터리얼처럼꾸", "머터리얼처럼 가자", "머터리얼처럼가자", "구글 같은 느낌", "구글같은느낌", "구글 같은 스타일", "구글같은스타일", "구글 같은 디자인", "구글같은디자인", "구글 같은 분위기", "구글같은분위기", "구글 같은 색감", "구글같은색감", "구글 같은 룩", "구글같은룩", "구글 같은 테마", "구글같은테마", "구글 같은 감성", "구글같은감성", "구글 같은 컨셉", "구글같은컨셉", "구글 같은 ui", "구글같은ui", "구글 같은 ux", "구글같은ux", "구글처럼 해", "구글처럼해", "구글처럼 하자", "구글처럼하자", "구글처럼 만들", "구글처럼만들", "구글처럼 바꿔", "구글처럼바꿔", "구글처럼 바꾸", "구글처럼바꾸", "구글처럼 보이", "구글처럼보이", "구글처럼 꾸", "구글처럼꾸", "구글처럼 가자", "구글처럼가자"]
+    reading:
+      - { axis: depth, direction: lifted, strength: 1 }
+      - { axis: palette-count, direction: more, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "그림자를 떠 보이게, 색을 여러 가지로, 모서리를 둥글게 이해했어요."
+      en: "I read this as raised cards, more colours and rounder corners."
+    confidence: high
+
+  # 관찰: 아주 어두운 바탕 · 남보라 강조 · 가는 선과 작은 글자로 촘촘함
+  - id: ref-linear
+    kind: reference
+    label: 리니어 같은 느낌
+    match:
+      ko: ["리니어느낌", "리니어 느낌", "리니어스타일", "리니어 스타일", "리니어풍으로", "리니어 풍으로", "리니어참고", "리니어 참고", "리니어기준", "리니어 기준", "리니어디자인", "리니어 디자인", "리니어ui", "리니어 ui", "리니어ux", "리니어 ux", "리니어룩", "리니어 룩", "리니어분위기", "리니어 분위기", "리니어감성", "리니어 감성", "리니어의ui", "리니어 의ui", "리니어의디자인", "리니어 의디자인", "리니어테마", "리니어 테마", "리니어색감", "리니어 색감", "리니어컨셉", "리니어 컨셉", "linear느낌", "linear 느낌", "linear스타일", "linear 스타일", "linear풍으로", "linear 풍으로", "linear참고", "linear 참고", "linear기준", "linear 기준", "linear디자인", "linear 디자인", "linearux", "linear ux", "linear룩", "linear 룩", "linear분위기", "linear 분위기", "linear감성", "linear 감성", "linear의디자인", "linear 의디자인", "linear테마", "linear 테마", "linear색감", "linear 색감", "linear컨셉", "linear 컨셉", "it like linear", "more like linear", "something like linear", "looks like linear", "look like linear", "feels like linear", "feel like linear", "similar to linear", "inspired by linear", "based on linear", "same as linear", "linear style", "linear vibe", "linear look", "linear feel", "linear-like", "linear-style", "linear theme", "linear colors", "linear colours", "리니어 같은 느낌", "리니어같은느낌", "리니어 같은 스타일", "리니어같은스타일", "리니어 같은 디자인", "리니어같은디자인", "리니어 같은 분위기", "리니어같은분위기", "리니어 같은 색감", "리니어같은색감", "리니어 같은 룩", "리니어같은룩", "리니어 같은 테마", "리니어같은테마", "리니어 같은 감성", "리니어같은감성", "리니어 같은 컨셉", "리니어같은컨셉", "리니어 같은 ui", "리니어같은ui", "리니어 같은 ux", "리니어같은ux", "리니어처럼 해", "리니어처럼해", "리니어처럼 하자", "리니어처럼하자", "리니어처럼 만들", "리니어처럼만들", "리니어처럼 바꿔", "리니어처럼바꿔", "리니어처럼 바꾸", "리니어처럼바꾸", "리니어처럼 보이", "리니어처럼보이", "리니어처럼 꾸", "리니어처럼꾸", "리니어처럼 가자", "리니어처럼가자", "linear 같은 느낌", "linear같은느낌", "linear 같은 스타일", "linear같은스타일", "linear 같은 디자인", "linear같은디자인", "linear 같은 분위기", "linear같은분위기", "linear 같은 색감", "linear같은색감", "linear 같은 룩", "linear같은룩", "linear 같은 테마", "linear같은테마", "linear 같은 감성", "linear같은감성", "linear 같은 컨셉", "linear같은컨셉", "linear 같은 ui", "linear같은ui", "linear 같은 ux", "linear같은ux", "linear처럼 해", "linear처럼해", "linear처럼 하자", "linear처럼하자", "linear처럼 만들", "linear처럼만들", "linear처럼 바꿔", "linear처럼바꿔", "linear처럼 바꾸", "linear처럼바꾸", "linear처럼 보이", "linear처럼보이", "linear처럼 꾸", "linear처럼꾸", "linear처럼 가자", "linear처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+      - { axis: color-hue, value: purple, strength: 1 }
+      - { axis: spacing, direction: tight, strength: 1 }
+    say:
+      ko: "배경을 아주 어둡게, 주된 색을 보라로, 간격을 촘촘하게 이해했어요."
+      en: "I read this as a very dark page with a purple accent and tight spacing."
+    confidence: high
+
+  # 관찰: 흰색 또는 짙은 회색 바탕 · 파랑 링크 · 옅은 회색 선 · 작은 글자로 촘촘함 · 색은 적음
+  - id: ref-github
+    kind: reference
+    label: 깃허브 같은 느낌
+    match:
+      ko: ["깃허브느낌", "깃허브 느낌", "깃허브스타일", "깃허브 스타일", "깃허브풍으로", "깃허브 풍으로", "깃허브참고", "깃허브 참고", "깃허브기준", "깃허브 기준", "깃허브디자인", "깃허브 디자인", "깃허브ui", "깃허브 ui", "깃허브ux", "깃허브 ux", "깃허브룩", "깃허브 룩", "깃허브분위기", "깃허브 분위기", "깃허브감성", "깃허브 감성", "깃허브의ui", "깃허브 의ui", "깃허브의디자인", "깃허브 의디자인", "깃허브테마", "깃허브 테마", "깃허브색감", "깃허브 색감", "깃허브컨셉", "깃허브 컨셉", "github느낌", "github 느낌", "github스타일", "github 스타일", "github풍으로", "github 풍으로", "github참고", "github 참고", "github기준", "github 기준", "github디자인", "github 디자인", "githubux", "github ux", "github룩", "github 룩", "github분위기", "github 분위기", "github감성", "github 감성", "github의디자인", "github 의디자인", "github테마", "github 테마", "github색감", "github 색감", "github컨셉", "github 컨셉", "it like github", "more like github", "something like github", "looks like github", "look like github", "feels like github", "feel like github", "similar to github", "inspired by github", "based on github", "same as github", "github style", "github vibe", "github look", "github feel", "github-like", "github-style", "github theme", "github colors", "github colours", "깃허브 같은 느낌", "깃허브같은느낌", "깃허브 같은 스타일", "깃허브같은스타일", "깃허브 같은 디자인", "깃허브같은디자인", "깃허브 같은 분위기", "깃허브같은분위기", "깃허브 같은 색감", "깃허브같은색감", "깃허브 같은 룩", "깃허브같은룩", "깃허브 같은 테마", "깃허브같은테마", "깃허브 같은 감성", "깃허브같은감성", "깃허브 같은 컨셉", "깃허브같은컨셉", "깃허브 같은 ui", "깃허브같은ui", "깃허브 같은 ux", "깃허브같은ux", "깃허브처럼 해", "깃허브처럼해", "깃허브처럼 하자", "깃허브처럼하자", "깃허브처럼 만들", "깃허브처럼만들", "깃허브처럼 바꿔", "깃허브처럼바꿔", "깃허브처럼 바꾸", "깃허브처럼바꾸", "깃허브처럼 보이", "깃허브처럼보이", "깃허브처럼 꾸", "깃허브처럼꾸", "깃허브처럼 가자", "깃허브처럼가자", "github 같은 느낌", "github같은느낌", "github 같은 스타일", "github같은스타일", "github 같은 디자인", "github같은디자인", "github 같은 분위기", "github같은분위기", "github 같은 색감", "github같은색감", "github 같은 룩", "github같은룩", "github 같은 테마", "github같은테마", "github 같은 감성", "github같은감성", "github 같은 컨셉", "github같은컨셉", "github 같은 ui", "github같은ui", "github 같은 ux", "github같은ux", "github처럼 해", "github처럼해", "github처럼 하자", "github처럼하자", "github처럼 만들", "github처럼만들", "github처럼 바꿔", "github처럼바꿔", "github처럼 바꾸", "github처럼바꾸", "github처럼 보이", "github처럼보이", "github처럼 꾸", "github처럼꾸", "github처럼 가자", "github처럼가자"]
+    reading:
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: spacing, direction: tight, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "색을 적게, 간격을 촘촘하게, 색을 차분하게 이해했어요."
+      en: "I read this as fewer colours, tighter spacing and muted colour."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 산호빛 분홍(#FF385C) 강조 · 큰 사진 · 둥근 사진과 버튼 · 카드에 옅은 그림자
+  - id: ref-airbnb
+    kind: reference
+    label: 에어비앤비 같은 느낌
+    cardNames: ["에어비앤비", "airbnb"]
+    match:
+      ko: ["에어비앤비느낌", "에어비앤비 느낌", "에어비앤비스타일", "에어비앤비 스타일", "에어비앤비풍으로", "에어비앤비 풍으로", "에어비앤비참고", "에어비앤비 참고", "에어비앤비기준", "에어비앤비 기준", "에어비앤비디자인", "에어비앤비 디자인", "에어비앤비ui", "에어비앤비 ui", "에어비앤비ux", "에어비앤비 ux", "에어비앤비룩", "에어비앤비 룩", "에어비앤비분위기", "에어비앤비 분위기", "에어비앤비감성", "에어비앤비 감성", "에어비앤비의ui", "에어비앤비 의ui", "에어비앤비의디자인", "에어비앤비 의디자인", "에어비앤비테마", "에어비앤비 테마", "에어비앤비색감", "에어비앤비 색감", "에어비앤비컨셉", "에어비앤비 컨셉", "airbnb느낌", "airbnb 느낌", "airbnb스타일", "airbnb 스타일", "airbnb풍으로", "airbnb 풍으로", "airbnb참고", "airbnb 참고", "airbnb기준", "airbnb 기준", "airbnb디자인", "airbnb 디자인", "airbnbui", "airbnb ui", "airbnbux", "airbnb ux", "airbnb룩", "airbnb 룩", "airbnb분위기", "airbnb 분위기", "airbnb감성", "airbnb 감성", "airbnb의ui", "airbnb 의ui", "airbnb의디자인", "airbnb 의디자인", "airbnb테마", "airbnb 테마", "airbnb색감", "airbnb 색감", "airbnb컨셉", "airbnb 컨셉", "it like airbnb", "more like airbnb", "something like airbnb", "looks like airbnb", "look like airbnb", "feels like airbnb", "feel like airbnb", "similar to airbnb", "inspired by airbnb", "based on airbnb", "same as airbnb", "airbnb style", "airbnb vibe", "airbnb look", "airbnb feel", "airbnb-like", "airbnb-style", "airbnb theme", "airbnb colors", "airbnb colours", "에어비앤비 같은 느낌", "에어비앤비같은느낌", "에어비앤비 같은 스타일", "에어비앤비같은스타일", "에어비앤비 같은 디자인", "에어비앤비같은디자인", "에어비앤비 같은 분위기", "에어비앤비같은분위기", "에어비앤비 같은 색감", "에어비앤비같은색감", "에어비앤비 같은 룩", "에어비앤비같은룩", "에어비앤비 같은 테마", "에어비앤비같은테마", "에어비앤비 같은 감성", "에어비앤비같은감성", "에어비앤비 같은 컨셉", "에어비앤비같은컨셉", "에어비앤비 같은 ui", "에어비앤비같은ui", "에어비앤비 같은 ux", "에어비앤비같은ux", "에어비앤비처럼 해", "에어비앤비처럼해", "에어비앤비처럼 하자", "에어비앤비처럼하자", "에어비앤비처럼 만들", "에어비앤비처럼만들", "에어비앤비처럼 바꿔", "에어비앤비처럼바꿔", "에어비앤비처럼 바꾸", "에어비앤비처럼바꾸", "에어비앤비처럼 보이", "에어비앤비처럼보이", "에어비앤비처럼 꾸", "에어비앤비처럼꾸", "에어비앤비처럼 가자", "에어비앤비처럼가자", "airbnb 같은 느낌", "airbnb같은느낌", "airbnb 같은 스타일", "airbnb같은스타일", "airbnb 같은 디자인", "airbnb같은디자인", "airbnb 같은 분위기", "airbnb같은분위기", "airbnb 같은 색감", "airbnb같은색감", "airbnb 같은 룩", "airbnb같은룩", "airbnb 같은 테마", "airbnb같은테마", "airbnb 같은 감성", "airbnb같은감성", "airbnb 같은 컨셉", "airbnb같은컨셉", "airbnb 같은 ui", "airbnb같은ui", "airbnb 같은 ux", "airbnb같은ux", "airbnb처럼 해", "airbnb처럼해", "airbnb처럼 하자", "airbnb처럼하자", "airbnb처럼 만들", "airbnb처럼만들", "airbnb처럼 바꿔", "airbnb처럼바꿔", "airbnb처럼 바꾸", "airbnb처럼바꾸", "airbnb처럼 보이", "airbnb처럼보이", "airbnb처럼 꾸", "airbnb처럼꾸", "airbnb처럼 가자", "airbnb처럼가자"]
+    reading:
+      - { axis: color-hue, value: coral, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+      - { axis: depth, direction: lifted, strength: 1 }
+    say:
+      ko: "주된 색을 산호색으로, 모서리를 둥글게, 떠 보이는 느낌으로 이해했어요."
+      en: "I read this as a coral main colour, rounder corners and raised cards."
+    confidence: high
+
+  # 관찰: 검정과 흰색만 쓰는 화면 · 굵은 고딕 제목 · 상품 사진 격자 · 장식이 거의 없음
+  - id: ref-musinsa
+    kind: reference
+    label: 무신사 같은 느낌
+    cardNames: ["무신사"]
+    match:
+      ko: ["무신사느낌", "무신사 느낌", "무신사스타일", "무신사 스타일", "무신사풍으로", "무신사 풍으로", "무신사참고", "무신사 참고", "무신사기준", "무신사 기준", "무신사디자인", "무신사 디자인", "무신사ui", "무신사 ui", "무신사ux", "무신사 ux", "무신사룩", "무신사 룩", "무신사분위기", "무신사 분위기", "무신사감성", "무신사 감성", "무신사의ui", "무신사 의ui", "무신사의디자인", "무신사 의디자인", "무신사테마", "무신사 테마", "무신사색감", "무신사 색감", "무신사컨셉", "무신사 컨셉", "무신사 같은 느낌", "무신사같은느낌", "무신사 같은 스타일", "무신사같은스타일", "무신사 같은 디자인", "무신사같은디자인", "무신사 같은 분위기", "무신사같은분위기", "무신사 같은 색감", "무신사같은색감", "무신사 같은 룩", "무신사같은룩", "무신사 같은 테마", "무신사같은테마", "무신사 같은 감성", "무신사같은감성", "무신사 같은 컨셉", "무신사같은컨셉", "무신사 같은 ui", "무신사같은ui", "무신사 같은 ux", "무신사같은ux", "무신사처럼 해", "무신사처럼해", "무신사처럼 하자", "무신사처럼하자", "무신사처럼 만들", "무신사처럼만들", "무신사처럼 바꿔", "무신사처럼바꿔", "무신사처럼 바꾸", "무신사처럼바꾸", "무신사처럼 보이", "무신사처럼보이", "무신사처럼 꾸", "무신사처럼꾸", "무신사처럼 가자", "무신사처럼가자"]
+    reading:
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+      - { axis: type-scale, direction: larger, strength: 1 }
+    say:
+      ko: "색을 적게, 대비를 또렷하게, 글자를 크게 이해했어요."
+      en: "I read this as fewer colours, crisper contrast and larger text."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 짙은 보라(#5F0080) 대표색 · 깔끔한 격자 · 그림자와 장식이 적음
+  - id: ref-kurly
+    kind: reference
+    label: 마켓컬리 같은 느낌
+    match:
+      ko: ["마켓컬리느낌", "마켓컬리 느낌", "마켓컬리스타일", "마켓컬리 스타일", "마켓컬리풍으로", "마켓컬리 풍으로", "마켓컬리참고", "마켓컬리 참고", "마켓컬리기준", "마켓컬리 기준", "마켓컬리디자인", "마켓컬리 디자인", "마켓컬리ui", "마켓컬리 ui", "마켓컬리ux", "마켓컬리 ux", "마켓컬리룩", "마켓컬리 룩", "마켓컬리분위기", "마켓컬리 분위기", "마켓컬리감성", "마켓컬리 감성", "마켓컬리의ui", "마켓컬리 의ui", "마켓컬리의디자인", "마켓컬리 의디자인", "마켓컬리테마", "마켓컬리 테마", "마켓컬리색감", "마켓컬리 색감", "마켓컬리컨셉", "마켓컬리 컨셉", "마켓컬리 같은 느낌", "마켓컬리같은느낌", "마켓컬리 같은 스타일", "마켓컬리같은스타일", "마켓컬리 같은 디자인", "마켓컬리같은디자인", "마켓컬리 같은 분위기", "마켓컬리같은분위기", "마켓컬리 같은 색감", "마켓컬리같은색감", "마켓컬리 같은 룩", "마켓컬리같은룩", "마켓컬리 같은 테마", "마켓컬리같은테마", "마켓컬리 같은 감성", "마켓컬리같은감성", "마켓컬리 같은 컨셉", "마켓컬리같은컨셉", "마켓컬리 같은 ui", "마켓컬리같은ui", "마켓컬리 같은 ux", "마켓컬리같은ux", "마켓컬리처럼 해", "마켓컬리처럼해", "마켓컬리처럼 하자", "마켓컬리처럼하자", "마켓컬리처럼 만들", "마켓컬리처럼만들", "마켓컬리처럼 바꿔", "마켓컬리처럼바꿔", "마켓컬리처럼 바꾸", "마켓컬리처럼바꾸", "마켓컬리처럼 보이", "마켓컬리처럼보이", "마켓컬리처럼 꾸", "마켓컬리처럼꾸", "마켓컬리처럼 가자", "마켓컬리처럼가자"]
+    reading:
+      - { axis: color-hue, value: purple, strength: 1 }
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "주된 색을 보라로, 색을 적게, 납작하게 이해했어요."
+      en: "I read this as a purple main colour, fewer colours and flat surfaces."
+    confidence: high
+
+  # 관찰: 베이지·흰색·옅은 갈색 바탕 · 장식 없는 평평한 화면 · 색이 차분하고 적음
+  - id: ref-muji
+    kind: reference
+    label: 무인양품 같은 느낌
+    match:
+      ko: ["무인양품느낌", "무인양품 느낌", "무인양품스타일", "무인양품 스타일", "무인양품풍으로", "무인양품 풍으로", "무인양품참고", "무인양품 참고", "무인양품기준", "무인양품 기준", "무인양품디자인", "무인양품 디자인", "무인양품ui", "무인양품 ui", "무인양품ux", "무인양품 ux", "무인양품룩", "무인양품 룩", "무인양품분위기", "무인양품 분위기", "무인양품감성", "무인양품 감성", "무인양품의ui", "무인양품 의ui", "무인양품의디자인", "무인양품 의디자인", "무인양품테마", "무인양품 테마", "무인양품색감", "무인양품 색감", "무인양품컨셉", "무인양품 컨셉", "muji느낌", "muji 느낌", "muji스타일", "muji 스타일", "muji풍으로", "muji 풍으로", "muji참고", "muji 참고", "muji기준", "muji 기준", "muji디자인", "muji 디자인", "mujiui", "muji ui", "mujiux", "muji ux", "muji룩", "muji 룩", "muji분위기", "muji 분위기", "muji감성", "muji 감성", "muji의ui", "muji 의ui", "muji의디자인", "muji 의디자인", "muji테마", "muji 테마", "muji색감", "muji 색감", "muji컨셉", "muji 컨셉", "it like muji", "more like muji", "something like muji", "looks like muji", "look like muji", "feels like muji", "feel like muji", "similar to muji", "inspired by muji", "based on muji", "same as muji", "muji style", "muji vibe", "muji look", "muji feel", "muji-like", "muji-style", "muji theme", "muji colors", "muji colours", "무인양품 같은 느낌", "무인양품같은느낌", "무인양품 같은 스타일", "무인양품같은스타일", "무인양품 같은 디자인", "무인양품같은디자인", "무인양품 같은 분위기", "무인양품같은분위기", "무인양품 같은 색감", "무인양품같은색감", "무인양품 같은 룩", "무인양품같은룩", "무인양품 같은 테마", "무인양품같은테마", "무인양품 같은 감성", "무인양품같은감성", "무인양품 같은 컨셉", "무인양품같은컨셉", "무인양품 같은 ui", "무인양품같은ui", "무인양품 같은 ux", "무인양품같은ux", "무인양품처럼 해", "무인양품처럼해", "무인양품처럼 하자", "무인양품처럼하자", "무인양품처럼 만들", "무인양품처럼만들", "무인양품처럼 바꿔", "무인양품처럼바꿔", "무인양품처럼 바꾸", "무인양품처럼바꾸", "무인양품처럼 보이", "무인양품처럼보이", "무인양품처럼 꾸", "무인양품처럼꾸", "무인양품처럼 가자", "무인양품처럼가자", "muji 같은 느낌", "muji같은느낌", "muji 같은 스타일", "muji같은스타일", "muji 같은 디자인", "muji같은디자인", "muji 같은 분위기", "muji같은분위기", "muji 같은 색감", "muji같은색감", "muji 같은 룩", "muji같은룩", "muji 같은 테마", "muji같은테마", "muji 같은 감성", "muji같은감성", "muji 같은 컨셉", "muji같은컨셉", "muji 같은 ui", "muji같은ui", "muji 같은 ux", "muji같은ux", "muji처럼 해", "muji처럼해", "muji처럼 하자", "muji처럼하자", "muji처럼 만들", "muji처럼만들", "muji처럼 바꿔", "muji처럼바꿔", "muji처럼 바꾸", "muji처럼바꾸", "muji처럼 보이", "muji처럼보이", "muji처럼 꾸", "muji처럼꾸", "muji처럼 가자", "muji처럼가자"]
+    reading:
+      - { axis: color-hue, value: beige, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "주된 색을 베이지로, 색을 차분하게, 납작하게 이해했어요."
+      en: "I read this as a beige main colour, muted colour and flat surfaces."
+    confidence: high
+
+  # 관찰: 검정과 흰색 바탕 · 화면을 가득 채우는 큰 사진 · 아주 큰 굵은 제목 · 색은 거의 없음
+  - id: ref-nike
+    kind: reference
+    label: 나이키 같은 느낌
+    match:
+      ko: ["나이키느낌", "나이키 느낌", "나이키스타일", "나이키 스타일", "나이키풍으로", "나이키 풍으로", "나이키참고", "나이키 참고", "나이키기준", "나이키 기준", "나이키디자인", "나이키 디자인", "나이키ui", "나이키 ui", "나이키ux", "나이키 ux", "나이키룩", "나이키 룩", "나이키분위기", "나이키 분위기", "나이키감성", "나이키 감성", "나이키의ui", "나이키 의ui", "나이키의디자인", "나이키 의디자인", "나이키테마", "나이키 테마", "나이키색감", "나이키 색감", "나이키컨셉", "나이키 컨셉", "nike느낌", "nike 느낌", "nike스타일", "nike 스타일", "nike풍으로", "nike 풍으로", "nike참고", "nike 참고", "nike기준", "nike 기준", "nike디자인", "nike 디자인", "nikeui", "nike ui", "nikeux", "nike ux", "nike룩", "nike 룩", "nike분위기", "nike 분위기", "nike감성", "nike 감성", "nike의ui", "nike 의ui", "nike의디자인", "nike 의디자인", "nike테마", "nike 테마", "nike색감", "nike 색감", "nike컨셉", "nike 컨셉", "it like nike", "more like nike", "something like nike", "looks like nike", "look like nike", "feels like nike", "feel like nike", "similar to nike", "inspired by nike", "based on nike", "same as nike", "nike style", "nike vibe", "nike look", "nike feel", "nike-like", "nike-style", "nike theme", "nike colors", "nike colours", "나이키 같은 느낌", "나이키같은느낌", "나이키 같은 스타일", "나이키같은스타일", "나이키 같은 디자인", "나이키같은디자인", "나이키 같은 분위기", "나이키같은분위기", "나이키 같은 색감", "나이키같은색감", "나이키 같은 룩", "나이키같은룩", "나이키 같은 테마", "나이키같은테마", "나이키 같은 감성", "나이키같은감성", "나이키 같은 컨셉", "나이키같은컨셉", "나이키 같은 ui", "나이키같은ui", "나이키 같은 ux", "나이키같은ux", "나이키처럼 해", "나이키처럼해", "나이키처럼 하자", "나이키처럼하자", "나이키처럼 만들", "나이키처럼만들", "나이키처럼 바꿔", "나이키처럼바꿔", "나이키처럼 바꾸", "나이키처럼바꾸", "나이키처럼 보이", "나이키처럼보이", "나이키처럼 꾸", "나이키처럼꾸", "나이키처럼 가자", "나이키처럼가자", "nike 같은 느낌", "nike같은느낌", "nike 같은 스타일", "nike같은스타일", "nike 같은 디자인", "nike같은디자인", "nike 같은 분위기", "nike같은분위기", "nike 같은 색감", "nike같은색감", "nike 같은 룩", "nike같은룩", "nike 같은 테마", "nike같은테마", "nike 같은 감성", "nike같은감성", "nike 같은 컨셉", "nike같은컨셉", "nike 같은 ui", "nike같은ui", "nike 같은 ux", "nike같은ux", "nike처럼 해", "nike처럼해", "nike처럼 하자", "nike처럼하자", "nike처럼 만들", "nike처럼만들", "nike처럼 바꿔", "nike처럼바꿔", "nike처럼 바꾸", "nike처럼바꾸", "nike처럼 보이", "nike처럼보이", "nike처럼 꾸", "nike처럼꾸", "nike처럼 가자", "nike처럼가자"]
+    reading:
+      - { axis: contrast, direction: crisp, strength: 2 }
+      - { axis: type-scale, direction: larger, strength: 2 }
+    say:
+      ko: "대비를 아주 또렷하게, 글자를 아주 크게 이해했어요."
+      en: "I read this as very crisp contrast and very large text."
+    confidence: high
+
+  # 관찰: 화면을 가득 채우는 큰 사진 · 가늘고 넓은 글자 · 흰색과 검정뿐인 색 · 그림자 없음 · 여백이 아주 넓음
+  - id: ref-tesla
+    kind: reference
+    label: 테슬라 같은 느낌
+    match:
+      ko: ["테슬라느낌", "테슬라 느낌", "테슬라스타일", "테슬라 스타일", "테슬라풍으로", "테슬라 풍으로", "테슬라참고", "테슬라 참고", "테슬라기준", "테슬라 기준", "테슬라디자인", "테슬라 디자인", "테슬라ui", "테슬라 ui", "테슬라ux", "테슬라 ux", "테슬라룩", "테슬라 룩", "테슬라분위기", "테슬라 분위기", "테슬라감성", "테슬라 감성", "테슬라의ui", "테슬라 의ui", "테슬라의디자인", "테슬라 의디자인", "테슬라테마", "테슬라 테마", "테슬라색감", "테슬라 색감", "테슬라컨셉", "테슬라 컨셉", "tesla느낌", "tesla 느낌", "tesla스타일", "tesla 스타일", "tesla풍으로", "tesla 풍으로", "tesla참고", "tesla 참고", "tesla기준", "tesla 기준", "tesla디자인", "tesla 디자인", "teslaui", "tesla ui", "teslaux", "tesla ux", "tesla룩", "tesla 룩", "tesla분위기", "tesla 분위기", "tesla감성", "tesla 감성", "tesla의ui", "tesla 의ui", "tesla의디자인", "tesla 의디자인", "tesla테마", "tesla 테마", "tesla색감", "tesla 색감", "tesla컨셉", "tesla 컨셉", "it like tesla", "more like tesla", "something like tesla", "looks like tesla", "look like tesla", "feels like tesla", "feel like tesla", "similar to tesla", "inspired by tesla", "based on tesla", "same as tesla", "tesla style", "tesla vibe", "tesla look", "tesla feel", "tesla-like", "tesla-style", "tesla theme", "tesla colors", "tesla colours", "테슬라 같은 느낌", "테슬라같은느낌", "테슬라 같은 스타일", "테슬라같은스타일", "테슬라 같은 디자인", "테슬라같은디자인", "테슬라 같은 분위기", "테슬라같은분위기", "테슬라 같은 색감", "테슬라같은색감", "테슬라 같은 룩", "테슬라같은룩", "테슬라 같은 테마", "테슬라같은테마", "테슬라 같은 감성", "테슬라같은감성", "테슬라 같은 컨셉", "테슬라같은컨셉", "테슬라 같은 ui", "테슬라같은ui", "테슬라 같은 ux", "테슬라같은ux", "테슬라처럼 해", "테슬라처럼해", "테슬라처럼 하자", "테슬라처럼하자", "테슬라처럼 만들", "테슬라처럼만들", "테슬라처럼 바꿔", "테슬라처럼바꿔", "테슬라처럼 바꾸", "테슬라처럼바꾸", "테슬라처럼 보이", "테슬라처럼보이", "테슬라처럼 꾸", "테슬라처럼꾸", "테슬라처럼 가자", "테슬라처럼가자", "tesla 같은 느낌", "tesla같은느낌", "tesla 같은 스타일", "tesla같은스타일", "tesla 같은 디자인", "tesla같은디자인", "tesla 같은 분위기", "tesla같은분위기", "tesla 같은 색감", "tesla같은색감", "tesla 같은 룩", "tesla같은룩", "tesla 같은 테마", "tesla같은테마", "tesla 같은 감성", "tesla같은감성", "tesla 같은 컨셉", "tesla같은컨셉", "tesla 같은 ui", "tesla같은ui", "tesla 같은 ux", "tesla같은ux", "tesla처럼 해", "tesla처럼해", "tesla처럼 하자", "tesla처럼하자", "tesla처럼 만들", "tesla처럼만들", "tesla처럼 바꿔", "tesla처럼바꿔", "tesla처럼 바꾸", "tesla처럼바꾸", "tesla처럼 보이", "tesla처럼보이", "tesla처럼 꾸", "tesla처럼꾸", "tesla처럼 가자", "tesla처럼가자"]
+    reading:
+      - { axis: spacing, direction: airy, strength: 2 }
+      - { axis: palette-count, direction: fewer, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "여백을 아주 넓게, 색을 적게, 납작하게 이해했어요."
+      en: "I read this as very roomy spacing, fewer colours and flat surfaces."
+    confidence: high
+
+  # 관찰: 짙은 회색 바탕(#313338) · 청보라(#5865F2) 강조 · 둥근 버튼과 카드
+  - id: ref-discord
+    kind: reference
+    label: 디스코드 같은 느낌
+    match:
+      ko: ["디스코드느낌", "디스코드 느낌", "디스코드스타일", "디스코드 스타일", "디스코드풍으로", "디스코드 풍으로", "디스코드참고", "디스코드 참고", "디스코드기준", "디스코드 기준", "디스코드디자인", "디스코드 디자인", "디스코드ui", "디스코드 ui", "디스코드ux", "디스코드 ux", "디스코드룩", "디스코드 룩", "디스코드분위기", "디스코드 분위기", "디스코드감성", "디스코드 감성", "디스코드의ui", "디스코드 의ui", "디스코드의디자인", "디스코드 의디자인", "디스코드테마", "디스코드 테마", "디스코드색감", "디스코드 색감", "디스코드컨셉", "디스코드 컨셉", "discord느낌", "discord 느낌", "discord스타일", "discord 스타일", "discord풍으로", "discord 풍으로", "discord참고", "discord 참고", "discord기준", "discord 기준", "discord디자인", "discord 디자인", "discordui", "discord ui", "discordux", "discord ux", "discord룩", "discord 룩", "discord분위기", "discord 분위기", "discord감성", "discord 감성", "discord의ui", "discord 의ui", "discord의디자인", "discord 의디자인", "discord테마", "discord 테마", "discord색감", "discord 색감", "discord컨셉", "discord 컨셉", "it like discord", "more like discord", "something like discord", "looks like discord", "look like discord", "feels like discord", "feel like discord", "similar to discord", "inspired by discord", "based on discord", "same as discord", "discord style", "discord vibe", "discord look", "discord feel", "discord-like", "discord-style", "discord theme", "discord colors", "discord colours", "디스코드 같은 느낌", "디스코드같은느낌", "디스코드 같은 스타일", "디스코드같은스타일", "디스코드 같은 디자인", "디스코드같은디자인", "디스코드 같은 분위기", "디스코드같은분위기", "디스코드 같은 색감", "디스코드같은색감", "디스코드 같은 룩", "디스코드같은룩", "디스코드 같은 테마", "디스코드같은테마", "디스코드 같은 감성", "디스코드같은감성", "디스코드 같은 컨셉", "디스코드같은컨셉", "디스코드 같은 ui", "디스코드같은ui", "디스코드 같은 ux", "디스코드같은ux", "디스코드처럼 해", "디스코드처럼해", "디스코드처럼 하자", "디스코드처럼하자", "디스코드처럼 만들", "디스코드처럼만들", "디스코드처럼 바꿔", "디스코드처럼바꿔", "디스코드처럼 바꾸", "디스코드처럼바꾸", "디스코드처럼 보이", "디스코드처럼보이", "디스코드처럼 꾸", "디스코드처럼꾸", "디스코드처럼 가자", "디스코드처럼가자", "discord 같은 느낌", "discord같은느낌", "discord 같은 스타일", "discord같은스타일", "discord 같은 디자인", "discord같은디자인", "discord 같은 분위기", "discord같은분위기", "discord 같은 색감", "discord같은색감", "discord 같은 룩", "discord같은룩", "discord 같은 테마", "discord같은테마", "discord 같은 감성", "discord같은감성", "discord 같은 컨셉", "discord같은컨셉", "discord 같은 ui", "discord같은ui", "discord 같은 ux", "discord같은ux", "discord처럼 해", "discord처럼해", "discord처럼 하자", "discord처럼하자", "discord처럼 만들", "discord처럼만들", "discord처럼 바꿔", "discord처럼바꿔", "discord처럼 바꾸", "discord처럼바꾸", "discord처럼 보이", "discord처럼보이", "discord처럼 꾸", "discord처럼꾸", "discord처럼 가자", "discord처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 1 }
+      - { axis: color-hue, value: purple, strength: 1 }
+      - { axis: shape, direction: round, strength: 1 }
+    say:
+      ko: "배경을 어둡게, 주된 색을 보라로, 모서리를 둥글게 이해했어요."
+      en: "I read this as a dark page with a purple accent and rounder corners."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 파랑(#0061FF) 강조 · 여러 색으로 칠한 일러스트 · 여백이 넓음
+  - id: ref-dropbox
+    kind: reference
+    label: 드롭박스 같은 느낌
+    match:
+      ko: ["드롭박스느낌", "드롭박스 느낌", "드롭박스스타일", "드롭박스 스타일", "드롭박스풍으로", "드롭박스 풍으로", "드롭박스참고", "드롭박스 참고", "드롭박스기준", "드롭박스 기준", "드롭박스디자인", "드롭박스 디자인", "드롭박스ui", "드롭박스 ui", "드롭박스ux", "드롭박스 ux", "드롭박스룩", "드롭박스 룩", "드롭박스분위기", "드롭박스 분위기", "드롭박스감성", "드롭박스 감성", "드롭박스의ui", "드롭박스 의ui", "드롭박스의디자인", "드롭박스 의디자인", "드롭박스테마", "드롭박스 테마", "드롭박스색감", "드롭박스 색감", "드롭박스컨셉", "드롭박스 컨셉", "dropbox느낌", "dropbox 느낌", "dropbox스타일", "dropbox 스타일", "dropbox풍으로", "dropbox 풍으로", "dropbox참고", "dropbox 참고", "dropbox기준", "dropbox 기준", "dropbox디자인", "dropbox 디자인", "dropboxui", "dropbox ui", "dropboxux", "dropbox ux", "dropbox룩", "dropbox 룩", "dropbox분위기", "dropbox 분위기", "dropbox감성", "dropbox 감성", "dropbox의ui", "dropbox 의ui", "dropbox의디자인", "dropbox 의디자인", "dropbox테마", "dropbox 테마", "dropbox색감", "dropbox 색감", "dropbox컨셉", "dropbox 컨셉", "it like dropbox", "more like dropbox", "something like dropbox", "looks like dropbox", "look like dropbox", "feels like dropbox", "feel like dropbox", "similar to dropbox", "inspired by dropbox", "based on dropbox", "same as dropbox", "dropbox style", "dropbox vibe", "dropbox look", "dropbox feel", "dropbox-like", "dropbox-style", "dropbox theme", "dropbox colors", "dropbox colours", "드롭박스 같은 느낌", "드롭박스같은느낌", "드롭박스 같은 스타일", "드롭박스같은스타일", "드롭박스 같은 디자인", "드롭박스같은디자인", "드롭박스 같은 분위기", "드롭박스같은분위기", "드롭박스 같은 색감", "드롭박스같은색감", "드롭박스 같은 룩", "드롭박스같은룩", "드롭박스 같은 테마", "드롭박스같은테마", "드롭박스 같은 감성", "드롭박스같은감성", "드롭박스 같은 컨셉", "드롭박스같은컨셉", "드롭박스 같은 ui", "드롭박스같은ui", "드롭박스 같은 ux", "드롭박스같은ux", "드롭박스처럼 해", "드롭박스처럼해", "드롭박스처럼 하자", "드롭박스처럼하자", "드롭박스처럼 만들", "드롭박스처럼만들", "드롭박스처럼 바꿔", "드롭박스처럼바꿔", "드롭박스처럼 바꾸", "드롭박스처럼바꾸", "드롭박스처럼 보이", "드롭박스처럼보이", "드롭박스처럼 꾸", "드롭박스처럼꾸", "드롭박스처럼 가자", "드롭박스처럼가자", "dropbox 같은 느낌", "dropbox같은느낌", "dropbox 같은 스타일", "dropbox같은스타일", "dropbox 같은 디자인", "dropbox같은디자인", "dropbox 같은 분위기", "dropbox같은분위기", "dropbox 같은 색감", "dropbox같은색감", "dropbox 같은 룩", "dropbox같은룩", "dropbox 같은 테마", "dropbox같은테마", "dropbox 같은 감성", "dropbox같은감성", "dropbox 같은 컨셉", "dropbox같은컨셉", "dropbox 같은 ui", "dropbox같은ui", "dropbox 같은 ux", "dropbox같은ux", "dropbox처럼 해", "dropbox처럼해", "dropbox처럼 하자", "dropbox처럼하자", "dropbox처럼 만들", "dropbox처럼만들", "dropbox처럼 바꿔", "dropbox처럼바꿔", "dropbox처럼 바꾸", "dropbox처럼바꾸", "dropbox처럼 보이", "dropbox처럼보이", "dropbox처럼 꾸", "dropbox처럼꾸", "dropbox처럼 가자", "dropbox처럼가자"]
+    reading:
+      - { axis: color-hue, value: blue, strength: 1 }
+      - { axis: palette-count, direction: more, strength: 1 }
+      - { axis: spacing, direction: airy, strength: 1 }
+    say:
+      ko: "주된 색을 파랑으로, 색을 여러 가지로, 여백을 넓게 이해했어요."
+      en: "I read this as a blue main colour, more colours and roomy spacing."
+    confidence: high
+
+  # 관찰: 크림색(#fdf6e3) 또는 짙은 청록(#002b36) 바탕 · 글자와 배경의 대비를 일부러 낮춤 · 흐린 포인트색
+  - id: ref-solarized
+    kind: reference
+    label: solarized 색감
+    match:
+      ko: ["솔라라이즈드느낌", "솔라라이즈드 느낌", "솔라라이즈드스타일", "솔라라이즈드 스타일", "솔라라이즈드풍으로", "솔라라이즈드 풍으로", "솔라라이즈드참고", "솔라라이즈드 참고", "솔라라이즈드기준", "솔라라이즈드 기준", "솔라라이즈드디자인", "솔라라이즈드 디자인", "솔라라이즈드ui", "솔라라이즈드 ui", "솔라라이즈드ux", "솔라라이즈드 ux", "솔라라이즈드룩", "솔라라이즈드 룩", "솔라라이즈드분위기", "솔라라이즈드 분위기", "솔라라이즈드감성", "솔라라이즈드 감성", "솔라라이즈드의ui", "솔라라이즈드 의ui", "솔라라이즈드의디자인", "솔라라이즈드 의디자인", "솔라라이즈드테마", "솔라라이즈드 테마", "솔라라이즈드색감", "솔라라이즈드 색감", "솔라라이즈드컨셉", "솔라라이즈드 컨셉", "솔라라이즈드", "solarized느낌", "solarized 느낌", "solarized스타일", "solarized 스타일", "solarized풍으로", "solarized 풍으로", "solarized참고", "solarized 참고", "solarized기준", "solarized 기준", "solarized디자인", "solarized 디자인", "solarizedui", "solarized ui", "solarizedux", "solarized ux", "solarized룩", "solarized 룩", "solarized분위기", "solarized 분위기", "solarized감성", "solarized 감성", "solarized의ui", "solarized 의ui", "solarized의디자인", "solarized 의디자인", "solarized테마", "solarized 테마", "solarized색감", "solarized 색감", "solarized컨셉", "solarized 컨셉", "solarized", "it like solarized", "more like solarized", "something like solarized", "looks like solarized", "look like solarized", "feels like solarized", "feel like solarized", "similar to solarized", "inspired by solarized", "based on solarized", "same as solarized", "solarized style", "solarized vibe", "solarized look", "solarized feel", "solarized-like", "solarized-style", "solarized theme", "solarized colors", "solarized colours", "솔라라이즈드 같은 느낌", "솔라라이즈드같은느낌", "솔라라이즈드 같은 스타일", "솔라라이즈드같은스타일", "솔라라이즈드 같은 디자인", "솔라라이즈드같은디자인", "솔라라이즈드 같은 분위기", "솔라라이즈드같은분위기", "솔라라이즈드 같은 색감", "솔라라이즈드같은색감", "솔라라이즈드 같은 룩", "솔라라이즈드같은룩", "솔라라이즈드 같은 테마", "솔라라이즈드같은테마", "솔라라이즈드 같은 감성", "솔라라이즈드같은감성", "솔라라이즈드 같은 컨셉", "솔라라이즈드같은컨셉", "솔라라이즈드 같은 ui", "솔라라이즈드같은ui", "솔라라이즈드 같은 ux", "솔라라이즈드같은ux", "솔라라이즈드처럼 해", "솔라라이즈드처럼해", "솔라라이즈드처럼 하자", "솔라라이즈드처럼하자", "솔라라이즈드처럼 만들", "솔라라이즈드처럼만들", "솔라라이즈드처럼 바꿔", "솔라라이즈드처럼바꿔", "솔라라이즈드처럼 바꾸", "솔라라이즈드처럼바꾸", "솔라라이즈드처럼 보이", "솔라라이즈드처럼보이", "솔라라이즈드처럼 꾸", "솔라라이즈드처럼꾸", "솔라라이즈드처럼 가자", "솔라라이즈드처럼가자", "solarized 같은 느낌", "solarized같은느낌", "solarized 같은 스타일", "solarized같은스타일", "solarized 같은 디자인", "solarized같은디자인", "solarized 같은 분위기", "solarized같은분위기", "solarized 같은 색감", "solarized같은색감", "solarized 같은 룩", "solarized같은룩", "solarized 같은 테마", "solarized같은테마", "solarized 같은 감성", "solarized같은감성", "solarized 같은 컨셉", "solarized같은컨셉", "solarized 같은 ui", "solarized같은ui", "solarized 같은 ux", "solarized같은ux", "solarized처럼 해", "solarized처럼해", "solarized처럼 하자", "solarized처럼하자", "solarized처럼 만들", "solarized처럼만들", "solarized처럼 바꿔", "solarized처럼바꿔", "solarized처럼 바꾸", "solarized처럼바꾸", "solarized처럼 보이", "solarized처럼보이", "solarized처럼 꾸", "solarized처럼꾸", "solarized처럼 가자", "solarized처럼가자"]
+    reading:
+      - { axis: contrast, direction: soft, strength: 1 }
+      - { axis: color-saturation, direction: muted, strength: 1 }
+    say:
+      ko: "대비를 은은하게, 색을 흐리게 이해했어요."
+      en: "I read this as soft contrast and muted colour."
+    confidence: high
+
+  # 관찰: 자주빛 회색 바탕(#282A36) · 분홍(#FF79C6)·연두(#50FA7B)·하늘색 형광에 가까운 포인트
+  - id: ref-dracula
+    kind: reference
+    label: dracula 색감
+    match:
+      ko: ["드라큘라느낌", "드라큘라 느낌", "드라큘라스타일", "드라큘라 스타일", "드라큘라풍으로", "드라큘라 풍으로", "드라큘라참고", "드라큘라 참고", "드라큘라기준", "드라큘라 기준", "드라큘라디자인", "드라큘라 디자인", "드라큘라ui", "드라큘라 ui", "드라큘라ux", "드라큘라 ux", "드라큘라룩", "드라큘라 룩", "드라큘라분위기", "드라큘라 분위기", "드라큘라감성", "드라큘라 감성", "드라큘라의ui", "드라큘라 의ui", "드라큘라의디자인", "드라큘라 의디자인", "드라큘라테마", "드라큘라 테마", "드라큘라색감", "드라큘라 색감", "드라큘라컨셉", "드라큘라 컨셉", "dracula느낌", "dracula 느낌", "dracula스타일", "dracula 스타일", "dracula풍으로", "dracula 풍으로", "dracula참고", "dracula 참고", "dracula기준", "dracula 기준", "dracula디자인", "dracula 디자인", "draculaui", "dracula ui", "draculaux", "dracula ux", "dracula룩", "dracula 룩", "dracula분위기", "dracula 분위기", "dracula감성", "dracula 감성", "dracula의ui", "dracula 의ui", "dracula의디자인", "dracula 의디자인", "dracula테마", "dracula 테마", "dracula색감", "dracula 색감", "dracula컨셉", "dracula 컨셉", "dracula", "it like dracula", "more like dracula", "something like dracula", "looks like dracula", "look like dracula", "feels like dracula", "feel like dracula", "similar to dracula", "inspired by dracula", "based on dracula", "same as dracula", "dracula style", "dracula vibe", "dracula look", "dracula feel", "dracula-like", "dracula-style", "dracula theme", "dracula colors", "dracula colours", "드라큘라 같은 느낌", "드라큘라같은느낌", "드라큘라 같은 스타일", "드라큘라같은스타일", "드라큘라 같은 디자인", "드라큘라같은디자인", "드라큘라 같은 분위기", "드라큘라같은분위기", "드라큘라 같은 색감", "드라큘라같은색감", "드라큘라 같은 룩", "드라큘라같은룩", "드라큘라 같은 테마", "드라큘라같은테마", "드라큘라 같은 감성", "드라큘라같은감성", "드라큘라 같은 컨셉", "드라큘라같은컨셉", "드라큘라 같은 ui", "드라큘라같은ui", "드라큘라 같은 ux", "드라큘라같은ux", "드라큘라처럼 해", "드라큘라처럼해", "드라큘라처럼 하자", "드라큘라처럼하자", "드라큘라처럼 만들", "드라큘라처럼만들", "드라큘라처럼 바꿔", "드라큘라처럼바꿔", "드라큘라처럼 바꾸", "드라큘라처럼바꾸", "드라큘라처럼 보이", "드라큘라처럼보이", "드라큘라처럼 꾸", "드라큘라처럼꾸", "드라큘라처럼 가자", "드라큘라처럼가자", "dracula 같은 느낌", "dracula같은느낌", "dracula 같은 스타일", "dracula같은스타일", "dracula 같은 디자인", "dracula같은디자인", "dracula 같은 분위기", "dracula같은분위기", "dracula 같은 색감", "dracula같은색감", "dracula 같은 룩", "dracula같은룩", "dracula 같은 테마", "dracula같은테마", "dracula 같은 감성", "dracula같은감성", "dracula 같은 컨셉", "dracula같은컨셉", "dracula 같은 ui", "dracula같은ui", "dracula 같은 ux", "dracula같은ux", "dracula처럼 해", "dracula처럼해", "dracula처럼 하자", "dracula처럼하자", "dracula처럼 만들", "dracula처럼만들", "dracula처럼 바꿔", "dracula처럼바꿔", "dracula처럼 바꾸", "dracula처럼바꾸", "dracula처럼 보이", "dracula처럼보이", "dracula처럼 꾸", "dracula처럼꾸", "dracula처럼 가자", "dracula처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 1 }
+      - { axis: color-hue, value: purple, strength: 1 }
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+    say:
+      ko: "배경을 어둡게, 주된 색을 보라로, 색을 쨍하게 이해했어요."
+      en: "I read this as a dark page with a purple tint and vivid accents."
+    confidence: high
+
+  # 관찰: 올리브빛 짙은 회색 바탕(#272822) · 분홍(#F92672)·연두(#A6E22E)·노랑(#E6DB74) 형광에 가까운 포인트
+  - id: ref-monokai
+    kind: reference
+    label: monokai 색감
+    match:
+      ko: ["모노카이느낌", "모노카이 느낌", "모노카이스타일", "모노카이 스타일", "모노카이풍으로", "모노카이 풍으로", "모노카이참고", "모노카이 참고", "모노카이기준", "모노카이 기준", "모노카이디자인", "모노카이 디자인", "모노카이ui", "모노카이 ui", "모노카이ux", "모노카이 ux", "모노카이룩", "모노카이 룩", "모노카이분위기", "모노카이 분위기", "모노카이감성", "모노카이 감성", "모노카이의ui", "모노카이 의ui", "모노카이의디자인", "모노카이 의디자인", "모노카이테마", "모노카이 테마", "모노카이색감", "모노카이 색감", "모노카이컨셉", "모노카이 컨셉", "모노카이", "monokai느낌", "monokai 느낌", "monokai스타일", "monokai 스타일", "monokai풍으로", "monokai 풍으로", "monokai참고", "monokai 참고", "monokai기준", "monokai 기준", "monokai디자인", "monokai 디자인", "monokaiui", "monokai ui", "monokaiux", "monokai ux", "monokai룩", "monokai 룩", "monokai분위기", "monokai 분위기", "monokai감성", "monokai 감성", "monokai의ui", "monokai 의ui", "monokai의디자인", "monokai 의디자인", "monokai테마", "monokai 테마", "monokai색감", "monokai 색감", "monokai컨셉", "monokai 컨셉", "monokai", "it like monokai", "more like monokai", "something like monokai", "looks like monokai", "look like monokai", "feels like monokai", "feel like monokai", "similar to monokai", "inspired by monokai", "based on monokai", "same as monokai", "monokai style", "monokai vibe", "monokai look", "monokai feel", "monokai-like", "monokai-style", "monokai theme", "monokai colors", "monokai colours", "모노카이 같은 느낌", "모노카이같은느낌", "모노카이 같은 스타일", "모노카이같은스타일", "모노카이 같은 디자인", "모노카이같은디자인", "모노카이 같은 분위기", "모노카이같은분위기", "모노카이 같은 색감", "모노카이같은색감", "모노카이 같은 룩", "모노카이같은룩", "모노카이 같은 테마", "모노카이같은테마", "모노카이 같은 감성", "모노카이같은감성", "모노카이 같은 컨셉", "모노카이같은컨셉", "모노카이 같은 ui", "모노카이같은ui", "모노카이 같은 ux", "모노카이같은ux", "모노카이처럼 해", "모노카이처럼해", "모노카이처럼 하자", "모노카이처럼하자", "모노카이처럼 만들", "모노카이처럼만들", "모노카이처럼 바꿔", "모노카이처럼바꿔", "모노카이처럼 바꾸", "모노카이처럼바꾸", "모노카이처럼 보이", "모노카이처럼보이", "모노카이처럼 꾸", "모노카이처럼꾸", "모노카이처럼 가자", "모노카이처럼가자", "monokai 같은 느낌", "monokai같은느낌", "monokai 같은 스타일", "monokai같은스타일", "monokai 같은 디자인", "monokai같은디자인", "monokai 같은 분위기", "monokai같은분위기", "monokai 같은 색감", "monokai같은색감", "monokai 같은 룩", "monokai같은룩", "monokai 같은 테마", "monokai같은테마", "monokai 같은 감성", "monokai같은감성", "monokai 같은 컨셉", "monokai같은컨셉", "monokai 같은 ui", "monokai같은ui", "monokai 같은 ux", "monokai같은ux", "monokai처럼 해", "monokai처럼해", "monokai처럼 하자", "monokai처럼하자", "monokai처럼 만들", "monokai처럼만들", "monokai처럼 바꿔", "monokai처럼바꿔", "monokai처럼 바꾸", "monokai처럼바꾸", "monokai처럼 보이", "monokai처럼보이", "monokai처럼 꾸", "monokai처럼꾸", "monokai처럼 가자", "monokai처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 1 }
+      - { axis: color-saturation, direction: vivid, strength: 1 }
+      - { axis: contrast, direction: crisp, strength: 1 }
+    say:
+      ko: "배경을 어둡게, 색을 쨍하게, 대비를 또렷하게 이해했어요."
+      en: "I read this as a dark page with vivid accents and crisp contrast."
+    confidence: high
+
+  # 관찰: 검정 바탕 · 고정폭 글꼴 · 초록 또는 호박색 글자 · 장식 없음
+  - id: ref-terminal
+    kind: reference
+    label: 터미널 같은 느낌
+    match:
+      ko: ["터미널느낌", "터미널 느낌", "터미널스타일", "터미널 스타일", "터미널풍으로", "터미널 풍으로", "터미널참고", "터미널 참고", "터미널기준", "터미널 기준", "터미널디자인", "터미널 디자인", "터미널ui", "터미널 ui", "터미널ux", "터미널 ux", "터미널룩", "터미널 룩", "터미널분위기", "터미널 분위기", "터미널감성", "터미널 감성", "터미널의ui", "터미널 의ui", "터미널의디자인", "터미널 의디자인", "터미널테마", "터미널 테마", "터미널색감", "터미널 색감", "터미널컨셉", "터미널 컨셉", "terminal느낌", "terminal 느낌", "terminal스타일", "terminal 스타일", "terminal풍으로", "terminal 풍으로", "terminal참고", "terminal 참고", "terminal기준", "terminal 기준", "terminal디자인", "terminal 디자인", "terminalux", "terminal ux", "terminal룩", "terminal 룩", "terminal분위기", "terminal 분위기", "terminal감성", "terminal 감성", "terminal의디자인", "terminal 의디자인", "terminal테마", "terminal 테마", "terminal색감", "terminal 색감", "terminal컨셉", "terminal 컨셉", "it like terminal", "more like terminal", "something like terminal", "looks like terminal", "look like terminal", "feels like terminal", "feel like terminal", "similar to terminal", "inspired by terminal", "based on terminal", "same as terminal", "terminal style", "terminal vibe", "terminal look", "terminal feel", "terminal-like", "terminal-style", "terminal theme", "terminal colors", "terminal colours", "터미널 같은 느낌", "터미널같은느낌", "터미널 같은 스타일", "터미널같은스타일", "터미널 같은 디자인", "터미널같은디자인", "터미널 같은 분위기", "터미널같은분위기", "터미널 같은 색감", "터미널같은색감", "터미널 같은 룩", "터미널같은룩", "터미널 같은 테마", "터미널같은테마", "터미널 같은 감성", "터미널같은감성", "터미널 같은 컨셉", "터미널같은컨셉", "터미널 같은 ui", "터미널같은ui", "터미널 같은 ux", "터미널같은ux", "터미널처럼 해", "터미널처럼해", "터미널처럼 하자", "터미널처럼하자", "터미널처럼 만들", "터미널처럼만들", "터미널처럼 바꿔", "터미널처럼바꿔", "터미널처럼 바꾸", "터미널처럼바꾸", "터미널처럼 보이", "터미널처럼보이", "터미널처럼 꾸", "터미널처럼꾸", "터미널처럼 가자", "터미널처럼가자", "terminal 같은 느낌", "terminal같은느낌", "terminal 같은 스타일", "terminal같은스타일", "terminal 같은 디자인", "terminal같은디자인", "terminal 같은 분위기", "terminal같은분위기", "terminal 같은 색감", "terminal같은색감", "terminal 같은 룩", "terminal같은룩", "terminal 같은 테마", "terminal같은테마", "terminal 같은 감성", "terminal같은감성", "terminal 같은 컨셉", "terminal같은컨셉", "terminal 같은 ui", "terminal같은ui", "terminal 같은 ux", "terminal같은ux", "terminal처럼 해", "terminal처럼해", "terminal처럼 하자", "terminal처럼하자", "terminal처럼 만들", "terminal처럼만들", "terminal처럼 바꿔", "terminal처럼바꿔", "terminal처럼 바꾸", "terminal처럼바꾸", "terminal처럼 보이", "terminal처럼보이", "terminal처럼 꾸", "terminal처럼꾸", "terminal처럼 가자", "terminal처럼가자"]
+    reading:
+      - { axis: color-lightness, direction: dark, strength: 2 }
+      - { axis: type-family, value: mono, strength: 1 }
+      - { axis: depth, direction: flat, strength: 1 }
+    say:
+      ko: "배경을 아주 어둡게, 고정폭 글꼴로, 납작하게 이해했어요."
+      en: "I read this as a very dark page, a monospace typeface and flat surfaces."
+    confidence: high
+
+  # 관찰: 흰 바탕 · 좁은 한 줄 본문 · 명조 계열 본문 글꼴 · 색이 거의 없음 · 여백이 넓음
+  - id: ref-medium
+    kind: reference
+    label: 미디엄 같은 느낌
+    match:
+      ko: ["미디엄스타일", "미디엄 스타일", "미디엄풍으로", "미디엄 풍으로", "미디엄 같은 스타일", "미디엄같은스타일"]
+    reading:
+      - { axis: type-family, value: serif, strength: 1 }
+      - { axis: spacing, direction: airy, strength: 1 }
+    say:
+      ko: "글꼴을 명조로, 여백을 넓게 이해했어요."
+      en: "I read this as a serif typeface and roomy spacing."
+    confidence: high
+
+  # ---- 범위·세기·부정(갈래 E) ----
+  # modifier 는 reading 이 없고 effect 만 있다. 한국어 cap(않게)은 바로 앞 낱말 묶음에, 그 밖(세기·범위·영어 not)은 바로 뒤 묶음에 붙는다.
+  # 사이에 낱말이 끼면 붙이지 않는다(군말·「부분」「색을」 같은 이름 뒤 꼬리는 grammar.yaml 의 match.gapOk). effect 가 비어 있는 항목은 낱말을 먹기만 한다(축으로 못 옮기는 말을 엉뚱한 축으로 읽지 않게).
+  # element 범위는 제목·본문·버튼·사진·배경·아이콘, section 범위는 구획 kind 이름(위 revise.sections 와 같다), page 범위는 revise.pages 키. 어디까지 실행하는지는 계획 2가 정한다(설계 5.10).
+
+  - id: slightly
+    kind: modifier
+    label: 조금
+    match:
+      ko: ["조금", "살짝", "약간", "은근", "슬쩍", "소소하게", "미세하게"]
+      en: ["slightly", "somewhat", "bit", "little"]
+    effect: { strength: 1 }
+
+  - id: greatly
+    kind: modifier
+    label: 확
+    match:
+      ko: ["확", "훨씬", "엄청", "아주", "매우", "완전", "진짜", "정말", "되게", "최대한", "극도로", "한껏", "너무너무", "많이많이", "더더", "엄청나게"]
+      en: ["much", "very", "really", "way", "super", "extremely", "significantly"]
+    not: ["완전 동그랗", "완전 둥글", "완전 둥근", "최대한 둥글"]
+    effect: { strength: 2 }
+
+  - id: scope-site
+    kind: modifier
+    label: 전체적으로
+    match:
+      ko: ["전체적으로", "전반적으로", "전체적인", "사이트 전체", "사이트 전반", "홈페이지 전체", "페이지 전체", "전 페이지", "모든 페이지", "전부", "통째로"]
+      en: ["overall", "everywhere", "sitewide", "site-wide", "globally"]
+    effect: { scope: site }
+
+  - id: title-only
+    kind: modifier
+    label: 제목만
+    match:
+      ko: ["제목만", "제목", "타이틀", "헤드라인", "헤딩"]
+      en: ["title", "heading", "headline"]
+    effect: { scope: "element:제목" }
+
+  - id: body-only
+    kind: modifier
+    label: 본문만
+    match:
+      ko: ["본문", "본문만", "본문 글", "본문 글씨", "본문 글자", "내용 글씨", "내용 글자"]
+      en: ["body", "paragraph", "paragraphs"]
+    effect: { scope: "element:본문" }
+
+  - id: button-only
+    kind: modifier
+    label: 버튼만
+    match:
+      ko: ["버튼", "버튼만", "버튼들"]
+      en: ["button", "buttons"]
+    not: ["라운드 버튼", "원형 버튼"]
+    effect: { scope: "element:버튼" }
+
+  - id: photo-only
+    kind: modifier
+    label: 사진만
+    match:
+      ko: ["사진만", "사진에만", "사진들만", "사진 쪽", "사진 쪽만", "사진 부분", "사진 부분만", "이미지만", "이미지 쪽", "이미지 부분", "그림만"]
+      en: ["photos-only", "photo-only", "images-only"]
+    effect: { scope: "element:사진" }
+
+  - id: photo-size
+    kind: modifier
+    label: 사진 크기
+    match:
+      ko: ["사진 크게", "사진 더 크게", "사진 키워", "사진 크기", "사진 작게", "사진 줄여", "이미지 크게", "이미지 키워", "이미지 작게", "이미지 크기", "그림 크게", "아이콘 크게", "아이콘 키워", "아이콘 작게", "아이콘 크기", "버튼 크게", "버튼 더 크게", "버튼 키워", "버튼 작게", "버튼 크기", "버튼만 크게", "버튼만 더 크게", "버튼만 키워", "버튼만 작게", "버튼들 크게"]
+    effect: {}
+
+  - id: icon-only
+    kind: modifier
+    label: 아이콘만
+    match:
+      ko: ["아이콘만", "아이콘 쪽", "아이콘 부분"]
+      en: ["icons-only", "icon-only"]
+    effect: { scope: "element:아이콘" }
+
+  - id: background-only
+    kind: modifier
+    label: 배경만
+    match:
+      ko: ["배경만", "배경색만", "배경 부분만", "배경 쪽만"]
+    effect: { scope: "element:배경" }
+
+  # ---- 쪽(page)·구획(section) 범위 ----
+
+  - id: page-home
+    kind: modifier
+    label: 메인 쪽
+    match:
+      ko: ["메인 페이지", "메인페이지", "첫 페이지", "첫페이지", "홈 화면", "홈화면"]
+    effect: { scope: "page:home" }
+
+  - id: page-pricing
+    kind: modifier
+    label: 요금제 쪽
+    match:
+      ko: ["요금제 쪽", "요금제 페이지", "가격 페이지", "가격 쪽", "요금 페이지"]
+      en: ["pricing-page"]
+    effect: { scope: "page:pricing" }
+
+  - id: page-signup
+    kind: modifier
+    label: 가입 쪽
+    match:
+      ko: ["가입 쪽", "가입 페이지", "회원가입 페이지", "회원가입 쪽"]
+    effect: { scope: "page:signup" }
+
+  - id: page-login
+    kind: modifier
+    label: 로그인 쪽
+    match:
+      ko: ["로그인 쪽", "로그인 페이지", "로그인 화면"]
+    effect: { scope: "page:login" }
+
+  - id: page-campaign
+    kind: modifier
+    label: 캠페인 쪽
+    match:
+      ko: ["캠페인 쪽", "캠페인 페이지"]
+    effect: { scope: "page:campaign" }
+
+  - id: sec-hero
+    kind: modifier
+    label: 히어로
+    match:
+      ko: ["히어로", "첫 화면", "첫화면", "메인 배너", "상단 배너", "메인 화면", "메인 비주얼"]
+      en: ["hero"]
+    effect: { scope: "section:hero" }
+
+  - id: sec-features
+    kind: modifier
+    label: 기능 소개
+    match:
+      ko: ["기능 소개", "기능 부분", "기능 섹션", "특징 부분", "특징 섹션", "장점 부분", "장점 섹션"]
+      en: ["features"]
+    effect: { scope: "section:features" }
+
+  - id: sec-pricing
+    kind: modifier
+    label: 요금제
+    match:
+      ko: ["요금제", "가격표", "가격", "가격 부분", "가격 섹션", "구독료"]
+      en: ["pricing", "prices"]
+    effect: { scope: "section:pricing" }
+
+  - id: sec-social-proof
+    kind: modifier
+    label: 후기
+    match:
+      ko: ["후기", "리뷰", "고객 평가", "추천사", "사용 후기"]
+      en: ["testimonials", "reviews"]
+    effect: { scope: "section:social-proof" }
+
+  - id: sec-faq
+    kind: modifier
+    label: 자주 묻는 질문
+    match:
+      ko: ["자주 묻는 질문", "질문 섹션", "질문 부분"]
+      en: ["faq"]
+    effect: { scope: "section:faq" }
+
+  - id: sec-gallery
+    kind: modifier
+    label: 갤러리
+    match:
+      ko: ["갤러리 섹션", "갤러리 부분", "갤러리 쪽", "갤러리 영역", "사진 섹션", "사진 모음"]
+      en: ["gallery"]
+    effect: { scope: "section:gallery" }
+
+  - id: sec-footer
+    kind: modifier
+    label: 푸터
+    match:
+      ko: ["푸터", "바닥글", "맨 아래", "하단 정보"]
+      en: ["footer"]
+    effect: { scope: "section:footer" }
+
+  - id: sec-contact
+    kind: modifier
+    label: 문의 폼
+    match:
+      ko: ["문의 폼", "문의 칸", "연락 폼"]
+    effect: { scope: "section:contact-form" }
+
+  - id: sec-menu
+    kind: modifier
+    label: 메뉴판
+    match:
+      ko: ["메뉴판", "메뉴 섹션", "메뉴 부분"]
+    effect: { scope: "section:menu" }
+
+  - id: sec-directions
+    kind: modifier
+    label: 오시는 길
+    match:
+      ko: ["오시는 길", "찾아오는 길", "지도 부분", "지도 섹션"]
+      en: ["directions"]
+    effect: { scope: "section:directions" }
+
+  - id: sec-final-cta
+    kind: modifier
+    label: 마지막 행동 유도
+    match:
+      ko: ["마지막 행동", "행동 유도", "하단 버튼", "최종 행동"]
+      en: ["cta"]
+    effect: { scope: "section:final-cta" }
+
+  # ---- 부정(상한) · 「너무 ~하지 않게」「~만 아니었으면」「~ 말고」「~는 싫어요」: 바로 앞 낱말 묶음의 방향으로는 지금 값을 넘지 않는다 ----
+
+  - id: not-too
+    kind: modifier
+    label: 하지 않게
+    match:
+      ko: ["않게", "않도록", "않았으면", "않은", "아니었으면", "않으면", "않았음", "않길", "않기를", "않다면", "않아야", "말아", "말아줘", "말아요", "말아주세요", "말았으면", "마세요", "말고", "싫어", "싫어요", "싫다", "싫은데", "싫습니다", "질색", "하지 마", "하지마", "싫고", "싫네", "싫으면", "싫은", "싫어서", "싫지만", "싫지", "제외하고", "제외해", "제외", "안", "못", "안돼", "안되", "안됩니다", "빼줘", "빼주세요", "빼고", "빼라", "빼세요", "없애줘", "없애주세요", "없애고", "없애세요", "지워줘", "지워주세요", "지우고", "지워라"]
+      en: ["not", "never", "dont", "don't", "avoid", "without", "isn't", "isnt", "aren't", "no", "less", "nothing"]
+    not: ["여백 없애", "여백 빼", "그림자 없애", "그림자 빼", "그림자 지우", "그림자 지워", "모션 빼", "모션 더 빼", "모션 없애", "모션 더 없애", "움직임 빼", "움직임 더 빼", "움직임 없애", "움직임 더 없애", "애니메이션 빼", "애니메이션 더 빼", "애니메이션 없애", "애니메이션 더 없애", "편안", "글씨 안 보", "글자 안 보", "잘 안 보", "노안", "정이 안 가요", "정이 안 가네", "정이 안 가는 디자인", "정이 안 가는 느낌", "정이 안 가는 사이트", "눈에 안 들어", "눈에 잘 안 들어", "한눈에 안 들어", "한눈에 안 보", "뭐가 중요한지 안 보", "뭐가 중요한지 잘 안", "뭐가 중요한지 한눈에 안", "믿음이 안 가요", "믿음이 안 가네", "믿음이 안 갑니다", "믿음이 안 가는 느낌", "믿음이 안 가는 디자인", "믿음이 안 가는 사이트", "신뢰가 안 가요", "신뢰가 안 가네", "신뢰가 안 갑니다", "신뢰가 안 가는 느낌", "신뢰가 안 가는 디자인", "신뢰가 안 가는 사이트", "못 믿겠", "미덥지 못해 보", "불안해 보여", "차이가 안 나", "구분이 안 가", "구분이 안 돼"]
+    effect: { strength: 0, cap: true }
+
+  # 「덜 ~」·「~한 거 줄여」: 위에서 반대쪽 항목이 풀어 둔 말은 그쪽이 갖고, 나머지 인상 낱말(~ 줄여 포함)은 먹어서 묻는다(effect 가 비어 있다).
+
+  - id: less-blocker
+    kind: modifier
+    label: 덜
+    match: {}
+    effect: {}

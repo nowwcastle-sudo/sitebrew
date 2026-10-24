@@ -1,0 +1,25 @@
+{
+  "service": "Paddle",
+  "role": "billing",
+  "need": "feature",
+  "cost": [
+    "per-sale"
+  ],
+  "after": [
+    "G-db",
+    "G-email"
+  ],
+  "home": "https://paddle.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "카드 결제와 정기구독이 열리지 않아요. 요금제를 팔 수 없고 구독 상태도 받지 못해요.",
+    "en": "Card payments and subscriptions do not open. You cannot sell plans or receive subscription state."
+  },
+  "when": {
+    "outcomes": [
+      "payments"
+    ]
+  },
+  "devOnly": [],
+  "notEnv": []
+}

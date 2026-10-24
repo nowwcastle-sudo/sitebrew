@@ -11,14 +11,17 @@
 // 개인정보는 최소만(이름 선택·연락처·내용). IP·브라우저 정보는 저장하지 않는다(요청 제한 키에만 잠깐 쓴다 — rate_limits 행).
 import { randomInt } from "node:crypto"
 import { DEFAULT_INQUIRY_RETENTION, type InquiryRetention } from "@launch-factory/consent"
-import { changeInquiryKind, insertInquiry, INQUIRY_KINDS, markInquiry, purgeExpiredInquiries, retainUntil, withIdempotency, type Database, type InquiryKind } from "@launch-factory/db"
+import { addInquiryReply, changeInquiryKind, getInquiryForStaff, insertInquiry, INQUIRY_KINDS, INQUIRY_STATUSES, listInquiriesByUser, listInquiriesForStaff, markInquiry, markInquiryReplyMailed, purgeExpiredInquiries, retainUntil, setInquiryStatus, withIdempotency, type Database, type InquiryKind, type InquiryStatus } from "@launch-factory/db"
 import type { Mailer } from "@launch-factory/email"
 import { isLocale, t, type Locale } from "@launch-factory/i18n"
 import { blockedByBot, blockedByRate, blockedResponse, blockedResult, type LaunchActionResult, type LaunchFailure } from "@launch-factory/security/protect"
 import type { RateLimiter } from "@launch-factory/security/rate-limit"
 import { TURNSTILE_FIELD, type Turnstile } from "@launch-factory/security/turnstile"
 
-export { DEFAULT_INQUIRY_RETENTION, INQUIRY_KINDS, type InquiryKind, type InquiryRetention }
+import { normalizePaging, toMyRequestsPage, type MyRequestsPage } from "./my-requests.ts"
+
+export { DEFAULT_INQUIRY_RETENTION, INQUIRY_KINDS, INQUIRY_STATUSES, type InquiryKind, type InquiryRetention, type InquiryStatus }
+export { maskContact, maskedPreview, MY_REQUESTS_MAX_PAGE_SIZE, MY_REQUESTS_PAGE_SIZE, PREVIEW_CHARS, type MyRequest, type MyRequestsPage } from "./my-requests.ts"
 
 // ── 종류(kind)와 보유 기간(D134 — 운영자 판정 2026-09-30 03:35: 일반 30일, 불만·분쟁 3년) ─────────────────────────────────
 /** 불만·분쟁 처리 기록으로 3년 보관하는 종류(전자상거래법 시행령 제6조①4) */
@@ -65,6 +68,35 @@ export function isAdminActor(actor: InquiryActor, o: { adminRoles?: readonly str
 
 export type ReclassifyResult = { ok: true; changed: boolean; kind: InquiryKind; expiresAt: Date } | { ok: false; error: "forbidden" | "not_found" | "invalid_kind" }
 
+export type SetStatusResult = { ok: true; changed: boolean; status: InquiryStatus } | { ok: false; error: "forbidden" | "not_found" | "invalid_status" }
+
+/** 직원이 보는 문의 한 줄(목록) — 내용은 앞부분만. 연락처는 그대로 간다: 가리는 일은 보여 주는 쪽(관리 콘솔)이 한다 */
+export interface StaffInquiryItem {
+  reference: string
+  kind: InquiryKind
+  status: InquiryStatus
+  name: string | null
+  contact: string
+  contactKind: "email" | "phone"
+  createdAt: string
+  preview: string
+}
+
+/** 직원이 보는 문의 하나 — 전체 내용과 답변 글타래(오래된 순). 사용자 id 는 싣지 않는다 */
+export interface StaffInquiry extends Omit<StaffInquiryItem, "preview"> {
+  form: string
+  message: string
+  locale: string
+  expiresAt: string
+  replies: { id: string; body: string; createdAt: string; mailedAt: string | null }[]
+}
+
+export type StaffFailure = { ok: false; error: "forbidden" | "not_found" | "invalid_input" }
+/** 답변 한 건: 같은 중복 전송 방지 키의 첫 요청이 아직 처리 중이다(곧 끝난다 — 잠시 뒤 글타래를 확인한다) */
+export type ReplyInProgress = { ok: false; error: "in_progress" }
+
+/** 답변 글자 수 상한(메일 본문으로 나간다) */
+export const REPLY_MAX = 2000
 
 /** 블록의 ContactReceipt 와 같은 모양(id = 접수 번호) */
 export interface InquiryReceipt {
@@ -187,6 +219,24 @@ export interface InquiryService {
   reclassify(reference: string, to: InquiryKind, actor: InquiryActor, opts?: { reason?: string }): Promise<ReclassifyResult>
   /** 불만 문의로 올린다(관리자만) — `reclassify(reference, "complaint", …)` */
   markAsComplaint(reference: string, actor: InquiryActor, opts?: { reason?: string }): Promise<ReclassifyResult>
+  /**
+   * 내 신청 내역 — 이 사용자가 로그인한 채 보낸 문의만, 최신 순. 연락처와 내용은 가린 앞부분만 내려간다(전체 내용·이름은 읽지도 않는다).
+   * 문의 창구가 꺼져 있어도(owner 없음) 이미 받은 것은 읽힌다. userId 는 세션에서 읽은 값만 넘긴다.
+   */
+  listMine(userId: string, paging?: { page?: number; pageSize?: number }): Promise<MyRequestsPage>
+  /** 직원 목록(관리자 또는 소유자) — 최신 순, 처리 상태로 거르고 접수 번호·이름·연락처로 찾는다. 문의 창구가 꺼져 있어도 이미 받은 것은 읽힌다 */
+  listForStaff(actor: InquiryActor, query?: { status?: string; search?: string; limit?: number; offset?: number }): Promise<{ ok: true; data: { items: StaffInquiryItem[]; total: number } } | StaffFailure>
+  /** 문의 하나와 답변 글타래(관리자 또는 소유자). 없는 접수 번호는 not_found */
+  getForStaff(actor: InquiryActor, reference: string): Promise<{ ok: true; data: StaffInquiry } | StaffFailure>
+  /**
+   * 답변을 남긴다(관리자 또는 소유자). 답변을 저장하고 admin_actions 한 줄(글은 싣지 않는다)을 남긴 뒤, 연락처가 이메일이면 보낸 사람에게 메일로 보낸다.
+   * 메일이 실패하거나 연락처가 전화면 답변은 남고 mailed 만 false 다(직원이 다른 길로 알려야 한다).
+   * 중복 전송 방지 키(`idempotencyKey`, 8~100자 영문·숫자·밑줄·하이픈): 같은 사람이 같은 문의에 같은 키로 다시 보내면 답변을 또 만들지 않고 첫 결과를 돌려준다(24시간).
+   * 첫 요청이 아직 처리 중이면 in_progress. 성공한 결과만 기억하므로 실패한 요청은 같은 키로 다시 보내도 된다. 키 모양이 틀리면 invalid_input. 키가 없으면 예전처럼 매번 새 답변이다.
+   */
+  reply(actor: InquiryActor, input: { reference: string; body: string; idempotencyKey?: string }): Promise<{ ok: true; data: { id: string; mailed: boolean } } | StaffFailure | ReplyInProgress>
+  /** 처리 상태를 바꾼다(관리자 또는 소유자). 한 트랜잭션에서 admin_actions 한 줄을 남기고, 상태가 그대로면 남기지 않는다 */
+  setStatus(actor: InquiryActor, input: { reference: string; status: string; reason?: string }): Promise<SetStatusResult>
 }
 
 export function createInquiryService(o: InquiryServiceOptions): InquiryService {
@@ -222,6 +272,94 @@ export function createInquiryService(o: InquiryServiceOptions): InquiryService {
       plan: (row) => (mayChange(row.kind, to, actor) ? { ok: true, expiresAt: expiresAt(to, row.createdAt) } : { ok: false, error: "forbidden" }),
     })
     return r.ok ? r : { ok: false, error: r.error as "forbidden" | "not_found" }
+  }
+
+  async function setStatus(actor: InquiryActor, input: { reference: string; status: string; reason?: string }): Promise<SetStatusResult> {
+    const status = INQUIRY_STATUSES.find((v) => v === input.status)
+    if (!status) return { ok: false, error: "invalid_status" }
+    if (!(actor.isOwner === true || isAdminActor(actor, adminOpts))) return { ok: false, error: "forbidden" }
+    const r = await setInquiryStatus(o.db, { reference: input.reference, to: status, adminUserId: actor.userId, ...(input.reason ? { reason: input.reason } : {}), at: now() })
+    return r.ok ? r : { ok: false, error: "not_found" }
+  }
+
+  const mayStaff = (actor: InquiryActor) => actor.isOwner === true || isAdminActor(actor, adminOpts)
+  const STAFF_LIMIT = 200
+  const iso = (d: Date) => d.toISOString()
+
+  async function listForStaff(actor: InquiryActor, query: { status?: string; search?: string; limit?: number; offset?: number } = {}) {
+    if (!mayStaff(actor)) return { ok: false as const, error: "forbidden" as const }
+    const status = query.status === undefined ? undefined : INQUIRY_STATUSES.find((v) => v === query.status)
+    if (query.status !== undefined && !status) return { ok: false as const, error: "invalid_input" as const }
+    const limit = Math.min(Math.max(1, Math.trunc(query.limit ?? 100)), STAFF_LIMIT)
+    const offset = Math.max(0, Math.trunc(query.offset ?? 0)) || 0
+    const { rows, total } = await listInquiriesForStaff(o.db, { ...(status ? { status } : {}), ...(query.search ? { search: query.search } : {}), limit, offset })
+    return { ok: true as const, data: { items: rows.map((r): StaffInquiryItem => ({ reference: r.reference, kind: r.kind, status: r.status, name: r.name, contact: r.contact, contactKind: r.contactKind, createdAt: iso(r.createdAt), preview: r.preview })), total } }
+  }
+
+  async function getForStaff(actor: InquiryActor, reference: string) {
+    if (!mayStaff(actor)) return { ok: false as const, error: "forbidden" as const }
+    const found = typeof reference === "string" && reference !== "" && reference.length <= 64 ? await getInquiryForStaff(o.db, reference) : undefined
+    if (!found) return { ok: false as const, error: "not_found" as const }
+    const { inquiry: q, replies } = found
+    const data: StaffInquiry = {
+      reference: q.reference,
+      kind: q.kind,
+      status: q.status,
+      name: q.name,
+      contact: q.contact,
+      contactKind: q.contactKind,
+      form: q.form,
+      message: q.message,
+      locale: q.locale,
+      createdAt: iso(q.createdAt),
+      expiresAt: iso(q.expiresAt),
+      replies: replies.map((r) => ({ id: r.id, body: r.body, createdAt: iso(r.createdAt), mailedAt: r.mailedAt ? iso(r.mailedAt) : null })),
+    }
+    return { ok: true as const, data }
+  }
+
+  async function reply(actor: InquiryActor, input: { reference: string; body: string; idempotencyKey?: string }): Promise<{ ok: true; data: { id: string; mailed: boolean } } | StaffFailure | ReplyInProgress> {
+    if (!mayStaff(actor)) return { ok: false as const, error: "forbidden" as const }
+    const body = typeof input?.body === "string" ? input.body.trim() : ""
+    if (!body || Array.from(body).length > REPLY_MAX || typeof input.reference !== "string" || input.reference === "") return { ok: false as const, error: "invalid_input" as const }
+    const key = input.idempotencyKey
+    if (key === undefined) return saveReply(actor, input.reference, body)
+    if (typeof key !== "string" || !IDEMPOTENCY_KEY.test(key)) return { ok: false as const, error: "invalid_input" as const }
+    // 키는 (보낸 사람, 문의)에 묶는다 — 다른 직원·다른 문의의 같은 키가 서로의 결과를 되살리지 않는다
+    const outcome = await withIdempotency(o.db, { scope: `inquiry-reply:${actor.userId}:${input.reference}`, key, now: now() }, () => saveReply(actor, input.reference, body))
+    return "inProgress" in outcome ? { ok: false as const, error: "in_progress" as const } : outcome.result
+  }
+
+  async function saveReply(actor: InquiryActor, reference: string, body: string) {
+    const at = now()
+    const saved = await addInquiryReply(o.db, { reference, body, adminUserId: actor.userId, at })
+    if (!saved.ok) return { ok: false as const, error: "not_found" as const }
+    let mailed = false
+    // 전화 연락처는 보낼 길이 없다. 메일이 실패해도 답변은 남는다(직원이 화면에서 mailed 를 보고 다른 길로 알린다)
+    if (saved.inquiry.contactKind === "email") {
+      try {
+        const sent = await o.mailer.send({
+          to: saved.inquiry.contact,
+          template: "inquiryReply",
+          idempotencyKey: `inquiry-reply:${saved.reply.id}`,
+          input: { locale: isLocale(saved.inquiry.locale) ? saved.inquiry.locale : "en", productName: o.productName, reference: saved.inquiry.reference, reply: body },
+        })
+        if (sent.ok) {
+          mailed = true
+          await markInquiryReplyMailed(o.db, saved.reply.id, now())
+        } else onError(new Error(`inquiry ${saved.inquiry.reference}: reply mail failed (${sent.error.name})`))
+      } catch (e) {
+        onError(new Error(`inquiry ${saved.inquiry.reference}: reply mail failed (${e instanceof Error ? e.name : "error"})`))
+      }
+    }
+    return { ok: true as const, data: { id: saved.reply.id, mailed } }
+  }
+
+  async function listMine(userId: string, opts: { page?: number; pageSize?: number } = {}): Promise<MyRequestsPage> {
+    const paging = normalizePaging(opts)
+    if (typeof userId !== "string" || userId === "") return toMyRequestsPage([], 0, paging)
+    const { rows, total } = await listInquiriesByUser(o.db, userId, { limit: paging.pageSize, offset: (paging.page - 1) * paging.pageSize })
+    return toMyRequestsPage(rows, total, paging)
   }
 
   async function store(owner: NonNullable<InquiryServiceOptions["owner"]>, p: Extract<Parsed, { ok: true }>, ctx: SubmitContext, locale: Locale, at: Date): Promise<LaunchActionResult<InquiryReceipt>> {
@@ -319,6 +457,11 @@ export function createInquiryService(o: InquiryServiceOptions): InquiryService {
     purgeExpired: () => purgeExpiredInquiries(o.db, now()),
     reclassify,
     markAsComplaint: (reference, actor, opts) => reclassify(reference, "complaint", actor, opts),
+    listMine,
+    setStatus,
+    listForStaff,
+    getForStaff,
+    reply,
   }
 }
 

@@ -29,6 +29,7 @@ export const TOP_PRESETS = 20
 export const PALETTES_PER_PRESET = 3
 export const PALETTE_WINDOW = 24 // 프리셋마다 씨앗이 뽑는 팔레트의 후보 창(순위 위쪽 N 개 — 모두 use "recipe")
 export const MIN_AXES = 2
+export const AXIS_COUNT = AXIS_ORDER.length + 3 // axisDistance 가 세는 칸 수(레시피 축 + 모션 + 색 논리 + 색) — 안 사이 거리가 이보다 클 수는 없다
 export const MIN_CONVERSIONS = 30 // §9 Q17
 // 분위기 가산(FIT-3 F1): 라이브러리 a 안 고름에서 레시피 mood 3단어 중 사용자의 분위기와 겹친 낱말 하나마다 더하는 점수. 원형 적합도(fit)가 같은 묶음 안에서만 작동하고,
 // 가중치 lift(≥30 전환 행)가 있으면 그 곁에서 근소 차이를 가르는 크기다. 프리셋·팔레트 쪽 가산은 style-presets.mjs MOOD_PRESET_W·MOOD_PALETTE_W.
@@ -137,7 +138,7 @@ export function libraryPick({ archetype, seed, weights, conditions = [], mood } 
 /**
  * @returns {Promise<{ candidates: object[], rejected: { id: string, reasons: string[] }[] }>}
  */
-export async function pickDirections({ brief, archetype, seed, weights, exclude = [], _presetFilter, _lint = lintRecipe, _paletteDiversity = true } = {}) {
+export async function pickDirections({ brief, archetype, seed, weights, exclude = [], minAxes = MIN_AXES, _presetFilter, _lint = lintRecipe, _paletteDiversity = true } = {}) {
   const arch = typeof archetype === 'string' ? archetype : archetype?.id ?? brief?.archetype
   if (!arch) throw new Error('pickDirections: 원형 id 가 없다')
   if (brief?.archetype && brief.archetype !== arch) throw new Error(`원형이 브리프와 다르다: 브리프 ${brief.archetype} · 넘긴 원형 ${arch}`)
@@ -199,8 +200,8 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
     const ex = excluded.get(g.key) ?? excluded.get(g.head.id)
     if (ex) { rejected.push({ id: g.key, reasons: [...ex] }); continue }
     const near = [
-      ...(axisDistance(g.head, safeHead) < MIN_AXES ? ['axis-distance:safe'] : []),
-      ...library.filter((r) => r.id !== safeHead.id && axisDistance(g.head, r) < MIN_AXES).map((r) => `axis-distance:library:${r.id}`),
+      ...(axisDistance(g.head, safeHead) < minAxes ? ['axis-distance:safe'] : []),
+      ...library.filter((r) => r.id !== safeHead.id && axisDistance(g.head, r) < minAxes).map((r) => `axis-distance:library:${r.id}`),
     ]
     if (near.length) rejected.push({ id: g.key, reasons: near })
     else alive.push(g)
@@ -235,7 +236,7 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
     const r = mod.brandToRecipeHead(brief.brand, base, { archetype: arch })
     if (r.blocked) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: [`brand-blocked: ${r.blocked}`] }])
     const v = _lint(r.head)
-    const near = [...(axisDistance(r.head, safeHead) < MIN_AXES ? ['axis-distance:safe'] : [])]
+    const near = [...(axisDistance(r.head, safeHead) < minAxes ? ['axis-distance:safe'] : [])]
     if (v.length || near.length) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: [...ruleIds(v), ...near].map((x) => `brand-${x}`) }])
     boldHead = r.head
     brandInfo = { input: brief.brand, adjustments: r.adjustments ?? [], fontSubstitutions: r.fontSubstitutions ?? [], basePreset: base.id }
@@ -253,7 +254,7 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
 
   const avoidNew = [safe.palette, bold.palette].filter(Boolean)
   const newPool = alive.filter((g) => g !== genBold || bold.source === 'brand')
-    .filter((g) => axisDistance(g.head, boldHead) >= MIN_AXES && (bold.source === 'brand' || g.novelty <= bold.novelty))
+    .filter((g) => axisDistance(g.head, boldHead) >= minAxes && (bold.source === 'brand' || g.novelty <= bold.novelty))
     .sort(byScore)
   const gNew = firstPassing(newPool, avoidNew)
   if (!gNew) throw new DirectionsShortError([...rejected, { id: 'slot:new', reasons: [alive.length ? 'no-passing-candidate-2-axes-from-bold' : 'no-passing-generated-candidate'] }])

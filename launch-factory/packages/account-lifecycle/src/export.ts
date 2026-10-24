@@ -1,7 +1,7 @@
 // 내 정보 내려받기(v0 Task 14). GDPR 제15조(접근권)·제20조(이동권) — en 사이트, 개인정보 보호법 제35조(열람) — ko 사이트.
 // 그 사용자의 행만 읽는다(모든 쿼리가 user_id = 본인). 비밀(비밀번호 해시·토큰·2단계 비밀·백업 코드)은 싣지 않는다.
-import { and, desc, eq, inArray } from "drizzle-orm"
-import { account, accountDeletions, consentRecords, marketingConsents, member, session, subscriptions, user, type Database } from "@launch-factory/db"
+import { and, asc, desc, eq, inArray } from "drizzle-orm"
+import { account, accountDeletions, consentRecords, marketingConsents, member, orderItems, orders, session, subscriptions, user, type Database } from "@launch-factory/db"
 
 export const EXPORT_FORMAT_VERSION = 1
 
@@ -10,7 +10,7 @@ const iso = (v: Date | null | undefined) => (v ? v.toISOString() : null)
 export async function exportMyData(db: Database, userId: string, now: Date = new Date()) {
   const [u] = await db.select().from(user).where(eq(user.id, userId))
   if (!u) return null
-  const [accounts, sessions, subs, consents, marketing, memberships, deletions] = await Promise.all([
+  const [accounts, sessions, subs, consents, marketing, memberships, deletions, myOrders] = await Promise.all([
     db.select({ providerId: account.providerId, accountId: account.accountId, scope: account.scope, createdAt: account.createdAt }).from(account).where(eq(account.userId, userId)),
     db
       .select({ createdAt: session.createdAt, expiresAt: session.expiresAt, ipAddress: session.ipAddress, userAgent: session.userAgent })
@@ -22,7 +22,9 @@ export async function exportMyData(db: Database, userId: string, now: Date = new
     db.select().from(marketingConsents).where(eq(marketingConsents.userId, userId)),
     db.select({ organizationId: member.organizationId, role: member.role, createdAt: member.createdAt }).from(member).where(eq(member.userId, userId)),
     db.select().from(accountDeletions).where(and(eq(accountDeletions.userId, userId), inArray(accountDeletions.status, ["pending", "purging"]))),
+    db.select().from(orders).where(eq(orders.userId, userId)).orderBy(desc(orders.createdAt)),
   ])
+  const lines = myOrders.length ? await db.select().from(orderItems).where(inArray(orderItems.orderId, myOrders.map((o) => o.id))).orderBy(asc(orderItems.productId)) : []
   return {
     format: "launch-factory/my-data",
     version: EXPORT_FORMAT_VERSION,
@@ -41,6 +43,21 @@ export async function exportMyData(db: Database, userId: string, now: Date = new
       cancelAt: iso(s.cancelAt),
       pausedUntil: iso(s.pausedUntil),
       createdAt: iso(s.createdAt),
+    })),
+    orders: myOrders.map((o) => ({
+      orderId: o.id,
+      status: o.status,
+      items: lines.filter((l) => l.orderId === o.id).map((l) => ({ productId: l.productId, name: l.name, quantity: l.quantity, unitAmount: l.unitAmount })),
+      subtotal: o.subtotal,
+      shipping: o.shipping,
+      total: o.total,
+      currency: o.currency,
+      paymentId: o.paymentId,
+      shippingAddress: o.address,
+      trackingNumber: o.trackingNumber,
+      createdAt: iso(o.createdAt),
+      paidAt: iso(o.paidAt),
+      canceledAt: iso(o.canceledAt),
     })),
     consents: consents.map((c) => ({ kind: c.kind, granted: c.granted, version: c.version, source: c.source, locale: c.locale, subject: c.subject, at: iso(c.createdAt) })),
     marketing: marketing.map((m) => ({ channel: m.channel, granted: m.granted, updatedAt: iso(m.updatedAt) })),

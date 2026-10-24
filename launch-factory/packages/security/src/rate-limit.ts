@@ -23,7 +23,21 @@ export const RATE_LIMIT_DEFAULTS = {
   signIn: { max: 3, windowSec: 10 },
   passwordReset: { max: 3, windowSec: 60 },
   inquiry: { max: 5, windowSec: 600 },
+  reviewsSubmit: { max: 5, windowSec: 600 },
+  newsletter: { max: 5, windowSec: 600 },
   checkoutStart: { max: 10, windowSec: 60 },
+  // 상점(feature-commerce) — 사용자·IP 별. 장바구니는 자주 만지고, 주문·취소·결제 확인은 드물다
+  shopCart: { max: 30, windowSec: 60 },
+  shopOrder: { max: 5, windowSec: 60 },
+  shopConfirm: { max: 20, windowSec: 60 },
+  shopCancel: { max: 5, windowSec: 60 },
+  shopAdmin: { max: 60, windowSec: 60 },
+  // 관리 화면의 행동(feature-admin-console) — 사용자별, 쓰기 제한은 이 한 곳뿐이다(입장 전에 센다). 사람이 누르는 속도보다 넉넉하고 스크립트 폭주는 막는다
+  adminAct: { max: 30, windowSec: 60 },
+  // 관리 콘솔(createAdminConsole limit 훅) — 입장한 사람별, 읽기만. 표·상세를 넘겨 볼 때. 쓰기는 adminAct 가 센다
+  "admin:read": { max: 120, windowSec: 60 },
+  search: { max: 30, windowSec: 60 },
+  storage: { max: 30, windowSec: 600 },
 } as const satisfies Record<string, RateRule>
 export type DefaultRoute = keyof typeof RATE_LIMIT_DEFAULTS
 

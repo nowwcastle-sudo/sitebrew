@@ -448,6 +448,27 @@
       "rule": "블록 예시(fixture)의 화면 이름표는 한글이라, 영어 사이트의 섹션 props 에 한글이 그대로 남는다. 06 의 bindSection 이 영어 사이트에서 번역표(`factory/stamp/ui-labels-en.mjs`)로 일반 이름표를 바꾸고, 이 사업의 문장은 04 화면 문구 칸(영어 사이트는 번역표 뒤에도 한글인 문장)으로 보낸다. 한글 잎이 수십 개인 큰 제품 화면(가입·로그인·계정·결제·해지·온보딩 14블록)은 예시 모듈이 영어 장면 `fixtureEn` 을 내보내고 영어 사이트의 06 은 `fixtureOf(b, { locale })` 로 그것을 쓴다(한국어는 `fixture` 그대로). 둘 다 못 닫은 한글은 「다른 언어·다른 사업의 화면 문구 남음」 공개 불가 사유다.",
       "action": "새 블록의 예시 이름표가 영어 사이트에서 한글로 남으면 번역표에 그 글자를 더한다(사업 문장은 더하지 않는다 — 문구 칸 몫). 요일 낱말은 `days` 칸 아래에서만 바뀐다. 제품 화면 블록이 영어 사이트에서 한글을 수십 개 남기면 예시 모듈에 `fixtureEn`(같은 짜임, 글만 영어, 사업 이름·업종 낱말 없이)을 더한다 — 한국어 `fixture` 는 건드리지 않는다(`stamp-follow-en-scenes.test.mjs` 가 모든 블록의 한국어 예시 해시를 지킨다).",
       "source": "FV1 Task 5.14(C333)"
+    },
+    {
+      "id": "cart-checkout-onpay-injected",
+      "area": "block",
+      "rule": "`cart/checkout-form` 은 결제 공급자(PortOne 등)를 모른다 — 조립하는 쪽이 `onPay(session: PaymentSession) => Promise<{ paymentId, ok, code? }>` 를 주입해 결제창을 연다. [결제하기]는 `placeOrder({ address, confirmed: true })`(승인 행동 place-order)로 결제 대기 주문을 만든 뒤 `onPay` → `confirmPayment` 순서다. 결제창을 닫았거나 실패하면 같은 주문으로 [다시 결제하기](주문을 또 만들지 않는다), 결제는 됐는데 확정을 못 받으면 [결제 확인 다시 하기](확정만 다시 — 이중 결제 없음).",
+      "action": "상점을 조립할 때 `onPay` 를 공급자 SDK 로 구현해 넘기고(사용자가 창을 닫으면 `code` 에 `cancel` 이 든 값으로 돌려준다), 블록 안에 공급자 이름·SDK 호출을 넣지 않는다. 멱등 키는 폼을 여는 쪽이 숨은 입력으로 더한다.",
+      "source": "3a C1 (cart/checkout-form)"
+    },
+    {
+      "id": "order-cancel-confirm-step",
+      "area": "block",
+      "rule": "`account/order-detail` 의 [주문 취소하기]는 승인 컨트롤이 아니라 확인 칸을 여는 단추이고, 확인 칸의 [취소 확정]만 `cancelOrder({ orderId, reason?, confirmed: true })` 를 부르며 `data-requires-human=\"cancel-order\"` 와 눈에 보이는 안내 글(`copy.humanHint`)을 가진다. 취소할 수 있는 상태는 결제 전·결제 완료·상품 준비 중뿐이고(결제 완료는 환불로 간다), 배송 중 이후는 단추 없이 안내 글만 나온다. 없는 주문(`not_found`)은 오류가 아니라 빈 상태다.",
+      "action": "주문 상세 쪽은 주소의 주문번호를 `orderId` 로 넘긴다. 에이전트 검사는 `[data-order-cancel-open]` 을 눌러 확인 칸을 연 뒤 승인 표지를 본다(`factory/qa/agent-boundary.mjs REACH`).",
+      "source": "3a C2 (account/order-detail)"
+    },
+    {
+      "id": "order-complete-account-optional",
+      "area": "block",
+      "rule": "`confirmation/order-complete` 의 계정 만들기 칸(`copy.account` + `submit`)과 비회원 주문 조회 안내(`copy.guest`)는 선택이다 — 셋 중 `account`·`submit` 이 하나라도 없으면 계정 칸을 그리지 않고(폼이 제출할 곳이 없다), 로그인한 구매자에게는 셋 다 빼서 쓴다. 주면 예전 출력과 글자 하나 다르지 않다.",
+      "action": "로그인한 구매자의 주문 완료 쪽은 `copy.account`·`copy.guest`·`submit` 을 주지 않는다. 비회원 주문 완료 쪽은 셋 다 준다.",
+      "source": "3a C2 (confirmation/order-complete)"
     }
   ]
 }

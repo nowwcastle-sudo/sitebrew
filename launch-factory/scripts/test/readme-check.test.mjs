@@ -59,6 +59,15 @@ test("필요 환경 표의 Node 판이 engines 와 다르면 잡는다", () => h
 test("README 가 없는 npm 스크립트를 가리키면 잡는다", () => has(run({ readme: README.replace("npm run setup", "npm run ghost") }), /npm run ghost.*scripts 에 없다/))
 test("워크스페이스 명령(-w)은 루트 scripts 와 맞추지 않는다", () => assert.deepEqual(run({ readme: `${README}\n\`npm run dev -w template\`` }), []))
 test("launch-factory: web-factory 고정이 잠금과 다르면 잡는다", () => has(run({ locks: { ...base.locks, "template.lock.json": "v0.0.10" } }), /web-factory 고정 v0\.0\.11 ≠ template\.lock\.json 잠금 v0\.0\.10/))
+const SHA = "0bf633d24a8b112aa8a94c7bc1d95028cd49f898"
+test("launch-factory: 출시 전 커밋 고정은 고정 줄에 해시 앞 8자가 있으면 맞다", () => {
+  const readme = README.replace("`v0.0.11`.", "`v0.0.11` · `0bf633d2`.")
+  assert.deepEqual(run({ readme, locks: { ...base.locks, "template.lock.json": SHA } }), [])
+})
+test("launch-factory: 커밋 고정인데 README 줄에 해시가 없거나 다르면 잡는다", () => {
+  has(run({ locks: { ...base.locks, "template.lock.json": SHA } }), /고정 줄에 template\.lock\.json 잠금 커밋 `0bf633d2` 이 없다/)
+  has(run({ readme: README.replace("`v0.0.11`.", "`v0.0.11` · `deadbeef`."), locks: { ...base.locks, "template.lock.json": SHA } }), /`0bf633d2` 이 없다/)
+})
 test("web-factory: 설치 주소 태그가 package.json 판과 다르면 잡는다", () => {
   const wf = { kind: "web-factory", readme: README.replace("```bash\nnpm run setup", "```bash\nnpm run setup\nnpx shadcn add x/web-factory/button#v1.1.0 -y -o") }
   has(run(wf), /설치 주소 #v1\.1\.0 ≠ package\.json 1\.2\.0/)

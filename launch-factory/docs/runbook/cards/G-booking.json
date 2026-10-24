@@ -1,0 +1,19 @@
+{
+  "service": "launch-factory",
+  "role": "booking",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db",
+    "G-email"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "새 예약 접수만 꺼져요. 이미 받은 예약의 조회·취소·안내는 그대로예요.",
+    "en": "Only new booking intake turns off. Existing bookings keep look-up, cancel and reminders."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

@@ -41,6 +41,9 @@ export const STEPS = [
   { id: "contract", title: "계약 잠금 일치", run: npm("contract:check") },
   { id: "template", title: "템플릿 잠금 일치(CI 파일 포함)", run: npm("template:check") },
   { id: "registry", title: "레지스트리 최신", run: npm("registry:check") },
+  { id: "outcomes", title: "기능 표 최신", run: npm("outcomes:check") },
+  // 런북 데이터가 원천과 같고 원천끼리 어긋나지 않는다(엄격: 장·카드 없는 guides id 와 덮이지 않은 환경 이름이 오류).
+  { id: "runbook", title: "런북 생성물 최신 + 원천 교차 검사", run: npm("runbook:verify") },
   { id: "readme", title: "README 가 현재 버전·명령·필요 환경과 맞다", run: npm("readme:check") },
   { id: "env-check", title: "환경 이름 점검(오프라인)", run: npm("env:check") },
   { id: "hangul", title: "한글 리터럴 검사(Task 18)", run: () => run(process.execPath, ["--test", "--test-name-pattern=한글 (문자열 )?리터럴", "packages/i18n/test/i18n.test.mjs"]) },

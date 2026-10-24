@@ -278,6 +278,11 @@ test('data-table-kit: 검색은 글자·상태 열만, 거르기는 열 값 일�
   assert.deepEqual(ids({ sort: { column: 'd', dir: 'asc' } }), ['b', 'd', 'a', 'c'])
   assert.deepEqual(ids({ sort: { column: 'name', dir: 'desc' } }), ['d', 'c', 'b', 'a'])
   assert.deepEqual(kit.filterOptions(DATA, 'st'), ['정지', '활성'])
+  // 서버 검색: 검색어로 다시 거르지 않는다(가린 연락처·표에 안 보이는 칸을 서버가 맞춘 행이 사라지지 않게) — 거르기·정렬은 그대로
+  const server = (q) => kit.applyQuery(DATA, { ...Q, ...q }, { serverSearch: true }).map((r) => r.id)
+  assert.deepEqual(server({ search: 'nobody@example.com' }), ['a', 'b', 'c', 'd'])
+  assert.deepEqual(server({ search: '나', filters: { st: '활성' } }), ['a', 'c', 'd'])
+  assert.deepEqual(server({ sort: { column: 'n', dir: 'asc' } }), ['b', 'a', 'd', 'c'])
 })
 test('data-table-kit: pageOf 는 범위를 맞추고(없는 쪽을 가리키지 않는다) 빈 목록도 한 쪽, cellText 는 숫자 자리 구분·서울 날짜·빈 값 —', () => {
   const rows = Array.from({ length: 23 }, (_, i) => i)
@@ -325,6 +330,7 @@ test('admin-list: 필터를 준 첫 그림은 결과 수·쪽 수가 그 필터�
   assert.match(h, new RegExp(`data-result-count="${n}"`))
   assert.doesNotMatch(h, /aria-label="쪽 이동"/, '한 쪽이면 쪽 이동을 그리지 않는다')
   assert.match(mods.get('data-table/admin-list').source, /onQueryChange/)
+  assert.match(mods.get('data-table/admin-list').source, /serverSearch/)
 })
 
 // ── bulk-select ────────────────────────────────────────────────────────────────────────────
@@ -391,6 +397,44 @@ test('record-panel: 요약 dl·작업 버튼·편집 폼·위험한 작업(처�
   assert.doesNotMatch(page('data-table/record-panel', 'fixtureMin'), /이 사용자에게 하는 작업/)
   // 읽기 상태: 찾을 수 없음(empty)에는 폼이 없다
   assert.equal(count(render('data-table/record-panel', { state: { status: 'empty' } }), /<form\b/g), 0)
+})
+
+// ── 관리 구획 모듈 모양(계획 3d) ───────────────────────────────────────────────────────────
+// 관리 포트(contract/admin)의 표·상세를 블록에 그대로 넘길 수 있고, 구획에 없는 칸(편집 칸·위험한 작업)은 그 구역을 그리지 않는다. 예시 출력은 위 검사들이 그대로 지킨다.
+const adminMod = await load(join(root, 'registry', 'factory', 'contract', 'adapter-mock-admin.ts'))
+test('record-panel(관리 상세): 편집 칸이 비면 편집 폼을 그리지 않고, remove 가 없으면 위험한 작업 구역이 없다 — 주면 예전 그대로', () => {
+  const data = mods.get('data-table/record-panel').fx.fixture.state.data
+  const noFields = render('data-table/record-panel', { state: { status: 'ready', data: { ...data, fields: [] } } })
+  assert.equal(count(noFields, /<form\b/g), 0)
+  assert.doesNotMatch(noFields, /정보 고치기/)
+  assert.match(noFields, /data-danger-zone=""/, '위험한 작업은 남는다')
+  const noRemove = render('data-table/record-panel', { remove: undefined })
+  assert.doesNotMatch(noRemove, /data-danger-zone=|data-danger-trigger=/)
+  assert.equal(count(noRemove, /<form\b/g), 1, '편집 폼은 남는다')
+  const noDangerCopy = render('data-table/record-panel', { copy: { ...mods.get('data-table/record-panel').fx.fixture.copy, danger: undefined } })
+  assert.doesNotMatch(noDangerCopy, /data-danger-zone=/, 'copy.danger 가 없으면 remove 가 있어도 구역이 없다')
+  const bare = render('data-table/record-panel', { remove: undefined, state: { status: 'ready', data: { ...data, fields: [] } } })
+  assert.doesNotMatch(bare, /cn-block-rp-main/, '편집 칸도 위험한 작업도 없으면 오른쪽 칸 자체가 없다')
+  // 숫자 칸(AdminRecordField type: number)
+  const num = render('data-table/record-panel', { state: { status: 'ready', data: { ...data, fields: [{ name: 'qty', label: '수량', type: 'number', value: '3' }] } } })
+  assert.match(num, /<input[^>]*type="number"[^>]*name="qty"|<input[^>]*name="qty"[^>]*type="number"/)
+})
+
+test('관리 포트 목의 표·상세를 admin-list·record-panel 에 그대로 넘기면 그려진다 — 식별자 열은 상세 링크, 연락처 열은 가려진 글, 후기 상세는 편집 폼 없음', async () => {
+  const port = adminMod.mockAdmin('')
+  const table = (await port.table({ section: 'orders' })).data
+  const list = render('data-table/admin-list', { state: { status: 'ready', data: table } })
+  assert.match(list, /<a href="\/admin\/orders\/ord-1003"[^>]*>ord-1003<\/a>/)
+  assert.match(list, /010-\*\*\*\*-1111/)
+  assert.doesNotMatch(list, /010-0000/)
+  const order = (await port.record({ section: 'orders', id: 'ord-1003' })).data
+  const panel = render('data-table/record-panel', { state: { status: 'ready', data: order }, actions: order.actions })
+  assert.match(panel, /data-record-action="advance"/)
+  assert.match(panel, /name="memo"/)
+  const review = (await port.record({ section: 'reviews', id: 'rev-2002' })).data
+  const reviewPanel = render('data-table/record-panel', { state: { status: 'ready', data: review }, actions: review.actions })
+  assert.equal(count(reviewPanel, /<form\b/g), 0)
+  assert.match(reviewPanel, /data-danger-zone=""/)
 })
 
 // ── security ───────────────────────────────────────────────────────────────────────────────

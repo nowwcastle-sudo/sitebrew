@@ -99,7 +99,7 @@ jobs:
     name: launch-factory build-smoke
     needs: verify
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     permissions:
       contents: read
     steps:
@@ -122,12 +122,18 @@ jobs:
       - name: build-smoke
         run: npm run ci:verify -- --only smoke
 
+      # 관리 화면 브라우저 시험(scripts/e2e-admin): 템플릿 사본에 관리자 스위치를 켜서 따로 빌드한다 — 제품 템플릿·조립된 제품은 건드리지 않는다
+      - name: e2e:admin
+        run: npm run e2e:admin
+
       - name: Upload smoke report and traces
         if: ${{ failure() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: smoke-report
-          path: launch-factory/template/.tmp/smoke
+          path: |
+            launch-factory/template/.tmp/smoke
+            launch-factory/.tmp/e2e-admin
           include-hidden-files: true
           retention-days: 7
           if-no-files-found: ignore

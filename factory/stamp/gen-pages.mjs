@@ -1424,7 +1424,7 @@ export async function generateSite(runDir, cand, opts = {}) {
 
 /** 설치할 항목: 레시피 base(부품 전부) + 쓰는 블록 + 조립 코드가 부르는 계약·콘텐츠·AX·모션·전화 항목. */
 export function installNames({ archetype, recipeId, blocks }) {
-  return dedupe([recipeId, ...blocks, ...SITE_FILE_ITEMS, 'attribution', 'adapter-mock', 'adapter-static', 'content-core', `content-${archetype}`, 'content-to-jsonld', 'seo-meta', 'geo-entity', 'json-ld', 'phone', 'motion-gsap', 'utils'])
+  return dedupe([recipeId, ...blocks, ...SITE_FILE_ITEMS, 'attribution', 'adapter-mock', 'adapter-mock-commerce', 'adapter-static', 'content-core', `content-${archetype}`, 'content-to-jsonld', 'seo-meta', 'geo-entity', 'json-ld', 'phone', 'motion-gsap', 'utils'])
 }
 
 function readOptionalMedia(candDir) {

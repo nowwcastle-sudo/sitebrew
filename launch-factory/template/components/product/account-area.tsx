@@ -1,5 +1,6 @@
 import { ConsentHistory, DeleteSection, NotificationsSection, ProfileSection, SectionLink, SecuritySection } from "@/components/product/account-blocks"
 import { accountNav, accountPageCopy, consentHistoryCopy } from "@/content/copy.account.en"
+import { hasUrl } from "@/lib/launch/enabled"
 import { productMode } from "@/lib/ports"
 
 // 계정 화면의 구획 틀(LFACCT · factory-rules.md §23 U7): 다섯 구획(프로필 · 보안 · 결제 · 알림 · 내 데이터)과 맨 아래 위험 구획(탈퇴). 서버 기능이 있는 계정 행동은 모두 이 쪽에서 닿는다.
@@ -10,6 +11,8 @@ import { productMode } from "@/lib/ports"
 export function AccountArea() {
   const mode = productMode()
   const c = accountPageCopy
+  // 결제 관리 쪽이 지워진 제품(결제를 고르지 않음)은 결제 구획과 그 바로가기를 그리지 않는다
+  const billingOn = hasUrl(c.billing.href)
   return (
     <div className="space-y-12">
       <header className="space-y-3">
@@ -17,7 +20,7 @@ export function AccountArea() {
         <p>{c.lead}</p>
         <nav aria-label={accountNav.label}>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            {accountNav.items.map((item) => (
+            {accountNav.items.filter((item) => item.id !== "billing" || billingOn).map((item) => (
               <li key={item.id}>
                 <a href={`#${item.id}`} className="underline underline-offset-4">
                   {item.label}
@@ -36,13 +39,15 @@ export function AccountArea() {
         <SecuritySection mode={mode} />
       </section>
 
-      <section id="billing" aria-labelledby="billing-title" className="scroll-mt-24 space-y-4 border-t pt-12">
-        <h2 id="billing-title" className="font-heading text-2xl">
-          {c.billing.title}
-        </h2>
-        <p>{c.billing.body}</p>
-        <SectionLink href={c.billing.href}>{c.billing.cta}</SectionLink>
-      </section>
+      {billingOn ? (
+        <section id="billing" aria-labelledby="billing-title" className="scroll-mt-24 space-y-4 border-t pt-12">
+          <h2 id="billing-title" className="font-heading text-2xl">
+            {c.billing.title}
+          </h2>
+          <p>{c.billing.body}</p>
+          <SectionLink href={c.billing.href}>{c.billing.cta}</SectionLink>
+        </section>
+      ) : null}
 
       <section id="notifications" aria-labelledby="notification-settings-title" className="scroll-mt-24 border-t pt-12">
         <NotificationsSection mode={mode} />

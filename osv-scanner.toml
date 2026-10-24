@@ -9,3 +9,11 @@ reason = "braces <= 3.0.3 스택 소진 DoS(CVE-2026-93687, 고친 버전 없음
 
 # 2026-10-07(REL12): 같은 날 첫 CI 실행에서 떴던 셋 — sharp(GHSA-wq5f-xc86-pv6w)·@modelcontextprotocol/sdk(GHSA-6qxp-vccf-f47h)·source-map-js(GHSA-68fv-2mgg-jv7q) —
 # 은 예외 없이 고쳤다: sharp 0.35.5(정확 고정) · sdk 1.32.1(shadcn@4.21.0 의 ^1.26.0 범위 안에서 잠금 갱신) · source-map-js 1.2.2(잠금 갱신). 예외 표에서 지웠다.
+
+# 2026-10-24(v0.2.0): 사이트 템플릿의 shadcn@4.21.0 이 품고 있는 zod 3.25.76(GHSA-mrhx-c7xc-m3w5, 「크기가 정해진 큰 모음을 검사할 때 메모리가 바닥난다」, 고친 판은 zod 4.6.6 이상뿐)이다.
+# 고치는 쪽을 먼저 봤다: shadcn 4.22.1 이 고친 판을 쓰지만 shadcn 4.21.0 은 문서·명령(npx shadcn@4.21.0 …)·시험이 모두 한 판에 묶여 있어 한 번에 올리면 설치 안내 748곳이 어긋난다 — 별도 판 올리기로 미룬다.
+# 영향: 이 zod 는 shadcn 명령줄(devDependency)만 쓴다. 우리가 만든 신뢰할 레지스트리 JSON 을 읽을 때 돌고, 사이트 실행 코드에는 들어가지 않는다. 루트의 shadcn 은 4.22.1 로 올렸다.
+[[IgnoredVulns]]
+id = "GHSA-mrhx-c7xc-m3w5"
+ignoreUntil = 2026-12-05
+reason = "shadcn@4.21.0(사이트 템플릿 devDependency)의 중첩 zod 3.25.76 — 명령줄이 우리 레지스트리 JSON 을 읽을 때만 돈다. 고친 판은 shadcn 4.22.1(zod 4.6.6+) 이고 문서의 shadcn@4.21.0 고정과 함께 다음 판에서 올린다."

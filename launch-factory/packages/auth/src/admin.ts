@@ -26,6 +26,7 @@ export type AdminErrorCode =
   | "invalid_input"
   | "not_found"
   | "cannot_ban_self"
+  | "confirmation_required"
   | "cannot_impersonate_admin"
   | "reason_required"
   | "not_impersonating"
@@ -75,9 +76,11 @@ export interface NormalizedUserQuery {
 const userIdSchema = z.string().trim().min(1).max(200)
 const reasonSchema = z.string().trim().max(REASON_MAX)
 const byIdSchema = z.object({ userId: userIdSchema }).strict()
-const banSchema = z.object({ userId: userIdSchema, reason: reasonSchema.optional(), expiresInSeconds: intLike(60, 10 * 365 * 24 * 3600).optional() }).strict()
+/** 사람이 확인 단계를 거쳤다(계약 HumanConfirmation). 정지·일괄 정지는 이것이 정확히 true 가 아니면 실행하지 않는다 — 콘솔 구획과 서버 액션이 같은 벽을 지난다 */
+const confirmedSchema = z.literal(true).optional()
+const banSchema = z.object({ userId: userIdSchema, reason: reasonSchema.optional(), expiresInSeconds: intLike(60, 10 * 365 * 24 * 3600).optional(), confirmed: confirmedSchema }).strict()
 const unbanSchema = z.object({ userId: userIdSchema, reason: reasonSchema.optional() }).strict()
-const bulkBanSchema = z.object({ userIds: z.array(userIdSchema).min(1).max(BULK_MAX), reason: reasonSchema.optional() }).strict()
+const bulkBanSchema = z.object({ userIds: z.array(userIdSchema).min(1).max(BULK_MAX), reason: reasonSchema.optional(), confirmed: confirmedSchema }).strict()
 const bulkUnbanSchema = z.object({ userIds: z.array(userIdSchema).min(1).max(BULK_MAX), reason: reasonSchema.optional() }).strict()
 const impersonateSchema = z.object({ userId: userIdSchema, reason: reasonSchema.min(1) }).strict()
 const exportSchema = querySchema.omit({ page: true, pageSize: true })
@@ -342,12 +345,13 @@ export function adminActions({ auth, db, io, subscriptionOf, locale = DEFAULT_LO
       }
     },
 
-    /** 정지(모든 세션이 끊기고 로그인이 막힌다). expiresInSeconds 가 없으면 풀 때까지 */
+    /** 정지(모든 세션이 끊기고 로그인이 막힌다). expiresInSeconds 가 없으면 풀 때까지. `confirmed: true` 가 없으면 confirmation_required */
     async banUser(input: unknown): Promise<AdminResult<{ userId: string }>> {
       const admin = await requireAdmin()
       if (isFailure(admin)) return admin
       const p = parse(banSchema, input)
       if (isFailure(p)) return p
+      if (p.confirmed !== true) return failure(400, "confirmation_required", M.confirmationRequired, { retryable: false })
       const r = await adminPost("/admin/ban-user", { userId: p.userId, banReason: p.reason || undefined, banExpiresIn: p.expiresInSeconds })
       return r.ok ? { ok: true, data: { userId: p.userId } } : r
     },
@@ -367,6 +371,7 @@ export function adminActions({ auth, db, io, subscriptionOf, locale = DEFAULT_LO
       if (isFailure(admin)) return admin
       const p = parse(bulkBanSchema, input)
       if (isFailure(p)) return p
+      if (p.confirmed !== true) return failure(400, "confirmation_required", M.confirmationRequired, { retryable: false })
       return bulk("/admin/ban-user", p.userIds, { banReason: p.reason || undefined })
     },
 

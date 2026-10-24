@@ -50,7 +50,7 @@ export function QnaSearchFirst({ copy, locale, timeZone, items, contact, track, 
   const remaining = matches.length - visible.length
   const searching = query.trim().length > 0
   return (
-    <section ref={ref} id={id} data-block="qna-search-first" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col px-4 py-16 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 gap-8 md:gap-10", className)}>
+    <section ref={ref} id={id} data-block="qna-search-first" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 gap-8 md:gap-10", className)}>
       <div className="flex max-w-3xl flex-col gap-3">
         <h2 id={`${id}-title`} data-enter className="text-[1.953rem] leading-[1.2] md:text-[2.441rem] md:leading-[1.15] font-heading-ko">
           {copy.title}

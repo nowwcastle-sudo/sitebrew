@@ -49,15 +49,19 @@ const editJournal = (dir, fn) => {
 }
 
 test("양성 대조: 결함을 하나씩 심으면 각각 잡힌다", () => {
+  // 마지막 마이그레이션이 늘어도 시험이 깨지지 않게 journal 에서 읽는다(병렬 레인이 번호를 먼저 쓰는 일이 잦다)
+  const entries = readJournal(DIRS[0]).entries
+  const lastTag = entries.at(-1).tag
+  const orphan = `${String(entries.length).padStart(4, "0")}_orphan`
   const cases = [
     ["SQL 파일 삭제", (d) => rmSync(join(d, "0012_notice_outbox.sql")), /0012_notice_outbox\.sql\)이 없다/],
-    ["journal 에 없는 SQL 추가", (d) => writeFileSync(join(d, "0013_orphan.sql"), "select 1;"), /0013_orphan\.sql 가 journal 에 없다/],
+    ["journal 에 없는 SQL 추가", (d) => writeFileSync(join(d, `${orphan}.sql`), "select 1;"), new RegExp(`${orphan}\\.sql 가 journal 에 없다`)],
     ["번호 건너뜀(0012 → 0014)", (d) => { renameSync(join(d, "0012_notice_outbox.sql"), join(d, "0014_notice_outbox.sql")); editJournal(d, (e) => (e[12].tag = "0014_notice_outbox")) }, /0012_ 로 시작하지 않는다/],
     ["idx 중복", (d) => editJournal(d, (e) => (e[5].idx = 4)), /idx 가 4/],
     ["스냅샷 삭제", (d) => rmSync(join(d, "meta", "0007_snapshot.json")), /0007_snapshot\.json 스냅샷이 없다/],
     ["when 이 앞 항목보다 작음", (d) => editJournal(d, (e) => (e[9].when = e[8].when - 1)), /0009_admin_plugin 의 when/],
     ["빈 SQL", (d) => writeFileSync(join(d, "0003_consents.sql"), "  \n"), /0003_consents\.sql 이 비어 있다/],
-    ["journal 항목 삭제(SQL 은 남음)", (d) => editJournal(d, (e) => e.pop()), /0012_notice_outbox\.sql 가 journal 에 없다/],
+    ["journal 항목 삭제(SQL 은 남음)", (d) => editJournal(d, (e) => e.pop()), new RegExp(`${lastTag}\\.sql 가 journal 에 없다`)],
   ]
   for (const [name, mutate, re] of cases) {
     const found = planted(mutate)

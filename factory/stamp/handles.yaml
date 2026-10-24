@@ -1,0 +1,63 @@
+# 손잡이 배선(설계 5.10) — 축마다 어느 레시피 칸을 어떤 방식으로 움직이는지. 배선만 적는다.
+#   축 사실(값 순서 order · 값 등급 rank · 구획 의도 sectionIntent)은 사전 factory/vocab/design-lexicon.yaml 의 axes 에 있고, loadHandles(lex)가 거기서 채운다.
+#   사용자 문장은 factory/vocab/grammar.yaml, 여백 CSS 수치는 factory/scripts/spacing.json.
+#   kind: order(값 줄에서 칸 옮기기) · rank(등급 칸 옮기기) · palette(팔레트 후보에서 고르기) · value(값 이름으로 고르기)
+#   field: 레시피 머리의 칸(axes.<축> | motion | colorLogic | spacing). repair: 값을 바꾼 뒤 궁합이 깨지면 함께 옮길 수 있는 compat 축. recolor: 색을 다시 짠다.
+axes:
+  type-scale: { kind: order, field: axes.display }
+  motion: { kind: order, field: motion }
+  shape: { kind: order, field: axes.radius, repair: [button, input, surface, header, table, shadow] }
+  depth: { kind: rank, field: axes.shadow, repair: [surface, radius, button, input, header, table] }
+  contrast: { kind: rank, field: axes.surface, repair: [radius, shadow, table] }
+  palette-count: { kind: rank, field: colorLogic, recolor: true }
+  color-lightness: { kind: palette }
+  color-saturation: { kind: palette }
+  color-temperature: { kind: palette }
+  color-hue: { kind: value }
+  type-family: { kind: value }
+  spacing: { kind: order, field: spacing, default: normal }
+palette:
+  pool: recipe # 후보 풀은 레시피(use: recipe)만
+  temperature: { warm: [warm], cool: [cool] }
+  saturation: { vivid: [bold, neon], muted: [muted, earthy] }
+  lightness: { by: background-l } # roles.background 의 oklch L
+values:
+  # name = 사전 valueLabels 의 한국어 이름. hex 가 없는 색은 revise-values.mjs COLOR_NAMES 의 대표 색을 쓴다.
+  #   hex 는 주색(버튼·링크 글자)으로 쓸 수 있는 색이다 — 밝은 하늘색(#38BDF8)·금색(#D4AF37)은 글자 대비 4.5:1 에서 색조가 한도(2°) 밖으로 돌아 라이브러리 15벌 모두에서 막혔다. 채도를 낮춘 같은 색조(하늘 233°·금 89°)는 15벌 모두 통과한다.
+  color-hue:
+    red: { name: 빨강 }
+    orange: { name: 주황 }
+    yellow: { name: 노랑 }
+    green: { name: 초록 }
+    teal: { name: 청록 }
+    blue: { name: 파랑 }
+    navy: { name: 남색 }
+    purple: { name: 보라 }
+    pink: { name: 분홍 }
+    brown: { name: 갈색 }
+    beige: { name: 베이지 }
+    black: { name: 검정 }
+    gray: { name: 회색 }
+    white: { name: 흰색 }
+    gold: { name: 금색, hex: '#D4B460' }
+    sky: { name: 하늘색, hex: '#68C3F2' }
+    coral: { name: 산호색, hex: '#FF7F50' }
+    lavender: { name: 연보라, hex: '#B794F4' }
+    olive: { name: 올리브색, hex: '#6B8E23' }
+    burgundy: { name: 진한 와인색, hex: '#800020' }
+    away-from-indigo-violet: { avoidHueFamilies: [indigo, violet, purple] }
+  type-family:
+    serif: { category: serif }
+    sans: { category: sans }
+    handwriting: { category: handwriting }
+    rounded-sans: { category: rounded }
+    mono: { category: mono }
+    serif-or-thin-sans: { category: serif }
+    clear-sans: { category: sans }
+    serif-or-slab: { category: serif }
+    distinctive: { notCurrent: [serif, handwriting, rounded] }
+# element 범위로 실행할 수 있는 것(첫 판: 제목 → type-scale). 표에 없는 요소는 사이트 전체에 적용된다고 되묻는다.
+elements:
+  제목: { type-scale: axes.display }
+# 다시 그리기(redraw)로 인정하는 최소 축 변화 수
+redraw: { minAxesDelta: 1 }

@@ -22,3 +22,32 @@ targetRules = ["generic-api-key"]
 paths = ['''(^|/)packages/security/test/turnstile\.test\.mjs$''']
 regexTarget = "line"
 regexes = ['''^\s*const key = "[A-Za-z0-9-]+"\s*$''']
+
+[[allowlists]]
+description = "payments-kr 환경 선택 시험의 가짜 PortOne 값(FAKE) — 'whsec_' + base64('fake') 모양의 시험 입력이다. 실제 키가 아니다"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)packages/payments-kr/test/config\.test\.mjs$''']
+regexTarget = "line"
+regexes = ['''PORTONE_WEBHOOK_SECRET: "whsec_ZmFrZQ==" \}$''']
+
+[[allowlists]]
+description = "notify-kr 시험의 가짜 솔라피 키(KEY) — 'NCSTESTKEY' 로 시작하는 시험 입력이다. 서명 계산을 확인하는 데만 쓰고 실제 계정과 무관하다"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)packages/notify-kr/test/(solapi|send)\.test\.mjs$''']
+regexTarget = "line"
+regexes = ['''^\s*const KEY = "NCSTESTKEY[A-Za-z0-9]+"\s*$''']
+
+[[allowlists]]
+description = "newsletter 시험의 가짜 서명 비밀(예전 모양) — 이 PR 의 앞 커밋에 남은 줄이다(지금 파일은 다른 시험과 같은 lf-test-secret-not-real 모양). 시험 입력일 뿐 실제 비밀이 아니다"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)(packages/newsletter/test/(tokens|newsletter)\.test\.mjs|scripts/test/newsletter-glue\.test\.mjs)$''']
+regexTarget = "line"
+regexes = ['''^\s*(const SECRET = "(test-secret-test-secret|newsletter-test-secret)-0123456789"|process\.env\.CRON_SECRET = "cron-secret-for-glue-test-0123456789")\s*$''']
+
+[[allowlists]]
+description = "Sitebrew: web-factory's tunnel tests hold made-up tokens (checked by the root config); launch-factory's range scan also walks the root files"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)factory/tunnel/(session|site-server|preview-link)\.test\.mjs$''']

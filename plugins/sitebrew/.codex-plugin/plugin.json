@@ -1,6 +1,6 @@
 {
   "name": "sitebrew",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Make a website from a short conversation: Sitebrew turns a few answers into three site candidates to compare, then revises and delivers the one you pick. Works without any API key in preview mode.",
   "author": { "name": "Sitebrew maintainers" },
   "license": "MIT",

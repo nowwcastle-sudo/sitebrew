@@ -66,15 +66,9 @@
   },
   {
     "check": "actions-without-screen",
-    "target": "template/app/actions/inquiry-admin.ts#reclassifyInquiry",
-    "item": "D137",
-    "note": "문의 번들(feature-inquiry)이 템플릿 기본이 되며 들어온 관리자용 액션 — 이 액션을 부르는 관리 화면은 제품이 만든다(대장 D137, item.json 안내 5번). 화면이 생기면 뺀다"
-  },
-  {
-    "check": "actions-without-screen",
-    "target": "template/app/actions/inquiry-admin.ts#markInquiryAsComplaint",
-    "item": "D137",
-    "note": "문의 번들(feature-inquiry)이 템플릿 기본이 되며 들어온 관리자용 액션 — 이 액션을 부르는 관리 화면은 제품이 만든다(대장 D137, item.json 안내 5번). 화면이 생기면 뺀다"
+    "target": "template/app/actions/my-requests.ts#myRequests",
+    "item": "3c-T5",
+    "note": "내 신청 내역(계획 3c Task 5) 서버 액션 — 화면은 제품이 web-factory MyRequestsPort 블록으로 만든다(템플릿은 쪽을 더하지 않는다, item.json 안내 6번). 화면이 생기면 뺀다"
   },
   {
     "check": "copy-promises",

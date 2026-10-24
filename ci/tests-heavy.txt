@@ -46,6 +46,7 @@ factory/qa/rel12-gallery.test.mjs  # Chrome · 미측정
 factory/qa/bold-safety.browser.test.mjs  # Chrome · 이 레인 실측 45초
 factory/scripts/revise.test.mjs  # 구획 수정 — 실제 06 으로 안마다 사이트를 다시 만든다 · FV1 4.3 실측 23~34초
 factory/scripts/revise-axis-copy.test.mjs  # 축 수정은 안마다 임시 레시피를 컴파일한다 · FV1 4.3 실측 15~18초
+factory/scripts/revise-plan-readings.test.mjs  # 읽기 → 2안 계획 — 팔레트·호환표 후보를 머리마다 탐색한다 · 혼자 41초(병렬 75초)
 factory/qa/agent-boundary.test.mjs  # Chrome(CLI 를 띄워 연다) · C387 — 부하 아래 120초 초과(10-10 관문)
 factory/qa/session-scene.test.mjs  # Chrome(CLI 를 띄워 연다) · C387 — 부하 아래 120초 초과, 단독 17/17(두 파일 합 500초)
 factory/qa/signed-out-access.test.mjs  # Chrome(CLI 를 띄워 연다) · C387 — 부하 아래 120초 초과
@@ -65,3 +66,4 @@ factory/qa/final-wf6-checkbox-name.test.mjs  # Chrome · FINAL-WF6 체크박스 
 factory/scripts/revise-values.test.mjs  # 값이 든 수정 요청 — 실제 06(install:false)으로 안마다 임시 레시피를 컴파일한다 · FIT-2 실측 약 70초
 factory/scripts/revise-values-golden.test.mjs  # REVISE_VALUES_GOLDEN=1 일 때만 도는 진짜 06(shadcn add) 왕복 · FIT-2 (잠금 안에서, 템플릿 npm ci 포함)
 factory/scripts/revise-structure.test.mjs  # 구획 더하기·빼기·순서 — 실제 06(install: false)을 제안·왕복으로 여러 번 돈다 · FIT-1 실측 약 25~40초
+factory/scripts/deliver-product.test.mjs  # P3 Task 9 — 진짜 composeProduct·npm install·next build·next start·POST /api/inquiry·정적 빌드, 한 파일 수십 분(메모리 3.0 GB 미만이면 건너뜀)

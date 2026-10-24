@@ -61,7 +61,7 @@ export function ConsentInlineNotice({ copy, consent, setConsent, track, category
   const granted = current[category]
   const view = granted ? "allowed" : declinedNow || snoozed === true ? "hidden" : "ask"
   return (
-    <section ref={ref} id={id} data-block="consent-inline-notice" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="consent-inline-notice" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <div data-enter data-consent-view={view} className="max-w-3xl">
         {view === "allowed" ? (
           <div className="flex flex-col items-start gap-3 border px-5 py-8 md:px-10">

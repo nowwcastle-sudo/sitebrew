@@ -5,7 +5,8 @@
   "type": "module",
   "description": "web-factory 계약(ports·events·attribution)을 태그·커밋 고정으로 가져와 다시 내보낸다. 판 검사 포함(J2).",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./conformance/commerce": "./src/web-factory/contract/conformance/commerce.ts"
   },
   "bin": {
     "lf-sync-contract": "./sync-contract.mjs"

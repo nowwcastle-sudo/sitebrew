@@ -6,7 +6,7 @@
 
 Sitebrew 是 Claude Code 和 Codex 的插件。你用平常的话描述想要的网站，它会做出三个不同的候选。你选一个，在对话中修改，然后把代码放进自己的文件夹。不需要会写代码，开始时也不需要 API 密钥。
 
-当前版本 `v0.1.2` · MIT 许可证 · Windows 10 和 11
+当前版本 `v0.2.0` · MIT 许可证 · Windows 10 和 11
 
 ## 为什么用 Sitebrew
 
@@ -55,13 +55,13 @@ Sitebrew 是 Claude Code 和 Codex 的插件。你用平常的话描述想要的
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.1.2 sitebrew
+npm create sitebrew@0.2.0 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.1.2 sitebrew
+npx create-sitebrew@0.2.0 sitebrew
 ```
 
 两者的选项相同：`--dry-run` 只显示计划，不做任何改动；`--yes` 对所有问题回答“是”；`--tool` 从 `claude`、`codex`、`both` 中选择。
@@ -69,14 +69,14 @@ npx create-sitebrew@0.1.2 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.0/get.ps1 | iex
 ```
 
 不安装任何东西、只看会做什么：
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.0/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 在 Claude Code 中：
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.0
 /plugin install sitebrew@sitebrew
 ```
 
 在 Codex 中：
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.0
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 也可以只把部件加到另一个 Next.js 项目中。地址里一定要带上标签：
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.2 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.2 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.2.0 -y -o
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.2.0 -y -o
 ```
 
 ## 参与贡献
@@ -149,6 +149,7 @@ MIT。见 [LICENSE](LICENSE) 和 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md
 
 | 标签 | 日期 | 变更 | 记录 |
 |---|---|---|---|
+| `v0.2.0` | 2026-10-24 | 无需密钥即可在 mock 模式下运行的后端模块（商店与韩国支付、预约、通知与推送、评价、搜索、存储、通讯、我的请求、管理端） · 通过 Cloudflare 临时隧道生成的可分享预览链接 · 决定使用站点之后才会出现的站点主人指南与运行手册 · 技能现在能判断自己处于聊天机器人还是代理环境，并新增可补装缺失工具的安装技能 · web-factory v0.0.14 + launch-factory v0.2.0（内部版本） | — |
 | `v0.1.2` | 2026-10-16 | 应对插件目录审核：doctor 从 compat.json 读取克隆地址、插件 README 列出网络调用、发布指南加入 GitHub 发布步骤、launch 工具包 lucide-react 1.53.0 | — |
 | `v0.1.1` | 2026-10-15 | 为 Claude 插件目录做好准备：换行规则不再作用于 `plugins/sitebrew`、插件图标、更清楚的 doctor 提示、五种安装方式、AGENT_INSTALL.md 和 CONTRIBUTING.md | — |
 | `v0.1.0` | 2026-10-15 | 首次公开发布 · web-factory v0.0.13 + launch-factory v0.1.2（内部版本） | — |

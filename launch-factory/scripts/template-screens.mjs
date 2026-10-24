@@ -13,13 +13,14 @@ import net from "node:net"
 import os from "node:os"
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
+import { MOCK_ONLY_NAMES } from "@launch-factory/env"
 import { aggregate, buildPlan, classifyExit, extractFindings, GATES, groupFindings, isProtected, readResult, redirectsToSignIn, renderTable, routesFromApp, SCENE_IN, SCENE_OUT, SCENE_UNVERIFIED } from "./template-screens/plan.mjs"
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url))
 const TEMPLATE = join(ROOT, "template")
 const NODE = process.execPath
 const WIN = process.platform === "win32"
-const PROVIDER_ENV = ["DATABASE_URL", "BETTER_AUTH_SECRET", "PADDLE_API_KEY", "PADDLE_WEBHOOK_SECRET", "RESEND_API_KEY", "POSTHOG_PROJECT_KEY", "SENTRY_DSN", "TURNSTILE_SECRET_KEY", "EMAIL_FROM", "NEXT_PUBLIC_APP_URL", "CRON_SECRET", "SUBJECT_REF_KEY", "TURNSTILE_SITE_KEY", "INQUIRY_OWNER_EMAIL", "PADDLE_CLIENT_TOKEN", "LF_MODE", "POSTHOG_HOST", "LF_MOCK_SUB", "NODE_ENV", "WF_SESSION"]
+const PROVIDER_ENV = ["DATABASE_URL", "BETTER_AUTH_SECRET", "PADDLE_API_KEY", "PADDLE_WEBHOOK_SECRET", "RESEND_API_KEY", "POSTHOG_PROJECT_KEY", "SENTRY_DSN", "TURNSTILE_SECRET_KEY", "EMAIL_FROM", "NEXT_PUBLIC_APP_URL", "CRON_SECRET", "SUBJECT_REF_KEY", "TURNSTILE_SITE_KEY", "INQUIRY_OWNER_EMAIL", "PADDLE_CLIENT_TOKEN", "LF_MODE", "POSTHOG_HOST", ...MOCK_ONLY_NAMES, "NODE_ENV", "WF_SESSION"]
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
 // ── 인자 ──────────────────────────────────────────────────────────────────────────────

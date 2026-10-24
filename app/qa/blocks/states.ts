@@ -75,9 +75,9 @@ const browserEnv: StatesEnv = {
 // ── 포트 목 주입(P3-2 레인 D1) ─────────────────────────────────────────────────────────────────────────────
 // 포트를 받는 블록(auth·account·paywall·retention·consent)은 예시 모듈이 fixturePorts(쿼리, { fx, onTrack })를 낸다 — adapter-mock 의
 // mockBilling·mockAuth·mockNotify·mockAnalytics 를 그 쿼리로 만들어 블록이 받는 메서드만 props 로 돌려준다.
-// 쿼리: 포트 처음 상태 ?sub=(구독 7상태 + pending-price-change) · ?auth= · ?consent=, 읽기·쓰기 결과 ?state=·?submit=·&delay=(목이 직접 읽는다).
+// 쿼리: 포트 처음 상태 ?sub=(구독 7상태 + pending-price-change) · ?auth= · ?consent= · 판매 목 ?cart=empty|filled · ?order=<주문 상태> · ?stock=out, 읽기·쓰기 결과 ?state=·?submit=·&delay=(목이 직접 읽는다).
 // 이 블록들은 withStates 를 거치지 않는다 — 메타 states 는 포트 목이 같은 쿼리로 그린다(state 는 읽기 메서드, submit 은 쓰기 메서드).
-export const PORT_QUERY_KEYS = ["sub", "auth", "consent", "state", "submit", "delay", "retryAfter", "unsupported", "last", "initialWait", "channels"] as const
+export const PORT_QUERY_KEYS = ["sub", "auth", "consent", "state", "submit", "delay", "retryAfter", "unsupported", "last", "initialWait", "channels", "cart", "order", "stock"] as const
 // attribution: 출처 태그(P3-2 Task 10c 계약 판 2 · 대장 A16) — 갤러리가 withPorts 에서 track 을 withAttribution 으로 감싸면 목이 기록에 싣는다.
 export type TrackedCall = { name: string; props: unknown; attribution?: Attribution }
 export type FixturePorts = (q: URLSearchParams, gallery: { fx: string; onTrack: (e: TrackedCall) => void }) => Record<string, unknown>

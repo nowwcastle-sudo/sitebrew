@@ -26,26 +26,29 @@ const prefsOpts = () => ({ seedFile: join(dir, 'no-seed.json'), userFile: userFi
 
 // ── 말 → 요청 ───────────────────────────────────────────────────────────────
 
-test('모호한 요청은 되묻고 아무것도 바꾸지 않는다(Review Focus 4)', async () => {
-  for (const text of ['더 예쁘게 해줘', '좀 더 좋게', '다시 해줘', '', '   ', 'make it prettier', 'improve it', '더 대담하게', '마음에 안 들어']) {
+test('모호한 요청은 되묻고 아무것도 바꾸지 않는다(Review Focus 4) — 빈 말은 바로, 사전이 못 읽은 말은 revise() 가', async () => {
+  for (const text of ['', '   ']) {
     const r = parseRevision(text, site)
     assert.ok(typeof r.ask === 'string' && r.ask.length > 0 && r.ask.length < 80, `${JSON.stringify(text)} → ${JSON.stringify(r)}`)
     assert.equal(r.scope, undefined, '되묻는 결과는 범위를 정하지 않는다')
   }
-  assert.match(parseRevision('더 예쁘게 해줘', site).ask, /[가-힣]/, '한국어 요청에는 한국어로')
-  assert.doesNotMatch(parseRevision('make it prettier', site).ask, /[가-힣]/, '영어 요청에는 영어로')
-  // revise() 에 되묻기 결과를 그대로 넘겨도 아무것도 쓰지 않는다
   const run = fixtureRun()
   const before = tree(run)
-  const out = await revise(run, 'a', parseRevision('더 예쁘게 해줘', site), { install: false })
-  assert.ok(out.ask)
-  assert.equal(out.variants, undefined)
+  for (const text of ['더 예쁘게 해줘', '좀 더 좋게', '다시 해줘', 'make it prettier', 'improve it', '마음에 안 들어']) {
+    const request = parseRevision(text, site)
+    assert.equal(request.scope, 'design', text) // 사전 분류가 근사·모름이면 revise() 가 되묻는다
+    const out = await revise(run, 'a', request, { install: false })
+    assert.ok(typeof out.ask === 'string' && out.ask.length > 0 && out.ask.length < 80, `${JSON.stringify(text)} → ${JSON.stringify(out)}`)
+    assert.equal(out.variants, undefined)
+  }
+  assert.match((await revise(run, 'a', parseRevision('더 예쁘게 해줘', site), { install: false })).ask, /[가-힣]/, '한국어 요청에는 한국어로')
+  assert.doesNotMatch((await revise(run, 'a', parseRevision('make it prettier', site), { install: false })).ask, /[가-힣]/, '영어 요청에는 영어로')
   assert.equal(tree(run), before, '디렉터리 목록이 그대로다')
 })
 
-test('「히어로를 더 대담하게」 → section home/hero, 2안, 지금 변형 제외', async () => {
-  const r = parseRevision('히어로를 더 대담하게', site)
-  assert.deepEqual([r.scope, r.target, r.intent], ['section', 'home/hero', 'bolder'])
+test('「히어로를 더 차분하게」 → section home/hero, 2안, 지금 변형 제외', async () => {
+  const r = parseRevision('히어로를 더 차분하게', site)
+  assert.deepEqual([r.scope, r.target, r.intent], ['section', 'home/hero', 'calmer'])
   const run = fixtureRun()
   const out = await revise(run, 'a', r, { n: 2, install: false })
   assert.equal(out.variants.length, 2)
@@ -59,7 +62,7 @@ test('구획 2안: 그 구획만 다시 만든다 — 지금 쪽 파일·03·04 
   const run = fixtureRun()
   const siteFile = join(run, 'a', 'site', 'content', 'site.json')
   const guard = { site: sha(siteFile), v: sha(join(run, 'a', '03-variants.json')), c: sha(join(run, 'a', '04-content.json')) }
-  const out = await revise(run, 'a', parseRevision('히어로를 더 대담하게', site), { install: false })
+  const out = await revise(run, 'a', parseRevision('히어로를 더 차분하게', site), { install: false })
   assert.equal(sha(siteFile), guard.site, '지금 사이트는 제안만으로 바뀌지 않는다')
   assert.equal(sha(join(run, 'a', '03-variants.json')), guard.v)
   assert.equal(sha(join(run, 'a', '04-content.json')), guard.c)
@@ -78,14 +81,14 @@ test('구획 2안: 그 구획만 다시 만든다 — 지금 쪽 파일·03·04 
 
 test('전·후 보드 자료 09-revise/<n>/board.json 이 쓰인다 — 번호는 1부터 늘고 안마다 사이트 사본이 있다', async () => {
   const run = fixtureRun()
-  const r = parseRevision('히어로를 더 대담하게', site)
+  const r = parseRevision('히어로를 더 차분하게', site)
   const a = await revise(run, 'a', r, { install: false, now: () => '2026-10-10T00:00:00.000Z' })
   assert.equal(a.index, 1)
   const file = join(run, 'a', '09-revise', '1', 'board.json')
   assert.equal(a.boardFile, file)
   const board = JSON.parse(readFileSync(file, 'utf8'))
-  assert.deepEqual([board.kind, board.version, board.candidate, board.scope, board.target, board.intent, board.status], ['revise-board', 1, 'a', 'section', 'home/hero', 'bolder', 'ready'])
-  assert.equal(board.request, '히어로를 더 대담하게')
+  assert.deepEqual([board.kind, board.version, board.candidate, board.scope, board.target, board.intent, board.status], ['revise-board', 1, 'a', 'section', 'home/hero', 'calmer', 'ready'])
+  assert.equal(board.request, '히어로를 더 차분하게')
   assert.equal(board.createdAt, '2026-10-10T00:00:00.000Z')
   assert.equal(board.before.block, site.sections['home/hero'].block)
   assert.equal(board.route, '/')
@@ -109,16 +112,15 @@ test('revise 가 학습 가중치를 안에 싣는다 — 안마다 weight 가 w
   for (const v of out.variants) assert.equal(v.weight, weightOf(prefs, 'saas', v.block))
 })
 
-test('의도가 정한 쪽으로 좁힌다: 더 대담하게 = 지금 것보다 움직임·밀도 점수가 큰 변형부터, 더 차분하게 = 작은 변형부터 — 모자라면 그 사실을 알린다', async () => {
-  // 허용 변형 수는 히어로가 늘 때마다 바뀐다 — 개수가 아니라 「조건에 맞는 안이 앞에 서고, 맞지 않는 안은 모자랄 때만 뒤를 채우며 그때 알린다」를 고정한다.
+test('의도가 정한 쪽으로 좁힌다: 더 대담하게 = 지금 것보다 움직임·밀도 점수가 큰 변형만, 더 차분하게 = 작은 변형만 — 모자라도 반대 방향으로 채우지 않고 그 사실을 알린다', async () => {
+  // 허용 변형 수는 히어로가 늘 때마다 바뀐다 — 개수가 아니라 「모든 안이 조건에 맞고, 모자라면 채우지 않으며 그때 까닭(why)을 알린다」를 고정한다.
   const run = fixtureRun()
   const cur = boldScore(site.sections['campaign/hero'].block)
   const check = (out, ok, label) => {
-    const flags = out.variants.map((v) => ok(boldScore(v.block)))
-    assert.ok(flags[0], `${label}: 첫 안이 조건에 맞아야 한다 ${cur} → ${out.variants.map((v) => boldScore(v.block))}`)
-    assert.deepEqual(flags, [...flags].sort((x, y) => Number(y) - Number(x)), `${label}: 조건에 맞는 안이 앞에 선다`)
-    if (flags.includes(false)) assert.match(out.notes.join(' '), /개뿐이라 나머지는 다른 변형/, `${label}: 맞는 안이 모자라 채웠으면 알린다`)
-    else assert.doesNotMatch(out.notes.join(' '), /개뿐이라/, `${label}: 다 맞으면 모자란다고 하지 않는다`)
+    assert.ok(out.variants.length >= 1, `${label}: 안이 있다`)
+    assert.ok(out.variants.every((v) => ok(boldScore(v.block))), `${label}: 모든 안이 조건에 맞아야 한다 ${cur} → ${out.variants.map((v) => boldScore(v.block))}`)
+    if (out.variants.length < 2) assert.match(out.why, new RegExp(`${out.variants.length}개뿐`), `${label}: 맞는 안이 모자라면 채우지 않고 까닭을 알린다`)
+    else assert.equal(out.why, undefined, `${label}: 다 채웠으면 모자란다고 하지 않는다`)
   }
   const bolder = await revise(run, 'a', parseRevision('캠페인 히어로를 더 대담하게', site), { install: false })
   const calmer = await revise(run, 'a', parseRevision('캠페인 히어로를 더 차분하게', site), { install: false })
@@ -130,10 +132,10 @@ test('07 관문은 바뀐 쪽만 돈다 — 홈 히어로는 /, 캠페인 히어
   const run = fixtureRun()
   const calls = []
   const qa = async (scratchRun, cand, opts) => { calls.push({ routes: opts.routes, cand: cand.id, run: scratchRun }); return { publishable: false, blockers: ['가짜 관문 사유'], gates: [{ id: 'fake', verdict: 'pass' }] } }
-  const out = await revise(run, 'a', parseRevision('히어로를 더 대담하게', site), { install: false, qa })
+  const out = await revise(run, 'a', parseRevision('히어로를 더 차분하게', site), { install: false, qa })
   assert.equal(calls.length, 0, 'install:false 면 관문을 돌리지 않는다(Chrome 이 필요하다)')
   assert.equal(out.variants.every((v) => v.qa === null), true)
-  const out2 = await revise(run, 'a', parseRevision('히어로를 더 대담하게', site), { install: false, qa, runGates: true })
+  const out2 = await revise(run, 'a', parseRevision('히어로를 더 차분하게', site), { install: false, qa, runGates: true })
   assert.equal(calls.length, 2)
   assert.deepEqual(calls.map((c) => c.routes), [['/'], ['/']])
   assert.deepEqual(out2.variants.map((v) => v.qa.routes), [['/'], ['/']])
@@ -162,7 +164,7 @@ test('다른 변형이 모자라면 있는 만큼만 돌려주고 까닭을 남�
   assert.equal(out.variants.length, available)
   assert.ok(out.variants.every((v) => v.block !== now))
   assert.equal(new Set(out.variants.map((v) => v.block)).size, available, '안끼리 서로 다르다')
-  assert.match(out.notes.join(' '), new RegExp(`${available}개뿐`), '모자란다는 까닭을 남긴다')
+  assert.match(out.why, new RegExp(`${available}개뿐`), '모자란다는 까닭을 남긴다')
   const board = JSON.parse(readFileSync(out.boardFile, 'utf8'))
   assert.equal(board.variants.length, available)
 })
@@ -171,7 +173,7 @@ test('다른 변형이 모자라면 있는 만큼만 돌려주고 까닭을 남�
 
 test('고르면 03-variants 에 반영하고(입력 해시는 그대로라 다시 돌려도 유지), 이긴 변형·진 변형을 학습에 기록한다', async () => {
   const run = fixtureRun()
-  const out = await revise(run, 'a', parseRevision('히어로를 더 대담하게', site), { install: false })
+  const out = await revise(run, 'a', parseRevision('히어로를 더 차분하게', site), { install: false })
   const chosen = out.variants[1]
   const stageFile = join(run, 'a', '03-variants.json')
   const old = JSON.parse(readFileSync(stageFile, 'utf8'))
@@ -197,7 +199,7 @@ test('고르면 03-variants 에 반영하고(입력 해시는 그대로라 다�
 
 test('고르기 오류: 모르는 안 id 는 아무것도 바꾸지 않는다(03·학습 기록 모두)', async () => {
   const run = fixtureRun()
-  const out = await revise(run, 'a', parseRevision('히어로를 더 대담하게', site), { install: false })
+  const out = await revise(run, 'a', parseRevision('히어로를 더 차분하게', site), { install: false })
   const guard = sha(join(run, 'a', '03-variants.json'))
   await assert.rejects(() => applyRevision(run, 'a', out.index, 'v9', prefsOpts()), /v9/)
   assert.equal(sha(join(run, 'a', '03-variants.json')), guard)

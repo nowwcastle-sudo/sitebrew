@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "hash": "fixturehash1",
+  "outcomes": [
+    {
+      "id": "one",
+      "order": 1,
+      "say": {
+        "ko": "하나",
+        "en": "One"
+      },
+      "question": {
+        "ko": "하나가 필요한가요?",
+        "en": "Need one?"
+      },
+      "archetypes": [
+        "saas"
+      ],
+      "parts": [
+        "alpha"
+      ],
+      "requires": [],
+      "closure": [
+        "db"
+      ],
+      "needs": [
+        "A_KEY",
+        "DATABASE_URL"
+      ],
+      "guides": [
+        "G-alpha",
+        "G-db"
+      ],
+      "product": false
+    },
+    {
+      "id": "two",
+      "order": 2,
+      "say": {
+        "ko": "둘",
+        "en": "Two"
+      },
+      "question": {
+        "ko": "둘이 필요한가요?",
+        "en": "Need two?"
+      },
+      "archetypes": [
+        "saas"
+      ],
+      "parts": [
+        "beta"
+      ],
+      "requires": [],
+      "closure": [
+        "db"
+      ],
+      "needs": [
+        "B_TOKEN",
+        "DATABASE_URL"
+      ],
+      "guides": [
+        "G-beta"
+      ],
+      "product": false
+    }
+  ],
+  "pages": [],
+  "routes": []
+}

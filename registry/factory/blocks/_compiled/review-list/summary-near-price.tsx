@@ -55,7 +55,7 @@ export function ReviewListSummaryNearPrice({ copy, product, summary, reviews, tr
   const picks = pickHighlights(reviews)
   const ld = ratingJsonLd({ type: "Product", name: product.name, price: toMajor(product.price, product.currency), currency: product.currency, url: product.url }, summary)
   return (
-    <section ref={ref} id={id} data-block="review-list-summary-near-price" aria-labelledby={`${id}-title`} className={cn("mx-auto w-full max-w-6xl flex-col px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12", className)}>
+    <section ref={ref} id={id} data-block="review-list-summary-near-price" aria-labelledby={`${id}-title`} className={cn("mx-auto w-full max-w-6xl flex-col px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-12", className)}>
       <div data-enter data-buy-box="" className="flex min-w-0 flex-col items-start gap-4">
         <h2 id={`${id}-title`} className="text-[1.563rem] leading-[1.25] md:text-[1.953rem] md:leading-[1.2] font-heading-ko">
           {product.name}

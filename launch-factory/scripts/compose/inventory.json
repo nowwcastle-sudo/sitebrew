@@ -1,0 +1,2876 @@
+{
+  "version": 1,
+  "hashRule": "sha256 over the sorted lines \"<path> NUL <sha256 of file bytes>\" of the stamp output (node_modules and .next skipped)",
+  "sources": {
+    "brand-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden brand-1 (factory/stamp/briefs/golden/brand-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 185,
+      "hash": "6a6f886b218c39f5edbee73a3dfd4a6274fb18cc2d6896454c1a2a7bc4a68050"
+    },
+    "commerce-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden commerce-1 (factory/stamp/briefs/golden/commerce-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 186,
+      "hash": "e5b968f926fd6e1e24da171a31fb3cab4c71ec4700faf3795f1c2ebf35425987"
+    },
+    "dashboard-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden dashboard-1 (factory/stamp/briefs/golden/dashboard-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 192,
+      "hash": "23c4aa9f899fff7a981daedaac2113667b757a74ad3e2056dbd3b0bc687f809d"
+    },
+    "detail-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden detail-1 (factory/stamp/briefs/golden/detail-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 184,
+      "hash": "60142a851b4f24a6d9bc585f2d1e2ea5cfea4df01e87169149202de10655cb09"
+    },
+    "landing-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden landing-1 (factory/stamp/briefs/golden/landing-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 188,
+      "hash": "9db4545bd54635766e0f133fbb67249134c2c7add216e156b9b702fa0dffb67e"
+    },
+    "local-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden local-1 (factory/stamp/briefs/golden/local-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 193,
+      "hash": "5c26674e4a037c21ab31acf8c49048f28a383f15c4142bf9f7cfcd65dbd757cc"
+    },
+    "portfolio-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden portfolio-1 (factory/stamp/briefs/golden/portfolio-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 190,
+      "hash": "6e9278253038f1e7cc5073272b3351fe2864dfa814479c09526926aa0f87e8cc"
+    },
+    "public-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden public-1 (factory/stamp/briefs/golden/public-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 172,
+      "hash": "e67b6b9da0ef23a1ae54e4223466edaad7043d40fbd1f44dd0ec19f9dd0e783d"
+    },
+    "pwa-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden pwa-1 (factory/stamp/briefs/golden/pwa-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 179,
+      "hash": "01da01da663461b9599c92ed77d32707e992fffd91dfcd9f9f19116f6f49b50e"
+    },
+    "saas-1": {
+      "command": "web-factory feature/v020-revise 5ac416a2, golden saas-1 (factory/stamp/briefs/golden/saas-1.json) direction a: factory/stamp/golden.mjs runGolden --until 03, 04-content from factory/stamp/binding-audit.mjs maxContent (the fixture factory/scripts/lib/golden-sites.mjs uses, because stamp.mjs stops at 04 waiting for the copy agent), then factory/stamp/gen-pages.mjs generateSite(install:true, build:false)",
+      "files": 247,
+      "hash": "fb8da8733a94c6d6df8d9358d85d3dbbf08d432d707acef5c65a328b831ec42f"
+    }
+  },
+  "paths": {
+    ".gitignore": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    ".pkg-hash": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/about/page.tsx": [
+      "brand-1"
+    ],
+    "app/account/page.tsx": [
+      "saas-1"
+    ],
+    "app/admin/page.tsx": [
+      "dashboard-1"
+    ],
+    "app/analytics/page.tsx": [
+      "dashboard-1"
+    ],
+    "app/apple-icon.png": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/billing/page.tsx": [
+      "saas-1"
+    ],
+    "app/booking/complete/page.tsx": [
+      "local-1"
+    ],
+    "app/campaign/page.tsx": [
+      "saas-1"
+    ],
+    "app/cancel/page.tsx": [
+      "saas-1"
+    ],
+    "app/careers/page.tsx": [
+      "brand-1"
+    ],
+    "app/detail/page.tsx": [
+      "pwa-1"
+    ],
+    "app/done/page.tsx": [
+      "pwa-1"
+    ],
+    "app/error.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/favicon.ico": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/fonts/alegreya-400-g0.woff2": [
+      "brand-1"
+    ],
+    "app/fonts/archivo-400-g0.woff2": [
+      "landing-1"
+    ],
+    "app/fonts/archivo-800-g0.woff2": [
+      "landing-1"
+    ],
+    "app/fonts/bagel-fat-one-400-g0.woff2": [
+      "commerce-1"
+    ],
+    "app/fonts/besley-400-g0.woff2": [
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/fonts/black-han-sans-400-g0.woff2": [
+      "landing-1"
+    ],
+    "app/fonts/bodoni-moda-400-g0.woff2": [
+      "detail-1"
+    ],
+    "app/fonts/bricolage-grotesque-400-g0.woff2": [
+      "portfolio-1"
+    ],
+    "app/fonts/bricolage-grotesque-500-g0.woff2": [
+      "portfolio-1"
+    ],
+    "app/fonts/diphylleia-400-g0.woff2": [
+      "detail-1"
+    ],
+    "app/fonts/do-hyeon-400-g0.woff2": [
+      "portfolio-1"
+    ],
+    "app/fonts/fonts.css": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/fonts/fragment-mono-400-g0.woff2": [
+      "public-1"
+    ],
+    "app/fonts/gothic-a1-400-g0.woff2": [
+      "commerce-1",
+      "landing-1",
+      "portfolio-1"
+    ],
+    "app/fonts/gothic-a1-500-g0.woff2": [
+      "commerce-1",
+      "landing-1",
+      "portfolio-1"
+    ],
+    "app/fonts/gothic-a1-700-g0.woff2": [
+      "commerce-1",
+      "landing-1",
+      "portfolio-1"
+    ],
+    "app/fonts/gothic-a1-800-g0.woff2": [
+      "commerce-1",
+      "landing-1",
+      "portfolio-1"
+    ],
+    "app/fonts/grandstander-400-g0.woff2": [
+      "commerce-1"
+    ],
+    "app/fonts/grandstander-700-g0.woff2": [
+      "commerce-1"
+    ],
+    "app/fonts/ibm-plex-mono-400-g0.woff2": [
+      "dashboard-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/fonts/ibm-plex-mono-600-g0.woff2": [
+      "dashboard-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/fonts/nanum-brush-script-400-g0.woff2": [
+      "brand-1"
+    ],
+    "app/fonts/nanum-gothic-400-g0.woff2": [
+      "brand-1"
+    ],
+    "app/fonts/nanum-gothic-700-g0.woff2": [
+      "brand-1"
+    ],
+    "app/fonts/nanum-gothic-800-g0.woff2": [
+      "brand-1"
+    ],
+    "app/fonts/newsreader-300-g0.woff2": [
+      "dashboard-1"
+    ],
+    "app/fonts/newsreader-400-g0.woff2": [
+      "dashboard-1"
+    ],
+    "app/fonts/noto-sans-kr-400-g0.woff2": [
+      "dashboard-1",
+      "local-1"
+    ],
+    "app/fonts/noto-serif-kr-400-g0.woff2": [
+      "dashboard-1"
+    ],
+    "app/fonts/song-myung-400-g0.woff2": [
+      "local-1"
+    ],
+    "app/fonts/young-serif-400-g0.woff2": [
+      "local-1"
+    ],
+    "app/global-error.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/globals.css": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/guide/page.tsx": [
+      "public-1"
+    ],
+    "app/icon.svg": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/layout.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/loading.tsx": [
+      "dashboard-1"
+    ],
+    "app/login/page.tsx": [
+      "saas-1"
+    ],
+    "app/manifest.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/news/page.tsx": [
+      "brand-1"
+    ],
+    "app/not-found.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/offline/page.tsx": [
+      "pwa-1"
+    ],
+    "app/onboarding/page.tsx": [
+      "saas-1"
+    ],
+    "app/opengraph-image.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/page.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/pricing/page.tsx": [
+      "saas-1"
+    ],
+    "app/privacy/page.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/products/page.tsx": [
+      "commerce-1"
+    ],
+    "app/refund/page.tsx": [
+      "commerce-1",
+      "detail-1",
+      "saas-1"
+    ],
+    "app/robots.txt/route.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/services/page.tsx": [
+      "local-1"
+    ],
+    "app/settings/page.tsx": [
+      "pwa-1"
+    ],
+    "app/signup/page.tsx": [
+      "saas-1"
+    ],
+    "app/sitemap.xml/route.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/terms/page.tsx": [
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "app/withdrawal/page.tsx": [
+      "commerce-1",
+      "detail-1",
+      "saas-1"
+    ],
+    "app/work/page.tsx": [
+      "portfolio-1"
+    ],
+    "components.json": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/brand-color.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/freshness.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/geo-entity.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/json-ld.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/og-image.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/seo-files.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ax/seo-meta.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/billing-actions.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/billing-format.tsx": [
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/block-heading.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/block-labels.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/bottom-bar-space.tsx": [
+      "detail-1",
+      "local-1"
+    ],
+    "components/blocks/_shared/break-text.tsx": [
+      "brand-1",
+      "commerce-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/business-info.tsx": [
+      "brand-1",
+      "commerce-1",
+      "detail-1",
+      "local-1",
+      "portfolio-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/calendar-links.tsx": [
+      "local-1"
+    ],
+    "components/blocks/_shared/choice-pair.tsx": [
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/consent-open-attrs.tsx": [
+      "landing-1",
+      "public-1"
+    ],
+    "components/blocks/_shared/consent-open.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/consent-prefs.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/content-kit.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/copy-button.tsx": [
+      "dashboard-1",
+      "local-1",
+      "public-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/dashboard-kit.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/_shared/data-table-kit.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/_shared/dismiss-memory.tsx": [
+      "local-1",
+      "pwa-1"
+    ],
+    "components/blocks/_shared/export-actions.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/_shared/filter-query.tsx": [
+      "commerce-1",
+      "dashboard-1"
+    ],
+    "components/blocks/_shared/floating-kit.tsx": [
+      "pwa-1"
+    ],
+    "components/blocks/_shared/form-flow.tsx": [
+      "local-1",
+      "portfolio-1"
+    ],
+    "components/blocks/_shared/grid-cols.tsx": [
+      "brand-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/heading-level.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/hero-media.tsx": [
+      "brand-1",
+      "commerce-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/hero-parts.tsx": [
+      "brand-1",
+      "commerce-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/human-approval.tsx": [
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/inapp-escape.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/input-format.tsx": [
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/integration-mark.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/leave-guard.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/list-status.tsx": [
+      "commerce-1",
+      "dashboard-1",
+      "detail-1"
+    ],
+    "components/blocks/_shared/loop-pause.tsx": [
+      "brand-1",
+      "commerce-1",
+      "landing-1"
+    ],
+    "components/blocks/_shared/lower-third.tsx": [
+      "brand-1",
+      "commerce-1"
+    ],
+    "components/blocks/_shared/menu-line.tsx": [
+      "local-1"
+    ],
+    "components/blocks/_shared/notice-kit.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/_shared/open-now.tsx": [
+      "local-1",
+      "public-1"
+    ],
+    "components/blocks/_shared/pinned-bar-space.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/plan-cta.tsx": [
+      "landing-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/plan-offer.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/policy-kit.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/_shared/port-form.tsx": [
+      "landing-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/port-read.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/price-tag.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/print-button.tsx": [
+      "local-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/product-price.tsx": [
+      "commerce-1",
+      "detail-1"
+    ],
+    "components/blocks/_shared/product-thumb.tsx": [
+      "commerce-1",
+      "detail-1"
+    ],
+    "components/blocks/_shared/review-kit.tsx": [
+      "detail-1",
+      "landing-1"
+    ],
+    "components/blocks/_shared/scroll-hint.tsx": [
+      "dashboard-1",
+      "saas-1"
+    ],
+    "components/blocks/_shared/snooze.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/social-login.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/sound-toggle.tsx": [
+      "brand-1",
+      "commerce-1"
+    ],
+    "components/blocks/_shared/step-history.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/_shared/submit-guard.tsx": [
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "saas-1"
+    ],
+    "components/blocks/account/billing-manage.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/account/notification-consents.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/account/permissions.tsx": [
+      "pwa-1"
+    ],
+    "components/blocks/account/profile-settings.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/announcement/top-bar.tsx": [
+      "local-1"
+    ],
+    "components/blocks/announcement/update-toast.tsx": [
+      "pwa-1"
+    ],
+    "components/blocks/auth/sign-in.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/auth/sign-up-consents.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/bottom-tab/split-booking-bar.tsx": [
+      "local-1"
+    ],
+    "components/blocks/bottom-tab/sticky-action-bar.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/confirmation/booking-complete.tsx": [
+      "local-1"
+    ],
+    "components/blocks/confirmation/signup-complete.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/consent/preference-dialog.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/contact-form/inline-short.tsx": [
+      "local-1",
+      "portfolio-1"
+    ],
+    "components/blocks/content/breadcrumb.tsx": [
+      "public-1"
+    ],
+    "components/blocks/content/cards.tsx": [
+      "brand-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1"
+    ],
+    "components/blocks/content/facts.tsx": [
+      "commerce-1",
+      "dashboard-1",
+      "portfolio-1"
+    ],
+    "components/blocks/content/gallery.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/content/links.tsx": [
+      "brand-1",
+      "dashboard-1",
+      "portfolio-1",
+      "public-1"
+    ],
+    "components/blocks/content/list.tsx": [
+      "brand-1",
+      "public-1",
+      "saas-1"
+    ],
+    "components/blocks/content/prose.tsx": [
+      "brand-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1"
+    ],
+    "components/blocks/content/skeleton.tsx": [
+      "pwa-1"
+    ],
+    "components/blocks/content/timeline.tsx": [
+      "brand-1"
+    ],
+    "components/blocks/dashboard-panel/action-list.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/dashboard-panel/kpi-first.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/dashboard-panel/trend-plus-table.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/data-table/admin-list.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/faq/single-accordion.tsx": [
+      "landing-1",
+      "saas-1"
+    ],
+    "components/blocks/faq/two-column-index.tsx": [
+      "detail-1",
+      "local-1",
+      "saas-1"
+    ],
+    "components/blocks/features/bento-grid.tsx": [
+      "brand-1",
+      "landing-1",
+      "saas-1"
+    ],
+    "components/blocks/features/compare-table.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/features/numbered-steps.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/filter-bar/chips.tsx": [
+      "commerce-1"
+    ],
+    "components/blocks/filter-bar/search-filter.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/filter-bar/toolbar.tsx": [
+      "commerce-1",
+      "dashboard-1"
+    ],
+    "components/blocks/final-cta/full-band.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/final-cta/kinetic-band.tsx": [
+      "landing-1"
+    ],
+    "components/blocks/footer/columns-business.tsx": [
+      "brand-1",
+      "saas-1"
+    ],
+    "components/blocks/footer/compact-strip.tsx": [
+      "local-1",
+      "portfolio-1"
+    ],
+    "components/blocks/footer/product-legal.tsx": [
+      "landing-1",
+      "public-1"
+    ],
+    "components/blocks/footer/stacked-legal.tsx": [
+      "commerce-1",
+      "detail-1"
+    ],
+    "components/blocks/hero/banded-full-bleed.tsx": [
+      "portfolio-1"
+    ],
+    "components/blocks/hero/identity-strip-banner.tsx": [
+      "public-1"
+    ],
+    "components/blocks/hero/kinetic-type-video.tsx": [
+      "brand-1",
+      "commerce-1"
+    ],
+    "components/blocks/hero/map-first.tsx": [
+      "local-1"
+    ],
+    "components/blocks/hero/punch-in-statement.tsx": [
+      "landing-1"
+    ],
+    "components/blocks/hero/screenshot-window.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/hours-location/hours-table-map-link.tsx": [
+      "local-1",
+      "public-1"
+    ],
+    "components/blocks/integrations/icon-grid.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/lead-capture/magnet-preview.tsx": [
+      "landing-1"
+    ],
+    "components/blocks/menu-price/board-columns.tsx": [
+      "local-1"
+    ],
+    "components/blocks/nav/app-bar-tabs.tsx": [
+      "pwa-1"
+    ],
+    "components/blocks/nav/app-sidebar.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/nav/top-bar.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/onboarding/empty-first-action.tsx": [
+      "pwa-1"
+    ],
+    "components/blocks/onboarding/setup-wizard.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/paywall/limit-meter.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/paywall/trial-ending.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/paywall/upgrade-modal.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/pricing/three-tier-cards.tsx": [
+      "landing-1",
+      "saas-1"
+    ],
+    "components/blocks/product-info/key-facts-first.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/product-info/spec-and-notice.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/product-list/grid-cards.tsx": [
+      "commerce-1"
+    ],
+    "components/blocks/product-list/spec-summary.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/retention/cancel-flow.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/retention/payment-failed-banner.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/retention/renewal-consent.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/review-list/summary-near-price.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/shipping-returns/return-steps.tsx": [
+      "detail-1"
+    ],
+    "components/blocks/social-proof/logo-rail.tsx": [
+      "brand-1",
+      "landing-1",
+      "portfolio-1"
+    ],
+    "components/blocks/social-proof/quote-wall.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/social-proof/whip-quotes.tsx": [
+      "saas-1"
+    ],
+    "components/blocks/state-screen/empty-guide.tsx": [
+      "local-1"
+    ],
+    "components/blocks/state-screen/error-retry.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/state-screen/loading.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/state-screen/not-found.tsx": [
+      "dashboard-1"
+    ],
+    "components/blocks/state-screen/offline-cached.tsx": [
+      "pwa-1"
+    ],
+    "components/content/content-core.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/content-to-jsonld.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/schemas/brand.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/schemas/commerce.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/schemas/dashboard.ts": [
+      "dashboard-1"
+    ],
+    "components/content/schemas/detail.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/schemas/landing.ts": [
+      "landing-1"
+    ],
+    "components/content/schemas/local.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/schemas/portfolio.ts": [
+      "portfolio-1"
+    ],
+    "components/content/schemas/public.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/content/schemas/pwa.ts": [
+      "pwa-1"
+    ],
+    "components/content/schemas/saas.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/contract/adapter-mock.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/contract/adapter-static.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/contract/attribution.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/contract/block-contract.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/contract/events.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/contract/human-actions.ts": [
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "saas-1"
+    ],
+    "components/contract/ports.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/icons/icon.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/icons/index.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/icons/lucide.ts": [
+      "brand-1",
+      "dashboard-1",
+      "landing-1",
+      "public-1"
+    ],
+    "components/icons/phosphor-bold.ts": [
+      "commerce-1",
+      "detail-1",
+      "local-1"
+    ],
+    "components/icons/phosphor-light.ts": [
+      "commerce-1",
+      "detail-1",
+      "local-1"
+    ],
+    "components/icons/phosphor.ts": [
+      "commerce-1",
+      "detail-1",
+      "local-1"
+    ],
+    "components/icons/tabler.ts": [
+      "portfolio-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/gsap-techniques.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/motion-boot.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/motion-scale.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/split-source.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/use-gsap-scene.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/use-pause-offscreen.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/use-recipe-motion.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/motion/use-reduced-motion.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/site/about-history.tsx": [
+      "brand-1"
+    ],
+    "components/site/about-leadership.tsx": [
+      "brand-1"
+    ],
+    "components/site/about-summary.tsx": [
+      "brand-1"
+    ],
+    "components/site/about-sustainability.tsx": [
+      "brand-1"
+    ],
+    "components/site/account-account.tsx": [
+      "saas-1"
+    ],
+    "components/site/account-notification-settings.tsx": [
+      "saas-1"
+    ],
+    "components/site/admin-list-data-table.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/admin-list-page-header.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/admin-list-search-filter-bar.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/analytics-filter-bar.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/analytics-kpi-row.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/analytics-main-trend.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/billing-payment-failed.tsx": [
+      "saas-1"
+    ],
+    "components/site/billing-paywall.tsx": [
+      "saas-1"
+    ],
+    "components/site/billing-renewal-consent.tsx": [
+      "saas-1"
+    ],
+    "components/site/billing-subscription.tsx": [
+      "saas-1"
+    ],
+    "components/site/billing-trial-ending.tsx": [
+      "saas-1"
+    ],
+    "components/site/billing-usage-limit.tsx": [
+      "saas-1"
+    ],
+    "components/site/booking-complete-confirmation.tsx": [
+      "local-1"
+    ],
+    "components/site/campaign-faq.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-final-cta.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-hero.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-how-it-works.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-integrations.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-pricing.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-testimonials.tsx": [
+      "saas-1"
+    ],
+    "components/site/campaign-workflow-features.tsx": [
+      "saas-1"
+    ],
+    "components/site/cancel-retention.tsx": [
+      "saas-1"
+    ],
+    "components/site/careers-job-list.tsx": [
+      "brand-1"
+    ],
+    "components/site/case-study-case-meta.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/case-study-challenge.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/case-study-next-work.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/case-study-process.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/case-study-results.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/case-study-role-collaboration.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/case-study-solution.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/category-list-filter-chips.tsx": [
+      "commerce-1"
+    ],
+    "components/site/category-list-list-toolbar.tsx": [
+      "commerce-1"
+    ],
+    "components/site/category-list-product-grid.tsx": [
+      "commerce-1"
+    ],
+    "components/site/completion-result.tsx": [
+      "pwa-1"
+    ],
+    "components/site/error-view.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/site/form-keys.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/site/global-app-shell-sidebar.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/global-connection-banner.tsx": [
+      "pwa-1"
+    ],
+    "components/site/global-footer.tsx": [
+      "brand-1",
+      "commerce-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "saas-1"
+    ],
+    "components/site/global-sticky-booking-bar.tsx": [
+      "local-1"
+    ],
+    "components/site/global-sticky-buy-bar.tsx": [
+      "detail-1"
+    ],
+    "components/site/global-top-bar.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/global-update-toast.tsx": [
+      "pwa-1"
+    ],
+    "components/site/home-app-bar.tsx": [
+      "pwa-1"
+    ],
+    "components/site/home-business-scope.tsx": [
+      "brand-1"
+    ],
+    "components/site/home-careers.tsx": [
+      "brand-1"
+    ],
+    "components/site/home-categories.tsx": [
+      "commerce-1"
+    ],
+    "components/site/home-changelog.tsx": [
+      "saas-1"
+    ],
+    "components/site/home-client-roster.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/home-contact-cta.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/home-contact-form.tsx": [
+      "local-1"
+    ],
+    "components/site/home-directions.tsx": [
+      "local-1"
+    ],
+    "components/site/home-empty-state.tsx": [
+      "pwa-1"
+    ],
+    "components/site/home-faq.tsx": [
+      "landing-1",
+      "local-1",
+      "saas-1"
+    ],
+    "components/site/home-features.tsx": [
+      "landing-1"
+    ],
+    "components/site/home-final-cta.tsx": [
+      "landing-1",
+      "saas-1"
+    ],
+    "components/site/home-hero-visit-info.tsx": [
+      "local-1"
+    ],
+    "components/site/home-hero.tsx": [
+      "brand-1",
+      "commerce-1",
+      "landing-1",
+      "saas-1"
+    ],
+    "components/site/home-integrations.tsx": [
+      "saas-1"
+    ],
+    "components/site/home-lead-capture.tsx": [
+      "landing-1"
+    ],
+    "components/site/home-menu-price.tsx": [
+      "local-1"
+    ],
+    "components/site/home-news.tsx": [
+      "brand-1"
+    ],
+    "components/site/home-notice.tsx": [
+      "local-1"
+    ],
+    "components/site/home-origin-info.tsx": [
+      "commerce-1"
+    ],
+    "components/site/home-pricing.tsx": [
+      "landing-1"
+    ],
+    "components/site/home-primary-content.tsx": [
+      "pwa-1"
+    ],
+    "components/site/home-recognition.tsx": [
+      "brand-1",
+      "portfolio-1"
+    ],
+    "components/site/home-shipping-pickup-info.tsx": [
+      "commerce-1"
+    ],
+    "components/site/home-skeleton.tsx": [
+      "pwa-1"
+    ],
+    "components/site/home-social-proof.tsx": [
+      "landing-1",
+      "saas-1"
+    ],
+    "components/site/home-statement.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/home-sustainability.tsx": [
+      "brand-1"
+    ],
+    "components/site/home-work-grid.tsx": [
+      "portfolio-1"
+    ],
+    "components/site/home-workflow-features.tsx": [
+      "saas-1"
+    ],
+    "components/site/login-auth.tsx": [
+      "saas-1"
+    ],
+    "components/site/main-agency-info.tsx": [
+      "public-1"
+    ],
+    "components/site/main-hero.tsx": [
+      "public-1"
+    ],
+    "components/site/main-news-tabs.tsx": [
+      "public-1"
+    ],
+    "components/site/main-policy-cards.tsx": [
+      "public-1"
+    ],
+    "components/site/news-press-list.tsx": [
+      "brand-1"
+    ],
+    "components/site/offline-offline-fallback.tsx": [
+      "pwa-1"
+    ],
+    "components/site/onboarding-confirmation.tsx": [
+      "saas-1"
+    ],
+    "components/site/onboarding-onboarding.tsx": [
+      "saas-1"
+    ],
+    "components/site/operational-action-list.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/operational-filter-bar.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/operational-kpi-row.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/operational-page-header.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/operational-trend-charts.tsx": [
+      "dashboard-1"
+    ],
+    "components/site/pricing-faq.tsx": [
+      "saas-1"
+    ],
+    "components/site/pricing-pricing-plans.tsx": [
+      "saas-1"
+    ],
+    "components/site/product-detail-booking-cta.tsx": [
+      "local-1"
+    ],
+    "components/site/product-detail-empty-guide.tsx": [
+      "local-1"
+    ],
+    "components/site/product-detail-key-points.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-notice-table.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-purchase-area.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-qna.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-review-list.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-shipping-returns.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-spec-table.tsx": [
+      "detail-1"
+    ],
+    "components/site/product-detail-story.tsx": [
+      "detail-1"
+    ],
+    "components/site/settings-permissions.tsx": [
+      "pwa-1"
+    ],
+    "components/site/signup-auth.tsx": [
+      "saas-1"
+    ],
+    "components/site/signup-consent.tsx": [
+      "saas-1"
+    ],
+    "components/site/sub-breadcrumb.tsx": [
+      "public-1"
+    ],
+    "components/site/sub-content.tsx": [
+      "public-1"
+    ],
+    "components/site/sub-detail-app-bar.tsx": [
+      "pwa-1"
+    ],
+    "components/site/sub-detail-detail-content.tsx": [
+      "pwa-1"
+    ],
+    "components/site/sub-side-menu.tsx": [
+      "public-1"
+    ],
+    "components/ui/accordion.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/alert-dialog.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/alert.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/aspect-ratio.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/attachment.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/avatar.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/badge.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/breadcrumb.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/bubble.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/button-group.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/button.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/calendar.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/card.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/carousel.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/chart.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/checkbox.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/collapsible.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/combobox.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/command.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/context-menu.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/dialog.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/direction.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/display.tsx": [
+      "landing-1"
+    ],
+    "components/ui/drawer.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/dropdown-menu.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/empty.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/field.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/hover-card.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/icon-button.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/input-group.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/input-otp.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/input.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/item.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/kbd.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/label.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/locale-labels.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/marker.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/menubar.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/message-scroller.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/message.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/native-select.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/navigation-menu.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/pagination.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/popover.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/progress.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/questionnaire.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/radio-group.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/resizable.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/scroll-area.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/select.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/separator.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/sheet.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/sidebar.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/site-shell-nav.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/site-shell.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/skeleton.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/slider.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/spinner.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/switch.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/table.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/tabs.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/textarea.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/texture.tsx": [
+      "landing-1"
+    ],
+    "components/ui/toast.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/toggle-group.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/toggle.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "components/ui/tooltip.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "content/site.json": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "hooks/use-mobile.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/analytics.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/booking.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/build.json": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/contact.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/legal.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/phone.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/ports.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/retention-offer.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/site.tsx": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/system-copy.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "lib/utils.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "next.config.ts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "package-lock.json": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "package.json": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "postcss.config.mjs": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "public/icon-192.png": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "public/icon-512.png": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "public/icon-maskable-512.png": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "scripts/csp-hashes.mjs": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "scripts/defer-hydration.mjs": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "security-headers.d.mts": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "security-headers.mjs": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ],
+    "tsconfig.json": [
+      "brand-1",
+      "commerce-1",
+      "dashboard-1",
+      "detail-1",
+      "landing-1",
+      "local-1",
+      "portfolio-1",
+      "public-1",
+      "pwa-1",
+      "saas-1"
+    ]
+  }
+}

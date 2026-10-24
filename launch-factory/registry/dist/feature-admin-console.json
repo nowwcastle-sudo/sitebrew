@@ -1,0 +1,99 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "feature-admin-console",
+  "type": "registry:item",
+  "title": "관리 화면 — 구획 등록부·접근 규칙·서버 액션",
+  "description": "관리 화면의 셸(계획 3d): 구획 모듈(주문·예약·문의·후기·뉴스레터·사용자)을 꽂는 등록부와 콘솔 조립, 요청당 한 번 읽는 신원(세션 + 사용자 행), 서버 액션 다섯(구획 목록·개요·표·기록·행동). 모든 입구가 세션을 먼저 읽고, 행동은 요청 제한과 사람 확인 입력(confirmed: true)을 지난다. 화면(/admin)은 web-factory 블록으로 템플릿이 짠다.",
+  "dependencies": [
+    "@launch-factory/admin-console@0.0.0",
+    "@launch-factory/db@0.0.0",
+    "@launch-factory/security@0.0.0",
+    "drizzle-orm@0.45.3"
+  ],
+  "registryDependencies": [
+    "@launch-factory/feature-auth-betterauth",
+    "@launch-factory/feature-security"
+  ],
+  "files": [
+    {
+      "path": "registry/feature-admin-console/files/lib/launch/admin-identity.ts",
+      "type": "registry:file",
+      "target": "lib/launch/admin-identity.ts",
+      "content": "// launch-factory: 관리 화면이 「지금 누구인가」를 읽는 한 곳(계획 3d). 세션과 사용자 행을 요청당 한 번 읽어 판정에 필요한 값만 돌려준다.\n// 신원의 모양(signed_out = 로그아웃·만료·읽기 실패, impersonating = 관리자가 대신 들어온 세션, user = 로그인한 사람)은 콘솔 패키지가 정한다.\n// 판정(관리자 벽·소유자 규칙·확인 벽)은 여기서 하지 않는다 — 콘솔(@launch-factory/admin-console)이 이 값을 받아 순수하게 정한다. 구획 모듈은 세션을 보지 못한다.\n// 입력(요청 본문·주소)의 role·userId 는 읽지 않는다 — 세션의 사용자 행에서만 온다. 서버 전용.\nimport type { AdminIdentity } from \"@launch-factory/admin-console\"\nimport { user } from \"@launch-factory/db\"\nimport { eq } from \"drizzle-orm\"\nimport { authPort } from \"@/lib/launch/auth\"\nimport { database } from \"@/lib/launch/db\"\n\nexport type { AdminIdentity }\n\n/** 세션을 읽고(없으면 signed_out) 사용자 행을 읽는다. 행이 없으면 정지된 사람처럼 권한 없는 사람이다(banned: true) */\nexport async function identify(): Promise<AdminIdentity> {\n  let s: Awaited<ReturnType<Awaited<ReturnType<typeof authPort>>[\"session\"]>>\n  try {\n    s = await (await authPort()).session()\n  } catch {\n    return { kind: \"signed_out\" }\n  }\n  if (!s.ok || !s.data) return { kind: \"signed_out\" }\n  if (s.data.impersonatedBy) return { kind: \"impersonating\" }\n  const [row] = await (await database()).select({ role: user.role, banned: user.banned, twoFactorEnabled: user.twoFactorEnabled, email: user.email, emailVerified: user.emailVerified }).from(user).where(eq(user.id, s.data.userId)).limit(1)\n  if (!row) return { kind: \"user\", userId: s.data.userId, role: null, banned: true, twoFactor: false, verifiedEmail: null }\n  return { kind: \"user\", userId: s.data.userId, role: row.role ?? null, banned: row.banned === true, twoFactor: row.twoFactorEnabled === true, verifiedEmail: row.emailVerified === true && row.email ? row.email : null }\n}\n"
+    },
+    {
+      "path": "registry/feature-admin-console/files/lib/launch/admin-console.ts",
+      "type": "registry:file",
+      "target": "lib/launch/admin-console.ts",
+      "content": "// launch-factory: 관리 콘솔 조립(계획 3d) — 구획 등록부와 AdminPort. 서버 전용. 이 파일은 제품 것이다(레지스트리를 다시 받아도 덮어쓰지 않는다 — 구획을 더하는 자리다).\n// 구획 하나 = lib/launch/admin-sections/<id>.ts (defineSection 선언 하나) + 아래 ADMIN_SECTIONS 에 한 줄. 구획이 켜질 부품(part)이 꺼지면(lib/launch/enabled) 사이드바에서도 직접 주소로도 사라진다.\n// 콘솔(@launch-factory/admin-console)이 접근 벽(관리자 · 소유자)·사람 확인 벽(confirmed: true)·상태 검사·주소·가리기·기록을 한 곳에서 한다. 여기서는 주입물만 꽂는다:\n//   identify  — 세션 + 사용자 행(lib/launch/admin-identity.ts)      limit — 읽기 요청 제한(admin:read 분당 120, 사용자·IP 별). 쓰기 제한은 서버 액션 adminAct 한 곳(분당 30)이 센다 — 여기서 한 번 더 세지 않는다\n//   audit     — 표·상세를 읽으면 access_logs 한 줄, 행동을 하면 admin_actions 한 줄(폼 값은 싣지 않는다. 읽기 기록이 실패하면 읽기도 거부)\n//   mask      — 연락처 열은 일부만 보이게, 나가는 모든 문구는 이메일·전화·토큰 모양을 가린다\n//   onError   — 구획이 던진 오류는 서버 로그에 오류 이름과 위치만(글·개인정보 없음). 화면에는 일반 문구만 나간다\nimport { headers } from \"next/headers\"\nimport { createAdminConsole, hasServerSearch, pageSizeOf, type AdminMasker, type AdminPort, type AdminSection } from \"@launch-factory/admin-console\"\nimport { adminActions, insertAccessLog } from \"@launch-factory/db\"\nimport { maskPii } from \"@launch-factory/security/pii\"\nimport { clientIp, ipAddressFromEnv } from \"@launch-factory/security/rate-limit\"\nimport { adminMessages } from \"@/content/copy.admin-messages.en\"\nimport { identify } from \"@/lib/launch/admin-identity\"\nimport { database } from \"@/lib/launch/db\"\nimport { hasPart } from \"@/lib/launch/enabled\"\nimport { guardAction } from \"@/lib/launch/security\"\n\n/**\n * 등록한 구획(순서가 사이드바 순서). 구획 모듈(lib/launch/admin-sections/<id>.ts)에서 구획을 가져와 배열에 한 줄씩 더한다:\n *   ADMIN_SECTIONS = [ordersSection, bookingsSection]\n * 부품 이름(part)은 features/outcomes.yaml parts 의 이름과 같아야 한다 — 시험이 대조한다.\n */\nexport const ADMIN_SECTIONS: readonly AdminSection[] = []\n\nconst MASK = \"***\"\n\n/** 연락처를 알아볼 만큼만 보인다: 메일 k***@example.com · 전화 ***-1234 · 그 밖(주소)은 앞 낱말만 */\nexport function maskContact(value: string): string {\n  const v = value.trim()\n  if (v === \"\") return v\n  const at = v.indexOf(\"@\")\n  if (at > 0) return `${[...v][0]}${MASK}${v.slice(at)}`\n  const digits = v.replace(/\\D/g, \"\")\n  if (digits.length >= 8 && /^[+\\d\\s().-]+$/.test(v)) return `${MASK}-${digits.slice(-4)}`\n  // 낱말이 하나뿐이면 이름일 수 있다(\"홍길동\") — 첫 글자만 보인다. 낱말이 여럿이면(주소) 앞 낱말만 보인다\n  const words = v.split(/\\s+/)\n  return words.length === 1 ? `${Array.from(v)[0]}${MASK}` : `${words[0]} ${MASK}`\n}\n\nconst masker: AdminMasker = { contact: maskContact, text: maskPii }\n\nasync function requester(): Promise<{ headers: Headers; ip: string }> {\n  const h = new Headers(await headers())\n  return { headers: h, ip: clientIp(h, ipAddressFromEnv(process.env)) ?? \"unknown\" }\n}\n\n/** 이 구획의 검색을 서버가 가린 연락처 칸까지 맞추는가(구획의 serverSearch 선언) — 목록 쪽이 받은 행을 다시 거르지 않게 한다 */\nexport const searchesOnServer = (id: string): boolean => hasServerSearch(ADMIN_SECTIONS, id)\n\n/** 이 구획의 한 쪽 줄 수(구획의 pageSize 선언, 없으면 100) — 쪽 이동이 몇 쪽까지 있는지 셀 때 쓴다 */\nexport const pageSizeFor = (id: string): number => pageSizeOf(ADMIN_SECTIONS, id)\n\nlet cached: AdminPort | undefined\n\n/** 등록한 구획으로 만든 콘솔(요청마다 새로 만들지 않는다 — 신원은 포트 호출마다 한 번 읽는다) */\nexport function adminConsole(): AdminPort {\n  return (cached ??= createAdminConsole({\n    sections: ADMIN_SECTIONS,\n    identify,\n    messages: adminMessages,\n    enabledParts: [...new Set(ADMIN_SECTIONS.map((s) => s.part))].filter(hasPart),\n    mask: masker,\n    limit: async (kind, actor) => (kind === \"read\" ? guardAction(\"admin:read\", { headers: (await requester()).headers, userId: actor.userId }) : null),\n    audit: {\n      async access(r) {\n        const { ip } = await requester()\n        await insertAccessLog(await database(), { actorId: r.actorId, ip, subjects: r.ids, action: \"view\", target: `admin/${r.section}/${r.kind}`, occurredAt: r.at.toISOString(), download: false })\n      },\n      async action(r) {\n        const { ip } = await requester()\n        await (await database()).insert(adminActions).values({ adminUserId: r.actorId, action: `${r.section}.${r.action}`, ipAddress: ip, meta: { section: r.section, recordId: r.id, ok: r.ok, via: r.via, ...(r.code ? { code: r.code } : {}) }, occurredAt: r.at })\n      },\n    },\n    onError: (error, where) => console.error(`[admin] ${where}: ${error instanceof Error ? error.name : \"error\"}`),\n  }))\n}\n"
+    },
+    {
+      "path": "registry/feature-admin-console/files/app/actions/admin-console.ts",
+      "type": "registry:file",
+      "target": "app/actions/admin-console.ts",
+      "content": "\"use server\"\n// launch-factory: 관리 화면의 서버 액션 다섯(계획 3d) = 포트 AdminPort 의 모양: adminSections · adminOverview · adminTable · adminRecord · adminAct.\n// 서버 액션은 누구나 직접 POST 로 부를 수 있다 — 그래서 모든 입구가 세션을 먼저 읽는다(없으면 sign_in_required). 이 파일은 로그인 여부만 보고 포트(콘솔)에 넘긴다.\n// 이 사람이 이 구획을 쓸 수 있는지(관리자 벽·소유자 규칙)와 사람 확인 벽(confirmed: true)은 콘솔이 신원(lib/launch/admin-identity.ts)으로 정한다 — 입력의 role·userId 는 읽지 않는다.\n// 행동(adminAct)은 요청 제한(adminAct, 분당 30)을 먼저 지난다 — 쓰기 제한은 이 한 곳뿐이다(콘솔은 읽기만 센다). 던진 오류는 콘솔이 일반 실패로 바꿔 돌려준다(DB 글·개인정보가 화면에 나가지 않는다).\nimport { headers } from \"next/headers\"\nimport type { AdminActInput, AdminActOutcome, AdminOverview, AdminRecord, AdminResult, AdminSectionInfo, AdminTable, AdminTableQuery } from \"@launch-factory/admin-console\"\nimport { signInRequiredResult } from \"@launch-factory/security/action\"\nimport { adminConsole } from \"@/lib/launch/admin-console\"\nimport { authPort } from \"@/lib/launch/auth\"\nimport { DEFAULT_LOCALE } from \"@/lib/launch/config\"\nimport { guardAction } from \"@/lib/launch/security\"\n\n/** 지금 로그인한 사람. 로그아웃·만료·읽기 실패는 null */\nasync function actor(): Promise<{ userId: string } | null> {\n  const s = await (await authPort()).session()\n  return s.ok && s.data ? { userId: s.data.userId } : null\n}\n\nconst signInRequired = () => signInRequiredResult(DEFAULT_LOCALE)\n\n/** 사이드바에 보일 구획 목록(이 사람이 볼 수 있는 것만) */\nexport async function adminSections(): Promise<AdminResult<AdminSectionInfo[]>> {\n  if (!(await actor())) return signInRequired()\n  return adminConsole().sections()\n}\n\n/** 개요: 지금 처리할 일 + 최근 변화(구획들이 보탠 것을 합친다) */\nexport async function adminOverview(): Promise<AdminResult<AdminOverview>> {\n  if (!(await actor())) return signInRequired()\n  return adminConsole().overview()\n}\n\n/** 입력: { section, search?, status?, limit? } — 최근 순, limit 은 1~200(기본 100) */\nexport async function adminTable(input: { section: string } & AdminTableQuery): Promise<AdminResult<AdminTable>> {\n  if (!(await actor())) return signInRequired()\n  return adminConsole().table(input)\n}\n\n/** 입력: { section, id } */\nexport async function adminRecord(input: { section: string; id: string }): Promise<AdminResult<AdminRecord>> {\n  if (!(await actor())) return signInRequired()\n  return adminConsole().record(input)\n}\n\n/** 입력: { section, id, action, fields?, confirmed? } — 확인이 필요한 행동(confirmActions)은 confirmed: true 가 있어야 실행된다 */\nexport async function adminAct(input: AdminActInput): Promise<AdminResult<AdminActOutcome>> {\n  const who = await actor()\n  if (!who) return signInRequired()\n  const refused = await guardAction(\"adminAct\", { headers: new Headers(await headers()), userId: who.userId })\n  if (refused) return refused\n  return adminConsole().act(input)\n}\n"
+    },
+    {
+      "path": "registry/feature-admin-console/files/content/copy.admin-messages.en.ts",
+      "type": "registry:file",
+      "target": "content/copy.admin-messages.en.ts",
+      "content": "// 관리 콘솔이 돌려주는 실패 문구(코드마다 한 줄) — 제품이 문구를 바꾼다(설치 때 한 번만 쓰이는 제품 소유 파일).\n// 구획이 던진 오류는 이 중 action_failed 로만 나간다 — DB 글·개인정보·누가 왜 막혔는지(관리자 목록·계정 존재 여부)는 싣지 않는다.\nimport type { AdminFailureCode } from \"@launch-factory/admin-console\"\n\nexport const adminMessages: Record<AdminFailureCode, string> = {\n  sign_in_required: \"Please sign in to continue.\",\n  forbidden: \"You don't have access to the admin pages.\",\n  two_factor_required: \"Turn on two-factor authentication in your account to use the admin pages.\",\n  impersonation_blocked: \"Admin pages aren't available while you're acting as another user.\",\n  provider_unavailable: \"This part of the admin pages is turned off.\",\n  not_found: \"We couldn't find that.\",\n  invalid_input: \"That request wasn't valid. Please check it and try again.\",\n  confirmation_required: \"Please confirm this action first.\",\n  invalid_state: \"That can't be done in the current state. Reload and check again.\",\n  action_failed: \"That didn't work. Please try again in a moment.\",\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/db.ts",
+      "type": "registry:file",
+      "target": "lib/launch/db.ts",
+      "content": "// launch-factory: DB 연결. mock 은 메모리 PGlite(키 없이 켜진다), live 는 DATABASE_URL(Supabase 풀러 6543 — prepared statement 끔은 패키지가 한다).\n// mock 의 마이그레이션은 이 앱에 설치된 db/migrations 를 쓴다(번들 안에서는 패키지 폴더를 찾을 수 없다).\nimport { join } from \"node:path\"\nimport { db, type Database } from \"@launch-factory/db\"\nimport { env, required } from \"@/lib/launch/env\"\n\nlet cached: Promise<Database> | undefined\n\n/**\n * mock 의 메모리 DB 는 프로세스 하나에 하나다. 서버 번들은 쪽·서버 액션·경로 처리기(app/api)로 갈라져 같은 모듈이 번들마다 따로 불리므로(Next/Turbopack),\n * 모듈 변수에만 두면 번들 수만큼 DB 가 생겨 경로 처리기(웹훅·크론·/api/auth)와 쪽이 서로 다른 데이터를 보았다(관리 화면 시험 실측: 경로로 만든 세션이 쪽에서 안 보였다).\n * 그래서 globalThis 에 둔다. live 는 연결 문자열이 같은 DB 를 가리키므로 모듈 변수로 충분하다.\n */\nconst mockStore = globalThis as { __lfMockDb?: Promise<Database> }\n\nexport function database(): Promise<Database> {\n  if (env().LF_MODE === \"mock\") return (mockStore.__lfMockDb ??= db.local({ migrationsFolder: join(process.cwd(), \"db\", \"migrations\") }))\n  return (cached ??= Promise.resolve(db(required(\"DATABASE_URL\"))))\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/env.ts",
+      "type": "registry:file",
+      "target": "lib/launch/env.ts",
+      "content": "// launch-factory: 환경 읽기. 이름만 다루고 값은 어디에도 남기지 않는다.\n// LF_MODE 는 항상 필수다 — 없으면 켜지지 않는다(조용히 mock 으로 가지 않는다). live 에서는 공급자 키가 모두 필수다.\nimport { loadAppEnv, type AppEnv } from \"@launch-factory/env\"\n\nlet cached: AppEnv | undefined\n\n/** 처음 부를 때 한 번 검사한다. 빠진 이름은 모두 모아 한 번에 알린다(값은 싣지 않는다). */\nexport function env(): AppEnv {\n  return (cached ??= loadAppEnv())\n}\n\n/** 설정값·비밀값 하나를 읽는다. 없으면 이름만 담아 던진다. */\nexport function required(name: string): string {\n  const value = (env() as Record<string, string | undefined>)[name] ?? process.env[name]\n  if (!value) throw new Error(`${name} is not set (see .env.example)`)\n  return value\n}\n\n/** 없어도 되는 설정값. */\nexport function optional(name: string): string | undefined {\n  return process.env[name] || undefined\n}\n"
+    },
+    {
+      "path": "registry/_shared/lib/launch/config.ts",
+      "type": "registry:file",
+      "target": "lib/launch/config.ts",
+      "content": "// launch-factory: 제품마다 고치는 값. 이 파일은 제품 것이다 — 레지스트리를 다시 받으면 덮어쓸지 묻는다.\nimport type { Locale } from \"@launch-factory/email\"\nimport { env, required } from \"@/lib/launch/env\"\n\nexport const PRODUCT_NAME = \"My Product\"\n/** 사용자 칸(user.locale)이 비었을 때 메일·오류 문구의 언어 */\nexport const DEFAULT_LOCALE: Locale = \"en\"\n/** 가입 때 동의 기록에 남길 약관·개인정보 처리방침의 판. 문서를 고치면 올린다 */\nexport const CONSENT_VERSIONS = { terms: \"2026-09-30\", privacy: \"2026-09-30\" }\n/** 결제 메일이 가리키는 화면 경로 */\nexport const ROUTES = { billing: \"/account/billing\", acceptPriceChange: \"/account/billing/price-change\", decline: \"/account/billing/cancel\", security: \"/forgot-password\", contact: \"/contact\" }\n\n/** 앱 주소. mock 에서는 로컬 주소로 켜지고, live 에서는 NEXT_PUBLIC_APP_URL 이 필수다 */\nexport function appUrl(): string {\n  // 빈 문자열은 없는 것으로 본다 — shadcn CLI 가 envVars 이름을 `NAME=`(빈 값)으로 .env.local 에 적는다\n  return process.env.NEXT_PUBLIC_APP_URL || (env().LF_MODE === \"mock\" ? \"http://localhost:3000\" : required(\"NEXT_PUBLIC_APP_URL\"))\n}\n"
+    }
+  ],
+  "envVars": {
+    "LF_MODE": "",
+    "DATABASE_URL": ""
+  },
+  "docs": "설치 뒤 할 일\n1. 인증 항목과 보안 항목이 함께 설치된다. 이 항목 자체는 표를 더하지 않는다. 구획(주문·예약 …)은 각자 자기 부품이 싣는다.\n2. 구획을 더하는 법: lib/launch/admin-sections/<id>.ts 에 구획을 선언하고 lib/launch/admin-console.ts 의 등록부에 한 줄을 더한다. 구획은 세션을 보지 못한다 — 신원(lib/launch/admin-identity.ts)을 읽어 접근 규칙(관리자 · 소유자)을 정하는 일은 콘솔이 한다. 전문: docs/guides/admin-sections.md.\n3. 서버 액션 5개(app/actions/admin-console.ts)는 로그인한 사람만 부를 수 있고, 행동(adminAct)은 요청 제한(RATE_LIMIT_DEFAULTS.adminAct, 60초 60번)을 먼저 지난다. 입력의 role·userId 는 읽지 않는다.\n4. 첫 관리자는 DB 에서 user.role 을 'admin' 으로 바꿔 만든다(화면으로는 만들지 않는다) — 운영자 할 일. 관리자는 2단계 인증을 켠 사람만 들어온다(lib/launch/features.ts 의 AUTH_FEATURES 를 { twoFactor: true, admin: true } 로).\n5. 던진 구획 오류는 화면에 DB 글·개인정보 없이 일반 문구로만 나가고, 서버 로그에는 오류 이름만 남는다.\n6. 화면(/admin, /admin/<구획>, /admin/<구획>/<기록 id>)은 템플릿이 web-factory 블록으로 짠다 — 레지스트리는 화면을 싣지 않는다. 검색엔진에 올리지 않는다(noindex).\n7. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/admin-console\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+  "meta": {
+    "launch": {
+      "tables": [],
+      "schema": [],
+      "migrations": [],
+      "routes": [],
+      "actions": [
+        "app/actions/admin-console.ts"
+      ],
+      "noEntrypointReason": null,
+      "setup": {
+        "npmrc": [
+          "save-exact=true"
+        ],
+        "transpilePackages": [
+          "@launch-factory/account-lifecycle",
+          "@launch-factory/admin-console",
+          "@launch-factory/analytics-posthog",
+          "@launch-factory/auth",
+          "@launch-factory/consent",
+          "@launch-factory/contract",
+          "@launch-factory/db",
+          "@launch-factory/email",
+          "@launch-factory/env",
+          "@launch-factory/i18n",
+          "@launch-factory/security"
+        ],
+        "serverExternalPackages": [
+          "@electric-sql/pglite"
+        ]
+      }
+    }
+  }
+}

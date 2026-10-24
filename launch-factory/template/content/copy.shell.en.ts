@@ -9,18 +9,20 @@ import type { StateScreenNotFoundCopy } from "@/components/blocks/state-screen/n
 import type { ConsentPrefsCopy } from "@/components/blocks/_shared/consent-prefs"
 // 값 import 는 상대 경로(.ts) — node 시험이 별칭(@/)을 못 푼다(lib/auth-next.ts 와 같다). 형식 import 는 지워지므로 별칭을 써도 된다
 import { PRODUCT_NAME } from "./copy.en.ts"
+// 지워진 기능(시안을 얹을 때 고르지 않은 것)의 쪽으로 가는 링크는 enabled 로 거른다 — 템플릿 그대로면 전부 남는다
+import { go, hasUrl, linksOn } from "../lib/launch/enabled.ts"
 
 /** 쪽을 열었을 때 로그인한 사람의 계정 메뉴에 들어가는 링크 — 계정 화면의 구획과 결제 관리 */
-const ACCOUNT_LINKS = [
+const ACCOUNT_LINKS = linksOn([
   { label: "Account", href: "/account" },
   { label: "Billing", href: "/account/billing" },
-]
+])
 
 /** 위 띠(N10) — 로그아웃은 [Sign in]·[Create an account], 로그인은 계정 메뉴(Account · Billing · Sign out). 로그인한 사람에게 Sign in 이 남지 않는다 */
 export const navCopy: NavAccountBarCopy = {
   brand: PRODUCT_NAME,
   navLabel: "Main",
-  links: [{ label: "Pricing", href: "/pricing" }],
+  links: linksOn([{ label: "Pricing", href: "/pricing" }]),
   signedOut: { signIn: { label: "Sign in", href: "/sign-in" }, signUp: { label: "Create an account", href: "/sign-up" } },
   signedIn: { menuLabel: "Account", links: ACCOUNT_LINKS, signedInAs: "Signed in as {who}", signOutLabel: "Sign out" },
 }
@@ -35,8 +37,8 @@ export const footerCopy: FooterProductLegalCopy = {
   links: {
     terms: { label: "Terms", href: "/terms" },
     privacy: { label: "Privacy", href: "/privacy" },
-    refund: { label: "Refunds", href: "/refund" },
-    contact: { label: "Contact us", href: "/contact" },
+    ...(hasUrl("/refund") ? { refund: { label: "Refunds", href: "/refund" } } : {}),
+    ...(hasUrl("/contact") ? { contact: { label: "Contact us", href: "/contact" } } : {}),
   },
   cookieSettings: { label: "Cookie settings", href: "/privacy" },
   businessTitle: "Business information",
@@ -64,7 +66,7 @@ export const errorScreenCopy: { error: StateScreenErrorRetryCopy; fatal: StateSc
     retryLabel: "Try again",
     retryingLabel: "Trying again",
     home: { label: "Back to the start page", href: "/" },
-    support: { label: "Contact us", href: "/contact" },
+    ...(hasUrl("/contact") ? { support: { label: "Contact us", href: "/contact" } } : {}),
     requestIdLabel: "Error number:",
   },
   fatal: {
@@ -73,7 +75,7 @@ export const errorScreenCopy: { error: StateScreenErrorRetryCopy; fatal: StateSc
     retryLabel: "Reload the page",
     retryingLabel: "Reloading",
     home: { label: "Back to the start page", href: "/" },
-    support: { label: "Contact us", href: "/contact" },
+    ...(hasUrl("/contact") ? { support: { label: "Contact us", href: "/contact" } } : {}),
     requestIdLabel: "Error number:",
   },
 }
@@ -84,12 +86,12 @@ export const notFoundCopy: StateScreenNotFoundCopy = {
   body: "The page you are looking for does not exist or has moved.",
   home: { label: "Back to the start page", href: "/" },
   linksTitle: "Places you may want to go",
-  links: [
+  links: linksOn([
     { label: "Pricing", href: "/pricing" },
     { label: "Sign in", href: "/sign-in" },
     { label: "Your account", href: "/account" },
-  ],
-  support: { label: "Still stuck? Contact us", href: "/contact" },
+  ]),
+  ...(hasUrl("/contact") ? { support: { label: "Still stuck? Contact us", href: "/contact" } } : {}),
 }
 
 /** 쪽을 불러오는 동안(app/loading.tsx) — 읽는 도구가 읽는 글(화면에는 뼈대만 보인다) */
@@ -135,9 +137,9 @@ export const homeCopy = {
   paused: "Your subscription is paused until {date}.",
   pausedNoDate: "Your subscription is paused.",
   actions: {
-    upgrade: { label: "Upgrade to a paid plan", href: "/upgrade" },
-    fixPayment: { label: "Update your payment method", href: "/account/billing" },
-    keep: { label: "Keep your plan", href: "/account/billing" },
-    manage: { label: "Manage billing", href: "/account/billing" },
+    upgrade: { label: "Upgrade to a paid plan", href: go("/upgrade", "/account") },
+    fixPayment: { label: "Update your payment method", href: go("/account/billing", "/account") },
+    keep: { label: "Keep your plan", href: go("/account/billing", "/account") },
+    manage: { label: "Manage billing", href: go("/account/billing", "/account") },
   },
 }

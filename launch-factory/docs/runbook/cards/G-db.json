@@ -1,0 +1,20 @@
+{
+  "service": "Supabase",
+  "role": "database",
+  "need": "feature",
+  "cost": [
+    "free-tier",
+    "monthly"
+  ],
+  "after": [
+    "G-hosting"
+  ],
+  "home": "https://supabase.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "실제로 켜는 사이트가 데이터를 저장하지 못해요. 가입·로그인·문의·예약처럼 기록을 남기는 기능이 모두 켜지지 않아요.",
+    "en": "The live site cannot store data. Every feature that keeps records, such as sign-in, inquiries and bookings, does not turn on."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

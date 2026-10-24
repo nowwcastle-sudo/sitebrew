@@ -190,7 +190,7 @@ test("정지·해제: 세션이 끊기고 로그인이 막힌다 → 해제하�
   const boss = await admin()
   const target = await person()
   const at = Date.now()
-  assert.deepEqual(await boss.actions.banUser({ userId: target.id, reason: "spam" }), { ok: true, data: { userId: target.id } })
+  assert.deepEqual(await boss.actions.banUser({ userId: target.id, reason: "spam", confirmed: true }), { ok: true, data: { userId: target.id } })
   // 정지된 사용자: 세션이 끊겼고 다시 로그인하지 못한다
   assert.deepEqual(await target.port.session(), { ok: true, data: null })
   assert.deepEqual(await target.port.signIn({ method: "password", email: target.email, password: PASSWORD }), { ok: false, formError: AUTH_MESSAGES.accountSuspended })
@@ -210,15 +210,15 @@ test("정지·해제: 세션이 끊기고 로그인이 막힌다 → 해제하�
   const [unban] = await logOf(and(eq(adminActionsTable.targetUserId, target.id), eq(adminActionsTable.action, ADMIN_ACTION.unban)))
   assert.deepEqual([unban.adminUserId, unban.ipAddress, unban.reason], [boss.id, boss.io.ip, "appeal"])
 
-  assert.deepEqual(await boss.actions.banUser({ userId: boss.id }), { ok: false, status: 400, code: "cannot_ban_self", formError: A.cannotBanSelf })
-  assert.equal((await boss.actions.banUser({ userId: "no-such-user" })).code, "not_found")
+  assert.deepEqual(await boss.actions.banUser({ userId: boss.id, confirmed: true }), { ok: false, status: 400, code: "cannot_ban_self", formError: A.cannotBanSelf })
+  assert.equal((await boss.actions.banUser({ userId: "no-such-user", confirmed: true })).code, "not_found")
   assert.equal((await logOf(eq(adminActionsTable.targetUserId, boss.id))).length, 0)
   assert.equal((await boss.actions.banUser({ userId: target.id, extra: 1 })).code, "invalid_input")
 
   // 일괄 정지·되돌리기: 사람마다 결과, 사람마다 기록(같은 bulkId)
   const u1 = await person()
   const u2 = await person()
-  const bulk = await boss.actions.bulkBan({ userIds: [u1.id, u2.id, u2.id, "no-such-user"], reason: "wave" })
+  const bulk = await boss.actions.bulkBan({ userIds: [u1.id, u2.id, u2.id, "no-such-user"], reason: "wave", confirmed: true })
   assert.equal(bulk.ok, true)
   assert.deepEqual(bulk.data.succeeded, [u1.id, u2.id])
   assert.deepEqual(bulk.data.failed, [{ userId: "no-such-user", code: "not_found" }])
@@ -229,6 +229,24 @@ test("정지·해제: 세션이 끊기고 로그인이 막힌다 → 해제하�
   assert.deepEqual(undo.data.succeeded, [u1.id, u2.id])
   assert.equal((await d.select().from(user).where(eq(user.id, u2.id)))[0].banned, false)
   assert.equal((await boss.actions.bulkBan({ userIds: Array.from({ length: 101 }, (_, i) => `u${i}`) })).code, "invalid_input")
+})
+
+test("정지·일괄 정지는 사람 확인(confirmed: true) 없이는 실행하지 않는다 — 서버 액션과 콘솔 구획이 같은 벽을 지난다 · 해제는 확인 없이도 된다", async () => {
+  const boss = await admin()
+  const target = await person()
+  const u1 = await person()
+  const before = (await d.select().from(adminActionsTable)).length
+  const expected = { ok: false, status: 400, code: "confirmation_required", formError: A.confirmationRequired, retryable: false }
+  assert.deepEqual(await boss.actions.banUser({ userId: target.id }), expected)
+  // true 가 아닌 값(false · "true" · 1)은 확인이 아니다 — 입력 모양 검사에서 막힌다
+  for (const confirmed of [false, "true", 1]) assert.equal((await boss.actions.banUser({ userId: target.id, confirmed })).code, "invalid_input")
+  assert.deepEqual(await boss.actions.bulkBan({ userIds: [u1.id] }), expected)
+  assert.equal((await d.select().from(user).where(eq(user.id, target.id)))[0].banned, false, "확인 없이는 정지되지 않는다")
+  assert.equal((await d.select().from(user).where(eq(user.id, u1.id)))[0].banned, false)
+  assert.equal((await d.select().from(adminActionsTable)).length, before, "막힌 요청은 기록도 남기지 않는다")
+  assert.deepEqual(await boss.actions.banUser({ userId: target.id, confirmed: true }), { ok: true, data: { userId: target.id } })
+  assert.deepEqual(await boss.actions.unbanUser({ userId: target.id }), { ok: true, data: { userId: target.id } })
+  assert.equal((await boss.actions.bulkUnban({ userIds: [u1.id] })).ok, true)
 })
 
 test("대리 로그인: 사유 필수 · 시작·종료가 기록된다 · 세션에 impersonatedBy · 대리 중에는 관리자 기능 불가 · 다른 관리자는 대리 불가 · 로그아웃도 종료로 남는다", async () => {
@@ -464,7 +482,7 @@ test("사용자 목록: 검색·필터·정렬·쪽 — 정렬 값이 같아도 
 test("사용자 상세: 구독 상태(결제 포트, 읽기 전용) · 세션 수 · 최근 관리자 행동 · 보기도 기록", async () => {
   const boss = await admin()
   const target = await person()
-  await boss.actions.banUser({ userId: target.id, reason: "r1" })
+  await boss.actions.banUser({ userId: target.id, reason: "r1", confirmed: true })
   await boss.actions.unbanUser({ userId: target.id })
   const sub = { planId: "pro", status: "active" }
   const withBilling = adminActions({ auth, db: d, io: boss.io, subscriptionOf: async (id) => (id === target.id ? { ok: true, data: sub } : { ok: false }) })

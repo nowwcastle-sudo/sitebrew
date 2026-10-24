@@ -5,8 +5,8 @@
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import { loadLibrary } from '../style-presets.mjs'
-import { axisHeads } from '../../stamp/revise.mjs'
 import { GENERATED_MARK, serializeRecipe, tmpRecipeId } from '../../stamp/compile-candidate.mjs'
+import { stateHash } from '../../stamp/revise-history.mjs'
 import { makeRun, gen, root, SAAS_BRIEF, saasContent, localBrief, localContent } from './stamp-site-fixtures.mjs'
 
 const BASE = join(root, '.tmp', 'revise-fixtures')
@@ -47,21 +47,20 @@ export const fixtureCand = (kind = 'saas') => structuredClone(MASTERS[kind].cand
 
 // ── 고르기(applyRevision) 시험 재료 — 06 을 돌리지 않는다 ──────────────────────────────────────────────────────────
 // revise() 가 내는 것(09-revise/<번호>/board.json · 안의 사이트 사본 자리의 임시 레시피 머리 · 안의 04 요청)을 손으로 놓는다. 시험이 보려는 것은 「고르면 무엇이 바뀌나」뿐이라
-// 안마다 06 을 다시 돌리는 시간(구획 약 6초 · 축은 임시 레시피 컴파일까지)이 필요 없다. 보드 모양은 revise.mjs 의 reviseSection·reviseAxis·reviseCopy 가 쓰는 것과 같다.
+// 안마다 06 을 다시 돌리는 시간(구획 약 6초 · 축은 임시 레시피 컴파일까지)이 필요 없다. 보드 모양은 revise.mjs 의 reviseSection·reviseHeads·reviseCopy 가 쓰는 것과 같다.
 const writeJ = (file, v) => { mkdirSync(dirname(file), { recursive: true }); writeFileSync(file, JSON.stringify(v, null, 2) + '\n') }
 const readJ = (file) => JSON.parse(readFileSync(file, 'utf8'))
 
 /**
  * 고르기 시험용 실행 폴더 — 06 까지 끝난 새 복사본(fixtureRun)에 09-revise/<index>/board.json(상태 ready, 안 v1) 하나를 더한다.
- * @param {{ scope: 'section'|'axis'|'copy',
+ * @param {{ scope: 'section'|'design'|'copy',
  *           texts?: Record<string,string>,   copy: 안 v1 의 새 문구(칸 경로 → 글). 기본: home/hero/subhead 하나
- *           (axis 안은 늘 motion 축 — 더 대담하게, 린트를 통과한 첫 값)
+ *           (design 안은 늘 motion 축 한 단계 위 — 읽기 「움직임 역동적으로 1」의 결과)
  *           needsCopy?: string[] }} o        section: 새 블록이 비워 둔 화면 문구 칸(잎 이름, 예 'copy.caption') — 있으면 안의 04 요청 사본도 둔다
  * @returns {{ dir: string, cand: string, index: number, variant: string, boardFile: string, before: { content: object, variants: object, direction: object }, variantData: object }}
  */
 export function fixtureRevisionRun({ scope, texts, needsCopy = [] }) {
   const index = 1
-  const axis = 'motion'
   const dir = fixtureRun()
   const cand = join(dir, 'a')
   // 실제 실행처럼 06·07 단계 파일도 둔다(고르면 이것이 낡음 표시가 된다). 내용은 비어 있다 — 시험은 입력 해시만 본다.
@@ -74,14 +73,16 @@ export function fixtureRevisionRun({ scope, texts, needsCopy = [] }) {
   const siteRel = (vid) => `a/09-revise/${index}/${vid}/${basename(dir)}/a/site`
   const base = { kind: 'revise-board', version: 1, index, candidate: 'a', request: null, intent: 'different', status: 'ready', createdAt: '2026-10-10T00:00:00.000Z', routes: ['/'], route: '/', notes: [], picked: null }
   let board
-  if (scope === 'axis') {
+  if (scope === 'design') {
     const head = loadLibrary().find((r) => r.id === direction.recipe)
-    const h = axisHeads(head, axis, 'bolder', 1)[0] // 더 대담하게 = 높은 모션 단계 중 린트를 통과한 첫 값
+    const moved = { ...structuredClone(head), motion: `M${Number(head.motion.slice(1)) + 1}` } // 모션 한 단계 위
+    const say = '움직임: 「역동적으로」 쪽으로 조금 바꿔요.'
     const propCand = join(dir, dirname(siteRel('v1')))
-    const designHead = { ...structuredClone(h.head), id: tmpRecipeId(dir, 'a') }
+    const designHead = { ...moved, id: tmpRecipeId(dir, 'a') }
     mkdirSync(join(propCand, 'recipe'), { recursive: true })
     writeFileSync(join(propCand, 'recipe', 'DESIGN.md'), serializeRecipe({ ...designHead, body: `${designHead.body.trimEnd()}\n\n${GENERATED_MARK}\n\n이 레시피는 시험 재료다.\n` }))
-    board = { ...base, scope, target: axis, before: { recipe: direction.recipe, blockers: [] }, variants: [{ id: 'v1', axis, value: h.value, label: `v1 ${h.label}`, diff: { kind: 'axis', axis, value: h.value, sameStructure: true, sections: [], files: [] }, blockers: [], weight: 1, qa: null, siteRel: siteRel('v1'), previewUrl: null }] }
+    const readings = [{ axis: 'motion', direction: 'dynamic', strength: 1, scope: 'site' }]
+    board = { ...base, version: 2, scope, target: 'site', readings, say, before: { recipe: direction.recipe, blockers: [] }, variants: [{ id: 'v1', label: `v1 ${say}`, say, readings, changes: [{ axis: 'motion', from: head.motion, to: moved.motion }], diff: { kind: 'design', sameStructure: true, sections: [], files: [] }, blockers: [], weight: 1, qa: null, siteRel: siteRel('v1'), previewUrl: null }] }
   } else if (scope === 'copy') {
     const after = texts ?? { 'home/hero/subhead': '우유와 밀가루만 써요' }
     board = { ...base, scope, target: 'home/hero', before: { texts: {}, blockers: [] }, variants: [{ id: 'v1', label: 'v1 문구', texts: after, diff: { kind: 'copy', key: 'home/hero', before: {}, after, sections: ['home/hero'], files: [] }, blockers: [], weight: 1, qa: null, siteRel: siteRel('v1'), previewUrl: null }] }
@@ -101,6 +102,6 @@ export function fixtureRevisionRun({ scope, texts, needsCopy = [] }) {
     }
   }
   const boardFile = join(cand, '09-revise', String(index), 'board.json')
-  writeJ(boardFile, board)
+  writeJ(boardFile, { ...board, stateHash: stateHash(cand) }) // 실제 판처럼 만든 때의 상태 해시를 적는다(고를 때 견준다)
   return { dir, cand, index, variant: 'v1', boardFile, before: { content, variants, direction }, variantData: board.variants[0] }
 }

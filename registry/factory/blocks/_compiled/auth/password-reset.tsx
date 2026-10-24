@@ -69,7 +69,7 @@ export function AuthPasswordReset({ copy, requestPasswordReset, track, id = "pas
     if (r) setResent((n) => n + 1)
   }
   return (
-    <section ref={ref} id={id} data-block="auth-password-reset" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="auth-password-reset" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
       <ol className="grid gap-6 border-y py-8 md:grid-cols-3 md:gap-10">
         {copy.steps.map((st, i) => (

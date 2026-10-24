@@ -24,16 +24,18 @@ export type DataTableAdminListProps = BlockBase<DataTableAdminListCopy> & {
   pageSize?: number
   initialQuery?: Partial<TableQuery>
   onQueryChange?: (query: TableQuery) => void
+  // 검색어를 서버가 처리할 때(조립하는 쪽이 onQueryChange 로 다시 읽는다) true — 받은 행을 보이는 칸으로 다시 거르지 않는다(선택, 없으면 예전 그대로)
+  serverSearch?: boolean
 }
 
-export function DataTableAdminList({ copy, locale, state, pageSize = 10, initialQuery, onQueryChange, id = "admin-list", className }: DataTableAdminListProps) {
+export function DataTableAdminList({ copy, locale, state, pageSize = 10, initialQuery, onQueryChange, serverSearch, id = "admin-list", className }: DataTableAdminListProps) {
   const ref = React.useRef<HTMLElement>(null)
   useGsapScene(ref, (s) => {
     rise(s, s.q("[data-enter]"))
   })
   const api = useTableQuery(initialQuery, onQueryChange)
   const data = state.status === "ready" && state.data.rows.length ? state.data : null
-  const matched = data ? applyQuery(data, api.query) : []
+  const matched = data ? applyQuery(data, api.query, { serverSearch }) : []
   const page = pageOf(matched, api.query.page, pageSize)
   return (
     <section ref={ref} id={id} data-block="data-table-admin-list" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("cn-block-section", className)}>

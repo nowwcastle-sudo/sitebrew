@@ -4,6 +4,7 @@ import type { ConfirmationVerifyEmailCopy } from "@/components/blocks/confirmati
 import type { RetentionPaymentFailedBannerCopy } from "@/components/blocks/retention/payment-failed-banner"
 import type { RetentionRenewalConsentCopy } from "@/components/blocks/retention/renewal-consent"
 import { HUMAN_HINT, PRODUCT_NAME, submitNotices } from "@/content/copy.en"
+import { go } from "../lib/launch/enabled.ts"
 
 /** 가격 변경 동의(F04) — /account/billing/price-change · /account/billing/cancel 이 같은 블록을 보인다 */
 export const renewalConsentCopy: RetentionRenewalConsentCopy = {
@@ -203,10 +204,182 @@ export const verifyEmailPageCopy: ConfirmationVerifyEmailCopy = {
   spam: "No email yet? Check your spam or junk folder and give it a few minutes. The link works for 1 hour.",
   resend: { label: "Send the email again", pending: "Sending", wait: "You can send it again in {seconds} seconds.", sent: "Sent again. Check your inbox and spam folder.", errorTitle: "We couldn't send the email" },
   wrongAddress: { text: "Wrong address?", label: "Fix your email address", href: FIX_EMAIL_HREF },
-  verified: { title: "Your email address is confirmed", body: "There is nothing more to do. Your account is ready.", label: "Go to your account", href: "/account/billing" },
+  verified: { title: "Your email address is confirmed", body: "There is nothing more to do. Your account is ready.", label: "Go to your account", href: go("/account/billing", "/account") },
   notices: submitNotices,
   empty: { title: "Sign in to confirm your email", body: "Open the confirmation link in the browser where you signed up, or sign in and we'll help you send a new one.", label: "Sign in", href: SIGN_IN_FOR_VERIFY },
   loading: "Loading your email status",
   error: "We couldn't load your email status",
   retry: "Try again",
+}
+
+/** 예약 화면(/book) — 서비스 고르기 → 날짜·시간 고르기 → 연락처 → 접수 번호 */
+export const bookCopy = {
+  title: "Book a time",
+  lead: "Pick a service and a time that suits you. You get a booking number when you send this.",
+  /** 예약 창구가 꺼졌을 때(BOOKING_OWNER_EMAIL 없음) 폼 대신 보이는 한 줄 — 서버 액션도 접수하지 않는다 */
+  unavailable: "We're not taking bookings right now.",
+  manage: { text: "Already booked?", label: "Look up or cancel a booking" },
+  service: { label: "Service", marker: "(required)", option: "{name} ({minutes} min)" },
+  slots: {
+    legend: "Date and time",
+    marker: "(required)",
+    /** {timeZone} 은 제품 설정의 시간대 */
+    hint: "The next 14 days. Times are in {timeZone} time.",
+    loading: "Loading available times",
+    /** {count} 은 불러온 시간 수 */
+    ready: "{count} times available in the next 14 days.",
+    empty: "There are no free times in the next 14 days. Try another service, or check back later.",
+    error: "We couldn't load the available times.",
+    retry: "Try again",
+    selected: "Selected",
+  },
+  partySize: { label: "Number of people", marker: "(required)", hint: "Up to {max} for this service." },
+  name: { label: "Your name", marker: "(optional)" },
+  contact: { label: "Your email or phone number", marker: "(required)", hint: "We send your booking number here, and you use it to look up or cancel the booking." },
+  note: { label: "Anything we should know?", marker: "(optional)", hint: "Up to 1,000 characters." },
+  errors: {
+    serviceRequired: "Choose a service.",
+    slotRequired: "Choose a date and time.",
+    contactRequired: "Enter an email address or a phone number so we can confirm your booking.",
+  },
+  /** 고른 시간을 그 사이 다른 사람이 잡았을 때(slot_taken) — 목록을 새로 읽은 뒤 알린다 */
+  slotTaken: "That time was just taken. We reloaded the list, so please choose another time.",
+  submit: "Book this time",
+  pending: "Sending",
+  alert: { field: "Some fields need your attention", server: "We couldn't make this booking. What you entered is still here." },
+  done: {
+    title: "Your booking is received",
+    reference: "Your booking number",
+    when: "When",
+    statusLabel: "Status",
+    status: { confirmed: "Confirmed", requested: "Waiting for our confirmation" },
+    keep: "Keep this number. With your email or phone number, you can look up or cancel the booking.",
+    manage: "Look up or cancel a booking",
+    again: "Make another booking",
+  },
+  /** 예약금이 있는 서비스(설정의 deposit). 금액·기한·환불 규정은 서버 설정이 정한 값이다 */
+  deposit: {
+    /** 서비스 선택지: {name} {minutes} {amount} */
+    option: "{name} ({minutes} min, {amount} deposit)",
+    /** 폼 안내: {amount} {minutes}(결제 대기 시간) */
+    note: "This service takes a deposit of {amount}. You pay it right after you send this, and we hold your time for {minutes} minutes while you do.",
+    /** {window}: 예: 24 hours */
+    refundFull: "Cancel at least {window} before the start for a full refund.",
+    refundLater: "After that, {percent}% of the deposit is refunded.",
+    refundNone: "After that, the deposit isn't refunded.",
+    /** 접수 뒤 결제 단계 */
+    title: "Pay the deposit to hold your time",
+    amount: "Deposit",
+    /** {when} */
+    payBy: "Pay by {when}. After that your time is released and nothing is charged.",
+    pay: "Pay {amount}",
+    opening: "Opening payment",
+    confirming: "Confirming your payment",
+    /** 결제를 마쳤는데 확인이 아직 안 됐을 때 */
+    pendingBody: "We haven't received the confirmation yet. Don't pay again — check again in a moment.",
+    checkAgain: "Check again",
+    /** 결제창을 닫았거나 실패했을 때: {when} */
+    failed: "The payment didn't go through and nothing was charged. Your time is held until {when}, so you can try again.",
+    closed: "This booking is closed, so we can't take the payment. If you paid, we refund it.",
+    confirmedTitle: "Deposit received",
+    statusPending: "Waiting for your deposit",
+  },
+}
+
+/** 예약금 결제창에서 돌아오는 쪽(/book/return) */
+export const bookReturnCopy = {
+  confirming: "Confirming your payment",
+  confirmed: { title: "Deposit received", body: "Your booking is held. We emailed you the details.", link: "Look up or cancel a booking" },
+  failed: { title: "Payment not finished", body: "The payment did not go through and nothing was charged. Your time stays held for a short while — if it has been released, make the booking again.", link: "Make a booking" },
+  pending: { title: "We're still checking your payment", body: "The payment has not been confirmed yet. Don't pay again — check again in a moment.", retry: "Check again" },
+  closed: { title: "This booking is closed", body: "The payment window had passed. If you paid, we refund it in full.", link: "Make a booking" },
+  missing: { title: "We couldn't find that payment", body: "This page needs a payment to check. Make a booking, or look up the one you have.", link: "Make a booking" },
+}
+
+/** 예약 조회·취소 화면(/book/manage) — 로그인 없이 쓴다 */
+export const bookingManageCopy = {
+  title: "Look up or cancel a booking",
+  lead: "Enter your booking number and the email address or phone number you booked with.",
+  reference: { label: "Booking number", marker: "(required)", hint: "It looks like B-7K3M9P2A. We sent it when you booked." },
+  contact: { label: "Your email or phone number", marker: "(required)" },
+  errors: { referenceRequired: "Enter your booking number.", contactRequired: "Enter the email address or phone number you booked with." },
+  find: "Find booking",
+  finding: "Looking",
+  /** 번호와 연락처 중 어느 쪽이 틀렸는지 알리지 않는다 — 어떤 틀린 조합이든 같은 글이다 */
+  notFound: "We couldn't find a booking with that number and contact. Check both and try again.",
+  alert: { field: "Some fields need your attention", server: "We couldn't look up the booking. What you entered is still here." },
+  found: {
+    title: "Your booking",
+    reference: "Booking number",
+    service: "Service",
+    when: "When",
+    people: "People",
+    status: "Status",
+    cancelBy: "You can cancel until {when}.",
+    cannotCancel: "This booking can no longer be cancelled here.",
+    cancelClosed: "The cancellation window has closed, so this booking can't be cancelled here. Contact us if you need help.",
+    deposit: "Deposit",
+    contactUs: "Contact us",
+    another: "Look up another booking",
+  },
+  statuses: {
+    requested: "Waiting for our confirmation",
+    confirmed: "Confirmed",
+    cancelled: "Cancelled",
+    completed: "Completed",
+    no_show: "Missed",
+  } as Record<string, string>,
+  /** 예약금이 있는 예약. {amount} {when} {percent} */
+  deposit: {
+    status: {
+      pending: "{amount} — waiting for payment",
+      paid: "{amount} — paid",
+      refunding: "{amount} — refund in progress",
+      refunded: "{amount} — refunded",
+      forfeited: "{amount} — not refunded",
+      voided: "{amount} — not taken",
+    } as Record<string, string>,
+    payBy: "Pay by {when} to keep this time.",
+    refundFull: "Full refund if you cancel by {when}.",
+    refundLater: "After that, {percent}% is refunded.",
+    refundNone: "After that, the deposit isn't refunded.",
+    /** 취소 확인 단계: 지금 취소하면 */
+    willRefundFull: "Your deposit is refunded in full.",
+    willRefundLater: "{percent}% of your deposit is refunded.",
+    willRefundNone: "Your deposit isn't refunded.",
+    willVoid: "Nothing was charged yet, so nothing is refunded.",
+  },
+  cancel: {
+    start: "Cancel this booking",
+    confirmTitle: "Cancel this booking?",
+    confirmBody: "The time is released and you can't undo this. You can book again if there is a free time.",
+    confirm: "Yes, cancel this booking",
+    keep: "No, keep it",
+    pending: "Cancelling",
+    error: "We couldn't cancel the booking. It is unchanged. Please try again.",
+    doneTitle: "Your booking is cancelled",
+  },
+}
+
+/** 이 기기의 푸시 알림 켜고 끄기(/account/notifications) */
+export const pushCopy = {
+  title: "Notifications on this device",
+  lead: "Get alerts from us on this device, even when the site is closed. This only affects this browser.",
+  unavailable: "Device notifications aren't available right now.",
+  checking: "Checking this device",
+  states: {
+    on: "Notifications are on for this device.",
+    off: "Notifications are off for this device.",
+    blocked: "Notifications are blocked in your browser settings.",
+    unsupported: "This browser can't receive notifications.",
+  },
+  blocked: "To turn them on, allow notifications for this site in your browser's site settings, then reload this page. We can't change that setting for you.",
+  unsupported: "Try a current desktop browser. On iPhone and iPad, add this site to your Home Screen first, then open it from there.",
+  enable: "Turn on notifications",
+  disable: "Turn off notifications",
+  enabling: "Turning on",
+  disabling: "Turning off",
+  error: "We couldn't change this setting. Nothing was changed. Please try again.",
+  signedOut: "Your session ended. Sign in again to change this setting.",
+  denied: "Notifications were not allowed, so they stay off.",
 }

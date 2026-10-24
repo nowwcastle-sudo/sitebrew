@@ -7,6 +7,25 @@ description: Checks that a computer is ready for Sitebrew - Node and npm version
 
 Reply in the user's language.
 
+<!-- env-block:start -->
+## Where this runs (read first)
+
+Do not assume you can run commands on the user's computer. Check first:
+
+```bash
+node "${CLAUDE_PLUGIN_ROOT}/scripts/setup.mjs" detect
+```
+
+The JSON says `mode`.
+
+- `agent`: you have a tool that runs commands on the user's own computer. Follow this skill as written.
+- `chatbot`: you cannot run commands for the user (a chat window, a cloud sandbox). Run nothing and do not say you ran anything. Follow the "Chatbot mode" section of this skill: ask the same questions, and give the user the command to paste into their own terminal and what they should see when it works.
+- `remote` is `true`: this is a cloud session, not the user's computer. Install nothing here; say so and use the chatbot steps.
+- `unsure` is `true`: ask once, in the user's language, "Can this window run commands on your own computer?" Then add `--as agent` or `--as chatbot` to the command. The user can always choose `chatbot`.
+
+If this command cannot run at all (no command tool, or `${CLAUDE_PLUGIN_ROOT}` is not filled in), you are in chatbot mode. In Codex use the folder two levels above this `SKILL.md` file instead of `${CLAUDE_PLUGIN_ROOT}`.
+<!-- env-block:end -->
+
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs" --data "${CLAUDE_PLUGIN_DATA}"
 ```
@@ -77,3 +96,12 @@ node factory/doctor.mjs --stage stamp
 ## After fixing
 
 Run the doctor again and report the new `doctor:` summary line and the exit code. Stop after the same `FAIL` repeats twice and report its cause.
+
+## Chatbot mode
+
+Use this when the block "Where this runs" says `chatbot`. The doctor script cannot run here, so do not report any check as done.
+
+1. Ask the user to run these in their own terminal and paste the three version lines (no key, no password): `node --version`, `npm --version`, `git --version`.
+2. Compare them with the minimums of the `guide` skill. For anything missing or too old, give the matching steps of the `setup` skill (its install guide), one item at a time.
+3. Keys are optional. Say that a missing key never stops the work and only turns off the feature it names. Never ask the user to paste a key value; ask only whether a named variable is set.
+4. Say that this was a check by the user's own report and not a run of the doctor.

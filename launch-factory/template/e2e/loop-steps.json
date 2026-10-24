@@ -1,0 +1,107 @@
+{
+  "note": "한 바퀴 시험(e2e/loop.mock.spec.ts)의 데이터. steps = 기능별로 돌릴 단계 id(순서가 곧 실행 순서), mail = 기능이 끝났을 때 메일 기록(LF_MOCK_OUTBOX)에 template 별로 정확히 이만큼 있어야 한다, selectors = 단계가 읽는 화면 표지. 단계 id 의 동작은 spec 의 RUNNERS 에 있고, 여기에만 있고 RUNNERS 에 없는 id 는 시험이 시작 전에 던진다. booking 은 즉시 확정 접수 → 예약 번호+이메일로 조회·취소 → 메일 3통(대표 알림·예약 확인·취소 확인)이고, booking-deposit 은 예약금이 있는 서비스(mock 에서만 있는 예시 서비스)로 접수 → 결제 대기(예약 안내 메일 1통) → 모의 결제 → 확정(대표 알림 1통 + 확정 메일 1통) → 취소·환불(취소 메일 1통)이고, 상점(shop)은 담기 확인 → 배송지 → 모의 결제 확인 칸 → 주문 확인 메일 1통 → 내 주문 목록이고, push·kakao 알림은 화면 단계가 없다(브라우저 권한·VAPID·Solapi 가 있어야 해서 한 바퀴에 넣지 않는다).",
+  "steps": {
+    "signup": ["signUp", "verifyMail", "signOut", "signIn"],
+    "payments": ["upgrade", "checkout", "billingReturn", "receiptMail"],
+    "inquiry": ["contact", "inquiryMail"],
+    "booking": ["bookPage", "manageCancel", "bookingMail"],
+    "booking-deposit": ["bookDepositPage", "payDeposit", "cancelDeposit", "bookingDepositMail"],
+    "shop": ["addToCart", "checkoutAddress", "payMock", "orderMail", "orderHistory"]
+  },
+  "requires": {
+    "payments": ["signup"],
+    "booking-deposit": ["booking"],
+    "shop": ["signup"]
+  },
+  "mail": {
+    "signup": { "verifyEmail": 1 },
+    "payments": { "orderConfirmation": 1 },
+    "inquiry": { "inquiryNotice": 1, "inquiryReceipt": 1 },
+    "booking": { "bookingNotice": 1, "bookingConfirmation": 1, "bookingCancellation": 1 },
+    "booking-deposit": { "bookingNotice": 1, "bookingConfirmation": 2, "bookingCancellation": 1 },
+    "shop": { "shopOrderConfirmation": 1 }
+  },
+  "expect": {
+    "billingNone": "You don't have a paid plan",
+    "billingStatusAfter": ["Active", "Free trial"]
+  },
+  "selectors": {
+    "shell": {
+      "accountMenu": "[data-block=\"nav-account-bar\"] [data-slot=\"session\"] summary",
+      "signOut": "[data-block=\"nav-account-bar\"] form[data-sign-out] button[type=\"submit\"]"
+    },
+    "signup": {
+      "flow": "[data-flow=\"signup\"]",
+      "email": "[data-flow=\"signup\"] input[name=\"email\"]",
+      "password": "[data-flow=\"signup\"] input[name=\"password\"]",
+      "next": "[data-flow=\"signup\"][data-step=\"1\"] form button[type=\"submit\"]",
+      "requiredBoxes": "[data-flow=\"signup\"][data-step=\"2\"] [role=\"checkbox\"][data-consent=\"required\"]",
+      "submit": "[data-flow=\"signup\"][data-step=\"2\"] form button[type=\"submit\"]",
+      "finished": "[data-flow=\"signup\"][data-step=\"3\"], [data-already-signed-in]"
+    },
+    "signin": {
+      "email": "[data-block=\"auth-sign-in\"] input[name=\"email\"]",
+      "password": "[data-block=\"auth-sign-in\"] input[name=\"password\"]",
+      "submit": "[data-block=\"auth-sign-in\"] form button[type=\"submit\"]",
+      "done": "[data-block=\"auth-sign-in\"] [role=\"status\"], [data-already-signed-in]"
+    },
+    "payments": {
+      "planLink": "a[href=\"/upgrade?plan=pro\"]",
+      "withdrawalBox": "[role=\"dialog\"] [data-terms=\"consent\"] [role=\"checkbox\"]",
+      "pay": "[role=\"dialog\"] [data-choice=\"primary\"]",
+      "paid": "[role=\"dialog\"] [role=\"status\"]",
+      "billingBlock": "[data-block=\"account-billing-manage\"]",
+      "billingPlan": "[data-billing=\"plan\"]",
+      "billingPlanText": "[data-billing=\"plan\"] dd",
+      "receipt": "[data-block=\"billing-return\"] [data-receipt]"
+    },
+    "inquiry": {
+      "contact": "form#contact-form input[name=\"contact\"]",
+      "message": "form#contact-form textarea[name=\"message\"]",
+      "submit": "form#contact-form button[type=\"submit\"]",
+      "done": "[data-testid=\"contact-done\"]",
+      "reference": "[data-testid=\"contact-reference\"]"
+    },
+    "booking": {
+      "slot": "[data-testid=\"book-slot\"]",
+      "name": "#book-name",
+      "contact": "#book-contact",
+      "submit": "#book-form button[type=\"submit\"]",
+      "done": "[data-testid=\"book-done\"]",
+      "reference": "[data-testid=\"book-reference\"]",
+      "manageReference": "#manage-reference",
+      "manageContact": "#manage-contact",
+      "manageFind": "form:has(#manage-reference) button[type=\"submit\"]",
+      "manageFound": "[data-testid=\"manage-found\"]",
+      "manageCancel": "[data-testid=\"manage-cancel\"]",
+      "manageConfirm": "[data-testid=\"manage-confirm\"] button[type=\"submit\"]",
+      "manageResult": "[data-testid=\"manage-result\"]"
+    },
+    "bookingDeposit": {
+      "serviceSelect": "#book-service",
+      "serviceOption": "#book-service option[value=\"deposit-consultation\"]",
+      "slotsStatus": "[data-testid=\"book-slots-status\"]",
+      "formNote": "#book-form [data-testid=\"book-deposit-note\"]",
+      "pending": "[data-testid=\"book-done\"][data-deposit=\"pending\"]",
+      "pay": "[data-testid=\"book-deposit-pay\"]",
+      "mockPay": "[data-mock-pay] button[data-action=\"mock-pay\"]",
+      "paid": "[data-testid=\"book-done\"][data-deposit=\"paid\"]",
+      "manageDeposit": "[data-testid=\"manage-deposit\"]",
+      "refundNote": "[data-testid=\"manage-refund-note\"]"
+    },
+    "shop": {
+      "addPath": "/cart?add=example-mug",
+      "addConfirm": "[data-testid=\"shop-add-confirm\"] button[data-action=\"confirm\"]",
+      "added": "[data-testid=\"shop-added\"]",
+      "cartLine": "[data-block=\"cart-lines-table\"] [data-cart-line]",
+      "recipient": "[data-block=\"cart-checkout-form\"] input[name=\"recipient\"]",
+      "phone": "[data-block=\"cart-checkout-form\"] input[name=\"phone\"]",
+      "postcode": "[data-block=\"cart-checkout-form\"] input[name=\"postcode\"]",
+      "address1": "[data-block=\"cart-checkout-form\"] input[name=\"address1\"]",
+      "pay": "[data-block=\"cart-checkout-form\"] form button[type=\"submit\"]",
+      "mockPay": "[data-mock-pay] button[data-action=\"mock-pay\"]",
+      "done": "[data-block=\"cart-checkout-form\"] [data-checkout=\"done\"]",
+      "orderRow": "[data-block=\"account-order-history\"] [data-order]"
+    }
+  }
+}

@@ -53,7 +53,7 @@ export function AnnouncementDismissibleInline({ copy, locale, timeZone, announce
     else snooze()
   }
   return (
-    <section ref={ref} id={id} data-block="announcement-dismissible-inline" data-announcement={announcementId} aria-labelledby={`${id}-title`} hidden={!visible || undefined} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 md:gap-12 md:px-8 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 py-8 md:py-10", className)}>
+    <section ref={ref} id={id} data-block="announcement-dismissible-inline" data-announcement={announcementId} aria-labelledby={`${id}-title`} hidden={!visible || undefined} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 py-8 md:py-10", className)}>
       <div data-enter className="grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-5 rounded-lg border border-s-8 border-s-primary px-5 py-5 md:grid-cols-[auto_1fr_auto] md:items-center md:px-6">
         <Bell aria-hidden="true" className="mt-1 size-6 text-primary md:mt-0" />
         <div className="flex min-w-0 flex-col gap-1">

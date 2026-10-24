@@ -26,9 +26,9 @@ import { Skeleton } from "@/registry/factory/ui/skeleton"
 // 비제어라 오류 뒤에도 입력이 남고, 칸마다 (필수)/(선택), 필드 오류는 그 칸에·서버 오류는 위 알림에) + 아래 「위험한 작업」: [지우기…]를 누르면 그 자리에
 // [취소][지우기] 대등한 확인(L3). 저장하지 않은 변경이 있으면 창을 닫을 때 브라우저가 묻는다(beforeunload — A49, 앱 안 이동 가로채기는 v0.2).
 /** autoComplete: 관리자가 남의 기록을 고치는 칸이라 기본은 "off"(브라우저가 관리자 본인 정보를 채우지 않게) */
-export type RecordField = { name: string; label: string; type?: "text" | "email" | "tel" | "textarea"; required?: boolean; value: string; autoComplete?: string }
+export type RecordField = { name: string; label: string; type?: "text" | "email" | "tel" | "textarea" | "number"; required?: boolean; value: string; autoComplete?: string }
 export type RecordAction = { id: string; label: string }
-export type RecordData = { title: string; summary: { label: string; value: string; kind?: "text" | "numeric" | "status" }[]; fields: RecordField[] }
+export type RecordData = { title: string; summary: { label: string; value: string; kind?: "text" | "numeric" | "status" | "contact" }[]; fields: RecordField[] }
 
 export type DataTableRecordPanelCopy = {
   title: string
@@ -41,7 +41,8 @@ export type DataTableRecordPanelCopy = {
   form: FormFlowCopy
   saved: string
   actionDone: string
-  danger: { title: string; body: string; trigger: string; question: string; cancel: string; confirm: string; pending: string; errorTitle: string; done: { title: string; body: string; link: Cta } }
+  // 위험한 작업 문구(선택) — remove 와 함께 줄 때만 구역을 그린다
+  danger?: { title: string; body: string; trigger: string; question: string; cancel: string; confirm: string; pending: string; errorTitle: string; done: { title: string; body: string; link: Cta } }
   empty: { title: string; body?: string; action?: Cta }
   loading: string
   error: { title: string; retryLabel: string }
@@ -52,7 +53,8 @@ export type DataTableRecordPanelProps = BlockBase<DataTableRecordPanelCopy> & {
   submit: ContactSubmit
   actions?: RecordAction[]
   act?: (input: { action: string }) => Promise<ActionResult<{ message?: string }>>
-  remove: () => Promise<ActionResult<Record<string, never>>>
+  // 위험한 작업(지우기 같은 되돌리기 어려운 일) — 없으면 「위험한 작업」 구역을 그리지 않는다(주면 예전 그대로). 결과의 data 는 읽지 않는다
+  remove?: () => Promise<ActionResult<{ message?: string }>>
 }
 
 const same = (a: Record<string, string>, fields: RecordField[]) => fields.every((f) => (a[f.name] ?? "") === f.value)
@@ -63,6 +65,8 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
     rise(s, s.q("[data-enter]"))
   })
   const data = state.status === "ready" ? state.data : null
+  const hasFields = (data?.fields.length ?? 0) > 0
+  const danger = remove ? copy.danger : undefined
   const required = (data?.fields ?? []).filter((f) => f.required).map((f) => f.name)
   const flow = useFormFlow(submit, { id, required, requiredMessage: copy.form.required, notices: copy.form.notices })
   const op = usePortForm({ id: `${id}-op`, notices: copy.form.notices })
@@ -109,13 +113,14 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
     if (r) setNote(r.message ?? copy.actionDone)
   }
   const confirmRemove = async () => {
+    if (!remove) return
     const r = await op.run(() => remove())
     if (!r) return
     setRemoved(true)
   }
 
   return (
-    <section ref={ref} id={id} data-block="data-table-record-panel" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="data-table-record-panel" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
       <div data-enter className="flex flex-col gap-6">
         {state.status === "loading" ? (
@@ -129,15 +134,15 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
         ) : null}
         {state.status === "error" ? <ListError title={copy.error.title} message={state.message} retryLabel={copy.error.retryLabel} retry={state.retry} /> : null}
         {state.status === "empty" ? <ListEmpty title={copy.empty.title} body={copy.empty.body} action={copy.empty.action} /> : null}
-        {removed ? (
+        {removed && danger ? (
           <div role="status" data-record-removed="" className="flex max-w-xl flex-col items-start gap-3 border px-6 py-8">
             <CheckCircle aria-hidden="true" className="size-8" />
             <h3 ref={doneRef} tabIndex={-1} className="text-[1.25rem] leading-[1.35] outline-hidden focus-visible:ring-3 focus-visible:ring-ring font-heading">
-              {copy.danger.done.title}
+              {danger.done.title}
             </h3>
-            <p className="text-base leading-[1.6]">{copy.danger.done.body}</p>
-            <Button variant="outline" nativeButton={false} render={<a href={copy.danger.done.link.href} />}>
-              {copy.danger.done.link.label}
+            <p className="text-base leading-[1.6]">{danger.done.body}</p>
+            <Button variant="outline" nativeButton={false} render={<a href={danger.done.link.href} />}>
+              {danger.done.link.label}
             </Button>
           </div>
         ) : null}
@@ -171,79 +176,87 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
                 </div>
               ) : null}
             </div>
-            <div className="flex min-w-0 flex-col gap-6">
-              <h3 className="text-[1.125rem] leading-[1.4] font-heading">{copy.editTitle}</h3>
-              <FlowAlert flow={flow} copy={copy.form} />
-              {saved ? (
-                <p role="status" data-record-saved="" className="flex items-start gap-3 border-s-4 bg-muted/40 px-4 py-3 text-base leading-[1.6]">
-                  <CheckCircle aria-hidden="true" className="mt-1 size-5 shrink-0" />
-                  {flow.receipt?.message ?? copy.saved}
-                </p>
-              ) : null}
-              <form method="post" id={flow.formId} noValidate aria-busy={flow.pending || undefined} onSubmit={flow.onSubmit} onInput={onInput} className="flex flex-col gap-5">
-                {data.fields.map((f) => {
-                  const inputId = `${id}-${f.name}`
-                  const aria = fieldAria(flow, id, f.name)
-                  return (
-                    <Field key={f.name} className="min-w-0" data-invalid={aria["aria-invalid"]}>
-                      <FieldLabel htmlFor={inputId}>
-                        {f.label} <span className="ms-1 text-base">{f.required ? copy.required : copy.optional}</span>
-                      </FieldLabel>
-                      {f.type === "textarea" ? (
-                        <Textarea id={inputId} name={f.name} defaultValue={f.value} aria-required={f.required || undefined} className="min-h-32" {...aria} />
-                      ) : (
-                        <Input
-                          id={inputId}
-                          name={f.name}
-                          type={f.type ?? "text"}
-                          defaultValue={f.value}
-                          autoComplete={f.autoComplete ?? "off"}
-                          autoCapitalize={f.type === "email" ? "off" : undefined}
-                          spellCheck={f.type === "email" ? false : undefined}
-                          aria-required={f.required || undefined}
-                          {...aria}
-                        />
-                      )}
-                      <FieldMessage flow={flow} id={id} name={f.name} />
-                    </Field>
-                  )
-                })}
-                <div className="flex">
-                  <SubmitButton flow={flow} copy={copy.form} />
-                </div>
-              </form>
-              <div data-danger-zone="" className="flex flex-col items-start gap-3 border-t pt-6">
-                <h3 className="text-[1.125rem] leading-[1.4] font-heading">{copy.danger.title}</h3>
-                <p className="text-base leading-[1.6]">{copy.danger.body}</p>
-                <FormAlert form={op} fieldTitle={copy.danger.errorTitle} serverTitle={copy.danger.errorTitle} />
-                {asking ? (
-                  <div className="flex w-full max-w-lg flex-col gap-4 border px-5 py-5">
-                    <p ref={questionRef} tabIndex={-1} className="text-[1.125rem] leading-[1.4] outline-hidden focus-visible:ring-3 focus-visible:ring-ring font-heading">
-                      {copy.danger.question}
-                    </p>
-                    <ChoiceRow label={copy.danger.question}>
-                      <ChoiceButton
-                        choice="decline"
-                        type="button"
-                        onClick={() => {
-                          back.current = true
-                          setAsking(false)
-                        }}
-                      >
-                        {copy.danger.cancel}
-                      </ChoiceButton>
-                      <ChoiceButton choice="primary" type="button" disabled={op.pending} focusableWhenDisabled onClick={confirmRemove}>
-                        {op.pending ? copy.danger.pending : copy.danger.confirm}
-                      </ChoiceButton>
-                    </ChoiceRow>
+            {hasFields || danger ? (
+              <div className="flex min-w-0 flex-col gap-6">
+                {hasFields ? (
+                  <>
+                    <h3 className="text-[1.125rem] leading-[1.4] font-heading">{copy.editTitle}</h3>
+                    <FlowAlert flow={flow} copy={copy.form} />
+                    {saved ? (
+                      <p role="status" data-record-saved="" className="flex items-start gap-3 border-s-4 bg-muted/40 px-4 py-3 text-base leading-[1.6]">
+                        <CheckCircle aria-hidden="true" className="mt-1 size-5 shrink-0" />
+                        {flow.receipt?.message ?? copy.saved}
+                      </p>
+                    ) : null}
+                    <form method="post" id={flow.formId} noValidate aria-busy={flow.pending || undefined} onSubmit={flow.onSubmit} onInput={onInput} className="flex flex-col gap-5">
+                      {data.fields.map((f) => {
+                        const inputId = `${id}-${f.name}`
+                        const aria = fieldAria(flow, id, f.name)
+                        return (
+                          <Field key={f.name} className="min-w-0" data-invalid={aria["aria-invalid"]}>
+                            <FieldLabel htmlFor={inputId}>
+                              {f.label} <span className="ms-1 text-base">{f.required ? copy.required : copy.optional}</span>
+                            </FieldLabel>
+                            {f.type === "textarea" ? (
+                              <Textarea id={inputId} name={f.name} defaultValue={f.value} aria-required={f.required || undefined} className="min-h-32" {...aria} />
+                            ) : (
+                              <Input
+                                id={inputId}
+                                name={f.name}
+                                type={f.type ?? "text"}
+                                defaultValue={f.value}
+                                autoComplete={f.autoComplete ?? "off"}
+                                autoCapitalize={f.type === "email" ? "off" : undefined}
+                                spellCheck={f.type === "email" ? false : undefined}
+                                aria-required={f.required || undefined}
+                                {...aria}
+                              />
+                            )}
+                            <FieldMessage flow={flow} id={id} name={f.name} />
+                          </Field>
+                        )
+                      })}
+                      <div className="flex">
+                        <SubmitButton flow={flow} copy={copy.form} />
+                      </div>
+                    </form>
+                  </>
+                ) : null}
+                {danger ? (
+                  <div data-danger-zone="" className="flex flex-col items-start gap-3 border-t pt-6">
+                    <h3 className="text-[1.125rem] leading-[1.4] font-heading">{danger.title}</h3>
+                    <p className="text-base leading-[1.6]">{danger.body}</p>
+                    <FormAlert form={op} fieldTitle={danger.errorTitle} serverTitle={danger.errorTitle} />
+                    {asking ? (
+                      <div className="flex w-full max-w-lg flex-col gap-4 border px-5 py-5">
+                        <p ref={questionRef} tabIndex={-1} className="text-[1.125rem] leading-[1.4] outline-hidden focus-visible:ring-3 focus-visible:ring-ring font-heading">
+                          {danger.question}
+                        </p>
+                        <ChoiceRow label={danger.question}>
+                          <ChoiceButton
+                            choice="decline"
+                            type="button"
+                            onClick={() => {
+                              back.current = true
+                              setAsking(false)
+                            }}
+                          >
+                            {danger.cancel}
+                          </ChoiceButton>
+                          <ChoiceButton choice="primary" type="button" disabled={op.pending} focusableWhenDisabled onClick={confirmRemove}>
+                            {op.pending ? danger.pending : danger.confirm}
+                          </ChoiceButton>
+                        </ChoiceRow>
+                      </div>
+                    ) : (
+                      <Button ref={triggerRef} type="button" variant="outline" size="lg" onClick={() => setAsking(true)} data-danger-trigger="" className="[color:color-mix(in_oklch,var(--destructive)_40%,var(--foreground))]">
+                        {danger.trigger}
+                      </Button>
+                    )}
                   </div>
-                ) : (
-                  <Button ref={triggerRef} type="button" variant="outline" size="lg" onClick={() => setAsking(true)} data-danger-trigger="" className="[color:color-mix(in_oklch,var(--destructive)_40%,var(--foreground))]">
-                    {copy.danger.trigger}
-                  </Button>
-                )}
+                ) : null}
               </div>
-            </div>
+            ) : null}
           </div>
         ) : null}
       </div>

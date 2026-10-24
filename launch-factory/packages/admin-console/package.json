@@ -1,0 +1,16 @@
+{
+  "name": "@launch-factory/admin-console",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "관리 화면의 뼈대(계획 3d) — 구획(주문·예약·문의·후기 …)은 defineSection 선언 하나 + 등록 한 줄이고, 입장(관리자·소유자)·확인 입력 벽·상태 검사·주소·가리기·접속 기록은 createAdminConsole 이 한 곳에서 한다. DB·세션은 모른다(신원·기록·제한·가리개는 주입). web-factory 계약 AdminPort 와 같은 모양.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

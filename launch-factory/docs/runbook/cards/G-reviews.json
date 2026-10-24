@@ -1,0 +1,19 @@
+{
+  "service": "후기·상품 문의 (이 키트에 내장)",
+  "role": "reviews",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db",
+    "G-security"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "후기와 상품 문의를 받을 수 없어요. 봇 확인 키(Turnstile)가 없으면 실제 운영에서 사이트가 시작되지 않아요.",
+    "en": "Reviews and product questions will not work. Without the bot-check key (Turnstile), the site does not start in live mode."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

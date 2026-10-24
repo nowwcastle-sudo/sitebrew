@@ -8,4 +8,6 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { languageOptions: { globals: { ...globals.node } } },
+  // 서비스 워커는 브라우저 워커 전역(self·clients·registration)을 쓴다
+  { files: ["**/public/sw.js"], languageOptions: { globals: { ...globals.serviceworker } } },
 )

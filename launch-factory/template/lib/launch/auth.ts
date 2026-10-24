@@ -10,14 +10,20 @@ import { ipAddressFromEnv } from "@launch-factory/security/rate-limit"
 import { createTurnstile } from "@launch-factory/security/turnstile"
 import { appUrl, CONSENT_VERSIONS, DEFAULT_LOCALE, PRODUCT_NAME, ROUTES } from "@/lib/launch/config"
 import { database } from "@/lib/launch/db"
+import { hasUrl } from "@/lib/launch/enabled"
 import { AUTH_FEATURES } from "@/lib/launch/features"
 import { env, required } from "@/lib/launch/env"
 import { linkSecret } from "@/lib/launch/link-secret"
 import { mailer } from "@/lib/launch/mailer"
 import { sendMarketingNotice } from "@/lib/launch/notices"
 
-/** mock 에서 BETTER_AUTH_SECRET 이 없으면 프로세스마다 새로 만든다(고정값을 코드에 두지 않는다 — 재시작하면 로그인이 풀린다). live 는 32자 이상이 필수다 */
-const mockSecret = () => randomBytes(32).toString("hex")
+/**
+ * mock 에서 BETTER_AUTH_SECRET 이 없으면 프로세스마다 새로 만든다(고정값을 코드에 두지 않는다 — 재시작하면 로그인이 풀린다). live 는 32자 이상이 필수다.
+ * 모듈 변수가 아니라 globalThis 에 둔다: 서버 번들이 쪽·서버 액션·경로 처리기로 갈라져 같은 모듈이 번들마다 따로 불리므로, 모듈 변수에 두면 번들마다 다른 비밀키로
+ * 쿠키에 서명해 /api/auth 가 준 로그인이 쪽에서 검증되지 않는다(lib/launch/db.ts 의 mock DB 와 같은 까닭).
+ */
+const mockAuthSecret = globalThis as { __lfMockAuthSecret?: string }
+const mockSecret = () => (mockAuthSecret.__lfMockAuthSecret ??= randomBytes(32).toString("hex"))
 
 /**
  * 메일 발송은 응답을 기다리지 않는다(대장 D202 — Better Auth 공식 문서: 기다리면 있는 계정만 느려져 이메일 존재 여부가 시간으로 드러난다).
@@ -53,8 +59,8 @@ async function build(): Promise<Auth> {
     productName: PRODUCT_NAME,
     defaultLocale: DEFAULT_LOCALE,
     securityUrl: `${appUrl()}${ROUTES.security}`,
-    // C02: 비밀번호·이메일 변경 알림의 「문의하기」 버튼
-    contactUrl: `${appUrl()}${ROUTES.contact}`,
+    // C02: 비밀번호·이메일 변경 알림의 「문의하기」 버튼 — 문의 화면이 없는 제품(문의를 고르지 않음)은 버튼을 싣지 않는다(contactUrl 은 선택이다)
+    contactUrl: hasUrl(ROUTES.contact) ? `${appUrl()}${ROUTES.contact}` : undefined,
     // G05: 이메일을 확인한 뒤 한 번 보내는 환영 메일의 「열기」 링크
     appUrl: appUrl(),
     // A13: 확인 메일의 「제가 가입한 게 아니에요」 — 서명 토큰 링크(확인 화면 /email 을 거쳐 아직 확인 안 된 그 계정만 지운다)

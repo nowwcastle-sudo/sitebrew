@@ -62,7 +62,7 @@ export function StateScreenOfflineCached({ copy, items, online: fixed, onRecheck
       data-online={online ? "" : undefined}
       aria-labelledby={copy.title && hasCached ? `${id}-title` : undefined}
       aria-label={copy.title && hasCached ? undefined : copy.offline}
-      className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}
+      className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}
     >
       <div data-enter className="flex flex-col gap-4 border-2 border-foreground px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div role="status" className="flex items-start gap-3">

@@ -49,6 +49,12 @@ export const SAMPLE_EVENTS: { [E in EventName]: EventProps[E] } = {
   consent_update: { analytics: true, marketing: false },
   web_vital: { metric: "INP", value: 180, rating: "good", path: "/pricing" },
   app_install: { source: "prompt" },
+  add_to_cart: { productId: "sku-1", quantity: 2 },
+  begin_checkout: { amount: 31_000, currency: "KRW" },
+  purchase: { orderId: "order-1", amount: 31_000, currency: "KRW" },
+  booking_view: { service: "consult" },
+  booking_submit: { service: "consult", status: "confirmed" },
+  booking_cancel: { service: "consult" },
 }
 
 /** 출처 태그 예시(모든 칸) */

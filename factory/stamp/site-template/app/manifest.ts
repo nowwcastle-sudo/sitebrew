@@ -4,6 +4,9 @@ import { manifestProps } from "@/lib/site"
 
 // Web App Manifest(Next 16 app/manifest 규약 — 빌드 때 정적으로 만들어진다). 이름·설명·색은 lib/site 가 content/site.json·lib/build.json 에서 읽는다(J9).
 // 아이콘은 favicon-kit 이 굽는 public/icon-192·512·maskable-512.png(gen-favicons) — 192·512 any + 512 maskable(web.dev add-manifest).
+// 정적 내보내기(output "export")는 force-static 을 명시한 메타데이터 경로만 받는다(Next 16 「Static Exports」 — 없으면 Failed to collect page data for /manifest.webmanifest). 평소 빌드는 이미 정적이라 출력이 같다.
+export const dynamic = "force-static"
+
 export default function manifest(): MetadataRoute.Manifest {
   const m = manifestProps()
   return {

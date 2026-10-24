@@ -1,0 +1,20 @@
+{
+  "name": "@launch-factory/booking-deposit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "예약금 결제 연결(계획 3d) — 예약 서비스의 DepositHook 을 결제 중개(PaymentGateway: PortOne V2 · 키 없는 mock)로 구현한다. 결제 세션 만들기·재조회·환불만 하고, 금액·기한·환불 규정·자리 잡기는 예약 서비스가 정한다.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/booking": "0.0.0",
+    "@launch-factory/payments-kr": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@launch-factory/newsletter",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "뉴스레터 구독 명단 — 이중 동의(확인 메일)·서명 수신거부 링크(RFC 8058 POST 포함)·동의 문구 판과 시각 저장. 요청 제한·Turnstile·멱등 키로 지키고, 보내기는 이 부품의 일이 아니다(내보내기용 구독자 목록만).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/email": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/security": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

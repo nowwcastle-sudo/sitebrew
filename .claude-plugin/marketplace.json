@@ -9,7 +9,7 @@
       "name": "sitebrew",
       "source": "./plugins/sitebrew",
       "description": "Answer a few questions, compare three site candidates, pick one, revise it and take the files. Works without any API key in preview mode.",
-      "version": "0.1.2",
+      "version": "0.2.0",
       "category": "development",
       "tags": ["website", "nextjs", "shadcn", "landing-page"]
     }

@@ -1,0 +1,19 @@
+[
+  {
+    "service": "Stibee (스티비)",
+    "tags": [
+      "ko"
+    ],
+    "support": "code",
+    "switchCost": {
+      "ko": "이 키트의 구독자 목록(listSubscribed)을 스티비로 옮기는 코드가 필요해요. 수신거부가 두 곳에서 어긋나지 않게 맞춰야 해요.",
+      "en": "You need code that moves this kit's subscriber list (listSubscribed) into Stibee, and you must keep unsubscribes in step between the two."
+    },
+    "note": {
+      "ko": "이 모듈은 메일을 보내지 않고 구독자 목록만 내요. 스티비는 한국어 이메일 발송 서비스이고 공식 도움말에 API·웹훅 항목이 있어요. 무료 요금제와 API 세부는 확인하지 못했어요.",
+      "en": "This module does not send mail; it only lists subscribers. Stibee is a Korean-language email sending service and its help site has an API and webhook section. A free plan and API details were not confirmed."
+    },
+    "home": "https://stibee.com",
+    "checked": "2026-10-22"
+  }
+]

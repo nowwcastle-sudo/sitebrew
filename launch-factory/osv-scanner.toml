@@ -13,3 +13,10 @@ reason = "braces <=3.0.3 스택 소진 DoS(깊게 중첩한 글롭 패턴). 고�
 id = "GHSA-67mh-4wv8-2f99"
 ignoreUntil = 2026-12-31
 reason = "esbuild <=0.24.2 개발 서버가 아무 웹사이트의 요청을 받는 문제(개발 서버 실행 때만). 우리 쪽은 drizzle-kit 0.31.11 → @esbuild-kit/* → esbuild 0.18.20 사슬로 CLI(db:generate)에서만 쓰고 개발 서버를 켜지 않는다. drizzle-kit 은 better-auth 의 선택 peer 라 npm 이 제품 트리에 설치하지만 런타임에서 불러오지 않는다. drizzle-kit 이 @esbuild-kit 을 떼면 풀린다 — 만료일에 다시 본다."
+
+# 2026-10-24(v0.2.1): shadcn@4.21.0(템플릿 devDependency)이 품은 zod 3.25.76 — 「크기가 정해진 큰 모음을 검사할 때 메모리가 바닥난다」. 고친 판은 zod 4.6.6 이상뿐이다.
+# 고치는 쪽을 먼저 봤다: 제품 쪽 zod 는 4.6.7 로 올렸다. shadcn 4.22.1 이 고친 판을 쓰지만 web-factory 의 문서·명령·시험이 shadcn@4.21.0 한 판에 묶여 있어 같이 올려야 한다(다음 판).
+[[IgnoredVulns]]
+id = "GHSA-mrhx-c7xc-m3w5"
+ignoreUntil = 2026-12-05
+reason = "shadcn@4.21.0 중첩 zod 3.25.76 — shadcn 명령줄(개발 도구)이 레지스트리 JSON 을 읽을 때만 돈다. 제품 코드에는 들어가지 않는다. 제품 쪽 zod 는 4.6.7 로 올렸다. shadcn 4.22.1 로 올리는 일은 web-factory 와 같이 다음 판에서 한다."

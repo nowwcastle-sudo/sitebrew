@@ -6,9 +6,9 @@
 ## 설치
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure#v0.1.2        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure-theme#v0.1.2  # 색만(registry:theme)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure-alt#v0.1.2    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure#v0.2.0        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure-theme#v0.2.0  # 색만(registry:theme)
+npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r1-measure-alt#v0.2.0    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
 ```
 
 부품은 `r1-measure-<부품>`(예: `r1-measure-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r1-measure/r1-measure.css` 를 붙인다.

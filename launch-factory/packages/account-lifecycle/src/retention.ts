@@ -18,6 +18,7 @@ import {
   type RetainedTransactionKind,
 } from "@launch-factory/db"
 import { subjectRef } from "./subject.ts"
+import { orderCollector } from "./orders.ts"
 
 export type Tx = Parameters<Parameters<Database["transaction"]>[0]>[0]
 type Db = Database | Tx
@@ -150,7 +151,7 @@ export const marketingConsentCollector: RetentionCollector = async (tx, { userId
   }))
 }
 
-export const DEFAULT_COLLECTORS: readonly RetentionCollector[] = [subscriptionCollector, withdrawalConsentCollector, marketingConsentCollector]
+export const DEFAULT_COLLECTORS: readonly RetentionCollector[] = [subscriptionCollector, withdrawalConsentCollector, marketingConsentCollector, orderCollector]
 
 /** 열람·분쟁 요청: 이메일로 보존 기록을 찾는다(키가 있어야 찾을 수 있다) */
 export async function findRetainedByEmail(d: Database, key: string, email: string) {

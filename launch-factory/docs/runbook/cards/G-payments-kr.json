@@ -1,0 +1,26 @@
+{
+  "service": "PortOne",
+  "role": "payments-kr",
+  "need": "feature",
+  "cost": [
+    "per-sale"
+  ],
+  "after": [
+    "G-biz-kr",
+    "G-db",
+    "G-hosting"
+  ],
+  "home": "https://portone.io",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "상점에서 한국 카드와 간편결제를 받을 수 없어요. 장바구니와 주문 화면은 있어도 결제가 열리지 않아요.",
+    "en": "The shop cannot take Korean card or easy-pay payments. The cart and order screens exist, but checkout does not open."
+  },
+  "when": {
+    "outcomes": [
+      "shop"
+    ]
+  },
+  "devOnly": [],
+  "notEnv": []
+}

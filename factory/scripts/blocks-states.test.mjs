@@ -176,7 +176,7 @@ test('메타 상태가 없는 블록은 예시 props 그대로', () => {
 // 포트 목 주입(레인 D1): 예시 fixturePorts 가 받는 쿼리에 ?sub=·?auth=·?consent= 와 state·submit·delay 가 그대로 가고, 다른 쿼리는 가지 않는다.
 test('포트 목 주입: withPorts 가 sub·auth·consent·state·submit·delay 를 fixturePorts 로 넘기고 목이 그 상태를 그린다', async () => {
   const mock = await import(pathToFileURL(transpile(join(root, 'registry', 'factory', 'contract', 'adapter-mock.ts'))).href)
-  assert.deepEqual([...PORT_QUERY_KEYS], ['sub', 'auth', 'consent', 'state', 'submit', 'delay', 'retryAfter', 'unsupported', 'last', 'initialWait', 'channels'])
+  assert.deepEqual([...PORT_QUERY_KEYS], ['sub', 'auth', 'consent', 'state', 'submit', 'delay', 'retryAfter', 'unsupported', 'last', 'initialWait', 'channels', 'cart', 'order', 'stock'])
   const seen = []
   const tracked = []
   // 합성 포트 블록의 예시: 결제·인증·계측 목에서 블록이 받는 메서드만 낸다(구독이 없으면 active 로 — 예시 기본값)

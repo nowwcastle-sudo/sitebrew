@@ -35,7 +35,7 @@ const stat = await load('adapter-static')
 const events = await load('events')
 const offerLib = await import(pathToFileURL(transpile(join(root, 'registry', 'factory', 'lib', 'retention-offer.ts'), 'lib-retention-offer')).href)
 
-// 계획 Task 10 의 이벤트 표(정본) — 순서까지 같다. 끝의 web_vital 은 Task 10d(대장 D103·A52)가 더한 선택 이벤트다.
+// 계획 Task 10 의 이벤트 표(정본) — 순서까지 같다. web_vital 은 Task 10d(대장 D103·A52)가, booking_* 셋은 예약 포트(sitebrew v0.2.0 계획 3b)가, 맨 끝 add_to_cart·begin_checkout·purchase 셋은 계획 3a(판매·결제)가 판 2 안에서 더한 선택 이벤트다.
 const PLAN_EVENTS = [
   'page_view', 'cta_click', 'form_start', 'form_submit', 'form_error',
   'signup_start', 'signup_complete', 'login', 'onboarding_step_complete', 'activation',
@@ -44,6 +44,8 @@ const PLAN_EVENTS = [
   'cancel_start', 'cancel_alternative_view', 'cancel_alternative_accept', 'cancel_complete', 'pause', 'resume',
   'payment_failed_view', 'payment_method_update', 'referral_share', 'consent_update', 'web_vital',
   'app_install',
+  'booking_view', 'booking_submit', 'booking_cancel',
+  'add_to_cart', 'begin_checkout', 'purchase',
 ]
 
 // ① 타입 파일 ─────────────────────────────────────────────────────────────

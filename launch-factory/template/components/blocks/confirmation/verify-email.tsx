@@ -85,7 +85,7 @@ export function ConfirmationVerifyEmail({ copy, session, sendVerificationEmail, 
   }
 
   return (
-    <section ref={ref} id={id} data-block="confirmation-verify-email" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 items-center", className)}>
+    <section ref={ref} id={id} data-block="confirmation-verify-email" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 items-center", className)}>
       <div data-enter aria-busy={read.state.status === "loading" || undefined} className="flex w-full max-w-xl flex-col items-center gap-5 rounded-lg border px-5 py-8 text-center md:px-10 md:py-10">
         {read.state.status === "loading" ? (
           <>

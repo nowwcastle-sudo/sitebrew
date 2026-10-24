@@ -1,0 +1,22 @@
+{
+  "name": "@launch-factory/reviews",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "후기·상품 문의(계획 3c Task 1) — 요청 제한·멱등 키·Turnstile 로 지키는 제출, 게시된 글만 읽는 목록·별점 요약(web-factory Review·RatingSummary 와 같은 모양), 판매자 답변, 사유가 남는 숨김, 탈퇴 시 작성자 익명화. 작성자 이름은 저장 전에 가린다.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/inquiry": "0.0.0",
+    "@launch-factory/security": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

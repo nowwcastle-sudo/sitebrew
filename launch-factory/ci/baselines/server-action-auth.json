@@ -28,6 +28,11 @@
       "targets": ["app/actions/inquiry.ts#submitInquiry"]
     },
     {
+      "class": "public",
+      "reason": "예약 접수·조회·취소는 로그인 없는 공개 창구가 설계다(방문자 예약). 요청 제한(IP)·Turnstile·입력 검사·접수 번호+연락처 조합(틀리면 모두 not_found)은 booking 서비스가 한다. 예약금 결제 확정(confirmBookingDeposit)은 결제 번호로 공급자에 다시 물어 예약 행의 금액과 맞을 때만 확정하고(요청 제한은 조회와 같다), payBookingWithMock 은 mock 전용이다(live 는 provider_unsupported). 로그인했으면 세션은 서버가 읽어 예약 행에만 싣는다. pushPublicKey 는 구독에 쓰는 공개 키 읽기다.",
+      "targets": ["app/actions/booking.ts#loadBookingSlots", "app/actions/booking.ts#submitBooking", "app/actions/booking.ts#lookupBooking", "app/actions/booking.ts#cancelBooking", "app/actions/booking-deposit.ts#confirmBookingDeposit", "app/actions/booking-deposit.ts#payBookingWithMock", "app/actions/push.ts#pushPublicKey"]
+    },
+    {
       "class": "port-delegated",
       "reason": "로그인 필요 계정 편의. 앱 쪽 액션은 얇게 authActions 로 넘기고 쿠키 세션은 authAdapter 가 읽는다. 쿠키 없는 브라우저로 이 메서드를 모두 불러 실행되지 않음을 보이는 시험이 증거다.",
       "proof": { "file": "packages/auth/test/anon-guard.test.mjs", "includes": "NEEDS_SESSION" },

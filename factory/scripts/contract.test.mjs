@@ -349,9 +349,9 @@ test('tsc: AgentToolMeta with autoSubmit: true (literal or a boolean) is a type 
 })
 
 // ④ 레지스트리 ───────────────────────────────────────────────────────────
-test('contract layer → 8 registry:lib items under @components/contract, none with npm dependencies; adapters depend on block-contract (+ ports) pinned to the ref; pincheck and the root registry cover it', () => {
+test('contract layer → 12 registry:lib items under @components/contract, none with npm dependencies; adapters depend on block-contract (+ ports) pinned to the ref; pincheck and the root registry cover it', () => {
   const items = buildItems(DIR, 'contract', REPO, DIR, 'v9.9.9', { zod: '^4.6.5' })
-  assert.deepEqual(items.map((i) => i.name), ['adapter-mock', 'adapter-static', 'attribution', 'block-contract', 'contract-conformance', 'events', 'human-actions', 'ports'])
+  assert.deepEqual(items.map((i) => i.name), ['adapter-mock', 'adapter-mock-admin', 'adapter-mock-commerce', 'adapter-static', 'admin', 'attribution', 'block-contract', 'commerce', 'contract-conformance', 'events', 'human-actions', 'ports'])
   for (const it of items) {
     if (it.name === 'contract-conformance') continue // 여러 파일 묶음(P3-3 Task 15) — conformance.test.mjs 가 본다
     assert.equal(it.type, 'registry:lib')
@@ -367,9 +367,16 @@ test('contract layer → 8 registry:lib items under @components/contract, none w
   // 출처 태그 감싸기(Task 10c)는 포트 타입만 부른다 — events 는 여전히 아무것도 부르지 않는다(ports ↔ events 순환 없음).
   assert.deepEqual(by.attribution.registryDependencies, [`${REPO}/ports#v9.9.9`])
   assert.deepEqual(by.events.registryDependencies, [])
+  // 판매 포트 목(계획 3a)은 목 도우미(adapter-mock)와 판매·포트·블록 계약 타입을 부른다 — 이벤트·정적 어댑터는 아니다
+  assert.deepEqual(by['adapter-mock-commerce'].registryDependencies, [`${REPO}/adapter-mock#v9.9.9`, `${REPO}/block-contract#v9.9.9`, `${REPO}/commerce#v9.9.9`, `${REPO}/ports#v9.9.9`])
+  // 판매 포트(계획 3a)는 타입 파일이라 ports 와 block-contract 만 부른다(이벤트·어댑터·블록 0)
+  assert.deepEqual(by.commerce.registryDependencies, [`${REPO}/block-contract#v9.9.9`, `${REPO}/ports#v9.9.9`])
+  // 관리 포트(계획 3d)는 타입 파일이라 block-contract(ActionResult)만 부른다 — ports·이벤트·어댑터·블록 0. 목은 목 도우미와 관리·블록 계약 타입을 부른다
+  assert.deepEqual(by.admin.registryDependencies, [`${REPO}/block-contract#v9.9.9`])
+  assert.deepEqual(by['adapter-mock-admin'].registryDependencies, [`${REPO}/adapter-mock#v9.9.9`, `${REPO}/admin#v9.9.9`, `${REPO}/block-contract#v9.9.9`])
   assert.ok(LAYERS.includes('contract'))
   const reg = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8'))
   assert.ok(reg.include.includes('registry/factory/contract/registry.json'))
   const gen = JSON.parse(readFileSync(join(DIR, 'registry.json'), 'utf8'))
-  assert.deepEqual(gen.items.map((i) => [i.name, i.dependencies]), [['adapter-mock', []], ['adapter-static', []], ['attribution', []], ['block-contract', []], ['contract-conformance', []], ['events', []], ['human-actions', []], ['ports', []]])
+  assert.deepEqual(gen.items.map((i) => [i.name, i.dependencies]), [['adapter-mock', []], ['adapter-mock-admin', []], ['adapter-mock-commerce', []], ['adapter-static', []], ['admin', []], ['attribution', []], ['block-contract', []], ['commerce', []], ['contract-conformance', []], ['events', []], ['human-actions', []], ['ports', []]])
 })

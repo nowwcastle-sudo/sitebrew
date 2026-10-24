@@ -4,7 +4,7 @@
 
 web-factory(画面ブロックのリポジトリ)と対になるリリースキットです。認証・データ・決済・メール・計測・ジョブといったバックエンド側を、このリポジトリが担います。プロダクトは `template/` を複製して始め、`@launch-factory/*` パッケージのバージョンだけを上げてセキュリティパッチを受け取ります。
 
-現在のバージョン `v0.1.2` · web-factory 固定 `v0.1.2`
+現在のバージョン `v0.2.0` · web-factory 固定 `v0.2.0` · ブロック `f2174f6e` · contract `f2174f6e`（タグ v0.2.0 のコミット）
 
 - ブロックはプロバイダーを知らず、アダプターが web-factory のポートを実装します。同じ適合性スイートで、アダプターが mock と同じシナリオを再現するかを検査します。
 - 機能バンドル(アダプター・サーバーアクション・Webhook ルート・スキーマ・マイグレーション)は、`registry.json` のエントリ1つにまとめられています。バージョンを固定した内訳は [`docs/versions.md`](docs/versions.md) にあります。
@@ -19,7 +19,7 @@ web-factory(画面ブロックのリポジトリ)と対になるリリースキ�
 | Node | >=24.13.0 | 必須 | `winget install OpenJS.NodeJS.LTS --version 24.13.0` | `nvm install 24.13.0` | `nvm install 24.13.0` |
 | npm | >=11.6.2 | 必須 | Node と一緒にインストールされます | Node と一緒にインストールされます | Node と一緒にインストールされます |
 | git | 最新 | 必須 | `winget install Git.Git` | `brew install git` | `sudo apt install git` |
-| web-factory のチェックアウト | タグ `v0.1.2` | 任意 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 |
+| web-factory のチェックアウト | タグ `v0.0.12` | 任意 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 |
 | Chrome | 最新 | 任意 | `winget install Google.Chrome` | `brew install --cask google-chrome` | `sudo apt install chromium` |
 | gh | 最新 | 任意 | `winget install GitHub.cli` | `brew install gh` | `sudo apt install gh` |
 | vercel | 最新 | 任意 | `npm i -g vercel` | `npm i -g vercel` | `npm i -g vercel` |
@@ -30,7 +30,7 @@ web-factory(画面ブロックのリポジトリ)と対になるリリースキ�
 
 任意の項目が入っていない場合は、次のようになります。
 
-- web-factory のチェックアウト: ない場合、適合性テストは SKIP と表示されます。ある場合は `LF_WF_REPO` が指す場所を読むので、そこに `v0.1.2` のコミットが必要です。環境変数がなければコード内の既定パスを使うため、別の PC では必ず `LF_WF_REPO` を指定してください。
+- web-factory のチェックアウト: ない場合、適合性テストは SKIP と表示されます。ある場合は `LF_WF_REPO` が指す場所を読むので、そこに `v0.0.12` のコミットが必要です。環境変数がなければコード内の既定パスを使うため、別の PC では必ず `LF_WF_REPO` を指定してください。
 - Chrome: `npm run template:screens` が動きません。インストール先が既定のパスでない場合は、`CHROME_PATH` に実行ファイルのパスを入れます。
 - セキュリティツール4つ: `npm run ci:verify` が該当ステップを SKIP と表示します。CI は `scripts/ci/tools.json` の固定バージョンを取得して使います。ローカルでも、ない場合を失敗として数えるには `LF_CI_REQUIRE_TOOLS=1` を指定します。
 - gitleaks: コミット前のシークレット検査フックは、案内を出すだけで通過します。
@@ -53,6 +53,7 @@ web-factory(画面ブロックのリポジトリ)と対になるリリースキ�
 | mock(既定の開発) | `LF_MODE=mock` だけです。プロバイダーのキーがなくても起動します。 |
 | live | `LF_MODE=live` と、プロバイダーのキー・`DATABASE_URL`。不足している名前は `npm run env:check`(オフライン)と `npm run doctor -- --stage sandbox` が知らせます。 |
 | 任意 | `INQUIRY_OWNER_EMAIL`・`POSTHOG_*`・`SENTRY_DSN`。ない場合は、その機能だけがオフになります。 |
+| ショップ（任意） | `NEXT_PUBLIC_PORTONE_STORE_ID`・`NEXT_PUBLIC_PORTONE_CHANNEL_KEY`・`PORTONE_API_SECRET`・`PORTONE_WEBHOOK_SECRET`。live では 4 つすべてが必要で、1 つでもないとショップだけがオフになります。mock ではキーなしで、模擬決済の確認ステップ付きで動きます。 |
 | パス | `LF_WF_REPO`(適合性テストが読む web-factory のチェックアウト) · `WF_HOME`(`template:screens` が読む web-factory のチェックアウト) · `CHROME_PATH` |
 
 ## はじめに
@@ -115,7 +116,7 @@ git diff template/package.json
 | 表示される内容 | 原因 | 解決方法 |
 |---|---|---|
 | `setup: FAIL — 필수 누락 …` | 必須ツールがない、またはバージョンが低いです | 行ごとに付いている `→` のコマンドを実行し、`npm run setup` をもう一度実行します。 |
-| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` のパスが存在しないか、`v0.1.2` のコミットがありません | web-factory を clone し、`git -C <path> fetch --tags` を実行してから、`LF_WF_REPO` にそのパスを設定します。 |
+| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` のパスが存在しないか、`v0.0.12` のコミットがありません | web-factory を clone し、`git -C <path> fetch --tags` を実行してから、`LF_WF_REPO` にそのパスを設定します。 |
 | `SKIP(도구 없음)` | 任意のセキュリティツールがありません | 失敗ではありません。インストールすればステップが動きます。 |
 | `[pre-commit] gitleaks 가 설치돼 있지 않아 … 건너뛴다` | フックは設定されていますが、gitleaks がありません | 「必要環境」の表にある gitleaks のコマンドを実行します。 |
 | `--only /pricing` がどのページも見つけられない | Git Bash が `/pricing` をパスに変換します | PowerShell で実行します。 |
@@ -124,4 +125,4 @@ git diff template/package.json
 
 | タグ | 日付 | 内容 | 記録 |
 |---|---|---|---|
-| `v0.1.2` | 2026-10-08 | launch-factory v0.1.2 (internal version) · next 16.3.8 のセキュリティパッチ（公告6件） · 退会後もマーケティング同意の履歴を3年保管 · EU 販売を既定で開放 | — |
+| `v0.2.0` | 2026-10-24 | launch-factory v0.2.1 (internal version) · セキュリティパッチ：next 16.4.3、zod 4.6.7、body-parser・fast-uri・undici の更新 · web-factory を `v0.2.0` に固定 | — |

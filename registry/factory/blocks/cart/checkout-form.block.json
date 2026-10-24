@@ -1,0 +1,13 @@
+{
+  "kind": "cart",
+  "variant": "checkout-form",
+  "title": "배송지 + 결제 — 받는 분·연락처·주소 폼 + 주문 요약(총액 먼저·VAT) + [○○원 결제하기](승인 행동 place-order)",
+  "layout": "form-with-summary",
+  "density": "comfortable",
+  "archetypes": [ "commerce" ],
+  "archetypeKinds": [ "payment-options", "checkout" ],
+  "states": [ "loading", "empty", "error", "ready", "submit-ok", "submit-field-error", "submit-server-error", "submit-pending" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "왼쪽(좁으면 위) 배송지 폼(받는 분·연락처(자동 하이픈)·우편번호·주소 필수, 상세 주소·배송 메모 선택) + 오른쪽(아래) 주문 요약(상품 줄·합계 먼저·VAT). [결제하기] = placeOrder({ address, confirmed: true }) — 승인 행동(place-order)이라 버튼 곁 안내 글(copy.humanHint)과 data-requires-human 이 있다. 주문이 만들어지면 onPay(payment)로 결제창을 연다(조립하는 쪽이 공급자 SDK 로 구현 — 블록은 공급자를 모른다). 돌려준 { ok, paymentId, code? }: ok 면 confirmPayment 로 확정 → 완료 칸(또는 onComplete). 사용자가 닫았거나 실패하면 같은 주문으로 [다시 결제하기](주문을 또 만들지 않는다). 결제는 끝났는데 확정을 못 받으면 [결제 확인 다시 하기](확정만 다시 — 이중 결제 없음). 멱등 키는 조립하는 쪽이 숨은 입력으로 더한다. 포트: cart·placeOrder·confirmPayment·onPay·track?. 계측: begin_checkout·purchase·form_error."
+}

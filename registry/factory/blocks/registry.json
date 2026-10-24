@@ -8,19 +8,19 @@
       "description": "web-factory 블록 account/billing-manage — layout overview-plan-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -76,15 +76,15 @@
       "description": "web-factory 블록 account/credentials — layout two-forms-stacked. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -138,18 +138,18 @@
       "description": "web-factory 블록 account/delete-account — layout export-retention-decision. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -203,15 +203,15 @@
       "description": "web-factory 블록 account/notification-consents — layout channel-switches. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -258,15 +258,126 @@
       }
     },
     {
+      "name": "block-account-order-detail",
+      "type": "registry:block",
+      "title": "주문 상세 — 상태 배지·상태 한 줄·송장번호 + 상품 줄·합계 + 받는 분 + 주문 취소(승인 행동 cancel-order)",
+      "description": "web-factory 블록 account/order-detail — layout detail-sections. 레시피(registry:base) 하나를 먼저 설치한다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-cart-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-order-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/account/order-detail.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/account/order-detail.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "kind": "account",
+        "variant": "order-detail",
+        "component": "AccountOrderDetail",
+        "layout": "detail-sections",
+        "density": "comfortable",
+        "archetypes": [
+          "commerce"
+        ],
+        "archetypeKinds": [
+          "order-detail",
+          "orders"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "motion": [
+          "rise"
+        ]
+      }
+    },
+    {
+      "name": "block-account-order-history",
+      "type": "registry:block",
+      "title": "주문 내역 — 주문번호 | 주문일 | 상품 | 결제 금액(총액·VAT) | 상태 배지 | 자세히 보기",
+      "description": "web-factory 블록 account/order-history — layout table-list. 레시피(registry:base) 하나를 먼저 설치한다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-order-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/account/order-history.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/account/order-history.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "kind": "account",
+        "variant": "order-history",
+        "component": "AccountOrderHistory",
+        "layout": "table-list",
+        "density": "comfortable",
+        "archetypes": [
+          "commerce"
+        ],
+        "archetypeKinds": [
+          "orders",
+          "order-history"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "motion": [
+          "rise"
+        ]
+      }
+    },
+    {
       "name": "block-account-permissions",
       "type": "registry:block",
       "title": "권한 설정 — 알림·위치 권한 상태를 글로 보이고 바꾸는 길 안내",
       "description": "web-factory 블록 account/permissions — layout permission-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -301,15 +412,15 @@
       "description": "web-factory 블록 account/profile-settings — layout settings-rows. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -363,18 +474,18 @@
       "description": "web-factory 블록 account/security — layout devices-and-two-factor. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -429,14 +540,14 @@
       "description": "web-factory 블록 announcement/dismissible-inline — layout inline-callout. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -484,13 +595,13 @@
       "description": "web-factory 블록 announcement/launch-banner — layout launch-hero-band. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -538,12 +649,12 @@
       "description": "web-factory 블록 announcement/notice-ticker — layout rolling-line. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -583,13 +694,13 @@
       "description": "web-factory 블록 announcement/popup-today — layout corner-window. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -627,12 +738,12 @@
       "description": "web-factory 블록 announcement/top-bar — layout slim-top-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -680,12 +791,12 @@
       "description": "web-factory 블록 announcement/update-toast — layout bottom-toast. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -720,13 +831,13 @@
       "description": "web-factory 블록 auth/new-password — layout single-form-panel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -776,13 +887,13 @@
       "description": "web-factory 블록 auth/password-reset — layout steps-then-inline-form. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -831,16 +942,16 @@
       "description": "web-factory 블록 auth/sign-in — layout social-first-card. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-social-login#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-social-login#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -895,16 +1006,16 @@
       "description": "web-factory 블록 auth/sign-up-consents — layout stepped-consents. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-social-login#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-social-login#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -961,13 +1072,13 @@
       "description": "web-factory 블록 auth/two-factor — layout intro-code-split. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1015,10 +1126,10 @@
       "description": "web-factory 블록 bottom-tab/icon-tabs — layout icon-tabs. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1053,11 +1164,11 @@
       "description": "web-factory 블록 bottom-tab/split-booking-bar — layout split-booking-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1092,11 +1203,11 @@
       "description": "web-factory 블록 bottom-tab/sticky-action-bar — layout sticky-action-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1126,20 +1237,241 @@
       }
     },
     {
+      "name": "block-cart-checkout-form",
+      "type": "registry:block",
+      "title": "배송지 + 결제 — 받는 분·연락처·주소 폼 + 주문 요약(총액 먼저·VAT) + [○○원 결제하기](승인 행동 place-order)",
+      "description": "web-factory 블록 cart/checkout-form — layout form-with-summary. 레시피(registry:base) 하나를 먼저 설치한다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-cart-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-checkout-flow#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/cart/checkout-form.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cart/checkout-form.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "kind": "cart",
+        "variant": "checkout-form",
+        "component": "CartCheckoutForm",
+        "layout": "form-with-summary",
+        "density": "comfortable",
+        "archetypes": [
+          "commerce"
+        ],
+        "archetypeKinds": [
+          "payment-options",
+          "checkout"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "motion": [
+          "rise"
+        ]
+      }
+    },
+    {
+      "name": "block-cart-lines-cards",
+      "type": "registry:block",
+      "title": "장바구니 줄 카드 — 사진 · 이름 · 단가 · 수량 · 금액 카드 목록 + 오른쪽 주문 요약(총액 먼저·VAT)",
+      "description": "web-factory 블록 cart/lines-cards — layout cards-with-aside. 레시피(registry:base) 하나를 먼저 설치한다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-cart-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/cart/lines-cards.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cart/lines-cards.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "kind": "cart",
+        "variant": "lines-cards",
+        "component": "CartLinesCards",
+        "layout": "cards-with-aside",
+        "density": "comfortable",
+        "archetypes": [
+          "commerce"
+        ],
+        "archetypeKinds": [
+          "line-items",
+          "totals"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "motion": [
+          "rise"
+        ]
+      }
+    },
+    {
+      "name": "block-cart-lines-table",
+      "type": "registry:block",
+      "title": "장바구니 줄 표 — 상품 | 단가 | 수량 | 금액 표 + 합계(총액 먼저·VAT) + 주문하기",
+      "description": "web-factory 블록 cart/lines-table — layout table-with-totals. 레시피(registry:base) 하나를 먼저 설치한다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-cart-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/cart/lines-table.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cart/lines-table.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "kind": "cart",
+        "variant": "lines-table",
+        "component": "CartLinesTable",
+        "layout": "table-with-totals",
+        "density": "comfortable",
+        "archetypes": [
+          "commerce"
+        ],
+        "archetypeKinds": [
+          "line-items",
+          "totals"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready",
+          "submit-ok",
+          "submit-field-error",
+          "submit-server-error",
+          "submit-pending"
+        ],
+        "media": [],
+        "motion": [
+          "rise"
+        ]
+      }
+    },
+    {
+      "name": "block-cart-totals-summary",
+      "type": "registry:block",
+      "title": "장바구니 합계 요약 — 담은 상품 한 줄씩 + 합계 목록(총액 먼저·VAT) · 읽기 전용",
+      "description": "web-factory 블록 cart/totals-summary — layout summary-list. 레시피(registry:base) 하나를 먼저 설치한다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-cart-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/cart/totals-summary.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/cart/totals-summary.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "kind": "cart",
+        "variant": "totals-summary",
+        "component": "CartTotalsSummary",
+        "layout": "summary-list",
+        "density": "comfortable",
+        "archetypes": [
+          "commerce"
+        ],
+        "archetypeKinds": [
+          "totals",
+          "order-summary"
+        ],
+        "states": [
+          "loading",
+          "empty",
+          "error",
+          "ready"
+        ],
+        "media": [],
+        "motion": [
+          "rise"
+        ]
+      }
+    },
+    {
       "name": "block-confirmation-booking-complete",
       "type": "registry:block",
       "title": "예약·문의 요청 완료 — 요청 내용 표·다음 일과 때·도움·행동 하나 + 성공 뒤 별점(선택)",
       "description": "web-factory 블록 confirmation/booking-complete — layout ticket-plus-steps. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-calendar-links#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-print-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-calendar-links#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-print-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1184,15 +1516,15 @@
       "description": "web-factory 블록 confirmation/order-complete — layout receipt-next-steps. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-print-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-print-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1242,14 +1574,14 @@
       "description": "web-factory 블록 confirmation/signup-complete — layout centered-unlocked-card. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-print-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-print-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1294,14 +1626,14 @@
       "description": "web-factory 블록 confirmation/upgrade-complete — layout centered-unlocked-poll. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1351,14 +1683,14 @@
       "description": "web-factory 블록 confirmation/verify-email — layout centered-mail-resend. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1410,14 +1742,14 @@
       "description": "web-factory 블록 consent/bottom-banner — layout fixed-bottom-strip. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-consent-open#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-consent-prefs#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-bottom-bar-space#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-consent-open#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-consent-prefs#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1466,13 +1798,13 @@
       "description": "web-factory 블록 consent/inline-notice — layout placeholder-panel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1520,14 +1852,14 @@
       "description": "web-factory 블록 consent/preference-dialog — layout summary-then-dialog. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-consent-open#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-consent-prefs#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-consent-open#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-consent-prefs#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1577,12 +1909,12 @@
       "description": "web-factory 블록 contact-form/channel-first — layout channels-then-form. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/agent-form-attrs#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/agent-form-attrs#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1626,11 +1958,11 @@
       "description": "web-factory 블록 contact-form/inline-short — layout intro-form-split. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1675,16 +2007,16 @@
       "description": "web-factory 블록 contact-form/stepped-booking — layout stepper. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/agent-form-attrs#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-ime-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-leave-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-review-summary#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-step-history#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/agent-form-attrs#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-ime-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-leave-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-review-summary#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-step-history#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1727,8 +2059,8 @@
       "description": "web-factory 블록 content/breadcrumb — layout crumb-strip. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1762,11 +2094,11 @@
       "description": "web-factory 블록 content/cards — layout card-grid. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-grid-cols#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-grid-cols#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1808,10 +2140,10 @@
       "description": "web-factory 블록 content/facts — layout definition-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1852,10 +2184,10 @@
       "description": "web-factory 블록 content/gallery — layout photo-grid. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1895,10 +2227,10 @@
       "description": "web-factory 블록 content/links — layout link-tiles. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1942,10 +2274,10 @@
       "description": "web-factory 블록 content/list — layout dated-rows. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -1989,10 +2321,10 @@
       "description": "web-factory 블록 content/prose — layout split-prose. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2035,8 +2367,8 @@
       "description": "web-factory 블록 content/skeleton — layout loading-rows. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2070,10 +2402,10 @@
       "description": "web-factory 블록 content/timeline — layout year-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-content-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2109,13 +2441,13 @@
       "description": "web-factory 블록 dashboard-panel/action-list — layout action-rows. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dashboard-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dashboard-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2158,13 +2490,13 @@
       "description": "web-factory 블록 dashboard-panel/kpi-first — layout focus-kpi-row. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dashboard-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dashboard-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2207,14 +2539,14 @@
       "description": "web-factory 블록 dashboard-panel/trend-plus-table — layout trend-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dashboard-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dashboard-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2260,13 +2592,13 @@
       "description": "web-factory 블록 data-table/admin-list — layout toolbar-table-pager. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-export-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-export-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2315,18 +2647,18 @@
       "description": "web-factory 블록 data-table/bulk-select — layout select-column-action-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-export-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-export-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2375,14 +2707,14 @@
       "description": "web-factory 블록 data-table/compact — layout dense-top-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-export-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-export-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2430,15 +2762,15 @@
       "description": "web-factory 블록 data-table/record-panel — layout summary-form-danger. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2492,11 +2824,11 @@
       "description": "web-factory 블록 faq/grouped-by-topic — layout topic-groups. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2537,11 +2869,11 @@
       "description": "web-factory 블록 faq/single-accordion — layout single-column-accordion. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2582,10 +2914,10 @@
       "description": "web-factory 블록 faq/two-column-index — layout split-index. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2625,10 +2957,10 @@
       "description": "web-factory 블록 features/bento-grid — layout bento. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2670,10 +3002,10 @@
       "description": "web-factory 블록 features/compare-table — layout compare-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2714,10 +3046,10 @@
       "description": "web-factory 블록 features/numbered-steps — layout numbered-steps. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2759,9 +3091,9 @@
       "description": "web-factory 블록 features/stagger-cards — layout stagger-cards. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2804,10 +3136,10 @@
       "description": "web-factory 블록 filter-bar/chips — layout chip-row. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-filter-query#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-filter-query#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2842,10 +3174,10 @@
       "description": "web-factory 블록 filter-bar/search-filter — layout search-first. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-filter-query#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-filter-query#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2880,10 +3212,10 @@
       "description": "web-factory 블록 filter-bar/toolbar — layout summary-controls. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-filter-query#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-filter-query#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2919,10 +3251,10 @@
       "description": "web-factory 블록 final-cta/full-band — layout full-band. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -2963,10 +3295,10 @@
       "description": "web-factory 블록 final-cta/kinetic-band — layout kinetic-band. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3009,9 +3341,9 @@
       "description": "web-factory 블록 final-cta/quiet-link-row — layout quiet-link-row. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3048,12 +3380,12 @@
       "description": "web-factory 블록 final-cta/split-form-hint — layout split-form-hint. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3094,11 +3426,11 @@
       "description": "web-factory 블록 final-cta/store-badges — layout store-badge-row. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3139,12 +3471,12 @@
       "description": "web-factory 블록 floating-action/call-bar — layout bottom-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3181,10 +3513,10 @@
       "description": "web-factory 블록 floating-action/chat-launcher — layout corner-pill. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3226,11 +3558,11 @@
       "description": "web-factory 블록 floating-action/quick-menu-rail — layout edge-rail. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-floating-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3269,10 +3601,10 @@
       "description": "web-factory 블록 footer/columns-business — layout columns-business. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3311,10 +3643,10 @@
       "description": "web-factory 블록 footer/compact-strip — layout compact-strip. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3353,12 +3685,12 @@
       "description": "web-factory 블록 footer/product-legal — layout product-legal. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-consent-open-attrs#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-consent-open-attrs#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3398,10 +3730,10 @@
       "description": "web-factory 블록 footer/stacked-legal — layout stacked-legal. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3438,12 +3770,12 @@
       "description": "web-factory 블록 hero/banded-full-bleed — layout banded-full-bleed. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3492,12 +3824,12 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-pause-offscreen#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-pause-offscreen#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3540,12 +3872,12 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3590,11 +3922,11 @@
       "description": "web-factory 블록 hero/centered-proof-panel — layout centered-proof-panel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3639,11 +3971,11 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3685,11 +4017,11 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3730,11 +4062,11 @@
       "description": "web-factory 블록 hero/crosshair-quadrants — layout crosshair-quadrants. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3778,12 +4110,12 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3828,13 +4160,13 @@
       "description": "web-factory 블록 hero/grid-lines-baseline-word — layout grid-lines-baseline-word. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-title-fit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-title-fit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3880,11 +4212,11 @@
       "description": "web-factory 블록 hero/identity-strip-banner — layout identity-strip-banner. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3927,12 +4259,12 @@
       "description": "web-factory 블록 hero/illustration-scene — layout illustration-scene. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -3980,12 +4312,12 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4031,14 +4363,14 @@
       "description": "web-factory 블록 hero/ken-burns-stills — layout ken-burns-stills. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-lower-third#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-lower-third#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4087,15 +4419,15 @@
       "description": "web-factory 블록 hero/kinetic-type-video — layout kinetic-type-video. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-lower-third#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-sound-toggle#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-lower-third#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-sound-toggle#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4146,10 +4478,10 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4194,11 +4526,11 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4241,13 +4573,13 @@
       "description": "web-factory 블록 hero/map-first — layout map-first. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4291,13 +4623,13 @@
       "description": "web-factory 블록 hero/mascot-greeting — layout mascot-greeting. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4345,11 +4677,11 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4393,15 +4725,15 @@
         "three@0.186.1"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-edge-ground#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-edge-ground#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4447,13 +4779,13 @@
       "description": "web-factory 블록 hero/punch-in-statement — layout punch-in-statement. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4501,12 +4833,12 @@
       "description": "web-factory 블록 hero/screenshot-window — layout screenshot-window. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4552,12 +4884,12 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4606,11 +4938,11 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4653,11 +4985,11 @@
       "description": "web-factory 블록 hero/stepped-crop-figure — layout stepped-crop-figure. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4703,12 +5035,12 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4754,11 +5086,11 @@
       "description": "web-factory 블록 hero/vertical-title-slides — layout vertical-title-slides. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4803,15 +5135,15 @@
       "description": "web-factory 블록 hero/video-montage — layout video-montage. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-sound-toggle#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-media#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-hero-parts#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-loop-pause#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-sound-toggle#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/use-reduced-motion#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4856,13 +5188,13 @@
       "description": "web-factory 블록 hours-location/branch-list — layout branch-cards. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-open-now#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-open-now#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4901,15 +5233,15 @@
       "description": "web-factory 블록 hours-location/hours-table-map-link — layout hours-table-map. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-open-now#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-open-now#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4949,13 +5281,13 @@
       "description": "web-factory 블록 hours-location/today-highlight — layout today-status. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-open-now#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-open-now#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -4993,11 +5325,11 @@
       "description": "web-factory 블록 integrations/category-tabs — layout category-tabs. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-integration-mark#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-integration-mark#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5036,11 +5368,11 @@
       "description": "web-factory 블록 integrations/hub-diagram — layout hub-spoke. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-integration-mark#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-integration-mark#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5080,12 +5412,12 @@
       "description": "web-factory 블록 integrations/icon-grid — layout logo-grid. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-grid-cols#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-integration-mark#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-grid-cols#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-integration-mark#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5125,14 +5457,14 @@
       "description": "web-factory 블록 lead-capture/cart-exit-offer — layout exit-intent-dialog. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5179,14 +5511,14 @@
       "description": "web-factory 블록 lead-capture/inline-newsletter — layout one-line-subscribe. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5240,15 +5572,15 @@
       "description": "web-factory 블록 lead-capture/magnet-preview — layout preview-plus-email. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5304,11 +5636,11 @@
       "description": "web-factory 블록 menu-price/board-columns — layout board-two-column. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-menu-line#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-menu-line#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5344,11 +5676,11 @@
       "description": "web-factory 블록 menu-price/category-tabs — layout category-tabs. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-menu-line#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-menu-line#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5385,12 +5717,12 @@
       "description": "web-factory 블록 menu-price/photo-rows — layout photo-rows. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-menu-line#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-menu-line#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5429,9 +5761,9 @@
       "description": "web-factory 블록 nav/account-bar — layout account-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5469,9 +5801,9 @@
       "description": "web-factory 블록 nav/app-bar-tabs — layout app-bar-tabs. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5507,8 +5839,8 @@
       "description": "web-factory 블록 nav/app-sidebar — layout side-rail. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5543,9 +5875,9 @@
       "description": "web-factory 블록 nav/centered-mark — layout centered-mark. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5582,9 +5914,9 @@
       "description": "web-factory 블록 nav/inline-links — layout inline-links. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5623,9 +5955,9 @@
       "description": "web-factory 블록 nav/top-bar — layout app-top-bar. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5660,12 +5992,12 @@
       "description": "web-factory 블록 onboarding/checklist-panel — layout progress-checklist. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5712,10 +6044,10 @@
       "description": "web-factory 블록 onboarding/empty-first-action — layout empty-state-single-action. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5762,13 +6094,13 @@
       "description": "web-factory 블록 onboarding/setup-wizard — layout question-then-branch. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-leave-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-step-history#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-leave-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-step-history#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5814,17 +6146,17 @@
       "description": "web-factory 블록 paywall/limit-meter — layout usage-bar-inline-offer. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5882,16 +6214,16 @@
       "description": "web-factory 블록 paywall/onboarding-offer — layout celebrate-center-offer. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -5946,17 +6278,17 @@
       "description": "web-factory 블록 paywall/trial-ending — layout countdown-band-split. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-snooze#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6015,19 +6347,19 @@
       "description": "web-factory 블록 paywall/upgrade-modal — layout locked-card-dialog. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-pinned-bar-space#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-pinned-bar-space#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-offer#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6086,15 +6418,15 @@
       "description": "web-factory 블록 pricing/feature-matrix — layout feature-matrix. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-cta#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-saas#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-cta#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-scroll-hint#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-saas#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6133,14 +6465,14 @@
       "description": "web-factory 블록 pricing/three-tier-cards — layout tier-cards. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-cta#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-saas#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-cta#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-saas#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6179,14 +6511,14 @@
       "description": "web-factory 블록 pricing/toggle-annual — layout billing-toggle. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-plan-cta#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-saas#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-plan-cta#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-saas#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6225,10 +6557,10 @@
       "description": "web-factory 블록 product-info/key-facts-first — layout key-facts-then-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-notice-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-notice-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6269,12 +6601,12 @@
       "description": "web-factory 블록 product-info/notice-table — layout full-width-notice-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-notice-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-notice-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6315,11 +6647,11 @@
       "description": "web-factory 블록 product-info/spec-and-notice — layout spec-dl-beside-notice-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-notice-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-notice-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6361,15 +6693,15 @@
       "description": "web-factory 블록 product-list/grid-cards — layout card-grid. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-price#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-price#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6417,15 +6749,15 @@
       "description": "web-factory 블록 product-list/ranked-list — layout ranked-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-price#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-price#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6470,16 +6802,16 @@
       "description": "web-factory 블록 product-list/spec-summary — layout spec-purchase. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-price#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-price#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6525,12 +6857,12 @@
       "description": "web-factory 블록 qna/answered-list — layout category-chips-answer-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-qna-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-qna-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6573,12 +6905,12 @@
       "description": "web-factory 블록 qna/ask-form — layout list-beside-ask-form. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-qna-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-form-flow#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-qna-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6628,12 +6960,12 @@
       "description": "web-factory 블록 qna/search-first — layout search-then-fallback-channels. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-qna-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-qna-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6676,12 +7008,12 @@
       "description": "web-factory 블록 referral/invite-panel — layout reward-progress-panel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-share-link#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-share-link#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6726,12 +7058,12 @@
       "description": "web-factory 블록 referral/share-sheet — layout channel-sheet. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-share-link#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-share-link#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6777,13 +7109,13 @@
       "description": "web-factory 블록 referral/success-moment-prompt — layout inline-after-success. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-share-link#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-dismiss-memory#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-share-link#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6829,19 +7161,19 @@
       "description": "web-factory 블록 retention/cancel-flow — layout stepped-cancel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6897,16 +7229,16 @@
       "description": "web-factory 블록 retention/payment-failed-banner — layout slim-warning-strip. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -6956,17 +7288,17 @@
       "description": "web-factory 블록 retention/renewal-consent — layout price-change-card. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7017,13 +7349,13 @@
       "description": "web-factory 블록 review-list/distribution-filter — layout bars-filter-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/json-ld#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/json-ld#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7072,12 +7404,12 @@
       "description": "web-factory 블록 review-list/photo-gallery — layout photo-grid-over-text. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7126,14 +7458,14 @@
       "description": "web-factory 블록 review-list/summary-near-price — layout price-adjacent-summary. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/json-ld#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-review-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/json-ld#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7180,11 +7512,11 @@
       "description": "web-factory 블록 공유 조각 billing-actions — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0"
       ],
       "files": [
         {
@@ -7205,9 +7537,9 @@
       "description": "web-factory 블록 공유 조각 billing-format — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7228,8 +7560,8 @@
       "description": "web-factory 블록 공유 조각 block-heading — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-heading-level#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-heading-level#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7307,9 +7639,9 @@
       "description": "web-factory 블록 공유 조각 business-info — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0"
       ],
       "files": [
         {
@@ -7343,13 +7675,63 @@
       }
     },
     {
+      "name": "block-shared-cart-kit",
+      "type": "registry:block",
+      "title": "블록 공유 조각 cart-kit",
+      "description": "web-factory 블록 공유 조각 cart-kit — 블록 항목이 의존으로 끌어온다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-ime-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-read#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-product-thumb#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/_shared/cart-kit.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/_shared/cart-kit.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "shared": true
+      }
+    },
+    {
+      "name": "block-shared-checkout-flow",
+      "type": "registry:block",
+      "title": "블록 공유 조각 checkout-flow",
+      "description": "web-factory 블록 공유 조각 checkout-flow — 블록 항목이 의존으로 끌어온다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/_shared/checkout-flow.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/_shared/checkout-flow.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "shared": true
+      }
+    },
+    {
       "name": "block-shared-choice-pair",
       "type": "registry:block",
       "title": "블록 공유 조각 choice-pair",
       "description": "web-factory 블록 공유 조각 choice-pair — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7408,8 +7790,8 @@
       "description": "web-factory 블록 공유 조각 consent-prefs — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0"
       ],
       "files": [
         {
@@ -7430,8 +7812,8 @@
       "description": "web-factory 블록 공유 조각 content-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7452,7 +7834,7 @@
       "description": "web-factory 블록 공유 조각 copy-button — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7473,8 +7855,8 @@
       "description": "web-factory 블록 공유 조각 dashboard-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-dashboard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/content-dashboard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7495,11 +7877,11 @@
       "description": "web-factory 블록 공유 조각 data-table-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-list-status#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7558,9 +7940,9 @@
       "description": "web-factory 블록 공유 조각 export-actions — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-data-table-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7619,13 +8001,13 @@
       "description": "web-factory 블록 공유 조각 form-flow — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-input-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-input-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7684,9 +8066,9 @@
       "description": "web-factory 블록 공유 조각 hero-media — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7707,8 +8089,8 @@
       "description": "web-factory 블록 공유 조각 hero-parts — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7729,7 +8111,7 @@
       "description": "web-factory 블록 공유 조각 human-approval — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7769,8 +8151,8 @@
       "description": "web-factory 블록 공유 조각 inapp-escape — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7791,7 +8173,7 @@
       "description": "web-factory 블록 공유 조각 input-format — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2"
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0"
       ],
       "files": [
         {
@@ -7812,8 +8194,8 @@
       "description": "web-factory 블록 공유 조각 integration-mark — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7853,8 +8235,8 @@
       "description": "web-factory 블록 공유 조각 list-status — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7875,7 +8257,7 @@
       "description": "web-factory 블록 공유 조각 loop-pause — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7896,7 +8278,7 @@
       "description": "web-factory 블록 공유 조각 lower-third — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7917,9 +8299,9 @@
       "description": "web-factory 블록 공유 조각 menu-line — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7940,11 +8322,11 @@
       "description": "web-factory 블록 공유 조각 notice-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -7965,13 +8347,37 @@
       "description": "web-factory 블록 공유 조각 open-now — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2"
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0"
       ],
       "files": [
         {
           "path": "_compiled/_shared/open-now.tsx",
           "type": "registry:block",
           "target": "components/blocks/_shared/open-now.tsx"
+        }
+      ],
+      "meta": {
+        "requires": "recipe",
+        "shared": true
+      }
+    },
+    {
+      "name": "block-shared-order-kit",
+      "type": "registry:block",
+      "title": "블록 공유 조각 order-kit",
+      "description": "web-factory 블록 공유 조각 order-kit — 블록 항목이 의존으로 끌어온다",
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
+      ],
+      "files": [
+        {
+          "path": "_compiled/_shared/order-kit.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/_shared/order-kit.tsx"
         }
       ],
       "meta": {
@@ -8005,7 +8411,7 @@
       "description": "web-factory 블록 공유 조각 plan-cta — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2"
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0"
       ],
       "files": [
         {
@@ -8026,12 +8432,12 @@
       "description": "web-factory 블록 공유 조각 plan-offer — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-choice-pair#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8052,10 +8458,10 @@
       "description": "web-factory 블록 공유 조각 policy-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0"
       ],
       "files": [
         {
@@ -8076,13 +8482,13 @@
       "description": "web-factory 블록 공유 조각 port-form — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-input-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/human-actions#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-human-approval#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-input-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/human-actions#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8103,7 +8509,7 @@
       "description": "web-factory 블록 공유 조각 port-read — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0"
       ],
       "files": [
         {
@@ -8124,9 +8530,9 @@
       "description": "web-factory 블록 공유 조각 price-tag — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8147,7 +8553,7 @@
       "description": "web-factory 블록 공유 조각 print-button — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8168,9 +8574,9 @@
       "description": "web-factory 블록 공유 조각 product-price — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-price-tag#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8191,9 +8597,9 @@
       "description": "web-factory 블록 공유 조각 product-thumb — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8214,11 +8620,11 @@
       "description": "web-factory 블록 공유 조각 qna-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-break-text#v0.2.0",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8239,10 +8645,10 @@
       "description": "web-factory 블록 공유 조각 review-kit — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8263,7 +8669,7 @@
       "description": "web-factory 블록 공유 조각 review-summary — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8284,7 +8690,7 @@
       "description": "web-factory 블록 공유 조각 scroll-hint — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8305,9 +8711,9 @@
       "description": "web-factory 블록 공유 조각 share-link — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-copy-button#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8347,7 +8753,7 @@
       "description": "web-factory 블록 공유 조각 social-login — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8368,7 +8774,7 @@
       "description": "web-factory 블록 공유 조각 sound-toggle — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8408,9 +8814,9 @@
       "description": "web-factory 블록 공유 조각 submit-guard — 블록 항목이 의존으로 끌어온다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8450,10 +8856,10 @@
       "description": "web-factory 블록 shipping-returns/at-a-glance-cards — layout three-facts-then-detail-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-policy-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-policy-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8496,10 +8902,10 @@
       "description": "web-factory 블록 shipping-returns/policy-tables — layout shipping-and-returns-tables. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-policy-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-policy-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8542,12 +8948,12 @@
       "description": "web-factory 블록 shipping-returns/return-steps — layout steps-timeline-with-conditions-table. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-policy-kit#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-policy-kit#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8590,9 +8996,9 @@
       "description": "web-factory 블록 social-proof/logo-rail — layout logo-rail. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8635,10 +9041,10 @@
       "description": "web-factory 블록 social-proof/quote-wall — layout masonry-quotes. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8682,9 +9088,9 @@
       "description": "web-factory 블록 social-proof/rating-summary — layout rating-histogram. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8728,10 +9134,10 @@
         "gsap@3.15.0"
       ],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-heading#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8775,10 +9181,10 @@
       "description": "web-factory 블록 state-screen/empty-guide — layout empty-guide. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8818,10 +9224,10 @@
       "description": "web-factory 블록 state-screen/error-retry — layout error-retry. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8861,8 +9267,8 @@
       "description": "web-factory 블록 state-screen/loading — layout loading. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8900,9 +9306,9 @@
       "description": "web-factory 블록 state-screen/not-found — layout not-found. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8940,9 +9346,9 @@
       "description": "web-factory 블록 state-screen/offline-cached — layout offline-cached. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -8980,10 +9386,10 @@
       "description": "web-factory 블록 trust/author-byline — layout byline-dl. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/freshness#v0.1.2",
-        "nowwcastle-sudo/sitebrew/json-ld#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/freshness#v0.2.0",
+        "nowwcastle-sudo/sitebrew/json-ld#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -9022,14 +9428,14 @@
       "description": "web-factory 블록 trust/brand-fact-sheet — layout fact-sheet-dl. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-to-jsonld#v0.1.2",
-        "nowwcastle-sudo/sitebrew/json-ld#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-to-jsonld#v0.2.0",
+        "nowwcastle-sudo/sitebrew/json-ld#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -9078,12 +9484,12 @@
       "description": "web-factory 블록 trust/guarantee-strip — layout cta-underline-guarantee. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-block-labels#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -9131,14 +9537,14 @@
       "description": "web-factory 블록 trust/payment-trust-panel — layout tinted-lock-panel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-inapp-escape#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-port-form#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {
@@ -9190,11 +9596,11 @@
       "description": "web-factory 블록 trust/verified-business-strip — layout business-facts-strip. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/motion-gsap#v0.1.2",
-        "nowwcastle-sudo/sitebrew/utils#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
+        "nowwcastle-sudo/sitebrew/block-shared-business-info#v0.2.0",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.0",
+        "nowwcastle-sudo/sitebrew/motion-gsap#v0.2.0",
+        "nowwcastle-sudo/sitebrew/utils#v0.2.0"
       ],
       "files": [
         {

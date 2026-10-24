@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { after, before, test } from 'node:test'
-import { deliver, parseDeliverArgs, renderReadme } from '../stamp/deliver.mjs'
+import { DELIVER_COPY, deliver, parseDeliverArgs, renderReadme } from '../stamp/deliver.mjs'
 import { gen, localBrief, localContent, makeRun, root, SAAS_BRIEF, saasContent } from './lib/stamp-site-fixtures.mjs'
 
 const BASE = join(root, '.tmp', 'deliver-test')
@@ -40,7 +40,7 @@ test('공백·한글 경로(홍 길동\\내 사이트)로 복사된다 — 파�
   const src = files(siteDir)
   const dst = files(to)
   const kept = src.filter((p) => !/^(?:node_modules|\.next|\.next-export|\.vercel)\//.test(p) && p !== '.env.local' && !p.endsWith('.tsbuildinfo'))
-  assert.deepEqual(dst.filter((p) => p !== 'README.md' && p !== 'AGENTS.md'), kept, '복사 목록이 원본에서 빠질 것만 뺀 것이다')
+  assert.deepEqual(dst.filter((p) => p !== 'README.md' && p !== 'AGENTS.md' && !p.startsWith('.sitebrew/')), kept, '복사 목록이 원본에서 빠질 것만 뺀 것이다(.sitebrew 는 넘긴 것 기록 — 계획 5 Task 9)')
   for (const junk of EXCLUDED) assert.equal(existsSync(join(to, junk)), false, `${junk} 는 복사하지 않는다`)
   for (const p of ['package.json', 'content/site.json', 'app/layout.tsx', 'lib/site.tsx', 'app/page.tsx']) {
     assert.ok(existsSync(join(to, p)), p)
@@ -202,18 +202,34 @@ test('README 공개 뒤 할 일: 절마다 1차 출처 주소와 확인 날짜�
     'https://contentsignals.org/',
     'https://nextjs.org/docs/app/api-reference/file-conventions/public-folder',
     'https://vercel.com/pricing',
-    'https://www.paddle.com/pricing',
   ]) assert.ok(ko.includes(url), `ko 출처: ${url}`)
   const parts = ko.split(/^#### /m).slice(1)
   assert.equal(parts.length, AFTER_TOPICS.length)
-  for (const p of parts) {
+  for (const p of parts.filter((x) => !x.startsWith('운영 비용'))) {
     const head = p.split('\n')[0]
     assert.match(p, /https:\/\//, `${head}: 출처 주소`)
     assert.match(p, /확인 날짜 20\d\d-\d\d-\d\d/, `${head}: 확인 날짜`)
   }
-  const cost = parts.find((p) => p.startsWith('운영 비용'))
-  assert.match(cost, /확인 필요/, '도메인 가격은 확인 필요로 둔다')
-  assert.doesNotMatch(cost, /합계|총\s*\d/, '계산해서 만든 합계 금액이 없다')
+})
+
+test('README 공개 뒤 할 일 8절(운영 비용): 금액표 대신 런북 호스팅 장을 가리키는 한 문장뿐이다 — ko·en 모두 금액 없음(계획 5 Task 10)', () => {
+  const md = renderReadme(baseInfo)
+  const en = md.slice(md.indexOf('## English'))
+  const costKo = afterKo(md).split(/^#### /m).find((p) => p.startsWith('운영 비용'))
+  const costEn = en.split(/^#### /m).find((p) => p.startsWith('Running costs'))
+  assert.equal(costKo.trim(), `운영 비용\n\n${DELIVER_COPY.runbookCosts.ko}`)
+  assert.equal(costEn.trim(), `Running costs\n\n${DELIVER_COPY.runbookCosts.en}`)
+  for (const t of [md, en]) assert.doesNotMatch(t, /\$\s?\d|\d\s?%|¢|\bcents\b|paddle\.com\/pricing/, '금액·수수료가 README 어디에도 없다')
+})
+
+test('README: 실제로 쓰기로 하면 「런북」이라고 말하라는 한 문장이 ko·en 에 한 번씩 있다(소개형·제품형 공통, 계획 5 Task 10)', () => {
+  for (const info of [baseInfo, { ...baseInfo, archetype: 'saas', completion: 'product' }]) {
+    const md = renderReadme(info)
+    const ko = md.slice(md.indexOf('## 한국어'), md.indexOf('## English'))
+    const en = md.slice(md.indexOf('## English'))
+    assert.equal(ko.split(DELIVER_COPY.runbookPointer.ko).length, 2, info.completion)
+    assert.equal(en.split(DELIVER_COPY.runbookPointer.en).length, 2, info.completion)
+  }
 })
 
 test('README: 대표·사업 정보를 싣지 않는다 · 안내 절은 원형·사이트 이름과 무관하게 같다', () => {

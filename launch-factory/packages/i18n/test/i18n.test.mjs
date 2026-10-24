@@ -20,13 +20,16 @@ const ko = leaves(MESSAGES.ko)
 const en = leaves(MESSAGES.en)
 
 test("메시지 키가 ko·en 양쪽에 모두 있다(모든 이름공간)", () => {
-  assert.deepEqual(Object.keys(MESSAGES.en), ["email", "auth", "consent", "checkout", "transfer", "inquiry", "protect", "collection"])
+  assert.deepEqual(Object.keys(MESSAGES.en), ["email", "auth", "consent", "checkout", "transfer", "inquiry", "protect", "collection", "commerce", "reviews", "storage", "newsletter", "booking"])
   assert.deepEqual(Object.keys(ko).filter((k) => !(k in en)), [], "ko 에만 있는 키")
   assert.deepEqual(Object.keys(en).filter((k) => !(k in ko)), [], "en 에만 있는 키")
   // 메일 37키는 그대로 옮겨 왔다(D35). Task 15 가 문의 알림 11키·접수 확인 6키를 더했고,
   // Task 19 가 계정 보안 메일 4묶음 26키(verifyEmail 7·emailChangeConfirm 7·emailChanged 6·passwordChanged 6)를, Task 9b 가 비밀번호 재설정 7키(D180)를, D201 이 마케팅 수신 처리 결과 통지 14키를, F11 이 결제 실패 안내 9키를, LFACCT 가 탈퇴 접수 메일 8키(accountDeletionRequested, D09)를 더했다 / LFMAIL 이 38키(링크 유효 시간·버튼 글자 링크 6, 확인 메일 가입 안 했어요 2, 변경 승인 기한 1, 문의 수신 사유 2, 새 기기 로그인 10, 2년 재확인 9, 광고 표시 8)를 더했다
+  // 계획 3b Task 1 이 예약 메일 셋(bookingConfirmation 18·bookingCancellation 12·bookingNotice 17 = 47키)과 예약 서비스 문구 이름공간 booking(20키)을 더했다
   // LFUX2 가 문의 접수 확인의 첫 응답 약속 1키(inquiryReceipt.responseNote)와 「contact us」 알림 둘의 문의 버튼 2키(passwordChanged·emailChanged 의 contactCta)를 더했다
-  assert.equal(Object.keys(en).filter((k) => k.startsWith("email.")).length, 37 + 11 + 6 + 26 + 7 + 14 + 9 + 8 + 3 + 38)
+  assert.equal(Object.keys(en).filter((k) => k.startsWith("email.")).length, 37 + 11 + 6 + 26 + 7 + 14 + 9 + 8 + 3 + 38 + 19 + 47 + 7 + 9 + 15 + 7)
+  // 계획 3d 관리 화면(문의 답변)이 답변 메일 inquiryReply 7키를 더했다
+  // Task 4(뉴스레터)가 구독 확인 메일 7키(newsletterConfirm)와 구독 완료 안내 9키(newsletterWelcome)를 더했다
   // 양성 대조: 한쪽에만 키를 더하면 잡힌다
   const extra = leaves({ ...MESSAGES.ko, auth: { ...MESSAGES.ko.auth, extra: "x" } })
   assert.deepEqual(Object.keys(extra).filter((k) => !(k in en)), ["auth.extra"])
@@ -73,9 +76,9 @@ test("t·fill: 자리표시를 채우고, 모르는 키·빈 값은 던진다", 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url))
 const HANGUL = /[ㄱ-ㆎ가-힣]/
 /** 대상: 어댑터 패키지 src 전부. billing-* 는 결제 레인(Task 5·6)이 들어오면 자동으로 포함된다 */
-const SCANNED = ["auth", "email", "analytics-posthog", "consent", "account-lifecycle", "inquiry", ...readdirSync(ROOT).filter((p) => p.startsWith("billing-"))]
+const SCANNED = ["auth", "email", "analytics-posthog", "consent", "account-lifecycle", "inquiry", "booking", "reviews", ...readdirSync(ROOT).filter((p) => p.startsWith("billing-"))]
 /** 어댑터 패키지가 아닌 곳의 Task 15 파일(요청 제한·봇 방어·문의 저장). 이 패키지들의 다른 파일은 개발자용 한글 오류가 남아 있어 범위 밖이다(Task 18 보고 7) */
-const SCANNED_FILES = ["security/src/rate-limit.ts", "security/src/turnstile.ts", "security/src/protect.ts", "db/src/rate-limit.ts", "db/src/idempotency.ts", "db/src/inquiries.ts", "db/src/schema/inquiries.ts"]
+const SCANNED_FILES = ["security/src/rate-limit.ts", "security/src/turnstile.ts", "security/src/protect.ts", "db/src/rate-limit.ts", "db/src/idempotency.ts", "db/src/inquiries.ts", "db/src/schema/inquiries.ts", "commerce/src/port.ts", "commerce/src/checkout.ts", "commerce/src/mail.ts"]
 
 function hangulLiterals(fileName, source) {
   const sf = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, fileName.endsWith("x") ? ts.ScriptKind.TSX : ts.ScriptKind.TS)

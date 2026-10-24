@@ -198,7 +198,7 @@ test("next build 종료 0(타입 검사 포함)", { timeout: 900_000 }, () => {
   const r = run(NPX, ["next", "build"], { cwd: app, env: { LF_MODE: "mock", LF_ALLOW_MOCK_PROD: "1" } })
   ok(r, "next build")
   assert.ok(existsSync(join(app, ".next/BUILD_ID")), "BUILD_ID")
-  for (const route of ["/api/auth/[...all]", "/api/webhooks/paddle", "/api/webhooks/gumroad", "/api/inquiry", "/api/cron/billing", "/api/cron/gumroad", "/api/cron/inquiry", "/api/admin/users/export", "/api/cron/purge", "/api/cron/security"]) {
+  for (const route of ["/api/auth/[...all]", "/api/webhooks/paddle", "/api/webhooks/gumroad", "/api/inquiry", "/api/cron/billing", "/api/cron/gumroad", "/api/cron/inquiry", "/api/admin/users/export", "/api/cron/purge", "/api/cron/security", "/api/storage/ticket", "/api/storage/complete", "/api/cron/storage"]) {
     assert.ok(r.out.includes(route), `route ${route} missing from build output`)
   }
 })

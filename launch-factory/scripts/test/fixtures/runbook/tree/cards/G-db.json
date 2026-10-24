@@ -1,0 +1,19 @@
+{
+  "service": "Example DB",
+  "role": "database",
+  "need": "feature",
+  "cost": [
+    "free-tier"
+  ],
+  "after": [
+    "G-hosting"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "그 기능이 꺼져요.",
+    "en": "That feature turns off."
+  },
+  "devOnly": [],
+  "notEnv": [],
+  "home": "https://db.example.com"
+}

@@ -126,3 +126,20 @@ test('axisDistance counts 9 axes + motion + color logic + colour', () => {
   const other = library.find((x) => x.id !== r.id && axisDistance(r, x) > 0)
   assert.equal(axisDistance(r, other), axisDistance(other, r))
 })
+
+test('minAxes: 올리면 모든 쌍과 생성 안~라이브러리 거리가 그 값 이상이다(기본 고름에는 더 가까운 쌍이 있다) · 안 주면 예전 그대로 · 채울 수 없으면 던진다', async () => {
+  const dash = loadArchetype('dashboard')
+  const b = { topic: '운영 현황판(예시)', archetype: 'dashboard', locale: 'en', facts: { name: 'Example Co' }, seed: 1 }
+  const closest = ({ candidates }) => {
+    const heads = candidates.map(headOf)
+    const pairs = [[0, 1], [0, 2], [1, 2]].map(([i, j]) => axisDistance(heads[i], heads[j]))
+    const libs = heads.slice(1).flatMap((h) => library.filter((r) => r.id !== heads[0].id).map((r) => axisDistance(h, r)))
+    return Math.min(...pairs, ...libs)
+  }
+  const normal = await pickDirections({ brief: b, archetype: dash, seed: 1 })
+  const minAxes = closest(normal) + 1
+  const wide = await pickDirections({ brief: b, archetype: dash, seed: 1, minAxes })
+  assert.ok(closest(wide) >= minAxes, `넓힌 뒤 가장 가까운 거리 ${closest(wide)} < ${minAxes}`)
+  assert.deepEqual((await pickDirections({ brief: b, archetype: dash, seed: 1, minAxes: undefined })).candidates, normal.candidates)
+  await assert.rejects(() => pickDirections({ brief: b, archetype: dash, seed: 1, minAxes: 99 }), DirectionsShortError)
+})

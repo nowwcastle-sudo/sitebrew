@@ -104,7 +104,7 @@ export function PaywallUpgradeModal({ copy, locale, timeZone, plans, checkout, t
   // 체험을 끄면 제안 한 판이 「바로 결제」 모양이다(체험 줄·체험 문구 없이 첫 결제 = 오늘)
   const offerPlan = plan && plan.trialDays && !trialOn ? { ...plan, trialDays: undefined } : plan
   return (
-    <section ref={ref} id={id} data-block="paywall-upgrade-modal" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="paywall-upgrade-modal" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <div data-enter className="grid max-w-3xl grid-cols-[3rem_minmax(0,1fr)] items-start gap-x-5 gap-y-6 border border-dashed px-5 py-8 md:px-10 md:py-10">
         <Lock aria-hidden="true" className="size-12 border p-2.5" />
         <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.body} className="gap-2" />

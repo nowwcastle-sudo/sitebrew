@@ -1,0 +1,244 @@
+# 해석기(interpret.mjs)와 정규화(normalize.mjs)가 쓰는 말본 낱말·숫자와 사용자에게 보이는 글. 코드는 이 목록으로 집합·정규식을 만든다(factory/vocab/grammar.mjs).
+# 디자인 뜻(축·방향)은 design-lexicon.yaml 이 정하고, 여기는 말의 모양(조사·어미·군말·부정)과 되묻는 글을 정한다. 낱말 사전과 같이 holdout 에 맞춰 고치지 않는다(ci/vocab-holdout-guard.mjs).
+# 글(text)의 {label}·{key}·{a}·{b} 는 코드가 채우는 자리다. 한국어 글은 변하는 말 뒤에 받침에 따라 달라지는 조사(은/는·이/가·와/과)를 두지 않는다.
+
+# 정규화(normalize.mjs): 낱말 끝에서만 뗀다. 떼고 남는 길이가 2글자 미만이면 떼지 않는다(「재미」「밤」 보호).
+normalize:
+  endings: ["스럽게", "스러운", "스럽고", "하게", "하고", "하는", "한", "게", "고", "은", "는", "이", "가", "을", "를"] # 조사·어미, 긴 것부터 본다
+  fillers: ["좀", "조금만"] # 낱말 하나로 떨어져 나오는 군말
+  minRest: 2 # 어미를 떼고 남는 길이의 하한(글자 수)
+
+# 해석기가 낱말을 문장에 맞출 때 쓰는 말본.
+#   짧은 한글 낱말(limits.shortKeyMax 글자 이하: 밝·밤·레드·골드·다크·샤프)은 낱말 처음에 오고 그 뒤가 tails, designSuffixes + tails, links + tails 일 때만 맞춘다
+#   — 「밝기는」「그 차가」「레드향」「화이트보드」「다크서클」처럼 다른 낱말의 일부로는 안 맞춘다. 띄어쓰기가 든 낱말(「대비 높」「색 줄」)은 이 규칙을 받지 않는다.
+match:
+  # 짧은 낱말 뒤에 붙어도 되는 디자인 붙임말: 「레드톤」「골드색」「파랑계열」「보라빛」「다크모드」「복고풍」「입체감」. 뒤에 tails 가 더 올 수 있다(「톤으로」).
+  designSuffixes: ["톤", "색", "색상", "컬러", "계열", "빛", "모드", "테마", "풍", "감", "체", "적", "적인", "적으로", "적이"]
+  # 짧은 낱말 뒤에 어미가 이어질 때 사이에 끼는 풀이 조각(하다·되다·ㅂ불규칙 계열): 「깔끔|하|게요」「따뜻|했|음」「차분|할」「어두|웠|음」「자유|로운」.
+  # 조각 뒤에는 tails 가 와야 한다. 명사 이름은 조각 뒤가 tails 가 아니라 막힌다(레드하우스·화이트한강·블루하늘).
+  links: ["하", "해", "했", "한", "할", "히", "하여", "스럽", "스러", "스런", "스러웠", "롭", "로운", "로워", "로웠", "웠"]
+  # 조각 바로 뒤에 한 글자 조사만 오면 명사(「하나」「하이」)와 겹치므로 조각 + tails 풀이에서는 뺀다.
+  linkBlock: ["나", "가", "이", "과", "와", "의", "에", "아", "어"]
+  # 낱말 뒤에 올 수 있는 어미·조사(빈 꼬리와 normalize.endings 는 코드가 더한다). 「하다」「하지」는 links 의 「하」 + 「다」「지」로 풀리므로 두지 않는다.
+  tails: [
+    "아", "어", "다", "히", "아서", "어서", "아요", "어요", "으면", "면", "은데", "지만",
+    "도록", "에", "에서", "의", "도", "만", "과", "와", "았으면", "었으면", "았는데", "었는데",
+    "네요", "해요", "하면", "게요", "는데", "지", "지는", "지도", "로", "으로", "랑", "이랑",
+    "이나", "나", "처럼", "보다", "까지", "부터", "운", "워", "워요", "워서", "웠으면", "합니다",
+    "하네", "하네요", "했으면", "했는데", "해서", "하면서", "하며", "하니까", "한데", "하죠", "되", "되는",
+    "되고", "되면", "되어", "돼", "된", "됐으면", "되서", "있는", "있게", "있고", "있어", "같은",
+    "같이", "같아", "같다", "있", "같", "해", "했어", "했다", "했네", "스럽", "스러웠으면", "스러워",
+    "스러워요", "스러웠어", "게만", "게도", "게끔", "끔", "길", "야", "음", "데요", "가요", "걸로",
+    "거나", "졌으면", "지면", "지게", "고요", "야죠", "더라고", "보여요", "보여", "보이는", "보이게", "느낌",
+    "운데요", "운데", "요", "이요", "이에요", "입니다", "이야", "이라", "이라서", "였으면", "더라", "더라고요",
+    "더라구요",
+  ]
+  # 세기·부정·범위가 붙을 말 사이에 끼어도 되는 군말(그 밖의 낱말이 끼면 붙이지 않는다). 영어는 낱말 하나씩. 범위 이름 뒤 꼬리(「버튼 색을 파랑으로」「푸터 부분은 밝게」「FAQ 쪽만」)와
+  # 부정 앞 꼬리(「어둡게 하지 마세요」「차가운 건 싫어요」)가 끼어도 붙게 보탰다. 영어 부정(never use red · without any shadows)의 꼬리도 같다 — 붙지 못한 부정은 조용히 버려져 반대로 읽히므로 흔한 꼬리를 미리 허용한다.
+  gapOk: [
+    "더", "너무", "아주", "정말", "too", "very", "so", "really", "quite", "much", "bit", "little",
+    "more", "a", "make", "it", "be", "look", "feel", "디자인", "디자인만", "느낌", "느낌만", "스타일",
+    "스타일만", "색", "색을", "색은", "색이", "색상", "색깔", "컬러", "글씨", "글자", "폰트", "글꼴",
+    "크기", "부분", "부분만", "쪽", "쪽만", "영역", "영역만", "섹션", "섹션만", "칸", "파트", "건",
+    "거", "것", "하지", "되지", "하면", "것도", "건도", "거도", "것이", "any", "use", "using",
+    "the", "color", "colors", "colour", "colours", "tone", "tones", "shade", "shades",
+  ]
+  # 앞에 놓이는 한국어 부정(「안 밝게」「못 어둡게」): 같은 상한이지만 낱말 전체일 때만, 뒤 묶음에 먼저 붙인다.
+  preNeg: ["안", "못"]
+  doVerbStems: ["하", "해", "했", "한", "할", "함", "어울", "맞", "좋", "예쁘", "이쁘", "예뻐", "이뻐"] # 「안 해도 돼요」「안 했으면」「안 하는」 · 싫다는 풀이 「안 어울려요」「안 좋아요」
+  prohibitStems: ["되", "돼", "됩"] # 「하면 안 돼요」(금지)
+  prohibitNotBefore: ["나", "니", "려", "겠"] # 「안 되나요」「안 되겠」는 묻는 말이라 금지에서 뺀다
+  prohibitWords: ["안돼", "안되"] # 붙여 쓴 「안돼요」
+  questionMarks: ["?", "？"]
+  predicateEnds: ["게", "해"] # 이 글자로 끝나는 낱말은 서술어(둥글게·따뜻하게·깔끔해)다
+  # 주색이 아닌 색 자리를 말하는 낱말 — 색 값 읽기와 함께 나오면 주색만 바꿀 수 있다고 되묻는다(ask.otherRole)
+  # 값을 빼 달라는 말(「빨강 말고」·「싫어요」·"not red") — 그 값을 그대로 적용하면 반대로 가므로 값 읽기 대신 되묻는다(ask.valueNegated)
+  negationWords: ["말고", "빼고", "제외", "아닌", "아니라", "싫", "말아", "쓰지 마", "not", "don't", "do not", "except", "instead of", "other than", "without", "avoid", "hate"]
+  # 사이트 전체를 분명히 말하는 낱말 — 구획 이름이 하나뿐인 문장에서도 이 낱말이 붙은 읽기는 그 구획의 것이 아니라 사이트 전체다
+  siteWords: ["사이트 전체", "전체 사이트", "전체 색", "전체 서체", "전체 글꼴", "모든 페이지", "전체 페이지", "전체", "whole site", "entire site", "every page", "all pages", "site-wide", "sitewide"]
+  # 「빨강을 파랑으로」「초록에서 파랑으로」「빨간 색을 좀 더 파란색으로」「빨강 대신 파랑으로」처럼 원래 색을 먼저, 바뀔 색을 뒤에 말하는 틀 — 원래 색(앞 덩이)은 바꿀 값이 아니라 읽지 않는다.
+  #   한국어: 바뀔 색 낱말이 targetMarks 로 끝나고, 그 앞에 sourceMarks 로 끝나는 낱말이 있을 때 — 그 낱말과 앞 덩이, 둘 사이의 낱말(좀 더 …)을 모두 뺀다. 영어: toWords 앞의 덩이(from red · change red · red)를 뺀다.
+  #   togetherMarks·togetherWords: 그 사이에 나란히 말하는 표지(「빨강이랑 파랑으로」「빨강이나 파랑으로」「red and blue」)가 있으면 원래→바뀔 틀이 아니라 값 둘이다.
+  fromTo:
+    sourceMarks: ["을", "를", "은", "는", "에서", "에서는", "대신"]
+    targetMarks: ["으로", "로"]
+    togetherMarks: ["이랑", "랑", "이나", "나", "하고", "또는", "과", "와"]
+    togetherWords: ["and", "or", "&"]
+    toWords: ["to", "into"]
+  # 구획 말의 낱말 표(INTENT_WORDS)가 뜻을 정할 때, 이 낱말이 함께 있으면 방향이 뒤집힐 수 있어 추측하지 않고 묻는다(「히어로 덜 대담하게」「대담하지 않게」). negationWords 도 같다.
+  lessWords: ["덜", "않", "less", "fewer"]
+  otherRoleWords: ["배경", "바탕색", "글자색", "글자 색", "글씨색", "글씨 색", "텍스트 색", "텍스트색", "본문 색", "테두리", "background", "text color", "font color", "foreground", "border"]
+  # 시안 비교 말(갈래 D) — ctx.candidates 가 있을 때만 읽는다. 틀의 글자 사이 띄어쓰기는 있어도 없어도 맞는다(그래서 틀에는 띄어쓰기를 두지 않는다).
+  #   indexForms 의 {n} 은 시안 번호(숫자 또는 numberWords 의 낱말) — 번호는 ctx.candidates 의 차례(1부터)다. previousWords 는 「방금 고치기 전 것」을 가리킨다(previousId 가 그 표시).
+  #   「두 번 안 해도 돼요」의 「{n}번 안」은 시안이 아니라 횟수 말이라, bareForms 는 바로 뒤에 bareMarks(비교 표지)가 붙을 때만 맞춘다. indexForms 는 시안·번째 같은 표지가 틀 안에 있다.
+  candidate:
+    indexForms: ["{n}번째시안", "{n}번시안", "시안{n}번", "{n}번째안", "option{n}", "design{n}", "version{n}", "candidate{n}"]
+    bareForms: ["{n}번안"]
+    bareMarks: ["처럼", "같이", "같은", "으로", "로"]
+    numberWords: { 첫: 1, 두: 2, 세: 3, 네: 4, first: 1, second: 2, third: 3, fourth: 4 }
+    previousWords: ["아까것", "아까게", "아까거", "아까꺼", "아까시안", "아까버전", "이전시안", "이전것", "이전거", "이전버전", "previousone", "previousversion", "previousdesign", "earlierone", "earlierversion"]
+    previousId: previous
+
+limits:
+  strengthMax: 2 # 읽기 세기는 크기 0..strengthMax(부호는 방향이 지닌다) — 사전 검사(lexicon.mjs)와 예측 파일 검사(eval/predictions.mjs)가 함께 쓴다
+  shortKeyMax: 3 # 짧은 한글 낱말의 글자 수 상한
+  lostNegStrays: 1 # 부정과 앞 묶음 사이에 모르는 낱말이 이만큼이면 부정이 앞 묶음에 걸린 것으로 보고 묻는다
+  maxChoices: 3 # 되물을 때 보이는 선택지 상한
+
+# 사용자에게 보이는 글(한국어 해요체 · 영어는 입력에 한글이 없을 때).
+text:
+  undone: # 「되돌려」(revise-history.mjs) — 마지막 수정을 되돌렸을 때 / 되돌릴 수정이 없을 때 / 「둘 다 아니에요」를 골랐을 때
+    ko: "방금 바꾼 것을 되돌렸어요."
+    en: "I undid the last change."
+  undoneDetail: # {index} = 판 번호, {count} = 되살린 파일 수
+    ko: "수정 {index}번 · 파일 {count}개"
+    en: "revision {index} · {count} files"
+  staleNote: # {stages} = 낡은 단계들
+    ko: "낡은 단계: {stages} (지금 사이트·관문 결과는 다음 찍어내기가 다시 만든다)"
+    en: "Stale steps: {stages} (the next stamp run rebuilds the current site and gate results)"
+  redrawn: # 「너무 똑같아」(--redraw-wider) — {min} = 세 안이 서로 달라야 하는 가짓수
+    ko: "방향 3안을 서로 {min}가지 이상 다르게 다시 골랐어요."
+    en: "I picked the three directions again so each pair differs in at least {min} ways."
+  redrawNoRun: # 다시 고를 실행 기록(stamp-summary.json)이 없을 때
+    ko: "다시 고를 실행 기록이 없어요. 먼저 찍어내기를 한 번 돌려 주세요."
+    en: "There is no earlier run to redo. Run the stamp once first."
+  redrawLimit: # 더 넓힐 수 없을 때(안 사이 거리가 셀 수 있는 끝)
+    ko: "방향 3안을 이미 더 넓힐 수 없을 만큼 다르게 골랐어요. 이 방향에서는 더 다르게 못 해요."
+    en: "The three directions are already as different as they can get, so I cannot spread them further."
+  nothingToUndo:
+    ko: "되돌릴 수정이 없어요."
+    en: "There is no change to undo."
+  neitherAsk:
+    ko: "둘 다 마음에 안 드셨군요. 어떤 점이 달랐으면 하는지 한 번 더 알려 주세요."
+    en: "Neither one fits. Tell me once more what you would like different."
+  askNone:
+    ko: "어떤 느낌으로 바꾸고 싶은지 한 문장으로 알려 주세요."
+    en: "Tell me in one sentence what feel you want."
+  askPick: # 항목에 ask 가 없을 때 두 가지로 읽히는 말을 되묻는다
+    ko: "「{label}」 말은 두 가지로 읽혀요. 둘 중 어느 쪽에 더 가까워요?"
+    en: "Which of these is closer to what you mean?"
+  askUnknownReference: # 「○○ 사이트처럼」처럼 사전에도 시안에도 없는 이름을 대면 스킬이 이 글로 되묻는다(어느 점이 좋았는지 세 갈래)
+    ko: "그 사이트의 어떤 점이 좋았어요? 1) 색 2) 글꼴 3) 배치"
+    en: "What did you like about that site? 1) the colors 2) the fonts 3) the layout"
+  doubleNeg:
+    ko: "부정이 겹쳐서 헷갈려요. 어떻게 바꾸고 싶은지 한 번 더 알려 주세요."
+    en: "Two negations cancel out here. Tell me once more what you want."
+  lostNeg:
+    ko: "「하지 않게」가 어느 말에 걸리는지 헷갈려요. 어떻게 바꾸고 싶은지 한 번 더 알려 주세요."
+    en: "I cannot tell what the negation refers to. Tell me once more what you want."
+  clash: # 같은 곳에서 서로 반대로 읽히는 두 말
+    ko: "「{a}」 말과 「{b}」 말은 서로 반대예요. 어느 쪽인가요?"
+    en: "\"{a}\" and \"{b}\" pull opposite ways. Which one?"
+  scope: # 범위가 붙은 말 앞에 놓는 글. {key} = 범위 이름
+    element:
+      ko: "「{key}」에만 "
+      en: "For the {key} only: "
+    section:
+      ko: "「{key}」 구획에만 "
+      en: "For the {key} section only: "
+    page:
+      ko: "「{key}」 쪽에만 "
+      en: "For the {key} page only: "
+  say: # 이해한 내용을 알리는 글. 항목에 say 가 있으면 그것을 쓴다
+    plain:
+      ko: "「{label}」 쪽으로 이해했어요."
+      en: "I read this as \"{label}\"."
+    cap: # 상한이 붙은 말
+      ko: "「{label}」 쪽으로는 더 가지 않게 이해했어요."
+      en: "I will not go any further toward \"{label}\"."
+  copy: # 시안 비교 말(「2번 시안처럼」·「아까 게」)을 이해한 내용 — 번호를 되풀이하지 않고 가리킨 시안 하나로 말한다
+    candidate:
+      ko: "고른 시안과 같은 모양으로 맞춘다고 이해했어요."
+      en: "I read this as matching the option you named."
+    previous:
+      ko: "방금 고치기 전 모양으로 맞춘다고 이해했어요."
+      en: "I read this as going back to how it looked before the last change."
+  candidateMissing: # {max} = 시안 수
+    ko: "그 번호의 시안이 없어요. 1번부터 {max}번까지 있어요."
+    en: "There is no option with that number. Options 1 to {max} exist."
+  candidateMixed:
+    ko: "시안을 따라 하는 말과 다른 수정은 한 번에 하나씩만 할 수 있어요. 하나씩 말해 주세요."
+    en: "I can match an option or make another change, but only one at a time. Tell me one."
+  step: # 손잡이 블록(factory/stamp/handles/)이 돌려주는 글 — 한국어 해요체만. {end} = 사전 axes.<축>.endLabels, {count} = counts 중 하나
+    atEnd: "더 바꿀 곳이 없어요. 지금이 이 방향의 끝이에요."
+    noPalette: "지금 쓰는 색 정보를 찾지 못해서 색 가짓수는 바꿀 수 없어요."
+    noSafeChange: "이대로 바꾸면 화면이 깨지거나 글이 읽기 어려워져서 적용하지 않았어요. 다르게 말해 주실래요?"
+    current: "지금"
+    keep: "그대로"
+    counts: ["한 칸", "두 칸"] # 옮긴 칸 수 1·2 — limits.strengthMax 만큼 있어야 한다
+    move: "{count} 더 {end}" # 순서·등급 손잡이: 「한 칸 더 크게」
+    palette: "{end} 바꾼 색" # 팔레트 손잡이: 「따뜻하게 바꾼 색」
+  ask: # 수정 명령(revise-parse.mjs · revise.mjs)이 되묻는 글 — 요청에 한글이 있으면 ko, 아니면 en. 계획 단계(말이 없는 읽기 입력)는 ko 를 쓴다
+    siteWide:
+      ko: "사이트 전체에 적용돼요. 괜찮아요?"
+      en: "This applies to the whole site. Is that okay?"
+    otherRole:
+      ko: "배경·글자 색은 따로 못 바꿔요. 메인(주) 색만 바꿀까요?"
+      en: "I can only change the main color, not background or text. Do that?"
+    oneKindAtATime:
+      ko: "사이트 전체를 바꾸는 말과 구획·쪽을 바꾸는 말은 한 번에 하나씩만 할 수 있어요. 하나씩 말해 주세요."
+      en: "I can change the whole site or a section or page, but only one at a time. Tell me one."
+    oneAxisAtATime:
+      ko: "색·서체·움직임은 한 번에 하나씩만 바꿀 수 있어요. 하나씩 말해 주세요."
+      en: "I can change color, type or motion one at a time. Tell me one."
+    valueNegated:
+      ko: "어떤 값으로 바꿀까요? 색 이름이나 #코드, 서체 이름으로 알려 주세요."
+      en: "Which value should it be? Give a color name, #code or font name."
+    boardStale: # 안을 만든 뒤 사이트가 바뀌어 고를 수 없을 때(--revise-pick)
+      ko: "이 안을 만든 뒤에 사이트가 바뀌어서 지금과 맞지 않아요. 아무것도 바꾸지 않았어요. 같은 말로 안을 다시 만들어 주세요."
+      en: "The site changed after these options were made, so they no longer fit. Nothing was changed. Please make the options again."
+    redrawDrops: # 적용한 수정(디자인·구획·문구·구조)이 있는데 방향을 다시 고르려 할 때(--redraw-wider)
+      ko: "방향을 다시 고르면 적용한 수정이 사라져요. 아무것도 바꾸지 않았어요. 수정을 모두 되돌린 뒤에 다시 말해 주세요."
+      en: "Picking the directions again would drop the changes you applied. Nothing was changed. Undo those changes first, then ask again."
+    intentUnclear: # 구획 말의 방향(더 대담/더 차분)을 낱말만으로는 정할 수 없을 때
+      ko: "더 대담하게 할까요, 더 차분하게 할까요? 어느 쪽인지 한 번 더 알려 주세요."
+      en: "Should it be bolder or calmer? Tell me once more which one."
+    valueCapped: # 더 가지 말라고 한 값과 같은 값을 말한 안(상한)
+      ko: "더 가지 말라고 한 값과 같은 값이라 이 안은 뺐어요."
+      en: "This value is the one you asked not to go to, so I left this option out."
+  plan: # 2안·구획 계획(factory/stamp/plan-readings.mjs · section-plan.mjs)이 돌려주는 글 — 한국어 해요체만. {label} = 사전 axes.<축>.label, {end} = endLabels 또는 valueLabels
+    onlyOne: "이 말대로 바꾸는 안은 하나뿐이에요."
+    noSection: "이 사이트에 그 구획이나 쪽이 없어요."
+    nothing: "바꿀 내용을 찾지 못했어요. 어떻게 바꾸고 싶은지 한 번 더 알려 주세요."
+    colorTwo: "색을 바꾸는 말이 둘이라 함께 적용하기 어려워요. 하나씩 말해 주세요."
+    sayReading: "{label}: 「{end}」 쪽으로 {amount} 바꿔요." # {amount} = amounts 중 읽기의 세기에 맞는 것
+    sayValue: "{label}: 「{end}」 쪽으로 바꿔요." # 값을 말한 읽기(색 이름·글꼴)는 세기가 없다
+    amounts: ["조금", "많이"] # 세기 1·2 — limits.strengthMax 만큼 있어야 한다
+    copyTo: "그 시안과 같게" # 시안 따라 하기가 바꾼 축 하나의 「바뀐 뒤」 글
+    copyNothing: "지금 모양이 이미 그 시안과 같아서 바꿀 곳이 없어요."
+    copyMissing: "그 시안을 찾지 못했어요. 어느 시안인지 한 번 더 알려 주세요."
+    noPrevious: "아직 고친 적이 없어서 되돌아갈 이전 모양이 없어요."
+    sayCopy: "고른 시안과 같은 모양으로 맞춰요."
+    sayPrevious: "방금 고치기 전 모양으로 맞춰요."
+  section: # 구획 교체 안(factory/stamp/revise.mjs)이 돌려주는 글. {label} = label 중 하나, {count} = 안의 수, {total} = 허용 변형 수
+    label:
+      bolder: { ko: "더 대담한 쪽", en: "bolder" }
+      calmer: { ko: "더 차분한 쪽", en: "calmer" }
+      different: { ko: "다른 변형", en: "different" }
+      spacious: { ko: "더 여유로운 쪽", en: "roomier" }
+      compact: { ko: "더 조밀한 쪽", en: "tighter" }
+    few: { ko: "{label} 변형이 {count}개뿐이에요.", en: "Only {count} {label} option(s) exist." }
+    fewTotal: { ko: "지금 것을 빼면 다른 변형이 {count}개뿐이에요(허용 변형 {total}개).", en: "Besides the current one, only {count} other option(s) exist (of {total} allowed)." }
+    none: { ko: "「{section}」에는 {label} 변형이 없어요.", en: "There is no {label} option for {section}." }
+    fewAllowed: { ko: "허용 변형이 {count}개뿐이에요.", en: "Only {count} allowed option(s) exist." }
+  value: # 값 읽기(색·서체)의 안이 고른 모양을 말하는 글(factory/stamp/revise-values.mjs) — 안 a·b 해석 문장 끝에 붙는다. {hex} {shown} {family} 는 코드가 채운다
+    mainColor: { ko: "주색 {hex}", en: "main color {hex}" }
+    mainColorShown: { ko: "주색 {hex} → 화면 {shown}", en: "main color {hex} → shown as {shown}" }
+    pairDarker: { ko: "같은 색조·더 어두운 명도 — 주색 {hex}", en: "same hue, darker — main color {hex}" }
+    pairLighter: { ko: "같은 색조·더 밝은 명도 — 주색 {hex}", en: "same hue, lighter — main color {hex}" }
+    fontBoth: { ko: "{family} 제목·본문", en: "{family} for headings and body" }
+    fontTitle: { ko: "{family} 제목만", en: "{family} for headings only" }
+  compare: # 지금 사이트와 2안 비교 화면(factory/stamp/revise-compare.mjs) — 요청에 한글이 있으면 ko, 아니면 en. {label} = 사전 axes.<축>.label, {section} = 구획 키
+    title: { ko: "지금 사이트와 안 비교", en: "The current site and the options" }
+    now: { ko: "지금", en: "Now" }
+    nowNote: { ko: "지금 보이는 사이트예요.", en: "This is the site as it is now." }
+    option: { ko: "{n}안 ({id})", en: "Option {n} ({id})" } # {n} = 칸 순서, {id} = 판의 안 번호(v1…) — 명령줄의 --revise-pick <번호>:<id> 와 같다
+    sectionFallback: { ko: "이 구획", en: "this section" }
+    otherLayout: { ko: "다른 구성", en: "another layout" }
+    changed: { ko: "바뀐 곳", en: "What changes" }
+    change: { ko: "{label}: {from} → {to}", en: "{label}: {from} → {to}" }
+    changeIn: { ko: "{label} · {section}: {from} → {to}", en: "{label} · {section}: {from} → {to}" }
+    open: { ko: "이 사이트 폴더 열기", en: "Open this site folder" }
+    swatchBefore: { ko: "바꾸기 전 색", en: "Colors before" }
+    axisFallback: { ko: "이 항목", en: "This setting" }
+    swatchAfter: { ko: "바꾼 뒤 색", en: "Colors after" }

@@ -34,6 +34,8 @@ const eslintConfig = defineConfig([
     "factory/qa/fixtures/**",
     // 찍어낸 사이트 뼈대(P3-3 Task 9): 레시피·블록을 설치한 사이트 안에서만 import 가 풀린다 — 그 사이트의 next build 가 검사한다
     "factory/stamp/site-template/**",
+    // 소개형 전달물에 더하는 문의 접수 자산(deliver-assets): 찍어낸 사이트 안에서만 import 가 풀린다
+    "factory/stamp/deliver-assets/**",
     "references/**",
     // Sitebrew holds more than web-factory: the other parts have their own tools and checks
     "launch-factory/**",

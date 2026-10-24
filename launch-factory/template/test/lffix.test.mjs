@@ -321,14 +321,14 @@ test("F11 마이그레이션: 공개 표를 만드는 모든 CREATE TABLE 에 �
   assert.ok(files.includes("0010_explicit_rls.sql"))
   const all = files.map((f) => readFileSync(join(dir, f), "utf8")).join("\n")
   const created = new Set([...all.matchAll(/CREATE TABLE "([a-z_]+)"/g)].map((m) => m[1]))
-  // 0010 이 그때까지의 표를 켜고, 그 뒤 새 표(0011~·0012 발신함)는 자기 마이그레이션이 같은 규칙으로 켠다
+  // 0010 이 그때까지의 표를 켜고, 그 뒤 새 표(0011~·0012 발신함·0013 상점 표 넷·0014 예약·푸시·알림 표 셋·0015 후기·검색·파일·뉴스레터 표 넷·0016 예약금 열·0017 문의 답변 표)는 자기 마이그레이션이 같은 규칙으로 켠다
   const rls = new Set([...all.matchAll(/ALTER TABLE "([a-z_]+)" ENABLE ROW LEVEL SECURITY/g)].map((m) => m[1]))
-  assert.equal(created.size, 23)
+  assert.equal(created.size, 35)
   assert.deepEqual([...rls].sort(), [...created].sort())
   const statements = all.split(/\r?\n/).filter((l) => !l.startsWith("--")).join(" ")
   assert.doesNotMatch(statements, /CREATE POLICY|FORCE ROW LEVEL SECURITY/i, "주석 말고 문장에")
   const journal = JSON.parse(readFileSync(join(dir, "meta", "_journal.json"), "utf8"))
-  assert.equal(journal.entries.at(-1).tag, "0012_notice_outbox")
+  assert.equal(journal.entries.at(-1).tag, "0017_inquiry_replies")
   const whens = journal.entries.map((e) => e.when)
   assert.deepEqual(whens, [...whens].sort((a, b) => a - b), "journal 의 when 은 늘어난다")
 })

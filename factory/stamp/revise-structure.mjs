@@ -19,6 +19,8 @@ import { bindCopy, PLACEHOLDER, slotFacts, UI_ROLE, uiNumberKind } from './conte
 import { inputHash } from './run-dir.mjs'
 import { FACT_GATED, hasFact, sectionOf } from './sitemap.mjs'
 import { uiSlotTable } from './ui-copy.mjs'
+import { fill } from '../vocab/fill.mjs'
+import { grammar } from '../vocab/grammar.mjs'
 
 export const STRUCTURE_SCOPES = ['remove', 'add', 'order']
 
@@ -36,17 +38,6 @@ const BEFORE_WORDS = ['위', '앞', '전에', 'above', 'before', 'over', 'ahead 
 const DEST_START = ['맨 위', '맨위', '맨 앞', '맨앞', '맨 처음', '제일 위', '처음', '첫 번째', 'top', 'first', 'beginning']
 const DEST_END = ['맨 아래', '맨아래', '맨 뒤', '맨뒤', '제일 아래', '마지막', '끝', 'bottom', 'last', 'end']
 const DEST_AMBIGUOUS_SECTION_WORDS = new Set(['맨 위', '맨 아래']) // 히어로·푸터 이름표이기도 하다 — 순서 말에서는 자리 말이다
-
-// 기존 SECTION_WORDS 에 없는 이름표(구조 조작이 쓴다). 같은 kind 는 합친다.
-const EXTRA_SECTION_WORDS = [
-  { kind: /^directions$/, words: ['위치', '약도'] },
-  { kind: /^hours/, words: ['영업 시간', '운영시간'] },
-  { kind: /^branches$/, words: ['지점', '매장', 'branches', 'branch'] },
-  { kind: /^departments$/, words: ['진료과', '진료 과목', 'departments', 'department'] },
-  { kind: /^doctors$/, words: ['의료진', 'doctors'] },
-  { kind: /^enterprise$/, words: ['엔터프라이즈', '기업용', 'enterprise'] },
-  { kind: /^changelog$/, words: ['변경 내역', '업데이트 내역', 'changelog', 'release notes'] },
-]
 
 const SA = {
   ko: {
@@ -155,7 +146,7 @@ function nameSections(lc, table, skip = new Set()) {
 
 function mergedTable(t, siteKinds, archKinds) {
   const byKind = new Map()
-  for (const e of [...t.SECTION_WORDS, ...EXTRA_SECTION_WORDS]) {
+  for (const e of [...t.SECTION_WORDS, ...t.EXTRA_SECTION_WORDS]) {
     const k = e.kind.source
     const cur = byKind.get(k)
     byKind.set(k, cur ? { kind: cur.kind, words: [...new Set([...cur.words, ...e.words])] } : { kind: e.kind, words: [...e.words] })
@@ -178,12 +169,12 @@ function choosePage(pageIds, kind, lc, t) {
 // ── 말 → 요청 ───────────────────────────────────────────────────────────────
 
 /**
- * @param {{ raw: string, lc: string, lang: 'ko'|'en', site: object, axes: string[], wantsCopy: boolean, t: object }} a  t: revise.mjs 의 낱말·도우미(has·PAGE_WORDS·SECTION_WORDS)
+ * @param {{ raw: string, lc: string, lang: 'ko'|'en', site: object, wantsCopy: boolean, t: object }} a  t: 낱말·도우미(has·esc·SECTION_WORDS·EXTRA_SECTION_WORDS·PAGE_WORDS — 표는 사전 revise 에서 온다)
  * @returns {object|undefined}  undefined = 구조 말이 아니다
  */
-export function parseStructure({ raw, lc, lang, site, axes, wantsCopy, t }) {
+export function parseStructure({ raw, lc, lang, site, wantsCopy, t }) {
   const L = lang
-  if (axes.length || wantsCopy) return undefined // 색·서체·모션·문구 말은 기존 사상이 맡는다
+  if (wantsCopy) return undefined // 문구 말은 기존 사상이 맡는다
   const removeHit = hasAny(lc, REMOVE_WORDS)
   const addStrong = hasAny(lc, ADD_STRONG)
   const addWeak = hasAny(lc, ADD_WEAK)
@@ -543,9 +534,8 @@ export async function reviseStructure({ ctx, request, n, opts, prefs, now, text,
   const picks = []
   if (plan.scope === 'add') {
     const ranked = await tools.rankSection({ sitemap: plan.sitemap, key: plan.key, head: ctx.cand.recipe, exclude: [], count: n, intent: 'different', preferences: prefs, seed: opts.seed ?? 0 })
-    notes.push(...ranked.notes)
     picks.push(...ranked.picks)
-    if (ranked.picks.length < n) notes.push(`허용 변형이 ${ranked.picks.length}개뿐이다`)
+    if (ranked.picks.length < n) notes.push(fill(grammar.text.section.fewAllowed[lang], { count: ranked.picks.length }))
   } else picks.push(null)
   const variants = []
   for (const [i, block] of picks.entries()) {
@@ -600,6 +590,7 @@ export async function applyStructure({ candDir, board, v, opts }) {
   const uiLeaves = v.block ? (await uiSlotTable([v.block], { locale })).get(v.block) ?? [] : []
   // 학습(구획 교체와 같다): 더하기는 고른 변형이 이기고 다른 안이 진다. 빼기·순서는 변형을 고르지 않는다.
   let learned = 0
+  let learnedPicks
   let prefsNext
   if (plan.scope === 'add') {
     const prefs = loadPreferences({ ...(opts.seedFile ? { seedFile: opts.seedFile } : {}), ...(opts.userFile ? { userFile: opts.userFile } : {}) })
@@ -607,11 +598,12 @@ export async function applyStructure({ candDir, board, v, opts }) {
     const losers = [...new Set(board.variants.filter((x) => x.id !== v.id).map((x) => x.block).filter((b) => b && b !== v.block))]
     for (const loser of losers) prefsNext = recordPick(prefsNext, { archetype: sitemap.archetype, winner: v.block, loser, kind: 'section' })
     learned = losers.length
+    if (losers.length) learnedPicks = { archetype: sitemap.archetype, winner: v.block, losers, kind: 'section' }
   }
   const { pending } = writeStructure({ candDir, plan, archetype, block: v.block ?? null, uiLeaves, preview: false, pin: false })
   if (prefsNext) savePreferences(prefsNext, opts.userFile ? { userFile: opts.userFile } : {})
   const requestFile = join(candDir, '04-content.request.json')
-  const out = { target: plan.key, op: plan.scope, learned, pageOrder: { before: plan.before, after: plan.after }, ...(v.block ? { block: v.block } : {}) }
+  const out = { target: plan.key, op: plan.scope, learned, ...(learnedPicks ? { learnedPicks } : {}), pageOrder: { before: plan.before, after: plan.after }, ...(v.block ? { block: v.block } : {}) }
   if (plan.scope === 'add' && pending.length) {
     return { ...out, waitingCopy: requestFile, next: `새 구획의 문구 칸 ${pending.length}개가 비어 있다 — 문구 에이전트가 ${requestFile} 의 pendingSlots 를 factory/stamp/COPY.md 대로 채운 04-content.json 을 쓴 뒤 같은 --run 으로 찍어내기를 다시 돌린다` }
   }
