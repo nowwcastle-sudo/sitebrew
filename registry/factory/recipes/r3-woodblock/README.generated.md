@@ -6,9 +6,9 @@
 ## 설치
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock#v0.2.1        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock-theme#v0.2.1  # 색만(registry:theme)
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock-alt#v0.2.1    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock#v0.2.2        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock-theme#v0.2.2  # 색만(registry:theme)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock-alt#v0.2.2    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
 ```
 
 부품은 `r3-woodblock-<부품>`(예: `r3-woodblock-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r3-woodblock/r3-woodblock.css` 를 붙인다.

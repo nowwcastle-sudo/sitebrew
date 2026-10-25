@@ -2,7 +2,7 @@
   "$comment": "생성물 — factory/scripts/gen-ai.mjs 로 다시 만든다. 손으로 고치지 않는다.",
   "id": "local",
   "source": "registry/factory/archetypes/local.json",
-  "ref": "v0.2.1",
+  "ref": "v0.2.2",
   "purpose": "손님이 「지금 여는가·어디인가·어떻게 예약하나」를 바로 알고 예약·전화·방문하게 한다.",
   "coreTask": "390×844 화면에서 홈을 열고 스크롤 없이 오늘 영업시간과 주소를 읽어 답한 뒤, 예약(또는 전화) 버튼을 눌러 예약 채널 URL(또는 tel:)에 도달한다. 이어서 두 화면 안에서 네이버 지도나 카카오맵 링크를 찾는다. 합격: 세 단계 성공, 시간·주소 답이 JSON-LD와 일치.",
   "completion": "site",
@@ -330,8 +330,8 @@
     "titleTemplate": "%s | {siteName}",
     "type": "local",
     "install": {
-      "seoMetadata": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/seo-meta#v0.2.1 -y -o",
-      "jsonLdFor": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/geo-entity#v0.2.1 -y -o"
+      "seoMetadata": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/seo-meta#v0.2.2 -y -o",
+      "jsonLdFor": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/geo-entity#v0.2.2 -y -o"
     },
     "usage": "seoMetadata(content, page) → Next Metadata(generateMetadata) · jsonLdFor(content, page) → <script type=\"application/ld+json\">. titleTemplate 의 {siteName} 은 content.site 이름(없으면 원형의 회사·가게·제품·기관 이름)이고, type 은 원형 기본 종류다."
   },
@@ -349,19 +349,19 @@
   ],
   "content": {
     "item": "content-local",
-    "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/content-local#v0.2.1 -y -o"
+    "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/content-local#v0.2.2 -y -o"
   },
   "recipes": {
     "candidates": [
       {
         "id": "r3-woodblock",
         "name": "네도수 목판",
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r3-woodblock#v0.2.2 -y -o"
       },
       {
         "id": "r8-dusk",
         "name": "솔숲 저녁",
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r8-dusk#v0.2.1 -y -o",
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r8-dusk#v0.2.2 -y -o",
         "condition": "헤리티지 업장(한옥 스테이·찻집·수목원·전통 식음)에만 — 병원·일반 카페·미용실은 r3-woodblock"
       }
     ],
@@ -390,7 +390,7 @@
           "submit-pending"
         ],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-account-notification-consents#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-account-notification-consents#v0.2.2 -y -o"
       }
     ],
     "announcement": [
@@ -406,7 +406,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-launch-banner#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-launch-banner#v0.2.2 -y -o"
       },
       {
         "item": "block-announcement-notice-ticker",
@@ -419,7 +419,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-notice-ticker#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-notice-ticker#v0.2.2 -y -o"
       },
       {
         "item": "block-announcement-popup-today",
@@ -432,7 +432,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-popup-today#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-popup-today#v0.2.2 -y -o"
       },
       {
         "item": "block-announcement-top-bar",
@@ -445,7 +445,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-top-bar#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-announcement-top-bar#v0.2.2 -y -o"
       }
     ],
     "bottom-tab": [
@@ -460,7 +460,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-bottom-tab-split-booking-bar#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-bottom-tab-split-booking-bar#v0.2.2 -y -o"
       }
     ],
     "confirmation": [
@@ -475,7 +475,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-confirmation-booking-complete#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-confirmation-booking-complete#v0.2.2 -y -o"
       }
     ],
     "consent": [
@@ -490,7 +490,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-consent-bottom-banner#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-consent-bottom-banner#v0.2.2 -y -o"
       },
       {
         "item": "block-consent-inline-notice",
@@ -503,7 +503,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-consent-inline-notice#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-consent-inline-notice#v0.2.2 -y -o"
       },
       {
         "item": "block-consent-preference-dialog",
@@ -516,7 +516,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-consent-preference-dialog#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-consent-preference-dialog#v0.2.2 -y -o"
       }
     ],
     "contact-form": [
@@ -536,7 +536,7 @@
           "submit-pending"
         ],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-contact-form-channel-first#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-contact-form-channel-first#v0.2.2 -y -o"
       },
       {
         "item": "block-contact-form-inline-short",
@@ -554,7 +554,7 @@
           "submit-pending"
         ],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-contact-form-inline-short#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-contact-form-inline-short#v0.2.2 -y -o"
       },
       {
         "item": "block-contact-form-stepped-booking",
@@ -572,7 +572,7 @@
           "submit-pending"
         ],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-contact-form-stepped-booking#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-contact-form-stepped-booking#v0.2.2 -y -o"
       }
     ],
     "content": [
@@ -589,7 +589,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-content-cards#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-content-cards#v0.2.2 -y -o"
       },
       {
         "item": "block-content-gallery",
@@ -604,7 +604,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-content-gallery#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-content-gallery#v0.2.2 -y -o"
       },
       {
         "item": "block-content-list",
@@ -621,7 +621,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-content-list#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-content-list#v0.2.2 -y -o"
       }
     ],
     "faq": [
@@ -636,7 +636,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-faq-grouped-by-topic#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-faq-grouped-by-topic#v0.2.2 -y -o"
       },
       {
         "item": "block-faq-single-accordion",
@@ -649,7 +649,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-faq-single-accordion#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-faq-single-accordion#v0.2.2 -y -o"
       },
       {
         "item": "block-faq-two-column-index",
@@ -662,7 +662,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-faq-two-column-index#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-faq-two-column-index#v0.2.2 -y -o"
       }
     ],
     "features": [
@@ -678,7 +678,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-features-numbered-steps#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-features-numbered-steps#v0.2.2 -y -o"
       }
     ],
     "final-cta": [
@@ -693,7 +693,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-final-cta-full-band#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-final-cta-full-band#v0.2.2 -y -o"
       },
       {
         "item": "block-final-cta-kinetic-band",
@@ -705,7 +705,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-final-cta-kinetic-band#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-final-cta-kinetic-band#v0.2.2 -y -o"
       },
       {
         "item": "block-final-cta-split-form-hint",
@@ -718,7 +718,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-final-cta-split-form-hint#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-final-cta-split-form-hint#v0.2.2 -y -o"
       }
     ],
     "floating-action": [
@@ -733,7 +733,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-floating-action-call-bar#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-floating-action-call-bar#v0.2.2 -y -o"
       },
       {
         "item": "block-floating-action-chat-launcher",
@@ -746,7 +746,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-floating-action-chat-launcher#v0.2.2 -y -o"
       },
       {
         "item": "block-floating-action-quick-menu-rail",
@@ -759,7 +759,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-floating-action-quick-menu-rail#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-floating-action-quick-menu-rail#v0.2.2 -y -o"
       }
     ],
     "footer": [
@@ -774,7 +774,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-footer-columns-business#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-footer-columns-business#v0.2.2 -y -o"
       },
       {
         "item": "block-footer-compact-strip",
@@ -787,7 +787,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-footer-compact-strip#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-footer-compact-strip#v0.2.2 -y -o"
       }
     ],
     "hero": [
@@ -804,7 +804,7 @@
         "media": [
           "band"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-banded-full-bleed#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-banded-full-bleed#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-crosshair-quadrants",
@@ -816,7 +816,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-crosshair-quadrants#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-crosshair-quadrants#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-framed-card-outline-title",
@@ -831,7 +831,7 @@
         "media": [
           "still"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-framed-card-outline-title#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-framed-card-outline-title#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-grid-lines-baseline-word",
@@ -847,7 +847,7 @@
         "media": [
           "grid"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-grid-lines-baseline-word#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-grid-lines-baseline-word#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-identity-strip-banner",
@@ -859,7 +859,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-identity-strip-banner#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-identity-strip-banner#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-ken-burns-stills",
@@ -874,7 +874,7 @@
         "media": [
           "stills"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-ken-burns-stills#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-ken-burns-stills#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-kinetic-type-video",
@@ -889,7 +889,7 @@
         "media": [
           "video"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-kinetic-type-video#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-kinetic-type-video#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-layered-landscape-logotype",
@@ -902,7 +902,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-layered-landscape-logotype#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-layered-landscape-logotype#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-map-first",
@@ -917,7 +917,7 @@
         "media": [
           "map"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-map-first#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-map-first#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-mascot-greeting",
@@ -932,7 +932,7 @@
         "media": [
           "character"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-mascot-greeting#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-mascot-greeting#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-staggered-oval-frame",
@@ -947,7 +947,7 @@
         "media": [
           "oval"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-staggered-oval-frame#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-staggered-oval-frame#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-vertical-title-slides",
@@ -964,7 +964,7 @@
           "slide-1",
           "slide-2"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-vertical-title-slides#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-vertical-title-slides#v0.2.2 -y -o"
       },
       {
         "item": "block-hero-video-montage",
@@ -979,7 +979,7 @@
         "media": [
           "clips"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-video-montage#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hero-video-montage#v0.2.2 -y -o"
       }
     ],
     "hours-location": [
@@ -994,7 +994,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hours-location-branch-list#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hours-location-branch-list#v0.2.2 -y -o"
       },
       {
         "item": "block-hours-location-hours-table-map-link",
@@ -1008,7 +1008,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hours-location-hours-table-map-link#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hours-location-hours-table-map-link#v0.2.2 -y -o"
       },
       {
         "item": "block-hours-location-today-highlight",
@@ -1021,7 +1021,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hours-location-today-highlight#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-hours-location-today-highlight#v0.2.2 -y -o"
       }
     ],
     "lead-capture": [
@@ -1041,7 +1041,7 @@
           "submit-pending"
         ],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-lead-capture-inline-newsletter#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-lead-capture-inline-newsletter#v0.2.2 -y -o"
       },
       {
         "item": "block-lead-capture-magnet-preview",
@@ -1061,7 +1061,7 @@
         "media": [
           "magnet-cover"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-lead-capture-magnet-preview#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-lead-capture-magnet-preview#v0.2.2 -y -o"
       }
     ],
     "menu-price": [
@@ -1075,7 +1075,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-menu-price-board-columns#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-menu-price-board-columns#v0.2.2 -y -o"
       },
       {
         "item": "block-menu-price-category-tabs",
@@ -1087,7 +1087,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-menu-price-category-tabs#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-menu-price-category-tabs#v0.2.2 -y -o"
       },
       {
         "item": "block-menu-price-photo-rows",
@@ -1101,7 +1101,7 @@
         "media": [
           "menu-photo"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-menu-price-photo-rows#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-menu-price-photo-rows#v0.2.2 -y -o"
       }
     ],
     "nav": [
@@ -1115,7 +1115,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-nav-centered-mark#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-nav-centered-mark#v0.2.2 -y -o"
       },
       {
         "item": "block-nav-inline-links",
@@ -1128,7 +1128,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-nav-inline-links#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-nav-inline-links#v0.2.2 -y -o"
       }
     ],
     "product-list": [
@@ -1152,7 +1152,7 @@
         "media": [
           "product-thumb"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-product-list-grid-cards#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-product-list-grid-cards#v0.2.2 -y -o"
       },
       {
         "item": "block-product-list-ranked-list",
@@ -1172,7 +1172,7 @@
         "media": [
           "product-thumb"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-product-list-ranked-list#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-product-list-ranked-list#v0.2.2 -y -o"
       }
     ],
     "referral": [
@@ -1187,7 +1187,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-referral-share-sheet#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-referral-share-sheet#v0.2.2 -y -o"
       }
     ],
     "review-list": [
@@ -1202,7 +1202,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-review-list-distribution-filter#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-review-list-distribution-filter#v0.2.2 -y -o"
       },
       {
         "item": "block-review-list-photo-gallery",
@@ -1217,7 +1217,7 @@
         "media": [
           "review-photo"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-review-list-photo-gallery#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-review-list-photo-gallery#v0.2.2 -y -o"
       }
     ],
     "social-proof": [
@@ -1235,7 +1235,7 @@
         "media": [
           "person"
         ],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-social-proof-quote-wall#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-social-proof-quote-wall#v0.2.2 -y -o"
       },
       {
         "item": "block-social-proof-rating-summary",
@@ -1249,7 +1249,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-social-proof-rating-summary#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-social-proof-rating-summary#v0.2.2 -y -o"
       },
       {
         "item": "block-social-proof-whip-quotes",
@@ -1262,7 +1262,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-social-proof-whip-quotes#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-social-proof-whip-quotes#v0.2.2 -y -o"
       }
     ],
     "trust": [
@@ -1277,7 +1277,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-author-byline#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-author-byline#v0.2.2 -y -o"
       },
       {
         "item": "block-trust-brand-fact-sheet",
@@ -1291,7 +1291,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-brand-fact-sheet#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-brand-fact-sheet#v0.2.2 -y -o"
       },
       {
         "item": "block-trust-guarantee-strip",
@@ -1305,7 +1305,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-guarantee-strip#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-guarantee-strip#v0.2.2 -y -o"
       },
       {
         "item": "block-trust-payment-trust-panel",
@@ -1323,7 +1323,7 @@
           "submit-pending"
         ],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-payment-trust-panel#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-payment-trust-panel#v0.2.2 -y -o"
       },
       {
         "item": "block-trust-verified-business-strip",
@@ -1336,7 +1336,7 @@
         ],
         "states": [],
         "media": [],
-        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-verified-business-strip#v0.2.1 -y -o"
+        "install": "npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/block-trust-verified-business-strip#v0.2.2 -y -o"
       }
     ]
   },

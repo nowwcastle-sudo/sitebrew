@@ -31,6 +31,29 @@ Two rules hold in every step:
 - Nothing on the site changes before the user picks an alternative (step 5). Say so if the user worries.
 - Never make up a reading outside the dictionary, and always show your reading to the user before the alternatives are built.
 
+Exit codes of the revise commands of `npm run stamp` (`--revise…` and `--redraw-wider`; the steps below say what to do with each):
+
+| Code | Meaning |
+|---|---|
+| 0 | Done: a pick or an undo was applied, `--redraw-wider` drew the directions again, or a plain `--revise` built alternatives straight from the dictionary. |
+| 1 | The tool failed, or the run folder has no built site yet (step 06 is missing). |
+| 2 | The arguments or the readings JSON are wrong, or `--redraw-wider` has no earlier run to redo. Nothing was changed. |
+| 3 | Not an error: the tool waits for a person or for the agent. Look for one of the markers below in the output (a `참고:` line or a log line may come first). |
+
+What exit code 3 means, by what the output shows:
+
+| The output shows | Meaning | Where |
+|---|---|---|
+| JSON and a `해석:` line (`--explain`) | The classification of a design sentence, or the request itself for a section, structure or copy sentence. | step 1 |
+| An alternatives list with `고르려면:` | The alternatives are ready to compare and pick. | step 4 |
+| `질문:` | The tool needs one answer from the user. Ask it as printed; nothing was changed. | steps 1, 4, "Sections, structure and copy" |
+| `대기: 문구 수정 요청` or `대기:` after a pick | Some texts must be written by following `factory/stamp/COPY.md`; then run the same command again. | "Sections, structure and copy" |
+| 「이 안을 만든 뒤에 사이트가 바뀌어서 지금과 맞지 않아요…」 | The site changed after the alternatives were built. Build them again with the same words. | step 5 |
+| A question about what should be different (after a pick of `none`) | Nothing applied. Put the answer into a new sentence and start again at step 1. | step 5 |
+| `되돌릴 수정이 없어요.` | Nothing to undo. | step 6 |
+| A message that the directions cannot get more different, or that picking them again would drop an applied design change | Nothing changed. Offer a specific change, or undo the applied changes first. | step 7 |
+| A message that the copy answer failed the content checks (length, tone, example-text mark) | Nothing was written. The tool prints the problems; fix the answer file and run the same command again. | "Sections, structure and copy", "Limits to say out loud" |
+
 ## Design requests: seven steps
 
 A design request is a wish about the look: spacing, colour, type, size, corners, depth, motion, a feel such as "고급스럽게", a likeness such as "2번 시안처럼", for the whole site, one page or one section. Adding, removing or moving a section and rewriting copy keep their own commands (last part of this file).

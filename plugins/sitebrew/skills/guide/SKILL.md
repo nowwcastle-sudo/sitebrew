@@ -28,8 +28,10 @@ If this command cannot run at all (no command tool, or `${CLAUDE_PLUGIN_ROOT}` i
 
 | Part | Where | Pinned tag | Role |
 |---|---|---|---|
-| web-factory | the repository root | `v0.2.1` | A shadcn registry. It holds the official shadcn components rebuilt on Base UI with baseline UI rules, recipes (visual styles), blocks (page sections), archetypes (site types) and a `stamp` command that turns a short brief into site candidates. |
-| launch-factory | the `launch-factory/` folder | `v0.2.1` | The back-end launch kit: auth, data, payments, email, analytics and jobs as `@launch-factory/*` packages, plus a `template/` Next.js app. It has its own `package.json` and `npm ci`; installing the root does not install it. |
+| web-factory | the repository root | `v0.2.2` | A shadcn registry. It holds the official shadcn components rebuilt on Base UI with baseline UI rules, recipes (visual styles), blocks (page sections), archetypes (site types) and a `stamp` command that turns a short brief into site candidates. |
+| launch-factory | the `launch-factory/` folder | `v0.2.2` | The back-end launch kit: auth, data, payments, email, analytics and jobs as `@launch-factory/*` packages, plus a `template/` Next.js app. It has its own `package.json` and `npm ci`; installing the root does not install it. |
+
+Both parts live in the one Sitebrew repository, so they carry the same public tag. The version numbers that `compat.json` lists under `internal` are the numbers the two parts carry as separate internal projects; they are for maintainers and are not a second version for the user.
 
 The install addresses in this guide name the GitHub account that hosts the Sitebrew repository. Use them as written.
 
@@ -42,7 +44,7 @@ The install addresses in this guide name the GitHub account that hosts the Siteb
 
 ## Rules to follow in every case
 
-- Pin to the tag. Write install addresses as `nowwcastle-sudo/sitebrew/<item>#v0.2.1`. An address without `#tag` reads the default branch and mixes versions.
+- Pin to the tag. Write install addresses as `nowwcastle-sudo/sitebrew/<item>#v0.2.2`. An address without `#tag` reads the default branch and mixes versions.
 - Check the Node version first: Node `>=24.13.0` and npm `>=11.6.2`. `npm run setup` reports what is missing and prints the install command for the user's OS. It does not install system software.
 - Confirm shadcn CLI syntax in the repository README before you change a command. The READMEs pin `npx shadcn@4.22.1`.
 - Never ask the user to paste a key value into the chat, and never print one. Tell the user which environment variable name to set and let them set it. Report only whether a name is set and its length (`node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs"` does exactly that).

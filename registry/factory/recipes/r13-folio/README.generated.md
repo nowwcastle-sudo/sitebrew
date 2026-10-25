@@ -6,9 +6,9 @@
 ## 설치
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r13-folio#v0.2.1        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r13-folio-theme#v0.2.1  # 색만(registry:theme)
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r13-folio-alt#v0.2.1    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r13-folio#v0.2.2        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r13-folio-theme#v0.2.2  # 색만(registry:theme)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r13-folio-alt#v0.2.2    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
 ```
 
 부품은 `r13-folio-<부품>`(예: `r13-folio-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r13-folio/r13-folio.css` 를 붙인다.

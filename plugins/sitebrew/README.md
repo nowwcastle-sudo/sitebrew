@@ -8,15 +8,15 @@ sitebrew is a Claude Code plugin with five skills. They guide you through web-fa
 
 | Part | Tag |
 |---|---|
-| web-factory | `v0.2.1` |
-| launch-factory | `v0.2.1` |
+| web-factory | `v0.2.2` |
+| launch-factory | `v0.2.2` |
 
 ## Install
 
 From the marketplace in this repository:
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.2
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ To try it without installing, start Claude Code with `claude --plugin-dir <path>
 In Codex, add the marketplace first and then the plugin (`codex plugin --help` lists both commands):
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -38,8 +38,10 @@ The session hook that copies plugin options into the shell is for Claude Code on
 | `new` | Answer a few questions and get three site candidates to compare and pick from. |
 | `revise` | Change one section, one design axis or one piece of copy of a built site. |
 | `deliver` | Copy the chosen site into your own folder, with a README that lists what to fix before publishing. |
-| `doctor` | See what is missing on your computer and how to fix it, in Korean and English. |
+| `doctor` | See what is missing on your computer and how to fix it, in Korean and English. It installs nothing; installing is the `setup` skill. |
+| `setup` | Install what Sitebrew needs (Node.js, Git, a browser, the Sitebrew folder), one item at a time and only after you say yes to each. |
 | `preview` | Open a delivered site on a temporary public address for a while, with no account, key or cost. |
+| `runbook` | After you decide to really use the site: which outside services to register with, in what order, what each one costs by kind, and what stops if you skip it. |
 | `guide` | Install web-factory parts, start the launch-factory template, find out which keys exist. |
 
 Start with these two:
@@ -80,7 +82,7 @@ Setting up the kit downloads the repository from GitHub and packages from the np
 
 ## What sitebrew does
 
-- Installs web-factory parts into a Next.js project with `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.1 -y -o`.
+- Installs web-factory parts into a Next.js project with `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.2 -y -o`.
 - Walks you through `npm run stamp`, which turns a brief into site candidates.
 - Starts the launch-factory template in mock mode, then lists what live mode needs.
 - Tells you which keys you must create yourself. It lists names only and never asks you for a value.

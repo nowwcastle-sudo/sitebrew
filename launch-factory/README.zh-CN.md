@@ -4,7 +4,7 @@
 
 这是与 web-factory（界面区块仓库）配套的上线套件，后端的认证、数据、支付、邮件、埋点和任务由本仓库负责。产品从复制 `template/` 开始，只需升级 `@launch-factory/*` 包版本，就能获得安全补丁。
 
-当前版本 `v0.2.1` · web-factory 固定 `v0.2.1` · 区块 `65b33823` · contract `65b33823`（标签 v0.2.1 的提交）
+当前版本 `v0.2.2` · web-factory 固定 `v0.2.2` · 区块 `a7d57537` · contract `a7d57537`（标签 v0.2.2 的提交）
 
 - 区块不了解具体的服务商，由适配器实现 web-factory 的端口。同一套一致性测试用来检查适配器能否复现与 mock 相同的场景。
 - 功能包（适配器、Server Action、Webhook 路由、schema、迁移）由 `registry.json` 中的一个条目打包。版本固定的记录见 [`docs/versions.md`](docs/versions.md)。
@@ -125,4 +125,4 @@ git diff template/package.json
 
 | 标签 | 日期 | 内容 | 记录 |
 |---|---|---|---|
-| `v0.2.1` | 2026-10-25 | launch-factory v0.2.2 (internal version) · 补丁版本：shadcn 4.22.1 精确固定为一个版本（消除嵌套 zod 公告及其 OSV 例外）· web-factory 固定为 `v0.2.1` | — |
+| `v0.2.2` | 2026-10-25 | launch-factory v0.2.2 (internal version) · 补丁版本：shadcn 4.22.1 精确固定为一个版本（消除嵌套 zod 公告及其 OSV 例外）· web-factory 固定为 `v0.2.2` | — |

@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Installs what Sitebrew needs on the user's computer, one item at a time and only after the user says yes to that item - Node.js, Git, a browser for the quality checks, the Sitebrew clone at the pinned tag and its packages (winget on Windows, Homebrew on macOS; Linux steps are shown, never run). In a chat window that cannot run commands it gives the same steps to paste into the user's own terminal, with what to see when each one works. Use when something is missing, on a new computer, or before the first site. Trigger phrases - "set up Sitebrew", "install what is needed", "get my computer ready for Sitebrew", "prepare my computer", "설치해 줘", "환경 설치", "처음 설정", "준비해 줘", "필요한 거 깔아 줘".
+description: Installs what Sitebrew needs on the user's computer, one item at a time and only after the user says yes to that item - Node.js, Git, a browser for the quality checks, the Sitebrew clone at the pinned tag and its packages (winget on Windows, Homebrew on macOS; Linux steps are shown, never run). In a chat window that cannot run commands it gives the same steps to paste into the user's own terminal, with what to see when each one works. Use when something is missing, on a new computer, or before the first site. Trigger phrases - "set up Sitebrew", "install what is needed", "get my computer ready for Sitebrew", "prepare my computer", "install git", "install node", "설치해 줘", "환경 설치", "처음 설정", "준비해 줘", "필요한 거 깔아 줘", "깃 설치해 줘", "노드 설치해 줘".
 ---
 
 # Set up the computer for Sitebrew
@@ -48,7 +48,7 @@ A Sitebrew-like folder that is not a release, and a development commit, are left
 
 ### 2. Ask for each item, then run it
 
-Ask **one item at a time**, in the order of the plan. Say in one sentence what the item installs and whether Windows or the system may ask for the administrator password (a step with `mayElevate: true` may start a second try that the system answers with such a prompt). When the item has a `where` folder, name it, so the user knows where it lands. Then ask 「설치해도 될까요?」 (in the user's language) and wait. Never install in the same turn as the question.
+Ask **one item at a time**, in the order of the plan. Say in one sentence what the item installs and whether Windows or the system may ask for the administrator password (a step with `mayElevate: true` may start a second try that the system answers with such a prompt). When the item has a `where` folder, name it, so the user knows where it lands. Then ask 「설치해도 될까요?」 (in the user's language) and wait. **No, silence or an unclear answer means: install nothing for that item.** Never install in the same turn as the question.
 
 After a **yes** for that item only:
 

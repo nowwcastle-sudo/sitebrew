@@ -59,10 +59,10 @@ winget install --id Google.Chrome -e --source winget --accept-package-agreements
 
 **4. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.1 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.2 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```powershell
-git clone --branch v0.2.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
@@ -122,10 +122,10 @@ brew install --cask google-chrome
 
 **4. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.1 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.2 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```bash
-git clone --branch v0.2.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
@@ -189,10 +189,10 @@ sudo apt install chromium
 
 **4. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.1 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.2 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```bash
-git clone --branch v0.2.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
@@ -258,10 +258,10 @@ When it works: It worked if Chrome opens from the start menu or the applications
 
 **4. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.1. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.2. A sitebrew folder is created in the current folder.
 
 ```powershell
-git clone --branch v0.2.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
@@ -321,10 +321,10 @@ When it works: It worked if Chrome opens from the start menu or the applications
 
 **4. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.1. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.2. A sitebrew folder is created in the current folder.
 
 ```bash
-git clone --branch v0.2.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
@@ -388,10 +388,10 @@ When it works: It worked if Chrome opens from the start menu or the applications
 
 **4. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.1. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.2. A sitebrew folder is created in the current folder.
 
 ```bash
-git clone --branch v0.2.1 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.

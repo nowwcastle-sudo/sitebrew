@@ -3,6 +3,9 @@
   "repository": "https://github.com/nowwcastle-sudo/sitebrew.git",
   "engines": { "node": ">=24.13.0", "npm": ">=11.6.2" },
   "guides": {
+    "0.2.2": {
+      "sitebrew": { "tag": "v0.2.2", "status": "pending-release", "range": ">=0.2.0 <0.3.0" }
+    },
     "0.2.1": {
       "sitebrew": { "tag": "v0.2.1", "status": "pending-release", "range": ">=0.2.0 <0.3.0" }
     },

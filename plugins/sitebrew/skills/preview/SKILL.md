@@ -85,7 +85,7 @@ Run it **in the background**. It waits until the address is ready or the attempt
 
 Relay every sentence of `notices` **verbatim**, in the user's language. If the user's language is neither Korean nor English, use `--lang en` and translate sentence by sentence without dropping one: the four limits (anyone can open it, when it closes, the address changes, fake data only) must always be there. Then give the address on its own line and say when it closes.
 
-Do not name the helper tool or the service behind it. The `trycloudflare.com` address itself is fine. Do not paste the log or any absolute path.
+Do not name the helper tool or the service behind it in what you tell the user in agent mode. The `trycloudflare.com` address itself is fine. Do not paste the log or any absolute path. The one exception is the commands of `references/own-computer.md`, wherever you give them (chatbot mode, or the fallback in steps 2 and 4): the user types them in their own terminal, so they must name the tool.
 
 If the user wants an address that lasts, say that this one is temporary and that the hosting chapter of the runbook covers it. When the user then asks 「이제 진짜 주소는?」 (or "what is the real address?"), that is a trigger of the `runbook` skill: go on with it. Do not start the runbook yourself without that question.
 

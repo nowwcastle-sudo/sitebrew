@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from "node:url"
 
 // web-factory is the root of this repository (launch-factory/scripts/lib -> three folders up)
 const WF_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..", "..")
-export const WF_CONFORMANCE_COMMIT = "65b33823c09c969e6c44a33b7e954089e0844bd9"
+export const WF_CONFORMANCE_COMMIT = "a7d57537d9d833b06b74263599d93ac385e478eb"
 const BASE = "registry/factory/contract/conformance"
 const FILES = {
   "billing.ts": `${BASE}/billing.ts`,

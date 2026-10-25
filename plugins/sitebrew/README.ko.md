@@ -8,15 +8,15 @@ sitebrew 는 스킬 다섯 개를 담은 Claude Code 플러그인이다. 스킬�
 
 | 부분 | 태그 |
 |---|---|
-| web-factory | `v0.2.1` |
-| launch-factory | `v0.2.1` |
+| web-factory | `v0.2.2` |
+| launch-factory | `v0.2.2` |
 
 ## 설치
 
 이 저장소의 마켓플레이스로 설치한다.
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.1
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.2
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew 는 스킬 다섯 개를 담은 Claude Code 플러그인이다. 스킬�
 Codex 에서는 마켓플레이스를 먼저 추가한 뒤 플러그인을 설치한다 (두 명령은 `codex plugin --help` 에 나온다).
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.1
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.2
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -38,8 +38,10 @@ codex plugin add sitebrew@sitebrew
 | `new` | 질문 몇 개에 답하면 사이트 후보 세 개를 만들어 비교하고 고르게 한다. |
 | `revise` | 만든 사이트의 구획 하나, 디자인 축 하나, 문구 하나만 바꾼다. |
 | `deliver` | 고른 사이트를 내 폴더로 복사하고, 공개 전에 고칠 것을 적은 README 를 넣는다. |
-| `doctor` | 내 컴퓨터에 빠진 것과 고치는 법을 한국어·영어로 알린다. |
+| `doctor` | 내 컴퓨터에 빠진 것과 고치는 법을 한국어·영어로 알린다. 직접 설치하지는 않고, 설치는 `setup` 스킬이 한다. |
+| `setup` | Sitebrew 에 필요한 것(Node.js, Git, 브라우저, Sitebrew 폴더)을 하나씩, 항목마다 승낙을 받은 뒤에만 설치한다. |
 | `preview` | 받은 사이트를 계정·키·비용 없이 임시 공개 주소로 잠깐 열어 남에게 보여 준다. |
+| `runbook` | 사이트를 실제로 쓰기로 정한 뒤, 어떤 외부 서비스에 어떤 순서로 가입하는지, 각각 어떤 종류의 비용이 드는지, 건너뛰면 무엇이 멈추는지 안내한다. |
 | `guide` | web-factory 부품을 설치하고, launch-factory 템플릿을 켜고, 어떤 키가 있는지 알려 준다. |
 
 먼저 이 둘을 쓴다.
@@ -80,7 +82,7 @@ codex plugin add sitebrew@sitebrew
 
 ## sitebrew 가 하는 일
 
-- `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.1 -y -o` 로 web-factory 부품을 Next.js 프로젝트에 설치한다.
+- `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.2 -y -o` 로 web-factory 부품을 Next.js 프로젝트에 설치한다.
 - 브리프를 사이트 후보로 바꾸는 `npm run stamp` 를 단계별로 안내한다.
 - launch-factory 템플릿을 mock 모드로 켜고, live 모드에 필요한 것을 정리해 준다.
 - 직접 만들어야 하는 키를 알려 준다. 이름만 알려 주고 값은 묻지 않는다.

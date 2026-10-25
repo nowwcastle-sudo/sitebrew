@@ -107,7 +107,7 @@ Use this when the block "Where this runs" says `chatbot`. Copying the site is a 
 1. Ask for the target folder (it must not exist or be empty; spaces and Korean characters are fine) and whether to run the completion check first (the same yes/no question as above).
 2. Give the command for the user to paste inside the `sitebrew` folder, with their folder in quotes: `node factory/stamp/deliver.mjs --run out/my-site --pick a --to "<target folder>"` (`--check-loop` only after a yes).
 3. Say what they should see: a new folder with the site and a `README.md` (Korean, then English) that lists the run commands and the things to fix before publishing. Ask them to paste the printed blockers so you can put them into plain words.
-4. An online preview link needs the `preview` skill and a command tool. Say so and offer the steps for the user's own computer.
+4. An online preview link (section 3, `--deploy-preview`) needs the Vercel access that section 3 names on the user's own computer, and it is skipped for a product site. The copy of step 2 has already run, so `--deploy-preview` goes into the step-2 command before the copy (the target folder must be empty). Say so. This is not the `preview` skill: that one opens a temporary public address from the delivered folder and needs no account, so offer it only when the user asks to show the site to someone for a while.
 
 ## Last step: the door to the runbook
 
