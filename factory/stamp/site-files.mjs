@@ -55,7 +55,7 @@ export async function writeFavicons(siteDir, head, brandName, opts = {}) {
   const { icon } = recipeColors(head)
   const mark = markSvg(brandName, opts)
   const written = await genFavicons({ svg: mark.svg, ...icon, out: siteDir })
-  return { markSource: mark.source, files: written }
+  return { markSource: mark.source, svg: mark.svg, files: written }
 }
 
 /** favicon-kit 이 계획하는 파일 경로(시험이 비교한다). */

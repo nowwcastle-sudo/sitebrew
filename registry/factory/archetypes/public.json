@@ -10,6 +10,7 @@
     {
       "id": "main",
       "route": "/",
+      "kind": "other",
       "sections": [
         {
           "kind": "hero",
@@ -264,6 +265,7 @@
     {
       "id": "sub",
       "route": "/guide",
+      "kind": "other",
       "sections": [
         {
           "kind": "breadcrumb",

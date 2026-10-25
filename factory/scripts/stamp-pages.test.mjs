@@ -289,7 +289,8 @@ test('메타·JSON-LD: 모든 쪽이 노드에서 만들어지고(seoMetadata·j
   const site = siteJsonOf(LS.siteDir)
   assert.equal(site.pages['/'].type, 'home')
   assert.equal(site.pages['/privacy'].type, 'legal')
-  assert.equal(site.pages['/booking/complete'].noindex, true)
+  assert.equal(site.pages['/booking/complete'].type, 'app') // 색인 제외는 종류 기본값(KIND_POLICY)이 정한다 — site.json 에 noindex 를 적지 않는다
+  assert.equal(site.pages['/booking/complete'].noindex, undefined)
   assert.equal(site.locale, 'ko')
   assert.match(read(LS.siteDir, 'app', 'layout.tsx'), /<MotionBoot \/>/)
   assert.match(read(LS.siteDir, 'app', 'layout.tsx'), /suppressHydrationWarning/)

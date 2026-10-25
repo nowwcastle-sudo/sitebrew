@@ -4,7 +4,7 @@
 
 web-factory(画面ブロックのリポジトリ)と対になるリリースキットです。認証・データ・決済・メール・計測・ジョブといったバックエンド側を、このリポジトリが担います。プロダクトは `template/` を複製して始め、`@launch-factory/*` パッケージのバージョンだけを上げてセキュリティパッチを受け取ります。
 
-現在のバージョン `v0.2.0` · web-factory 固定 `v0.2.0` · ブロック `f2174f6e` · contract `f2174f6e`（タグ v0.2.0 のコミット）
+現在のバージョン `v0.2.1` · web-factory 固定 `v0.2.1` · ブロック `65b33823` · contract `65b33823`（タグ v0.2.1 のコミット）
 
 - ブロックはプロバイダーを知らず、アダプターが web-factory のポートを実装します。同じ適合性スイートで、アダプターが mock と同じシナリオを再現するかを検査します。
 - 機能バンドル(アダプター・サーバーアクション・Webhook ルート・スキーマ・マイグレーション)は、`registry.json` のエントリ1つにまとめられています。バージョンを固定した内訳は [`docs/versions.md`](docs/versions.md) にあります。
@@ -125,4 +125,4 @@ git diff template/package.json
 
 | タグ | 日付 | 内容 | 記録 |
 |---|---|---|---|
-| `v0.2.0` | 2026-10-24 | launch-factory v0.2.1 (internal version) · セキュリティパッチ：next 16.4.3、zod 4.6.7、body-parser・fast-uri・undici の更新 · web-factory を `v0.2.0` に固定 | — |
+| `v0.2.1` | 2026-10-25 | launch-factory v0.2.2 (internal version) · パッチ版：shadcn 4.22.1 を厳密な1つの版に固定（入れ子の zod 公告とその OSV 例外を解消）· web-factory を `v0.2.1` に固定 | — |

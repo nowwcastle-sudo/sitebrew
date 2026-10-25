@@ -85,8 +85,12 @@ const Section = z.object({
   if (!bound && !s.noBlock) ctx.addIssue({ code: "custom", path: ["noBlock"], message: "블록이 없는 섹션은 noBlock 으로 이유를 적는다" })
   if (bound !== (s.blockKinds.length > 0)) ctx.addIssue({ code: "custom", path: ["blockKinds"], message: "blockKinds 와 allowedVariants 는 함께 있거나 함께 없다" })
 })
+/** 쪽 종류 — registry/factory/ax/seo-meta.ts 의 PAGE_KINDS 와 같은 목록이다(seo-kind.test.mjs 가 둘이 같은지 본다). 색인·JSON-LD 정책은 그쪽 KIND_POLICY·JSONLD_BY_PAGE 가 정한다. */
+export const PAGE_KINDS = ["home", "about", "product", "pricing", "location", "article", "contact", "legal", "list", "other", "campaign", "app"]
 const Page = z.object({
   id: z.string(), route: z.string().startsWith("/"),
+  /** 이 쪽의 SEO 종류. 기본값을 두지 않는다 — 빠진 쪽이 조용히 「other」로 색인되는 길을 막는다 */
+  kind: z.enum(PAGE_KINDS),
   /** 없으면 v0. v0.2 쪽은 찍어내기가 사이트맵에 넣지 않는다(commerce 장바구니 — C44) */
   phase: z.enum(["v0", "v0.2"]).optional(),
   sections: z.array(Section).min(1),

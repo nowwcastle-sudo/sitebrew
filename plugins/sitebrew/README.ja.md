@@ -8,15 +8,15 @@ sitebrew は、スキルを 5 つ備えた Claude Code プラグインです。�
 
 | 部分 | タグ |
 |---|---|
-| web-factory | `v0.2.0` |
-| launch-factory | `v0.2.0` |
+| web-factory | `v0.2.1` |
+| launch-factory | `v0.2.1` |
 
 ## インストール
 
 このリポジトリのマーケットプレイスからインストールします。
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.0
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.1
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew は、スキルを 5 つ備えた Claude Code プラグインです。�
 Codex では、先にマーケットプレイスを追加してからプラグインをインストールします（2 つのコマンドは `codex plugin --help` に出ます）。
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.0
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.1
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -80,7 +80,7 @@ codex plugin add sitebrew@sitebrew
 
 ## sitebrew ができること
 
-- `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.2.0 -y -o` で、web-factory の部品を Next.js プロジェクトに入れます。
+- `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.1 -y -o` で、web-factory の部品を Next.js プロジェクトに入れます。
 - ブリーフからサイト候補を作る `npm run stamp` を、手順に沿って案内します。
 - launch-factory のテンプレートを mock モードで起動し、live モードに必要なものを一覧にします。
 - 自分で用意すべきキーを教えます。示すのは名前だけで、値は聞きません。

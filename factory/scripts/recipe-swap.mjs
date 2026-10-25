@@ -1,6 +1,6 @@
 // 레시피 교체 실험(T9-c2): 새 소비자 한 곳에 레시피 두 벌을 차례로 add 하고 빌드한다.
 // 사용: node factory/scripts/recipe-swap.mjs [--work <폴더>] [--keep]   (= npm run qa:swap -- …)
-//   1. 저장소 로컬 빌드: npx shadcn@4.21.0 build -o <work>/r0
+//   1. 저장소 로컬 빌드: npx shadcn@<package.json 핀> build -o <work>/r0
 //   2. 두 번째 레시피(시험용 고정물 factory/scripts/fixtures/recipes/good-swap, id t13-swap — 게시하지 않는다)를
 //      <work>/fx 에 컴파일하고 따로 shadcn build(<work>/fx/registry/factory/r 에서)
 //   3. 두 빌드를 <work>/localreg 로 합치며 의존 주소 nowwcastle-sudo/sitebrew/<이름>#vX 를 ../localreg/<이름>.json 으로 바꾼다
@@ -13,9 +13,10 @@ import { join, dirname } from 'node:path'
 import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { parseRecipe, buildRecipe, knownRegistryItems } from './recipe.mjs'
+import { shadcnSpec } from './lib/pins.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
-export const SHADCN = 'shadcn@4.21.0'
+const SHADCN = shadcnSpec()
 export const FIXTURE = join(ROOT, 'factory', 'scripts', 'fixtures', 'recipes', 'good-swap', 'DESIGN.md')
 export const FIRST = 'r1-measure'
 // 고정물 good-swap 의 표지 값 — r1-measure 와 다르다(본문 서체 Noto Sans KR, 라이트 primary)

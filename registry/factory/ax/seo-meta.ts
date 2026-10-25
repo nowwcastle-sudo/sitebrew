@@ -2,8 +2,31 @@ import type { Metadata } from "next"
 import { NEEDS_CHECK, type SiteInput } from "@/registry/factory/content/content-core"
 
 /** 페이지 종류 — 메타(og:type)와 JSON-LD 표(geo-entity `JSONLD_BY_PAGE`)가 같은 목록을 쓴다. */
-export const PAGE_KINDS = ["home", "about", "product", "pricing", "location", "article", "contact", "legal", "list", "other"] as const
+export const PAGE_KINDS = ["home", "about", "product", "pricing", "location", "article", "contact", "legal", "list", "other", "campaign", "app"] as const
 export type PageKind = (typeof PAGE_KINDS)[number]
+
+/**
+ * 종류별 기본 색인 정책 — 「색인에서 뺄 종류」의 유일한 주인이다.
+ * campaign = 광고·캠페인 도착 쪽(검색 유입이 아니라 광고로 오는 쪽이라 중복 콘텐츠가 되기 쉽다, C411),
+ * app = 로그인한 사람용 화면(가입·로그인·온보딩·계정·결제·해지·예약 완료).
+ */
+export const KIND_POLICY: Record<PageKind, { noindex: boolean }> = {
+  home: { noindex: false },
+  about: { noindex: false },
+  product: { noindex: false },
+  pricing: { noindex: false },
+  location: { noindex: false },
+  article: { noindex: false },
+  contact: { noindex: false },
+  legal: { noindex: false },
+  list: { noindex: false },
+  other: { noindex: false },
+  campaign: { noindex: true },
+  app: { noindex: true },
+}
+
+/** 색인되는 쪽인가. 쪽이 `noindex` 를 직접 적었으면 그 값이 종류 기본값보다 앞선다. 메타(robots)와 사이트맵이 모두 이 함수 하나만 부른다. */
+export const isIndexed = (p: { type: PageKind; noindex?: boolean }): boolean => !(p.noindex ?? KIND_POLICY[p.type].noindex)
 
 /** 페이지 한 쪽의 SEO 입력. 제목·설명·갱신일은 화면과 같은 콘텐츠 값을 넘긴다(J9). */
 export interface SeoPage {
@@ -16,7 +39,7 @@ export interface SeoPage {
   ogImage?: string
   /** YYYY-MM-DD — 화면 「업데이트」·JSON-LD dateModified·sitemap lastmod 가 이 값 하나에서 나온다(freshness) */
   updatedAt?: string
-  /** 색인 제외. 법정 페이지(약관·개인정보 처리방침)는 끄지 않는다 */
+  /** 색인 제외를 직접 정한다. 없으면 종류 기본값(KIND_POLICY — campaign·app 은 제외). 법정 페이지(약관·개인정보 처리방침)는 끄지 않는다 */
   noindex?: boolean
   /** 이 쪽 화면에 가격이 보이는지. `false` 면 JSON-LD 는 가격(Offer)을 싣지 않는다(X4·DESIGN §12-A — 화면에 없는 가격을 구조화 데이터에 두지 않는다). 없으면 예전대로 싣는다 */
   showsPrice?: boolean
@@ -91,7 +114,7 @@ export function seoMetadata(c: SeoContent, page: SeoPage): Metadata {
       images: [{ url: image, ...OG_SIZE, alt: title }],
     },
     twitter: { card: "summary_large_image", title, description, images: [image] },
-    robots: { index: !page.noindex, follow: true },
+    robots: { index: isIndexed(page), follow: true },
     ...(verify ? { verification: { ...(v.google ? { google: v.google } : {}), ...(Object.keys(other).length ? { other } : {}) } } : {}),
   }
 }

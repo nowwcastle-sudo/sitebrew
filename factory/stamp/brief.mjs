@@ -16,7 +16,14 @@ export const REQUIRED_FACTS = {
   detail: ['name', 'price', 'seller', 'bizNo'],
 }
 export const DEFAULT_REQUIRED = ['name', 'email']
-export const requiredFacts = (archetypeId) => REQUIRED_FACTS[archetypeId] ?? DEFAULT_REQUIRED
+
+// 행사형 랜딩(C416) — 일시·장소가 있어야 한다. 행사형 판정: landing 이고, 일시·장소 사실 중 하나라도 있거나 주제가 행사를 가리킬 때.
+// 그 밖의 랜딩(출시 대기 명단 등)은 영향이 없다 — 원형 JSON 에 행사 표지를 따로 만들지 않는다.
+export const EVENT_FACTS = ['eventDate', 'eventVenue']
+const EVENT_TOPIC = /행사|박람회|북페어|컨퍼런스|세미나|워크숍|축제|공연|전시회|밋업|\b(?:conference|festival|workshop|meetup|expo|summit)\b/i
+const filled = (v) => typeof v === 'string' && v.trim() !== ''
+export const isEventBrief = (brief) => brief?.archetype === 'landing' && (EVENT_FACTS.some((k) => filled(brief.facts?.[k])) || EVENT_TOPIC.test(brief.topic ?? ''))
+export const requiredFacts = (archetypeId, brief) => [...(REQUIRED_FACTS[archetypeId] ?? DEFAULT_REQUIRED), ...(isEventBrief(brief) ? EVENT_FACTS : [])]
 
 // 사실 이름 → 콘텐츠 객체 자리(content-core Business 필드 이름). 여기 없는 사실은 content.facts 에 원문 그대로 둔다
 // (영업시간·가격처럼 구조로 풀어야 하는 것은 04-content 단계가 원문을 보고 채운다).
@@ -120,6 +127,6 @@ export function briefToSeed(brief, archetype) {
   const facts = Object.fromEntries(Object.entries(b.facts).map(([k, v]) => [k, v.trim()]).filter(([, v]) => v))
   const content = { ...(BUSINESS_ROOT[b.archetype] ? { [BUSINESS_ROOT[b.archetype]]: {} } : {}), facts: {} }
   for (const [k, v] of Object.entries(facts)) put(content, factPath(b.archetype, k), v)
-  const missing = requiredFacts(b.archetype).filter((k) => !(k in facts))
+  const missing = requiredFacts(b.archetype, b).filter((k) => !(k in facts))
   return { content, missing }
 }

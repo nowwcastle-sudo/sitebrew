@@ -4,9 +4,10 @@ import * as React from "react"
 
 import siteJson from "@/content/site.json"
 import build from "@/lib/build.json"
+import ogMark from "@/lib/og-mark.json"
 import { normalizePhone } from "@/lib/phone"
 import { NEEDS_CHECK_LITERALS, isMailAddress, type ArchetypeId } from "@/components/content/content-core"
-import type { SeoPage, PageKind } from "@/components/ax/seo-meta"
+import { isIndexed, type SeoPage, type PageKind } from "@/components/ax/seo-meta"
 import type { SeoInput } from "@/components/ax/seo-files"
 import { toHex } from "@/components/ax/brand-color"
 
@@ -92,11 +93,11 @@ export function shellProps(route: string) {
   }
 }
 
-/** robots.txt·sitemap.xml 입력(seo-files) — 색인 제외(noindex) 쪽은 사이트맵에 싣지 않는다(robots 로 막지도 않는다: 막으면 봇이 noindex 를 읽지 못한다). */
+/** robots.txt·sitemap.xml 입력(seo-files) — 색인 제외(isIndexed 가 아닌) 쪽은 사이트맵에 싣지 않는다(robots 로 막지도 않는다: 막으면 봇이 noindex 를 읽지 못한다). */
 export function seoInput(): SeoInput {
   const brand = str(resolve(site.shell.brand)) ?? ""
   const pages = Object.entries(site.pages)
-    .filter(([, p]) => !p.noindex)
+    .filter(([, p]) => isIndexed(p))
     .map(([route, p]) => ({ url: route, title: str(resolve(p.title)) ?? route, description: str(resolve(p.description)) }))
   return { siteUrl: str(resolve(site.site.url)) ?? "https://example.com", name: brand, summary: str(resolve(site.site.description)) ?? brand, pages }
 }
@@ -112,5 +113,6 @@ export function manifestProps() {
 /** 기본 공유 그림(app/opengraph-image.tsx)이 읽는 값: 홈 제목·이름·레시피 색(lib/build.json — 기본 테마 쪽 색). */
 export function ogProps() {
   const brand = str(resolve(site.shell.brand)) ?? ""
-  return { title: str(resolve(site.pages["/"]?.title)) ?? brand, name: brand, colors: build.og }
+  // mark = 브리프 로고 SVG(lib/og-mark.json — 브리프에 쓸 만한 로고가 있을 때만 찍어내기가 채운다). 없으면 글자 카드 그대로
+  return { title: str(resolve(site.pages["/"]?.title)) ?? brand, name: brand, colors: build.og, ...(ogMark.svg ? { mark: { svg: ogMark.svg } } : {}) }
 }

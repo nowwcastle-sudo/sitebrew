@@ -11,6 +11,24 @@ export interface OgFont {
   style?: "normal" | "italic"
 }
 
+/** OG 카드에 넣는 로고. Satori 는 `currentColor` 를 부모 색에서 받지 못해 검정으로 그리므로 그릴 때 accent #hex 로 바꾼다. */
+export interface OgMark {
+  svg: string
+}
+
+/** 로고 칸 높이(px). 가로는 SVG viewBox 비율로 정하고 28~160 안에 둔다(가로로 긴 로고가 찌그러지거나 잘리지 않게). */
+const MARK_HEIGHT = 56
+
+/** SVG → <img> 에 쓰는 data URI 와 칸 크기. viewBox 가 없으면 정사각. */
+export function markImage(mark: OgMark, color: string): { src: string; width: number; height: number } {
+  const svg = mark.svg.replace(/currentColor/gi, color)
+  const vb = /viewBox\s*=\s*["']\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)\s*["']/i.exec(svg)
+  const ratio = vb && Number(vb[1]) > 0 && Number(vb[2]) > 0 ? Number(vb[1]) / Number(vb[2]) : 1
+  const width = Math.min(160, Math.max(28, Math.round(MARK_HEIGHT * ratio)))
+  const bytes = new TextEncoder().encode(svg)
+  return { src: `data:image/svg+xml;base64,${btoa(Array.from(bytes, (b) => String.fromCharCode(b)).join(""))}`, width, height: MARK_HEIGHT }
+}
+
 export interface OgCardProps {
   /** 페이지 제목(화면 h1 과 같은 값) */
   title: string
@@ -18,6 +36,8 @@ export interface OgCardProps {
   name: string
   /** 레시피 색(oklch·#hex) — Satori 는 oklch 를 읽지 못해 #hex 로 바꿔 그린다 */
   colors: { background: string; foreground: string; accent?: string }
+  /** 브랜드 로고(C414) — 한 색 SVG(`currentColor` 로 칠한 것). 있으면 이름 옆 accent 막대 자리에 그린다. 없으면 글자 카드 그대로 */
+  mark?: OgMark
   /** 앞에서부터 쓴다. 앞 서체에 없는 글자(한글 등)는 뒤 서체로 채운다 — 레시피 제목 서체 + 한글 키트 서체 순서 */
   fonts: OgFont[]
 }
@@ -45,8 +65,9 @@ export async function readOgFont(path: string = PRETENDARD_BOLD, name = "Pretend
 }
 
 /** OG 카드 그림(1200×630). Satori 가 읽는 flex 레이아웃만 쓴다. */
-export function OgCard({ title, name, colors, fonts }: OgCardProps) {
+export function OgCard({ title, name, colors, mark, fonts }: OgCardProps) {
   const bg = toHex(colors.background), fg = toHex(colors.foreground), accent = toHex(colors.accent ?? colors.foreground)
+  const logo = mark ? markImage(mark, accent) : null
   const t = title.trim() || NEEDS_CHECK
   const size = [...t].length > 28 ? 60 : 76
   return (
@@ -64,7 +85,12 @@ export function OgCard({ title, name, colors, fonts }: OgCardProps) {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", fontSize: 36 }}>
-        <div style={{ width: 16, height: 48, background: accent, marginRight: 24 }} />
+        {logo ? (
+          // eslint-disable-next-line @next/next/no-img-element -- Satori(ImageResponse)는 next/image 를 쓰지 못한다
+          <img src={logo.src} width={logo.width} height={logo.height} alt="" style={{ marginRight: 24 }} />
+        ) : (
+          <div style={{ width: 16, height: 48, background: accent, marginRight: 24 }} />
+        )}
         {name}
       </div>
       <div style={{ display: "flex", fontSize: size, lineHeight: 1.2, fontWeight: 700 }}>{t}</div>

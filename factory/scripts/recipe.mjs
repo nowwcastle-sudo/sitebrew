@@ -31,6 +31,7 @@ import { createRequire } from 'node:module'
 import { parse as parseYaml } from 'yaml'
 import { z } from 'zod'
 import { createStyleMap } from 'shadcn/utils'
+import { shadcnSpec } from './lib/pins.mjs'
 import { BASE_CSS, AXIS_ORDER, AXIS_DEFAULTS, axisValue, listValues } from './axes.mjs'
 import { checkCompat, checkCompatWarnings, checkRecipeRules, checkAxisRecipeRules, COMPAT, LINE_VALUES } from './compat.mjs'
 import { ratio, alphaOf, oklchToLinearSrgb } from './lib/contrast-lib.mjs'
@@ -1065,9 +1066,9 @@ export function recipeReadme(r, { repo = REPO, ref } = {}) {
     '## 설치',
     '',
     '```bash',
-    `npx shadcn@4.21.0 add ${repo}/${r.id}#${tag}        # 디자인 시스템 전체(registry:base)`,
-    `npx shadcn@4.21.0 add ${repo}/${r.id}-theme#${tag}  # 색만(registry:theme)`,
-    ...(r.alternates ? [`npx shadcn@4.21.0 add ${repo}/${r.id}-alt#${tag}    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)`] : []),
+    `npx ${shadcnSpec()} add ${repo}/${r.id}#${tag}        # 디자인 시스템 전체(registry:base)`,
+    `npx ${shadcnSpec()} add ${repo}/${r.id}-theme#${tag}  # 색만(registry:theme)`,
+    ...(r.alternates ? [`npx ${shadcnSpec()} add ${repo}/${r.id}-alt#${tag}    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)`] : []),
     '```',
     '',
     `부품은 \`${r.id}-<부품>\`(예: \`${r.id}-button\`)으로 하나씩도 설치된다. 단일 HTML 에는 \`registry/factory/r/${r.id}/${r.id}.css\` 를 붙인다.`,

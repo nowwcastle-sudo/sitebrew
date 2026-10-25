@@ -15,10 +15,10 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
-        "nowwcastle-sudo/sitebrew/events#v0.2.0",
-        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.0"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1",
+        "nowwcastle-sudo/sitebrew/events#v0.2.1",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.1",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.1"
       ]
     },
     {
@@ -35,9 +35,9 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/adapter-mock#v0.2.0",
-        "nowwcastle-sudo/sitebrew/admin#v0.2.0",
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0"
+        "nowwcastle-sudo/sitebrew/adapter-mock#v0.2.1",
+        "nowwcastle-sudo/sitebrew/admin#v0.2.1",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1"
       ]
     },
     {
@@ -54,10 +54,10 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/adapter-mock#v0.2.0",
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
-        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
-        "nowwcastle-sudo/sitebrew/ports#v0.2.0"
+        "nowwcastle-sudo/sitebrew/adapter-mock#v0.2.1",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.1",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.1"
       ]
     },
     {
@@ -74,9 +74,9 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
-        "nowwcastle-sudo/sitebrew/phone#v0.2.0",
-        "nowwcastle-sudo/sitebrew/ports#v0.2.0"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.1",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.1"
       ]
     },
     {
@@ -93,7 +93,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1"
       ]
     },
     {
@@ -110,7 +110,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/ports#v0.2.0"
+        "nowwcastle-sudo/sitebrew/ports#v0.2.1"
       ]
     },
     {
@@ -142,8 +142,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
-        "nowwcastle-sudo/sitebrew/ports#v0.2.0"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.1"
       ]
     },
     {
@@ -195,12 +195,12 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/admin#v0.2.0",
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
-        "nowwcastle-sudo/sitebrew/commerce#v0.2.0",
-        "nowwcastle-sudo/sitebrew/events#v0.2.0",
-        "nowwcastle-sudo/sitebrew/ports#v0.2.0",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.0"
+        "nowwcastle-sudo/sitebrew/admin#v0.2.1",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.1",
+        "nowwcastle-sudo/sitebrew/events#v0.2.1",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.1",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.1"
       ]
     },
     {
@@ -247,8 +247,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.2.0",
-        "nowwcastle-sudo/sitebrew/events#v0.2.0"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.1",
+        "nowwcastle-sudo/sitebrew/events#v0.2.1"
       ]
     }
   ]

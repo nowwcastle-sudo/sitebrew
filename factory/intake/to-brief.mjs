@@ -1,7 +1,7 @@
 // 대화형 입구의 답 → 브리프(factory v1 Task 4.1 · 합의안 D3). 파일 없이 메모리에서 만들고, 만든 브리프는 loadBrief 와 같은 스키마를 통과한다.
 //   지어내지 않는다(§9 Q8): 빈 답·「없음」류는 사실로 싣지 않는다. 빠진 사실은 브리프에 없고(04-content 가 「확인 필요」 자리 표시로 남긴다)
 //   `previewOnly: true` 표지와 missingFacts() 목록으로 사람에게 알린다 — 미리보기 자산 + 「공개 전 교체」 표지로 끝까지 가고, 공개 관문이 막는다.
-import { factPath, loadBriefObject } from '../stamp/brief.mjs'
+import { factPath, isEventBrief, loadBriefObject } from '../stamp/brief.mjs'
 import { contactFact, questionsFor } from './questions.mjs'
 
 // 「모른다」는 뜻의 흔한 답 — 사실 칸에 이 글자가 들어가면 04-content 가 그것을 사실로 읽는다.
@@ -105,6 +105,7 @@ export function missingFacts(brief) {
   for (const q of questionsFor(brief.archetype)) {
     if (q.logo) { if (!brief.brand?.logo) missing.push('logo'); continue }
     if (q.brand) continue // 브랜드 색·서체는 필수 사실이 아니다 — 없어도 missing·previewOnly 를 바꾸지 않는다(FIT-3)
+    if (q.eventOnly && !isEventBrief(brief)) continue // 행사 일시·장소는 행사형 브리프에서만 필수다(C416)
     // 연락처: 전화가 필수인 원형은 전화가 있어야 하고, 아니면 전화나 이메일 중 하나면 된다.
     const filled = q.id === 'contact' ? (contactFact(brief.archetype) === 'phone' ? has('phone') : has('email') || has('phone')) : has(q.fact)
     if (!filled) missing.push(labelOf(brief.archetype, q.fact))

@@ -14,11 +14,11 @@ import { createHash } from "node:crypto"
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { dirname, join, relative, sep } from "node:path"
 import { fileURLToPath } from "node:url"
+import { SHADCN, shadcnSpec } from "./pins.mjs" // shadcn 판은 template/package.json 이 주인이다
 
 export const ROOT = fileURLToPath(new URL("..", import.meta.url))
 export const TEMPLATE = join(ROOT, "template")
 export const LOCK = join(TEMPLATE, "template.lock.json")
-export const SHADCN = "4.21.0"
 export const WEB_FACTORY = "nowwcastle-sudo/sitebrew"
 /** 블록 설치 목록. 레시피 하나 + 계약 목 + 모션 + 대표 블록. 나머지 의존(공유 조각·부품·아이콘·서체)은 registryDependencies 로 따라온다 */
 export const BLOCK_ITEMS = [
@@ -223,7 +223,7 @@ export function syncBlocks({ from, ref, work }) {
   if (tar.status !== 0) throw new Error(`git archive 실패: ${tar.stderr}`)
   writeFileSync(join(work, "wf.tar"), tar.stdout)
   run("tar", ["-xf", "wf.tar", "-C", "wf"], work) // 상대 경로 — GNU tar 는 C: 를 원격 호스트로 읽는다
-  run(NPX, ["-y", `shadcn@${SHADCN}`, "build", "-o", q(join(work, "r0"))], wf)
+  run(NPX, ["-y", shadcnSpec(), "build", "-o", q(join(work, "r0"))], wf)
   const rewritten = localRegistry(join(work, "r0"), join(work, "localreg"))
   // 설치용 사이트: 템플릿 뼈대(설정 파일)만 복사한다
   const site = join(work, "site")
@@ -236,7 +236,7 @@ export function syncBlocks({ from, ref, work }) {
   cpSync(join(ROOT, "scripts", "template-skeleton", "globals.css"), join(site, "app", "globals.css")) // shadcn init(next·base·nova) 결과 — 빈 파일이면 add 가 proxyOf 오류로 멈춘다
   writeFileSync(join(site, "app", "layout.tsx"), `export default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en">\n      <body>{children}</body>\n    </html>\n  )\n}\n`)
   const before = new Set(walk(site))
-  run(NPX, ["-y", `shadcn@${SHADCN}`, "add", ...BLOCK_ITEMS.map((n) => `../localreg/${n}.json`), "-y", "-o"], site)
+  run(NPX, ["-y", shadcnSpec(), "add", ...BLOCK_ITEMS.map((n) => `../localreg/${n}.json`), "-y", "-o"], site)
   // 정확한 판으로 고정한다(계획 Global Constraints): shadcn 이 더한 의존과 ^ 범위를 설치된 판으로 바꿔 템플릿 package.json 에 적는다
   const installed = JSON.parse(readFileSync(join(site, "package.json"), "utf8"))
   const exact = (name) => JSON.parse(readFileSync(join(site, "node_modules", ...name.split("/"), "package.json"), "utf8")).version

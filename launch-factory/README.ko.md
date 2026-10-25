@@ -4,7 +4,7 @@
 
 web-factory(화면 블록 저장소)와 짝을 이루는 출시 키트로, 뒷단인 인증·데이터·결제·메일·계측·작업을 이 저장소가 맡는다. 제품은 `template/` 을 복제해 시작하고 `@launch-factory/*` 패키지 판만 올려서 보안 패치를 받는다.
 
-현재 버전 `v0.2.0` · web-factory 고정 `v0.2.0` · 블록 `f2174f6e` · contract `f2174f6e` (태그 v0.2.0 의 커밋)
+현재 버전 `v0.2.1` · web-factory 고정 `v0.2.1` · 블록 `65b33823` · contract `65b33823` (태그 v0.2.1 의 커밋)
 
 - 블록은 공급자를 모르고 어댑터가 web-factory 포트를 구현한다. 같은 적합성 묶음으로 어댑터가 mock 과 같은 시나리오를 재현하는지 검사한다.
 - 기능 번들(어댑터·서버 액션·웹훅 경로·스키마·마이그레이션)은 `registry.json` 의 항목 하나로 묶인다. 판을 고정한 내역은 [`docs/versions.md`](docs/versions.md)에 있다.
@@ -125,4 +125,4 @@ git diff template/package.json
 
 | 태그 | 날짜 | 내용 | 기록 |
 |---|---|---|---|
-| `v0.2.0` | 2026-10-24 | launch-factory v0.2.1 (internal version) · 보안 패치: next 16.4.3, zod 4.6.7, body-parser·fast-uri·undici 갱신 · web-factory `v0.2.0` 고정 | — |
+| `v0.2.1` | 2026-10-25 | launch-factory v0.2.2 (internal version) · 패치 판: shadcn 4.22.1을 정확한 한 판으로 고정(중첩 zod 공지와 OSV 예외 해소) · web-factory `v0.2.1` 고정 | — |

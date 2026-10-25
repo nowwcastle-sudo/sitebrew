@@ -11,6 +11,7 @@
     {
       "id": "home",
       "route": "/",
+      "kind": "home",
       "sections": [
         {
           "kind": "notice-bar",
@@ -291,6 +292,7 @@
     {
       "id": "category-list",
       "route": "/products",
+      "kind": "list",
       "sections": [
         {
           "kind": "list-toolbar",
@@ -365,6 +367,7 @@
     {
       "id": "cart",
       "route": "/cart",
+      "kind": "other",
       "phase": "v0.2",
       "sections": [
         {
@@ -424,6 +427,7 @@
     {
       "id": "checkout",
       "route": "/checkout",
+      "kind": "other",
       "phase": "v0.2",
       "sections": [
         {
@@ -450,6 +454,7 @@
     {
       "id": "order-complete",
       "route": "/checkout/complete",
+      "kind": "other",
       "phase": "v0.2",
       "sections": [
         {
@@ -470,6 +475,7 @@
     {
       "id": "orders",
       "route": "/orders",
+      "kind": "other",
       "phase": "v0.2",
       "sections": [
         {
@@ -490,6 +496,7 @@
     {
       "id": "order-detail",
       "route": "/orders/[id]",
+      "kind": "other",
       "phase": "v0.2",
       "sections": [
         {

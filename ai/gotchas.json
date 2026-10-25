@@ -41,7 +41,7 @@
     {
       "id": "install-pinned-tag",
       "area": "install",
-      "rule": "설치는 항상 버전 고정 태그로 한다: `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#vX.Y.Z -y -o` (브랜치·`main`으로 설치하지 않는다).",
+      "rule": "설치는 항상 버전 고정 태그로 한다: `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#vX.Y.Z -y -o` (브랜치·`main`으로 설치하지 않는다).",
       "action": "한 소비자 안에서 태그를 섞지 않는다. 태그를 찍기 전 npm run gen:all 로 모든 생성물을 다시 만들고, npm run registry:pincheck -- vX.Y.Z 와 커밋 뒤 npm run check:regen 이 둘 다 0이어야 한다(pincheck 는 registry.json 만 보고, ai/tasks 설치 명령의 태그는 check:regen 이 지킨다).",
       "source": "docs/agents/agent-guide.md §5(계획 1)"
     },
@@ -210,7 +210,7 @@
       "id": "recipe-alt-item",
       "area": "install",
       "rule": "보드 B안이 있는 레시피는 `<id>-alt`(registry:base) 항목도 낸다 — 부품은 A 항목 그대로이고 색·서체·모션·히어로 메타만 B다(`meta.recipe.alternateOf`·`hero`). A 를 먼저 깔고 `-alt` 를 `-o` 로 덮으면 `:root` 색·서체 스택이 B 로 바뀐다. r5-celadon 은 B안이 없어 `-alt` 가 없다.",
-      "action": "B안으로 찍을 때는 `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<id>-alt#vX.Y.Z -y -o` 한 번이면 된다(부품·A 서체까지 딸려 온다). 히어로 블록은 `meta.recipe.hero`(B 히어로)를 설치한다. A 서체 로더가 `app/layout.tsx` 에 남는 것은 레시피를 바꿀 때와 같다(gotcha recipe-switch-font-loader).",
+      "action": "B안으로 찍을 때는 `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<id>-alt#vX.Y.Z -y -o` 한 번이면 된다(부품·A 서체까지 딸려 온다). 히어로 블록은 `meta.recipe.hero`(B 히어로)를 설치한다. A 서체 로더가 `app/layout.tsx` 에 남는 것은 레시피를 바꿀 때와 같다(gotcha recipe-switch-font-loader).",
       "source": "P3-2 Task 8(대장 A10)"
     },
     {

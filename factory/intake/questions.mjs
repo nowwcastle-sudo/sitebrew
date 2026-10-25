@@ -46,7 +46,7 @@ export function photoNotice(archetype) {
 export const INTAKE_ARCHETYPES = [...ARCHETYPE_IDS]
 
 /**
- * @typedef {{ id: string, ask: string, hint?: string, fact?: string, logo?: true, brand?: 'colors'|'fonts' }} Question
+ * @typedef {{ id: string, ask: string, hint?: string, fact?: string, logo?: true, brand?: 'colors'|'fonts', eventOnly?: true }} Question
  *   id = answers 의 키 · ask = 사용자에게 묻는 한 문장 · hint = 예시나 괜찮은 답 · fact = 브리프 facts 이름(contact 는 원형이 정한다) · logo = brand.logo 칸 · brand = brand.colors / brand.fonts 칸(FIT-3)
  */
 
@@ -63,7 +63,7 @@ const COMMON = [
   { id: 'brandFonts', ask: '꼭 쓰고 싶은 서체가 있나요? 제목용·본문용 순서로. 없으면 비워 두세요.', brand: 'fonts' },
 ]
 
-/** 원형별로 더 묻는 것(0~2개). 이름은 브리프 FACT_NAMES 안의 사실 이름이다. */
+/** 원형별로 더 묻는 것(0~3개). 이름은 브리프 FACT_NAMES 안의 사실 이름이다. eventOnly 질문은 행사형 브리프에서만 빠진 사실로 센다. */
 const EXTRA = {
   brand: [{ id: 'claim', ask: '브랜드를 한 문장으로 소개한다면 어떻게 말하나요?', fact: 'claim' }],
   commerce: [{ id: 'bestsellers', ask: '대표 상품은 무엇인가요? 몇 가지만 적어 주세요.', fact: 'bestsellers' }],
@@ -74,7 +74,12 @@ const EXTRA = {
   public: [{ id: 'hours', ask: '민원 창구 운영시간은 어떻게 되나요?', fact: 'hours' }],
   pwa: [{ id: 'price', ask: '요금제가 있나요? 있다면 가격을 알려 주세요.', fact: 'price' }],
   saas: [{ id: 'price', ask: '요금제가 있나요? 있다면 가격을 알려 주세요.', fact: 'price' }],
-  landing: [{ id: 'claim', ask: '이 한 쪽 안에서 약속하는 핵심 메시지는 무엇인가요?', fact: 'claim' }],
+  landing: [
+    { id: 'claim', ask: '이 한 쪽 안에서 약속하는 핵심 메시지는 무엇인가요?', fact: 'claim' },
+    // 행사형 랜딩(C416)만 묻는다 — 행사가 아니면 비워 두고, 비워도 missing·previewOnly 가 생기지 않는다(to-brief missingFacts).
+    { id: 'eventDate', ask: '행사라면 일시(날짜와 시간)는 언제인가요? 행사가 아니면 비워 두세요.', hint: '예: 2026-11-14 14:00', fact: 'eventDate', eventOnly: true },
+    { id: 'eventVenue', ask: '행사라면 장소는 어디인가요? 행사가 아니면 비워 두세요.', hint: '예: 서울 ○○홀 3층', fact: 'eventVenue', eventOnly: true },
+  ],
 }
 
 /** 연락처 답이 들어가는 사실 이름: 원형이 전화를 필수로 요구하면 phone, 아니면 email. 답에 @ 가 있으면 어느 원형에서든 email. */

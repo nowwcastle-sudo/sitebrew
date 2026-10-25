@@ -6,9 +6,9 @@
 ## 설치
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r12-spectrum#v0.2.0        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r12-spectrum-theme#v0.2.0  # 색만(registry:theme)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r12-spectrum-alt#v0.2.0    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r12-spectrum#v0.2.1        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r12-spectrum-theme#v0.2.1  # 색만(registry:theme)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r12-spectrum-alt#v0.2.1    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
 ```
 
 부품은 `r12-spectrum-<부품>`(예: `r12-spectrum-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r12-spectrum/r12-spectrum.css` 를 붙인다.

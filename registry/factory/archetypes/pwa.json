@@ -11,6 +11,7 @@
     {
       "id": "home",
       "route": "/",
+      "kind": "home",
       "sections": [
         {
           "kind": "app-bar",
@@ -128,6 +129,7 @@
     {
       "id": "sub-detail",
       "route": "/detail",
+      "kind": "other",
       "sections": [
         {
           "kind": "app-bar",
@@ -161,6 +163,7 @@
     {
       "id": "offline",
       "route": "/offline",
+      "kind": "other",
       "sections": [
         {
           "kind": "offline-fallback",
@@ -191,6 +194,7 @@
     {
       "id": "settings",
       "route": "/settings",
+      "kind": "other",
       "sections": [
         {
           "kind": "permissions",
@@ -293,6 +297,7 @@
     {
       "id": "completion",
       "route": "/done",
+      "kind": "other",
       "sections": [
         {
           "kind": "result",

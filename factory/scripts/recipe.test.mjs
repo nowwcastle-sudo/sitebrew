@@ -303,7 +303,7 @@ test('buildRecipe: items = components + base + theme, with names, targets, pins 
 
 // P3-2 Task 1b: 블록은 아이콘을 정본 모듈(@/registry/factory/icons → 소비자 @/components/icons)로 부른다. 레시피 base 가
 // components/icons/index.ts 를 실어 그 레시피의 어댑터를 다시 내보낸다(두 번째 레시피를 add -o 하면 마지막 레시피가 이긴다).
-// registry:component 여야 한다 — shadcn 4.21.0 은 registry:file·registry:item 내용을 import 바꾸기 없이 그대로 쓴다.
+// registry:component 여야 한다 — shadcn 4.22.1 은 registry:file·registry:item 내용을 import 바꾸기 없이 그대로 쓴다.
 test('recipe base ships components/icons/index.ts re-exporting its own icon adapter (fixtures, every adapter, every repo recipe)', async () => {
   const { good } = await built()
   const base = good.items.find((i) => i.name === 'fx-good')
@@ -342,7 +342,7 @@ test('buildRecipe writes the compiled ui, marker, pure CSS and agent README', as
   assert.match(css, /\.dark \{[^}]*--background: oklch\(0\.17 0\.008 230\);/)
   const readme = readFileSync(join(r, 'recipes', 'fx-good', 'README.generated.md'), 'utf8')
   assert.match(readme.split('\n')[0], /^<!-- 생성물 — factory\/scripts\/recipe\.mjs 로 다시 만든다\. 손으로 고치지 않는다\. -->$/)
-  assert.match(readme, /npx shadcn@4\.21\.0 add nowwcastle-sudo\/sitebrew\/fx-good#v9\.9\.9/)
+  assert.match(readme, /npx shadcn@4.22.1 add nowwcastle-sudo\/sitebrew\/fx-good#v9\.9\.9/)
   assert.match(readme, /## 하지 말 것/)
   assert.ok(good.files.length >= FX_COMPONENTS.length + 3)
   assert.equal(recipeCss(load('good')).split('\n')[0], css.split('\n')[0])

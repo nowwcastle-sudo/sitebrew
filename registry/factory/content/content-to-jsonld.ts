@@ -220,6 +220,37 @@ export function toSoftwareApplication(
 }
 
 /**
+ * 목록 쪽 → ItemList JSON-LD(C413). 화면에 그려진 목록과 같은 항목만 넘긴다(화면에 없는 항목을 싣지 않는다, X4).
+ * 항목은 이름과(상세 쪽이 있으면) 절대 주소만 싣는다 — 가격(Offer)은 상품 상세의 Product 가 맡는다. 항목이 없으면 null.
+ * `url` 은 사이트 안 경로나 절대 주소이고, base(사이트 주소)로 절대 주소를 만든다.
+ */
+export function toItemList(items: { name: string; url?: string }[], base: string): JsonLdObject | null {
+  if (!items.length) return null
+  return {
+    "@context": CONTEXT,
+    "@type": "ItemList",
+    itemListElement: items.map((it, i) => ({ "@type": "ListItem", position: i + 1, name: it.name, ...(it.url ? { url: new URL(it.url, base).href } : {}) })),
+  }
+}
+
+/**
+ * 행사 사실 → Event JSON-LD(C413·C416). 사실(이름·시작 일시·장소)이 있을 때만 만든다 — 없는 일시·장소를 지어내지 않는다.
+ * 장소는 Place 로, 주소가 있으면 PostalAddress 의 streetAddress 로 싣는다. 온라인 전용이 아니므로 오프라인 참석 방식을 쓴다.
+ */
+export function toEvent(e: { name: string; startDate: string; endDate?: string; venue: string; address?: string }, url?: string): JsonLdObject {
+  return {
+    "@context": CONTEXT,
+    "@type": "Event",
+    name: e.name,
+    startDate: e.startDate,
+    ...(e.endDate ? { endDate: e.endDate } : {}),
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    location: { "@type": "Place", name: e.venue, ...(e.address ? { address: { "@type": "PostalAddress", streetAddress: e.address } } : {}) },
+    ...(url ? { url } : {}),
+  }
+}
+
+/**
  * 이동 경로 → BreadcrumbList JSON-LD. 화면 breadcrumb 과 같은 Cta 목록을 넘긴다. Google 은 item 에 절대 주소를 요구하므로
  * 상대 경로는 base(사이트 주소)로 절대 주소로 만들고, base 없이 상대 경로가 오면 한국어 오류를 던진다.
  */

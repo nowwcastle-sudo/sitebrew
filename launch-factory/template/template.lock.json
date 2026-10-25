@@ -1,9 +1,9 @@
 {
   "blocks": {
     "source": "nowwcastle-sudo/sitebrew",
-    "ref": "v0.2.0",
-    "commit": "f2174f6ed94a60f6ccd1b3deda50a3190a883413",
-    "shadcn": "4.21.0",
+    "ref": "v0.2.1",
+    "commit": "65b33823c09c969e6c44a33b7e954089e0844bd9",
+    "shadcn": "4.22.1",
     "items": [
       "r1-measure",
       "adapter-mock",
@@ -45,7 +45,7 @@
       "block-nav-app-sidebar",
       "block-nav-top-bar"
     ],
-    "rewrittenAddresses": 11060,
+    "rewrittenAddresses": 11062,
     "rootFiles": [
       {
         "path": "registry/factory/blocks/_compiled/_shared/billing-actions.tsx",

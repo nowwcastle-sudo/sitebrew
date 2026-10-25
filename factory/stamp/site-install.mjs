@@ -9,12 +9,13 @@ import { appendFileSync, cpSync, createWriteStream, existsSync, mkdirSync, readF
 import { basename, dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { localRegistry } from '../scripts/recipe-swap.mjs'
+import { shadcnSpec } from '../scripts/lib/pins.mjs'
 import { envWithoutSecrets } from '../lib/secret-env.mjs'
 import { failMessage, tailLog } from './fail-message.mjs'
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const TEMPLATE = join(dirname(fileURLToPath(import.meta.url)), 'site-template')
-export const SHADCN = 'shadcn@4.21.0'
+const SHADCN = shadcnSpec()
 const CACHE = join(ROOT, '.tmp', 'stamp-template')
 const REG_CACHE = join(ROOT, '.tmp', 'stamp-registry')
 

@@ -1,5 +1,6 @@
 // ai/ 생성물과 그 원천의 모양(zod 4). gen-ai.mjs 가 쓰기 전에, gen-ai.test.mjs 가 커밋된 파일에 건다.
 import { z } from 'zod'
+import { shadcnAddPattern } from '../scripts/lib/pins.mjs'
 
 const text = z.string().min(1)
 export const AREAS = ['part', 'block', 'recipe', 'font', 'install', 'contract']
@@ -30,7 +31,7 @@ export const GotchasFile = z.object({
 }).strict()
 
 const tag = z.string().regex(/^v\d+\.\d+\.\d+$/)
-const install = z.string().regex(/^npx shadcn@4\.21\.0 add nowwcastle-sudo\/sitebrew\/[a-z0-9-]+#v\d+\.\d+\.\d+ -y -o$/)
+const install = z.string().regex(shadcnAddPattern())
 
 // 섹션 한 줄 — 블록에 묶였으면 allowedVariants(블록 이름), 없으면 noBlock(이유·대장 행). 원형 JSON v1(P3-3 Task 1).
 const Section = z.object({
