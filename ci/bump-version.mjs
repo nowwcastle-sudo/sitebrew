@@ -5,14 +5,18 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { COMPAT, SITES, check } from './check-single-version.mjs'
+import { COMPAT, SITES, check, kitRangeOf } from './check-single-version.mjs'
 
-/** A new guides["X.Y.Z"] entry in the compat table (old plugin versions keep their rows). */
+/**
+ * A new guides["X.Y.Z"] entry in the compat table (old plugin versions keep their rows).
+ * "status" says the row was written before its tag existed; the release steps never change it (nothing reads it).
+ */
 export function addCompatEntry(text, version) {
   if (JSON.parse(text).guides?.[version]) return text
   const re = /("guides":\s*\{\n)/
   if (!re.test(text)) throw new Error(`${COMPAT}: "guides" object not found`)
-  return text.replace(re, `$1    "${version}": {\n      "sitebrew": { "tag": "v${version}", "status": "pending-release" }\n    },\n`)
+  const row = `{ "tag": "v${version}", "status": "pending-release", "range": "${kitRangeOf(version)}" }`
+  return text.replace(re, `$1    "${version}": {\n      "sitebrew": ${row}\n    },\n`)
 }
 
 export function bump(root, version) {

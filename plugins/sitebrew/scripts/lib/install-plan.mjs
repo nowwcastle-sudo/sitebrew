@@ -7,7 +7,7 @@ const TABLE = JSON.parse(readFileSync(new URL('./install-items.json', import.met
 
 const PLATFORMS = ['win32', 'darwin']
 
-const fill = (text, vars) => text.replace(/\{(tag|repository|nodeMin)\}/g, (_, k) => vars[k])
+const fill = (text, vars) => text.replace(/\{(tag|repository|nodeMin|npmMin)\}/g, (_, k) => vars[k])
 const fillSay = (say, vars) => ({ ko: fill(say.ko, vars), en: fill(say.en, vars) })
 const fillStep = (s, vars) => ({
   argv: s.argv.map((a) => fill(a, vars)),
@@ -49,15 +49,16 @@ function needed(results, facts) {
 }
 
 /**
- * @param {{ results: object[], platform: string, facts: { winget?: boolean, brew?: boolean, kitDir?: string|null, kitInstalled?: boolean, kitRejected?: boolean, kitGitRoot?: boolean, where?: string },
- *           compat: { repository: string, tag: string, nodeMin: string, ownerUnset: boolean }, items?: object }} input
+ * @param {{ results: object[], platform: string, facts: { winget?: boolean, brew?: boolean, kitDir?: string|null, kitInstalled?: boolean, kitRejected?: boolean, kitGitRoot?: boolean, unsafeHere?: boolean, where?: string },
+ *           compat: { repository: string, tag: string, nodeMin: string, npmMin: string, ownerUnset: boolean }, items?: object }} input
  * @returns {{ platform: string, items: { id: string, status: 'todo'|'manual'|'blocked', reason?: string, steps: object[], say: {ko:string,en:string} }[] }}
  */
 export function buildPlan({ results, platform, facts = {}, compat, items = TABLE.items }) {
-  const vars = { tag: compat.tag, repository: compat.repository, nodeMin: compat.nodeMin }
+  const vars = { tag: compat.tag, repository: compat.repository, nodeMin: compat.nodeMin, npmMin: compat.npmMin }
   const key = PLATFORMS.includes(platform) ? platform : 'linux'
   const out = []
-  const ownerBlocked = compat.ownerUnset || !compat.repository
+  // why the clone (and the setup behind it) cannot run: this build has no owner, or the folder the clone would land in is one where a clone must not go
+  const cloneBlock = compat.ownerUnset || !compat.repository ? { say: items['kit-clone'].blocked } : facts.unsafeHere ? { reason: 'unsafe-folder', say: items['kit-clone'].unsafeFolder } : null
   for (const { id, reason } of needed(results, facts)) {
     const it = items[id]
     const entry = it[key] ?? it.all
@@ -66,8 +67,8 @@ export function buildPlan({ results, platform, facts = {}, compat, items = TABLE
       out.push({ ...base, status: 'manual', steps: [], say: fillSay(reason === 'rejected' ? it.rejectedNote : it.explicitNote, vars) })
     } else if (id === 'browser' && reason && reason !== 'not-found') {
       out.push({ ...base, status: 'manual', steps: [], say: fillSay(it.manualReasons[reason], vars) })
-    } else if ((id === 'kit-clone' || id === 'kit-setup') && ownerBlocked && (id === 'kit-clone' || out.some((o) => o.id === 'kit-clone'))) {
-      out.push({ ...base, status: 'blocked', steps: [], say: fillSay(items['kit-clone'].blocked, vars) })
+    } else if ((id === 'kit-clone' || id === 'kit-setup') && cloneBlock && (id === 'kit-clone' || out.some((o) => o.id === 'kit-clone'))) {
+      out.push({ ...base, ...(cloneBlock.reason ? { reason: cloneBlock.reason } : {}), status: 'blocked', steps: [], say: fillSay(cloneBlock.say, vars) })
     } else if (entry.needs && !facts[entry.needs]) {
       out.push({ ...base, status: 'manual', steps: [], say: fillSay(entry.manual, vars) })
     } else if (id === 'kit-checkout' && (reason === 'dev-commit' || !facts.kitGitRoot)) {

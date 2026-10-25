@@ -1,4 +1,4 @@
-// v0.2.2 SEO 패치(C411 광고 쪽 noindex · C413 ItemList/Event · C414 OG 로고 · C416 행사 사실). 실행: node --test --test-force-exit factory/scripts/seo-patch.test.mjs
+// v0.2.3 SEO 패치(C411 광고 쪽 noindex · C413 ItemList/Event · C414 OG 로고 · C416 행사 사실). 실행: node --test --test-force-exit factory/scripts/seo-patch.test.mjs
 // 케이스마다 서로 다른 사고 하나를 잡는다.
 import { test } from 'node:test'
 import assert from 'node:assert/strict'

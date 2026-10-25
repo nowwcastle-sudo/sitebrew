@@ -1,113 +1,115 @@
 ---
 name: deliver
-description: Copies the chosen site candidate from a Sitebrew run into the user's own folder, writes a README (Korean then English) with the run commands and the list of things to fix before publishing, and can make an online preview link when a Vercel login or token exists. Safe for folder paths with spaces and Korean characters. Use when the user is happy with a candidate and wants the files. Trigger phrases - "deliver the site", "give me the files", "export the site", "copy it to my folder", "사이트 넘겨줘", "파일로 받고 싶어", "내 폴더에 저장", "미리보기 링크".
+description: Copies the chosen, built candidate of a Sitebrew run into the user's own folder with a README (Korean, then English); optionally runs a completion check or makes a Vercel preview link. Use when the user is happy with a Sitebrew candidate and wants the files. Not for a temporary public link (`preview`) or design changes (`revise`). Trigger phrases - "deliver the site", "export the site", "give me the files", "copy it to my folder", "사이트 넘겨줘", "파일로 받고 싶어", "내 폴더에 저장", "Vercel 미리보기 링크"
 ---
 
 # Deliver the chosen site
 
-Reply in the user's language. Run from the `sitebrew` folder. The run must have the chosen candidate built to step 06 (the `new` skill, step 5).
+Run every `factory/...` command from the `sitebrew` folder: the Sitebrew repository root, which holds `factory/stamp/stamp.mjs`. It is `sitebrew` in the folder the user works in, or the folder named by `SITEBREW_DIR`. If `factory/stamp/deliver.mjs` is missing there, the kit is not installed: use the `setup` skill. A command written with `${CLAUDE_PLUGIN_ROOT}` is run from the plugin folder instead.
 
 <!-- env-block:start -->
 ## Where this runs (read first)
 
-Do not assume you can run commands on the user's computer. Check first:
+Check first whether you can run commands on the user's own computer:
 
 ```bash
 node "${CLAUDE_PLUGIN_ROOT}/scripts/setup.mjs" detect
 ```
 
-The JSON says `mode`.
+Read the JSON from the top; the first line that applies decides:
 
-- `agent`: you have a tool that runs commands on the user's own computer. Follow this skill as written.
-- `chatbot`: you cannot run commands for the user (a chat window, a cloud sandbox). Run nothing and do not say you ran anything. Follow the "Chatbot mode" section of this skill: ask the same questions, and give the user the command to paste into their own terminal and what they should see when it works.
-- `remote` is `true`: this is a cloud session, not the user's computer. Install nothing here; say so and use the chatbot steps.
-- `unsure` is `true`: ask once, in the user's language, "Can this window run commands on your own computer?" Then add `--as agent` or `--as chatbot` to the command. The user can always choose `chatbot`.
+- `remote` is `true`: a cloud session, not the user's computer. Install nothing here; say so and use the chatbot steps.
+- `unsure` is `true`: ask once, in the user's language, "Can this window run commands on your own computer?" Then add `--as agent` or `--as chatbot` to the command.
+- `mode` is `chatbot`: run nothing and do not say you ran anything. Follow the "Chatbot mode" section of this skill.
+- `mode` is `agent`: follow this skill as written.
 
-If this command cannot run at all (no command tool, or `${CLAUDE_PLUGIN_ROOT}` is not filled in), you are in chatbot mode. In Codex use the folder two levels above this `SKILL.md` file instead of `${CLAUDE_PLUGIN_ROOT}`.
+If the command cannot run: with a command tool, where the error says `node` is not found, Node.js is missing, so follow "No Node.js yet" in the `setup` skill; with no command tool, or with `${CLAUDE_PLUGIN_ROOT}` not filled in, you are in chatbot mode. In Codex use the plugin folder (the one that holds `scripts/setup.mjs`, two levels above this `SKILL.md` file) instead of `${CLAUDE_PLUGIN_ROOT}`.
 <!-- env-block:end -->
 
-## 1. Ask for the target folder
+## Never
 
-- It must **not exist or must be empty**. The tool never overwrites the user's files and refuses a target inside the run folder.
-- Spaces and non-ASCII characters are fine (for example `C:\Users\홍 길동\내 사이트`). Keep the quotes around the path.
-- Ask one more question before you copy: **「완성 확인을 돌려 볼까요? 몇 분 걸리고 메모리를 많이 써요」** (in the user's language; in Korean use this exact sentence). Run the check **only if the user says yes**. Do not add `--check-loop` for a "no", for silence, or for an unclear answer. The check runs inside the delivery command, so it has to be decided before the copy, not after.
+- Paste tool lines, README internal lines, build logs or absolute paths: they hold the user's folder names and internal English lines. Relay results in plain words (Korean: 해요체), one or two sentences, naming the target folder by its last part only. The one exception is the `실행:` command of step 3, which the user types: give it as printed.
+- Name a provider or a part of the kit to the user: use only the result words of the README (「회원가입·로그인」, 「결제」).
+- Call a `안내:` notice, a skipped preview or a "not placed" feature line a failure: the tool exits with code 0 and the copy is done. Only a `도구 실패:` line is a failure.
+- Call the site publishable or "checked" while blockers, a `안내:` notice or a skipped or failed check stand: placeholder images and unverified legal pages become the user's risk once published, and the feature loop did not run through.
+- Retry a failed or skipped completion check on your own: the cause (memory, missing browser, build error) is the same on the next run. A new delivery into a new empty folder, after the user fixed the cause and said yes again, is not a retry.
+- Say a feature was added when the README lists it as not placed: it misstates the delivered site.
+- Run an `npm install` yourself to clear a skipped check: it installs on the user's computer without their yes.
+- Ask for a key, a token or an account login in the chat: the chat history is stored. The tool reads the Vercel token from the user's own environment.
+- Run a production deployment: only previews are made, and the tool refuses a production deployment before it copies anything.
+- Empty, delete or reuse the user's target folder yourself: it may hold their files, and a filled folder refuses a second delivery.
+
+## Judgment calls
+
+- Weigh the cost before you ask: minutes, memory, downloads. If the user says the PC is slow, busy or low on memory, say that first and let them decide.
+- A Vercel preview link needs a Vercel account and token. To "show it to someone for a while", copy without `--deploy-preview` and offer the `preview` skill afterwards.
+- Blockers that are only placeholder images and unverified legal pages are normal in preview mode: report them in one sentence; do not offer to fix them now.
+- A filled folder refuses a second delivery: read a hand-typed target path back once first.
+
+## 1. Decide everything before the copy
+
+The copy, the completion check and the preview link go into one command, so collect the answers first, then run once. Silence, 「아직요」 and 「잘 모르겠어요」 count as no.
+
+- **Run folder and letter.** List the built candidates from inside the `sitebrew` folder (the same line works in bash and PowerShell; the kit already needs Node 24.13 or newer):
+
+  ```bash
+  node -e "for (const f of require('node:fs').globSync('out/*/?/06-pages.json')) console.log(f)"
+  ```
+
+  A line `out/<name>/<letter>/06-pages.json` gives `<run folder>` = `out/<name>` and a built `<letter>` (Windows prints backslashes, `out\<name>\<letter>\06-pages.json`; the parts are the same). One run: use it. Several runs: ask the user once which site. None: the site is not built, so use the `new` skill, section 5. Several letters: use the one the user picked there; ask if you do not know it.
+- **Product site?** Yes when the user chose sign-up, login or payment in the feature questions (`features.json` in the run folder; the `new` skill, section 2 item 4). The tool wires its back end during the copy: there is **no separate step** to attach it, and you start no back end. It decides the preview question and the kind of completion check below.
+- **Target folder.** It must not exist or must be empty. The tool never overwrites the user's files and refuses a target inside the run folder. Spaces and non-ASCII characters are fine (for example `C:\Users\홍 길동\내 사이트`) inside the quotes.
+- **Completion check.** Ask only where it can run: a product site (real-browser sign-up and checkout loop) or an intro site where the user chose the inquiry feature (one test inquiry). For any other site, or with no feature record, the tool only prints `skipped`: do not ask, treat it as no. Where it can run, ask: **「완성 확인을 돌려 볼까요? 몇 분 걸리고 메모리를 많이 써요」** (in the user's language; in Korean use this exact sentence). Run the check **only if the user says yes**. Do not add `--check-loop` for a "no", for silence, or for an unclear answer: the check runs inside the delivery command, so it is decided before the copy. After a yes the tool installs and builds in the target folder and runs the chosen features once from start to end: a few minutes, a lot of memory, **downloads packages from the internet** (`npm install`), and `node_modules`, `.next` and `.tmp/smoke` stay there (the user can delete them before sharing). Below 3 GB free memory at the start the tool skips instead of waiting. If free memory drops below 3 GB during the run, the product check can wait up to about 30 minutes and then fail: ask the user to close heavy programs before a yes.
+- **Online preview link.** Ask only for a site that is not a product site: the tool never deploys a product folder (only the original site would be deployed, and it differs from the finished product). It needs the Vercel access token that the `doctor` skill lists, saved as a user environment variable on this computer; a `vercel login` alone is not enough. A real address with a domain is the hosting chapter of the runbook (last step), not this flag.
 
 ## 2. Copy
 
-```bash
-node factory/stamp/deliver.mjs --run out/my-site --pick a --to "<target folder>"
-```
+Pick the table row for the two yes/no answers, replace the three `<...>` values and run that one command once. The flags combine. Add `--lf <launch-factory folder>` only when `references/notices.md` says so; no other flag is needed. A product site uses a row with preview `no`.
 
-The tool prints the target, the number of files copied, the run command, and `공개하기 전에 해결할 것 N건` when blockers exist. It leaves out `node_modules`, `.next`, `.vercel`, `.turbo`, `.env*` and `*.tsbuildinfo`. The README it writes lists the same blockers.
+| Completion check | Online preview | Command |
+| --- | --- | --- |
+| no | no | `node factory/stamp/deliver.mjs --run <run folder> --pick <letter> --to "<target folder>"` |
+| yes | no | `node factory/stamp/deliver.mjs --run <run folder> --pick <letter> --to "<target folder>" --check-loop` |
+| no | yes | `node factory/stamp/deliver.mjs --run <run folder> --pick <letter> --to "<target folder>" --deploy-preview` |
+| yes | yes | `node factory/stamp/deliver.mjs --run <run folder> --pick <letter> --to "<target folder>" --check-loop --deploy-preview` |
 
-The blockers come from the last quality check (step 07) of that candidate. After a `revise`, step 07 runs again only when the stamp command gets past the legal-review wait; while it still waits there (exit code 3), the list can describe the site before the change. Say this to the user when a revise was applied after the last full run.
+The tool prints `전달 끝:` (target and number of files), the run command and, when blockers exist, `공개하기 전에 해결할 것 N건`. For an intro or default site the copy leaves out `node_modules`, `.next`, `.next-export`, `.vercel`, `.turbo`, `.env*` and `*.tsbuildinfo` of the original.
 
-Report to the user: the folder, the run command from the output (`cd` into the folder, `npm install`, `npm run dev`; Node 20.9 or newer for the delivered site), and the **blockers in plain words**. In preview mode these always include placeholder images and unverified legal pages. Do not hide them and do not call the site publishable while the list is not empty.
+Exit codes:
 
-### Notice lines (`안내:`)
+- `0`: the copy is done. Step 3 may still report a notice or a skip.
+- `1` with a `도구 실패: …` line and no `전달 끝:` line: the delivery did not finish. By the line:
+  - `사이트(06-pages)가 없다`: nothing was copied; the site is not built. Finish it with the `new` skill, section 5, then run once more.
+  - `원본 사이트 폴더 안`: nothing was copied; the target is inside the run folder. Ask for a folder outside `out/`, then run once more.
+  - `비어 있지 않다` or `폴더가 아니라 파일이다`: nothing was copied; ask for a NEW empty folder, then run once more.
+  - Other text: the tool can fail after it has begun writing, so the target folder may be partly filled, and a filled folder refuses the next delivery. Report the cause in plain words and say the folder may be partly filled. The user chooses: a NEW empty folder, or emptying this one themselves. Do not empty or delete it yourself. Then run once more.
+- `1` with `전달 끝:` before the `도구 실패: …` line: the copy is done; the completion check or the preview deployment failed (the line names which). See step 3.
+- `2`: argument error (a missing value, an unknown flag, a `--pick` other than `a`, `b`, `c`); nothing was copied. Correct the command.
+- Any other code, or no output: report the last output lines; run nothing again.
 
-The tool may print a line starting with `안내:` after the run command. It means the feature choice was **not applied** and the folder came out the default way for its type. The same sentence is in the README. Relay it in the user's language, in one or two plain sentences (Korean: 해요체), with no part names and no absolute paths:
+## 3. Report
 
-- No feature record in the run folder: the user has not answered the feature questions for this run. Offer to ask them (the `new` skill, step 4), then deliver again into an empty folder.
-- The feature table changed after the choice: the old answers do not fit any more. Ask the feature questions again, write the choice again with `features-write`, and deliver again.
-- launch-factory was not found: the choice is on record but cannot be read. Deliver again with `--lf <launch-factory folder>`; the same flag goes to `intake.mjs features` and `features-write`.
-- Product name or share-preview language not set everywhere: tell the user to open the folder and check the name and language.
+Tell the user in plain words:
 
-A notice is **not a failure** and the copy is done. Do not call the site a product site while one of the first three is shown.
-
-### Features not applied to an intro site
-
-For an intro site (not a product site) the README can list a chosen feature with the line 「…는 소개형 사이트에 넣을 곳이 없어서 넣지 않았어요」 or 「…는 이 시안에 문의 폼이나 신청 블록이 없어서 넣지 않았어요」. The tool does not print these lines; read them from the README. Relay each one in the user's language, in one plain sentence (Korean: 해요체), with the feature's result word from the README and no part names:
-
-- "No place in an intro site": this feature only works in a product site. Offer to ask the feature questions again if the user wants a product site.
-- "No contact form or sign-up block": the inquiry feature needs a design with a form. Offer another candidate that has one, or a `revise` that adds a contact section, then deliver again into an empty folder.
-
-These lines are **not a failure**. Do not say the feature was added.
-
-### Completion check (only after a yes)
-
-```bash
-node factory/stamp/deliver.mjs --run out/my-site --pick a --to "<target folder>" --check-loop
-```
-
-- After the copy, the tool installs and builds inside the target folder and runs the chosen features once, from start to end: a product site goes through its sign-up and checkout loop in a real browser, an intro site with an inquiry form sends one test inquiry. It takes a few minutes, uses a lot of memory, **downloads packages from the internet** (`npm install` in the target folder) and leaves `node_modules`, `.next` and `.tmp/smoke` there; the README says so, and the user can delete them before sharing the folder.
-- It prints one line, `완성 확인: ok`, `완성 확인: skipped — <reason>` or `완성 확인: failed — <reason>`. The README gets the same result.
-- Tell the user the result in the user's language, in plain words and one or two sentences (Korean: 해요체). Do not paste the tool line or the build log, and do not show absolute paths from it.
+- The target folder, the run command exactly as the `실행:` line prints it (`cd` into the folder, `npm install`, `npm run dev`; Node 20.9 or newer for the delivered site) and the **blockers**. In preview mode they always include placeholder images and unverified legal pages: do not hide them. The README also lists what to prepare before sign-up and payment work; relay only its result words (회원가입·로그인, 결제).
+- If you applied a `revise` in this conversation after the last full stamp run, add that the blocker list may describe the site before the change: step 07 runs again only after the stamp command gets past the legal-review wait (exit code 3).
+- The completion check, when it was asked: the tool prints `완성 확인: ok`, `완성 확인: skipped — <reason>` or `완성 확인: failed — <reason>`, and the README gets the same result.
   - `ok`: "완성 확인을 돌려 봤고 통과했어요. 고른 기능이 처음부터 끝까지 이어져요."
-  - `skipped`: say that it did not run and why (not enough free memory: free 3 GB or more and run it again; no Chrome or Edge on this computer; the browser test tool is not installed, so give the one `npm install` command from the reason and do not run it for the user; the folder has no `package.json`, so check that it is the delivered folder; the feature record could not be read, so ask the feature questions again; no feature to check). A skip is **not** a failure and **not** a pass. Do not call the site "checked".
-  - `failed`: say that it got stuck and give the cause in plain words. The copy is still done. The tool exits with code 1. Offer to look into the cause, and do not retry in a loop.
-- Memory is checked once at the start: below 3 GB free the tool skips instead of waiting. If free memory drops below 3 GB during the run, the product check can wait up to about 30 minutes for memory and then fail. Tell the user to close other heavy programs before a yes.
+  - `failed`: say that it got stuck, give the cause in plain words and offer to look into it.
+  - `skipped`: say that it did not run and why. A skip is **not** a failure and **not** a pass.
 
-## 3. Online preview link (optional)
+    | Reason in the line | Say | Agent action |
+    | --- | --- | --- |
+    | not enough free memory | free memory was under 3 GB | if wanted, the user closes heavy programs and you deliver again into a new empty folder with `--check-loop` after a new yes (this folder cannot re-run it) |
+    | no Chrome or Edge | this computer has no Chrome or Edge | none; a later check needs a new delivery after a new yes |
+    | the browser test tool is not installed (still missing after the tool's own `npm install`) | a test tool is missing although the tool installed the packages | none to run; the user checks that `package.json` lists `@playwright/test` in `devDependencies`; do not run an install for them |
+    | the email that receives inquiries is not confirmed yet (preview state) | the inquiry check did not run, because the receiving email is not filled in yet; this is the normal preview state | the user fills the email in `content/site.json` (a new delivery copies the one in `<run folder>/<letter>/site/content/site.json`); a later check needs a new delivery after a new yes |
+    | no `package.json` in the folder | the check did not run, because that folder is not the delivered site | none; the user checks that this is the delivered folder |
+    | feature record or `launch-factory` not found or unreadable, feature table changed | the feature choice cannot be read | a `안내:` line is also printed: the MANDATORY line below |
+    | no feature to check, or no steps in the full-loop test for the chosen features | nothing to check on this site | none |
+- The preview, when it was asked: `미리보기: <url>` is the link to give. `미리보기 배포 건너뜀` means no deployment: say that the token is missing or the site is a product site, and that the copy is done. A failed deployment is exit code 1 after `전달 끝:`: report its line (the token is masked).
 
-```bash
-node factory/stamp/deliver.mjs --run out/my-site --pick a --to "<target folder>" --deploy-preview
-```
-
-- Only a **preview** deployment is ever made. A production deployment is refused before anything runs.
-- It needs a Vercel login on this computer. Without one, the tool prints `미리보기 배포 건너뜀` and still finishes the copy. That is not a failure.
-- Never ask for a key or a token in the chat. How to get an account and a real address is the hosting chapter of the runbook (last step below), not part of this step.
-- If the deployment fails, the copy is still done. The tool exits with code 1 and prints the reason with the token masked. Report that line.
-
-## Product sites (sign-up, payments and so on)
-
-Whether a site is a product site follows the feature choice in `features.json` of the run folder (the `new` skill, step 4), not the site type alone. A product site comes out of the copy with its back end already wired by the tool. There is **no separate step** to attach it, and you do not start a back end for the user here.
-
-What the user does next, in plain words (Korean: 해요체):
-
-1. Open the folder, run `npm install`, then `npm run dev`. The README in the folder shows the exact commands. Node 20.9 or newer.
-2. Read the README. It lists what the user has to prepare before the chosen features work for real (accounts and keys, named in plain words).
-
-Never ask for a key or an account in the chat. Keep every provider and part name out of what you say: use only the result words of the README ("회원가입·로그인", "결제").
-
-## Chatbot mode
-
-Use this when the block "Where this runs" says `chatbot`. Copying the site is a command on the user's computer, so run nothing and never say a folder was written.
-
-1. Ask for the target folder (it must not exist or be empty; spaces and Korean characters are fine) and whether to run the completion check first (the same yes/no question as above).
-2. Give the command for the user to paste inside the `sitebrew` folder, with their folder in quotes: `node factory/stamp/deliver.mjs --run out/my-site --pick a --to "<target folder>"` (`--check-loop` only after a yes).
-3. Say what they should see: a new folder with the site and a `README.md` (Korean, then English) that lists the run commands and the things to fix before publishing. Ask them to paste the printed blockers so you can put them into plain words.
-4. An online preview link (section 3, `--deploy-preview`) needs the Vercel access that section 3 names on the user's own computer, and it is skipped for a product site. The copy of step 2 has already run, so `--deploy-preview` goes into the step-2 command before the copy (the target folder must be empty). Say so. This is not the `preview` skill: that one opens a temporary public address from the delivered folder and needs no account, so offer it only when the user asks to show the site to someone for a while.
+**MANDATORY:** read `references/notices.md` and relay as it says when the output has a line starting `안내:` or `제품 이름·언어를 못 바꾼 자리`, or when the README in the target folder has the text `넣지 않았어요` (search it once). **Do NOT** read it when none of these is there.
 
 ## Last step: the door to the runbook
 
@@ -116,12 +118,21 @@ When the files are delivered and you have reported the result, do this last. Not
 1. Read the state first:
 
 ```bash
-node factory/runbook/runbook.mjs gate --run out/my-site --site "<target folder>"
+node factory/runbook/runbook.mjs gate --run <run folder> --site "<target folder>"
 ```
 
-The JSON is `{"door": "ask" | "skip" | "use"}`.
+The JSON is `{"door": "ask" | "skip" | "use"}`. If the command exits non-zero or prints no JSON, skip the question, say nothing about it and finish.
 
-2. Only when the door is `ask`, ask **once**: 「이 사이트를 실제로 쓰실 건가요?」 (in the user's language; in Korean use this exact sentence). Record the answer with `gate --answer yes`, `gate --answer no` or `gate --answer unsure`. 「잘 모르겠어요」 and 「아직요」 count as no (`unsure`).
-3. A yes: continue with the `runbook` skill. A no: say 「나중에 ‘런북’이라고 말하면 보여 드려요」 in one line and stop. When the door is `skip` or `use`, do not ask; `use` means the runbook skill can go on if the user wants it.
+2. Only when the door is `ask`, ask **once**: 「이 사이트를 실제로 쓰실 건가요?」 (in the user's language; in Korean use this exact sentence). Record the answer by running the command of item 1 again with `--answer yes`, `--answer no` or `--answer unsure` added. 「잘 모르겠어요」 and 「아직요」 count as no (`unsure`).
+3. A yes: continue with the `runbook` skill. Item 2 stored the yes in the run folder, so the `runbook` skill reads the door as `use` and does not ask again. If the output of item 2 has `"saved": false`, nothing could be stored: tell the `runbook` skill that the user said yes (it then adds `--answer yes` to its commands) and do not ask again. A no: say 「나중에 ‘런북’이라고 말하면 보여 드려요」 in one line and stop. When the door is `skip` or `use`, do not ask; `use` means the runbook skill can go on if the user wants it.
 
 If you have no tool that runs commands (a chat window), ask the question once in the conversation and, on a yes, go on with the `runbook` skill in chatbot mode.
+
+## Chatbot mode
+
+Use this when the block "Where this runs" says `chatbot`. Copying the site is a command on the user's computer, so run nothing and never say a folder was written.
+
+1. Ask the step 1 questions: the target folder, the completion check (yes/no; only where step 1 allows it) and the online preview link (yes/no; not for a product site).
+2. Give one command for the user to paste inside the `sitebrew` folder: the row of the step 2 table for their two answers, with their folder in quotes. The row with no flags is `node factory/stamp/deliver.mjs --run out/my-site --pick a --to "<target folder>"` (replace `out/my-site` and `a` with the real run folder and letter; ask the user if you do not know them).
+3. Say what they should see: a new folder with the site and a `README.md` that lists the run commands and the things to fix before publishing. Ask them to paste the printed blockers so you can put them into plain words. If they paste a `안내:` or `제품 이름·언어를 못 바꾼 자리` line, or the README text `넣지 않았어요`, read `references/notices.md`.
+4. An online preview link (`--deploy-preview`) needs the Vercel access token of step 1 on the user's own computer and is skipped for a product site. It cannot be added after the copy, because the target folder must be empty for a second run: put it into the step-2 command. This is not the `preview` skill: that one opens a temporary public address from the delivered folder and needs no account, so offer it only when the user asks to show the site to someone for a while.

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "note": "Install items of the setup skill. Commands are argv arrays: no shell, no user value. {tag}, {repository} and {nodeMin} are filled from compat.json. manualOnly steps (administrator rights, shell functions) are shown, never run.",
+  "note": "Install items of the setup skill. Commands are argv arrays: no shell, no user value. {tag}, {repository}, {nodeMin} and {npmMin} are filled from compat.json. manualOnly steps (administrator rights, shell functions) are shown, never run. 'trouble' (per system or 'all') is read by the install guide only.",
   "items": {
     "node": {
       "say": {
@@ -116,8 +116,30 @@
     },
     "npm": {
       "say": {
-        "ko": "npm 이 없거나 너무 낮아요. npm 은 Node.js 와 함께 와요.",
-        "en": "npm is missing or too old. npm comes with Node.js."
+        "ko": "npm 이 없거나 너무 낮아요. Sitebrew 는 npm {npmMin} 이상이 필요해요. npm 은 Node.js 와 함께 와요.",
+        "en": "npm is missing or too old. Sitebrew needs npm {npmMin} or newer. npm comes with Node.js."
+      },
+      "win32": {
+        "steps": [
+          {
+            "argv": [
+              "npm.cmd",
+              "install",
+              "-g",
+              "npm@{npmMin}"
+            ],
+            "admin": false,
+            "manualOnly": true,
+            "say": {
+              "ko": "npm 만 낮으면 이 명령을 터미널에 붙여 넣어요. PowerShell 에서는 `npm` 이 아니라 `npm.cmd` 로 쳐요(`npm` 은 스크립트 실행 제한에 막힐 수 있어요). npm 이 아예 없으면 Node.js 를 다시 설치해요.",
+              "en": "If only npm is old, paste this command into the terminal. In PowerShell type `npm.cmd`, not `npm` (`npm` can be stopped by the script-execution limit). If npm is missing, reinstall Node.js."
+            }
+          }
+        ],
+        "success": {
+          "ko": "새 터미널을 열고 `npm.cmd --version` 을 쳐요. {npmMin} 이상 숫자가 나오면 돼요.",
+          "en": "Open a new terminal and type `npm.cmd --version`. A number of {npmMin} or higher means it worked."
+        }
       },
       "all": {
         "steps": [
@@ -126,7 +148,7 @@
               "npm",
               "install",
               "-g",
-              "npm@latest"
+              "npm@{npmMin}"
             ],
             "admin": false,
             "manualOnly": true,
@@ -136,6 +158,24 @@
             }
           }
         ]
+      },
+      "success": {
+        "ko": "새 터미널을 열고 `npm --version` 을 쳐요. {npmMin} 이상 숫자가 나오면 돼요.",
+        "en": "Open a new terminal and type `npm --version`. A number of {npmMin} or higher means it worked."
+      },
+      "trouble": {
+        "win32": {
+          "ko": "권한 오류(`EPERM`)로 멈추면 PowerShell 을 「관리자 권한으로 실행」으로 다시 열고 같은 명령을 쳐요. npm 이 있는 폴더를 일반 계정이 바꿀 수 없는 경우가 있어요. 백신 프로그램이나 다른 프로그램이 파일을 잡고 있어도 같은 오류(`EPERM`, `EBUSY`)가 나니, 그 프로그램을 닫고 잠시 뒤 다시 쳐도 돼요.",
+          "en": "If it stops with a permission error (`EPERM`), open PowerShell again with \"Run as administrator\" and type the same command. The folder that holds npm is sometimes one that a normal account may not change. Antivirus or another program that holds the files gives the same error (`EPERM`, `EBUSY`): close that program and type the command again after a moment."
+        },
+        "darwin": {
+          "ko": "권한 오류(`EACCES`)로 멈추면 `sudo` 를 붙이지 말고 npm 의 전역 폴더를 내 폴더로 바꿔요(`sudo` 로 깔면 내 폴더에 관리자 소유 파일이 남아 이후 설치가 또 막혀요). 아래 한 줄을 붙여 넣고 터미널을 닫았다 다시 연 뒤 위 명령을 다시 쳐요: `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH=\"$HOME/.npm-global/bin:$PATH\"' >> ~/.zshrc`",
+          "en": "If it stops with a permission error (`EACCES`), do not add `sudo` (a `sudo` install leaves administrator-owned files in your folders and later installs stop again); move npm's global folder into your own folder. Paste this line, close the terminal, open it again and type the command above again: `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH=\"$HOME/.npm-global/bin:$PATH\"' >> ~/.zshrc`"
+        },
+        "linux": {
+          "ko": "권한 오류(`EACCES`)로 멈추면 `sudo` 를 붙이지 말고(`sudo` 로 깔면 내 폴더에 관리자 소유 파일이 남아 이후 설치가 또 막혀요) npm 의 전역 폴더를 내 폴더로 바꿔요. 아래 한 줄을 붙여 넣고 터미널을 닫았다 다시 연 뒤 위 명령을 다시 쳐요(zsh 를 쓰면 `~/.bashrc` 대신 `~/.zshrc`): `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH=\"$HOME/.npm-global/bin:$PATH\"' >> ~/.bashrc`",
+          "en": "If it stops with a permission error (`EACCES`), do not add `sudo` (a `sudo` install leaves administrator-owned files in your folders and later installs stop again); move npm's global folder into your own folder. Paste this line, close the terminal, open it again and type the command above again (with zsh use `~/.zshrc` instead of `~/.bashrc`): `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH=\"$HOME/.npm-global/bin:$PATH\"' >> ~/.bashrc`"
+        }
       }
     },
     "git": {
@@ -220,8 +260,8 @@
             "admin": true,
             "manualOnly": true,
             "say": {
-              "ko": "관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이에요.",
-              "en": "This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command."
+              "ko": "관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이에요. 다른 배포판은 그 배포판의 패키지 관리자로 설치해요(Fedora 계열 `sudo dnf install git`, Arch 계열 `sudo pacman -S git`).",
+              "en": "This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command. On another distribution use its package manager (Fedora family `sudo dnf install git`, Arch family `sudo pacman -S git`)."
             }
           }
         ]
@@ -291,6 +331,10 @@
         "manual": {
           "ko": "winget 이 없어요. google.com/chrome 에서 설치 파일을 받아요. Windows 11 에는 Edge 가 이미 있어요.",
           "en": "winget is not available. Download the installer from google.com/chrome. Windows 11 already ships Edge."
+        },
+        "success": {
+          "ko": "새 터미널에 이 줄을 쳐요: `\"C:/Program Files/Google/Chrome/Application/chrome.exe\",\"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe\" | Test-Path` 한 줄이라도 `True` 가 나오면 돼요. 키트는 이 두 자리만 찾아요(Windows 11 의 Edge 는 보통 둘째 자리에 있어요). 시작 메뉴에서 열린다고 해서 키트가 찾는 것은 아니에요. 둘 다 `False` 인데 Chrome 이나 Edge 가 다른 곳에 있으면(예: 내 계정에만 설치한 Chrome) 새로 설치하지 말고 환경 변수 CHROME_PATH 에 실행 파일의 전체 경로를 넣어요. 예: `setx CHROME_PATH \"$env:LOCALAPPDATA\\Google\\Chrome\\Application\\chrome.exe\"` 를 치고 이 앱을 닫았다 다시 열어요. 이미 CHROME_PATH 를 넣었다면 `Test-Path $env:CHROME_PATH` 가 `True` 여야 해요.",
+          "en": "In a new terminal type this line: `\"C:/Program Files/Google/Chrome/Application/chrome.exe\",\"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe\" | Test-Path` It worked if at least one line says `True`. The kit looks in these two places only (the Edge of Windows 11 is normally in the second). A browser that opens from the start menu is not enough: the kit must find it. If both lines say `False` but Chrome or Edge is installed somewhere else (for example a Chrome installed for your user only), do not install again: set the environment variable CHROME_PATH to the full path of the executable. Example: type `setx CHROME_PATH \"$env:LOCALAPPDATA\\Google\\Chrome\\Application\\chrome.exe\"` and close and reopen this app. If you already set CHROME_PATH, `Test-Path $env:CHROME_PATH` must say `True`."
         }
       },
       "darwin": {
@@ -313,6 +357,10 @@
         "manual": {
           "ko": "brew 가 없어요. google.com/chrome 에서 설치 파일을 받아요.",
           "en": "brew is not available. Download the installer from google.com/chrome."
+        },
+        "success": {
+          "ko": "터미널에 `ls \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\"` 를 쳐요. 그 경로가 그대로 나오면 Chrome 은 깔려 있어요(「No such file」이면 없는 거예요). 키트는 macOS 에서 이 자리를 스스로 찾지 못해서 환경 변수 CHROME_PATH 가 꼭 필요해요. 이 한 줄을 치고 터미널과 이 앱을 닫았다 다시 열어요: `echo 'export CHROME_PATH=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\"' >> ~/.zshrc` 그런 뒤 `test -f \"$CHROME_PATH\" && echo found` 가 `found` 를 보여 주면 돼요.",
+          "en": "In the terminal type `ls \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\"`. If it prints that path, Chrome is installed (\"No such file\" means it is missing). The kit does not look in that place on macOS, so the environment variable CHROME_PATH is required. Type this line, then close and reopen the terminal and this app: `echo 'export CHROME_PATH=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\"' >> ~/.zshrc` It worked when `test -f \"$CHROME_PATH\" && echo found` prints `found`."
         }
       },
       "linux": {
@@ -327,11 +375,15 @@
             "admin": true,
             "manualOnly": true,
             "say": {
-              "ko": "관리자 암호가 필요해서 직접 실행해요. 패키지 이름이 배포판마다 달라요(chromium 또는 chromium-browser).",
-              "en": "This needs the administrator password, so run it yourself. The package name differs by distribution (chromium or chromium-browser)."
+              "ko": "관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이고 패키지 이름이 배포판마다 달라요(chromium 또는 chromium-browser). 다른 배포판은 Fedora 계열 `sudo dnf install chromium`, Arch 계열 `sudo pacman -S chromium` 처럼 그 배포판의 패키지 관리자로 설치해요.",
+              "en": "This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command, and the package name differs by distribution (chromium or chromium-browser). On another distribution use its package manager, for example Fedora family `sudo dnf install chromium`, Arch family `sudo pacman -S chromium`."
             }
           }
-        ]
+        ],
+        "success": {
+          "ko": "터미널에서 `ls /usr/bin/google-chrome /usr/bin/chromium` 을 쳐요. 둘 중 하나라도 목록에 나오면 돼요(다른 하나가 「No such file」이어도 괜찮아요). 키트는 이 두 자리만 찾아요. 배포판이 다른 이름으로 깔았으면(예: `/usr/bin/chromium-browser`, `/snap/bin/chromium`) 새로 설치하지 말고 환경 변수 CHROME_PATH 에 전체 경로를 넣어요. 예: `echo 'export CHROME_PATH=/usr/bin/chromium-browser' >> ~/.bashrc` (zsh 는 `~/.zshrc`) 를 치고 터미널과 이 앱을 닫았다 다시 열어요.",
+          "en": "In the terminal type `ls /usr/bin/google-chrome /usr/bin/chromium`. It worked if at least one of the two is listed (the other may say \"No such file\"). The kit looks in these two places only. If your distribution installed the browser under another name (for example `/usr/bin/chromium-browser` or `/snap/bin/chromium`), do not install again: set the environment variable CHROME_PATH to the full path. Example: type `echo 'export CHROME_PATH=/usr/bin/chromium-browser' >> ~/.bashrc` (with zsh use `~/.zshrc`), then close and reopen the terminal and this app."
+        }
       },
       "verify": {
         "known": {
@@ -348,10 +400,6 @@
             "/usr/bin/google-chrome"
           ]
         }
-      },
-      "success": {
-        "ko": "시작 메뉴에서 Chrome 이 열리면 돼요.",
-        "en": "It worked if Chrome opens from the start menu or the applications folder."
       }
     },
     "kit-clone": {
@@ -362,6 +410,10 @@
       "blocked": {
         "ko": "이 플러그인은 소유자 미정 판이라 내려받을 주소가 없어요. 설치 안내에 적힌 주소를 써요.",
         "en": "This plugin build has no owner set, so there is no address to clone from. Use the address in the install instructions."
+      },
+      "unsafeFolder": {
+        "ko": "이 폴더에는 내려받지 않아요. 홈 폴더 맨 위나 운영체제 폴더(`C:\\Windows`, `Program Files`, `/usr` 같은 곳)에 파일이 흩어지면 되돌리기 어려워요. 새 빈 `Sitebrew` 폴더를 만들어요(예: 문서 폴더 안. 문서 폴더를 클라우드 동기화 서비스가 동기화하면 그 밖의 폴더를 써요: 동기화가 설치를 막아 `EPERM`·`EBUSY` 오류가 날 수 있어요). 설치는 그 폴더에서 이어가요.",
+        "en": "Nothing is downloaded into this folder. Files spread over the top of the home folder or an operating-system folder (`C:\\Windows`, `Program Files`, `/usr`) are hard to undo. Make a new empty `Sitebrew` folder (for example under Documents; if a cloud-sync service syncs your Documents folder, use a folder outside it, because syncing can stop the install with `EPERM` or `EBUSY` errors). The installation then continues in that folder."
       },
       "all": {
         "steps": [
@@ -439,6 +491,16 @@
       "notGitNote": {
         "ko": "이 Sitebrew 폴더는 자기 git 저장소의 맨 위가 아니거나 git 정보가 없어요. 다른 저장소를 건드리지 않도록 직접 하는 단계로만 보여 줘요. 폴더를 열고 아래 명령을 실행해요.",
         "en": "This Sitebrew folder is not the top of its own git repository, or has no git data. The steps are shown for you to run, so that no other repository is touched. Open the folder and run them."
+      },
+      "success": {
+        "ko": "같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. {tag} 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.",
+        "en": "In the same terminal type `git describe --tags --exact-match`. It worked if it prints {tag}. An error means it is not on that tag yet."
+      },
+      "trouble": {
+        "all": {
+          "ko": "`git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout {tag}` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.",
+          "en": "If `git checkout` stops with a \"local changes\" error, type `git stash` once and then `git checkout {tag}` again. Your edits are not lost: they stay in the stash."
+        }
       }
     },
     "kit-setup": {

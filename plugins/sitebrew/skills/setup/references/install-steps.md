@@ -31,7 +31,21 @@ winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-package-agreem
 
 성공하면: 새 터미널을 열고 `node --version` 을 쳐요. 24.13.0 이상 숫자가 나오면 돼요. npm 은 Node.js 와 함께 와요.
 
-**2. Git**
+**2. npm 올리기**
+
+npm 이 없거나 너무 낮아요. Sitebrew 는 npm 11.6.2 이상이 필요해요. npm 은 Node.js 와 함께 와요.
+
+```powershell
+npm.cmd install -g npm@11.6.2
+```
+
+npm 만 낮으면 이 명령을 터미널에 붙여 넣어요. PowerShell 에서는 `npm` 이 아니라 `npm.cmd` 로 쳐요(`npm` 은 스크립트 실행 제한에 막힐 수 있어요). npm 이 아예 없으면 Node.js 를 다시 설치해요.
+
+성공하면: 새 터미널을 열고 `npm.cmd --version` 을 쳐요. 11.6.2 이상 숫자가 나오면 돼요.
+
+문제 해결: 권한 오류(`EPERM`)로 멈추면 PowerShell 을 「관리자 권한으로 실행」으로 다시 열고 같은 명령을 쳐요. npm 이 있는 폴더를 일반 계정이 바꿀 수 없는 경우가 있어요. 백신 프로그램이나 다른 프로그램이 파일을 잡고 있어도 같은 오류(`EPERM`, `EBUSY`)가 나니, 그 프로그램을 닫고 잠시 뒤 다시 쳐도 돼요.
+
+**3. Git**
 
 git 이 없어요. 정해진 태그로 Sitebrew 를 내려받는 데 필요해요.
 
@@ -45,7 +59,7 @@ winget install --id Git.Git -e --source winget --accept-package-agreements --acc
 
 성공하면: 새 터미널을 열고 `git --version` 을 쳐요. 버전 숫자가 나오면 돼요.
 
-**3. Chrome 또는 Edge**
+**4. Chrome 또는 Edge**
 
 Chrome 또는 Edge 를 찾지 못했어요. 품질 검사와 보드 사진에 필요해요.
 
@@ -55,26 +69,41 @@ winget install --id Google.Chrome -e --source winget --accept-package-agreements
 
 이 도구가 없으면: winget 이 없어요. google.com/chrome 에서 설치 파일을 받아요. Windows 11 에는 Edge 가 이미 있어요.
 
-성공하면: 시작 메뉴에서 Chrome 이 열리면 돼요.
+성공하면: 새 터미널에 이 줄을 쳐요: `"C:/Program Files/Google/Chrome/Application/chrome.exe","C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" | Test-Path` 한 줄이라도 `True` 가 나오면 돼요. 키트는 이 두 자리만 찾아요(Windows 11 의 Edge 는 보통 둘째 자리에 있어요). 시작 메뉴에서 열린다고 해서 키트가 찾는 것은 아니에요. 둘 다 `False` 인데 Chrome 이나 Edge 가 다른 곳에 있으면(예: 내 계정에만 설치한 Chrome) 새로 설치하지 말고 환경 변수 CHROME_PATH 에 실행 파일의 전체 경로를 넣어요. 예: `setx CHROME_PATH "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"` 를 치고 이 앱을 닫았다 다시 열어요. 이미 CHROME_PATH 를 넣었다면 `Test-Path $env:CHROME_PATH` 가 `True` 여야 해요.
 
-**4. Sitebrew 내려받기**
+**5. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.2 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.3 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```powershell
-git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
 
-**5. Sitebrew 설치**
+**6. Sitebrew 를 고정 태그로 맞추기**
 
-Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.
+Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.3 로 맞춰요.
 
-`sitebrew` 폴더 안에서 실행해요:
+Sitebrew 를 내려받은 폴더(`sitebrew` 폴더가 들어 있는 폴더)에서 실행해요:
 
 ```powershell
 cd sitebrew
+git fetch --tags
+git checkout v0.2.3
+```
+
+성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.3 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
+
+문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.3` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
+
+**7. Sitebrew 설치**
+
+Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.
+
+`sitebrew` 폴더 안에서 실행해요. 6번을 했다면 이미 그 안에 있어요. 6번을 건너뛰었거나 터미널을 새로 열었다면, `sitebrew` 가 들어 있는 폴더에서 `cd sitebrew` 를 먼저 쳐요:
+
+```powershell
 npm.cmd run setup
 ```
 
@@ -96,7 +125,21 @@ brew install node
 
 성공하면: 새 터미널을 열고 `node --version` 을 쳐요. 24.13.0 이상 숫자가 나오면 돼요. npm 은 Node.js 와 함께 와요.
 
-**2. Git**
+**2. npm 올리기**
+
+npm 이 없거나 너무 낮아요. Sitebrew 는 npm 11.6.2 이상이 필요해요. npm 은 Node.js 와 함께 와요.
+
+```bash
+npm install -g npm@11.6.2
+```
+
+npm 만 낮으면 이 명령을 터미널에 붙여 넣어요. npm 이 아예 없으면 Node.js 를 다시 설치해요.
+
+성공하면: 새 터미널을 열고 `npm --version` 을 쳐요. 11.6.2 이상 숫자가 나오면 돼요.
+
+문제 해결: 권한 오류(`EACCES`)로 멈추면 `sudo` 를 붙이지 말고 npm 의 전역 폴더를 내 폴더로 바꿔요(`sudo` 로 깔면 내 폴더에 관리자 소유 파일이 남아 이후 설치가 또 막혀요). 아래 한 줄을 붙여 넣고 터미널을 닫았다 다시 연 뒤 위 명령을 다시 쳐요: `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc`
+
+**3. Git**
 
 git 이 없어요. 정해진 태그로 Sitebrew 를 내려받는 데 필요해요.
 
@@ -108,7 +151,7 @@ brew install git
 
 성공하면: 새 터미널을 열고 `git --version` 을 쳐요. 버전 숫자가 나오면 돼요.
 
-**3. Chrome 또는 Edge**
+**4. Chrome 또는 Edge**
 
 Chrome 또는 Edge 를 찾지 못했어요. 품질 검사와 보드 사진에 필요해요.
 
@@ -118,26 +161,41 @@ brew install --cask google-chrome
 
 이 도구가 없으면: brew 가 없어요. google.com/chrome 에서 설치 파일을 받아요.
 
-성공하면: 시작 메뉴에서 Chrome 이 열리면 돼요.
+성공하면: 터미널에 `ls "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"` 를 쳐요. 그 경로가 그대로 나오면 Chrome 은 깔려 있어요(「No such file」이면 없는 거예요). 키트는 macOS 에서 이 자리를 스스로 찾지 못해서 환경 변수 CHROME_PATH 가 꼭 필요해요. 이 한 줄을 치고 터미널과 이 앱을 닫았다 다시 열어요: `echo 'export CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"' >> ~/.zshrc` 그런 뒤 `test -f "$CHROME_PATH" && echo found` 가 `found` 를 보여 주면 돼요.
 
-**4. Sitebrew 내려받기**
+**5. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.2 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.3 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```bash
-git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
 
-**5. Sitebrew 설치**
+**6. Sitebrew 를 고정 태그로 맞추기**
 
-Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.
+Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.3 로 맞춰요.
 
-`sitebrew` 폴더 안에서 실행해요:
+Sitebrew 를 내려받은 폴더(`sitebrew` 폴더가 들어 있는 폴더)에서 실행해요:
 
 ```bash
 cd sitebrew
+git fetch --tags
+git checkout v0.2.3
+```
+
+성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.3 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
+
+문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.3` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
+
+**7. Sitebrew 설치**
+
+Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.
+
+`sitebrew` 폴더 안에서 실행해요. 6번을 했다면 이미 그 안에 있어요. 6번을 건너뛰었거나 터미널을 새로 열었다면, `sitebrew` 가 들어 있는 폴더에서 `cd sitebrew` 를 먼저 쳐요:
+
+```bash
 npm run setup
 ```
 
@@ -159,7 +217,21 @@ nvm 이 있으면 이 명령을 터미널에 붙여 넣어요. 없으면 nodejs.
 
 성공하면: 새 터미널을 열고 `node --version` 을 쳐요. 24.13.0 이상 숫자가 나오면 돼요. npm 은 Node.js 와 함께 와요.
 
-**2. Git**
+**2. npm 올리기**
+
+npm 이 없거나 너무 낮아요. Sitebrew 는 npm 11.6.2 이상이 필요해요. npm 은 Node.js 와 함께 와요.
+
+```bash
+npm install -g npm@11.6.2
+```
+
+npm 만 낮으면 이 명령을 터미널에 붙여 넣어요. npm 이 아예 없으면 Node.js 를 다시 설치해요.
+
+성공하면: 새 터미널을 열고 `npm --version` 을 쳐요. 11.6.2 이상 숫자가 나오면 돼요.
+
+문제 해결: 권한 오류(`EACCES`)로 멈추면 `sudo` 를 붙이지 말고(`sudo` 로 깔면 내 폴더에 관리자 소유 파일이 남아 이후 설치가 또 막혀요) npm 의 전역 폴더를 내 폴더로 바꿔요. 아래 한 줄을 붙여 넣고 터미널을 닫았다 다시 연 뒤 위 명령을 다시 쳐요(zsh 를 쓰면 `~/.bashrc` 대신 `~/.zshrc`): `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.bashrc`
+
+**3. Git**
 
 git 이 없어요. 정해진 태그로 Sitebrew 를 내려받는 데 필요해요.
 
@@ -167,13 +239,11 @@ git 이 없어요. 정해진 태그로 Sitebrew 를 내려받는 데 필요해�
 sudo apt install git
 ```
 
-이 명령은 관리자 암호가 필요할 수 있어요.
-
-관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이에요.
+관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이에요. 다른 배포판은 그 배포판의 패키지 관리자로 설치해요(Fedora 계열 `sudo dnf install git`, Arch 계열 `sudo pacman -S git`).
 
 성공하면: 새 터미널을 열고 `git --version` 을 쳐요. 버전 숫자가 나오면 돼요.
 
-**3. Chrome 또는 Edge**
+**4. Chrome 또는 Edge**
 
 Chrome 또는 Edge 를 찾지 못했어요. 품질 검사와 보드 사진에 필요해요.
 
@@ -181,30 +251,43 @@ Chrome 또는 Edge 를 찾지 못했어요. 품질 검사와 보드 사진에 �
 sudo apt install chromium
 ```
 
-이 명령은 관리자 암호가 필요할 수 있어요.
+관리자 암호가 필요해서 직접 실행해요. Debian·Ubuntu 계열의 명령이고 패키지 이름이 배포판마다 달라요(chromium 또는 chromium-browser). 다른 배포판은 Fedora 계열 `sudo dnf install chromium`, Arch 계열 `sudo pacman -S chromium` 처럼 그 배포판의 패키지 관리자로 설치해요.
 
-관리자 암호가 필요해서 직접 실행해요. 패키지 이름이 배포판마다 달라요(chromium 또는 chromium-browser).
+성공하면: 터미널에서 `ls /usr/bin/google-chrome /usr/bin/chromium` 을 쳐요. 둘 중 하나라도 목록에 나오면 돼요(다른 하나가 「No such file」이어도 괜찮아요). 키트는 이 두 자리만 찾아요. 배포판이 다른 이름으로 깔았으면(예: `/usr/bin/chromium-browser`, `/snap/bin/chromium`) 새로 설치하지 말고 환경 변수 CHROME_PATH 에 전체 경로를 넣어요. 예: `echo 'export CHROME_PATH=/usr/bin/chromium-browser' >> ~/.bashrc` (zsh 는 `~/.zshrc`) 를 치고 터미널과 이 앱을 닫았다 다시 열어요.
 
-성공하면: 시작 메뉴에서 Chrome 이 열리면 돼요.
+**5. Sitebrew 내려받기**
 
-**4. Sitebrew 내려받기**
-
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.2 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.3 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```bash
-git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
 
-**5. Sitebrew 설치**
+**6. Sitebrew 를 고정 태그로 맞추기**
 
-Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.
+Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.3 로 맞춰요.
 
-`sitebrew` 폴더 안에서 실행해요:
+Sitebrew 를 내려받은 폴더(`sitebrew` 폴더가 들어 있는 폴더)에서 실행해요:
 
 ```bash
 cd sitebrew
+git fetch --tags
+git checkout v0.2.3
+```
+
+성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.3 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
+
+문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.3` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
+
+**7. Sitebrew 설치**
+
+Sitebrew 의 패키지를 설치해요(npm run setup). 몇 분 걸리고 인터넷을 써요.
+
+`sitebrew` 폴더 안에서 실행해요. 6번을 했다면 이미 그 안에 있어요. 6번을 건너뛰었거나 터미널을 새로 열었다면, `sitebrew` 가 들어 있는 폴더에서 `cd sitebrew` 를 먼저 쳐요:
+
+```bash
 npm run setup
 ```
 
@@ -230,7 +313,21 @@ If that tool is not available: winget is not available. Download the LTS install
 
 When it works: Open a new terminal and type `node --version`. A number of 24.13.0 or higher means it worked. npm comes with Node.js.
 
-**2. Git**
+**2. Update npm**
+
+npm is missing or too old. Sitebrew needs npm 11.6.2 or newer. npm comes with Node.js.
+
+```powershell
+npm.cmd install -g npm@11.6.2
+```
+
+If only npm is old, paste this command into the terminal. In PowerShell type `npm.cmd`, not `npm` (`npm` can be stopped by the script-execution limit). If npm is missing, reinstall Node.js.
+
+When it works: Open a new terminal and type `npm.cmd --version`. A number of 11.6.2 or higher means it worked.
+
+Trouble: If it stops with a permission error (`EPERM`), open PowerShell again with "Run as administrator" and type the same command. The folder that holds npm is sometimes one that a normal account may not change. Antivirus or another program that holds the files gives the same error (`EPERM`, `EBUSY`): close that program and type the command again after a moment.
+
+**3. Git**
 
 git is missing. It is needed to download Sitebrew at its pinned tag.
 
@@ -244,7 +341,7 @@ If that tool is not available: winget is not available. Download the installer f
 
 When it works: Open a new terminal and type `git --version`. A version number means it worked.
 
-**3. Chrome or Edge**
+**4. Chrome or Edge**
 
 Chrome or Edge was not found. The quality checks and board photos need one.
 
@@ -254,26 +351,41 @@ winget install --id Google.Chrome -e --source winget --accept-package-agreements
 
 If that tool is not available: winget is not available. Download the installer from google.com/chrome. Windows 11 already ships Edge.
 
-When it works: It worked if Chrome opens from the start menu or the applications folder.
+When it works: In a new terminal type this line: `"C:/Program Files/Google/Chrome/Application/chrome.exe","C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" | Test-Path` It worked if at least one line says `True`. The kit looks in these two places only (the Edge of Windows 11 is normally in the second). A browser that opens from the start menu is not enough: the kit must find it. If both lines say `False` but Chrome or Edge is installed somewhere else (for example a Chrome installed for your user only), do not install again: set the environment variable CHROME_PATH to the full path of the executable. Example: type `setx CHROME_PATH "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"` and close and reopen this app. If you already set CHROME_PATH, `Test-Path $env:CHROME_PATH` must say `True`.
 
-**4. Download Sitebrew**
+**5. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.2. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.3. A sitebrew folder is created in the current folder.
 
 ```powershell
-git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
 
-**5. Install Sitebrew**
+**6. Move Sitebrew to the pinned tag**
 
-Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet.
+Sitebrew is on another version. Move it to the pinned tag v0.2.3.
 
-Run it inside the `sitebrew` folder:
+Run it from the folder where you downloaded Sitebrew (the folder that holds the `sitebrew` folder):
 
 ```powershell
 cd sitebrew
+git fetch --tags
+git checkout v0.2.3
+```
+
+When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.3. An error means it is not on that tag yet.
+
+Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.3` again. Your edits are not lost: they stay in the stash.
+
+**7. Install Sitebrew**
+
+Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet.
+
+Run it inside the `sitebrew` folder. After item 6 you are already there. If you skipped item 6 or opened a new terminal, first type `cd sitebrew` in the folder that holds it:
+
+```powershell
 npm.cmd run setup
 ```
 
@@ -295,7 +407,21 @@ If that tool is not available: brew is not available. Download the LTS installer
 
 When it works: Open a new terminal and type `node --version`. A number of 24.13.0 or higher means it worked. npm comes with Node.js.
 
-**2. Git**
+**2. Update npm**
+
+npm is missing or too old. Sitebrew needs npm 11.6.2 or newer. npm comes with Node.js.
+
+```bash
+npm install -g npm@11.6.2
+```
+
+If only npm is old, paste this command into the terminal. If npm is missing, reinstall Node.js.
+
+When it works: Open a new terminal and type `npm --version`. A number of 11.6.2 or higher means it worked.
+
+Trouble: If it stops with a permission error (`EACCES`), do not add `sudo` (a `sudo` install leaves administrator-owned files in your folders and later installs stop again); move npm's global folder into your own folder. Paste this line, close the terminal, open it again and type the command above again: `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.zshrc`
+
+**3. Git**
 
 git is missing. It is needed to download Sitebrew at its pinned tag.
 
@@ -307,7 +433,7 @@ If that tool is not available: brew is not available. Run xcode-select --install
 
 When it works: Open a new terminal and type `git --version`. A version number means it worked.
 
-**3. Chrome or Edge**
+**4. Chrome or Edge**
 
 Chrome or Edge was not found. The quality checks and board photos need one.
 
@@ -317,26 +443,41 @@ brew install --cask google-chrome
 
 If that tool is not available: brew is not available. Download the installer from google.com/chrome.
 
-When it works: It worked if Chrome opens from the start menu or the applications folder.
+When it works: In the terminal type `ls "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"`. If it prints that path, Chrome is installed ("No such file" means it is missing). The kit does not look in that place on macOS, so the environment variable CHROME_PATH is required. Type this line, then close and reopen the terminal and this app: `echo 'export CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"' >> ~/.zshrc` It worked when `test -f "$CHROME_PATH" && echo found` prints `found`.
 
-**4. Download Sitebrew**
+**5. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.2. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.3. A sitebrew folder is created in the current folder.
 
 ```bash
-git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
 
-**5. Install Sitebrew**
+**6. Move Sitebrew to the pinned tag**
 
-Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet.
+Sitebrew is on another version. Move it to the pinned tag v0.2.3.
 
-Run it inside the `sitebrew` folder:
+Run it from the folder where you downloaded Sitebrew (the folder that holds the `sitebrew` folder):
 
 ```bash
 cd sitebrew
+git fetch --tags
+git checkout v0.2.3
+```
+
+When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.3. An error means it is not on that tag yet.
+
+Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.3` again. Your edits are not lost: they stay in the stash.
+
+**7. Install Sitebrew**
+
+Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet.
+
+Run it inside the `sitebrew` folder. After item 6 you are already there. If you skipped item 6 or opened a new terminal, first type `cd sitebrew` in the folder that holds it:
+
+```bash
 npm run setup
 ```
 
@@ -358,7 +499,21 @@ If you have nvm, paste this command into the terminal. Otherwise download from n
 
 When it works: Open a new terminal and type `node --version`. A number of 24.13.0 or higher means it worked. npm comes with Node.js.
 
-**2. Git**
+**2. Update npm**
+
+npm is missing or too old. Sitebrew needs npm 11.6.2 or newer. npm comes with Node.js.
+
+```bash
+npm install -g npm@11.6.2
+```
+
+If only npm is old, paste this command into the terminal. If npm is missing, reinstall Node.js.
+
+When it works: Open a new terminal and type `npm --version`. A number of 11.6.2 or higher means it worked.
+
+Trouble: If it stops with a permission error (`EACCES`), do not add `sudo` (a `sudo` install leaves administrator-owned files in your folders and later installs stop again); move npm's global folder into your own folder. Paste this line, close the terminal, open it again and type the command above again (with zsh use `~/.zshrc` instead of `~/.bashrc`): `mkdir -p ~/.npm-global && npm config set prefix ~/.npm-global && echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> ~/.bashrc`
+
+**3. Git**
 
 git is missing. It is needed to download Sitebrew at its pinned tag.
 
@@ -366,13 +521,11 @@ git is missing. It is needed to download Sitebrew at its pinned tag.
 sudo apt install git
 ```
 
-This command may ask for the administrator password.
-
-This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command.
+This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command. On another distribution use its package manager (Fedora family `sudo dnf install git`, Arch family `sudo pacman -S git`).
 
 When it works: Open a new terminal and type `git --version`. A version number means it worked.
 
-**3. Chrome or Edge**
+**4. Chrome or Edge**
 
 Chrome or Edge was not found. The quality checks and board photos need one.
 
@@ -380,30 +533,43 @@ Chrome or Edge was not found. The quality checks and board photos need one.
 sudo apt install chromium
 ```
 
-This command may ask for the administrator password.
+This needs the administrator password, so run it yourself. It is the Debian and Ubuntu command, and the package name differs by distribution (chromium or chromium-browser). On another distribution use its package manager, for example Fedora family `sudo dnf install chromium`, Arch family `sudo pacman -S chromium`.
 
-This needs the administrator password, so run it yourself. The package name differs by distribution (chromium or chromium-browser).
+When it works: In the terminal type `ls /usr/bin/google-chrome /usr/bin/chromium`. It worked if at least one of the two is listed (the other may say "No such file"). The kit looks in these two places only. If your distribution installed the browser under another name (for example `/usr/bin/chromium-browser` or `/snap/bin/chromium`), do not install again: set the environment variable CHROME_PATH to the full path. Example: type `echo 'export CHROME_PATH=/usr/bin/chromium-browser' >> ~/.bashrc` (with zsh use `~/.zshrc`), then close and reopen the terminal and this app.
 
-When it works: It worked if Chrome opens from the start menu or the applications folder.
+**5. Download Sitebrew**
 
-**4. Download Sitebrew**
-
-There is no Sitebrew folder. Download it at the pinned tag v0.2.2. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.3. A sitebrew folder is created in the current folder.
 
 ```bash
-git clone --branch v0.2.2 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
 
-**5. Install Sitebrew**
+**6. Move Sitebrew to the pinned tag**
 
-Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet.
+Sitebrew is on another version. Move it to the pinned tag v0.2.3.
 
-Run it inside the `sitebrew` folder:
+Run it from the folder where you downloaded Sitebrew (the folder that holds the `sitebrew` folder):
 
 ```bash
 cd sitebrew
+git fetch --tags
+git checkout v0.2.3
+```
+
+When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.3. An error means it is not on that tag yet.
+
+Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.3` again. Your edits are not lost: they stay in the stash.
+
+**7. Install Sitebrew**
+
+Install the Sitebrew packages (npm run setup). It takes a few minutes and uses the internet.
+
+Run it inside the `sitebrew` folder. After item 6 you are already there. If you skipped item 6 or opened a new terminal, first type `cd sitebrew` in the folder that holds it:
+
+```bash
 npm run setup
 ```
 

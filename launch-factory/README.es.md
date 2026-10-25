@@ -4,7 +4,7 @@
 
 Kit de lanzamiento que acompaña a web-factory (el repositorio de bloques de pantalla). Este repositorio se encarga de la parte de servidor: autenticación, datos, pagos, correo, medición y tareas. Cada producto empieza copiando `template/` y recibe los parches de seguridad con solo subir la versión de los paquetes `@launch-factory/*`.
 
-Versión actual `v0.2.2` · web-factory fijado `v0.2.2` · bloques `a7d57537` · contract `a7d57537` (el commit de la etiqueta v0.2.2)
+Versión actual `v0.2.3` · web-factory fijado `v0.2.3` · bloques `2ec0b992` · contract `2ec0b992` (el commit de la etiqueta v0.2.3)
 
 - Los bloques no conocen al proveedor: los adaptadores implementan los puertos de web-factory. Un mismo conjunto de pruebas de conformidad comprueba que cada adaptador reproduce los mismos escenarios que el mock.
 - Cada paquete de funcionalidad (adaptador, acciones de servidor, rutas de webhook, esquema y migraciones) se agrupa en una sola entrada de `registry.json`. Las versiones fijadas se detallan en [`docs/versions.md`](docs/versions.md).
@@ -125,4 +125,4 @@ Se siguen los pasos de [`docs/RELEASING.md`](docs/RELEASING.md). Actualizar el R
 
 | Etiqueta | Fecha | Contenido | Registro |
 |---|---|---|---|
-| `v0.2.2` | 2026-10-25 | launch-factory v0.2.2 (internal version) · Versión de parche: shadcn 4.22.1 fijado en una versión exacta (elimina el aviso del zod anidado y su excepción OSV) · web-factory fijado en `v0.2.2` | — |
+| `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · Versión de parche: shadcn 4.22.1 fijado en una versión exacta (elimina el aviso del zod anidado y su excepción OSV) · web-factory fijado en `v0.2.3` | — |

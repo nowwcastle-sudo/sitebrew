@@ -8,15 +8,15 @@ sitebrew 是包含五个技能的 Claude Code 插件。这些技能带你使用 
 
 | 部分 | 标签 |
 |---|---|
-| web-factory | `v0.2.2` |
-| launch-factory | `v0.2.2` |
+| web-factory | `v0.2.3` |
+| launch-factory | `v0.2.3` |
 
 ## 安装
 
 通过本仓库的插件市场安装：
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.2
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.3
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew 是包含五个技能的 Claude Code 插件。这些技能带你使用 
 在 Codex 中，先添加市场，再安装插件（两条命令见 `codex plugin --help`）：
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.2
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.3
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -82,7 +82,7 @@ codex plugin add sitebrew@sitebrew
 
 ## sitebrew 的作用
 
-- 用 `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.2 -y -o` 把 web-factory 的组件装进 Next.js 项目。
+- 用 `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.3 -y -o` 把 web-factory 的组件装进 Next.js 项目。
 - 逐步带你运行 `npm run stamp`，把一份需求简述变成站点候选方案。
 - 以 mock 模式启动 launch-factory 模板，再列出 live 模式所需的内容。
 - 告诉你哪些密钥需要自己创建。只列出名称，从不向你索要具体值。

@@ -6,7 +6,7 @@
 
 Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 싶은 사이트를 평소 말로 설명하면, 서로 다른 후보 세 개를 만듭니다. 하나를 고르고, 대화로 고친 뒤, 코드를 내 폴더로 가져갑니다. 코딩을 몰라도 되고, 처음 시작할 때 API 키도 필요 없습니다.
 
-현재 버전 `v0.2.2` · MIT 라이선스 · Windows 10·11
+현재 버전 `v0.2.3` · MIT 라이선스 · Windows 10·11
 
 ## 왜 Sitebrew인가
 
@@ -55,13 +55,13 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.2 sitebrew
+npm create sitebrew@0.2.3 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.2 sitebrew
+npx create-sitebrew@0.2.3 sitebrew
 ```
 
 두 방식은 옵션이 같습니다. `--dry-run` 은 아무것도 바꾸지 않고 할 일만 보여 줍니다. `--yes` 는 모든 질문에 「예」로 답합니다. `--tool` 은 `claude`, `codex`, `both` 중에서 고릅니다.
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.2 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.2/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
 ```
 
 아무것도 설치하지 않고 할 일만 보려면:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.2/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code에서:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.2
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.3
 /plugin install sitebrew@sitebrew
 ```
 
 Codex에서:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.2
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.3
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 부품만 다른 Next.js 프로젝트에 넣을 수도 있습니다. 주소에는 늘 태그를 붙이세요.
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.2 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.2 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.3 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.3 -y -o
 ```
 
 ## 기여하기
@@ -149,6 +149,7 @@ MIT. [LICENSE](LICENSE)와 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)를 �
 
 | 태그 | 날짜 | 바뀐 것 | 기록 |
 |---|---|---|---|
+| `v0.2.3` | 2026-10-26 | 패치 판: 플러그인 스킬 8개를 다듬음 — 분기 안내와 종료 코드 표가 더 분명해짐 · 규칙마다 한 곳에만 둠 · 설치 스킬에 Node.js 가 없을 때의 경로 추가 · 설치 안내에 정확한 릴리스 태그 확인과 Windows 에서 안전한 npm 사용 · 키트가 읽는 위치와 맞춘 브라우저 확인 · new 의 인계가 더 안전해짐 · deliver 의 건너뛰기 사유가 늘어남 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.2` | 2026-10-25 | 스킬 감사 반영: doctor 스킬이 직접 설치하지 않고 설치 스킬로 넘김 · deliver 가 Vercel 미리보기 링크와 임시 공개 주소를 구분함 · revise 에 종료 코드 표 하나, runbook 은 장 파일을 장 단위로 읽음, new 는 빌드 시간을 측정 1회 기준으로 표시 · 플러그인 안내에 설치·런북 스킬 추가 · QA 페이지에서 실제 사람 이름 제거 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.1` | 2026-10-25 | 패치 판: shadcn 4.22.1을 한 곳에서 정확 고정(중첩 zod 공지 해소) · 광고 도착 쪽은 기본 noindex · 상품 목록에 ItemList, 행사 랜딩에 Event 구조화 데이터 · 공유 그림에 브랜드 로고 · 행사 랜딩 브리프가 일시·장소를 질문 · 레시피 추가 검증이 안내 문서를 그대로 따름 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.0` | 2026-10-24 | 키 없이 mock 모드로 도는 뒷단 모듈(쇼핑·한국 결제, 예약, 알림·푸시, 후기, 검색, 저장소, 뉴스레터, 내 요청, 관리자) · Cloudflare 임시 터널로 만드는 공유 미리보기 링크 · 사이트를 쓰기로 정한 뒤에 보이는 주인용 안내와 런북 · 챗봇인지 에이전트인지 알아보는 스킬과, 빠진 것을 깔아 주는 새 설치 스킬 · web-factory v0.0.14 + launch-factory v0.2.0 (내부 버전) | — |

@@ -13,9 +13,9 @@
 
 ## How to use · 쓰는 법
 
-한국어: 이 목록은 사이트 만들기 대화(2단계)를 키트 없이 하는 데 써요. 주제를 한 줄로 묻고, 원형을 고르고, 공통 질문을 순서대로 묻고, 그 원형의 질문과 기능 질문을 이어서 물어요. 사용자가 한국어로 쓰지 않으면 질문을 번역해요. 답할 수 없는 질문은 빈 답으로 두고 「없음」·「아직」도 빈 답으로 읽어요. **모르는 사실을 지어내지 않아요.** 색은 색 코드(`#0B6E4F`)로만 받고, 「올리브 녹색」 같은 말은 어떤 코드로 할지 제안해서 사용자가 확인한 뒤에만 써요. 키·토큰 값을 채팅에 붙여 넣게 하지 않아요.
+한국어: 이 목록은 사이트 만들기 대화(2단계)를 키트 없이 하는 데 써요. 주제를 한 줄로 묻고, 원형을 고르고, 공통 질문을 순서대로 묻고, 그 원형의 질문과 기능 질문을 이어서 물어요. 사용자가 한국어로 쓰지 않으면 질문을 번역해요. 답할 수 없는 질문은 빈 답으로 두고 「없음」·「아직」도 빈 답으로 읽어요. `new` 스킬의 `## Never` 목록은 여기서도 그대로 지켜요.
 
-English: This list runs the site-making conversation (stage 2) without the kit. Ask the topic in one line, pick the archetype, ask the common questions in order, then that archetype's own questions and its feature questions. Translate the questions when the user does not write Korean. A question the user cannot answer gets an empty answer; "none" and "not yet" also count as empty. **Never invent a fact.** Take colours as colour codes (`#0B6E4F`) only; for a name such as "olive green" propose a code and use it only after the user confirms. Never ask for a key or token value in the chat.
+English: This list runs the site-making conversation (stage 2) without the kit. Ask the topic in one line, pick the archetype, ask the common questions in order, then that archetype's own questions and its feature questions. Translate the questions when the user does not write Korean. A question the user cannot answer gets an empty answer; "none" and "not yet" also count as empty. The `## Never` list of the `new` skill applies here as well.
 
 <a id="common-questions"></a>
 
@@ -208,7 +208,7 @@ English: This list runs the site-making conversation (stage 2) without the kit. 
 한국어: 질문이 끝나면 답을 아래 두 JSON 으로 정리해서 보여 줘요. 사용자가 내 컴퓨터의 에이전트(Claude Code 또는 Codex)에게 그대로 건네면, 그쪽에서 브리프를 만들고 사이트를 찍어내요. 질문 id 는 위 목록 그대로예요.
 English: When the questions are done, show the answers as the two JSON files below. The user hands them to an agent on their own computer (Claude Code or Codex), which makes the brief and builds the site. The question ids are the ones listed above.
 
-`answers.json`:
+`answers.json` (`answers` holds every common id above plus the ids under "Archetype questions" of the chosen archetype, such as `claim` or `hours`; a key that is not in these lists is refused · 공통 id 와 고른 원형의 「원형 질문」 id 를 모두 넣어요):
 
 ```json
 {
@@ -223,12 +223,13 @@ English: When the questions are done, show the answers as the two JSON files bel
     "logo": "<answer>",
     "mood": "<answer>",
     "brandColors": "<answer>",
-    "brandFonts": "<answer>"
+    "brandFonts": "<answer>",
+    "<archetype question id>": "<answer>"
   }
 }
 ```
 
-`features.json` (only when the archetype has feature questions · 기능 질문이 있을 때만):
+`features.json` (one `true` or `false` per feature question of the chosen archetype; no file when it lists none · 고른 원형의 기능 질문마다 true/false 하나, 기능 질문이 없으면 파일 없음):
 
 ```json
 {

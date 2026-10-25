@@ -313,13 +313,13 @@ describe('environment branching (plan 6): every skill starts with the same block
     }
   })
 
-  it('the generated install guide and the chatbot run guide are Korean then English', () => {
+  it('the generated install guide and the chatbot run guide are Korean then English (the run guide: Korean steps once, with one English line to translate them)', () => {
     for (const [skill, file] of [['setup', 'install-steps.md'], ['new', 'chatbot-run.md'], ['new', 'intake-questions.md']]) {
       const text = read(PLUGIN, 'skills', skill, 'references', file)
       assert.ok(/[가-힣]/.test(text) && /English|Install|Questions|Steps/.test(text), `${file}`)
     }
     const run = read(PLUGIN, 'skills', 'new', 'references', 'chatbot-run.md')
-    assert.ok(run.search(/[가-힣]/) < run.indexOf('## English'), 'chatbot-run.md: Korean must come first')
+    assert.ok(!run.includes('## English') && /translate them/i.test(run) && run.includes('## 넘기는 말'), 'chatbot-run.md: Korean steps once, no second English copy, one line that says to translate')
     assert.ok(run.includes('out/answers.json') && run.includes('out/features.json'))
   })
 })
