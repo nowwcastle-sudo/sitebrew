@@ -15,7 +15,7 @@
     "@launch-factory/i18n": "0.0.0",
     "@launch-factory/security": "0.0.0",
     "react-email": "6.11.1",
-    "resend": "6.30.0"
+    "resend": "6.32.1"
   },
   "peerDependencies": {
     "react": "^19.0.0",
