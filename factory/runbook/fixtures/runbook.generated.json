@@ -1,0 +1,709 @@
+{
+  "version": 1,
+  "outcomesHash": "fixture0001",
+  "staleAfterDays": 90,
+  "order": [
+    "G-hosting",
+    "G-domain",
+    "G-db",
+    "G-auth",
+    "G-email",
+    "G-billing",
+    "G-biz-kr",
+    "G-push"
+  ],
+  "chapters": {
+    "G-hosting": {
+      "gid": "G-hosting",
+      "file": "hosting.md",
+      "card": {
+        "service": "예시 호스팅",
+        "role": "hosting",
+        "need": "always",
+        "cost": [
+          "free-tier",
+          "usage"
+        ],
+        "after": [],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "사이트를 인터넷에 올릴 수 없어요.",
+          "en": "The site cannot go online."
+        },
+        "devOnly": [],
+        "notEnv": [],
+        "home": "https://example-hosting.com"
+      },
+      "text": {
+        "ko": {
+          "title": "호스팅",
+          "body": "- 왜: 사이트를 인터넷에 올려 누구나 열 수 있게 해요.\n- 준비물: 이메일 주소, 깃 저장소.\n- 등록: 호스팅 서비스에 계정을 만들고 저장소를 연결해요.\n- 설정: `NEXT_PUBLIC_APP_URL` 을 호스팅 대시보드에 넣어요. 값은 쓰지 않아요.\n- 확인: 배포가 끝나면 임시 주소로 사이트가 열려요.\n- 막힘: 빌드가 실패하면 로그의 첫 오류를 봐요.\n- 출처: example-hosting.com 공식 문서."
+        },
+        "en": {
+          "title": "Hosting",
+          "body": "- Why: puts the site on the internet so anyone can open it.\n- Prepare: an email address, a git repository.\n- Register: create an account at a hosting service and connect the repository.\n- Set: put `NEXT_PUBLIC_APP_URL` in the host dashboard. Do not write the value.\n- Check: after the deploy ends, the site opens at a temporary address.\n- Stuck: if the build fails, read the first error in the log.\n- Source: example-hosting.com official docs."
+        }
+      },
+      "envNames": [
+        "NEXT_PUBLIC_APP_URL"
+      ],
+      "mustName": [
+        "NEXT_PUBLIC_APP_URL"
+      ],
+      "actions": {
+        "ko": 4,
+        "en": 4
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-domain": {
+      "gid": "G-domain",
+      "file": "domain.md",
+      "card": {
+        "service": "예시 도메인",
+        "role": "domain",
+        "need": "always",
+        "cost": [
+          "one-time"
+        ],
+        "after": [
+          "G-hosting"
+        ],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "임시 주소로만 열려요.",
+          "en": "The site opens only at a temporary address."
+        },
+        "devOnly": [],
+        "notEnv": [],
+        "home": "https://example-domain.com"
+      },
+      "text": {
+        "ko": {
+          "title": "도메인",
+          "body": "- 왜: 내 이름의 주소를 가져요.\n- 등록: 도메인 판매처에서 이름을 사요. 등록이 끝나기까지 몇 시간이 걸릴 수 있어요.\n- 설정: 호스팅 대시보드에서 도메인을 연결해요.\n- 확인: 내 주소로 사이트가 열려요.\n- 막힘: 연결이 안 되면 DNS 반영을 기다려요.\n- 출처: example-domain.com 공식 문서."
+        },
+        "en": {
+          "title": "Domain",
+          "body": "- Why: gives you an address with your own name.\n- Register: buy the name at a domain seller. Registration can take a few hours.\n- Set: connect the domain in the host dashboard.\n- Check: the site opens at your address.\n- Stuck: if it does not connect, wait for DNS to update.\n- Source: example-domain.com official docs."
+        }
+      },
+      "envNames": [],
+      "mustName": [],
+      "actions": {
+        "ko": 3,
+        "en": 3
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-db": {
+      "gid": "G-db",
+      "file": "database.md",
+      "card": {
+        "service": "예시 데이터베이스",
+        "role": "database",
+        "need": "feature",
+        "cost": [
+          "free-tier",
+          "usage"
+        ],
+        "after": [
+          "G-hosting"
+        ],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "이 기능이 켜지지 않아요.",
+          "en": "This feature will not work."
+        },
+        "devOnly": [],
+        "notEnv": [],
+        "home": "https://example-db.com"
+      },
+      "text": {
+        "ko": {
+          "title": "데이터베이스",
+          "body": "- 왜: 가입자와 주문 같은 기록을 저장해요.\n- 등록: 데이터베이스 서비스에 계정을 만들고 새 데이터베이스를 만들어요.\n- 설정: 연결 주소를 `DATABASE_URL` 이름으로 호스팅 대시보드에 넣어요.\n- 확인: 사이트에서 가입이 되면 돼요.\n- 막힘: 연결이 거절되면 주소 끝의 보안 연결 옵션을 확인해요.\n- 출처: example-db.com 공식 문서."
+        }
+      },
+      "envNames": [
+        "DATABASE_URL"
+      ],
+      "mustName": [
+        "DATABASE_URL"
+      ],
+      "actions": {
+        "ko": 3,
+        "en": 0
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-auth": {
+      "gid": "G-auth",
+      "file": "auth.md",
+      "card": {
+        "service": "예시 로그인",
+        "role": "auth",
+        "need": "feature",
+        "cost": [
+          "none"
+        ],
+        "after": [
+          "G-db"
+        ],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "이 기능이 켜지지 않아요.",
+          "en": "This feature will not work."
+        },
+        "devOnly": [],
+        "notEnv": [],
+        "home": "https://example-auth.com"
+      },
+      "text": {
+        "ko": {
+          "title": "로그인",
+          "body": "- 왜: 방문자가 가입하고 로그인해요.\n- 등록: 외부 계정은 필요 없어요.\n- 설정: 길고 무작위인 비밀 문자열을 만들어 `BETTER_AUTH_SECRET` 이름으로 넣어요. 값은 쓰지 않아요.\n- 확인: 가입 후 로그인이 돼요.\n- 막힘: 로그인 직후 풀리면 `NEXT_PUBLIC_APP_URL` 이 실제 주소인지 봐요.\n- 출처: example-auth.com 공식 문서."
+        },
+        "en": {
+          "title": "Sign-in",
+          "body": "- Why: visitors sign up and log in.\n- Register: no outside account needed.\n- Set: make a long random secret string and add it as `BETTER_AUTH_SECRET`. Do not write the value.\n- Check: after sign-up, log-in works.\n- Stuck: if you are signed out right after log-in, check that `NEXT_PUBLIC_APP_URL` is the real address.\n- Source: example-auth.com official docs."
+        }
+      },
+      "envNames": [
+        "BETTER_AUTH_SECRET",
+        "NEXT_PUBLIC_APP_URL"
+      ],
+      "mustName": [
+        "BETTER_AUTH_SECRET",
+        "NEXT_PUBLIC_APP_URL"
+      ],
+      "actions": {
+        "ko": 3,
+        "en": 3
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-email": {
+      "gid": "G-email",
+      "file": "email.md",
+      "card": {
+        "service": "예시 메일",
+        "role": "email",
+        "need": "feature",
+        "cost": [
+          "free-tier"
+        ],
+        "after": [
+          "G-domain"
+        ],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "이 기능이 켜지지 않아요.",
+          "en": "This feature will not work."
+        },
+        "devOnly": [],
+        "notEnv": [],
+        "home": "https://example-mail.com"
+      },
+      "text": {
+        "ko": {
+          "title": "메일 보내기",
+          "body": "- 왜: 가입 확인과 영수증 같은 메일을 보내요.\n- 등록: 메일 서비스에 계정을 만들고 보내는 도메인을 인증해요. 인증 반영에 최대 하루가 걸릴 수 있어요.\n- 설정: 발급한 키를 `RESEND_API_KEY` 이름으로, 보내는 주소를 `EMAIL_FROM` 이름으로 넣어요.\n- 확인: 시험 가입 메일이 도착해요.\n- 막힘: 스팸함을 봐요.\n- 출처: example-mail.com 공식 문서."
+        },
+        "en": {
+          "title": "Sending email",
+          "body": "- Why: sends sign-up confirmations and receipts.\n- Register: create an account at a mail service and verify your sending domain. Verification can take up to a day.\n- Set: add the issued key as `RESEND_API_KEY` and the sender address as `EMAIL_FROM`.\n- Check: a test sign-up email arrives.\n- Stuck: look in the spam folder.\n- Source: example-mail.com official docs."
+        }
+      },
+      "envNames": [
+        "EMAIL_FROM",
+        "RESEND_API_KEY"
+      ],
+      "mustName": [
+        "EMAIL_FROM",
+        "RESEND_API_KEY"
+      ],
+      "actions": {
+        "ko": 3,
+        "en": 3
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-billing": {
+      "gid": "G-billing",
+      "file": "billing.md",
+      "card": {
+        "service": "예시 결제",
+        "role": "billing",
+        "need": "feature",
+        "cost": [
+          "per-sale"
+        ],
+        "after": [
+          "G-email",
+          "G-auth"
+        ],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "결제를 받을 수 없어요.",
+          "en": "You cannot take payments."
+        },
+        "devOnly": [],
+        "notEnv": [
+          "TEST_MODE"
+        ],
+        "home": "https://example-pay.com"
+      },
+      "text": {
+        "ko": {
+          "title": "결제",
+          "body": "- 왜: 카드 결제와 정기구독을 받아요.\n- 준비물: 사업자 정보, 정산 계좌.\n- 등록: 결제 서비스에 가입하고 심사를 받아요. 심사에는 영업일 기준 며칠이 걸릴 수 있어요.\n- 설정: 발급한 키를 `PADDLE_API_KEY` 이름으로, 웹훅 비밀을 `PADDLE_WEBHOOK_SECRET` 이름으로 넣어요. `TEST_MODE` 는 시험용 낱말이에요.\n- 확인: 시험 결제가 되고 구독이 켜져요.\n- 막힘: 웹훅이 안 오면 웹훅 주소를 확인해요.\n- 출처: example-pay.com 공식 문서."
+        },
+        "en": {
+          "title": "Payments",
+          "body": "- Why: take card payments and subscriptions.\n- Prepare: business details, a payout account.\n- Register: sign up at a payment service and pass review. Review can take several business days.\n- Set: add the issued key as `PADDLE_API_KEY` and the webhook secret as `PADDLE_WEBHOOK_SECRET`. `TEST_MODE` is a test word.\n- Check: a test payment works and the subscription turns on.\n- Stuck: if webhooks do not arrive, check the webhook address.\n- Source: example-pay.com official docs."
+        }
+      },
+      "envNames": [
+        "PADDLE_API_KEY",
+        "PADDLE_WEBHOOK_SECRET",
+        "TEST_MODE"
+      ],
+      "mustName": [
+        "PADDLE_API_KEY",
+        "PADDLE_WEBHOOK_SECRET"
+      ],
+      "actions": {
+        "ko": 4,
+        "en": 4
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-biz-kr": {
+      "gid": "G-biz-kr",
+      "file": "biz-kr.md",
+      "card": {
+        "service": "국세청·시군구",
+        "role": "biz-kr",
+        "need": "optional",
+        "cost": [
+          "none"
+        ],
+        "after": [
+          "G-billing"
+        ],
+        "checked": "2026-10-01",
+        "ifSkipped": {
+          "ko": "결제 심사를 받기 어려울 수 있어요.",
+          "en": "Payment review may be hard to pass."
+        },
+        "devOnly": [],
+        "notEnv": [],
+        "when": {
+          "locale": "ko",
+          "outcomes": [
+            "payments"
+          ]
+        }
+      },
+      "text": {
+        "ko": {
+          "title": "사업 등록",
+          "body": "- 법률·세무 자문이 아니에요. 관할 기관에서 확인하세요.\n- 왜: 물건이나 서비스를 팔려면 사업자 등록이 필요해요.\n- 등록: 사업자 등록을 하고, 온라인 판매면 통신판매업 신고를 해요.\n- 확인: 사업자 등록증이 나와요.\n- 막힘: 업종 선택이 어려우면 세무서에 물어요.\n- 출처: 국세청 안내."
+        }
+      },
+      "envNames": [],
+      "mustName": [],
+      "actions": {
+        "ko": 2,
+        "en": 0
+      },
+      "staleAfter": "2026-12-30"
+    },
+    "G-push": {
+      "gid": "G-push",
+      "file": "push.md",
+      "card": {
+        "service": "웹 푸시",
+        "role": "push",
+        "need": "feature",
+        "cost": [
+          "none"
+        ],
+        "after": [
+          "G-db"
+        ],
+        "checked": "2026-06-01",
+        "ifSkipped": {
+          "ko": "푸시 알림이 꺼져요.",
+          "en": "Push notifications stay off."
+        },
+        "devOnly": [
+          "VAPID_DEV_KEY"
+        ],
+        "notEnv": []
+      },
+      "text": {
+        "ko": {
+          "title": "웹 푸시",
+          "body": "- 왜: 로그인한 사용자에게 알림을 보내요.\n- 등록: 외부 계정은 필요 없어요.\n- 설정: 키 한 쌍을 만들어 `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` 이름으로 넣어요. 키를 바꾸면 기존 구독이 못 쓰여요. `VAPID_DEV_KEY` 는 개발 전용이에요.\n- 확인: 푸시 단추를 누르고 허용하면 알림이 와요.\n- 막힘: 단추가 없으면 이름 둘이 모두 있는지 봐요.\n- 출처: 브라우저 표준 문서."
+        },
+        "en": {
+          "title": "Web push",
+          "body": "- Why: sends notices to signed-in users.\n- Register: no outside account needed.\n- Set: make a key pair and add `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY`. Changing the key breaks existing subscriptions. `VAPID_DEV_KEY` is for development only.\n- Check: press the push button and allow; a notice arrives.\n- Stuck: if there is no button, check that both names exist.\n- Source: browser standard docs."
+        }
+      },
+      "envNames": [
+        "VAPID_DEV_KEY",
+        "VAPID_PRIVATE_KEY",
+        "VAPID_PUBLIC_KEY"
+      ],
+      "mustName": [
+        "VAPID_PRIVATE_KEY",
+        "VAPID_PUBLIC_KEY"
+      ],
+      "actions": {
+        "ko": 3,
+        "en": 3
+      },
+      "staleAfter": "2026-08-30"
+    }
+  },
+  "shared": {},
+  "outcomes": {
+    "signup": {
+      "say": {
+        "ko": "회원가입·로그인",
+        "en": "Sign-up and log-in"
+      },
+      "question": {
+        "ko": "방문자가 회원가입·로그인을 해야 하나요?",
+        "en": "Do visitors need to sign up and log in?"
+      },
+      "guides": [
+        "G-db",
+        "G-auth"
+      ],
+      "uncovered": []
+    },
+    "payments": {
+      "say": {
+        "ko": "카드 결제·정기구독",
+        "en": "Card payments and subscriptions"
+      },
+      "question": {
+        "ko": "카드로 결제·정기구독을 받아야 하나요?",
+        "en": "Do you need card payments or subscriptions?"
+      },
+      "guides": [
+        "G-db",
+        "G-email",
+        "G-billing"
+      ],
+      "uncovered": []
+    },
+    "push": {
+      "say": {
+        "ko": "웹 푸시 알림",
+        "en": "Web push"
+      },
+      "question": {
+        "ko": "웹 푸시 알림을 보내고 싶나요?",
+        "en": "Do you want to send web push notices?"
+      },
+      "guides": [
+        "G-db",
+        "G-push"
+      ],
+      "uncovered": []
+    }
+  },
+  "alternatives": {
+    "email": [
+      {
+        "service": "예시 메일 A",
+        "tags": [
+          "free",
+          "ko"
+        ],
+        "support": "builtin",
+        "via": [
+          "payments"
+        ],
+        "switchCost": {
+          "ko": "기능을 다시 고르고 사이트를 다시 받으면 돼요.",
+          "en": "Choose the feature again and get the site again."
+        },
+        "note": {
+          "ko": "무료 한도가 있어요.",
+          "en": "Has a free tier."
+        },
+        "home": "https://example-mail-a.com",
+        "checked": "2026-10-01",
+        "item": "email"
+      },
+      {
+        "service": "예시 메일 B",
+        "tags": [
+          "cheaper"
+        ],
+        "support": "code",
+        "switchCost": {
+          "ko": "어댑터 코드 수정이 필요해요.",
+          "en": "Needs adapter code changes."
+        },
+        "note": {
+          "ko": "사용량 기준이에요.",
+          "en": "Priced by use."
+        },
+        "home": "https://example-mail-b.com",
+        "checked": "2026-10-01"
+      },
+      {
+        "service": "예시 메일 C",
+        "tags": [
+          "better"
+        ],
+        "support": "no",
+        "switchCost": {
+          "ko": "이 키트와 맞지 않아요.",
+          "en": "Does not fit this kit."
+        },
+        "note": {
+          "ko": "맞지 않는 이유가 있어요.",
+          "en": "There is a reason it does not fit."
+        },
+        "checked": "2026-10-01"
+      }
+    ]
+  },
+  "rubric": {
+    "rules": {
+      "ko": [
+        "처음 나오는 낱말은 한 문장으로 풀어 줘요. 예: 환경 변수는 사이트가 읽는 비밀 메모예요.",
+        "단계 하나에 동작 하나만 써요. 각 단계는 어느 서비스의 어떤 화면에서, 무엇을 하고, 무엇이 보이면 됐는지 순서로 써요.",
+        "버튼 이름을 단정하지 않아요. 새 프로젝트나 만들기처럼 보이는 버튼이라고 모양으로 말해요. 장마다 도움 문장을 한 번 넣어요.",
+        "주소는 서비스 홈 도메인만 써요. 경로를 지어내지 않아요.",
+        "값(키·비밀번호·번호)을 채팅에 붙이라고 하지 않아요. 이름과 넣을 곳만 말해요. 사용자가 값을 붙여도 되풀이하지 않고, 노출됐으니 다시 발급하라고 말해요.",
+        "장 글에 있는 사실(기다리는 날수·고칠 수 없다는 경고·순서)을 빼지 않아요. 장 글에 없는 사실은 여기서는 확인하지 않았다고 말하고 물어볼 곳을 알려 줘요.",
+        "비용은 카드의 종류로 말해요. 금액은 사용자가 물을 때만, 공식 가격 쪽에서 확인한 값에 날짜를 붙여서 말해요.",
+        "한 번에 한 장만 보여 줘요. 끝에 다 했어요 또는 막혔어요를 물어요.",
+        "해요체로 써요. 비유와 관용구는 쓰지 않아요."
+      ],
+      "en": [
+        "Explain each new word in one sentence. Example: an environment variable is a secret note the site reads.",
+        "One action per step. Say which screen of which service, what to do there, and what you should see when it worked.",
+        "Do not state exact button names. Describe the button by its look, for example a button that looks like New project or Create. Add the help sentence once per chapter.",
+        "Use only the home domain of a service. Do not invent paths.",
+        "Never ask the user to paste a value (key, password, number) in chat. Give only the name and where to put it. If the user pastes a value, do not repeat it; say it is exposed and must be issued again.",
+        "Keep every fact in the chapter text (waiting days, warnings that cannot be fixed, order). For facts not in the chapter, say it was not checked here and say where to ask.",
+        "Say cost by the card's kind. Give an amount only when the user asks, from the official price page checked at that time, with the date.",
+        "Show one chapter at a time. End by asking: done, or stuck?",
+        "Use plain, easy English. No metaphors or idioms."
+      ]
+    },
+    "helpLine": {
+      "ko": "버튼 이름이 다르거나 못 찾겠으면 지금 보이는 화면을 말해 주세요. 같이 찾아요.",
+      "en": "If a button has a different name or you cannot find it, tell me what you see on the screen now. We will find it together."
+    },
+    "staleLine": {
+      "ko": "이 장은 확인한 지 오래돼서 화면이 바뀌었을 수 있어요.",
+      "en": "This chapter was checked a long time ago, so the screens may have changed."
+    },
+    "closing": {
+      "ko": "다 했어요 / 막혔어요",
+      "en": "Done / Stuck"
+    },
+    "problems": {
+      "env-missing": {
+        "ko": "장 글에 있는 환경 변수 이름이 빠졌어요.",
+        "en": "An environment variable name from the chapter is missing."
+      },
+      "secret-shape": {
+        "ko": "키나 토큰처럼 보이는 문자열이 있어요. 지우고 이름만 써 주세요.",
+        "en": "There is a string that looks like a key or token. Remove it and write only the name."
+      },
+      "url": {
+        "ko": "서비스 홈 도메인이 아닌 주소가 있어요. 경로가 붙은 주소는 쓰지 않아요.",
+        "en": "There is an address that is not the service home domain. Do not use addresses with paths."
+      },
+      "unknown-number": {
+        "ko": "장 글에 없는 숫자가 있어요. 지어낸 숫자는 쓰지 않아요.",
+        "en": "There is a number that is not in the chapter. Do not invent numbers."
+      },
+      "unknown-name": {
+        "ko": "장 글에 없는 이름이 있어요. 지어낸 버튼이나 이름은 쓰지 않아요.",
+        "en": "There is a name that is not in the chapter. Do not invent button names or other names."
+      },
+      "help-missing": {
+        "ko": "도움 문장이 그대로 들어 있지 않아요.",
+        "en": "The help sentence is not in the text exactly."
+      },
+      "stale-missing": {
+        "ko": "오래된 장인데 오래됨 문장이 없어요.",
+        "en": "This chapter is old but the old-chapter sentence is missing."
+      },
+      "too-few-steps": {
+        "ko": "번호 단계가 너무 적거나, 단계 하나가 두 문장을 넘어요.",
+        "en": "There are too few numbered steps, or one step is longer than two sentences."
+      }
+    },
+    "generalWords": {
+      "ko": [
+        "버튼",
+        "새 프로젝트",
+        "만들기",
+        "새로 만들기",
+        "추가",
+        "시작하기",
+        "저장",
+        "확인",
+        "다음",
+        "다 했어요",
+        "막혔어요",
+        "계정",
+        "로그인",
+        "가입",
+        "설정",
+        "메뉴",
+        "대시보드"
+      ],
+      "en": [
+        "button",
+        "New project",
+        "Create",
+        "Add",
+        "Get started",
+        "Save",
+        "Continue",
+        "Next",
+        "Done",
+        "Stuck",
+        "Account",
+        "Log in",
+        "Sign up",
+        "Settings",
+        "Menu",
+        "Dashboard"
+      ]
+    },
+    "labels": {
+      "headline": {
+        "ko": "{site} · {lang}",
+        "en": "{site} · {lang}"
+      },
+      "site": {
+        "site": {
+          "ko": "소개형 사이트",
+          "en": "Intro site"
+        },
+        "composed": {
+          "ko": "제품형 사이트",
+          "en": "Product site"
+        }
+      },
+      "langName": {
+        "ko": {
+          "ko": "한국어",
+          "en": "영어"
+        },
+        "en": {
+          "ko": "Korean",
+          "en": "English"
+        }
+      },
+      "columns": {
+        "chapter": {
+          "ko": "장",
+          "en": "Chapter"
+        },
+        "service": {
+          "ko": "서비스",
+          "en": "Service"
+        },
+        "cost": {
+          "ko": "비용 종류",
+          "en": "Cost kind"
+        },
+        "need": {
+          "ko": "필수/선택",
+          "en": "Required/optional"
+        },
+        "ifSkipped": {
+          "ko": "건너뛰면",
+          "en": "If skipped"
+        }
+      },
+      "cost": {
+        "none": {
+          "ko": "무료",
+          "en": "Free"
+        },
+        "free-tier": {
+          "ko": "무료 한도 있음",
+          "en": "Free tier"
+        },
+        "usage": {
+          "ko": "쓴 만큼",
+          "en": "Pay for use"
+        },
+        "monthly": {
+          "ko": "달마다",
+          "en": "Monthly"
+        },
+        "per-sale": {
+          "ko": "팔 때마다",
+          "en": "Per sale"
+        },
+        "one-time": {
+          "ko": "한 번",
+          "en": "One time"
+        }
+      },
+      "need": {
+        "always": {
+          "ko": "꼭 필요",
+          "en": "Always"
+        },
+        "feature": {
+          "ko": "고른 기능에 필요",
+          "en": "Needed for a chosen feature"
+        },
+        "optional": {
+          "ko": "선택",
+          "en": "Optional"
+        }
+      },
+      "missing": {
+        "ko": "아직 준비되지 않았어요",
+        "en": "Not ready yet"
+      }
+    }
+  },
+  "secretShapes": [
+    {
+      "id": "prefixed-live-key",
+      "re": "\\b(?:sk|pk|rk)_(?:live|test)_[A-Za-z0-9]{12,}\\b"
+    },
+    {
+      "id": "prefixed-api-key",
+      "re": "\\b(?:re|ghp|gho|ghs|xoxb|xoxp)_[A-Za-z0-9]{20,}\\b"
+    },
+    {
+      "id": "aws-access-key-id",
+      "re": "\\bAKIA[0-9A-Z]{16}\\b"
+    },
+    {
+      "id": "private-key-block",
+      "re": "-----BEGIN [A-Z ]*PRIVATE KEY-----"
+    },
+    {
+      "id": "long-hex",
+      "re": "\\b[0-9a-fA-F]{40,}\\b"
+    },
+    {
+      "id": "jwt",
+      "re": "\\beyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\b"
+    }
+  ]
+}

@@ -113,9 +113,7 @@ export function undrawnRequiredBlockers(sitemap, sections, blockers = [], merged
 }
 const OWN_PREFIXES = Object.values(BLOCKER)
 
-// 쪽 → SEO 종류. 나머지는 other. 앱 쪽(로그인 뒤·완료 화면)은 색인 제외.
-const PAGE_KIND = { home: 'home', pricing: 'pricing', 'product-detail': 'product', privacy: 'legal', terms: 'legal', refund: 'legal', withdrawal: 'legal', contact: 'contact', about: 'about' }
-const NOINDEX = new Set(['signup', 'login', 'onboarding', 'account', 'billing', 'cancel', 'booking-complete'])
+// 쪽 종류(SEO)는 원형 JSON 쪽마다 적힌 kind 다(sitemap 이 그대로 싣는다). 색인 여부의 기본값은 키트 seo-meta 의 KIND_POLICY·isIndexed 가 정한다 — 여기에 id 목록을 두지 않는다.
 // 가격을 화면에 그리는 블록 종류(요금제·상품 요약) — 이런 블록이 없는 쪽은 JSON-LD 에 가격을 싣지 않는다
 const PRICE_BLOCK = /^block-(?:pricing|product-list)-/
 const LEGAL_NOTICE = { ko: '법률 검토 전 초안이에요. 공개 전에 검토가 필요해요.', en: 'Draft pending legal review. It needs review before publishing.' }
@@ -871,7 +869,7 @@ export async function generateSite(runDir, cand, opts = {}) {
     copyIndex.set(`${slot.path}#${n}`, rawContent.slots.copy.indexOf(entry))
   }
   const routes = Object.fromEntries(sitemap.pages.map((p) => [p.id, p.route]))
-  const navPages = sitemap.pages.filter((p) => !p.legal && p.sections.some((s) => s.status === 'block') && p.route !== '/' && !NOINDEX.has(p.id))
+  const navPages = sitemap.pages.filter((p) => !p.legal && p.sections.some((s) => s.status === 'block') && p.route !== '/' && p.kind !== 'app')
   const emptyPages = new Set() // 본문이 하나도 안 그려져 빈 상태 안내만 든 쪽(06 이 empty-guide 를 그린 쪽) — 메뉴·사이트맵에서 빼고 noindex(FINAL-WF2 AB6)
   const navLinks = () => [
     { label: pageLabel('home', locale), href: '/' },
@@ -1272,11 +1270,12 @@ export async function generateSite(runDir, cand, opts = {}) {
     const hero = !!r && r.leaves.filter((l) => l.hero).length
     const own = page.route === '/' ? null : describePage(page)
     pages[page.route] = {
-      id: page.id, type: PAGE_KIND[page.id] ?? 'other', hero: hero === 1,
+      id: page.id, type: page.kind, hero: hero === 1,
       // JSON-LD 가격(Offer)은 그 쪽 화면에 가격 블록(요금제·상품 요약)이 그려질 때만 싣는다(X4 — 홈에 요금표가 없는데 Offer 만 있으면 marketing jsonld-visible 이 떨어진다)
       showsPrice: !!r && r.leaves.some((l) => PRICE_BLOCK.test(l.block)),
       title: page.legal ? legal[page.id].title : (heroTitleOf(page.route) ?? contentTitleRef(page) ?? pageLabel(page.id, locale)),
-      ...(NOINDEX.has(page.id) || emptyPages.has(page.id) ? { noindex: true } : {}),
+      // 빈 상태 안내뿐인 쪽만 여기서 noindex 를 적는다(동적). 그 밖의 색인 제외는 종류 기본값(KIND_POLICY)이 정하고, 명시한 noindex 가 그것을 이긴다.
+      ...(emptyPages.has(page.id) ? { noindex: true } : {}),
       ...(page.legal ? { legal: true } : {}),
       ...(own ? { description: own } : {}),
     }
@@ -1361,6 +1360,8 @@ export async function generateSite(runDir, cand, opts = {}) {
   const noAgeGate = locale === 'en' && Object.values(sections).some((x) => /sign-up-consents$/.test(x.block ?? '')) && !Object.values(sections).some((x) => x.props?.copy?.ageOver14 !== undefined)
   writeAtomic(join(siteDir, 'lib', 'build.json'), JSON.stringify({ recipeId, theme: colors.theme, og: colors.og, locale, brand: typeof brandText === 'string' ? brandText : '', ...(noAgeGate ? { requireAgeOver14: false } : {}) }, null, 2) + '\n')
   const favicons = await writeFavicons(siteDir, head, typeof brandText === 'string' ? brandText : '', { logoPath: head.brand?.logo, baseDir: candDir })
+  // 공유 그림 로고(C414): 브리프 로고 SVG 를 파비콘이 받아들인 경우에만 싣는다(같은 검증을 통과한 것). 도형 표지(자동)나 로고 없음은 글자 카드 그대로 — 템플릿의 lib/og-mark.json 은 { svg: null }
+  if (favicons.markSource === 'brand-logo') writeAtomic(join(siteDir, 'lib', 'og-mark.json'), JSON.stringify({ svg: favicons.svg }, null, 2) + '\n')
   for (const l of leafFiles.values()) writeAtomic(join(siteDir, 'components', 'site', `${l.file}.tsx`), l.render ? l.render({ name: l.name, block: blockItems().get(l.block), recipeId }) : leafSource({ name: l.name, block: l.block, recipeId, h1: !!l.h1 }))
   // 앱 전체 상태 화면(dashboard): 템플릿의 loading(없음)·error·not-found 를 state-screen 블록을 끼운 것으로 바꾼다. 다른 원형은 shellPlan.appFiles 가 비어 템플릿 그대로다.
   for (const [rel, src] of Object.entries(shellPlan.appFiles)) writeAtomic(join(siteDir, ...rel.split('/')), src)
@@ -1424,7 +1425,7 @@ export async function generateSite(runDir, cand, opts = {}) {
 
 /** 설치할 항목: 레시피 base(부품 전부) + 쓰는 블록 + 조립 코드가 부르는 계약·콘텐츠·AX·모션·전화 항목. */
 export function installNames({ archetype, recipeId, blocks }) {
-  return dedupe([recipeId, ...blocks, ...SITE_FILE_ITEMS, 'attribution', 'adapter-mock', 'adapter-static', 'content-core', `content-${archetype}`, 'content-to-jsonld', 'seo-meta', 'geo-entity', 'json-ld', 'phone', 'motion-gsap', 'utils'])
+  return dedupe([recipeId, ...blocks, ...SITE_FILE_ITEMS, 'attribution', 'adapter-mock', 'adapter-mock-commerce', 'adapter-static', 'content-core', `content-${archetype}`, 'content-to-jsonld', 'seo-meta', 'geo-entity', 'json-ld', 'phone', 'motion-gsap', 'utils'])
 }
 
 function readOptionalMedia(candDir) {

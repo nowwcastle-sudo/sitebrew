@@ -1,0 +1,31 @@
+{
+  "name": "feature-search",
+  "title": "사이트 검색",
+  "description": "공개 쪽·상품·글을 찾는 검색. Postgres ILIKE 로 모든 낱말이 제목 또는 본문에 있는 문서를 찾고(한국어 부분 문자열 가능), 제목 일치를 더 높게 친다. 하이라이트는 HTML 이 아니라 범위 배열이다. 요청 제한 경로 search, 색인 원천 content/search-index.json, 색인 새로 만들기 Cron.",
+  "npm": ["@launch-factory/search", "@launch-factory/db", "@launch-factory/env", "@launch-factory/i18n", "@launch-factory/security", "drizzle-orm", "postgres"],
+  "registryDependencies": ["feature-security"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "CRON_SECRET"],
+  "files": [
+    "files/lib/launch/search.ts",
+    "files/app/api/search/route.ts",
+    "files/app/api/cron/search/route.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": ["search.ts"],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 보안 항목(요청 제한 표 rate_limits)이 함께 설치된다. 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs (search_documents 표가 생긴다).",
+    "2. 색인 원천 파일 content/search-index.json 을 만든다: [{ \"kind\": \"page\", \"ref\": \"about\", \"locale\": \"ko\", \"title\": \"소개\", \"body\": \"…\", \"url\": \"/about\" }, …]. kind 는 소문자·숫자·_·-(40자 이하), (kind, ref) 가 문서의 열쇠이고, url 은 이 사이트 안 경로(/…) 또는 http(s) 주소만 된다(javascript: 등은 거절). 본문은 4000자까지만 저장한다. 파일이 없으면 빈 색인이다. 문서가 하나라도 잘못되면 색인은 아무것도 바꾸지 않고 멈춘다. 개인정보(이름·연락처·주문 내용)는 넣지 않는다.",
+    "3. mock 은 서비스를 처음 만들 때 표가 비어 있으면 같은 파일로 자동 색인한다. live 는 Cron 이 채운다 — 첫 배포 뒤 한 번 직접 불러도 된다: curl -H \"Authorization: Bearer $CRON_SECRET\" https://<도메인>/api/cron/search",
+    "4. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/search\", \"schedule\": \"20 4 * * *\" }] } (템플릿 vercel.json 은 제품 것이라 이 항목이 고치지 않는다). CRON_SECRET 이 없으면 401 이다. Cron 은 content/search-index.json 에 든 종류만 통째로 바꾼다 — 코드(lib/launch/search.ts 의 search())로 따로 색인한 종류(상품·후기 등)는 그대로 둔다. 파일에서 종류를 통째로 빼도 옛 문서는 남는다 — 지우려면 (await search()).replaceKind(종류, []) 를 한 번 부른다.",
+    "5. 코드로 색인하기: const s = await search(); await s.indexDocuments([...]) (덮어쓰기) · s.removeDocument(kind, ref) · s.replaceKind(kind, docs) (한 트랜잭션, 실패하면 옛 문서 그대로).",
+    "6. 화면은 GET /api/search?q=…&kinds=page,product&locale=ko&page=1&pageSize=10 을 부른다(요청 제한 경로 search: 1분에 30번, 넘으면 429 + Retry-After). 결과 항목의 snippet.ranges 는 snippet.text 안의 [시작, 끝) 위치다 — 글자는 그대로 그리고 범위만 <mark> 로 감싼다(HTML 로 풀지 않는다). 빈 질의는 오류가 아니라 빈 결과다. 낱말은 100자·5개까지 읽는다.",
+    "7. 한계: 형태소 분석이 없어 부분 문자열로 맞춘다(「청소기」는 「무선청소기」에 맞고 「청소」도 맞는다). 문서가 수만 건으로 늘면 pg_trgm GIN 색인(title·body)을 마이그레이션으로 더한다.",
+    "8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

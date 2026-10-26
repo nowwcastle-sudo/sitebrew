@@ -5,7 +5,7 @@
 [[IgnoredVulns]]
 id = "GHSA-vfj7-8cjw-p6xm"
 ignoreUntil = 2026-12-05
-reason = "braces <= 3.0.3 스택 소진 DoS(CVE-2026-93687, 고친 버전 없음 — 2026-10-05 확인). 경로 shadcn@4.21.0 → fast-glob → micromatch → braces 는 레지스트리 빌드(shadcn build) 때 우리 파일 glob 에만 쓰고 외부 입력을 받지 않는다. 고친 버전이 나오면 올리고 이 예외를 지운다."
+reason = "braces <= 3.0.3 스택 소진 DoS(CVE-2026-93687, 고친 버전 없음 — 2026-10-05 확인). 경로 shadcn@4.22.1 → fast-glob → micromatch → braces 는 레지스트리 빌드(shadcn build) 때 우리 파일 glob 에만 쓰고 외부 입력을 받지 않는다. 고친 버전이 나오면 올리고 이 예외를 지운다."
 
 # 2026-10-07(REL12): 같은 날 첫 CI 실행에서 떴던 셋 — sharp(GHSA-wq5f-xc86-pv6w)·@modelcontextprotocol/sdk(GHSA-6qxp-vccf-f47h)·source-map-js(GHSA-68fv-2mgg-jv7q) —
-# 은 예외 없이 고쳤다: sharp 0.35.5(정확 고정) · sdk 1.32.1(shadcn@4.21.0 의 ^1.26.0 범위 안에서 잠금 갱신) · source-map-js 1.2.2(잠금 갱신). 예외 표에서 지웠다.
+# 은 예외 없이 고쳤다: sharp 0.35.5(정확 고정) · sdk 1.32.1(shadcn 의 ^1.26.0 범위 안에서 잠금 갱신) · source-map-js 1.2.2(잠금 갱신). 예외 표에서 지웠다.

@@ -4,7 +4,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import vm from 'node:vm'
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { tmpdir } from 'node:os'
@@ -288,6 +288,31 @@ test('single: 사이트 템플릿 next.config.ts 가 WF_STATIC_EXPORT 로만 out
   assert.match(cfg, /distDir: "\.next-export"/)
   assert.match(cfg, /unoptimized: true/)
   assert.match(cfg, /turbopack: \{ root:/, '뿌리 고정은 그대로')
+})
+
+test('single: 정적 내보내기는 소개형 전달물의 app/api/inquiry 를 옆으로 치웠다 되돌리고 NEXT_PUBLIC_WF_STATIC=1 을 준다(deliver Task 9)', () => {
+  const src = readFileSync(join(root, 'factory', 'export', 'single-html.mjs'), 'utf8')
+  assert.match(src, /NEXT_PUBLIC_WF_STATIC: '1'/)
+  assert.match(src, /renameSync\(inquiry, inquirySaved\)/)
+  assert.match(src, /renameSync\(inquirySaved, inquiry\)/)
+  assert.doesNotMatch(src, /rmSync\(inquiry/, '사용자의 접수 폴더를 지우지 않는다')
+})
+
+/** 정적 내보내기에서 force-static 이어야 하는 메타데이터 경로: 코드로 만드는 manifest·opengraph/twitter-image·icon·apple-icon(.ts/.tsx/.js)과, 파일 이름이 점이 든 폴더(robots.txt/·sitemap.xml/) 안의 route. app/api/x/route.ts 같은 일반 route 는 내보내기에서 빠지므로 대상이 아니다(결함 11) */
+const metadataRoutes = (paths) => paths.filter((p) => /(?:^|[\\/])(?:manifest|opengraph-image|twitter-image|icon|apple-icon)\.(?:ts|tsx|js|jsx)$/.test(p) || /(?:^|[\\/])[^\\/]+\.[A-Za-z]+[\\/]route\.(?:ts|tsx|js)$/.test(p))
+
+test('single: 메타데이터 경로 고르기는 일반 route(app/api/…)를 뺀다', () => {
+  const all = ['manifest.ts', 'robots.txt/route.ts', 'sitemap.xml/route.ts', 'opengraph-image.tsx', 'api/inquiry/route.ts', 'api/x/route.js', 'contact/route.ts', 'icon.svg', 'page.tsx', 'blog/[slug]/opengraph-image.tsx']
+  assert.deepEqual(metadataRoutes(all), ['manifest.ts', 'robots.txt/route.ts', 'sitemap.xml/route.ts', 'opengraph-image.tsx', 'blog/[slug]/opengraph-image.tsx'])
+})
+
+test('single: output export 는 메타데이터 경로가 force-static 이어야 한다 — manifest·robots·sitemap·opengraph-image 가 모두 그렇다(manifest.webmanifest·/opengraph-image 에서 멈춘 적 있음)', () => {
+  const app = join(root, 'factory', 'stamp', 'site-template', 'app')
+  const known = ['manifest.ts', join('robots.txt', 'route.ts'), join('sitemap.xml', 'route.ts'), 'opengraph-image.tsx']
+  // 코드로 만드는 메타데이터 경로는 전부 본다 — 새 파일이 생겨도 빠뜨리지 않는다. icon.svg·favicon.ico·apple-icon.png 같은 정적 파일은 코드가 아니라 대상이 아니다
+  const found = metadataRoutes(readdirSync(app, { recursive: true }).map(String))
+  for (const f of known) assert.ok(found.includes(f), `${f} 가 목록에 있다: ${found}`)
+  for (const f of found) assert.match(readFileSync(join(app, f), 'utf8'), /^export const dynamic = "force-static"$/m, f)
 })
 
 // ─── 픽셀 차이 ───

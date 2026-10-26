@@ -8,15 +8,15 @@ sitebrew 是包含五个技能的 Claude Code 插件。这些技能带你使用 
 
 | 部分 | 标签 |
 |---|---|
-| web-factory | `v0.1.2` |
-| launch-factory | `v0.1.2` |
+| web-factory | `v0.2.3` |
+| launch-factory | `v0.2.3` |
 
 ## 安装
 
 通过本仓库的插件市场安装：
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.3
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ sitebrew 是包含五个技能的 Claude Code 插件。这些技能带你使用 
 在 Codex 中，先添加市场，再安装插件（两条命令见 `codex plugin --help`）：
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.3
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -38,7 +38,10 @@ codex plugin add sitebrew@sitebrew
 | `new` | 回答几个问题，得到三个站点候选方案，比较后选择一个。 |
 | `revise` | 只修改已生成站点的某个版块、某个设计维度或某段文案。 |
 | `deliver` | 把选定的站点复制到你自己的文件夹，并附上列出发布前待修项的 README。 |
-| `doctor` | 用韩文和英文告诉你电脑上缺什么、怎么修。 |
+| `doctor` | 用韩文和英文告诉你电脑上缺什么、怎么修。它本身不安装任何东西，安装由 `setup` 技能负责。 |
+| `setup` | 安装 Sitebrew 需要的东西（Node.js、Git、浏览器、Sitebrew 文件夹），一次一项，每项都在你同意之后才安装。 |
+| `preview` | 不需要账号、密钥和费用，把交付的网站临时开放到一个公开地址，让别人看一看。 |
+| `runbook` | 在你决定真正使用站点之后：要注册哪些外部服务、按什么顺序、各自属于哪类费用，以及跳过后什么会停止。 |
 | `guide` | 安装 web-factory 组件、启动 launch-factory 模板、说明有哪些密钥。 |
 
 先使用这两个：
@@ -79,7 +82,7 @@ codex plugin add sitebrew@sitebrew
 
 ## sitebrew 的作用
 
-- 用 `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.2 -y -o` 把 web-factory 的组件装进 Next.js 项目。
+- 用 `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.3 -y -o` 把 web-factory 的组件装进 Next.js 项目。
 - 逐步带你运行 `npm run stamp`，把一份需求简述变成站点候选方案。
 - 以 mock 模式启动 launch-factory 模板，再列出 live 模式所需的内容。
 - 告诉你哪些密钥需要自己创建。只列出名称，从不向你索要具体值。

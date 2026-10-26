@@ -1,0 +1,171 @@
+# 기능 표 원본. `npm run outcomes:gen` 이 features/outcomes.generated.json 을 만든다(web-factory 가 읽는다).
+# 손으로 쓰는 것은 이 파일뿐이다. closure·needs·routes·hash 는 패키지·레지스트리에서 계산한다.
+
+# 기반 부품: closure·needs 에서 뺀다.
+infra: [contract, env]
+
+# 모든 feature 항목이 가진 환경 이름: needs 에서 뺀다.
+baseEnv: [LF_MODE]
+
+# 켜지면 제품형이 되는 부품.
+productParts: [auth, billing-paddle, billing-gumroad, commerce]
+
+# 부품 → registry 항목(feature)과 안내 번호(guides). feature 가 없는 부품은 레지스트리에 환경 이름이 없다.
+parts:
+  auth: { feature: feature-auth-betterauth, guides: [G-auth, G-db] }
+  billing-paddle: { feature: feature-billing-paddle, guides: [G-billing, G-db, G-email] }
+  inquiry: { feature: feature-inquiry, guides: [G-inquiry, G-db, G-email] }
+  payments-kr: { feature: feature-payments-kr, guides: [G-payments-kr] }
+  commerce: { feature: feature-commerce, guides: [G-commerce, G-db, G-email] }
+  reviews: { feature: feature-reviews, guides: [G-reviews, G-db] }
+  email: { feature: feature-email-resend, guides: [G-email] }
+  analytics-posthog: { feature: feature-analytics-posthog, guides: [G-analytics] }
+  consent: { feature: feature-consents, guides: [G-consent] }
+  account-lifecycle: { feature: feature-account-lifecycle, guides: [G-db, G-analytics] }
+  security: { feature: feature-security, guides: [G-security] }
+  storage: { feature: feature-storage, guides: [G-storage, G-db] }
+  newsletter: { feature: feature-newsletter, guides: [G-newsletter, G-email, G-db] }
+  booking: { feature: feature-booking, guides: [G-booking, G-db, G-email] }
+  notify-kr: { feature: feature-notify-kr, guides: [G-notify, G-db] }
+  booking-deposit: { feature: feature-booking-deposit, guides: [G-booking, G-payments-kr, G-db] }
+  push: { feature: feature-push, guides: [G-push, G-db] }
+  i18n: { guides: [] }
+  db: { guides: [G-db] }
+  search: { feature: feature-search, guides: [G-search, G-db] }
+  # 관리 화면 셸(계획 3d). 켜는 질문은 따로 없다 — /admin 쪽은 구획을 가진 부품(아래 pages)이 하나라도 켜지면 남는다
+  admin-console: { feature: feature-admin-console, guides: [] }
+
+# 템플릿(template/) 쪽 소유표. 여기 없는 쪽은 언제나 남는다.
+pages:
+  - owners: [auth]
+    files:
+      - app/(product)/sign-in/page.tsx
+      - app/(product)/sign-up/page.tsx
+      - app/(product)/forgot-password/page.tsx
+      - app/(product)/reset-password/page.tsx
+      - app/(product)/verify-email/page.tsx
+      - app/(product)/account/page.tsx
+  - owners: [billing-paddle]
+    files:
+      - app/(product)/pricing/page.tsx
+      - app/(product)/upgrade/page.tsx
+      - app/(product)/billing/return/page.tsx
+      - app/(product)/account/billing/page.tsx
+      - app/(product)/account/billing/cancel/page.tsx
+      - app/(product)/account/billing/price-change/page.tsx
+      - app/(product)/account/cancel/page.tsx
+      - app/(legal)/refund/page.tsx
+  - owners: [inquiry]
+    files:
+      - app/(product)/contact/page.tsx
+  - owners: [booking]
+    files:
+      - app/(product)/book/page.tsx
+      - app/(product)/book/manage/page.tsx
+  - owners: [booking-deposit]
+    files:
+      - app/(product)/book/return/page.tsx
+  - owners: [push]
+    files:
+      - app/(product)/account/notifications/page.tsx
+  - owners: [commerce]
+    files:
+      - app/(product)/products/page.tsx
+      - app/(product)/cart/page.tsx
+      - app/(product)/checkout/page.tsx
+      - app/(product)/checkout/return/page.tsx
+      - app/(product)/orders/page.tsx
+      - app/(product)/orders/[id]/page.tsx
+  - owners: [auth, consent]
+    files:
+      - app/(product)/email/page.tsx
+  # 관리 화면(계획 3d): 구획(주문·예약·문의·후기·뉴스레터·사용자)을 가진 부품이 하나라도 켜지면 남는다. 레이아웃(admin/layout.tsx)은 쪽이 아니라 표에 올리지 않는다
+  - owners: [admin-console, auth, commerce, booking, inquiry, reviews, newsletter]
+    files:
+      - app/(product)/admin/page.tsx
+      - app/(product)/admin/[section]/page.tsx
+      - app/(product)/admin/[section]/[id]/page.tsx
+
+# 질문 순서 = 목록 순서. archetypes 는 이 질문을 묻는 원형의 명시 목록.
+outcomes:
+  - id: signup
+    say: { ko: 회원가입·로그인, en: Sign-up and log-in }
+    question: { ko: 방문자가 회원가입·로그인을 해야 하나요?, en: Do visitors need to sign up and log in? }
+    parts: [auth]
+    archetypes: [saas, pwa, commerce, public, dashboard, landing, local, brand, detail, portfolio]
+  - id: payments
+    say: { ko: 카드 결제·정기구독, en: Card payments and subscriptions }
+    question: { ko: 카드로 결제·정기구독을 받아야 하나요?, en: Do you need card payments or subscriptions? }
+    parts: [billing-paddle]
+    requires: [signup]
+    archetypes: [saas, pwa, landing]
+  - id: shop
+    say: { ko: 상품 판매·카드·간편결제, en: Sell products with card and easy pay }
+    question: { ko: 상품을 팔고 카드·간편결제로 결제받아야 하나요?, en: Do you need to sell products and take card or easy-pay payments? }
+    parts: [commerce, payments-kr]
+    requires: [signup]
+    archetypes: [commerce, detail]
+  - id: inquiry
+    say: { ko: 문의·상담 메일 알림, en: Inquiry email alerts }
+    question: { ko: 문의나 상담 신청을 받아서 메일로 알림받고 싶나요?, en: Should inquiries come to you by email? }
+    parts: [inquiry]
+    archetypes: [brand, commerce, detail, landing, local, portfolio, public, saas, pwa]
+  - id: marketing
+    say: { ko: 마케팅 메일 수신 동의, en: Marketing email consent }
+    question: { ko: 마케팅 메일 수신 동의를 받아야 하나요?, en: Do you need marketing email consent? }
+    parts: [consent]
+    archetypes: [saas, pwa, commerce, landing]
+  - id: analytics
+    say: { ko: 방문자 수 통계, en: Visitor statistics }
+    question: { ko: 방문자 수와 많이 본 쪽을 보고 싶나요?, en: Do you want visitor counts? }
+    parts: [analytics-posthog]
+    archetypes: [saas, pwa, commerce, public, dashboard, landing, local, brand, detail, portfolio]
+  - id: reviews
+    say: { ko: 후기·상품 문의, en: Reviews and product questions }
+    question: { ko: 방문자가 후기나 상품 문의를 남길 수 있게 하고 싶나요?, en: Should visitors be able to leave reviews and product questions? }
+    parts: [reviews]
+    archetypes: [commerce, detail, local, brand, saas, pwa]
+  - id: search
+    say: { ko: 사이트 안 검색, en: Site search }
+    question: { ko: 방문자가 사이트 안에서 쪽이나 상품을 검색해서 찾을 수 있게 하고 싶나요?, en: Should visitors be able to search your pages and products? }
+    parts: [search]
+    archetypes: [public, commerce, brand, detail]
+  - id: my-requests
+    say: { ko: 내 신청 내역 확인, en: My requests }
+    question: { ko: 방문자가 보낸 문의·신청의 진행 상태를 직접 확인하게 하나요?, en: Should visitors be able to check the status of their own requests? }
+    parts: [inquiry]
+    requires: [signup, inquiry]
+    archetypes: [public]
+  - id: uploads
+    say: { ko: 사진·파일 올리기, en: Photo and file uploads }
+    question: { ko: 방문자가 사진이나 파일을 올릴 수 있어야 하나요?, en: Should visitors be able to upload photos or files? }
+    parts: [storage]
+    archetypes: [public, local, brand, saas]
+  - id: newsletter
+    say: { ko: 뉴스레터 구독, en: Newsletter subscriptions }
+    question: { ko: 방문자에게 뉴스레터 구독 신청을 받아야 하나요?, en: Should visitors be able to subscribe to a newsletter? }
+    parts: [newsletter]
+    archetypes: [landing, brand, commerce, saas, portfolio]
+  - id: booking
+    say: { ko: 예약 접수, en: Booking }
+    question: { ko: 방문자가 날짜와 시간을 골라 예약해야 하나요?, en: Do visitors need to book a date and time? }
+    parts: [booking]
+    archetypes: [local, brand, detail, landing, portfolio, public, saas]
+  - id: booking-deposit
+    say: { ko: 예약금 받기, en: Booking deposits }
+    question: { ko: 예약할 때 예약금을 먼저 받아야 하나요?, en: Should visitors pay a deposit when they book? }
+    parts: [booking-deposit]
+    requires: [booking]
+    archetypes: [local, brand, detail, landing, portfolio, public, saas]
+  - id: kakao-alerts
+    say: { ko: 카카오 알림톡·문자 안내, en: Kakao and SMS alerts }
+    question: { ko: 예약 확정·취소 안내를 카카오 알림톡이나 문자로도 보내야 하나요?, en: Should booking notices also go out by Kakao or SMS? }
+    parts: [notify-kr]
+    requires: [booking]
+    archetypes: [local, brand, detail, landing, portfolio, public]
+  - id: push
+    say: { ko: 웹 푸시 알림, en: Web push notifications }
+    question: { ko: 로그인한 사용자에게 웹 푸시 알림을 보내야 하나요?, en: Should signed-in users get web push notifications? }
+    parts: [push]
+    requires: [signup]
+    archetypes: [saas, pwa, commerce, dashboard]

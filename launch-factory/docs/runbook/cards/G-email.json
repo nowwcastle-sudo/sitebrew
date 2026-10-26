@@ -1,0 +1,25 @@
+{
+  "service": "Resend",
+  "role": "email",
+  "need": "feature",
+  "cost": [
+    "free-tier",
+    "usage"
+  ],
+  "after": [
+    "G-domain"
+  ],
+  "home": "https://resend.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "가입 확인·결제 안내·문의 알림 같은 메일이 진짜로 나가지 않아요. 개발 중에는 콘솔에만 찍혀요.",
+    "en": "Mail such as sign-up confirmation, payment notices and inquiry alerts is not really sent. During development it only prints to the console."
+  },
+  "devOnly": [
+    "LF_MOCK_OUTBOX"
+  ],
+  "notEnv": [
+    "PRODUCT_NAME",
+    "DEFAULT_LOCALE"
+  ]
+}

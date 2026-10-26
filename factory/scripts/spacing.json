@@ -1,0 +1,5 @@
+{
+  "tight": { "py": 10, "pyMd": 16, "gap": 6, "gapMd": 8 },
+  "normal": { "py": 16, "pyMd": 24, "gap": 10, "gapMd": 12 },
+  "airy": { "py": 24, "pyMd": 32, "gap": 14, "gapMd": 16 }
+}

@@ -8,7 +8,8 @@ import privacy from "@/content/legal/privacy.json"
 import refund from "@/content/legal/refund.json"
 import terms from "@/content/legal/terms.json"
 import variables from "@/content/legal/variables.json"
-import { fillLegalDoc, legalVars, type LegalDoc } from "@/lib/legal-tokens"
+import { hasUrl } from "@/lib/launch/enabled"
+import { fillLegalDoc, legalDocWithoutContactPage, legalVars, type LegalDoc } from "@/lib/legal-tokens"
 
 // 법정 페이지 자리(v0 Task 10). 본문은 web-factory 찍어내기(stamp)가 content/legal/<쪽>.json 에 쓴다 — 이 파일은 그것을 그리기만 한다.
 // 형식: { status, contact, notice?, clauses: [{ title, text }] } (text 는 빈 줄이 문단, 「- 」로 시작하는 줄이 목록 — stamp 의 LegalBody 와 같다).
@@ -43,7 +44,7 @@ function Linked({ text }: { text: string }) {
   return (
     <>
       {text.split(/(https:\/\/[^\s),]+|\/(?:contact|terms|privacy|refund)\b)/).map((part, i) =>
-        i % 2 === 1 ? (
+        i % 2 === 1 && hasUrl(part) ? (
           <a key={i} href={part} className="underline underline-offset-4" {...(part.startsWith("http") ? { rel: "noreferrer noopener" } : {})}>
             {part}
           </a>
@@ -133,7 +134,8 @@ export function LegalPage({ slug }: { slug: keyof typeof LEGAL }) {
   // 문의 보유 일수는 문의 접수 조립(lib/launch/inquiry.ts)이 쓰는 기본값과 같은 값이다 — 제품이 retain 을 바꾸면 여기도 함께 바꾼다
   const inquiryRetentionDays = DEFAULT_INQUIRY_RETENTION.kind === "days" ? DEFAULT_INQUIRY_RETENTION.days : undefined
   const vars = legalVars({ business: businessInfo(), product: { name: PRODUCT_NAME, deletionGraceDays: GRACE_DAYS, inquiryRetentionDays }, legal: variables })
-  const { doc, unresolved } = fillLegalDoc(LEGAL[slug], vars)
+  // 문의 화면이 없는 제품은 본문의 「Contact page (/contact)」 안내를 사업자 이메일로 바꾼다 — 템플릿 그대로면 본문 그대로다
+  const { doc, unresolved } = fillLegalDoc(hasUrl("/contact") ? LEGAL[slug] : legalDocWithoutContactPage(LEGAL[slug]), vars)
   // 운영자가 승인한 쪽(final)에 빈 자리가 남으면 공개하지 않는다 — 값 없이 「to be confirmed」가 손님에게 보이는 것을 막는다. 이름만 싣는다
   if (doc.status === "final" && unresolved.length) throw new Error(`legal page "${slug}" is final but these placeholders have no value: ${unresolved.join(", ")}`)
   return (

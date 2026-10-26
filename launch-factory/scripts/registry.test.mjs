@@ -6,6 +6,7 @@ import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
+import { MOCK_ONLY_NAMES } from "@launch-factory/env"
 import { ITEM_ORDER, main } from "./gen-registry.mjs"
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url))
@@ -168,7 +169,8 @@ test("envVars 는 이름만(값 없음)이고 .env.example 에 있으며, 파일
         const k = m[1] ?? m[2]
         // LF_PADDLE_LIVE 는 운영자만 켜는 스위치라 목록에 두지 않는다(docs 에 적었다)
         if (k === "LF_PADDLE_LIVE") assert.match(item.docs, /LF_PADDLE_LIVE/, name)
-        else assert.ok(known.has(k), `${name}:${f.target} reads ${k} but no item declares it in envVars`)
+        // mock 전용 개발·시험 이름은 사용자가 채울 값이 아니라 envVars(= 기능 표의 「필요한 것」)에 두지 않는다 — packages/env 의 MOCK_ONLY_NAMES 가 한 원천이고 env:check 가 .env.example 을 본다
+        else if (!MOCK_ONLY_NAMES.includes(k)) assert.ok(known.has(k), `${name}:${f.target} reads ${k} but no item declares it in envVars`)
       }
     }
   }

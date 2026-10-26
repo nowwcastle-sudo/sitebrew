@@ -10,6 +10,15 @@ import type { RetentionCancelFlowCopy } from "@/components/blocks/retention/canc
 import type { PricingThreeTierCardsCopy } from "@/components/blocks/pricing/three-tier-cards"
 import type { SubmitNotices } from "@/components/blocks/_shared/submit-guard"
 import type { PlanOfferCopy } from "@/components/blocks/_shared/plan-offer"
+// 지워진 기능(시안을 얹을 때 고르지 않은 것)의 쪽 대신 갈 곳 — 템플릿 그대로면 아래 값은 원래 글과 같다
+import { go, hasUrl } from "../lib/launch/enabled.ts"
+
+/** 로그인·확인 뒤 사람이 닿는 「내 쪽」. 결제 관리가 지워졌으면 계정 화면이다 */
+const HOME_AFTER_AUTH = go("/account/billing", "/account")
+/** 가입·확인이 끝난 화면의 다음 행동. 요금제 쪽이 지워졌으면 요금제를 고르라는 말 없이 계정으로 보낸다 */
+const NEXT_AFTER_SIGNUP = hasUrl("/pricing")
+  ? { plan: " Pick a plan to get started.", label: "See plans", href: "/pricing" }
+  : { plan: "", label: "Go to your account", href: "/account" }
 
 export const PRODUCT_NAME = "Example App"
 /** 이 문구 판의 언어. 가입할 때 사용자 언어(user.locale)로 함께 보내 확인 메일 같은 서버 문구가 화면 언어와 같게 한다(LFFIX F6) */
@@ -34,7 +43,7 @@ export const submitNotices: SubmitNotices = {
     progress: "Nothing has changed yet.",
     reason: "This change needs a person to review it and press the button.",
     next: "Press the confirm button on the screen yourself.",
-    route: { label: "Contact support", href: "/contact" },
+    route: { label: "Contact support", href: go("/contact", "/") },
   },
 }
 
@@ -72,7 +81,7 @@ export const signInCopy: AuthSignInCopy = {
   },
   signUp: { text: "New here?", label: "Create an account", href: "/sign-up" },
   // B01: 이 글은 사실만 말한다 — 이 화면은 저절로 옮겨 가지 않는다(돌아갈 곳 `?next=` 이 있을 때만 조립하는 쪽이 이동시키고, 그때는 이 글을 거의 못 본다)
-  done: { title: "You're signed in", body: "Your account is ready. Pick up where you left off.", label: "Go to your account", href: "/account/billing" },
+  done: { title: "You're signed in", body: "Your account is ready. Pick up where you left off.", label: "Go to your account", href: HOME_AFTER_AUTH },
   twoFactor: { title: "A verification code is required", body: "Enter the 6-digit code from your authenticator app to finish signing in.", label: "Enter your code", href: "/sign-in" },
   emailSent: { title: "We sent you a sign-in link", body: "Open the link in your inbox to sign in. It works for 10 minutes." },
   rememberMe: { label: "Keep me signed in" },
@@ -128,7 +137,7 @@ export const signUpCopy: AuthSignUpConsentsCopy = {
     error: "We couldn't load the quick sign-up buttons. You can still sign up with email.",
     retry: "Reload",
   },
-  done: { title: "You're all set", body: "Your account is ready. Pick a plan to get started.", label: "See plans", href: "/pricing" },
+  done: { title: "You're all set", body: `Your account is ready.${NEXT_AFTER_SIGNUP.plan}`, label: NEXT_AFTER_SIGNUP.label, href: NEXT_AFTER_SIGNUP.href },
   emailSent: { title: "Check your email", body: "Open the link in the email we sent to finish signing up." },
   signIn: { text: "Already have an account?", label: "Sign in", href: "/sign-in" },
   // A04: 약관·정책 링크는 새 탭에서 열어 가입 단계·입력값이 남는다 — 링크 이름에 그 사실을 붙인다
@@ -430,11 +439,11 @@ export const resetPasswordCopy = {
  * signup = 소셜(구글 등) 가입이 끝나 돌아옴 · signin = 소셜 로그인이 끝나 돌아옴 · verified = 확인 메일의 링크를 누름. 가입 화면의 완료 글(signUpCopy.done)을 그대로 쓴다.
  */
 export const welcomeCopy = {
-  signup: { ...signUpCopy.done, label: signUpCopy.done.label ?? "See plans", href: signUpCopy.done.href ?? "/pricing" },
-  signin: { title: "You're signed in", body: "Welcome back.", label: "Go to your account", href: "/account/billing" },
-  verified: { title: "You're all set", body: "Your email address is confirmed and your account is ready. Pick a plan to get started.", label: "See plans", href: "/pricing" },
+  signup: { ...signUpCopy.done, label: signUpCopy.done.label ?? NEXT_AFTER_SIGNUP.label, href: signUpCopy.done.href ?? NEXT_AFTER_SIGNUP.href },
+  signin: { title: "You're signed in", body: "Welcome back.", label: "Go to your account", href: HOME_AFTER_AUTH },
+  verified: { title: "You're all set", body: `Your email address is confirmed and your account is ready.${NEXT_AFTER_SIGNUP.plan}`, label: NEXT_AFTER_SIGNUP.label, href: NEXT_AFTER_SIGNUP.href },
   // A08: 확인 링크를 로그인 안 된 기기·브라우저에서 열었을 때 — 다음 행동은 로그인이고, 로그인하면 계정으로 돌아온다(`?next=`)
-  verifiedSignedOut: { title: "You're all set", body: "Your email address is confirmed. Sign in to open your account.", label: "Sign in", href: "/sign-in?next=%2Faccount%2Fbilling" },
+  verifiedSignedOut: { title: "You're all set", body: "Your email address is confirmed. Sign in to open your account.", label: "Sign in", href: `/sign-in?next=${encodeURIComponent(HOME_AFTER_AUTH)}` },
   // B03: 로그아웃을 마친 도착 화면 — 됐다는 사실과, 다시 들어올 길 하나
   signedout: { title: "You're signed out", body: "You've been signed out on this device.", label: "Sign in again", href: "/sign-in" },
   // 확인 링크가 틀리거나 만료됐을 때(Better Auth 가 같은 주소에 error= 를 붙인다) — 성공처럼 보이지 않게 따로 말한다. 어느 문구인지는 lib/welcome.ts 의 welcomeView 가 정한다(A10·A09):
@@ -442,7 +451,7 @@ export const welcomeCopy = {
   expired: { title: "That confirmation link has expired", body: "Confirmation links work for 1 hour. Send yourself a new one — it takes a minute.", label: "See where we sent it", href: "/verify-email" },
   failed: { title: "That confirmation link didn't work", body: "The link may be cut off, or a newer one replaced it. Send yourself a new one.", label: "See where we sent it", href: "/verify-email" },
   failedSignedOut: { title: "That confirmation link didn't work", body: "It may have expired or been used already. Your account still works. Sign in and we'll help you get a new link.", label: "Sign in", href: "/sign-in?next=%2Fverify-email" },
-  alreadyVerified: { title: "Your email address is already confirmed", body: "This link was used before, so there is nothing more to do. Your account is ready.", label: "Go to your account", href: "/account/billing" },
+  alreadyVerified: { title: "Your email address is already confirmed", body: "This link was used before, so there is nothing more to do. Your account is ready.", label: "Go to your account", href: HOME_AFTER_AUTH },
 }
 
 /** 이메일 가입 직후, 가입 화면 완료 글 아래의 확인 메일 안내(UXOK — components/product/verify-email-note.tsx). {email} 은 방금 적은 주소 */
@@ -482,6 +491,7 @@ export const emailChoiceCopy = {
       title: "You're unsubscribed",
       body: "We won't send you marketing emails anymore. You'll get a short confirmation email. Receipts and security notices will still reach you.",
     },
+    confirmed: { title: "You're subscribed", body: "Thanks for confirming. We sent a short email with the date you agreed and a link to unsubscribe whenever you like." },
     kept: { title: "Thanks for confirming", body: "We'll keep sending you marketing emails. You can unsubscribe from any of them." },
     withdrawn: { title: "You had already unsubscribed", body: "Nothing changed. We won't send you marketing emails." },
     removed: { title: "The account was deleted", body: "We deleted the account that was created with your email address." },
@@ -517,5 +527,5 @@ export const alreadySignedInCopy = {
   body: "You're signed in as {email}, so there's nothing to fill in here.",
   bodyNoEmail: "You're signed in, so there's nothing to fill in here.",
   label: "Go to your account",
-  href: "/account/billing",
+  href: HOME_AFTER_AUTH,
 }

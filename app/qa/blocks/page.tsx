@@ -23,9 +23,9 @@ export default async function QaBlocksPage({ searchParams }: { searchParams: Pro
   const b = one(q.b)
   const r = one(q.r)
   if (b && r) {
-    // o3: 3D 히어로의 재료 갈래(model·image·none — media.ts object3d). 상태 주입 쿼리(state·submit·delay)와 포트 목 쿼리(sub·auth·consent·retryAfter·unsupported·last — states.ts PORT_QUERY_KEYS)만 보기에 넘긴다 — 바뀌면 보기가 다시 주입한다.
+    // o3: 3D 히어로의 재료 갈래(model·image·none — media.ts object3d). 상태 주입 쿼리(state·submit·delay)와 포트 목 쿼리(sub·auth·consent·cart·order·stock·retryAfter·unsupported·last — states.ts PORT_QUERY_KEYS)만 보기에 넘긴다 — 바뀌면 보기가 다시 주입한다.
     const query = new URLSearchParams(
-      Object.entries({ state: one(q.state), submit: one(q.submit), delay: one(q.delay), sub: one(q.sub), auth: one(q.auth), consent: one(q.consent), retryAfter: one(q.retryAfter), unsupported: one(q.unsupported), last: one(q.last), initialWait: one(q.initialWait), channels: one(q.channels), o3: one(q.o3), media: one(q.media) }).filter((e): e is [string, string] => e[1] !== undefined),
+      Object.entries({ state: one(q.state), submit: one(q.submit), delay: one(q.delay), sub: one(q.sub), auth: one(q.auth), consent: one(q.consent), retryAfter: one(q.retryAfter), unsupported: one(q.unsupported), last: one(q.last), initialWait: one(q.initialWait), channels: one(q.channels), cart: one(q.cart), order: one(q.order), stock: one(q.stock), o3: one(q.o3), media: one(q.media) }).filter((e): e is [string, string] => e[1] !== undefined),
     ).toString()
     // d·x(P3-2 Task 8): 히어로의 새 축 시험 값(D2·D3 · X1~X8) — 없으면 레시피 머리 값.
     return <BlockView b={b} r={r} theme={one(q.theme)} fx={one(q.fx)} query={query} frame={one(q.frame) === "1"} d={one(q.d)} x={one(q.x)} />

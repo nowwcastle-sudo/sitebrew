@@ -15,7 +15,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3"
       ]
     },
     {
@@ -47,7 +47,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/brand-color#v0.1.2"
+        "nowwcastle-sudo/sitebrew/brand-color#v0.2.3"
       ]
     },
     {
@@ -79,16 +79,17 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-brand#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-commerce#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-detail#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-local#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-public#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-saas#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-to-jsonld#v0.1.2",
-        "nowwcastle-sudo/sitebrew/freshness#v0.1.2",
-        "nowwcastle-sudo/sitebrew/seo-meta#v0.1.2"
+        "nowwcastle-sudo/sitebrew/content-brand#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-commerce#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-detail#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-landing#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-local#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-public#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-saas#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-to-jsonld#v0.2.3",
+        "nowwcastle-sudo/sitebrew/freshness#v0.2.3",
+        "nowwcastle-sudo/sitebrew/seo-meta#v0.2.3"
       ]
     },
     {
@@ -120,9 +121,9 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/brand-color#v0.1.2",
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2",
-        "nowwcastle-sudo/sitebrew/seo-meta#v0.1.2"
+        "nowwcastle-sudo/sitebrew/brand-color#v0.2.3",
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.3",
+        "nowwcastle-sudo/sitebrew/seo-meta#v0.2.3"
       ]
     },
     {
@@ -154,7 +155,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/content-core#v0.1.2"
+        "nowwcastle-sudo/sitebrew/content-core#v0.2.3"
       ]
     }
   ]

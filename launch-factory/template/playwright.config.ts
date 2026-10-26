@@ -1,6 +1,6 @@
 // 빌드 스모크 설정(LFSMOKE). 직접 `npx playwright test` 를 부르지 말고 `npm run smoke`(scripts/ci/smoke.mjs)를 쓴다 — 빌드·서버·정리를 오케스트레이터가 한다.
 // 설정 근거(Playwright 문서 「Continuous Integration」): workers 1(안정·재현성), retries 로 재시도해 통과한 시험은 「flaky」로 따로 보인다, forbidOnly 로 test.only 를 막는다.
-// 환경: SMOKE_BASE_URL(서버 주소) · SMOKE_OUT(결과 폴더) · SMOKE_AXE_OUT(axe jsonl) · SMOKE_CHANNEL(설치된 브라우저 이름 — 비우면 번들 chromium).
+// 환경: SMOKE_BASE_URL(서버 주소) · SMOKE_OUT(결과 폴더) · SMOKE_AXE_OUT(axe jsonl) · SMOKE_CHANNEL(설치된 브라우저 이름 — 비우면 번들 chromium) · loop 프로젝트만: SMOKE_OUTBOX(서버의 메일 기록 파일) · LOOP_FEATURES(쉼표).
 import { defineConfig } from "@playwright/test"
 
 const out = process.env.SMOKE_OUT || ".tmp/smoke/run"
@@ -28,5 +28,7 @@ export default defineConfig({
   projects: [
     { name: "mock", testMatch: "smoke.mock.spec.ts" },
     { name: "live", testMatch: "smoke.live.spec.ts" },
+    // 한 바퀴(가입 → 로그인 → 가짜 결제 → 문의, 메일 개수까지). 재시도 없음: 재시도하면 같은 메일을 두 번 써서 줄 수를 속인다. 서버는 smoke.mjs 가 mock 빌드를 장면 없이 새 메일 기록으로 띄운다
+    { name: "loop", testMatch: "loop.mock.spec.ts", retries: 0 },
   ],
 })

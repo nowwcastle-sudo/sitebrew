@@ -4,13 +4,17 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
-import { join, dirname } from 'node:path'
+import { createHash } from 'node:crypto'
+import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
-import { EXIT, PICKS, defaultDeps, legalState, parseArgs, runStamp, boardData, UsageError } from '../stamp/stamp.mjs'
+import { EXIT, PICKS, defaultDeps, legalState, parseArgs, runRedrawWider, runStamp, boardData, UsageError } from '../stamp/stamp.mjs'
+import { inputHash } from '../stamp/run-dir.mjs'
+import { loadHandles } from '../stamp/handles.mjs'
+import { loadLexicon } from '../vocab/lexicon.mjs'
 import { loadBrief, briefToSeed } from '../stamp/brief.mjs'
 import { loadArchetypes } from './archetypes.mjs'
-import { DirectionsShortError } from '../stamp/directions.mjs'
+import { AXIS_COUNT, DirectionsShortError, MIN_AXES } from '../stamp/directions.mjs'
 import { MOCK_PREVIEW_BLOCKER, MOCK_PREVIEW_NOTICE, blockerClass } from '../stamp/blocker-class.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
@@ -677,4 +681,74 @@ test('05 미디어는 후보 자기 변형표를 받고, 변형이나 미리보�
     if (prev === undefined) delete process.env.WF_MEDIA_PREVIEW
     else process.env.WF_MEDIA_PREVIEW = prev
   }
+})
+
+// ─── 다시 그리기(--redraw-wider) ───
+
+test('parseArgs --redraw-wider: --run 과만 쓴다 — 다른 모드와 섞거나 --run 이 없으면 UsageError', () => {
+  assert.equal(parseArgs(['--run', 'out', '--redraw-wider']).redrawWider, true)
+  for (const bad of [['--redraw-wider'], ['--run', 'o', '--redraw-wider', '--brief', 'b.json'], ['--run', 'o', '--redraw-wider', '--pick', 'a'], ['--run', 'o', '--redraw-wider', '--until', '2'], ['--run', 'o', '--redraw-wider', '--revise-undo']]) {
+    assert.throws(() => parseArgs(bad), UsageError, JSON.stringify(bad))
+  }
+})
+
+test('--redraw-wider: 01 만 minAxes 를 올려 다시 고르고(입력 해시가 바뀐다) 03~07 은 낡게 한다(구획 수정이 남긴 03 도) — 02 는 그대로 · 평소 실행의 01 해시는 예전 그대로 · 실행 기록이 없으면 종료 2', async () => {
+  const dir = fresh()
+  const file = writeBrief(dir)
+  const run = join(dir, 'run')
+  const seen = []
+  const picks = (tag) => PICKS.map((id, i) => ({ id, slot: ['safe', 'new', 'bold'][i], source: 'generated', recipe: { id: `gen-${tag}-${id}` }, preset: 'p' }))
+  const deps = fakeDeps({ deps: { directions: async ({ minAxes }) => { seen.push(minAxes); return { candidates: picks(minAxes ? `m${minAxes}` : 'base'), rejected: [] } } } })
+  assert.equal((await runStamp({ brief: file, run, until: '03-variants', pick: null, deployPreview: false }, deps)).code, EXIT.done)
+  assert.deepEqual(seen, [undefined], '평소 실행은 minAxes 를 넘기지 않는다')
+  const brief = loadBrief(file)
+  assert.equal(readJ(join(run, 'a', '01-direction.json')).inputHash, inputHash({ brief, archetype: brief.archetype, seed: brief.seed ?? 0, weights: [] }), '평소 01 해시는 예전 모양 그대로')
+  for (const c of PICKS) for (const stage of ['04-content', '05-media', '06-pages', '07-qa']) writeFileSync(join(run, c, `${stage}.json`), j({ inputHash: 'h', producedAt: 'x', data: { built: true } }))
+  for (const c of PICKS) { // 구획 수정이 남긴 열쇠: 사이트맵이 그대로면 03 을 다시 고르지 않고 쓰게 하는 것
+    const saved = readJ(join(run, c, '03-variants.json'))
+    writeFileSync(join(run, c, '03-variants.json'), j({ ...saved, revisedFor: inputHash(readJ(join(run, c, '02-sitemap.json')).data) }))
+  }
+  const sha = (f) => createHash('sha256').update(readFileSync(f)).digest('hex')
+  const map0 = sha(join(run, 'a', '02-sitemap.json'))
+
+  const out = await runRedrawWider({ run }, deps)
+  assert.equal(out.code, EXIT.done)
+  const wide = MIN_AXES + loadHandles(loadLexicon()).redraw.minAxesDelta
+  assert.deepEqual(seen, [undefined, wide], '다시 고르기는 MIN_AXES + handles.redraw.minAxesDelta')
+  for (const c of PICKS) {
+    assert.equal(readJ(join(run, c, '01-direction.json')).data.recipe.id, `gen-m${wide}-${c}`, `${c}: 01 이 새로 뽑혔다`)
+    for (const stage of ['03-variants', '04-content', '05-media', '06-pages', '07-qa']) assert.match(readJ(join(run, c, `${stage}.json`)).inputHash, /^stale:/, `${c} ${stage}`)
+    assert.equal('revisedFor' in readJ(join(run, c, '03-variants.json')), false, `${c}: 구획 수정이 남긴 열쇠도 지운다`)
+  }
+  assert.equal(sha(join(run, 'a', '02-sitemap.json')), map0, '02 는 01 에 기대지 않아 그대로')
+
+  assert.match(out.lines.at(-1), /다시 골랐어요/)
+  assert.equal(readJ(join(run, 'stamp-summary.json')).brief, resolve(file), '요약이 같은 브리프를 가리킨다')
+
+  const before = deps.calls.variants
+  await runStamp({ brief: file, run, until: '03-variants', pick: null, deployPreview: false }, deps)
+  assert.equal(deps.calls.variants, before + 1, '03 이 새 01 위에서 다시 돈다')
+  assert.deepEqual(seen, [undefined, wide], '평소 명령을 다시 돌려도 넓힌 01 을 되돌리지 않는다(넓이가 directions.json 에 남는다)')
+  assert.equal(readJ(join(run, 'a', '01-direction.json')).data.recipe.id, `gen-m${wide}-a`)
+
+  const second = await runRedrawWider({ run }, deps)
+  assert.equal(second.code, EXIT.done)
+  const wider = wide + loadHandles(loadLexicon()).redraw.minAxesDelta
+  assert.deepEqual(seen, [undefined, wide, wider], '두 번째 다시 그리기는 지난번 넓이에서 또 넓힌다')
+  assert.equal(readJ(join(run, 'a', '01-direction.json')).data.recipe.id, `gen-m${wider}-a`)
+  assert.equal(readJ(join(run, 'directions.json')).minAxes, wider)
+
+  // 끝(셀 수 있는 칸 수)에 닿으면 아무것도 바꾸지 않고 더 못 넓힌다고 알린다(종료 3)
+  writeFileSync(join(run, 'directions.json'), j({ ...readJ(join(run, 'directions.json')), minAxes: AXIS_COUNT }))
+  const snapshot = ['a', 'b', 'c'].map((c) => sha(join(run, c, '01-direction.json')) + sha(join(run, c, '06-pages.json')))
+  const capped = await runRedrawWider({ run }, deps)
+  assert.equal(capped.code, EXIT.waiting)
+  assert.match(capped.lines.at(-1), /더 넓힐 수 없/)
+  assert.deepEqual(seen, [undefined, wide, wider], '방향을 다시 뽑지 않았다')
+  assert.deepEqual(['a', 'b', 'c'].map((c) => sha(join(run, c, '01-direction.json')) + sha(join(run, c, '06-pages.json'))), snapshot, '아무것도 바꾸지 않았다')
+
+  const none = fakeDeps()
+  const missing = await runRedrawWider({ run: join(dir, 'no-such-run') }, none)
+  assert.equal(missing.code, EXIT.args)
+  assert.equal(none.calls.directions, undefined, '실행 기록이 없으면 아무것도 돌리지 않는다')
 })

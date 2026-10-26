@@ -1,0 +1,13 @@
+# 제품 폴더가 비밀값·빌드 부산물을 커밋하지 않게 한다. 시안(.gitignore)이 같은 이름이면 얹을 때 줄 단위로 합친다
+/node_modules
+/.next/
+/out/
+/dist/
+/.tmp/
+.env
+.env.*
+!.env.example
+.vercel/
+*.log
+next-env.d.ts
+*.tsbuildinfo

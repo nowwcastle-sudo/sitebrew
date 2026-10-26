@@ -67,14 +67,16 @@ const FORMATS: Record<ProviderSecretName, z.ZodString | z.ZodURL> = {
  * 앱이 선택적으로 읽는 비밀 이름(설치한 항목이 required() 로 요구한다 — live 에서도 env 검사는 없어도 통과하고, 있으면 형식만 본다).
  * 공급자 비밀(PROVIDER_SECRET_NAMES)과 합쳐 SECRET_NAMES 가 된다.
  */
-export const EXTRA_SECRET_NAMES = ["POSTHOG_PROJECT_KEY", "SENTRY_DSN", "SENTRY_AUTH_TOKEN", "SUBJECT_REF_KEY", "POSTHOG_PERSONAL_API_KEY", "GUMROAD_ACCESS_TOKEN", "GUMROAD_PING_SECRET", "CRON_SECRET", "GITHUB_TOKEN", "GH_TOKEN", "GOOGLE_CLIENT_SECRET", "KAKAO_CLIENT_SECRET", "NAVER_CLIENT_SECRET"] as const
+export const EXTRA_SECRET_NAMES = ["POSTHOG_PROJECT_KEY", "SENTRY_DSN", "SENTRY_AUTH_TOKEN", "SUBJECT_REF_KEY", "POSTHOG_PERSONAL_API_KEY", "GUMROAD_ACCESS_TOKEN", "GUMROAD_PING_SECRET", "CRON_SECRET", "GITHUB_TOKEN", "GH_TOKEN", "GOOGLE_CLIENT_SECRET", "KAKAO_CLIENT_SECRET", "NAVER_CLIENT_SECRET", "SOLAPI_API_KEY", "SOLAPI_API_SECRET", "VAPID_PRIVATE_KEY"] as const
 /**
  * 값을 출력·로그에 절대 싣지 않는 이름 전부(비밀이거나 비밀이 섞인 URL). **한 원천**이다 — scripts/doctor.mjs 가 이 배열을 그대로 쓴다(대장 D193).
  * 새 비밀을 더하면 여기 한 곳만 고친다.
  */
 export const SECRET_NAMES = [...PROVIDER_SECRET_NAMES, ...EXTRA_SECRET_NAMES] as const
+/** mock 에서만 읽는 개발·시험용 이름(live 는 무시) — .env.example 에 적혀 있어야 한다(env:check). LF_MOCK_OUTBOX: mock 메일을 이 파일에 한 줄씩 남긴다(packages/email) */
+export const MOCK_ONLY_NAMES = ["LF_MOCK_SUB", "LF_MOCK_OUTBOX", "LF_MOCK_NOTIFY_OUTBOX"] as const
 /** 비밀은 아니지만 앱·doctor 가 읽는 이름 */
-export const PLAIN_NAMES = ["LF_MODE", "LF_PADDLE_LIVE", "PADDLE_CLIENT_TOKEN", "POSTHOG_HOST", "POSTHOG_PROJECT_ID", "EMAIL_FROM", "TURNSTILE_SITE_KEY", "GITHUB_REPOSITORY", "GOOGLE_CLIENT_ID", "KAKAO_CLIENT_ID", "NAVER_CLIENT_ID", ...BUSINESS_ENV_NAMES] as const
+export const PLAIN_NAMES = ["LF_MODE", "LF_PADDLE_LIVE", "PADDLE_CLIENT_TOKEN", "POSTHOG_HOST", "POSTHOG_PROJECT_ID", "EMAIL_FROM", "TURNSTILE_SITE_KEY", "GITHUB_REPOSITORY", "GOOGLE_CLIENT_ID", "KAKAO_CLIENT_ID", "NAVER_CLIENT_ID", "SOLAPI_SENDER", "SOLAPI_KAKAO_PFID", "VAPID_PUBLIC_KEY", "VAPID_SUBJECT", ...BUSINESS_ENV_NAMES] as const
 
 /** 선택 이름의 형식(있을 때만 본다). 공급자에 실제로 되는지는 doctor 가 부른다 */
 /**

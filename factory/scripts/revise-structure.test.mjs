@@ -211,7 +211,7 @@ test('더하기(local 후기): 허용 변형이 하나뿐인 구획은 안 1개 
   try {
     const out = await revise(run, 'a', parseRevision('후기 섹션 추가해줘', fixtureSite('local')), { install: false })
     assert.equal(out.variants.length, 1)
-    assert.ok(out.notes.some((n) => /1개뿐/.test(n)), JSON.stringify(out.notes))
+    assert.ok(out.notes.includes('허용 변형이 1개뿐이에요.'), JSON.stringify(out.notes)) // grammar.yaml text.section.fewAllowed
     const r = await applyRevision(run, 'a', out.index, 'v1', prefsOpts(dir))
     const req = readJ(join(run, 'a', '04-content.request.json'))
     const content = unwrapped(join(run, 'a', '04-content.json'))

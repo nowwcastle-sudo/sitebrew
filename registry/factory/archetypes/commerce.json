@@ -11,6 +11,7 @@
     {
       "id": "home",
       "route": "/",
+      "kind": "home",
       "sections": [
         {
           "kind": "notice-bar",
@@ -291,6 +292,7 @@
     {
       "id": "category-list",
       "route": "/products",
+      "kind": "list",
       "sections": [
         {
           "kind": "list-toolbar",
@@ -365,21 +367,20 @@
     {
       "id": "cart",
       "route": "/cart",
+      "kind": "other",
       "phase": "v0.2",
       "sections": [
         {
           "kind": "line-items",
           "required": true,
           "importance": 2,
-          "blockKinds": [],
-          "allowedVariants": [],
-          "noBlock": {
-            "mode": "pending",
-            "reason": "장바구니는 v0.2 — 외부 판매처 링크형 v0(C44)",
-            "register": [
-              "A60"
-            ]
-          },
+          "blockKinds": [
+            "cart"
+          ],
+          "allowedVariants": [
+            "block-cart-lines-table",
+            "block-cart-lines-cards"
+          ],
           "copySlots": [],
           "imageSlots": []
         },
@@ -387,15 +388,12 @@
           "kind": "totals",
           "required": true,
           "importance": 1,
-          "blockKinds": [],
-          "allowedVariants": [],
-          "noBlock": {
-            "mode": "pending",
-            "reason": "장바구니는 v0.2 — 외부 판매처 링크형 v0(C44)",
-            "register": [
-              "A60"
-            ]
-          },
+          "blockKinds": [
+            "cart"
+          ],
+          "allowedVariants": [
+            "block-cart-totals-summary"
+          ],
           "copySlots": [
             {
               "id": "total",
@@ -409,15 +407,12 @@
           "kind": "payment-options",
           "required": true,
           "importance": 2,
-          "blockKinds": [],
-          "allowedVariants": [],
-          "noBlock": {
-            "mode": "pending",
-            "reason": "장바구니·결제는 v0.2 — 외부 판매처 링크형 v0(C44)",
-            "register": [
-              "A60"
-            ]
-          },
+          "blockKinds": [
+            "cart"
+          ],
+          "allowedVariants": [
+            "block-cart-checkout-form"
+          ],
           "copySlots": [
             {
               "id": "escrowNotice",
@@ -425,6 +420,96 @@
               "maxChars": null
             }
           ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "checkout",
+      "route": "/checkout",
+      "kind": "other",
+      "phase": "v0.2",
+      "sections": [
+        {
+          "kind": "shipping-payment",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "cart"
+          ],
+          "allowedVariants": [
+            "block-cart-checkout-form"
+          ],
+          "copySlots": [
+            {
+              "id": "escrowNotice",
+              "role": "에스크로·소비자피해보상보험 선택 안내, 무통장 계좌(은행·번호·예금주)",
+              "maxChars": null
+            }
+          ],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "order-complete",
+      "route": "/checkout/complete",
+      "kind": "other",
+      "phase": "v0.2",
+      "sections": [
+        {
+          "kind": "receipt",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "confirmation"
+          ],
+          "allowedVariants": [
+            "block-confirmation-order-complete"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "orders",
+      "route": "/orders",
+      "kind": "other",
+      "phase": "v0.2",
+      "sections": [
+        {
+          "kind": "order-list",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "account"
+          ],
+          "allowedVariants": [
+            "block-account-order-history"
+          ],
+          "copySlots": [],
+          "imageSlots": []
+        }
+      ]
+    },
+    {
+      "id": "order-detail",
+      "route": "/orders/[id]",
+      "kind": "other",
+      "phase": "v0.2",
+      "sections": [
+        {
+          "kind": "order",
+          "required": true,
+          "importance": 1,
+          "blockKinds": [
+            "account"
+          ],
+          "allowedVariants": [
+            "block-account-order-detail"
+          ],
+          "copySlots": [],
           "imageSlots": []
         }
       ]
@@ -611,8 +696,7 @@
       }
     },
     {
-      "event": "purchase",
-      "phase": "v0.2"
+      "event": "purchase"
     }
   ]
 }

@@ -1,3 +1,4 @@
+// (코드 블록을 읽고 적용하는 부분은 lib/guide-blocks.mjs 로 옮겼다 — _tools 의 verify-public ext-recipe 행도 같은 모듈을 쓴다.)
 // 안내 문서 docs/guides/add-recipe.md 의 코드 블록을 저장소 사본에 문서 순서대로 그대로 적용하고 `npm run gen:all` 이 0 으로 끝나는지 본다.
 // 문서와 코드가 어긋나면(축 호환·서체 고유·히어로 고유·색 대비·필수 키가 바뀌면) 이 시험이 실패한다 — 안내가 낡았다는 신호다.
 // 문서의 표지(코드 블록 첫 줄 뒤에 적는다):
@@ -9,32 +10,14 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { execFileSync, spawn } from 'node:child_process'
-import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, realpathSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, lstatSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, realpathSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { applyFile, guideBlocks } from './lib/guide-blocks.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const GUIDE = join(ROOT, 'docs', 'guides', 'add-recipe.md')
-
-/** 문서에서 표지가 있는 코드 블록만 문서 순서대로 뽑는다. */
-export function guideBlocks(md) {
-  const out = []
-  const lines = md.replace(/\r\n/g, '\n').split('\n')
-  for (let i = 0; i < lines.length; i++) {
-    const open = /^```(\w*)[ \t]*(.*)$/.exec(lines[i])
-    if (!open) continue
-    const body = []
-    let j = i + 1
-    while (j < lines.length && !/^```[ \t]*$/.test(lines[j])) body.push(lines[j++])
-    assert.ok(j < lines.length, `닫히지 않은 코드 블록(${i + 1}행)`)
-    const attrs = {}
-    for (const m of open[2].matchAll(/(\w+)(?:=(?:"([^"]*)"|(\S+)))?/g)) attrs[m[1]] = m[2] ?? m[3] ?? true
-    if (attrs.file || attrs.run) out.push({ lang: open[1], attrs, text: body.join('\n') + '\n', line: i + 1 })
-    i = j
-  }
-  return out
-}
 
 function listFiles(src) {
   try {
@@ -71,22 +54,6 @@ function makeCopy(src, dst) {
     cpSync(from, join(dst, f))
   }
   symlinkSync(realpathSync(join(src, 'node_modules')), join(dst, 'node_modules'), 'junction')
-}
-
-function applyFile(copy, block) {
-  const target = join(copy, block.attrs.file)
-  if (block.attrs.after === undefined) {
-    assert.ok(!existsSync(target), `${block.attrs.file}: 이미 있는 파일이다 — 안내의 예시 이름이 저장소와 겹친다(${block.line}행)`)
-    mkdirSync(dirname(target), { recursive: true })
-    writeFileSync(target, block.text)
-    return
-  }
-  assert.ok(existsSync(target), `${block.attrs.file}: 파일이 없다(${block.line}행)`)
-  const lines = readFileSync(target, 'utf8').split('\n')
-  const at = lines.flatMap((l, k) => (l.trim() === block.attrs.after ? [k] : []))
-  assert.equal(at.length, 1, `${block.attrs.file}: 「${block.attrs.after}」 줄이 ${at.length}개 — 정확히 하나여야 한다(${block.line}행)`)
-  lines.splice(at[0] + 1, 0, ...block.text.replace(/\n$/, '').split('\n'))
-  writeFileSync(target, lines.join('\n'))
 }
 
 function run(copy, command) {

@@ -20,11 +20,16 @@ export interface TemplateMeta {
 export const TEMPLATE_META: Record<TemplateName, TemplateMeta> = {
   welcome: { kind: "transactional", action: "one" },
   orderConfirmation: { kind: "transactional", action: "one" },
+  shopOrderConfirmation: { kind: "transactional", action: "one" },
   priceChange: { kind: "transactional", action: "one", expires: "deadline" },
   cancellation: { kind: "transactional", action: "none" },
   paymentFailed: { kind: "transactional", action: "one" },
   inquiryNotice: { kind: "transactional", action: "one" },
   inquiryReceipt: { kind: "transactional", action: "none" },
+  inquiryReply: { kind: "transactional", action: "none" },
+  bookingConfirmation: { kind: "transactional", action: "none" },
+  bookingCancellation: { kind: "transactional", action: "none" },
+  bookingNotice: { kind: "transactional", action: "one" },
   verifyEmail: { kind: "transactional", action: "one", expires: "duration" },
   emailChangeConfirm: { kind: "transactional", action: "one", expires: "duration" },
   emailChanged: { kind: "transactional", action: "none" },
@@ -35,6 +40,8 @@ export const TEMPLATE_META: Record<TemplateName, TemplateMeta> = {
   marketingConsentNotice: { kind: "transactional", action: "none" },
   marketingReconfirm: { kind: "transactional", action: "one", expires: "duration" },
   marketingAnnouncement: { kind: "marketing", action: "one" },
+  newsletterConfirm: { kind: "transactional", action: "one", expires: "duration" },
+  newsletterWelcome: { kind: "transactional", action: "none" },
 }
 
 export const kindOf = (name: TemplateName): TemplateKind => TEMPLATE_META[name].kind

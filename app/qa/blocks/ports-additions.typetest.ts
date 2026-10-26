@@ -2,7 +2,26 @@
 // 틀린 모양은 @ts-expect-error 로 적었다 — 타입이 느슨해지면(그 줄이 오류가 아니게 되면) typecheck 가 TS2578 로 실패한다.
 // contract-additions.test.mjs 가 이 파일에서 @ts-expect-error 줄을 지운 사본을 tsc 로 돌려, 오류가 바로 그 줄들에서 나는지 본다(음성 대조).
 import type { ActionFailureCode, ActionResult } from "@/registry/factory/contract/block-contract"
-import type { AnalyticsPort, AuthPort, BillingPort, ConsentInput, DeviceSession, NotifyPort, Session } from "@/registry/factory/contract/ports"
+import type {
+  AnalyticsPort,
+  AuthPort,
+  BillingPort,
+  BookingChange,
+  BookingPort,
+  BookingReceipt,
+  BookingRequest,
+  ConsentInput,
+  DeviceSession,
+  ManagedBooking,
+  MyRequestsPort,
+  NewsletterPort,
+  NotifyPort,
+  ReviewsPort,
+  SearchPort,
+  Session,
+  StoragePort,
+  UploadTicket,
+} from "@/registry/factory/contract/ports"
 import type { EventName, EventProps } from "@/registry/factory/contract/events"
 
 declare const track: AnalyticsPort["track"]
@@ -120,3 +139,78 @@ export const legacyBilling: Pick<BillingPort, "acceptPriceChange" | "cancel" | "
 // 승인 대기는 오류가 아니라 정해진 결과 — code 가 있으면 retryable 도 준다(문서화). 새 code 값 여섯과 옛 이름 둘이 모두 ActionFailureCode 다.
 export const awaiting: ActionResult<never> = { ok: false, code: "confirmation_required", retryable: false, formError: "확인이 먼저예요", fieldErrors: { confirmed: ["확인이 먼저예요"] } }
 export const axcCodes: ActionFailureCode[] = ["confirmation_required", "sign_in_required", "provider_unavailable", "invalid_input", "invalid_credentials", "action_failed", "approval_required", "signInRequired"]
+
+// ⑧ 후기·검색·뉴스레터·내 신청 내역·티켓식 올리기(p3-3c — 타입만, 모두 선택 추가라 판은 그대로 2). launch-factory 서비스의 결과 모양을 옮긴 표본.
+declare const reviews: ReviewsPort
+declare const searchPort: SearchPort
+declare const newsletter: NewsletterPort
+declare const myRequests: MyRequestsPort
+declare const storage: StoragePort
+export const reviewList = reviews.list({ subjectType: "product", subjectId: "p-1", sort: "latest", rating: 5, page: 1, pageSize: 10 })
+export const questionList = reviews.list({ subjectType: "product", subjectId: "p-1", kind: "question" })
+export const reviewSubmit = reviews.submit({ subjectType: "product", subjectId: "p-1", rating: 4, title: "좋아요", body: "잘 쓰고 있어요", locale: "ko" })
+export const questionSubmit = reviews.submit({ subjectType: "product", subjectId: "p-1", kind: "question", body: "크기가 어떻게 되나요?", authorName: "김예시" })
+// @ts-expect-error — 별점은 1~5 사이 정수 리터럴이다
+export const reviewBadRating = reviews.submit({ subjectType: "product", subjectId: "p-1", rating: 6, body: "x" })
+// @ts-expect-error — sort 는 정해진 값만(latest·rating_desc·rating_asc)
+export const reviewBadSort = reviews.list({ subjectType: "product", subjectId: "p-1", sort: "popular" })
+// 결과는 kind 로 갈린다 — 후기에는 요약이 있고 문의에는 없다
+export async function reviewShapes() {
+  const r = await reviews.list({ subjectType: "product", subjectId: "p-1" })
+  if (r.ok && r.data.kind === "review") {
+    const avg: number = r.data.summary.avg
+    const stars: number = r.data.summary.distribution[5]
+    const first: string | undefined = r.data.items[0]?.reply?.body
+    return [avg, stars, first, r.data.pageCount]
+  }
+  if (r.ok && r.data.kind === "question") {
+    // @ts-expect-error — 문의 결과에는 요약(summary)이 없다
+    return r.data.summary
+  }
+  return null
+}
+export const searchHits = searchPort.search({ q: "청소기", kinds: ["product"], page: 1 })
+export async function snippetShape() {
+  const r = await searchPort.search({ q: "청소기" })
+  if (!r.ok) return null
+  const first = r.data.items[0]
+  // 하이라이트는 HTML 이 아니라 [시작, 끝) 범위 배열이다
+  const range: [number, number] | undefined = first?.snippet.ranges[0]
+  // @ts-expect-error — 스니펫에 html 문자열 칸은 없다
+  const html: string = first?.snippet.html
+  return [range, html]
+}
+export const subscribed = newsletter.subscribe({ email: "kim@example.com", consent: true, source: "footer" })
+// @ts-expect-error — 뉴스레터 동의는 true 만(체크하지 않았으면 칸을 뺀다, false 를 보내지 않는다)
+export const subscribeNoConsent = newsletter.subscribe({ email: "kim@example.com", consent: false })
+export const mine = myRequests.list({ page: 1 })
+export const mineBare = myRequests.list()
+// 티켓식 올리기는 선택 — upload 만 구현한 옛 어댑터도 StoragePort 를 지킨다
+export const uploadOnly: StoragePort = { upload: async () => ({ ok: true, data: { url: "#u", key: "k" } }) }
+export const ticketed = storage.createTicket?.({ kind: "attachment", contentType: "application/pdf", size: 1024, fileName: "견적.pdf" })
+export const completed = storage.complete?.({ id: "ticket-1" })
+export const ticketShape: UploadTicket = { id: "t", key: "attachment/2026/x.pdf", method: "PUT", url: "https://storage.example/x", headers: { "content-type": "application/pdf" }, expiresAt: "2026-10-01T00:15:00.000Z", maxBytes: 10 * 1024 * 1024 }
+// @ts-expect-error — 올리기 종류는 avatar·attachment·image 뿐이다
+export const ticketBadKind = storage.createTicket?.({ kind: "video", contentType: "video/mp4", size: 1 })
+
+// ⑧ 예약 포트(sitebrew v0.2.0 계획 3b): 새 포트 하나 + 실패 코드 여섯 + 이벤트 셋 — 모두 판 2 안의 추가다. 접수 입력은 폼 칸 그대로라 값이 모두 문자열이다.
+declare const booking: BookingPort
+export const bookingSlots = booking.slots({ service: "consult", from: "2026-10-05", days: 3 })
+export const bookingRequest: BookingRequest = { service: "consult", startsAt: "2026-10-05T01:00:00.000Z", contact: "kim@example.com", partySize: "2", name: "김예시", note: "창가 자리" }
+export const bookingReceipt: Promise<ActionResult<BookingReceipt>> = booking.book(bookingRequest)
+export const bookingView: Promise<ActionResult<ManagedBooking>> = booking.lookup({ reference: "B-1001", contact: "kim@example.com" })
+export const bookingChange: Promise<ActionResult<BookingChange>> = booking.cancel({ reference: "B-1001", contact: "kim@example.com" })
+export const bookingCodes: ActionFailureCode[] = ["slot_taken", "not_found", "cancel_closed", "invalid_state", "forbidden", "deposit_failed"]
+export const bookingEvents: EventName[] = ["booking_view", "booking_submit", "booking_cancel"]
+track("booking_view", { service: "consult" })
+track("booking_submit", { service: "consult", status: "requested" })
+track("booking_cancel", { service: "consult" })
+// @ts-expect-error — booking_submit 의 status 는 접수 결과(requested·confirmed)뿐이다
+track("booking_submit", { service: "consult", status: "cancelled" })
+// @ts-expect-error — 접수 입력의 partySize 는 폼 칸이라 숫자 문자열이다
+export const partyNumber: BookingRequest = { service: "consult", startsAt: "2026-10-05T01:00:00.000Z", contact: "kim@example.com", partySize: 2 }
+// @ts-expect-error — 조회·취소는 예약 번호와 연락처가 함께 있어야 한다(번호만으로는 찾지 않는다)
+export const referenceOnly = booking.lookup({ reference: "B-1001" })
+// launch-factory 의 서버 액션(폼 칸 Record<string, string> 을 받는다)이 book 자리에 그대로 들어간다.
+declare function lfSubmitBooking(input: Record<string, string>): Promise<ActionResult<BookingReceipt>>
+export const lfAsBook: BookingPort["book"] = lfSubmitBooking

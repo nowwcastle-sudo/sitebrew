@@ -1,0 +1,17 @@
+{
+  "gates": {
+    "kindAgreement": { "min": 0.85 },
+    "leadAgreement": { "min": 0.8 },
+    "oppositeApply": { "max": 0.03 },
+    "unclassified": { "max": 0.15 },
+    "twoHit": { "min": 0.95, "minSample": 40 }
+  },
+  "lexiconOnly": ["oppositeApply"],
+  "reference": ["leadFirst", "exactAgreement", "contentApply"],
+  "verdicts": [
+    { "id": "ok", "label": "맞음" },
+    { "id": "fix", "label": "고침", "note": true },
+    { "id": "ask", "label": "이건 물어봐야 함", "expect": "ask" }
+  ],
+  "holdoutMin": 100
+}

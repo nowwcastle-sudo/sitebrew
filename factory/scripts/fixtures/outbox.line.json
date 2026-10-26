@@ -1,0 +1,1 @@
+{ "id": "mock_1", "template": "verifyEmail", "to": "kim@example.com", "subject": "Verify your email for Example", "at": "2026-10-18T03:00:00.000Z" }

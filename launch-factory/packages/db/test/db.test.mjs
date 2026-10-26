@@ -12,24 +12,36 @@ import * as lf from "../src/index.ts"
 const { db, MIGRATIONS_DIR, connectionOptions, recordWebhookEvent, applySubscriptionState, retainUntil, ECOMMERCE_RETENTION } = lf
 
 const EXPECTED_TABLES = [
+  "access_logs",
   "account",
   "account_deletions",
-  "access_logs",
   "admin_actions",
+  "cart_items",
+  "bookings",
   "consent_records",
   "idempotency_keys",
   "inquiries",
+  "inquiry_replies",
   "invitation",
   "known_devices",
   "mail_ledger",
   "marketing_consents",
   "marketing_notice_outbox",
+  "newsletter_subscribers",
   "member",
+  "order_items",
+  "orders",
+  "notifications",
   "organization",
+  "push_subscriptions",
   "rate_limit",
   "rate_limits",
   "retained_transactions",
+  "reviews",
+  "search_documents",
   "session",
+  "stored_files",
+  "stock_levels",
   "subscriptions",
   "two_factor",
   "user",
@@ -57,7 +69,7 @@ async function sqlState(promise) {
   return "no-error"
 }
 
-test("마이그레이션이 빈 DB에 적용된다 — 표 23개, 기록 수 = journal 항목 수, 다시 돌려도 그대로", async () => {
+test("마이그레이션이 빈 DB에 적용된다 — 표 35개, 기록 수 = journal 항목 수, 다시 돌려도 그대로", async () => {
   const tables = await d.execute(sql`select table_name from information_schema.tables where table_schema = 'public' order by 1`)
   assert.deepEqual(tables.rows.map((r) => r.table_name).sort(), EXPECTED_TABLES)
 

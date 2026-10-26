@@ -26,7 +26,9 @@
     "CRON_SECRET",
     "NEXT_PUBLIC_APP_URL",
     "LF_PAYMENT_FAILED_EMAIL",
-    "LF_EU_SALES"
+    "LF_EU_SALES",
+    "PADDLE_CLIENT_TOKEN",
+    "LF_PADDLE_LIVE"
   ],
   "files": [
     "files/lib/launch/billing.ts",

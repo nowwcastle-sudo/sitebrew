@@ -92,15 +92,18 @@ test('sitemap C75: required pending sections stay (status pending + register), b
   assert.deepEqual(sm('dashboard', {}).blockers, [])
 })
 
-test('sitemap C75: 3 required pending left in the data (all in the v0.2 cart page, not in the sitemap) = 0 blockers', () => {
+test('sitemap C75: required pending sections are all bound now (3a — the cart blocks) and the v0.2 shop pages stay out of the sitemap = 0 blockers', () => {
   let requiredPending = 0
   for (const a of Object.values(archetypes)) for (const p of a.pages) for (const s of p.sections) if (s.required && s.noBlock?.mode === 'pending') requiredPending++
-  assert.equal(requiredPending, 3)
+  assert.equal(requiredPending, 0, '장바구니 쪽 필수 pending 셋(A60)은 3a 에서 cart 블록에 묶였다')
   const total = Object.keys(archetypes).reduce((n, id) => n + sm(id, {}).blockers.length, 0)
   assert.equal(total, 0)
   const c = sm('commerce', {})
   assert.ok(!c.pages.some((p) => p.id === 'cart'), 'v0.2 쪽은 뺀다')
   assert.deepEqual(c.excluded.filter((e) => e.page === 'cart'), [{ page: 'cart', why: 'phase-v0.2' }])
+  // 상점 쪽 다섯(장바구니·결제·주문 완료·주문 내역·주문 상세)은 모두 v0.2 라 사이트맵에 들지 않는다 — 지금 commerce 사이트(외부 판매처 링크형)의 출력은 그대로다
+  for (const id of ['cart', 'checkout', 'order-complete', 'orders', 'order-detail']) assert.ok(!c.pages.some((p) => p.id === id), id)
+  assert.deepEqual(c.excluded.filter((e) => e.why === 'phase-v0.2').map((e) => e.page).sort(), ['cart', 'checkout', 'order-complete', 'order-detail', 'orders'])
   assert.deepEqual(c.blockers, [])
   assert.deepEqual(sm('local', {}).blockers, [])
 })

@@ -1,0 +1,52 @@
+[
+  {
+    "service": "Resend",
+    "tags": [
+      "free"
+    ],
+    "support": "builtin",
+    "item": "email",
+    "switchCost": {
+      "ko": "이 키트의 기본이에요. 바꿀 것이 없어요.",
+      "en": "This is the kit's default. Nothing to change."
+    },
+    "note": {
+      "ko": "공식 가격 쪽에 무료 요금제가 있어요.",
+      "en": "The official pricing page lists a free plan."
+    },
+    "home": "https://resend.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Postmark",
+    "tags": [
+      "free"
+    ],
+    "support": "code",
+    "switchCost": {
+      "ko": "전송기(createMailer)에 맞는 어댑터를 직접 써야 하고, 발신 도메인 인증을 Postmark 에서 다시 해야 해요.",
+      "en": "You write an adapter for the mailer (createMailer) and verify the sender domain again in Postmark."
+    },
+    "note": {
+      "ko": "공식 가격 쪽에 기한 없는 무료 개발자 요금제가 있어요.",
+      "en": "The official pricing page lists a free developer plan with no expiry."
+    },
+    "home": "https://postmarkapp.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Amazon SES",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "전송기(createMailer)에 맞는 어댑터를 직접 써야 하고, AWS 계정과 발신 도메인 인증이 필요해요.",
+      "en": "You write an adapter for the mailer (createMailer), and need an AWS account and sender-domain verification."
+    },
+    "note": {
+      "ko": "공식 가격 쪽은 사용량에 따라 내는 방식이고 무료는 AWS 전체 무료 이용 크레딧으로 안내돼요.",
+      "en": "The official pricing page is pay-as-you-go, and the free part is described as general AWS free-tier credits."
+    },
+    "home": "https://aws.amazon.com",
+    "checked": "2026-10-22"
+  }
+]

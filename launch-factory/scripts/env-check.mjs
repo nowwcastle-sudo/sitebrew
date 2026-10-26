@@ -11,6 +11,7 @@ import { spawnSync } from "node:child_process"
 import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { join, relative } from "node:path"
 import { pathToFileURL, fileURLToPath } from "node:url"
+import { MOCK_ONLY_NAMES } from "@launch-factory/env"
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url))
 const NAME = /^[A-Z][A-Z0-9_]*$/
@@ -55,9 +56,21 @@ function walk(dir, out = []) {
 /** 선택 이름이 없을 때 꺼지는 기능 — 경고 문구에 쓴다(없어도 사이트는 켜진다). 새 선택 이름을 더하면 여기에도 한 줄 */
 export const OPTIONAL_EFFECT = {
   INQUIRY_OWNER_EMAIL: "문의 창구가 꺼진다",
+  BOOKING_OWNER_EMAIL: "예약 접수가 꺼진다(이미 받은 예약의 조회·취소는 그대로)",
   POSTHOG_HOST: "분석(PostHog)이 꺼진다 — POSTHOG_PROJECT_KEY 와 둘 다 있어야 켜진다. 동의 띠·쿠키 설정 링크도 사라진다",
   POSTHOG_PROJECT_KEY: "분석(PostHog)이 꺼진다 — POSTHOG_HOST 와 둘 다 있어야 켜진다. 동의 띠·쿠키 설정 링크도 사라진다",
   SENTRY_DSN: "오류 수집(Sentry)이 꺼진다",
+  NEXT_PUBLIC_PORTONE_STORE_ID: "상점(카드·간편결제)이 꺼진다 — PortOne 값 넷이 모두 있어야 켜진다",
+  NEXT_PUBLIC_PORTONE_CHANNEL_KEY: "상점(카드·간편결제)이 꺼진다 — PortOne 값 넷이 모두 있어야 켜진다",
+  PORTONE_API_SECRET: "상점(카드·간편결제)이 꺼진다 — PortOne 값 넷이 모두 있어야 켜진다",
+  PORTONE_WEBHOOK_SECRET: "상점(카드·간편결제)이 꺼진다 — PortOne 값 넷이 모두 있어야 켜진다",
+  STORAGE_ENDPOINT: "파일 올리기가 꺼진다 — STORAGE_* 필수 다섯 이름이 모두 있어야 켜진다",
+  STORAGE_BUCKET: "파일 올리기가 꺼진다 — STORAGE_* 필수 다섯 이름이 모두 있어야 켜진다",
+  STORAGE_REGION: "파일 올리기가 꺼진다 — STORAGE_* 필수 다섯 이름이 모두 있어야 켜진다",
+  STORAGE_ACCESS_KEY_ID: "파일 올리기가 꺼진다 — STORAGE_* 필수 다섯 이름이 모두 있어야 켜진다",
+  STORAGE_SECRET_ACCESS_KEY: "파일 올리기가 꺼진다 — STORAGE_* 필수 다섯 이름이 모두 있어야 켜진다",
+  STORAGE_PATH_STYLE: "경로식 주소(R2·MinIO)를 못 쓴다 — 없으면 가상호스트식 주소로 서명한다",
+  STORAGE_PUBLIC_BASE_URL: "공개 종류(프로필 사진·이미지)가 서명 없는 저장소 주소로 나간다 — CDN·공개 도메인을 못 쓴다",
 }
 
 /**
@@ -93,6 +106,9 @@ export async function checkOffline(root = ROOT) {
   const { required, optional } = await liveRequirements(root)
   for (const n of [...required, ...optional]) {
     if (!example.has(n)) errors.push(`live 환경 이름 ${n} 이 .env.example 에 없다 — 이름과 뜻을 적는다(필수·선택 구분은 template/lib/live-env.ts)`)
+  }
+  for (const n of MOCK_ONLY_NAMES) {
+    if (!example.has(n)) errors.push(`mock 전용 이름 ${n} 이 .env.example 에 없다 — 이름과 뜻을 적는다(목록은 packages/env 의 MOCK_ONLY_NAMES)`)
   }
   const inCode = requiredInCode(root)
   const known = new Set([...required, ...optional])

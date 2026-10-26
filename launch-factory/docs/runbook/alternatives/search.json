@@ -1,0 +1,47 @@
+[
+  {
+    "service": "Meilisearch",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "검색 서비스 코드를 바꿔야 해요: 색인을 보내는 코드와 검색 호출을 새로 쓰고, 서버를 직접 운영하거나 클라우드를 골라요.",
+      "en": "Replace the search service code: write new indexing and query calls, then run a server yourself or pick the cloud."
+    },
+    "note": {
+      "ko": "공식 문서에 따르면 직접 올려 쓸 수 있고(단일 실행 파일과 REST API) 호스팅 클라우드도 있어요. 한국어 처리는 확인하지 못했어요.",
+      "en": "Per the official docs you can self-host it (a single binary with a REST API) and there is also a hosted cloud. Korean-language handling was not confirmed."
+    },
+    "home": "https://www.meilisearch.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Typesense",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "검색 서비스 코드를 바꿔야 해요: 색인과 검색 호출을 새로 쓰고 서버를 직접 운영하거나 클라우드를 골라요.",
+      "en": "Replace the search service code: write new indexing and query calls, then run a server yourself or pick the cloud."
+    },
+    "note": {
+      "ko": "공식 사이트에 따르면 오픈소스이고 직접 설치해 쓸 수 있으며 호스팅 클라우드(Typesense Cloud)도 있어요. 한국어 지원은 확인하지 못했어요.",
+      "en": "Per the official site it is open source, can be self-hosted, and has a hosted cloud (Typesense Cloud). Korean support was not confirmed."
+    },
+    "home": "https://typesense.org",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Algolia",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "검색 서비스 코드를 바꿔야 해요: 색인과 검색 호출을 새로 써요. 서버는 운영하지 않아도 돼요.",
+      "en": "Replace the search service code: write new indexing and query calls. You do not run a server."
+    },
+    "note": {
+      "ko": "공식 문서에 따르면 호스팅 검색 서비스(API 방식)예요. 무료 요금제와 한국어 지원은 확인하지 못했어요.",
+      "en": "Per the official docs it is a hosted search service (API based). A free plan and Korean support were not confirmed."
+    },
+    "home": "https://www.algolia.com",
+    "checked": "2026-10-22"
+  }
+]

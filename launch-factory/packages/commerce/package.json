@@ -1,0 +1,25 @@
+{
+  "name": "@launch-factory/commerce",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "판매 규칙 — 상품표 검사·가격 계산·재고 예약·장바구니·주문 상태 전이 표·결제 확정(리디렉션 반환과 웹훅이 같은 함수)·취소/환불·만료·주문 확인 메일, 그리고 web-factory 계약 CommercePort 구현. 결제는 주입받은 PaymentGateway 로만 부른다(공급자를 모른다).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/email": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/payments-kr": "0.0.0",
+    "@launch-factory/security": "0.0.0",
+    "drizzle-orm": "0.45.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

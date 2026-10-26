@@ -2,6 +2,8 @@ fceb3caa0f98455d  block-account-billing-manage
 2b9a26a3aa289c9a  block-account-credentials
 cf8c657e9185b48e  block-account-delete-account
 7f047ef29a3b7d5c  block-account-notification-consents
+fa238b1a1f37ee89  block-account-order-detail
+9b3af3b2c45bfe97  block-account-order-history
 29d46802fe85c81f  block-account-permissions
 049db5952c1af2d8  block-account-profile-settings
 4ad2a8d73a632f25  block-account-security
@@ -19,6 +21,10 @@ da4860211c9f173f  block-auth-sign-in
 81760a43d386c04e  block-bottom-tab-icon-tabs
 6971aca37a4f0807  block-bottom-tab-split-booking-bar
 4a2eae2e231695df  block-bottom-tab-sticky-action-bar
+edc241a680303ef8  block-cart-checkout-form
+76592ef07b4fb91d  block-cart-lines-cards
+d49e955f85feabbb  block-cart-lines-table
+781e9f3bcef49332  block-cart-totals-summary
 b55fe02d8c026b3a  block-confirmation-booking-complete
 e7aad748eb9c3a9a  block-confirmation-order-complete
 a36927d6f51a5134  block-confirmation-signup-complete

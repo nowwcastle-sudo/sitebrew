@@ -15,10 +15,49 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/events#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3",
+        "nowwcastle-sudo/sitebrew/events#v0.2.3",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.3",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.3"
+      ]
+    },
+    {
+      "name": "adapter-mock-admin",
+      "type": "registry:lib",
+      "title": "adapter-mock-admin",
+      "description": "web-factory contract: adapter-mock-admin",
+      "files": [
+        {
+          "path": "adapter-mock-admin.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/adapter-mock-admin.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/adapter-mock#v0.2.3",
+        "nowwcastle-sudo/sitebrew/admin#v0.2.3",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3"
+      ]
+    },
+    {
+      "name": "adapter-mock-commerce",
+      "type": "registry:lib",
+      "title": "adapter-mock-commerce",
+      "description": "web-factory contract: adapter-mock-commerce",
+      "files": [
+        {
+          "path": "adapter-mock-commerce.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/adapter-mock-commerce.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/adapter-mock#v0.2.3",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.3",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.3"
       ]
     },
     {
@@ -35,9 +74,26 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/phone#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3",
+        "nowwcastle-sudo/sitebrew/phone#v0.2.3",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.3"
+      ]
+    },
+    {
+      "name": "admin",
+      "type": "registry:lib",
+      "title": "admin",
+      "description": "web-factory contract: admin",
+      "files": [
+        {
+          "path": "admin.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/admin.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3"
       ]
     },
     {
@@ -54,7 +110,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2"
+        "nowwcastle-sudo/sitebrew/ports#v0.2.3"
       ]
     },
     {
@@ -73,11 +129,34 @@
       "registryDependencies": []
     },
     {
+      "name": "commerce",
+      "type": "registry:lib",
+      "title": "commerce",
+      "description": "web-factory contract: commerce",
+      "files": [
+        {
+          "path": "commerce.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/commerce.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.3"
+      ]
+    },
+    {
       "name": "contract-conformance",
       "type": "registry:lib",
       "title": "contract-conformance",
       "description": "web-factory contract: contract-conformance",
       "files": [
+        {
+          "path": "conformance/admin.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/admin.ts"
+        },
         {
           "path": "conformance/analytics.ts",
           "type": "registry:lib",
@@ -94,6 +173,16 @@
           "target": "@components/contract/conformance/billing.ts"
         },
         {
+          "path": "conformance/booking.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/booking.ts"
+        },
+        {
+          "path": "conformance/commerce.ts",
+          "type": "registry:lib",
+          "target": "@components/contract/conformance/commerce.ts"
+        },
+        {
           "path": "conformance/conformance-core.ts",
           "type": "registry:lib",
           "target": "@components/contract/conformance/conformance-core.ts"
@@ -106,10 +195,12 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/events#v0.1.2",
-        "nowwcastle-sudo/sitebrew/ports#v0.1.2",
-        "nowwcastle-sudo/sitebrew/retention-offer#v0.1.2"
+        "nowwcastle-sudo/sitebrew/admin#v0.2.3",
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3",
+        "nowwcastle-sudo/sitebrew/commerce#v0.2.3",
+        "nowwcastle-sudo/sitebrew/events#v0.2.3",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.3",
+        "nowwcastle-sudo/sitebrew/retention-offer#v0.2.3"
       ]
     },
     {
@@ -156,8 +247,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/block-contract#v0.1.2",
-        "nowwcastle-sudo/sitebrew/events#v0.1.2"
+        "nowwcastle-sudo/sitebrew/block-contract#v0.2.3",
+        "nowwcastle-sudo/sitebrew/events#v0.2.3"
       ]
     }
   ]

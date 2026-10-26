@@ -1,6 +1,6 @@
 // 설치 닫힘 시험(v0 Task 9). 무겁고 네트워크가 필요하다(npm·shadcn CLI·next build) — `npm run registry:install` 로 따로 돌린다.
 //   1. 워크스페이스 패키지를 npm pack 으로 묶는다(아직 게시하지 않았으므로 tarball 이 게시본 대역이다)
-//   2. 빈 Next 앱(next 16.3.8)을 만들고, 여섯 항목을 **진짜 shadcn CLI(4.21.0)** 로 설치한다 — 네임스페이스 @launch-factory/<이름>
+//   2. 빈 Next 앱(next 16.3.8)을 만들고, 여섯 항목을 **진짜 shadcn CLI(판은 scripts/pins.mjs)** 로 설치한다 — 네임스페이스 @launch-factory/<이름>
 //   3. 설치된 파일 = 항목이 싣는 파일(내용까지), .env.local 에 envVars 이름만, 마이그레이션이 PGlite 에 적용
 //   4. next build 종료 0(타입 검사 포함) → next start 로 경로가 실제로 답한다(문의 접수 200·Cron 401·웹훅 키 없음 500)
 // 무거운 실행이라 web-factory 공용 잠금 원장 아래에서 돌린다(호출하는 쪽 책임). LF_REGISTRY_KEEP=1 이면 작업 폴더를 남긴다.
@@ -14,9 +14,9 @@ import { join } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
 import { ITEM_ORDER } from "./gen-registry.mjs"
+import { shadcnSpec } from "./pins.mjs"
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url))
-const SHADCN = "4.21.0"
 const NPM = process.platform === "win32" ? "npm.cmd" : "npm"
 const NPX = process.platform === "win32" ? "npx.cmd" : "npx"
 const json = (p) => JSON.parse(readFileSync(p, "utf8"))
@@ -136,8 +136,8 @@ test("빈 Next 앱을 만들고 패키지를 묶는다", { timeout: 600_000 }, a
 test("열 항목을 shadcn CLI 로 한 번에 설치한다 — 파일이 그대로 놓이고 envVars 는 이름만 들어간다", { timeout: 600_000 }, async () => {
   // 명령줄의 로컬 항목은 파일 경로로 준다(@네임스페이스 이름은 원격 URL 로만 풀린다). 그 항목들의 registryDependencies(@launch-factory/…)는 components.json 의 로컬 주소 규칙으로 풀린다
   const names = ITEM_ORDER.map((n) => `./reg/${n}.json`)
-  log(`shadcn@${SHADCN} add ${names.length} items`)
-  const r = await runAsync(NPX, ["--yes", `shadcn@${SHADCN}`, "add", ...names, "--yes", "--cwd", "."], { cwd: app })
+  log(`${shadcnSpec()} add ${names.length} items`)
+  const r = await runAsync(NPX, ["--yes", shadcnSpec(), "add", ...names, "--yes", "--cwd", "."], { cwd: app })
   ok(r, "shadcn add")
   for (const p of packages) assert.ok(existsSync(join(app, "node_modules", p.name, "package.json")) || !Object.values(dist).some((i) => i.dependencies.some((d) => d.startsWith(`${p.name}@`))), `${p.name} not installed`)
   // 항목이 싣는 모든 파일이, 내용까지 같게 놓였다(여러 항목이 같은 파일을 실어도 하나)
@@ -198,7 +198,7 @@ test("next build 종료 0(타입 검사 포함)", { timeout: 900_000 }, () => {
   const r = run(NPX, ["next", "build"], { cwd: app, env: { LF_MODE: "mock", LF_ALLOW_MOCK_PROD: "1" } })
   ok(r, "next build")
   assert.ok(existsSync(join(app, ".next/BUILD_ID")), "BUILD_ID")
-  for (const route of ["/api/auth/[...all]", "/api/webhooks/paddle", "/api/webhooks/gumroad", "/api/inquiry", "/api/cron/billing", "/api/cron/gumroad", "/api/cron/inquiry", "/api/admin/users/export", "/api/cron/purge", "/api/cron/security"]) {
+  for (const route of ["/api/auth/[...all]", "/api/webhooks/paddle", "/api/webhooks/gumroad", "/api/inquiry", "/api/cron/billing", "/api/cron/gumroad", "/api/cron/inquiry", "/api/admin/users/export", "/api/cron/purge", "/api/cron/security", "/api/storage/ticket", "/api/storage/complete", "/api/cron/storage"]) {
     assert.ok(r.out.includes(route), `route ${route} missing from build output`)
   }
 })

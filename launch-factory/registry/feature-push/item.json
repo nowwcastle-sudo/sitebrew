@@ -1,0 +1,29 @@
+{
+  "name": "feature-push",
+  "title": "웹 푸시",
+  "description": "로그인한 사용자의 기기 구독을 저장하고 VAPID 로 웹 푸시를 보낸다. 폐기된 기기(404·410)는 지우고, 연속 실패가 쌓이면 지운다. VAPID 설정 문제(401·403)는 구독을 지우지 않는다. 서비스 워커 public/sw.js 포함. 비로그인 방문자는 메일·알림톡.",
+  "npm": ["@launch-factory/push", "@launch-factory/contract", "@launch-factory/db", "@launch-factory/env", "drizzle-orm", "postgres"],
+  "registryDependencies": ["feature-auth-betterauth"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "VAPID_PUBLIC_KEY", "VAPID_PRIVATE_KEY", "VAPID_SUBJECT"],
+  "files": [
+    "files/lib/launch/push.ts",
+    "files/app/actions/push.ts",
+    "files/public/sw.js",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": ["push.ts"],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(구독 표가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. VAPID 키 한 쌍을 만든다: npx web-push generate-vapid-keys. VAPID_PUBLIC_KEY·VAPID_PRIVATE_KEY·VAPID_SUBJECT(mailto:운영자메일 또는 https 주소)를 환경에 넣는다. 개인키는 저장소·대화에 적지 않는다. live 에서 셋 중 하나라도 없거나 모양이 틀리면 이 기능만 꺼진다(pushEnabled() 가 false — 화면은 푸시 단추를 그리지 않는다).",
+    "3. public/sw.js 는 서비스 워커다(같은 출처 /sw.js 로 등록). CSP worker-src 'self' 가 이미 허용한다. 푸시는 HTTPS 에서만 된다(localhost 예외). iOS 는 홈 화면에 추가한 앱에서만 받는다.",
+    "4. 화면: pushPublicKey()(서버 액션)로 공개키를 받아 pushManager.subscribe({ userVisibleOnly: true, applicationServerKey }) 한 뒤 그 결과의 toJSON() 을 subscribePush 에 넘긴다. 해제는 unsubscribePush({ endpoint }). 권한 요청은 사용자가 단추를 눌렀을 때만 한다.",
+    "5. 보내기(서버 코드): (await push()).sendToUser(userId, { title, body?, url?, tag? }) → { sent, pruned, failed }. url 은 이 사이트 안 경로만 받는다. 이 항목은 보내는 쪽 소비자를 만들지 않는다 — 어떤 일에 푸시를 보낼지는 제품이 정한다.",
+    "6. mock 에서는 구독을 저장하고 보내기는 기록만 한다(외부 호출 없음). mock 에서 만든 구독은 live 에서 쓸 수 없다(키가 다르다).",
+    "7. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

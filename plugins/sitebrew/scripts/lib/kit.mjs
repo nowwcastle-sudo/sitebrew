@@ -13,11 +13,16 @@ export const PLUGIN_OPTION_PREFIX = 'CLAUDE_PLUGIN_OPTION_'
 // packageNames = the `name` of the root package.json (the folder is only taken from the current directory when it says so).
 export const KIT = { name: 'sitebrew', packageNames: ['web-factory', 'sitebrew'], marker: ['factory', 'doctor.mjs'], flag: '--kit', env: 'SITEBREW_DIR', launchMarker: ['launch-factory', 'template', 'package.json'] }
 
-/** The environment a child process may see: the process environment without any key or plugin option value. */
+/**
+ * The environment a child process may see: the process environment without the Sitebrew key names and the plugin option values (names compared without
+ * regard to case: Windows environment names have no case). Other variables, such as a token of another service, stay: an install step needs PATH, the
+ * proxy settings and the like, and a list of what to allow would break installs.
+ */
 export function safeEnv(env = process.env) {
   const out = {}
+  const keys = KEY_NAMES.map((n) => n.toUpperCase())
   for (const [k, v] of Object.entries(env)) {
-    if (KEY_NAMES.includes(k) || k.startsWith(PLUGIN_OPTION_PREFIX)) continue
+    if (keys.includes(k.toUpperCase()) || k.toUpperCase().startsWith(PLUGIN_OPTION_PREFIX)) continue
     out[k] = v
   }
   return out

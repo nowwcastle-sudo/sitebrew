@@ -8,15 +8,15 @@ sitebrew es un plugin de Claude Code con cinco skills. Te guían en el uso de we
 
 | Parte | Etiqueta |
 |---|---|
-| web-factory | `v0.1.2` |
-| launch-factory | `v0.1.2` |
+| web-factory | `v0.2.3` |
+| launch-factory | `v0.2.3` |
 
 ## Instalación
 
 Desde el marketplace de este repositorio:
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.3
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ Para probarlo sin instalar, inicia Claude Code con `claude --plugin-dir <path>`,
 En Codex, añade primero el marketplace y después el plugin (`codex plugin --help` muestra ambos comandos):
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.3
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -38,7 +38,10 @@ El hook de sesión que copia las opciones del plugin al shell es solo para Claud
 | `new` | Respondes unas preguntas y obtienes tres candidatos de sitio para comparar y elegir. |
 | `revise` | Cambia una sección, un eje de diseño o un texto de un sitio ya generado. |
 | `deliver` | Copia el sitio elegido a tu propia carpeta, con un README que lista lo que falta corregir antes de publicar. |
-| `doctor` | Muestra qué falta en tu equipo y cómo arreglarlo, en coreano y en inglés. |
+| `doctor` | Muestra qué falta en tu equipo y cómo arreglarlo, en coreano y en inglés. No instala nada; instalar es tarea del skill `setup`. |
+| `setup` | Instala lo que Sitebrew necesita (Node.js, Git, un navegador, la carpeta de Sitebrew), de uno en uno y solo después de que digas que sí a cada elemento. |
+| `preview` | Abre un sitio entregado en una dirección pública temporal, sin cuenta, clave ni coste. |
+| `runbook` | Cuando decides usar el sitio de verdad: en qué servicios externos registrarte, en qué orden, qué tipo de coste tiene cada uno y qué deja de funcionar si lo omites. |
 | `guide` | Instala piezas de web-factory, arranca la plantilla de launch-factory y explica qué claves existen. |
 
 Empieza con estas dos:
@@ -79,7 +82,7 @@ Al preparar el kit se descarga el repositorio desde GitHub y los paquetes desde 
 
 ## Qué hace sitebrew
 
-- Instala piezas de web-factory en un proyecto Next.js con `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/<item>#v0.1.2 -y -o`.
+- Instala piezas de web-factory en un proyecto Next.js con `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.3 -y -o`.
 - Te acompaña paso a paso con `npm run stamp`, que convierte un brief en candidatos de sitio.
 - Arranca la plantilla de launch-factory en modo mock y después enumera lo que necesita el modo live.
 - Te dice qué claves debes crear tú. Solo da nombres y nunca te pide un valor.

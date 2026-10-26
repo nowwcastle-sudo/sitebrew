@@ -86,7 +86,7 @@ test("IP 는 Better Auth 와 같은 규칙으로 읽는다 — x-forwarded-for �
 })
 
 test("기본 규칙: 가입·로그인·재설정은 Better Auth 기본값과 같고, 문의·결제 시작도 덮는다 — 결제 시작 보호 예시", async () => {
-  assert.deepEqual(Object.keys(RATE_LIMIT_DEFAULTS).sort(), ["checkoutStart", "inquiry", "passwordReset", "signIn", "signUp"])
+  assert.deepEqual(Object.keys(RATE_LIMIT_DEFAULTS).sort(), ["admin:read", "adminAct", "checkoutStart", "inquiry", "newsletter", "passwordReset", "reviewsSubmit", "search", "shopAdmin", "shopCancel", "shopCart", "shopConfirm", "shopOrder", "signIn", "signUp", "storage"])
   assert.deepEqual(RATE_LIMIT_DEFAULTS.signIn, { max: 3, windowSec: 10 })
   assert.deepEqual(RATE_LIMIT_DEFAULTS.passwordReset, { max: 3, windowSec: 60 })
   const c = clock("2026-10-01T02:00:00.000Z")

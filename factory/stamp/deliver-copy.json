@@ -1,0 +1,142 @@
+{
+  "_note": "deliver 가 README 에 새로 더하는 사용자 문장(ko·en) — 한 곳. 기존 deliver-guide.mjs·ui-copy.mjs 문장은 여기로 옮기지 않는다. 영어 쪽에는 한글을 싣지 않는다. inquiryRuntime 은 README 가 아니라 소개형 전달물의 lib/inquiry-copy.json 으로 복사되어 문의 접수 코드(app/api/inquiry/route.ts · lib/contact.ts)가 읽는 문장이다.",
+  "productRunLead": {
+    "ko": "이 폴더는 로그인·결제 같은 제품 기능이 들어 있는 완성본이에요. 아래 명령을 차례로 실행해요.",
+    "en": "This folder is a finished product with features such as sign-in and billing. Run the commands below in order."
+  },
+  "productChosenTitle": { "ko": "### 고른 기능", "en": "### Features you chose" },
+  "runbookPointer": {
+    "ko": "실제로 쓰기로 하면 ‘런북’이라고 말해 주세요. 무엇을 등록하고 설정해야 하는지 알려 드려요.",
+    "en": "When you decide to use this site for real, say 'runbook' and we will go through what to register and set up."
+  },
+  "runbookCosts": {
+    "ko": "운영 비용(호스팅·도메인·결제 수수료)은 실제로 쓰기로 한 뒤 런북의 호스팅 장에서 확인해요.",
+    "en": "Once you decide to use the site for real, check running costs (hosting, domain, payment fees) in the hosting chapter of the runbook."
+  },
+  "productEnglish": {
+    "ko": "제품 화면은 지금 영어예요. 로그인·결제·계정 화면이 영어로 나오고, 사이트 쪽 화면만 고른 언어로 나와요.",
+    "en": "The product screens are English for now. Sign-in, billing and account screens appear in English, and only the site pages follow your language."
+  },
+  "productLegal": {
+    "ko": "법정 쪽(개인정보 처리방침·이용약관, 결제를 골랐다면 환불 정책)은 템플릿의 영어 초안으로 바뀌었어요. 공개하기 전에 우리 서비스에 맞는 글로 바꿔 주세요.",
+    "en": "The legal pages (privacy policy, terms of service, and the refund policy if you chose payments) are now the template's English drafts. Replace them with text that fits your service before you publish."
+  },
+  "productCheck": {
+    "ko": "지금은 가짜 모드(LF_MODE=mock)라서 `npm run build` 다음 `npm start` 로는 켜지지 않아요. 가짜 모드에서는 `npm run dev` 로 확인해요. 진짜로 올릴 때는 환경 변수를 채운 뒤에 빌드해요.",
+    "en": "It runs in mock mode (LF_MODE=mock) now, so `npm run build` followed by `npm start` will not start it. In mock mode, check it with `npm run dev`. When you really publish it, fill in the environment variables first, then build."
+  },
+  "previewSkippedProduct": {
+    "ko": "제품형 폴더는 미리보기를 배포하지 않아요. 원본 사이트만 배포되어 완성본과 달라지기 때문이에요.",
+    "en": "A product folder is not deployed as a preview, because only the original site would be deployed and it differs from the finished product."
+  },
+  "noticeNoFeatures": {
+    "ko": "이 실행 폴더에는 기능 선택 기록(features.json)이 없어서, 원형의 기본 방식 그대로 전달했어요.",
+    "en": "This run folder has no feature record (features.json), so it was delivered the default way for its type."
+  },
+  "noticeTableChanged": {
+    "ko": "표가 바뀌었어요. 기능을 고른 뒤에 launch-factory 의 기능 표가 달라져서, 고른 기능은 반영하지 않고 원형의 기본 방식 그대로 전달했어요. 기능 질문을 다시 해 주세요.",
+    "en": "The feature table has changed since you chose your features, so your choices were not applied and the folder was delivered the default way for its type. Please answer the feature questions again."
+  },
+  "noticeNoLf": {
+    "ko": "launch-factory 를 못 찾았어요. 기능을 고른 기록은 있지만 표를 읽을 수 없어서, 원형의 기본 방식 그대로 전달했어요. --lf 로 launch-factory 폴더를 알려 주세요.",
+    "en": "launch-factory was not found. Your feature choices are on record but the table cannot be read, so the folder was delivered the default way for its type. Pass the launch-factory folder with --lf."
+  },
+  "noticeBadFeatures": {
+    "ko": "이 실행 폴더의 기능 선택 기록(features.json)을 읽을 수 없어서, 고른 기능은 반영하지 않고 원형의 기본 방식 그대로 전달했어요. 기능 질문을 다시 해 주세요.",
+    "en": "The feature record (features.json) in this run folder could not be read, so your choices were not applied and the folder was delivered the default way for its type. Please answer the feature questions again."
+  },
+  "noticeRootMeta": {
+    "ko": "제품 이름과 공유 미리보기 언어를 이 사이트 것으로 바꾸지 못한 곳이 있어요. 템플릿에 예시 이름(Example App)이나 en_US 가 남았을 수 있으니 열어서 확인해 주세요.",
+    "en": "The product name and the share-preview language could not be set everywhere. The template placeholder name (Example App) or en_US may remain, so please open the folder and check."
+  },
+  "checkLoopTitle": { "ko": "### 완성 확인", "en": "### Completion check" },
+  "checkLoopOk": {
+    "ko": "완성 확인을 돌려 봤고 통과했어요. 고른 기능이 처음부터 끝까지 이어져요.",
+    "en": "The completion check ran and passed. The features you chose work from start to finish."
+  },
+  "checkLoopFailed": {
+    "ko": "완성 확인에서 막혔어요. 원인 기록의 끝부분은 아래 코드 블록에 있어요(영어로 나와요).",
+    "en": "The completion check failed. The end of the log is in the code block in the Korean section above."
+  },
+  "checkLoopFailedPlain": {
+    "ko": "완성 확인에서 막혔어요. 남은 원인 기록이 없어요. 같은 확인을 다시 돌려 주세요.",
+    "en": "The completion check failed. No log was left to show. Please run the check again."
+  },
+  "checkLoopMemory": {
+    "ko": "메모리 여유가 {free} GB라서 완성 확인을 돌리지 않았어요. {min} GB 이상일 때 다시 돌려 주세요.",
+    "en": "Free memory is {free} GB, so the completion check did not run. Run it again when {min} GB or more is free."
+  },
+  "checkLoopNoPlaywright": {
+    "ko": "이 폴더에서 `npm install` 을 했는데도 브라우저 시험 도구(@playwright/test)가 없어서 완성 확인을 돌리지 않았어요. package.json 의 devDependencies 에 @playwright/test 가 있는지 확인해 주세요.",
+    "en": "The browser test tool (@playwright/test) is still missing after `npm install` in this folder, so the completion check did not run. Check that package.json lists @playwright/test in devDependencies."
+  },
+  "checkLoopNoPackage": {
+    "ko": "이 폴더에 package.json 이 없어서 설치도 완성 확인도 하지 않았어요. 전달한 폴더가 맞는지 확인해 주세요.",
+    "en": "This folder has no package.json, so nothing was installed and the completion check did not run. Check that this is the delivered folder."
+  },
+  "checkLoopTableChanged": {
+    "ko": "기능 표가 바뀌어서 완성 확인을 돌리지 않았어요. 기능 질문을 다시 해 주세요.",
+    "en": "The feature table has changed, so the completion check did not run. Please answer the feature questions again."
+  },
+  "checkLoopNoLf": {
+    "ko": "launch-factory 를 못 찾아서 완성 확인을 돌리지 않았어요. --lf 로 launch-factory 폴더를 알려 주세요.",
+    "en": "launch-factory was not found, so the completion check did not run. Pass the launch-factory folder with --lf."
+  },
+  "checkLoopLeftover": {
+    "ko": "확인하는 동안 이 폴더에 설치와 빌드 결과(node_modules, .next, .tmp/smoke)가 생겼어요. 공유하거나 올리기 전에 지워도 돼요.",
+    "en": "The check left install and build output (node_modules, .next, .tmp/smoke) in this folder. You can delete it before you share or upload the folder."
+  },
+  "checkLoopNoBrowser": {
+    "ko": "이 컴퓨터에 브라우저(Chrome이나 Edge)가 없어서 완성 확인을 돌리지 않았어요.",
+    "en": "This computer has no browser (Chrome or Edge), so the completion check did not run."
+  },
+  "checkLoopNoInquiry": {
+    "ko": "이 사이트에는 확인할 기능이 없어서 완성 확인을 돌리지 않았어요. 문의 받기를 고른 소개형과 제품형만 확인해요.",
+    "en": "This site has no feature to check, so the completion check did not run. Only intro sites with inquiries and product sites are checked."
+  },
+  "checkLoopNoFeatures": {
+    "ko": "기능 선택 기록이나 launch-factory 가 없어서 완성 확인을 돌리지 않았어요.",
+    "en": "There is no feature record or launch-factory, so the completion check did not run."
+  },
+  "checkLoopBadFeatures": {
+    "ko": "기능 선택 기록(features.json)을 읽을 수 없어서 완성 확인을 돌리지 않았어요. 기능 질문을 다시 해 주세요.",
+    "en": "The feature record (features.json) could not be read, so the completion check did not run. Please answer the feature questions again."
+  },
+  "checkLoopNoOwner": {
+    "ko": "문의를 받을 메일 주소가 아직 확인되지 않아서(미리보기 상태) 문의 확인을 돌리지 않았어요. content/site.json 에 메일 주소를 채운 뒤 다시 돌려 주세요.",
+    "en": "The email address that receives inquiries is not confirmed yet (preview state), so the inquiry check did not run. Fill in the email address in content/site.json and run it again."
+  },
+  "checkLoopTimedOut": {
+    "ko": "완성 확인이 시간 제한 안에 끝나지 않아서 멈췄어요. 컴퓨터가 바쁘지 않을 때 다시 돌려 주세요.",
+    "en": "The completion check did not finish within its time limit and was stopped. Please run it again when the computer is not busy."
+  },
+  "checkLoopNoSteps": {
+    "ko": "고른 기능에 한 바퀴 시험 단계가 없어서 완성 확인을 돌리지 않았어요.",
+    "en": "The features you chose have no steps in the full-loop test, so the completion check did not run."
+  },
+  "featureNotAppliedTitle": { "ko": "### 넣지 못한 기능", "en": "### Features that were not added" },
+  "featureNotAppliedType": {
+    "ko": "- 「{say}」는 소개형 사이트에 넣을 곳이 없어서 넣지 않았어요.",
+    "en": "- \"{say}\" has no place in an intro site, so it was not added."
+  },
+  "featureNotAppliedForm": {
+    "ko": "- 「{say}」는 이 시안에 문의 폼이나 신청 블록이 없어서 넣지 않았어요.",
+    "en": "- \"{say}\" was not added because this design has no contact form or sign-up block."
+  },
+  "inquiryMockTitle":{ "ko": "### 문의 보내기 (시험용)", "en": "### Sending inquiries (test mode)" },
+  "inquiryMock": {
+    "ko": "문의 폼의 보내기는 지금 시험용 접수(app/api/inquiry)로 가요. 실제 메일은 가지 않고 터미널에 한 줄이 남아요. 가짜 메일 기록 파일이 필요하면 환경 변수 LF_MOCK_OUTBOX 에 파일 경로를 줘요. 정적 내보내기(WF_STATIC_EXPORT=1)로 빌드하는 동안에는 이 접수 경로를 옆 폴더(.wf-saved-inquiry)로 잠시 치우고 빌드가 끝나면 되돌려요. 내보낸 사이트에는 접수 경로가 없고, 보내기는 메일 앱 열기로 바뀌어요.",
+    "en": "The send button of the contact form goes to a test receiver (app/api/inquiry) for now. No real email is sent, and one line appears in the terminal. If you want a mock mail record file, set the LF_MOCK_OUTBOX environment variable to a file path. While a static export build (WF_STATIC_EXPORT=1) runs, this receiver is moved aside to the .wf-saved-inquiry folder and put back when the build ends. The exported site has no receiver, and sending opens the mail app instead."
+  },
+  "inquiryRuntime": {
+    "subject": { "ko": "새 문의가 도착했어요", "en": "New website inquiry" },
+    "formSubject": { "ko": "홈페이지 문의", "en": "Website inquiry" },
+    "leadSubject": { "ko": "신청", "en": "Sign-up request" },
+    "badBody": { "ko": "문의 내용을 읽을 수 없어요. 다시 보내 주세요.", "en": "We could not read your inquiry. Please try again." },
+    "tooBig": { "ko": "문의가 너무 길어요. 줄여서 다시 보내 주세요.", "en": "Your inquiry is too long. Please shorten it and try again." },
+    "noOwner": { "ko": "받는 메일 주소를 확인하는 중이에요. 전화나 다른 채널로 문의해 주세요.", "en": "The contact email is not confirmed yet. Please use another channel." },
+    "writeFailed": { "ko": "문의를 기록하지 못했어요. 잠시 후 다시 시도해 주세요.", "en": "We could not record your inquiry. Please try again shortly." },
+    "received": { "ko": "문의가 접수됐어요. 지금은 시험용 접수라 실제 메일은 가지 않아요.", "en": "Your inquiry was received. This is a test receiver for now, so no real email is sent." },
+    "failed": { "ko": "문의를 보내지 못했어요. 잠시 후 다시 시도해 주세요.", "en": "We could not send your inquiry. Please try again shortly." }
+  }
+}

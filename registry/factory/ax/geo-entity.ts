@@ -1,7 +1,9 @@
 import { isNeedsCheck, type ArchetypeId, type Business, type Cta } from "@/registry/factory/content/content-core"
 import {
   toBreadcrumb,
+  toEvent,
   toIntlPhone,
+  toItemList,
   toLocalBusiness,
   toLocalBusinessBranches,
   toOrganization,
@@ -13,13 +15,14 @@ import {
 import type { BrandContent } from "@/registry/factory/content/schemas/brand"
 import type { CommerceContent } from "@/registry/factory/content/schemas/commerce"
 import type { DetailContent } from "@/registry/factory/content/schemas/detail"
+import type { LandingContent } from "@/registry/factory/content/schemas/landing"
 import type { LocalContent } from "@/registry/factory/content/schemas/local"
 import type { PublicContent } from "@/registry/factory/content/schemas/public"
 import type { SaasContent } from "@/registry/factory/content/schemas/saas"
 import { assertDate } from "@/registry/factory/ax/freshness"
 import { pageUrl, siteName, type PageKind, type SeoContent, type SeoPage } from "@/registry/factory/ax/seo-meta"
 
-export type Entity = "WebSite" | "Organization" | "LocalBusiness" | "Product" | "SoftwareApplication" | "BreadcrumbList" | "WebPage"
+export type Entity = "WebSite" | "Organization" | "LocalBusiness" | "Product" | "SoftwareApplication" | "ItemList" | "Event" | "BreadcrumbList" | "WebPage"
 
 /**
  * 페이지 종류별로 내는 JSON-LD(원형에 해당 값이 있을 때만). Organization 은 홈 한 곳(X7 — 가게 원형은 LocalBusiness 가 그 자리),
@@ -27,7 +30,7 @@ export type Entity = "WebSite" | "Organization" | "LocalBusiness" | "Product" | 
  * 기본 끔(C-6), `faqPage: true` 로만 켠다. 별점은 Product 에만(X4).
  */
 export const JSONLD_BY_PAGE: Record<PageKind, readonly Entity[]> = {
-  home: ["WebSite", "Organization", "LocalBusiness", "Product", "SoftwareApplication", "WebPage"],
+  home: ["WebSite", "Organization", "LocalBusiness", "Product", "SoftwareApplication", "Event", "WebPage"],
   about: ["BreadcrumbList", "WebPage"],
   product: ["Product", "BreadcrumbList", "WebPage"],
   pricing: ["SoftwareApplication", "BreadcrumbList", "WebPage"],
@@ -35,8 +38,10 @@ export const JSONLD_BY_PAGE: Record<PageKind, readonly Entity[]> = {
   article: ["BreadcrumbList", "WebPage"],
   contact: ["BreadcrumbList", "WebPage"],
   legal: ["BreadcrumbList", "WebPage"],
-  list: ["BreadcrumbList", "WebPage"],
+  list: ["ItemList", "BreadcrumbList", "WebPage"],
   other: ["BreadcrumbList", "WebPage"],
+  campaign: ["Event", "BreadcrumbList", "WebPage"],
+  app: ["BreadcrumbList", "WebPage"],
 }
 
 /** jsonLdFor 의 페이지 입력: SEO 페이지 + 화면 이동 경로·상품 slug·FAQ 켜기. */
@@ -126,6 +131,16 @@ export function jsonLdFor(c: GeoContent, page: EntityPage): JsonLdObject[] {
     const s = c as unknown as SaasContent
     const app = toSoftwareApplication(s.product, page.showsPrice === false ? [] : s.plans)
     if (app) out.push(app)
+  }
+  // 상품 목록 쪽(C413): 화면에 상품 요약 블록이 그려진 쪽만, 이름만 싣는다(가격은 상세 Product 가 맡는다)
+  if (want.has("ItemList") && c.archetype === "commerce" && page.showsPrice !== false) {
+    const list = toItemList((c as unknown as CommerceContent).products.map((p) => ({ name: p.name })), c.site.url)
+    if (list) out.push(list)
+  }
+  // 행사형 랜딩(C413·C416): 콘텐츠에 event 사실이 있을 때만 — 없는 일시·장소를 지어내지 않는다
+  if (want.has("Event") && c.archetype === "landing") {
+    const e = (c as unknown as LandingContent).event
+    if (e) out.push(toEvent(e, pageUrl(c, page.path)))
   }
   if (want.has("BreadcrumbList") && page.breadcrumb?.length) out.push(toBreadcrumb(page.breadcrumb, c.site.url))
   if (want.has("WebPage") && page.updatedAt)

@@ -132,9 +132,9 @@ export function buildSitemap(archetype, brief, { blockIndex } = {}) {
       sections.push(sectionOf(s))
     }
     if (!sections.length) { excluded.push({ page: p.id, why: 'no-sections' }); continue }
-    pages.push({ id: p.id, route: p.route, sections })
+    pages.push({ id: p.id, route: p.route, kind: p.kind, sections })
   }
-  for (const name of archetype.legal.pages) pages.push({ id: name, route: LEGAL_ROUTES[name], legal: true, sections: [] })
+  for (const name of archetype.legal.pages) pages.push({ id: name, route: LEGAL_ROUTES[name], kind: 'legal', legal: true, sections: [] })
   const globals = (archetype.globalSections ?? []).map((g) => globalOf(g, archetype.id, index))
   const sitemap = { archetype: archetype.id, pages, globals, excluded, blockers: [] }
   sitemap.blockers = sitemapBlockers(sitemap)

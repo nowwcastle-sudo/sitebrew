@@ -1,0 +1,23 @@
+{
+  "service": "S3 호환 저장소 (AWS S3 · Cloudflare R2 · MinIO)",
+  "role": "storage",
+  "need": "feature",
+  "cost": [
+    "free-tier",
+    "usage"
+  ],
+  "after": [
+    "G-db",
+    "G-security"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "파일 올리기만 꺼져요. 사이트의 다른 부분은 그대로 켜져요.",
+    "en": "Only file upload turns off. The rest of the site keeps running."
+  },
+  "devOnly": [],
+  "notEnv": [
+    "ACCESS_KEY_ID",
+    "SECRET_ACCESS_KEY"
+  ]
+}

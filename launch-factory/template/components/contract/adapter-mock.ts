@@ -5,19 +5,41 @@ import type {
   AuthMethod,
   AuthPort,
   BillingPort,
+  BookingChange,
+  BookingDay,
+  BookingLookup,
+  BookingPort,
+  BookingReceipt,
+  BookingRequest,
+  BookingStatus,
   ConsentInput,
   ConsentState,
   DeviceSession,
   HumanConfirmation,
   IsoDate,
+  ManagedBooking,
+  MyRequest,
+  MyRequestsPort,
+  NewsletterPort,
   NotifyPort,
   Plan,
   PushSubscriptionInput,
+  Question,
+  RatingSummary,
   RetentionOffer,
+  Review,
+  ReviewKind,
+  ReviewListInput,
+  ReviewRating,
+  ReviewsPort,
+  SearchHit,
+  SearchPort,
   Session,
+  StorageKind,
   StoragePort,
   Subscription,
   TrackMeta,
+  UploadTicket,
 } from "@/components/contract/ports"
 import type { EventName, EventProps } from "@/components/contract/events"
 import { retentionOfferIssues } from "@/lib/retention-offer"
@@ -182,6 +204,9 @@ export type MockSub = (typeof MOCK_SUBS)[number]
 export type MockSubScenario = (typeof MOCK_SUB_SCENARIOS)[number]
 export type MockAuth = (typeof MOCK_AUTHS)[number]
 export type MockConsent = (typeof MOCK_CONSENTS)[number]
+/** ?booking= 장면(예약 포트): open 은 모든 칸이 열려 있고, full 은 모든 칸이 마감이라 book 이 slot_taken 이다 */
+export const MOCK_BOOKINGS = ["open", "full"] as const
+export type MockBookingScenario = (typeof MOCK_BOOKINGS)[number]
 
 /** 목이 「지금」으로 쓰는 고정 시각(동의 결정·수신 동의 변경·즉시 해지) */
 export const MOCK_NOW: IsoDate = "2026-10-01T00:00:00.000Z"
@@ -644,6 +669,165 @@ export function mockNotify(search: string | URLSearchParams, options: PortMockOp
   }
 }
 
+// ── 예약 포트 목(계약 판 2 안의 선택 추가 — sitebrew v0.2.0 계획 3b) ─────────────────────────────
+/** 목의 예약 서비스(가상). 시간 칸은 서비스마다 같은 격자고 칸마다 자리 1개다 */
+export const MOCK_BOOKING_SERVICES = [{ id: "consult", name: "상담(예시)", durationMin: 60, partyMax: 4 }] as const
+const BOOKING_HOURS = [10, 11, 14, 15] as const // 업장 시간대(한국)의 시각
+const BOOKING_UTC_OFFSET = 9
+const BOOKING_DEFAULT_DAYS = 7
+const BOOKING_MAX_DAYS = 14
+const BOOKING_CANCEL_HOURS = 24 // 시작 24시간 전까지 직접 취소할 수 있다
+const BOOKING_FIRST_NUMBER = 1001
+const STARTS_AT_WITH_ZONE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?(?:Z|[+-]\d{2}:\d{2})$/
+const DATE_ONLY = /^(\d{4})-(\d{2})-(\d{2})$/
+const HOLDING: readonly BookingStatus[] = ["requested", "confirmed"] // 시간 칸을 차지하는 상태
+const BOOKING_INVALID = "입력한 내용을 다시 확인해 주세요."
+const BOOKING_NOT_FOUND = "예약 번호와 연락처가 맞는 예약을 찾지 못했어요. 두 가지를 다시 확인해 주세요."
+const BOOKING_SLOT_TAKEN = "방금 다른 분이 이 시간을 예약했어요. 다른 시간을 골라 주세요."
+const BOOKING_CANCEL_CLOSED = "직접 취소할 수 있는 기한이 지났어요. 업장에 직접 연락해 주세요."
+const BOOKING_ALREADY_ENDED = "이미 취소됐거나 끝난 예약이라 취소할 수 없어요."
+const bookingFailure = (code: "slot_taken" | "not_found" | "cancel_closed" | "invalid_state", formError: string): Failure => ({ ok: false, code, retryable: false, formError })
+
+interface StoredBooking {
+  id: string
+  service: (typeof MOCK_BOOKING_SERVICES)[number]
+  startsAt: IsoDate
+  partySize: number
+  status: BookingStatus
+  contact: string // 비교용으로 다듬은 값(앞뒤 공백 제거·소문자)
+}
+
+const normContact = (v: string) => v.trim().toLowerCase()
+const normReference = (v: string) => v.trim().toUpperCase()
+const isoOf = (ms: number): IsoDate => new Date(ms).toISOString()
+
+/** 그날의 시간 칸(업장 시간대 10·11·14·15시) — 지난 칸(MOCK_NOW 이전)은 뺀다 */
+function gridOf(date: string): IsoDate[] {
+  const [, y, m, d] = DATE_ONLY.exec(date) as RegExpExecArray
+  return BOOKING_HOURS.map((h) => isoOf(Date.UTC(Number(y), Number(m) - 1, Number(d), h - BOOKING_UTC_OFFSET))).filter((iso) => iso > MOCK_NOW)
+}
+
+/** YYYY-MM-DD 이고 실제 있는 날짜인가(2026-02-31 은 아니다) */
+function isRealDate(v: string): boolean {
+  const m = DATE_ONLY.exec(v)
+  if (!m) return false
+  const t = new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])))
+  return isoOf(t.getTime()).startsWith(v)
+}
+
+const addDays = (date: string, n: number): string => isoOf(Date.parse(`${date}T00:00:00.000Z`) + n * 86_400_000).slice(0, 10)
+
+/**
+ * 예약 포트 목. 서비스 `consult`(60분·한 번에 4명까지) 하나, 시간 칸은 `from` 부터 하루 네 칸(한국 시각 10·11·14·15시)이고 칸마다 자리 1개다 — 지난 칸(MOCK_NOW 이전)은 없다.
+ * book 은 `B-1001` 부터 순서대로 예약 번호를 주고(확정으로 접수) 그 칸을 잡는다(같은 칸을 또 잡으면 slot_taken, 취소하면 풀린다). lookup·cancel 은 번호 + 연락처(앞뒤 공백·대소문자 무시)가 맞아야 하고,
+ * 틀린 조합은 번호를 모르는 경우와 연락처가 틀린 경우를 구별하지 않는 같은 not_found 다. 취소는 시작 24시간 전까지(MOCK_NOW 기준 — 지나면 cancel_closed), 끝난 예약을 또 취소하면 invalid_state 다.
+ * ?booking=full 이면 모든 칸이 자리 0이고 book 은 slot_taken 이다. ?state=(slots·lookup)·?submit=(book·cancel·lookup)·&delay= 는 다른 포트 목과 같다.
+ * 예약 장부는 인스턴스마다 따로다(같은 쿼리로 새로 만들면 같은 처음 상태). 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
+ */
+export function mockBooking(search: string | URLSearchParams, options: PortMockOptions = {}): Required<BookingPort> {
+  const q = toParams(search)
+  const ctx = portCtx(q, options)
+  const full = oneOf("booking", q.get("booking") ?? "open", MOCK_BOOKINGS) === "full"
+  const ledger: StoredBooking[] = []
+  const holds = (service: string, startsAt: IsoDate) => ledger.some((b) => b.service.id === service && b.startsAt === startsAt && HOLDING.includes(b.status))
+  const find = ({ reference, contact }: BookingLookup) => ledger.find((b) => b.id === normReference(reference) && b.contact === normContact(contact))
+  const cancelBy = (b: StoredBooking): IsoDate => isoOf(Date.parse(b.startsAt) - BOOKING_CANCEL_HOURS * 3_600_000)
+  const view = (b: StoredBooking): ManagedBooking => ({
+    id: b.id,
+    service: b.service.id,
+    serviceName: b.service.name,
+    startsAt: b.startsAt,
+    endsAt: isoOf(Date.parse(b.startsAt) + b.service.durationMin * 60_000),
+    partySize: b.partySize,
+    status: b.status,
+    canCancel: HOLDING.includes(b.status) && MOCK_NOW <= cancelBy(b),
+    cancelBy: cancelBy(b),
+  })
+  const pairProblem = (input: BookingLookup): Failure | null => {
+    const errors: Record<string, string[]> = {}
+    if (!input?.reference?.trim()) errors.reference = ["예약 번호를 입력해 주세요."]
+    if (!input?.contact?.trim()) errors.contact = ["예약할 때 적은 연락처를 입력해 주세요."]
+    return Object.keys(errors).length ? { ok: false, code: "invalid_input", retryable: false, formError: BOOKING_INVALID, fieldErrors: errors } : null
+  }
+
+  // slots 는 읽기: 입력이 틀리면 칸 오류, 맞으면 ?state= 를 따른다(empty 는 날짜가 없는 목록)
+  const slots: BookingPort["slots"] = async (input) => {
+    const errors: Record<string, string[]> = {}
+    if (!MOCK_BOOKING_SERVICES.some((s) => s.id === input?.service)) errors.service = ["예약할 수 있는 서비스를 골라 주세요."]
+    if (!isRealDate(input?.from ?? "")) errors.from = ["날짜를 YYYY-MM-DD 로 적어 주세요."]
+    if (Object.keys(errors).length) return fail(BOOKING_INVALID, errors)
+    const asked = Number.isFinite(input.days) ? Math.trunc(input.days as number) : BOOKING_DEFAULT_DAYS
+    const count = Math.min(BOOKING_MAX_DAYS, Math.max(1, asked))
+    return reader<{ days: BookingDay[] }>(
+      ctx,
+      () => ({
+        days: Array.from({ length: count }, (_, i) => addDays(input.from, i)).map((date) => ({
+          date,
+          slots: gridOf(date).map((startsAt) => ({ startsAt, available: full || holds(input.service, startsAt) ? 0 : 1 })),
+        })),
+      }),
+      () => ({ days: [] }),
+    )()
+  }
+
+  const book = writer<BookingRequest, BookingReceipt>(ctx, (input) => {
+    const errors: Record<string, string[]> = {}
+    const service = MOCK_BOOKING_SERVICES.find((s) => s.id === input?.service)
+    if (!service) errors.service = ["예약할 수 있는 서비스를 골라 주세요."]
+    let startsAt: IsoDate | undefined
+    const rawStart = input?.startsAt ?? ""
+    if (!STARTS_AT_WITH_ZONE.test(rawStart) || Number.isNaN(Date.parse(rawStart))) errors.startsAt = ["예약할 시간을 골라 주세요."]
+    else {
+      const iso = isoOf(Date.parse(rawStart))
+      const localDate = isoOf(Date.parse(iso) + BOOKING_UTC_OFFSET * 3_600_000).slice(0, 10) // 업장 시간대의 그 날짜
+      const onGrid = gridOf(localDate).includes(iso)
+      if (onGrid) startsAt = iso
+      else errors.startsAt = ["예약할 수 없는 시간이에요. 다른 시간을 골라 주세요."]
+    }
+    let partySize = 1
+    if (input?.partySize !== undefined && input.partySize !== "") {
+      partySize = /^\d{1,3}$/.test(input.partySize) ? Number(input.partySize) : 0
+      if (partySize < 1 || (service && partySize > service.partyMax)) errors.partySize = [`인원은 1명부터 ${service?.partyMax ?? 1}명까지예요.`]
+    }
+    if (input?.name && input.name.length > 100) errors.name = ["이름은 100자까지 적을 수 있어요."]
+    if (input?.note && input.note.length > 1000) errors.note = ["요청 사항은 1000자까지 적을 수 있어요."]
+    const contact = input?.contact?.trim() ?? ""
+    if (!contact) errors.contact = ["연락처를 입력해 주세요."]
+    else if (!EMAIL_SHAPE.test(contact) && !/^\+?[\d\s-]{8,20}$/.test(contact)) errors.contact = ["이메일 주소나 전화번호를 다시 확인해 주세요."]
+    if (Object.keys(errors).length || !service || !startsAt) return fail(BOOKING_INVALID, errors)
+    if (full || holds(service.id, startsAt)) return bookingFailure("slot_taken", BOOKING_SLOT_TAKEN)
+    const id = `B-${BOOKING_FIRST_NUMBER + ledger.length}`
+    ledger.push({ id, service, startsAt, partySize, status: "confirmed", contact: normContact(contact) })
+    return { ok: true, data: { id, startsAt, status: "confirmed", message: `예약했어요. 예약 번호는 ${id} 예요. 조회와 취소에 쓰니 적어 두세요.` } }
+  })
+
+  const lookup = writer<BookingLookup, ManagedBooking>(ctx, (input) => {
+    const bad = pairProblem(input)
+    if (bad) return bad
+    const found = find(input)
+    return found ? { ok: true, data: view(found) } : bookingFailure("not_found", BOOKING_NOT_FOUND)
+  })
+
+  const cancel = writer<BookingLookup, BookingChange>(ctx, (input) => {
+    const bad = pairProblem(input)
+    if (bad) return bad
+    const found = find(input)
+    if (!found) return bookingFailure("not_found", BOOKING_NOT_FOUND)
+    if (!HOLDING.includes(found.status)) return bookingFailure("invalid_state", BOOKING_ALREADY_ENDED)
+    if (MOCK_NOW > cancelBy(found)) return bookingFailure("cancel_closed", BOOKING_CANCEL_CLOSED)
+    found.status = "cancelled"
+    return { ok: true, data: { id: found.id, status: "cancelled", message: "예약을 취소했어요." } }
+  })
+
+  // lookup 은 읽는 일이라 ?state=loading·error 도 따른다(그 밖은 쓰기와 같은 ?submit= 결과)
+  const lookupWithState: BookingPort["lookup"] = async (input) => {
+    if (ctx.state === "loading") return new Promise<never>(noop)
+    if (ctx.state === "error") return { ok: false, formError: ctx.opts.message ?? DEFAULT_ERROR, retryable: true }
+    return lookup(input)
+  }
+  return { slots, book, lookup: lookupWithState, cancel }
+}
+
 /** 목 계측이 남긴 호출 하나. attribution 은 track 의 meta 로 출처 태그가 왔을 때만 있다(없으면 키도 없다 — 옛 호출의 기록 모양 그대로) */
 export interface TrackedEvent {
   name: EventName
@@ -693,21 +877,244 @@ export function mockAnalytics(
   }
 }
 
+/** 올리기 정책(launch-factory `packages/storage` policy.ts 의 종류별 한도를 옮긴 것 — 바뀌면 이 표와 시험이 같이 바뀐다). 크기는 바이트 */
+const MOCK_MB = 1024 * 1024
+const MOCK_STORAGE_POLICY: Record<StorageKind, { maxBytes: number; types: readonly string[]; signInRequired: boolean; priv: boolean }> = {
+  avatar: { maxBytes: 2 * MOCK_MB, types: ["image/png", "image/jpeg", "image/webp"], signInRequired: true, priv: false },
+  image: { maxBytes: 5 * MOCK_MB, types: ["image/png", "image/jpeg", "image/webp", "image/avif"], signInRequired: false, priv: false },
+  attachment: {
+    maxBytes: 10 * MOCK_MB,
+    types: ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/x-hwp", "application/vnd.hancom.hwpx", "image/jpeg", "image/png"],
+    signInRequired: false,
+    priv: true,
+  },
+}
+const MOCK_EXTENSION: Record<string, string> = { "image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "image/avif": "avif", "application/pdf": "pdf", "application/x-hwp": "hwp", "application/vnd.hancom.hwpx": "hwpx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx" }
+const MOCK_TICKET_SECONDS = 900
+
 /**
  * 파일 포트 목. 올릴 때마다 번호가 는다: key "mock/<kind>/<n>", url 은 options.url(kind, n) 또는 "#mock-upload/<kind>/<n>".
  * 빈 파일은 필드 오류(file)다. 네트워크를 쓰지 않는다.
- * 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
+ * **티켓식 올리기(p3-3c 후속)**: createTicket 은 종류·형식·크기를 위 정책 표로 검사해(어기면 fieldErrors.kind·contentType·size) 15분짜리 티켓을 낸다 —
+ * avatar 는 로그인이 필요하다(?auth=signed-out 이면 code sign_in_required, 기본은 로그인). 티켓의 url 은 실제로 PUT 하지 않는 가짜 주소("#mock-ticket/<id>")다.
+ * complete 는 받은 티켓만 끝낸다(모르는 id 는 code not_found) — 두 번 불러도 같은 결과다. 비공개 종류(attachment)의 url 은 짧게 열리는 주소를 흉내 낸다("#mock-download/…?expires=…").
+ * 반환은 Required<StoragePort> 다. 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
  */
 export function mockStorage(
   search: string | URLSearchParams,
   options: PortMockOptions & { url?: (kind: string, n: number) => string } = {},
-): StoragePort {
-  const ctx = portCtx(toParams(search), options)
+): Required<StoragePort> {
+  const q = toParams(search)
+  const ctx = portCtx(q, options)
+  const signedOut = oneOf("auth", q.get("auth") ?? "signed-in", MOCK_AUTHS) === "signed-out"
   let n = 0
   const upload = writer(ctx, ({ file, kind }: { file: File | Blob; kind: string }) => {
     if (!file || file.size === 0) return fail("파일을 다시 선택해 주세요.", { file: ["빈 파일은 올릴 수 없어요."] })
     n += 1
     return { ok: true, data: { key: `mock/${kind}/${n}`, url: options.url?.(kind, n) ?? `#mock-upload/${kind}/${n}` } }
   })
-  return { upload: (file, opts) => upload({ file, kind: opts?.kind }) }
+  const tickets = new Map<string, { kind: StorageKind; key: string; n: number }>()
+  const createTicket = writer(ctx, (input: { kind: StorageKind; contentType: string; size: number; fileName?: string }) => {
+    const policy = Object.hasOwn(MOCK_STORAGE_POLICY, input.kind) ? MOCK_STORAGE_POLICY[input.kind] : undefined
+    if (!policy) return fail("올릴 수 없는 종류예요.", { kind: ["avatar, image, attachment 중에서 골라 주세요."] })
+    if (policy.signInRequired && signedOut) return { ok: false, code: "sign_in_required", retryable: false, formError: NEED_LOGIN }
+    const contentType = typeof input.contentType === "string" ? input.contentType.trim().toLowerCase() : ""
+    if (!policy.types.includes(contentType)) return fail("올릴 수 없는 파일 형식이에요.", { contentType: [`이 종류는 ${policy.types.map((t) => MOCK_EXTENSION[t] ?? t).join(", ")} 파일만 올릴 수 있어요.`] })
+    if (!Number.isInteger(input.size) || input.size < 1) return fail("파일 크기를 확인해 주세요.", { size: ["빈 파일은 올릴 수 없어요."] })
+    if (input.size > policy.maxBytes) return fail("파일이 너무 커요.", { size: [`${Math.floor(policy.maxBytes / MOCK_MB)}MB 이하 파일만 올릴 수 있어요.`] })
+    n += 1
+    const id = `mock-upload-${n}`
+    const key = `mock/${input.kind}/${n}.${MOCK_EXTENSION[contentType] ?? "bin"}`
+    tickets.set(id, { kind: input.kind, key, n })
+    const data: UploadTicket = { id, key, method: "PUT", url: `#mock-ticket/${id}`, headers: { "content-type": contentType }, expiresAt: new Date(Date.parse(MOCK_NOW) + MOCK_TICKET_SECONDS * 1000).toISOString(), maxBytes: policy.maxBytes }
+    return { ok: true, data }
+  })
+  const complete = writer(ctx, ({ id }: { id: string }) => {
+    const ticket = tickets.get(id)
+    if (!ticket) return { ok: false, code: "not_found", retryable: false, formError: "올리기를 찾지 못했어요. 처음부터 다시 올려 주세요." }
+    const priv = MOCK_STORAGE_POLICY[ticket.kind].priv
+    const url = options.url?.(ticket.kind, ticket.n) ?? (priv ? `#mock-download/${ticket.key}?expires=${new Date(Date.parse(MOCK_NOW) + MOCK_TICKET_SECONDS * 1000).toISOString()}` : `#mock-upload/${ticket.kind}/${ticket.n}`)
+    return { ok: true, data: { key: ticket.key, url } }
+  })
+  return { upload: (file, opts) => upload({ file, kind: opts?.kind }), createTicket, complete }
 }
+
+// ── 후기·검색·뉴스레터·내 신청 내역 목(p3-3c) ─────────────────────────────────────────────────────────────
+// 읽기는 reader 와 같은 ?state= 규칙, 쓰기는 writer 와 같은 ?submit= 규칙을 따른다. 상태는 포트 하나 안에만 있다(새로 만들면 시드로 돌아간다).
+
+const DEFAULT_PAGE_SIZE = 10
+const MAX_PAGE_SIZE = 50
+function pageOf<T>(all: readonly T[], page = 1, pageSize = DEFAULT_PAGE_SIZE) {
+  const size = Math.min(MAX_PAGE_SIZE, Math.max(1, Math.floor(pageSize)))
+  const no = Math.max(1, Math.floor(page))
+  return { items: all.slice((no - 1) * size, no * size), total: all.length, page: no, pageCount: Math.ceil(all.length / size) }
+}
+/** 입력을 받는 읽기: reader 와 같은 ?state= 규칙(loading 은 끝나지 않고, error 는 다시 시도할 수 있고, empty 는 empty(input)) */
+function readerOf<I, T>(ctx: PortCtx, make: (input: I) => T, empty?: (input: I) => T): (input: I) => Promise<ActionResult<T>> {
+  return (input) => reader(ctx, () => make(input), empty ? () => empty(input) : undefined)()
+}
+const DAY = (iso: IsoDate) => iso.slice(0, 10)
+
+type StoredReview = { seq: number; subjectType: string; subjectId: string; kind: ReviewKind; status: "published" | "pending"; mine: boolean; rating?: ReviewRating; title?: string; body: string; author: string; date: IsoDate; verified?: boolean; reply?: Review["reply"] }
+const OWNER_REPLY = (date: IsoDate) => ({ author: "판매자", body: "소중한 의견 고마워요.", date })
+const REVIEW_SEED: readonly Omit<StoredReview, "seq">[] = [
+  { subjectType: "product", subjectId: "example-1", kind: "review", status: "published", mine: false, rating: 5, title: "조용하고 가벼워요", body: "생각보다 훨씬 가볍고 소리가 작아서 아침에도 부담 없이 써요.", author: "김**", date: "2026-09-20", verified: true, reply: OWNER_REPLY("2026-09-21") },
+  { subjectType: "product", subjectId: "example-1", kind: "review", status: "published", mine: false, rating: 4, body: "흡입력은 만족해요. 먼지통이 조금 작아요.", author: "이**", date: "2026-09-12", verified: true },
+  { subjectType: "product", subjectId: "example-1", kind: "review", status: "published", mine: false, rating: 5, body: "배송이 빨랐고 설명서가 알기 쉬웠어요.", author: "박**", date: "2026-09-02" },
+  { subjectType: "product", subjectId: "example-1", kind: "review", status: "published", mine: false, rating: 2, body: "배터리가 광고만큼 오래가지 않아요.", author: "최**", date: "2026-08-25" },
+  { subjectType: "product", subjectId: "example-1", kind: "question", status: "published", mine: false, body: "충전은 얼마나 걸리나요?", author: "정**", date: "2026-09-15", reply: OWNER_REPLY("2026-09-16") },
+]
+/** 이름을 가린다: 첫 글자만 남기고 나머지는 별표(최대 둘) */
+const maskName = (name: string) => `${[...name.trim()][0] ?? "익"}${"*".repeat(Math.min(2, Math.max(1, [...name.trim()].length - 1)))}`
+
+function ratingSummary(rows: readonly StoredReview[]): RatingSummary {
+  const distribution: Record<ReviewRating, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+  let sum = 0
+  for (const r of rows) {
+    distribution[r.rating as ReviewRating] += 1
+    sum += r.rating as number
+  }
+  return { avg: rows.length ? Math.round((sum / rows.length) * 10) / 10 : 0, count: rows.length, asOf: DAY(MOCK_NOW), distribution }
+}
+
+/**
+ * 후기·상품 문의 포트 목. 시드는 subjectType "product" · subjectId "example-1" 후기 넷(5·4·5·2점)과 문의 하나이고, 다른 대상은 비어 있다.
+ * submit 은 후기는 별점(1~5)·본문, 문의는 본문이 필요하고, 같은 대상에 후기는 한 번뿐이다(fieldErrors.body). 글쓴이 이름은 가려서 저장한다.
+ * options.moderation "before" 면 새 글이 pending 이라 목록에 아직 없다(기본 "after" — 바로 게시). 요약은 게시된 후기 전체로 센다(별점 거르기·쪽과 무관).
+ * 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
+ */
+export function mockReviews(search: string | URLSearchParams, options: PortMockOptions & { moderation?: "after" | "before" } = {}): Required<ReviewsPort> {
+  const ctx = portCtx(toParams(search), options)
+  const rows: StoredReview[] = REVIEW_SEED.map((r, i) => ({ ...copy(r), seq: i }))
+  const published = (i: Pick<ReviewListInput, "subjectType" | "subjectId">, kind: ReviewKind) =>
+    rows.filter((r) => r.subjectType === i.subjectType && r.subjectId === i.subjectId && r.kind === kind && r.status === "published")
+  const newestFirst = (a: StoredReview, b: StoredReview) => (a.date === b.date ? b.seq - a.seq : a.date < b.date ? 1 : -1)
+  const toReview = (r: StoredReview): Review => ({ id: `rv-${r.seq}`, rating: r.rating as ReviewRating, ...(r.title ? { title: r.title } : {}), body: r.body, author: r.author, date: r.date, ...(r.verified ? { verified: true } : {}), ...(r.reply ? { reply: { ...r.reply } } : {}) })
+  const toQuestion = (r: StoredReview): Question => ({ id: `rv-${r.seq}`, body: r.body, author: r.author, date: r.date, ...(r.reply ? { reply: { ...r.reply } } : {}) })
+  return {
+    list: readerOf(
+      ctx,
+      (input: ReviewListInput) => {
+        const kind = input.kind ?? "review"
+        const all = published(input, kind)
+        if (kind === "question") return { kind, ...pageOf([...all].sort(newestFirst).map(toQuestion), input.page, input.pageSize) }
+        const sort = input.sort ?? "latest"
+        const shown = all
+          .filter((r) => input.rating === undefined || r.rating === input.rating)
+          .sort(sort === "rating_desc" ? (a, b) => (b.rating as number) - (a.rating as number) || newestFirst(a, b) : sort === "rating_asc" ? (a, b) => (a.rating as number) - (b.rating as number) || newestFirst(a, b) : newestFirst)
+        return { kind, summary: ratingSummary(all), ...pageOf(shown.map(toReview), input.page, input.pageSize) }
+      },
+      (input: ReviewListInput) =>
+        input.kind === "question"
+          ? { kind: "question", ...pageOf<Question>([], input.page, input.pageSize) }
+          : { kind: "review", summary: ratingSummary([]), ...pageOf<Review>([], input.page, input.pageSize) },
+    ),
+    submit: writer(ctx, (input) => {
+      const kind = input.kind ?? "review"
+      const body = input.body?.trim() ?? ""
+      if (!body) return fail("입력한 내용을 다시 확인해 주세요.", { body: ["내용을 입력해 주세요."] })
+      if (kind === "review" && !(Number.isInteger(input.rating) && (input.rating as number) >= 1 && (input.rating as number) <= 5)) return fail("입력한 내용을 다시 확인해 주세요.", { rating: ["별점을 1~5점 중에서 골라 주세요."] })
+      if (kind === "review" && rows.some((r) => r.mine && r.kind === "review" && r.subjectType === input.subjectType && r.subjectId === input.subjectId)) return fail("이미 후기를 남겼어요.", { body: ["같은 상품에는 후기를 한 번만 남길 수 있어요."] })
+      const status = options.moderation === "before" ? "pending" : "published"
+      const row: StoredReview = { seq: rows.length, subjectType: input.subjectType, subjectId: input.subjectId, kind, status, mine: true, ...(kind === "review" ? { rating: input.rating, ...(input.title?.trim() ? { title: input.title.trim() } : {}) } : {}), body, author: maskName(input.authorName ?? MOCK_SESSION.name ?? ""), date: DAY(MOCK_NOW) }
+      rows.push(row)
+      return { ok: true, data: { id: `rv-${row.seq}`, status } }
+    }),
+  }
+}
+
+const SEARCH_SEED: readonly { kind: string; ref: string; locale: "ko" | "en"; title: string; body: string; url: string }[] = [
+  { kind: "product", ref: "p-1", locale: "ko", title: "무선청소기 에어", body: "가볍고 조용한 무선청소기예요. 배터리는 한 번 충전으로 60분 쓸 수 있어요.", url: "/products/p-1" },
+  { kind: "post", ref: "b-1", locale: "ko", title: "청소기 고르는 법", body: "흡입력과 배터리, 소음을 비교해 보세요. 주문하기 전에 크기와 배송 방법도 확인해요.", url: "/blog/b-1" },
+  { kind: "page", ref: "shipping", locale: "ko", title: "배송 안내", body: "주문 뒤 2~3일 안에 보내 드려요. 청소기처럼 큰 상품은 따로 알려 드려요.", url: "/shipping" },
+  { kind: "page", ref: "returns", locale: "ko", title: "반품과 교환", body: "받은 날부터 7일 안에 반품할 수 있어요. 반품 배송비는 상품 상태에 따라 달라요.", url: "/returns" },
+]
+const SEARCH_MAX_QUERY = 100
+const SEARCH_MAX_WORDS = 5
+const SNIPPET_LEAD = 20
+const SNIPPET_LENGTH = 80
+
+/** 글 안에서 낱말이 나오는 모든 자리를 [시작, 끝) 범위로(겹치면 합친다) */
+function rangesOf(text: string, words: readonly string[]): [number, number][] {
+  const lower = text.toLowerCase()
+  const found: [number, number][] = []
+  for (const w of words) for (let i = lower.indexOf(w); i >= 0; i = lower.indexOf(w, i + w.length)) found.push([i, i + w.length])
+  found.sort((a, b) => a[0] - b[0])
+  const merged: [number, number][] = []
+  for (const r of found) {
+    const last = merged.at(-1)
+    if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1])
+    else merged.push([r[0], r[1]])
+  }
+  return merged
+}
+
+/**
+ * 검색 포트 목. 시드 문서 넷(상품·글·쪽 둘)을 낱말마다 부분 문자열로 찾는다 — 모든 낱말이 제목이나 본문에 있어야 하고(AND, 최대 5개, 질의는 100자까지),
+ * 점수는 낱말마다 제목 3 + 본문 1이며 같으면 시드 순서다. 스니펫은 HTML 이 아니라 text 와 [시작, 끝) 범위 배열이다(본문에 맞은 데가 없으면 제목이 스니펫).
+ * 빈 질의는 오류가 아니라 빈 결과다. 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
+ */
+export function mockSearch(search: string | URLSearchParams, options: PortMockOptions = {}): Required<SearchPort> {
+  const ctx = portCtx(toParams(search), options)
+  const run = (input: Parameters<SearchPort["search"]>[0]) => {
+    const words = input.q.normalize("NFC").trim().slice(0, SEARCH_MAX_QUERY).toLowerCase().split(/\s+/).filter(Boolean).slice(0, SEARCH_MAX_WORDS)
+    const scored = words.length === 0 ? [] : SEARCH_SEED.flatMap((d, order) => {
+      if ((input.kinds && !input.kinds.includes(d.kind)) || (input.locale && input.locale !== d.locale)) return []
+      const title = d.title.toLowerCase()
+      const body = d.body.toLowerCase()
+      if (!words.every((w) => title.includes(w) || body.includes(w))) return []
+      const score = words.reduce((n, w) => n + (title.includes(w) ? 3 : 0) + (body.includes(w) ? 1 : 0), 0)
+      return [{ d, order, score }]
+    })
+    scored.sort((a, b) => b.score - a.score || a.order - b.order)
+    const hits: SearchHit[] = scored.map(({ d }) => {
+      const first = rangesOf(d.body, words)[0]
+      const text = first ? d.body.slice(Math.max(0, first[0] - SNIPPET_LEAD)).slice(0, SNIPPET_LENGTH) : d.title
+      return { kind: d.kind, ref: d.ref, title: d.title, url: d.url, snippet: { text, ranges: rangesOf(text, words) } }
+    })
+    return pageOf(hits, input.page, input.pageSize)
+  }
+  return { search: readerOf(ctx, run, () => pageOf<SearchHit>([])) }
+}
+
+/**
+ * 뉴스레터 구독 포트 목. 동의(consent: true)와 이메일 모양을 검사하고, 성공하면 확인 메일을 보냈다고 답한다 — 같은 주소를 또 넣어도 같은 응답이다
+ * (주소가 이미 구독자인지 알리지 않는다). 상태가 없다. 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
+ */
+export function mockNewsletter(search: string | URLSearchParams, options: PortMockOptions = {}): Required<NewsletterPort> {
+  const ctx = portCtx(toParams(search), options)
+  return {
+    subscribe: writer(ctx, (input) => {
+      const fieldErrors: Partial<Record<string, string[]>> = {}
+      if (!EMAIL_SHAPE.test(input.email?.trim() ?? "")) fieldErrors.email = ["이메일 주소를 다시 확인해 주세요."]
+      if (input.consent !== true) fieldErrors.consent = ["수신 동의에 체크해 주세요."]
+      if (Object.keys(fieldErrors).length) return fail("입력한 내용을 다시 확인해 주세요.", fieldErrors)
+      return { ok: true, data: { confirmationSent: true } }
+    }),
+  }
+}
+
+const REQUEST_SEED: readonly MyRequest[] = [
+  { reference: "INQ-2026-0003", kind: "contact", status: "in_progress", receivedAt: "2026-09-28T01:00:00.000Z", preview: "배송지를 바꾸고 싶어요. 주문 번호는 1234 이고 연락처는 010-****-5678 이에요" },
+  { reference: "INQ-2026-0002", kind: "quote", status: "received", receivedAt: "2026-09-20T05:30:00.000Z", preview: "단체 주문 견적을 받고 싶어요" },
+  { reference: "INQ-2026-0001", kind: "contact", status: "done", receivedAt: "2026-09-02T09:10:00.000Z", preview: "영수증 재발급을 부탁드려요" },
+]
+const clip40 = (s: string) => ([...s].length > 40 ? `${[...s].slice(0, 40).join("")}…` : s)
+
+/**
+ * 내 신청 내역 포트 목. 시드 세 건을 최신 순으로 쪽 나눠 보인다 — 미리보기는 앞 40자(넘으면 …). ?auth=signed-out 이면 로그인이 먼저다(code: sign_in_required, retryable false).
+ * 포트는 함수 묶음이라 서버 컴포넌트에서 클라이언트 블록으로 props 로 넘길 수 없다 — 클라이언트 쪽('use client')에서 만든다.
+ */
+export function mockMyRequests(search: string | URLSearchParams, options: PortMockOptions = {}): Required<MyRequestsPort> {
+  const q = toParams(search)
+  const ctx = portCtx(q, options)
+  const signedOut = oneOf("auth", q.get("auth") ?? "signed-in", MOCK_AUTHS) === "signed-out"
+  const read = readerOf(ctx, (input: { page?: number; pageSize?: number } | undefined) => pageOf(REQUEST_SEED.map((r) => ({ ...r, preview: clip40(r.preview) })), input?.page, input?.pageSize), (input) => pageOf<MyRequest>([], input?.page, input?.pageSize))
+  return { list: async (input) => (signedOut ? { ok: false, code: "sign_in_required", retryable: false, formError: NEED_LOGIN } : read(input)) }
+}
+
+// ── 목 어댑터 도우미 내보내기(계획 3a) ────────────────────────────────────────
+// 포트마다 목 파일을 따로 두는 adapter-mock-* 파일(adapter-mock-commerce 등)이 같은 규칙(쿼리 읽기·?state=·?submit=·확인 입력)을 다시 쓰지 않고 이 도우미를 부른다.
+// 이 아래는 내보내기만 있다 — 위 코드는 한 글자도 바뀌지 않았다(출력 불변).
+export { copy, fail, needsConfirmation, oneOf, portCtx, reader, toParams, wait, writer }
+export type { Failure, PortCtx }

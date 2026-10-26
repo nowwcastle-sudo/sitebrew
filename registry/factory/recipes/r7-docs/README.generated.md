@@ -6,9 +6,9 @@
 ## 설치
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r7-docs#v0.1.2        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r7-docs-theme#v0.1.2  # 색만(registry:theme)
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/r7-docs-alt#v0.1.2    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r7-docs#v0.2.3        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r7-docs-theme#v0.2.3  # 색만(registry:theme)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r7-docs-alt#v0.2.3    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)
 ```
 
 부품은 `r7-docs-<부품>`(예: `r7-docs-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r7-docs/r7-docs.css` 를 붙인다.

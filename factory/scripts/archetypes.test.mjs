@@ -141,12 +141,23 @@ test("noBlock schema: a section may not have both blocks and noBlock, nor neithe
   assert.equal(ArchetypeSchema.safeParse(base).success, true)
 })
 
-test("commerce v0 is the external-seller shape: the cart page is v0.2 and its sections wait for A60", async () => {
+test("commerce v0 is the external-seller shape: every shop page (cart·checkout·orders) is v0.2 and bound to the cart/account blocks (3a C3)", async () => {
   const { commerce } = await loadArchetypes()
+  const SHOP = { cart: ["line-items", "totals", "payment-options"], checkout: ["shipping-payment"], "order-complete": ["receipt"], orders: ["order-list"], "order-detail": ["order"] }
+  assert.deepEqual(commerce.pages.filter((p) => p.phase === "v0.2").map((p) => p.id).sort(), Object.keys(SHOP).sort())
+  assert.ok(commerce.pages.filter((p) => !(p.id in SHOP)).every((p) => (p.phase ?? "v0") === "v0"), "나머지 쪽은 v0 그대로 — 현재 외부 판매처 링크형 사이트의 출력이 바뀌지 않는다")
+  for (const [id, kinds] of Object.entries(SHOP)) {
+    const page = commerce.pages.find((p) => p.id === id)
+    assert.deepEqual(page.sections.map((s) => s.kind), kinds, id)
+    for (const s of page.sections) {
+      assert.ok(!s.noBlock, `${id}/${s.kind}: 블록이 있다(예전 pending A60 은 풀렸다)`)
+      assert.ok(s.allowedVariants.length > 0, `${id}/${s.kind}`)
+    }
+  }
   const cart = commerce.pages.find((p) => p.id === "cart")
-  assert.equal(cart.phase, "v0.2")
-  for (const s of cart.sections) assert.ok(s.noBlock?.register?.includes("A60"), s.kind)
-  assert.ok(commerce.pages.filter((p) => p.id !== "cart").every((p) => (p.phase ?? "v0") === "v0"))
+  assert.deepEqual(cart.sections.map((s) => s.allowedVariants), [["block-cart-lines-table", "block-cart-lines-cards"], ["block-cart-totals-summary"], ["block-cart-checkout-form"]])
+  assert.deepEqual(commerce.pages.map((p) => [p.id, p.route]).filter(([id]) => id in SHOP && id !== "cart"), [["checkout", "/checkout"], ["order-complete", "/checkout/complete"], ["orders", "/orders"], ["order-detail", "/orders/[id]"]])
+  assert.deepEqual(commerce.pages.find((p) => p.id === "order-detail").sections[0].allowedVariants, ["block-account-order-detail"])
 })
 
 test("legal: pages are known legal pages, laws are named per locale, paid saas adds the Paddle terms (en)", async () => {
@@ -177,7 +188,8 @@ test("seo defaults and conversion definitions (C43)", async () => {
   assert.equal(all.local.conversion[0].event, "cta_click")
   assert.deepEqual(all.local.conversion[0].match.id, ["booking", "tel", "channel"])
   for (const id of ["portfolio", "brand", "public", "landing"]) assert.equal(all[id].conversion[0].event, "form_submit", id)
-  assert.ok(all.commerce.conversion.some((c) => c.event === "purchase" && c.phase === "v0.2"))
+  // purchase 이벤트는 계약 판 2 에 더해졌다(3a) — 더 이상 v0.2 표시가 아니다
+  assert.ok(all.commerce.conversion.some((c) => c.event === "purchase" && c.phase === undefined))
 })
 
 test("image slot sources use the four media values (C12) and mediaPlan accepts every archetype", async () => {

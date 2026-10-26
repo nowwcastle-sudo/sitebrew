@@ -6,6 +6,7 @@ import Link from "next/link"
 import { StateScreenErrorRetry } from "@/components/blocks/state-screen/error-retry"
 import { errorScreenCopy } from "@/content/copy.shell.en"
 import { errorCopy } from "@/content/copy.ux.en"
+import { hasUrl } from "@/lib/launch/enabled"
 import { PRODUCT_NAME } from "@/content/copy.en"
 
 // 오류 화면의 공통 몸(H01·H04). 화면 자체는 web-factory 블록 `state-screen/error-retry`(P3-6)다 — 이 파일은 Next 의 error.tsx·global-error.tsx 에 끼우는 얇은 껍데기다.
@@ -22,12 +23,16 @@ export function PlainHeader() {
         <Link href="/" className="inline-flex min-h-11 shrink-0 items-center whitespace-nowrap font-heading">
           {PRODUCT_NAME}
         </Link>
-        <Link href="/pricing" className="inline-flex min-h-11 shrink-0 items-center">
-          Pricing
-        </Link>
-        <Link href="/contact" className="inline-flex min-h-11 shrink-0 items-center">
-          {errorCopy.contact}
-        </Link>
+        {hasUrl("/pricing") ? (
+          <Link href="/pricing" className="inline-flex min-h-11 shrink-0 items-center">
+            Pricing
+          </Link>
+        ) : null}
+        {hasUrl("/contact") ? (
+          <Link href="/contact" className="inline-flex min-h-11 shrink-0 items-center">
+            {errorCopy.contact}
+          </Link>
+        ) : null}
       </nav>
     </header>
   )

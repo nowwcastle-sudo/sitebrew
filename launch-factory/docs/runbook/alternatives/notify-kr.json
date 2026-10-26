@@ -1,0 +1,19 @@
+[
+  {
+    "service": "Naver Cloud SENS",
+    "tags": [
+      "ko"
+    ],
+    "support": "code",
+    "switchCost": {
+      "ko": "발송부(solapi.ts)와 같은 모양의 어댑터를 새로 써야 해요. 발신번호 등록과 알림톡 템플릿 심사는 SENS 에서 다시 해요.",
+      "en": "You must write a new adapter shaped like the sender (solapi.ts). Sender-number registration and Alimtalk template review are done again in SENS."
+    },
+    "note": {
+      "ko": "공식 개요에 따르면 SMS·LMS·MMS 와 카카오톡 알림톡·브랜드 메시지를 미리 승인된 템플릿으로 보내요. 무료 구간은 확인하지 못했어요.",
+      "en": "Per the official overview it sends SMS, LMS, MMS and KakaoTalk Alimtalk and BrandMessage through pre-approved templates. A free tier was not confirmed."
+    },
+    "home": "https://www.ncloud.com",
+    "checked": "2026-10-22"
+  }
+]

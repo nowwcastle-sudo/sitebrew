@@ -89,19 +89,19 @@ test('더하면서 자리 말하기 — 「후기를 FAQ 아래에 추가」는 
   assert.deepEqual([r.scope, r.target, r.anchor, r.place], ['add', 'home/external-reviews', 'home/menu-price', 'after'])
 })
 
-test('회귀 — 구획 이름이 없는 말과 기존 section·axis·copy 사상은 그대로다', () => {
-  // 구조 낱말이 없을 때: 기존과 똑같다
-  assert.deepEqual(P('히어로를 더 대담하게'), { scope: 'section', target: 'home/hero-visit-info', intent: 'bolder', text: '히어로를 더 대담하게' })
+test('회귀 — 구획 이름이 붙은 section·copy 사상은 그대로이고, 구획 이름이 없는 디자인 말은 scope design 이다', () => {
+  // 구조 낱말이 없을 때: 기존과 똑같다. 사전이 방향을 읽은 구획 말에는 그 읽기(classification)가 더 실린다 — --explain 이 보인다.
+  const plain = (r) => Object.fromEntries(Object.entries(r).filter(([k]) => k !== 'classification'))
+  assert.deepEqual(plain(P('히어로를 더 대담하게')), { scope: 'section', target: 'home/hero-visit-info', intent: 'bolder', text: '히어로를 더 대담하게' })
   assert.deepEqual(P('FAQ 문구 짧게'), { scope: 'copy', target: 'home/faq', intent: 'shorter', text: 'FAQ 문구 짧게' })
-  assert.deepEqual(Object.keys(P('장식 없애줘')), ['ask'], '구획 이름 없는 「없애줘」는 지금처럼 되묻는다')
-  assert.equal(P('장식 없애줘').ask, '어느 부분을 바꿀까요? 구획(예: 히어로)·색/서체/모션·문구 중 하나를 알려 주세요.')
-  assert.deepEqual(P('히어로 장식 없애줘'), { scope: 'section', target: 'home/hero-visit-info', intent: 'calmer', text: '히어로 장식 없애줘' }, '장식을 줄이라는 말은 구획 삭제가 아니다')
+  assert.equal(P('장식 없애줘').scope, 'design', '구획 이름 없는 「없애줘」는 구조 낱말이 아니라 사전 분류로 간다')
+  assert.notEqual(P('장식 없애줘').classification.result, 'confirmed', '사전이 못 읽으면 revise() 가 되묻는다')
+  assert.deepEqual(plain(P('히어로 장식 없애줘')), { scope: 'section', target: 'home/hero-visit-info', intent: 'calmer', text: '히어로 장식 없애줘' }, '장식을 줄이라는 말은 구획 삭제가 아니다')
   assert.deepEqual(P('FAQ를 다른 걸로 바꿔줘'), { scope: 'section', target: 'home/faq', intent: 'different', text: 'FAQ를 다른 걸로 바꿔줘' })
   assert.deepEqual(P('swap the hero'), { scope: 'section', target: 'home/hero-visit-info', intent: 'different', text: 'swap the hero' })
-  assert.deepEqual(P('색을 바꿔줘'), { scope: 'axis', target: 'color', intent: 'different', text: '색을 바꿔줘' })
-  assert.deepEqual(P('모션 강도를 낮춰줘'), { scope: 'axis', target: 'motion', intent: 'calmer', text: '모션 강도를 낮춰줘' })
+  assert.equal(P('모션 강도를 낮춰줘').scope, 'design', '옛 축 낱말 표가 없어졌다 — 사전 분류로 간다')
   assert.deepEqual(P('히어로 문구를 더 짧게'), { scope: 'copy', target: 'home/hero-visit-info', intent: 'shorter', text: '히어로 문구를 더 짧게' })
-  assert.deepEqual(Object.keys(P('더 예쁘게 해줘')), ['ask'])
+  assert.deepEqual(Object.keys(P('더 예쁘게 해줘')), ['scope', 'classification', 'text'])
   // 원형을 모르는 사이트(archetype 칸 없음)에서는 더하기를 판단할 수 없어 예전처럼 되묻는다 — 엉뚱한 교체로 가지 않는다
   const noArch = { sections: { 'home/hero': { block: 'b' }, 'home/faq': { block: 'b' } } }
   assert.deepEqual(Object.keys(parseRevision('후기 섹션 추가해줘', noArch)), ['ask'])

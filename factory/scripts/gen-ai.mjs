@@ -13,6 +13,7 @@ import { ARCHETYPES, RECIPES_DIR, REPO, parseRecipe, isUnconfirmed } from './rec
 import { ARCHETYPE_PATH, ARCHETYPE_DIR } from './archetypes.mjs'
 import { GotchasSource, GotchasFile, TaskFile, GENERATED } from '../ai/schemas.mjs'
 import { loadBlocks, blockName } from './blocks.mjs'
+import { SHADCN_VERSION, shadcnAddCommand } from './lib/pins.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const AI_DIR = join(root, 'ai')
@@ -25,10 +26,12 @@ export const END = '<!-- 생성 구역 끝 -->'
 export const RECIPES_COMPLETE = true
 
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'))
-export const installCmd = (item, ref) => `npx shadcn@4.21.0 add ${REPO}/${item}#${ref} -y -o`
+export const installCmd = (item, ref) => shadcnAddCommand(item, ref, REPO)
 
 export function loadGotchas(path = SOURCE) {
-  return GotchasSource.parse(readJson(path)).gotchas
+  // 원천 문장의 {{SHADCN_VERSION}} 은 package.json 핀으로 채운다(lib/pins.mjs) — 버전 숫자를 손으로 쓰지 않는다.
+  const text = readFileSync(path, 'utf8').split('{{SHADCN_VERSION}}').join(SHADCN_VERSION)
+  return GotchasSource.parse(JSON.parse(text)).gotchas
 }
 
 export function gotchasFile(gotchas) {

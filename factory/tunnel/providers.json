@@ -1,0 +1,45 @@
+{
+  "_comment": "임시 공개 주소 공급자 표(계획 4 Task 1). 새 공급자 = 항목 하나 + 시험 한 줄. args 의 {port} 자리에는 정수 포트만 들어가고 사용자 값은 들어가지 않는다. ignore 는 도구가 로그에 찍는 주소가 아닌 호스트다. install 의 needsAdmin true 는 실행하는 쪽이 관리자 권한을 따로 확인해야 한다는 뜻이고, 이 표는 설치를 돌리지 않는다.",
+  "default": "cloudflare",
+  "order": ["cloudflare", "localhostrun"],
+  "providers": {
+    "cloudflare": {
+      "tool": "cloudflared",
+      "args": ["tunnel", "--no-autoupdate", "--url", "http://127.0.0.1:{port}"],
+      "urlPattern": "https://[a-z0-9-]+\\.trycloudflare\\.com",
+      "ignore": ["api.trycloudflare.com"],
+      "readyMs": 60000,
+      "reachMs": 90000,
+      "knownPaths": {
+        "win32": ["C:\\Program Files (x86)\\cloudflared\\cloudflared.exe", "C:\\Program Files\\cloudflared\\cloudflared.exe"],
+        "darwin": ["/opt/homebrew/bin/cloudflared", "/usr/local/bin/cloudflared"],
+        "linux": ["/usr/bin/cloudflared", "/usr/local/bin/cloudflared"]
+      },
+      "install": {
+        "win32": [
+          { "argv": ["winget", "install", "--id", "Cloudflare.cloudflared", "-e"], "needsAdmin": false, "textKey": "installWinget" }
+        ],
+        "darwin": [
+          { "argv": ["brew", "install", "cloudflared"], "needsAdmin": false, "textKey": "installBrew" }
+        ],
+        "debian": [
+          { "argv": ["mkdir", "-p", "--mode=0755", "/usr/share/keyrings"], "needsAdmin": true, "textKey": "installApt1" },
+          { "argv": ["sh", "-c", "curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null"], "needsAdmin": true, "textKey": "installApt2" },
+          { "argv": ["sh", "-c", "echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main' | tee /etc/apt/sources.list.d/cloudflared.list"], "needsAdmin": true, "textKey": "installApt3" },
+          { "argv": ["sh", "-c", "apt-get update && apt-get install -y cloudflared"], "needsAdmin": true, "textKey": "installApt4" }
+        ]
+      },
+      "limits": ["limit200", "noSse"]
+    },
+    "localhostrun": {
+      "_comment": "unverified (확인 안 됨): 주소 출력 모양과 시간 한도는 공식 문서에서 확인하지 못했다. urlPattern 은 추정이라 도달 확인(reachMs)으로 거른다. 무료 도메인은 자주 바뀌고 속도 제한이 있다고 공식 안내에 적혀 있다.",
+      "tool": "ssh",
+      "args": ["-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new", "-o", "ServerAliveInterval=30", "-o", "ExitOnForwardFailure=yes", "-R", "80:127.0.0.1:{port}", "localhost.run"],
+      "urlPattern": "https://[a-z0-9.-]+\\.(?:lhr\\.life|localhost\\.run)",
+      "ignore": ["admin.localhost.run"],
+      "readyMs": 30000,
+      "reachMs": 60000,
+      "limits": ["rotates", "speedLimit"]
+    }
+  }
+}

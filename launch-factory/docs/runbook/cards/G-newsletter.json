@@ -1,0 +1,22 @@
+{
+  "service": "뉴스레터 구독 명단 (이 키트에 내장, 확인 메일은 메일 서비스)",
+  "role": "newsletter",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-email",
+    "G-db",
+    "G-security"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "확인 메일을 보낼 수 없어서 구독이 시작되지 않아요.",
+    "en": "Confirmation mail cannot be sent, so subscriptions never start."
+  },
+  "devOnly": [],
+  "notEnv": [
+    "NEWSLETTER_CONSENT_VERSION"
+  ]
+}

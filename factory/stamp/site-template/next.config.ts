@@ -1,4 +1,5 @@
-import { dirname } from "node:path"
+import { existsSync, renameSync } from "node:fs"
+import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import type { NextConfig } from "next"
 
@@ -9,6 +10,24 @@ import { securityHeaders } from "./security-headers.mjs"
 // 기본 이미지 로더는 정적 내보내기에서 쓸 수 없으므로 unoptimized 로 둔다. 평소 빌드(06-pages)에는 이 환경 변수를 주지 않는다.
 // 보안 헤더(대장 C171): 평소 빌드만 headers() 를 싣는다(Next 는 output "export" 에서 headers 를 무시하고 경고한다). CSP 의 인라인 script 해시는 빌드 뒤 scripts/csp-hashes.mjs 가 붙인다.
 const staticExport = process.env.WF_STATIC_EXPORT === "1"
+// 정적 내보내기에는 서버 경로가 들어갈 수 없다: 소개형 전달물(deliver-intro)이 더한 가짜 문의 접수 app/api/inquiry 를 빌드하는 동안만 옆 폴더(.wf-saved-inquiry)로 치우고
+// 이 프로세스가 끝날 때(exit) 되돌린다 — 사용자의 파일을 지우지 않는다. 문의 폼(lib/contact.ts)은 빌드 때 NEXT_PUBLIC_WF_STATIC 을 읽어 보내기를 메일 앱 열기(mailto)로 돌린다.
+// 평소 빌드·개발 서버에는 영향이 없고, 강제 종료로 옆 폴더가 남았으면 다음 평소 실행이 제자리로 되돌린다. 폴더가 없는 사이트(소개형이 아니거나 문의 없음)에서는 아무 일도 안 한다.
+// 단일 HTML 내보내기(export/single-html.mjs)는 같은 폴더를 먼저 치웠다가 빌드 뒤에 되돌린다.
+const siteRoot = dirname(fileURLToPath(import.meta.url))
+const inquiryDir = join(siteRoot, "app", "api", "inquiry")
+const inquiryAside = join(siteRoot, ".wf-saved-inquiry")
+if (!staticExport && existsSync(inquiryAside) && !existsSync(inquiryDir)) renameSync(inquiryAside, inquiryDir)
+if (staticExport && existsSync(inquiryDir) && !existsSync(inquiryAside)) {
+  renameSync(inquiryDir, inquiryAside)
+  process.on("exit", () => {
+    try {
+      if (!existsSync(inquiryDir)) renameSync(inquiryAside, inquiryDir)
+    } catch {
+      /* 되돌리지 못하면 옆 폴더가 남는다 — 다음 평소 실행이 되돌린다 */
+    }
+  })
+}
 // 빌드 병렬도(P3-4 골든 실행 — 메모리가 모자란 머신): WF_BUILD_CPUS=<양의 정수> 일 때만 `experimental.cpus`(페이지 데이터 수집·정적 생성 작업자 수, 기본 코어 수 − 1)를 그 값으로 낮춘다.
 // 이 변수는 06-pages 빌드를 돌리는 쪽이 환경 변수로 줄 때만 켜진다 — 없으면 설정이 예전과 똑같고 출력도 같다(근거: Next.js 문서 「Memory Usage」·staticGeneration, experimental.cpus 기본값 cores − 1 에는 환경 변수가 없다).
 const buildCpus = Number(process.env.WF_BUILD_CPUS)
@@ -30,7 +49,7 @@ const nextConfig: NextConfig = {
   ...(Object.keys(experimental).length ? { experimental } : {}),
   ...(skipTypecheck ? { typescript: { ignoreBuildErrors: true } } : {}),
   ...(staticExport
-    ? { output: "export", distDir: ".next-export", images: { unoptimized: true } }
+    ? { output: "export", distDir: ".next-export", images: { unoptimized: true }, env: { NEXT_PUBLIC_WF_STATIC: "1" } }
     : {
         async headers() {
           return [{ source: "/(.*)", headers: securityHeaders({ dev: process.env.NODE_ENV !== "production" }) }]

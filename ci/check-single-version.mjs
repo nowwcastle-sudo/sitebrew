@@ -67,12 +67,23 @@ export const COMPAT = 'plugins/sitebrew/compat.json'
 
 const read = (root, file) => fs.readFileSync(path.join(root, file), 'utf8')
 
-/** The compat table names this release: guides["X.Y.Z"] exists and, when it names a kit tag, that tag is vX.Y.Z. */
+/** The kit versions one release works with: the same 0.x minor (0.2.2 -> ">=0.2.0 <0.3.0"), or the same major from 1.0 on. The plugin's doctor reads this range. */
+export function kitRangeOf(version) {
+  const m = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(version)
+  if (!m) throw new Error(`not a release number: ${version}`)
+  const [major, minor] = [Number(m[1]), Number(m[2])]
+  return major === 0 ? `>=0.${minor}.0 <0.${minor + 1}.0` : `>=${major}.0.0 <${major + 1}.0.0`
+}
+
+/** The compat table names this release: guides["X.Y.Z"] exists, its kit tag is vX.Y.Z and its range is the one kitRangeOf gives (the doctor fails without a range). */
 export function compatProblems(text, version) {
   const g = JSON.parse(text).guides?.[version]
   if (!g) return [`${COMPAT}: guides has no entry "${version}"`]
-  const tag = g.sitebrew?.tag
-  return tag !== undefined && tag !== `v${version}` ? [`${COMPAT}: guides["${version}"].sitebrew.tag is ${tag}, expected v${version}`] : []
+  const out = []
+  const { tag, range } = g.sitebrew ?? {}
+  if (tag !== undefined && tag !== `v${version}`) out.push(`${COMPAT}: guides["${version}"].sitebrew.tag is ${tag}, expected v${version}`)
+  if (range !== kitRangeOf(version)) out.push(`${COMPAT}: guides["${version}"].sitebrew.range is ${range ?? 'missing'}, expected ${kitRangeOf(version)}`)
+  return out
 }
 
 /** Node and npm requirements are the same in every part (package.json engines, .nvmrc, compat table, npx package). */

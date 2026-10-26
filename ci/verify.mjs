@@ -1,5 +1,5 @@
 // npm run ci:verify — CI 와 컨트롤러가 병합 전에 같은 명령으로 돌리는 검증 한 줄(P3-8).
-// 순서: check:regen → registry:pincheck(현재 버전) → readme:check(README 5개 언어 = 현재 버전) → lint(경고 래칫) → lint:ui → blocks:check --all-kinds → registry:check → registry:closure → typecheck → 가벼운 시험(+커버리지 래칫) → security:osv(OSV-Scanner — 새 취약점 공지를 push 전에 잡는다. 도구가 없으면 SKIP 이유를 찍고 0이며 통과로 세지 않는다: `npm run ci:tools` 로 고정판을 .tmp 에 받는다).
+// 순서: check:regen → registry:pincheck(현재 버전) → readme:check(README 5개 언어 = 현재 버전) → lint(경고 래칫) → lint:ui → blocks:check --all-kinds → registry:check → registry:closure → typecheck → 가벼운 시험(+커버리지 래칫) → vocab:eval(dev 묶음 합격선 — 어휘집·말본을 고쳐 정확도가 떨어지면 push 전에 잡는다 · holdout 은 돌리지 않는다) → vocab-holdout-guard(어휘집·말본·holdout 동시 변경 금지) → security:osv(OSV-Scanner — 새 취약점 공지를 push 전에 잡는다. 도구가 없으면 SKIP 이유를 찍고 0이며 통과로 세지 않는다: `npm run ci:tools` 로 고정판을 .tmp 에 받는다).
 // 첫 실패에서 멈춘다(--keep-going 이면 끝까지 돌려 실패를 모은다). 단계마다 시간·종료 코드를 표로 남기고 $GITHUB_STEP_SUMMARY 가 있으면 거기에도 쓴다.
 // 이식성: 드라이브 문자 경로·Windows 전용 명령·저장소 밖 시각 기준을 쓰지 않는다 — 시각 회귀(blocks:visual)는 로컬·릴리스 관문이고 여기에 없다.
 import { spawnSync } from 'node:child_process'
@@ -68,6 +68,8 @@ export const STEPS = [
   ['registry:closure', () => npm(['run', 'registry:closure']).status],
   ['typecheck', () => npm(['run', 'typecheck'], { NODE_OPTIONS: process.env.NODE_OPTIONS ?? '--max-old-space-size=4096' }).status],
   ['test:light', () => npm(['run', 'ci:test']).status],
+  ['vocab:eval', () => npm(['run', 'vocab:eval', '--', '--set', 'dev']).status],
+  ['vocab-holdout-guard', () => spawnSync(process.execPath, [join(ROOT, 'ci', 'vocab-holdout-guard.mjs')], { cwd: ROOT, stdio: 'inherit' }).status ?? 1],
   ['security:osv', () => osvStep()],
 ]
 

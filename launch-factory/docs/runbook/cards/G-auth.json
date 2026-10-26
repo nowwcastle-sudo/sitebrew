@@ -1,0 +1,20 @@
+{
+  "service": "Better Auth",
+  "role": "auth",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db",
+    "G-domain"
+  ],
+  "home": "https://better-auth.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "가입과 로그인이 켜지지 않아요. 소셜 로그인은 건너뛰어도 이메일·비밀번호 로그인은 돼요.",
+    "en": "Sign-up and sign-in do not turn on. You can skip social sign-in and still have email-and-password sign-in."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

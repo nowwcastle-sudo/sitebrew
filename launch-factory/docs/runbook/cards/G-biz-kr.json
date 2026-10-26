@@ -1,0 +1,26 @@
+{
+  "service": "National Tax Service, city/county/district office and PG company (Korea)",
+  "role": "biz-kr",
+  "need": "optional",
+  "cost": [
+    "one-time",
+    "per-sale"
+  ],
+  "after": [
+    "G-hosting"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "한국에서 돈을 받는 사이트로 열 수 없어요. 사업자 정보를 푸터에 보이지 못하고, 국내 카드 결제(PortOne)를 쓰려면 필요한 결제 계약도 할 수 없어요.",
+    "en": "The site cannot open as one that takes money in Korea. It cannot show business details in the footer, and if you use Korean card payments (PortOne) it cannot sign the payment contract it requires."
+  },
+  "when": {
+    "locale": "ko",
+    "outcomes": [
+      "payments",
+      "shop"
+    ]
+  },
+  "devOnly": [],
+  "notEnv": []
+}

@@ -36,14 +36,15 @@ test("routesFromApp — 라우트 그룹은 주소에서 빠지고 [동적] 쪽�
   }
 })
 
-test("실제 템플릿 — 앱의 page.tsx 가 하나도 빠지지 않고, 공개 쪽 목록(lib/seo.ts)과 맞는다", () => {
+test("실제 템플릿 — 앱의 page.tsx 가 하나도 빠지지 않고, 공개 쪽 목록(lib/public-paths.json)과 맞는다", () => {
   const { routes, dynamic } = routesFromApp(join(ROOT, "template", "app"))
-  assert.equal(dynamic.length, 0, `[동적] 쪽이 생겼다 — 러너가 주소를 못 만든다: ${dynamic}`)
-  for (const p of ["/", "/pricing", "/contact", "/terms", "/privacy", "/refund", "/sign-in", "/sign-up", "/forgot-password", "/reset-password", "/upgrade", "/billing/return", "/account", "/account/billing", "/account/billing/cancel", "/account/billing/price-change", "/account/cancel", "/email"]) {
+  // 러너가 주소를 못 만드는 [동적] 쪽은 알려진 것뿐이다 — 주문 상세는 주문 번호가 있어야 열린다(주문 목록 쪽이 같은 블록 틀을 덮는다).
+  // 관리 구획 목록·기록(/admin/[section], /admin/[section]/[id])은 구획 id·기록 id 가 있어야 열린다 — 개요(/admin)가 같은 관리 틀(사이드바·위 띠·접근 거절)을 덮는다. 새 동적 쪽이 생기면 여기에 까닭과 함께 적는다
+  assert.deepEqual(dynamic, ["/admin/[section]", "/admin/[section]/[id]", "/orders/[id]"], `[동적] 쪽 목록이 달라졌다 — 러너가 주소를 못 만든다: ${dynamic}`)
+  for (const p of ["/", "/pricing", "/cart", "/checkout", "/checkout/return", "/orders", "/contact", "/terms", "/privacy", "/refund", "/sign-in", "/sign-up", "/forgot-password", "/reset-password", "/upgrade", "/billing/return", "/account", "/account/billing", "/account/billing/cancel", "/account/billing/price-change", "/account/cancel", "/email", "/admin"]) {
     assert.ok(routes.includes(p), `${p} 가 쪽 목록에 없다`)
   }
-  const seo = readFileSync(join(ROOT, "template", "lib", "seo.ts"), "utf8")
-  const publicPaths = [...(/PUBLIC_PATHS = \[([^\]]+)\]/.exec(seo)?.[1] ?? "").matchAll(/"([^"]+)"/g)].map((m) => m[1])
+  const publicPaths = JSON.parse(readFileSync(join(ROOT, "template", "lib", "public-paths.json"), "utf8"))
   assert.ok(publicPaths.length >= 6)
   for (const p of publicPaths) assert.ok(routes.includes(p), `공개 쪽 ${p} 가 목록에 없다`)
 })

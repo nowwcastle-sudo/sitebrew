@@ -104,6 +104,21 @@ export function recordPick(prefs, { archetype, winner, loser, kind }) {
   return { ...(prefs ?? emptyPreferences()), user, warnings: [...(prefs?.warnings ?? [])] }
 }
 
+/** recordPick 이 더한 만큼만 덜어 낸다(되돌리기용) — 이긴 쪽 win · 진 쪽 loss 를 하나씩 줄이고, 0·0 이 된 칸은 지운다. 다른 칸은 건드리지 않는다. */
+export function unrecordPick(prefs, { archetype, winner, loser }) {
+  const user = structuredClone(prefs?.user ?? {})
+  const drop = (variant, field) => {
+    const c = user[archetype]?.[variant]
+    if (!c || c[field] === 0) return
+    c[field]--
+    if (c.win === 0 && c.loss === 0) delete user[archetype][variant]
+  }
+  drop(winner, 'win')
+  drop(loser, 'loss')
+  if (user[archetype] && !Object.keys(user[archetype]).length) delete user[archetype]
+  return { ...(prefs ?? emptyPreferences()), user, warnings: [...(prefs?.warnings ?? [])] }
+}
+
 /** 사용자 몫만 파일에 쓴다(원자적). 씨앗은 복사하지 않는다 — 씨앗이 바뀌면 새 씨앗이 이긴다. */
 export function savePreferences(prefs, { userFile = userPreferencesFile() } = {}) {
   mkdirSync(dirname(userFile), { recursive: true })

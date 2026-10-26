@@ -1,4 +1,4 @@
-export type ActionFailureCode = "rate_limited" | "bot_check_failed" | "bot_check_unavailable" | "in_progress" | "provider_unsupported" | "scenario_unsupported" | "invalid_token" | "signInRequired" | "sign_in_required" | "approval_required" | "confirmation_required" | "provider_unavailable" | "invalid_input" | "invalid_credentials" | "action_failed"
+export type ActionFailureCode = "rate_limited" | "bot_check_failed" | "bot_check_unavailable" | "in_progress" | "provider_unsupported" | "scenario_unsupported" | "invalid_token" | "signInRequired" | "sign_in_required" | "approval_required" | "confirmation_required" | "provider_unavailable" | "invalid_input" | "invalid_credentials" | "action_failed" | "slot_taken" | "not_found" | "cancel_closed" | "invalid_state" | "forbidden" | "deposit_failed" | "two_factor_required" | "impersonation_blocked"
 
 /** 서버 액션·정적 어댑터·목 어댑터가 모두 돌려주는 결과. next-safe-action 결과와 1:1 변환 가능 */
 export type ActionResult<TData> =

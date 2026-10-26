@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://launch-factory.invalid/email/outbox.schema.json",
+  "title": "OutboxLine",
+  "description": "LF_MOCK_OUTBOX 파일의 한 줄(JSONL). 본문·링크·비밀번호는 싣지 않는다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "template", "to", "subject", "at"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "template": { "type": "string", "minLength": 1 },
+    "to": { "type": "string", "minLength": 1 },
+    "subject": { "type": "string" },
+    "at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "service": "Example Beta",
+  "role": "beta",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "그 기능이 꺼져요.",
+    "en": "That feature turns off."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

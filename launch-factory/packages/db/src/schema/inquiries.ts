@@ -16,6 +16,10 @@ const tz = { withTimezone: true } as const
 export const INQUIRY_KINDS = ["general", "consultation", "quote", "complaint", "dispute"] as const
 export type InquiryKind = (typeof INQUIRY_KINDS)[number]
 
+/** 신청 처리 상태(계획 3c Task 5 — 내 신청 내역). 접수 → 처리 중 → 완료 */
+export const INQUIRY_STATUSES = ["received", "in_progress", "done"] as const
+export type InquiryStatus = (typeof INQUIRY_STATUSES)[number]
+
 export const inquiries = pgTable(
   "inquiries",
   {
@@ -29,6 +33,8 @@ export const inquiries = pgTable(
     contactKind: text("contact_kind").$type<"email" | "phone">().notNull(),
     message: text("message").notNull(),
     kind: text("kind").$type<InquiryKind>().notNull().default("general"),
+    /** 처리 상태. 새 문의는 received — 바꾸는 일은 관리자·소유자만(admin_actions 에 한 줄) */
+    status: text("status").$type<InquiryStatus>().notNull().default("received"),
     locale: text("locale").notNull(),
     /** 로그인한 채 보냈으면 그 사용자. 탈퇴하면 연결만 끊는다(문의 자체는 보유 기간까지) */
     userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
@@ -39,9 +45,31 @@ export const inquiries = pgTable(
   },
   (t) => [
     index("inquiries_expires_at_idx").on(t.expiresAt),
+    index("inquiries_user_idx").on(t.userId, t.createdAt),
     check("inquiries_kind_check", sql`${t.kind} in ('general', 'consultation', 'quote', 'complaint', 'dispute')`),
+    check("inquiries_status_check", sql`${t.status} in ('received', 'in_progress', 'done')`),
   ],
 )
+
+/**
+ * 문의 답변(계획 3d 관리 화면). 직원(소유자·관리자)이 문의에 단 답 — 한 문의에 여러 번 달 수 있고 문의의 글타래가 된다.
+ * 문의가 파기되면(expires_at) 답변도 같이 지워진다(on delete cascade) — 보유 기간은 문의 것을 따른다. mailed_at: 보낸 사람에게 메일이 나갔으면 그 시각(연락처가 전화이거나 메일이 실패하면 null).
+ * 쓴 사람(admin_user_id)은 탈퇴하면 연결만 끊는다.
+ */
+export const inquiryReplies = pgTable(
+  "inquiry_replies",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    inquiryId: uuid("inquiry_id")
+      .notNull()
+      .references(() => inquiries.id, { onDelete: "cascade" }),
+    body: text("body").notNull(),
+    adminUserId: text("admin_user_id").references(() => user.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", tz).notNull(),
+    mailedAt: timestamp("mailed_at", tz),
+  },
+  (t) => [index("inquiry_replies_inquiry_idx").on(t.inquiryId, t.createdAt)],
+).enableRLS() // 공개 표는 RLS 를 명시로 켠다(정책은 만들지 않는다 — 0010_explicit_rls)
 
 export const idempotencyKeys = pgTable(
   "idempotency_keys",

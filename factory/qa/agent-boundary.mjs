@@ -237,6 +237,7 @@ export function summarize(pages, source) {
 // 갤러리 블록이 승인 컨트롤을 그리려고 열어야 하는 화면(클릭 한 번) — 기본 그림만으로는 안 나오는 것. 구현은 CLICK 으로 마지막 요소를 눌러 본다.
 //   steps 는 block-board gates.mjs STEPS(가입 2단계·해지 2단계·창 열기)를 그대로 쓰고, 그 밖에 이 표가 더한다.
 export const REACH = {
+  'account/order-detail': [{ click: '[data-order-cancel-open]' }],
   'account/billing-manage': [{ click: 'button[aria-pressed="false"]' }],
   'account/security': [{ click: '[data-two-factor-trigger]' }],
   'paywall/limit-meter': [{ click: '[data-block="paywall-limit-meter"] button:not([data-snooze])' }],

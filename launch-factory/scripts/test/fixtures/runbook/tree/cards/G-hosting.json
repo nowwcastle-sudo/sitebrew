@@ -1,0 +1,18 @@
+{
+  "service": "Example Host",
+  "role": "hosting",
+  "need": "always",
+  "cost": [
+    "free-tier",
+    "monthly"
+  ],
+  "after": [],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "사이트가 인터넷에 올라가지 않아요.",
+    "en": "The site is not online."
+  },
+  "devOnly": [],
+  "notEnv": [],
+  "home": "https://host.example.com"
+}

@@ -1,0 +1,19 @@
+{
+  "service": "문의 접수 (메일 + 데이터베이스)",
+  "role": "inquiry",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db",
+    "G-email"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "문의 폼이 꺼지고 안내만 보여요. 방문자의 문의를 받지도 저장하지도 못해요.",
+    "en": "The inquiry form is off and only a notice shows. Visitor inquiries are neither received nor saved."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

@@ -1,0 +1,20 @@
+{
+  "service": "PostHog",
+  "role": "analytics",
+  "need": "feature",
+  "cost": [
+    "free-tier",
+    "usage"
+  ],
+  "after": [
+    "G-hosting"
+  ],
+  "home": "https://posthog.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "방문자 수와 많이 본 쪽을 볼 수 없어요. 분석 스크립트와 동의 띠도 사이트에서 빠져요.",
+    "en": "You cannot see visitor counts or the most viewed pages. The analytics script and the consent banner are also left out of the site."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

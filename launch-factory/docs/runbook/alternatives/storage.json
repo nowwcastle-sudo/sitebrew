@@ -1,0 +1,52 @@
+[
+  {
+    "service": "Cloudflare R2",
+    "tags": [
+      "free"
+    ],
+    "support": "builtin",
+    "item": "storage",
+    "switchCost": {
+      "ko": "코드는 그대로예요. 환경 변수 값만 바꿔요(주소·리전 auto·경로 방식 true).",
+      "en": "No code change. Only the environment values change (endpoint, region auto, path style true)."
+    },
+    "note": {
+      "ko": "공식 가격 안내에 따르면 Standard 저장 공간에는 월 무료 구간이 있고, R2 에서 나가는 전송에는 요금이 붙지 않아요. 연결한 다른 서비스는 요금이 붙을 수 있어요.",
+      "en": "Per the official pricing page, Standard storage has a monthly free tier and egress from R2 is not charged. Other services connected to a bucket may still charge."
+    },
+    "home": "https://www.cloudflare.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Backblaze B2",
+    "tags": [],
+    "support": "builtin",
+    "item": "storage",
+    "switchCost": {
+      "ko": "코드는 그대로예요. 주소·키 값을 바꾸고 CORS 를 B2 쪽에서 따로 설정해요.",
+      "en": "No code change. Change the endpoint and keys, and set CORS on the B2 side separately."
+    },
+    "note": {
+      "ko": "공식 문서에 따르면 S3 호환 API 이고 서명 주소로 올리기·내려받기를 지원해요. 객체별 접근 권한(ACL)·객체 태그·브라우저 POST 올리기는 지원하지 않아요. 이 키트는 서명 주소 PUT 을 쓰므로 첫 시험 올리기로 꼭 확인하세요.",
+      "en": "Per the official docs it has an S3-compatible API and supports signed-URL upload and download. Per-object ACLs, object tags and browser POST uploads are not supported. This kit uses signed-URL PUT, so confirm with a first test upload."
+    },
+    "home": "https://www.backblaze.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "AWS S3",
+    "tags": [],
+    "support": "builtin",
+    "item": "storage",
+    "switchCost": {
+      "ko": "코드는 그대로예요. 환경 변수 값(주소·리전·버킷·키)만 바꿔요.",
+      "en": "No code change. Only the environment values change (endpoint, region, bucket, keys)."
+    },
+    "note": {
+      "ko": "공식 가격 안내에 따르면 새 계정은 한정된 기간 동안 쓸 수 있는 무료 이용 크레딧을 받아요. 기간이 지나면 일반 요금이에요.",
+      "en": "Per the official pricing page, new accounts get free-tier credits for a limited period. After that, normal pricing applies."
+    },
+    "home": "https://aws.amazon.com",
+    "checked": "2026-10-22"
+  }
+]

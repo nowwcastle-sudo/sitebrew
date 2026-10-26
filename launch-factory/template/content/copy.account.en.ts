@@ -6,6 +6,7 @@ import type { AccountNotificationConsentsCopy } from "@/components/blocks/accoun
 import type { AccountProfileSettingsCopy } from "@/components/blocks/account/profile-settings"
 import type { AccountSecurityCopy } from "@/components/blocks/account/security"
 import { HUMAN_HINT, submitNotices } from "@/content/copy.en"
+import { go } from "../lib/launch/enabled.ts"
 
 /** 탈퇴 유예 일수 — 어댑터의 graceDays 와 같은 값이다(@launch-factory/account-lifecycle ACCOUNT_DELETION_DEFAULTS.graceDays) */
 export const GRACE_DAYS = 7
@@ -277,7 +278,7 @@ export const deleteCopy: AccountDeleteAccountCopy = {
     title: "Your subscription",
     live: "You have an active subscription. When you delete the account, it ends on {date}. You are not charged again after that.",
     scheduled: "Your cancellation is already scheduled. You can use the service until {date}. You are not charged again after that.",
-    link: { label: "Only want to cancel the subscription? Go to billing.", href: "/account/billing" },
+    link: { label: "Only want to cancel the subscription? Go to billing.", href: go("/account/billing", "/account") },
   },
   grace: {
     title: "You have time to change your mind",

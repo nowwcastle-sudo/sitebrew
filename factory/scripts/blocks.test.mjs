@@ -35,13 +35,13 @@ function fakeRepo(blocks) {
   return r
 }
 
-test('BLOCK_KINDS: 스펙 16종 + 레인 D1 5종 + 레인 D2 7종 + Task 7b-commerce 3종 + Task 7b data-table + 본문 섹션 렌더러 content + 떠 있는 행동 floating-action + 거르기 줄 filter-bar(차례로 뒤에 붙인다) = 35', () => {
-  assert.equal(BLOCK_KINDS.length, 35)
-  assert.equal(new Set(BLOCK_KINDS).size, 35)
+test('BLOCK_KINDS: 스펙 16종 + 레인 D1 5종 + 레인 D2 7종 + Task 7b-commerce 3종 + Task 7b data-table + 본문 섹션 렌더러 content + 떠 있는 행동 floating-action + 거르기 줄 filter-bar + 장바구니 cart(차례로 뒤에 붙인다) = 36', () => {
+  assert.equal(BLOCK_KINDS.length, 36)
+  assert.equal(new Set(BLOCK_KINDS).size, 36)
   assert.ok(BLOCK_KINDS.includes('state-screen'))
   assert.deepEqual(BLOCK_KINDS.slice(16, 21), ['auth', 'account', 'paywall', 'retention', 'consent'])
   assert.deepEqual(BLOCK_KINDS.slice(21, 28), ['onboarding', 'trust', 'review-list', 'referral', 'lead-capture', 'announcement', 'confirmation'])
-  assert.deepEqual(BLOCK_KINDS.slice(28), ['product-info', 'shipping-returns', 'qna', 'data-table', 'content', 'floating-action', 'filter-bar'])
+  assert.deepEqual(BLOCK_KINDS.slice(28), ['product-info', 'shipping-returns', 'qna', 'data-table', 'content', 'floating-action', 'filter-bar', 'cart'])
 })
 test('BlockMeta: rules 는 선택, 규칙 ID(L·P·O·R·T·A·V·X·M + 숫자)만 받고 중복은 위반', () => {
   assert.equal(BlockMeta.safeParse(meta()).success, true)

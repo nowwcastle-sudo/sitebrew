@@ -643,7 +643,7 @@ export default function QaBasePage() {
           <Section name="field">
             <Field className="max-w-sm">
               <FieldLabel htmlFor="qa-field">받는 사람(필수)</FieldLabel>
-              <Input id="qa-field" autoComplete="name" defaultValue="강현성" />
+              <Input id="qa-field" autoComplete="name" defaultValue="홍길동" />
               <FieldDescription>대리점 기사님이 부를 이름입니다.</FieldDescription>
             </Field>
           </Section>

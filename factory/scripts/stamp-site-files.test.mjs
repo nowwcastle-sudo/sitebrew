@@ -42,15 +42,16 @@ test('C115: 라우트 코드에 콘텐츠 값이 없다 — 사이트 주소·�
     for (const v of ['달빛 베이커리', site.site.url, '02-1234-5678']) assert.equal(src.includes(v), false, `${f}: ${v}`)
   }
   assert.match(read(LS.siteDir, 'lib/site.tsx'), /export function seoInput\(\)/)
-  assert.match(read(LS.siteDir, 'lib/site.tsx'), /filter\(\(\[, p\]\) => !p\.noindex\)/)
+  assert.match(read(LS.siteDir, 'lib/site.tsx'), /filter\(\(\[, p\]\) => isIndexed\(p\)\)/)
 })
 
 test('C115: seo-files 입력 = site.json 의 색인 쪽 — 사이트맵에 noindex 앱 쪽(가입·로그인·결제)이 없고 robots 에 Sitemap 줄이 있다', async () => {
   const seo = await tsLoader('stamp-site-files')('ax/seo-files.ts')
-  for (const [s, mustHave, mustNot] of [[SS, ['/', '/pricing', '/privacy'], ['/signup', '/login', '/billing', '/account']], [LS, ['/', '/privacy'], ['/booking/complete', '/services']]]) {
+  const meta = await tsLoader('stamp-site-files')('ax/seo-meta.ts')
+  for (const [s, mustHave, mustNot] of [[SS, ['/', '/pricing', '/privacy'], ['/signup', '/login', '/billing', '/account', '/campaign']], [LS, ['/', '/privacy'], ['/booking/complete', '/services']]]) {
     const site = JSON.parse(read(s.siteDir, 'content/site.json'))
     // lib/site.tsx seoInput 과 같은 규칙(색인 제외 쪽을 뺀다) — 라우트가 부르는 seoFiles 를 노드에서 돌려 본다
-    const pages = Object.entries(site.pages).filter(([, p]) => !p.noindex).map(([route]) => ({ url: route, title: route }))
+    const pages = Object.entries(site.pages).filter(([, p]) => meta.isIndexed(p)).map(([route]) => ({ url: route, title: route }))
     const files = seo.seoFiles({ siteUrl: site.site.url, name: 'x', summary: 'x', pages })
     const xml = files.sitemap()
     for (const r of mustHave) assert.ok(xml.includes(`<loc>${new URL(r, site.site.url).href}</loc>`), `${r} 가 사이트맵에 있다`)

@@ -14,11 +14,11 @@ import { createHash } from "node:crypto"
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { dirname, join, relative, sep } from "node:path"
 import { fileURLToPath } from "node:url"
+import { SHADCN, shadcnSpec } from "./pins.mjs" // shadcn 판은 template/package.json 이 주인이다
 
 export const ROOT = fileURLToPath(new URL("..", import.meta.url))
 export const TEMPLATE = join(ROOT, "template")
 export const LOCK = join(TEMPLATE, "template.lock.json")
-export const SHADCN = "4.21.0"
 export const WEB_FACTORY = "nowwcastle-sudo/sitebrew"
 /** 블록 설치 목록. 레시피 하나 + 계약 목 + 모션 + 대표 블록. 나머지 의존(공유 조각·부품·아이콘·서체)은 registryDependencies 로 따라온다 */
 export const BLOCK_ITEMS = [
@@ -50,6 +50,22 @@ export const BLOCK_ITEMS = [
   "block-state-screen-error-retry",
   "block-state-screen-not-found",
   "block-state-screen-loading",
+  // 상점(3a 레인 D): 장바구니·결제 폼, 주문 내역·상세 — 블록은 포트 메서드만 받고 템플릿의 서버 액션(app/actions/commerce.ts)에 이어진다
+  "block-cart-lines-table",
+  "block-cart-lines-cards",
+  "block-cart-totals-summary",
+  "block-cart-checkout-form",
+  "block-account-order-history",
+  "block-account-order-detail",
+  // 상품 목록 입구(3d L4): 카드 격자 — 카드를 누르면 /cart?add=<상품 id> (담기 확인 줄이 뜬다)
+  "block-product-list-grid-cards",
+  // 관리 화면(3d 레인 L1): 구획 표·기록 상세·개요(KPI + 할 일)·사이드바·상단 줄 — 블록은 AdminPort 모양의 데이터만 안다
+  "block-data-table-admin-list",
+  "block-data-table-record-panel",
+  "block-dashboard-panel-kpi-first",
+  "block-dashboard-panel-action-list",
+  "block-nav-app-sidebar",
+  "block-nav-top-bar",
 ]
 /** 기능 번들 목록(설치 순서). 선택 번들(gumroad·admin)은 제품이 고른다. 문의(inquiry)는 모든 제품이 문의 창구를 가져야 해서(K05) 기본이다 */
 export const FEATURE_ITEMS = [
@@ -61,9 +77,20 @@ export const FEATURE_ITEMS = [
   "feature-consents",
   "feature-account-lifecycle",
   "feature-inquiry",
+  "feature-payments-kr",
+  "feature-commerce",
+  "feature-reviews",
+  "feature-search",
+  "feature-storage",
+  "feature-newsletter",
+  "feature-booking",
+  "feature-notify-kr",
+  "feature-booking-deposit",
+  "feature-push",
+  "feature-admin-console",
 ]
 /** 제품이 고치는 파일 — 처음에만 쓴다 */
-export const OWNED = new Set(["lib/launch/config.ts", "lib/launch/features.ts", "lib/launch/paddle-plans.ts", "lib/launch/support.ts", "app/globals.css", "app/layout.tsx", "components.json", "osv-scanner.toml", "e2e/a11y-known.json"])
+export const OWNED = new Set(["lib/launch/config.ts", "lib/launch/enabled.json", "lib/launch/features.ts", "lib/launch/paddle-plans.ts", "lib/launch/support.ts", "lib/launch/catalog.ts", "lib/launch/commerce-session.ts", "lib/launch/admin-console.ts", "content/copy.admin-messages.en.ts", "lib/launch/purgers.ts", "lib/launch/booking-config.ts", "lib/launch/notify-kr-config.ts", "app/globals.css", "app/layout.tsx", "components.json", "osv-scanner.toml", "e2e/a11y-known.json"])
 /** 제품이 CI 를 상속하는 파일(LFCI). from = "launch-factory-ci". 두 갈래:
  *  CI_SHARED — 저장소 뿌리의 같은 경로 파일을 그대로 복사한다(원천이 바뀌면 사본이 어긋나 template:check 가 잡는다). 도구 고정판 목록(tools.json)이 대표적이다.
  *  CI_OWN    — 제품용으로 template/ 안에서 직접 쓴 파일. 해시만 잠근다(손으로 고치면 template:check 가 잡는다). osv-scanner.toml · e2e/a11y-known.json 은 제품이 고치는 「제품 것」(OWNED). */
@@ -84,12 +111,16 @@ export const CI_OWN = [
   "e2e/lib.ts",
   "e2e/smoke.mock.spec.ts",
   "e2e/smoke.live.spec.ts",
+  // 한 바퀴 시험(LOOP) — 시험과 그 데이터(단계 id · 메일 기대 개수 · 선택자)
+  "e2e/loop.mock.spec.ts",
+  "e2e/loop-steps.json",
   "e2e/a11y-known.json",
 ]
 export const CI_PATHS = [...CI_SHARED, ...CI_OWN]
 
 const sha = (buf) => createHash("sha256").update(buf).digest("hex")
-const q = (p) => `"${p}"`
+// 경로 인자 따옴표는 셸을 거치는 Windows 에서만 필요하다 — 다른 곳에서는 따옴표가 폴더 이름에 그대로 들어간다
+const q = (p) => (process.platform === "win32" ? `"${p}"` : p)
 const NPX = process.platform === "win32" ? "npx.cmd" : "npx"
 
 function run(cmd, args, cwd) {
@@ -192,7 +223,7 @@ export function syncBlocks({ from, ref, work }) {
   if (tar.status !== 0) throw new Error(`git archive 실패: ${tar.stderr}`)
   writeFileSync(join(work, "wf.tar"), tar.stdout)
   run("tar", ["-xf", "wf.tar", "-C", "wf"], work) // 상대 경로 — GNU tar 는 C: 를 원격 호스트로 읽는다
-  run(NPX, ["-y", `shadcn@${SHADCN}`, "build", "-o", q(join(work, "r0"))], wf)
+  run(NPX, ["-y", shadcnSpec(), "build", "-o", q(join(work, "r0"))], wf)
   const rewritten = localRegistry(join(work, "r0"), join(work, "localreg"))
   // 설치용 사이트: 템플릿 뼈대(설정 파일)만 복사한다
   const site = join(work, "site")
@@ -205,7 +236,7 @@ export function syncBlocks({ from, ref, work }) {
   cpSync(join(ROOT, "scripts", "template-skeleton", "globals.css"), join(site, "app", "globals.css")) // shadcn init(next·base·nova) 결과 — 빈 파일이면 add 가 proxyOf 오류로 멈춘다
   writeFileSync(join(site, "app", "layout.tsx"), `export default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en">\n      <body>{children}</body>\n    </html>\n  )\n}\n`)
   const before = new Set(walk(site))
-  run(NPX, ["-y", `shadcn@${SHADCN}`, "add", ...BLOCK_ITEMS.map((n) => `../localreg/${n}.json`), "-y", "-o"], site)
+  run(NPX, ["-y", shadcnSpec(), "add", ...BLOCK_ITEMS.map((n) => `../localreg/${n}.json`), "-y", "-o"], site)
   // 정확한 판으로 고정한다(계획 Global Constraints): shadcn 이 더한 의존과 ^ 범위를 설치된 판으로 바꿔 템플릿 package.json 에 적는다
   const installed = JSON.parse(readFileSync(join(site, "package.json"), "utf8"))
   const exact = (name) => JSON.parse(readFileSync(join(site, "node_modules", ...name.split("/"), "package.json"), "utf8")).version
@@ -316,6 +347,12 @@ export function check({ template = TEMPLATE, root = ROOT, lock = readLock() } = 
   }
   // 기능 번들: 지금 registry/dist 의 내용과 잠금이 같은가(번들이 바뀌었는데 템플릿을 다시 안 만들었으면 어긋난다)
   if (lock.features) {
+    // 같은 파일을 둘 이상의 항목이 내면 목록의 뒤 항목이 앞 항목을 대신한다(예: feature-notify-kr 의 booking-notify.ts 가 feature-booking 의 통로 없는 판을 대신한다) — 이긴 항목의 내용과만 견준다
+    const winner = new Map()
+    for (const name of lock.features.items) {
+      const dist = join(root, "registry", "dist", `${name}.json`)
+      if (existsSync(dist)) for (const f of JSON.parse(readFileSync(dist, "utf8")).files) winner.set(f.target, name)
+    }
     for (const name of lock.features.items) {
       const dist = join(root, "registry", "dist", `${name}.json`)
       if (!existsSync(dist)) {
@@ -323,6 +360,7 @@ export function check({ template = TEMPLATE, root = ROOT, lock = readLock() } = 
         continue
       }
       for (const f of JSON.parse(readFileSync(dist, "utf8")).files) {
+        if (winner.get(f.target) !== name) continue
         const row = lock.files.find((r) => r.path === f.target && r.from === "launch-factory")
         if (!row) problems.push(`${f.target}: 잠금에 없다(${name})`)
         else if (!row.owned && row.sha256 !== sha(Buffer.from(f.content))) problems.push(`${f.target}: registry/dist/${name} 가 바뀌었다 — features 를 다시`)

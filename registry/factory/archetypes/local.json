@@ -10,6 +10,7 @@
     {
       "id": "home",
       "route": "/",
+      "kind": "home",
       "sections": [
         {
           "kind": "hero-visit-info",
@@ -332,6 +333,7 @@
     {
       "id": "product-detail",
       "route": "/services",
+      "kind": "product",
       "sections": [
         {
           "kind": "bookable-item",
@@ -377,6 +379,7 @@
     {
       "id": "booking-complete",
       "route": "/booking/complete",
+      "kind": "app",
       "sections": [
         {
           "kind": "confirmation",

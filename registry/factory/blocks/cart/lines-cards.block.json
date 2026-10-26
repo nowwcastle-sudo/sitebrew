@@ -1,0 +1,29 @@
+{
+  "kind": "cart",
+  "variant": "lines-cards",
+  "title": "장바구니 줄 카드 — 사진 · 이름 · 단가 · 수량 · 금액 카드 목록 + 오른쪽 주문 요약(총액 먼저·VAT)",
+  "layout": "cards-with-aside",
+  "density": "comfortable",
+  "archetypes": [
+    "commerce"
+  ],
+  "archetypeKinds": [
+    "line-items",
+    "totals"
+  ],
+  "states": [
+    "loading",
+    "empty",
+    "error",
+    "ready",
+    "submit-ok",
+    "submit-field-error",
+    "submit-server-error",
+    "submit-pending"
+  ],
+  "media": [],
+  "motion": [
+    "rise"
+  ],
+  "notes": "담은 줄을 카드 목록으로(사진 칸 · 이름 · 단가 · [−][수량][+] · 줄 금액 · [빼기]) + 오른쪽(좁으면 아래) 주문 요약 칸(합계 목록: 결제할 금액이 맨 위·VAT 문구 곁, 상품 금액·배송비는 그 아래) + [주문하기] 링크. 표 변형(lines-table)과 같은 포트·동작이고 모양만 다르다 — 모바일에 맞다. 재고 부족(out_of_stock)의 fieldErrors[상품 id] 는 그 카드의 수량 칸 아래에 그려진다. 포트: cart·setCartLine·track?. 계측: add_to_cart(올릴 때만)·cta_click. 승인 행동 없음."
+}

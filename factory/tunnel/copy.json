@@ -1,0 +1,145 @@
+{
+  "_note": "임시 공개 주소 도구의 사용자 문장(ko·en) — 한 곳. 한국어는 해요체, 영어에는 한글을 싣지 않는다. 그룹은 notices(항상 알리는 문장)·limits(공급자 한계, providers.json 의 limits 키)·failures(실패 이유)·install(설치 단계 문장, providers.json 의 textKey)·guide(챗봇 안내)이고 키는 그룹을 가로질러 유일하다. notices 문장에는 도구·공급자 이름을 쓰지 않는다. {minutes} 는 자동으로 닫히는 분이다.",
+  "notices": {
+    "publicAnyone": {
+      "ko": "이 주소를 아는 사람은 누구나 사이트를 열어 볼 수 있어요.",
+      "en": "Anyone who knows this address can open the site."
+    },
+    "closesWhen": {
+      "ko": "컴퓨터를 끄거나, 멈추라고 하거나, {minutes}분이 지나면 주소가 닫혀요.",
+      "en": "The address closes when you turn off the computer, ask to stop it, or after {minutes} minutes."
+    },
+    "addressChanges": {
+      "ko": "다시 열면 주소가 새로 바뀌어요.",
+      "en": "The address changes each time you open it again."
+    },
+    "fakeDataOnly": {
+      "ko": "화면에 보이는 정보는 모두 예시와 가짜 데이터예요.",
+      "en": "Everything on screen is sample and fake data."
+    },
+    "mockShared": {
+      "ko": "같은 주소로 들어온 사람은 같은 가짜 로그인 상태를 같이 써요.",
+      "en": "Everyone who opens the same address shares the same fake sign-in state."
+    },
+    "longTerm": {
+      "ko": "오래 가는 주소가 필요하면 따로 호스팅해서 올려야 해요.",
+      "en": "If you need a lasting address, host the site separately."
+    }
+  },
+  "limits": {
+    "limit200": {
+      "ko": "한꺼번에 처리 중인 요청이 200건을 넘으면 일부가 거절돼요.",
+      "en": "Requests are refused when more than 200 are in progress at once."
+    },
+    "noSse": {
+      "ko": "서버가 계속 이어서 보내는 실시간 연결(SSE)은 이 주소에서 동작하지 않아요.",
+      "en": "Streaming connections that the server keeps open (SSE) do not work on this address."
+    },
+    "rotates": {
+      "ko": "무료 주소는 자주 바뀔 수 있어요.",
+      "en": "Free addresses can change often."
+    },
+    "speedLimit": {
+      "ko": "속도 제한이 있어서 느릴 수 있어요.",
+      "en": "There is a speed limit, so pages can be slow."
+    }
+  },
+  "failures": {
+    "toolMissing": {
+      "ko": "주소를 만드는 도구를 찾지 못했어요.",
+      "en": "The tool that makes the address was not found."
+    },
+    "urlNotFound": {
+      "ko": "주소가 만들어지지 않았어요. 잠시 뒤에 다시 해 보세요.",
+      "en": "No address was made. Please try again in a moment."
+    },
+    "notReachable": {
+      "ko": "주소는 만들어졌지만 열리지 않아서 닫았어요.",
+      "en": "An address was made but it did not open, so it was closed."
+    },
+    "exited": {
+      "ko": "주소를 만드는 도구가 중간에 멈췄어요.",
+      "en": "The tool that makes the address stopped partway."
+    },
+    "buildFailed": {
+      "ko": "사이트를 빌드하지 못했어요.",
+      "en": "The site could not be built."
+    },
+    "installFailed": {
+      "ko": "필요한 패키지를 설치하지 못했어요.",
+      "en": "The required packages could not be installed."
+    },
+    "outputMissing": {
+      "ko": "빌드는 끝났지만 사이트 파일(out 폴더)이 만들어지지 않았어요.",
+      "en": "The build finished, but the site files (the out folder) were not made."
+    },
+    "serverFailed": {
+      "ko": "사이트 서버가 켜지지 않았어요. 로그 파일을 열어 보세요.",
+      "en": "The site server did not start. Please open the log file."
+    },
+    "exportNeedsStatic": {
+      "ko": "이 사이트는 정적 파일로 내보내는 형태라서 서버로 켤 수 없었어요. 빌드한 out 폴더를 그대로 열어야 해요.",
+      "en": "This site is exported as static files, so it could not be started as a server. The built out folder must be served as is."
+    },
+    "noPackage": {
+      "ko": "이 폴더에는 사이트 파일(package.json)이 없어요.",
+      "en": "This folder has no site files (package.json)."
+    },
+    "alreadyRunning": {
+      "ko": "이 사이트의 임시 주소가 이미 열려 있어요.",
+      "en": "A temporary address for this site is already open."
+    },
+    "mockNeedsOk": {
+      "ko": "로그인·결제 화면이 가짜로 도는 사이트라서, 동의해 주신 뒤에만 열 수 있어요.",
+      "en": "This site runs fake sign-in and billing screens, so it can only be opened after you agree."
+    },
+    "timeout": {
+      "ko": "시간이 너무 오래 걸려서 멈췄어요.",
+      "en": "It took too long, so it was stopped."
+    },
+    "unexpected": {
+      "ko": "예상하지 못한 문제로 멈췄어요. 로그 파일을 열어 보세요.",
+      "en": "It stopped because of an unexpected problem. Please open the log file."
+    },
+    "manualInstall": {
+      "ko": "이 컴퓨터에는 자동 설치 계획이 없어요. 공식 설치 안내를 보고 직접 설치해 주세요.",
+      "en": "There is no automatic install plan for this computer. Please follow the official install guide."
+    }
+  },
+  "install": {
+    "installWinget": {
+      "ko": "Windows 패키지 관리자로 설치해요.",
+      "en": "Install with the Windows package manager."
+    },
+    "installBrew": {
+      "ko": "Homebrew로 설치해요.",
+      "en": "Install with Homebrew."
+    },
+    "installApt1": {
+      "ko": "패키지 서명 키를 보관할 폴더를 만들어요.",
+      "en": "Create the folder that holds the package signing key."
+    },
+    "installApt2": {
+      "ko": "서명 키를 내려받아 저장해요.",
+      "en": "Download and save the signing key."
+    },
+    "installApt3": {
+      "ko": "패키지 저장소를 목록에 더해요.",
+      "en": "Add the package repository to the list."
+    },
+    "installApt4": {
+      "ko": "저장소를 새로 읽고 설치해요.",
+      "en": "Refresh the repositories and install."
+    }
+  },
+  "guide": {
+    "guideIntro": {
+      "ko": "이 환경에서는 직접 주소를 만들 수 없어요. 내 컴퓨터에서 아래 순서로 만들 수 있어요.",
+      "en": "An address cannot be made from this environment. You can make one on your own computer with the steps below."
+    },
+    "guideRun": {
+      "ko": "사이트 폴더에서 빌드하고 시작한 뒤, 다른 창에서 터널 명령을 실행해요.",
+      "en": "Build and start the site in its folder, then run the tunnel command in another window."
+    }
+  }
+}

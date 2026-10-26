@@ -1,0 +1,20 @@
+[
+  {
+    "service": "Neon",
+    "tags": [
+      "free"
+    ],
+    "support": "builtin",
+    "item": "db",
+    "switchCost": {
+      "ko": "연결 문자열만 바꾸면 돼요. 코드를 쓸 필요는 없어요.",
+      "en": "Change only the connection string. No code is needed."
+    },
+    "note": {
+      "ko": "Postgres라서 이 키트의 db 부품이 그대로 붙어요. 무료 요금제가 있고 무료 요금제의 컴퓨팅은 5분 동안 활동이 없으면 멈춰요. 서울 지역이 없고(가장 가까운 곳은 싱가포르), 이 키트는 포트 6543만 풀러로 보고 prepared statement를 꺼요. Neon의 풀러 연결은 prepared statement를 지원한다고 문서에 있어 그대로 두지만, 이 키트로 직접 돌려 보지는 않았어요. 마이그레이션은 직접 연결 문자열로 해요.",
+      "en": "It is Postgres, so this kit's db part attaches as is. It has a free plan, and free-plan compute suspends after 5 minutes of inactivity. There is no Seoul region (the closest is Singapore). This kit treats only port 6543 as a pooler and turns prepared statements off; Neon's docs say its pooled connection supports protocol-level prepared statements, so they stay on, but this was not run against the kit. Run migrations with the direct connection string."
+    },
+    "home": "https://neon.com",
+    "checked": "2026-10-22"
+  }
+]

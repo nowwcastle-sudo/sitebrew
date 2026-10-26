@@ -28,7 +28,7 @@ export function FaqTwoColumnIndex({ copy, id = "faq", className }: FaqTwoColumnI
   })
   const qid = (i: number) => `${id}-q-${i + 1}`
   return (
-    <section ref={ref} id={id} data-block="faq-two-column-index" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="faq-two-column-index" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
       <div className="grid gap-10 md:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] md:gap-16">
         <nav aria-label={copy.indexLabel} className="hidden md:sticky md:top-24 md:block md:max-h-[70vh] md:self-start md:overflow-y-auto md:border-e md:pe-6">

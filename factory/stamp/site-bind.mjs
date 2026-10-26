@@ -470,6 +470,8 @@ export const PAGE_LABELS = {
   operational: { ko: '운영 현황', en: 'Operations' }, analytics: { ko: '분석', en: 'Analytics' }, 'admin-list': { ko: '관리 목록', en: 'Admin list' },
   'case-study': { ko: '작업 사례', en: 'Case study' }, main: { ko: '메인', en: 'Main' }, sub: { ko: '안내', en: 'Guide' }, 'sub-detail': { ko: '상세', en: 'Details' },
   offline: { ko: '오프라인', en: 'Offline' }, settings: { ko: '설정', en: 'Settings' }, completion: { ko: '완료', en: 'Done' },
+  // 3a 상점 쪽(commerce v0.2 — 사이트맵에는 들지 않는다, 상점이 켜진 사이트의 launch-factory 가 쓴다)
+  checkout: { ko: '주문·결제', en: 'Checkout' }, 'order-complete': { ko: '주문 완료', en: 'Order complete' }, orders: { ko: '주문 내역', en: 'Orders' }, 'order-detail': { ko: '주문 상세', en: 'Order details' },
 }
 export const pageLabel = (id, locale) => PAGE_LABELS[id]?.[locale] ?? id.replace(/-/g, ' ')
 

@@ -52,6 +52,9 @@ jobs:
           node-version-file: .nvmrc
       - name: one release number in every place
         run: node ci/check-single-version.mjs
+      # the contract tests that run against the kit import its own packages (zod in factory/stamp), so the root dependencies must be there first
+      - name: install the repository packages
+        run: npm ci --no-audit --no-fund
       - name: plugin contract tests
         run: node --test --test-force-exit --test-timeout=300000 "plugins/sitebrew/test/*.test.mjs"
       # the automated rules of Anthropic's plugin directory (submit with plugin path plugins/sitebrew): a finding that blocks the portal fails here first

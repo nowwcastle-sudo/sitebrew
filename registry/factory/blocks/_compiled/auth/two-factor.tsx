@@ -77,7 +77,7 @@ export function AuthTwoFactor({ copy, verifyTwoFactor, track, id = "two-factor",
     form.showErrors({})
   }
   return (
-    <section ref={ref} id={id} data-block="auth-two-factor" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="auth-two-factor" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:items-start md:gap-16">
         <div className="flex flex-col items-start gap-6">
           <Lock aria-hidden="true" data-enter className="size-12 border p-2.5" />

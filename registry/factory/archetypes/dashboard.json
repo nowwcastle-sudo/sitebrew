@@ -11,6 +11,7 @@
     {
       "id": "operational",
       "route": "/",
+      "kind": "other",
       "sections": [
         {
           "kind": "page-header",
@@ -199,6 +200,7 @@
     {
       "id": "analytics",
       "route": "/analytics",
+      "kind": "other",
       "sections": [
         {
           "kind": "filter-bar",
@@ -275,6 +277,7 @@
     {
       "id": "admin-list",
       "route": "/admin",
+      "kind": "other",
       "sections": [
         {
           "kind": "page-header",

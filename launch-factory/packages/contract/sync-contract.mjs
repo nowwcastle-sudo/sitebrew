@@ -21,11 +21,14 @@ const VENDOR = "src/web-factory"
 /**
  * 가져올 목록. 「/」로 끝나면 그 아래 모든 파일이다. import 로 닿는 파일(block-contract.ts 등)은 자동으로 따라온다.
  * 적합성 묶음(web-factory P3-3 Task 15)이 태그에 실리면 한 줄을 더한다: `"registry/factory/contract/conformance/",`
+ * 판매 포트 적합성 `conformance/commerce.ts`(공용 conformance-core.ts 는 import 로 따라온다)는 계획 3d L4 에서 먼저 가져왔다 — 나머지 묶음은 scripts/lib/wf-conformance.mjs 가 아직 꺼낸다.
  */
 export const CONTRACT_FILES = [
   "registry/factory/contract/ports.ts",
   "registry/factory/contract/events.ts",
   "registry/factory/contract/attribution.ts",
+  "registry/factory/contract/commerce.ts",
+  "registry/factory/contract/conformance/commerce.ts",
 ]
 
 const PKG_DIR = dirname(fileURLToPath(import.meta.url))

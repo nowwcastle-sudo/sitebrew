@@ -7,10 +7,11 @@
 // It prints a name's presence and length - never a value, never a path that was given as a value. A key can be seen under its own name or as
 // CLAUDE_PLUGIN_OPTION_<NAME> (what Claude Code passes to hook processes for a plugin option). Paths in the output are relative to the current folder or left out.
 // Every item that is not ok prints one Korean line and one English line: what turns off, and how to fix it.
+// cloudflared (the tool of the preview skill's temporary public address) is looked for by file name on PATH and in its known install folders; it is never run.
 // Exit 0 in preview mode (optional keys missing). Exit 1 only when a real prerequisite is missing or wrong, or in strict mode (--strict or WF_REQUIRE_KEYS=1) when a key is missing.
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, statSync } from 'node:fs'
-import { dirname, join, resolve } from 'node:path'
+import { delimiter, dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { KEY_NAMES, KIT, OPTION_NAMES, PLUGIN_OPTION_PREFIX, findKit, hasLaunchKit, inKitRange, packageVersion, safeEnv, shownFolder, tagsAt } from './lib/kit.mjs'
 
@@ -61,7 +62,8 @@ export function gitVersion() {
 }
 
 const ok = (id, text) => ({ status: 'ok', id, text })
-const off = (status, id, ko, en) => ({ status, id, ko, en })
+// `reason` (optional) is a machine-readable cause that the setup skill's install plan reads; the printed lines do not show it.
+const off = (status, id, ko, en, reason) => (reason ? { status, id, ko, en, reason } : { status, id, ko, en })
 
 // Where the kit looks for Chrome or Edge (copied from factory/qa/cdp.mjs of the Sitebrew clone; a test compares the two). The quality gates of
 // step 07 and the board photos need one. Anything else - a per-user Chrome install, for example - is found only when CHROME_PATH names it.
@@ -86,16 +88,34 @@ function browserResult(env, exists) {
     // the value is the user's own path: say whether it works, never print it
     return exists(own)
       ? ok('browser', 'found via CHROME_PATH')
-      : off('fail', 'browser', 'CHROME_PATH 가 가리키는 파일이 없어요 — 품질 관문(07단계)과 보드 사진이 멈춰요. 경로를 chrome.exe 또는 msedge.exe 의 전체 경로로 고치거나 환경 변수를 비워요.', 'The file that CHROME_PATH points to does not exist - the quality gates (step 07) and board photos stop. Set it to the full path of chrome.exe or msedge.exe, or unset the variable.')
+      : off('fail', 'browser', 'CHROME_PATH 가 가리키는 파일이 없어요 — 품질 관문(07단계)과 보드 사진이 멈춰요. 경로를 chrome.exe 또는 msedge.exe 의 전체 경로로 고치거나 환경 변수를 비워요.', 'The file that CHROME_PATH points to does not exist - the quality gates (step 07) and board photos stop. Set it to the full path of chrome.exe or msedge.exe, or unset the variable.', 'bad-path')
   }
   if (KIT_BROWSER_PATHS.some((p) => exists(p))) return ok('browser', 'Chrome or Edge found')
   const other = extraBrowserPaths(env).find((p) => exists(p))
   if (other) {
     return off('fail', 'browser', `Chrome 은 있지만 키트가 찾는 자리에 없어요 (${other}) — 품질 관문(07단계)이 "Chrome/Edge not found" 로 멈춰요. 환경 변수 CHROME_PATH 에 그 전체 경로를 넣어요 (PowerShell: setx CHROME_PATH "${other}" 한 뒤 Claude Code 를 다시 시작해요).`,
-      `Chrome is installed but not where the kit looks (${other}) - the quality gates (step 07) stop with "Chrome/Edge not found". Set the environment variable CHROME_PATH to that full path (PowerShell: setx CHROME_PATH "${other}", then restart Claude Code).`)
+      `Chrome is installed but not where the kit looks (${other}) - the quality gates (step 07) stop with "Chrome/Edge not found". Set the environment variable CHROME_PATH to that full path (PowerShell: setx CHROME_PATH "${other}", then restart Claude Code).`, 'elsewhere')
   }
   return off('fail', 'browser', 'Chrome 또는 Edge 를 찾지 못했어요 — 품질 관문(07단계)과 보드 사진이 멈춰요. 설치해요: winget install Google.Chrome (Windows 11 에는 Edge 가 이미 있어요). 다른 곳에 있으면 환경 변수 CHROME_PATH 에 chrome.exe 또는 msedge.exe 의 전체 경로를 넣어요.',
-    'Chrome or Edge was not found - the quality gates (step 07) and board photos stop. Install it: winget install Google.Chrome (Windows 11 already ships Edge). If it lives elsewhere, set the environment variable CHROME_PATH to the full path of chrome.exe or msedge.exe.')
+    'Chrome or Edge was not found - the quality gates (step 07) and board photos stop. Install it: winget install Google.Chrome (Windows 11 already ships Edge). If it lives elsewhere, set the environment variable CHROME_PATH to the full path of chrome.exe or msedge.exe.', 'not-found')
+}
+
+// cloudflared opens the temporary public address of the preview skill (a *.trycloudflare.com link, no account). It is optional: a note, never a failure.
+// Only file names are looked at - the doctor does not run it and starts no shell. The known folders are the ones the kit's providers.json lists for a PATH that
+// does not hold it yet (a fresh install, a terminal opened before it). Where it was found is never printed.
+export const CLOUDFLARED_KNOWN_PATHS = {
+  win32: ['C:/Program Files (x86)/cloudflared/cloudflared.exe', 'C:/Program Files/cloudflared/cloudflared.exe'],
+  darwin: ['/opt/homebrew/bin/cloudflared', '/usr/local/bin/cloudflared'],
+  linux: ['/usr/bin/cloudflared', '/usr/local/bin/cloudflared'],
+}
+
+function cloudflaredResult(env, exists, platform) {
+  const file = platform === 'win32' ? 'cloudflared.exe' : 'cloudflared'
+  const dirs = String(env.PATH ?? env.Path ?? '').split(delimiter).filter(Boolean)
+  if (dirs.some((d) => exists(join(d, file)))) return ok('cloudflared', 'found on PATH')
+  if ((CLOUDFLARED_KNOWN_PATHS[platform] ?? []).some((p) => exists(p))) return ok('cloudflared', 'found in its install folder')
+  return off('note', 'cloudflared', '선택: cloudflared 없음 — 임시 공개 주소(preview 스킬)를 열 수 없어요. 사이트 만들기와 전달은 돼요. 계정은 필요 없어요. 설치해요: Windows 는 winget install --id Cloudflare.cloudflared -e, macOS 는 brew install cloudflared, 그 밖의 시스템은 developers.cloudflare.com 의 cloudflared 설치 안내를 따라요.',
+    'optional: cloudflared not found - the temporary public address (preview skill) cannot be opened; building and delivering the site still work. No account is needed. Install it: Windows: winget install --id Cloudflare.cloudflared -e, macOS: brew install cloudflared, other systems: see the cloudflared install guide at developers.cloudflare.com.')
 }
 
 // The account that hosts the repository. The export fills it in; until then it is the placeholder (not a real GitHub name), and the comparison is
@@ -120,7 +140,7 @@ function kitResult({ tag, range, repository, args, env, cwd, allowDev }) {
     const odd = found.rejected?.length
     const clone = cloneCommand(tag, repository)
     return off('fail', 'sitebrew', `Sitebrew 클론을 찾지 못했어요 — 사이트 만들기·수정·전달이 모두 멈춰요. ${clone ? `고정 태그로 내려받아요: ${clone} 그리고 그 폴더 안에서 npm run setup.` : '이 플러그인은 소유자 미정 판이라 내려받을 주소를 알려 줄 수 없어요 — 설치 안내의 주소를 써요.'} 다른 곳에 있으면 ${KIT.flag} <폴더> 또는 환경 변수 ${KIT.env} 로 알려요.${odd ? ` (현재 폴더의 ${KIT.name} 비슷한 폴더는 ${range} 판의 Sitebrew 가 아니라서 쓰지 않았어요.)` : ''}`,
-      `Sitebrew clone not found - creating, revising and delivering sites all stop. ${clone ? `Clone the pinned tag: ${clone} then run npm run setup inside it.` : 'This plugin build has no owner set, so it cannot print a clone address - use the address in the install instructions.'} If it lives elsewhere, pass ${KIT.flag} <folder> or set the environment variable ${KIT.env}.${odd ? ` (A Sitebrew-like folder in the current directory was not used: it is not a Sitebrew ${range} release.)` : ''}`)
+      `Sitebrew clone not found - creating, revising and delivering sites all stop. ${clone ? `Clone the pinned tag: ${clone} then run npm run setup inside it.` : 'This plugin build has no owner set, so it cannot print a clone address - use the address in the install instructions.'} If it lives elsewhere, pass ${KIT.flag} <folder> or set the environment variable ${KIT.env}.${odd ? ` (A Sitebrew-like folder in the current directory was not used: it is not a Sitebrew ${range} release.)` : ''}`, found.explicit ? 'explicit-missing' : 'missing')
   }
   const dir = found.dir
   const where = shownFolder(dir, cwd)
@@ -136,13 +156,13 @@ function kitResult({ tag, range, repository, args, env, cwd, allowDev }) {
         `This is a development clone (a commit that is not a release tag, version ${ver}). It is only a warning because of --allow-dev / SITEBREW_DEV=1 - results can differ from the pinned release.`)
     }
     return off('fail', 'sitebrew', `Sitebrew 가 태그가 아닌 커밋에 있어요 (버전 ${ver}). 고정 태그는 ${tag} 이에요 — 판이 섞이면 설치와 찍어내기가 어긋나요. 릴리스로 맞춰요: git -C "${dir}" fetch --tags 그리고 git -C "${dir}" checkout ${tag}. 개발용 클론이면 --allow-dev (또는 환경 변수 SITEBREW_DEV=1) 를 붙여요.`,
-      `Sitebrew is on a commit that is not a release tag (version ${ver}). The pinned tag is ${tag} - mixed versions break installs and stamping. Move to the release: git -C "${dir}" fetch --tags then git -C "${dir}" checkout ${tag}. For a development clone add --allow-dev (or set SITEBREW_DEV=1).`)
+      `Sitebrew is on a commit that is not a release tag (version ${ver}). The pinned tag is ${tag} - mixed versions break installs and stamping. Move to the release: git -C "${dir}" fetch --tags then git -C "${dir}" checkout ${tag}. For a development clone add --allow-dev (or set SITEBREW_DEV=1).`, 'dev-commit')
   }
   const at = tags?.length ? tags.join(', ') : ver ? `버전 ${ver}` : '알 수 없는 판'
   const atEn = tags?.length ? tags.join(', ') : ver ? `version ${ver}` : 'an unknown version'
   return off('fail', 'sitebrew',
     `Sitebrew 가 ${at} 에 있어요. 이 플러그인은 ${range} 판과 맞고 고정 태그는 ${tag} 이에요 — 판이 섞이면 설치와 찍어내기가 어긋나요. git -C "${dir}" fetch --tags 그리고 git -C "${dir}" checkout ${tag} 을 실행해요.`,
-    `Sitebrew is at ${atEn}. This plugin works with ${range} and the pinned tag is ${tag} - mixed versions break installs and stamping. Run git -C "${dir}" fetch --tags then git -C "${dir}" checkout ${tag}.`)
+    `Sitebrew is at ${atEn}. This plugin works with ${range} and the pinned tag is ${tag} - mixed versions break installs and stamping. Run git -C "${dir}" fetch --tags then git -C "${dir}" checkout ${tag}.`, 'wrong-version')
 }
 
 // The launch-factory kit is optional: it adds sign-in, billing and mail to a product site. `dir` is the clone that was found, whatever its version
@@ -228,7 +248,7 @@ export function bridgeResults({ env, args }) {
   return out
 }
 
-export function diagnose({ args = {}, env = process.env, cwd = process.cwd(), exists = existsSync } = {}) {
+export function diagnose({ args = {}, env = process.env, cwd = process.cwd(), exists = existsSync, platform = process.platform } = {}) {
   const compat = readJson(join(ROOT, 'compat.json'))
   const manifest = readJson(join(ROOT, '.claude-plugin', 'plugin.json'))
   const guide = compat.guides[manifest.version]
@@ -242,10 +262,10 @@ export function diagnose({ args = {}, env = process.env, cwd = process.cwd(), ex
   const nodeV = process.versions.node
   results.push(satisfies(nodeV, compat.engines.node)
     ? ok('node', `${nodeV} (needs ${compat.engines.node})`)
-    : off('fail', 'node', `Node ${nodeV} 는 너무 낮아요 (필요 ${compat.engines.node}). 키트의 스크립트가 시작되지 않아요. nodejs.org 에서 새 판을 설치해요 (Windows: winget install OpenJS.NodeJS.LTS, macOS·Linux: nvm install ${compat.engines.node.slice(2)}).`, `Node ${nodeV} is too old (needs ${compat.engines.node}). The kit's scripts will not start. Install a newer Node from nodejs.org (Windows: winget install OpenJS.NodeJS.LTS, macOS/Linux: nvm install ${compat.engines.node.slice(2)}).`))
+    : off('fail', 'node', `Node ${nodeV} 는 너무 낮아요 (필요 ${compat.engines.node}). 키트의 스크립트가 시작되지 않아요. nodejs.org 에서 새 판을 설치해요 (Windows: winget install OpenJS.NodeJS.LTS, macOS·Linux: nvm install ${compat.engines.node.slice(2)}).`, `Node ${nodeV} is too old (needs ${compat.engines.node}). The kit's scripts will not start. Install a newer Node from nodejs.org (Windows: winget install OpenJS.NodeJS.LTS, macOS/Linux: nvm install ${compat.engines.node.slice(2)}).`, 'old'))
   const npmV = npmVersion()
-  if (!npmV) results.push(off('fail', 'npm', 'npm 을 찾지 못했어요 — 키트 설치(npm run setup)가 안 돼요. npm 은 Node 와 함께 와요. Node 를 다시 설치해요.', 'npm was not found - the kit cannot be installed (npm run setup). npm ships with Node; reinstall Node.'))
-  else if (!satisfies(npmV, compat.engines.npm)) results.push(off('fail', 'npm', `npm ${npmV} 는 너무 낮아요 (필요 ${compat.engines.npm}). 키트 설치가 어긋날 수 있어요. npm i -g npm@latest 를 실행하거나 Node 를 새 판으로 올려요.`, `npm ${npmV} is too old (needs ${compat.engines.npm}). Kit installs may fail. Run npm i -g npm@latest or upgrade Node.`))
+  if (!npmV) results.push(off('fail', 'npm', 'npm 을 찾지 못했어요 — 키트 설치(npm run setup)가 안 돼요. npm 은 Node 와 함께 와요. Node 를 다시 설치해요.', 'npm was not found - the kit cannot be installed (npm run setup). npm ships with Node; reinstall Node.', 'missing'))
+  else if (!satisfies(npmV, compat.engines.npm)) results.push(off('fail', 'npm', `npm ${npmV} 는 너무 낮아요 (필요 ${compat.engines.npm}). 키트 설치가 어긋날 수 있어요. npm i -g npm@latest 를 실행하거나 Node 를 새 판으로 올려요.`, `npm ${npmV} is too old (needs ${compat.engines.npm}). Kit installs may fail. Run npm i -g npm@latest or upgrade Node.`, 'old'))
   else results.push(ok('npm', `${npmV} (needs ${compat.engines.npm})`))
   const gitV = gitVersion()
   results.push(gitV
@@ -258,6 +278,7 @@ export function diagnose({ args = {}, env = process.env, cwd = process.cwd(), ex
   // the folder the kit check found, also when that check failed on the version: the launch-factory line reports what is in it, not the version verdict
   results.push(launchResult(findKit({ arg: args.kit, env, cwd, pluginRoot: ROOT, range }).dir ?? null))
   results.push(...keyResults(env, strict))
+  results.push(cloudflaredResult(env, exists, platform))
   results.push(...bridgeResults({ env, args }))
   return { guide: manifest.version, tag, strict, results }
 }

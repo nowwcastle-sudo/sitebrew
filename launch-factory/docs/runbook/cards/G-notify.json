@@ -1,0 +1,23 @@
+{
+  "service": "Solapi",
+  "role": "notify-kr",
+  "need": "feature",
+  "cost": [
+    "usage"
+  ],
+  "after": [
+    "G-booking"
+  ],
+  "home": "https://solapi.com",
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "카카오 알림톡·문자 안내만 꺼져요. 예약 안내는 메일로만 가요.",
+    "en": "Only Kakao and text alerts turn off. Booking notices go by email only."
+  },
+  "devOnly": [
+    "LF_MOCK_NOTIFY_OUTBOX"
+  ],
+  "notEnv": [
+    "MARKETING_OPT_OUT_NUMBER"
+  ]
+}

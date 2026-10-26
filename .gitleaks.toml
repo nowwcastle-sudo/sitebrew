@@ -8,12 +8,16 @@ useDefault = true
 # 2026-10-07 첫 실행 오탐 2건(전체 이력 592커밋 · 둘 다 시험 안의 가짜 값이다 — 값은 읽어 확인했고 실제 키가 아니다).
 #   media-pipeline.test.mjs: redact() 가 메시지에서 키 글자를 지우는지 보는 시험 상수.
 #   stamp-export.test.mjs: 가짜 VERCEL_TOKEN 이 자식 환경 변수로만 가고 인자에는 없는지 보는 시험 상수.
+# 2026-10-22 계획 4 터널 시험 3건: 가짜 비밀 값('secret-xyz-123')이 자식 환경·상태·로그·출력에 새지 않는지 보는 시험 상수.
 [[allowlists]]
 description = "시험 안의 가짜 토큰·키 상수(generic-api-key 오탐)"
 targetRules = ["generic-api-key"]
 paths = [
   '''factory/scripts/media-pipeline\.test\.mjs''',
   '''factory/scripts/stamp-export\.test\.mjs''',
+  '''factory/tunnel/preview-link\.test\.mjs''',
+  '''factory/tunnel/session\.test\.mjs''',
+  '''factory/tunnel/site-server\.test\.mjs''',
 ]
 
 # Sitebrew: the launch-factory/ folder is scanned on its own with launch-factory/.gitleaks.toml (its allow list is written for its own paths); see .github/workflows/security.yml.

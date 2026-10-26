@@ -1,20 +1,20 @@
-// 값이 든 수정 요청(FIT-2) — 「색을 초록색으로」·「메인 색을 #0B6E4F 로」·「서체를 명조로」처럼 사용자가 값을 말한 축 수정을 지킨다.
-// revise.mjs 가 부르는 값 처리 본체다(revise.mjs 에는 축 분기에서 이 모듈을 부르는 몇 줄만 있다).
+// 값이 든 수정 요청(FIT-2) — 「색을 초록색으로」·「서체를 명조로」처럼 사용자가 값을 말한 읽기를 지킨다.
+// 값 읽기는 사전(design-lexicon.yaml)이 하고, 이 모듈은 값 손잡이(handles/value.mjs)가 부르는 안 계획 본체다.
 //
-//   valueRequest(axis, raw)         → null(값 없음 — 예전 「다르게」 경로) | { ask } | { value }
-//     color: { hex, from: "hex"|"name", name?, label? }      type: { category } | { family }
-//   impliedAxis(raw)                → "color"|"type"|null — 「축 이름」 낱말이 없어도 값만으로 축이 분명할 때(#hex · 서체 이름 · 명조/고딕/세리프/손글씨)
 //   planAxisValue(head, request, { n }) → { ask, reason? } | { heads: [{ value, label, head, detail }], notes[] }
+//     request = { target: "color"|"type", text, value } — color: { hex, from: "hex"|"name", name? }   type: { category } | { family }
 //
-// 색: 문장의 #rgb·#rrggbb 와 색 이름(작은 표 COLOR_NAMES — 이름마다 대표 색 하나)을 읽는다. 이름은 해석이라 보드 안내에 「초록 → #xxxxxx 로 읽었어요」를 단다(지어낸 값이 아니다).
+// 색: 요청한 색(#rrggbb) 하나를 주색으로 한 안을 만든다. 색 이름은 해석이라(작은 표 COLOR_NAMES — 이름마다 대표 색 하나) 보드 안내에 「초록 → #xxxxxx 로 읽었어요」를 단다(지어낸 값이 아니다).
 //   안 = brand.mjs brandToRecipeHead({ colors: [hex] }, 그 후보의 지금 레시피를 프리셋으로 만든 것) — 브랜드 색을 대비(4.5:1)·색조(2° 이내) 규칙에 맞춰 레시피 머리로 만든다.
 //   (a) 그 색을 주색으로 · (b) 같은 색조에서 명도만 다른 짝. 맞출 수 없으면(blocked) 아무것도 바꾸지 않고 질문으로 돌려준다 — 조용히 다른 색을 내지 않는다.
 //   바뀌는 것은 색(color·colorLogic)뿐이다 — 서체·축·히어로·모션은 지금 레시피 그대로.
-// 서체: 범주 낱말(명조·고딕·손글씨·둥근·고정폭 …)이나 서체 이름(폰트 키트·fonts.json)을 읽는다. 안 = 그 범주에서 한글을 그리는(본문은 lint font-korean) 키트 서체 상위 2개를 제목(+본문)에 쓴 머리.
+// 서체: 범주(명조·고딕·손글씨·둥근·고정폭)나 서체 이름(폰트 키트·fonts.json)을 받는다. 안 = 그 범주에서 한글을 그리는(본문은 lint font-korean) 키트 서체 상위 2개를 제목(+본문)에 쓴 머리.
 //   범주는 references/fonts/fonts.json 의 category 로, fonts.json 에 없는 키트 서체는 키트 항목의 generic 과 작은 보정표(KIT_CATEGORY)로 정한다. 맞는 서체가 없으면 질문.
 import { readFileSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { fill } from '../vocab/fill.mjs'
+import { grammar } from '../vocab/grammar.mjs'
 import { brandToRecipeHead, HUE_LIMIT } from './brand.mjs'
 import { kitFont, lintRecipeReport } from '../scripts/recipe.mjs'
 import { FONTS_FILE, css, oklchToHex, recipePreset } from '../scripts/style-presets.mjs'
@@ -22,98 +22,40 @@ import { ACCENT_C, hexToOklch, hueDist } from '../scripts/lib/palette-lib.mjs'
 import { parseOklch } from '../scripts/lib/palette-rules.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
-const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 const isKo = (raw) => /[가-힣]/.test(raw)
-/** 낱말 하나가 문장에 있는가 — 영어는 단어 경계, 한글은 포함. */
-function hasWord(lc, w) {
-  return /^[a-z][a-z' -]*$/i.test(w) ? new RegExp(`(?<![a-z])${esc(w)}(?![a-z])`, 'i').test(lc) : lc.includes(w)
-}
+const V = grammar.text.value // 안이 고른 모양을 말하는 글(grammar.yaml text.value)
+const say = (pair, ko, vars) => fill(pair[ko ? 'ko' : 'en'], vars)
 
 // ── 색 읽기 ──────────────────────────────────────────────────────────────────
 
 /** 색 이름 → 대표 색 하나. 주색(버튼·링크 글자)으로 쓰므로 밝은 바탕 위 4.5:1 에 닿는 중간 명도로 골랐다(노랑·베이지·흰색은 밝아서 맞추지 못해 질문으로 간다 — 정직하게). */
 export const COLOR_NAMES = [
-  { key: 'red', label: '빨강', en: 'red', hex: '#C62828', ko: ['빨강', '빨간', '붉은', '레드'], words: ['red'] },
-  { key: 'orange', label: '주황', en: 'orange', hex: '#B45309', ko: ['주황', '오렌지'], words: ['orange'] },
-  { key: 'yellow', label: '노랑', en: 'yellow', hex: '#F2C200', ko: ['노랑', '노란', '옐로'], words: ['yellow'] },
-  { key: 'green', label: '초록', en: 'green', hex: '#2E7D32', ko: ['초록', '녹색'], words: ['green'] },
-  { key: 'teal', label: '청록', en: 'teal', hex: '#00796B', ko: ['청록'], words: ['teal'] },
-  { key: 'blue', label: '파랑', en: 'blue', hex: '#1565C0', ko: ['파랑', '파란', '푸른', '블루'], words: ['blue'] },
-  { key: 'navy', label: '남색', en: 'navy', hex: '#1F3A8A', ko: ['남색', '네이비'], words: ['navy'] },
-  { key: 'purple', label: '보라', en: 'purple', hex: '#6A1B9A', ko: [/보라(?![고면니는])/, '퍼플'], words: ['purple'] },
-  { key: 'pink', label: '분홍', en: 'pink', hex: '#D6336C', ko: ['분홍', '핑크'], words: ['pink'] },
-  { key: 'brown', label: '갈색', en: 'brown', hex: '#7B4A2D', ko: ['갈색', '브라운'], words: ['brown'] },
-  { key: 'beige', label: '베이지', en: 'beige', hex: '#D8C3A5', ko: ['베이지'], words: ['beige'] },
-  { key: 'black', label: '검정', en: 'black', hex: '#111111', ko: ['검정', '검은', '블랙'], words: ['black'] },
-  { key: 'gray', label: '회색', en: 'gray', hex: '#707070', ko: ['회색', '그레이'], words: ['gray', 'grey'] },
-  { key: 'white', label: '흰색', en: 'white', hex: '#FFFFFF', ko: ['흰색', '하양', '하얀', '흰', '화이트'], words: ['white'] },
+  { key: 'red', label: '빨강', en: 'red', hex: '#C62828' },
+  { key: 'orange', label: '주황', en: 'orange', hex: '#B45309' },
+  { key: 'yellow', label: '노랑', en: 'yellow', hex: '#F2C200' },
+  { key: 'green', label: '초록', en: 'green', hex: '#2E7D32' },
+  { key: 'teal', label: '청록', en: 'teal', hex: '#00796B' },
+  { key: 'blue', label: '파랑', en: 'blue', hex: '#1565C0' },
+  { key: 'navy', label: '남색', en: 'navy', hex: '#1F3A8A' },
+  { key: 'purple', label: '보라', en: 'purple', hex: '#6A1B9A' },
+  { key: 'pink', label: '분홍', en: 'pink', hex: '#D6336C' },
+  { key: 'brown', label: '갈색', en: 'brown', hex: '#7B4A2D' },
+  { key: 'beige', label: '베이지', en: 'beige', hex: '#D8C3A5' },
+  { key: 'black', label: '검정', en: 'black', hex: '#111111' },
+  { key: 'gray', label: '회색', en: 'gray', hex: '#707070' },
+  { key: 'white', label: '흰색', en: 'white', hex: '#FFFFFF' },
 ]
-// 주색이 아닌 자리를 말하는 낱말 — 이 도구는 주색(버튼·링크·강조)만 바꾼다. 다른 자리를 말하면 되묻는다.
-const OTHER_ROLE = ['배경', '바탕색', '글자색', '글자 색', '글씨색', '글씨 색', '텍스트 색', '텍스트색', '본문 색', '테두리', 'background', 'text color', 'font color', 'foreground', 'border']
-const HEX = /#([0-9a-f]{6}|[0-9a-f]{3})(?![0-9a-z])/gi
-export const hexesIn = (raw) => [...new Set([...String(raw ?? '').matchAll(HEX)].map((m) => {
-  const h = m[1].toUpperCase()
-  return `#${h.length === 3 ? h.split('').map((c) => c + c).join('') : h}`
-}))]
-const namesIn = (lc) => COLOR_NAMES.filter((c) => c.ko.some((w) => (w instanceof RegExp ? w.test(lc) : lc.includes(w))) || c.words.some((w) => hasWord(lc, w)))
-
-// 값을 빼 달라는 말(「빨강 말고」·"not red") — 그 값을 그대로 적용하면 반대로 가므로 어떤 값을 원하는지 되묻는다.
-const NEGATION = ['말고', '빼고', '제외', '아닌', '아니라', '싫', '말아', '쓰지 마', 'not', "don't", 'do not', 'except', 'instead of', 'other than', 'without', 'avoid', 'hate']
-const negated = (lc) => NEGATION.some((w) => hasWord(lc, w))
-const ASK = {
-  ko: {
-    negated: '어떤 값으로 바꿀까요? 색 이름이나 #코드, 서체 이름으로 알려 주세요.',
-    manyColors: '색이 여러 개로 읽혀요. 하나만 알려 주세요.',
-    otherRole: '배경·글자 색은 따로 못 바꿔요. 메인(주) 색만 바꿀까요?',
-    manyTypes: '서체 범주가 여러 개로 읽혀요. 하나만 알려 주세요.',
-    manyFamilies: '서체 이름이 여러 개로 읽혀요. 하나만 알려 주세요.',
-  },
-  en: {
-    negated: 'Which value should it be? Give a color name, #code or font name.',
-    manyColors: 'More than one color matches. Pick one.',
-    otherRole: 'I can only change the main color, not background or text. Do that?',
-    manyTypes: 'More than one font style matches. Pick one.',
-    manyFamilies: 'More than one font name matches. Pick one.',
-  },
-}
-
-function colorValue(raw) {
-  const lc = raw.toLowerCase()
-  const A = ASK[isKo(raw) ? 'ko' : 'en']
-  const hexes = hexesIn(raw)
-  const names = hexes.length ? [] : namesIn(lc)
-  if (!hexes.length && !names.length) return null
-  if (OTHER_ROLE.some((w) => hasWord(lc, w))) return { ask: A.otherRole }
-  if (negated(lc)) return { ask: A.negated }
-  if (hexes.length > 1 || names.length > 1) return { ask: A.manyColors }
-  if (hexes.length) return { value: { hex: hexes[0], from: 'hex' } }
-  return { value: { hex: names[0].hex, from: 'name', name: names[0].key } }
-}
 
 // ── 서체 읽기 ─────────────────────────────────────────────────────────────────
 
-// 범주 낱말 — 순서가 뜻이다(산세리프를 먼저 걷어내야 「세리프」가 따로 걸리지 않는다).
+// 서체 범주 — 사용자가 쓰는 낱말은 사전(type-family 값)이 맡고, 여기는 범주 이름표와 안 계획이 쓴다.
 export const TYPE_CATEGORIES = [
-  { key: 'sans', label: '고딕(산세리프)', en: 'sans-serif', words: ['산세리프', '산스', '고딕', 'sans-serif', 'sans serif', 'sansserif', 'sans'] },
-  { key: 'serif', label: '명조(세리프)', en: 'serif', words: ['명조', '바탕체', '세리프', 'serif'] },
-  { key: 'handwriting', label: '손글씨', en: 'handwriting', words: ['손글씨', '필기체', '캘리그라피', '붓글씨', '캘리', 'handwriting', 'handwritten', 'calligraphy'] },
-  { key: 'rounded', label: '둥근 서체', en: 'rounded', words: ['둥근', '라운드', 'rounded'] },
-  { key: 'mono', label: '고정폭', en: 'monospace', words: ['고정폭', '모노스페이스', 'monospace', 'mono'] },
+  { key: 'sans', label: '고딕(산세리프)', en: 'sans-serif' },
+  { key: 'serif', label: '명조(세리프)', en: 'serif' },
+  { key: 'handwriting', label: '손글씨', en: 'handwriting' },
+  { key: 'rounded', label: '둥근 서체', en: 'rounded' },
+  { key: 'mono', label: '고정폭', en: 'monospace' },
 ]
-// 축 이름 낱말이 없어도 서체 이야기가 분명한 범주 낱말.
-const IMPLIED_TYPE = ['명조', '고딕', '산세리프', '세리프', '손글씨', 'sans-serif', 'serif', 'handwriting']
-
-function categoriesIn(lc) {
-  let rest = lc
-  const found = []
-  for (const c of TYPE_CATEGORIES) {
-    const hit = c.words.filter((w) => hasWord(rest, w))
-    if (!hit.length) continue
-    found.push(c)
-    for (const w of hit) rest = /^[a-z]/i.test(w) ? rest.replace(new RegExp(`(?<![a-z])${esc(w)}(?![a-z])`, 'gi'), ' ') : rest.split(w).join(' ')
-  }
-  return found
-}
 
 let KOREAN_LIST, REF_FONTS, KIT_LIST
 const koreanList = () => (KOREAN_LIST ??= JSON.parse(readFileSync(join(ROOT, 'factory', 'qa', 'data', 'korean-fonts.json'), 'utf8')).families)
@@ -131,47 +73,42 @@ function families() {
   for (const r of refFonts()) add(r.family, { item: null, installable: false, korean: false, exactCase: true })
   return (FAMILIES = map)
 }
+
+// ── 값으로 말한 #hex·서체 이름 ────────────────────────────────────────────────────
+// 색 이름·서체 범주는 사전이 읽는다. 사전에 없는 두 가지 — 색 코드와 서체 이름 — 는 여기서 문장에서 찾아, 값 읽기(color-hue 는 「#rrggbb」, type-family 는 서체 이름)로 넘긴다.
+
+const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const HEX = /#([0-9a-f]{6}|[0-9a-f]{3})(?![0-9a-z])/gi
+/** 문장의 색 코드(#rgb·#rrggbb) → 대문자 #RRGGBB, 겹침 없이. */
+const hexesIn = (raw) => [...new Set([...String(raw ?? '').matchAll(HEX)].map((m) => {
+  const h = m[1].toUpperCase()
+  return `#${h.length === 3 ? h.split('').map((c) => c + c).join('') : h}`
+}))]
+/** 문장의 서체 이름 → 키트·fonts.json 항목. 더 긴 이름 안에 든 이름은 뺀다(Noto Serif KR 안의 Noto Serif). */
 function familiesIn(raw) {
   const lc = raw.toLowerCase()
   const hits = []
   for (const [k, e] of families()) {
-    const re = new RegExp(`(?<![a-z0-9])${esc(k)}(?![a-z0-9])`, 'i')
-    if (!re.test(lc)) continue
+    if (!new RegExp(`(?<![a-z0-9])${esc(k)}(?![a-z0-9])`, 'i').test(lc)) continue
     if (e.exactCase && !new RegExp(`(?<![A-Za-z0-9])${esc(e.name)}(?![A-Za-z0-9])`).test(raw)) continue
     hits.push([k, e])
   }
-  // 더 긴 이름 안에 든 이름은 뺀다(Noto Serif KR 안의 Noto Serif)
   return hits.filter(([k]) => !hits.some(([k2]) => k2 !== k && k2.includes(k))).map(([, e]) => e)
 }
 
-function typeValue(raw) {
-  const lc = raw.toLowerCase()
-  const A = ASK[isKo(raw) ? 'ko' : 'en']
-  const fam = familiesIn(raw)
-  const cats = categoriesIn(lc)
-  if ((fam.length || cats.length) && negated(lc)) return { ask: A.negated }
-  if (fam.length > 1) return { ask: A.manyFamilies }
-  if (fam.length === 1) return { value: { family: fam[0].name } }
-  if (cats.length > 1) return { ask: A.manyTypes }
-  if (cats.length === 1) return { value: { category: cats[0].key } }
+/** 문장이 색 코드 하나나 서체 이름 하나만 말했으면 그 값 읽기의 축과 값. 둘 이상이거나 섞여 있으면 null(사전 분류가 되묻는다). */
+export function literalValueIn(raw) {
+  const [hexes, fams] = [hexesIn(raw), familiesIn(String(raw ?? ''))]
+  if (hexes.length === 1 && !fams.length) return { axis: 'color-hue', value: hexes[0] }
+  if (fams.length === 1 && !hexes.length) return { axis: 'type-family', value: fams[0].name }
   return null
 }
 
-/** 축 이름 낱말이 없을 때: #hex 가 있으면 색, 서체 이름·분명한 범주 낱말이 있으면 서체. 아니면 null. */
-export function impliedAxis(raw) {
-  const text = String(raw ?? '')
-  if (hexesIn(text).length) return 'color'
-  const lc = text.toLowerCase()
-  if (familiesIn(text).length || IMPLIED_TYPE.some((w) => hasWord(lc, w))) return 'type'
-  return null
-}
-
-/** 축 하나의 값 요청 읽기. 값이 없으면 null(예전 「다르게」 경로 그대로). */
-export function valueRequest(axis, raw) {
-  const text = String(raw ?? '')
-  if (axis === 'color') return colorValue(text)
-  if (axis === 'type') return typeValue(text)
-  return null
+/** 값 읽기의 값이 사전 표기가 아닌 직접 말한 값인가 — color-hue 는 #rrggbb, type-family 는 아는 서체 이름. */
+export function isLiteralValue(axis, value) {
+  if (axis === 'color-hue') return /^#[0-9a-f]{6}$/i.test(String(value))
+  if (axis === 'type-family') return families().has(String(value).toLowerCase())
+  return false
 }
 
 // ── 색 안 ────────────────────────────────────────────────────────────────────
@@ -227,13 +164,14 @@ function nearestFeasible(head, hex) {
   return null
 }
 
-const nameLabel = (value, ko) => { const c = COLOR_NAMES.find((x) => x.key === value.name); return ko ? c.label : c.en }
+const nameLabel = (value, ko) => { const c = COLOR_NAMES.find((x) => x.key === value.name); return ko ? c?.label ?? value.label : c?.en ?? value.name } // 표 밖 이름(금색·하늘색 …)은 요청이 가져온 label 과 key 를 쓴다
 const nameNote = (value, ko) => (value.from === 'name'
   ? (ko ? `${nameLabel(value, ko)} → ${value.hex} 로 읽었어요. 정확한 색 코드가 있으면 알려 주세요.` : `Read "${nameLabel(value, ko)}" as ${value.hex}. If you have an exact color code, tell me.`)
   : null)
 
 function planColor(head, value, { lang }) {
   const ko = lang === 'ko'
+  let reason = null
   const theme = themeOf(head)
   const a = tryColor(head, value.hex)
   const shown = value.from === 'name' ? `${nameLabel(value, ko)}(${value.hex})` : value.hex
@@ -253,7 +191,7 @@ function planColor(head, value, { lang }) {
   if (aShift.length) notes.push(ko ? `주색을 명도만 조정했어요(바탕 위 4.5:1): ${aShift.join(' · ')}` : `Only lightness of the main color was adjusted (4.5:1 on the background): ${aShift.join(' · ')}`)
 
   const heads = [{
-    value: value.hex, label: ko ? `주색 ${value.hex}${primaryHexOf(a.head) !== value.hex ? ` → 화면 ${primaryHexOf(a.head)}` : ''}` : `main color ${value.hex}${primaryHexOf(a.head) !== value.hex ? ` → shown as ${primaryHexOf(a.head)}` : ''}`, head: a.head,
+    value: value.hex, label: primaryHexOf(a.head) !== value.hex ? say(V.mainColorShown, ko, { hex: value.hex, shown: primaryHexOf(a.head) }) : say(V.mainColor, ko, { hex: value.hex }), head: a.head,
     detail: { read: value.from === 'name' ? { name: nameLabel(value, ko), hex: value.hex } : null, primary: { light: primaryHexOf(a.head, 'light'), dark: primaryHexOf(a.head, 'dark') }, colorLogic: a.head.colorLogic },
   }]
   // (b) 같은 색조에서 명도만 다른 짝 — 라이트 기본은 어둡게부터, 다크 기본은 밝게부터. 고쳐 맞춘 주색이 (a) 와 같아지면 쓰지 않는다.
@@ -268,11 +206,11 @@ function planColor(head, value, { lang }) {
   }
   if (pair) {
     heads.push({
-      value: primaryHexOf(pair.b.head), label: ko ? `같은 색조·${pair.d < 0 ? '더 어두운' : '더 밝은'} 명도 — 주색 ${primaryHexOf(pair.b.head)}` : `same hue, ${pair.d < 0 ? 'darker' : 'lighter'} — main color ${primaryHexOf(pair.b.head)}`, head: pair.b.head,
+      value: primaryHexOf(pair.b.head), label: say(pair.d < 0 ? V.pairDarker : V.pairLighter, ko, { hex: primaryHexOf(pair.b.head) }), head: pair.b.head,
       detail: { pairOf: value.hex, requested: pair.hex, primary: { light: primaryHexOf(pair.b.head, 'light'), dark: primaryHexOf(pair.b.head, 'dark') }, colorLogic: pair.b.head.colorLogic },
     })
-  } else notes.push(ko ? '같은 색조에서 명도만 다른 짝은 규칙을 맞추지 못해 한 안만 냈어요.' : 'No same-hue lightness pair met the rules, so there is one option.')
-  return { heads, notes }
+  } else reason = ko ? '같은 색조에서 명도만 다른 짝은 규칙을 맞추지 못해 한 안만 냈어요.' : 'No same-hue lightness pair met the rules, so there is one option.'
+  return { heads, notes, ...(reason ? { reason } : {}) } // reason = 안이 하나뿐인 까닭(안내가 아니라 까닭 한 줄)
 }
 
 // ── 서체 안 ──────────────────────────────────────────────────────────────────
@@ -339,8 +277,8 @@ function planType(head, value, { lang, n }) {
     const f = { family: faceOf(e.item), item: e.item }
     const both = e.korean ? fontHead(head, f, { body: true }) : null
     const titleOnly = fontHead(head, f, { body: false })
-    if (both) heads.push({ value: f.family, label: ko ? `${f.family} 제목·본문` : `${f.family} for headings and body`, head: both, detail: { applies: 'display+body' } })
-    if (titleOnly) heads.push({ value: f.family, label: ko ? `${f.family} 제목만` : `${f.family} for headings only`, head: titleOnly, detail: { applies: 'display' } })
+    if (both) heads.push({ value: f.family, label: say(V.fontBoth, ko, { family: f.family }), head: both, detail: { applies: 'display+body' } })
+    if (titleOnly) heads.push({ value: f.family, label: say(V.fontTitle, ko, { family: f.family }), head: titleOnly, detail: { applies: 'display' } })
     if (!e.korean) notes.push(ko ? `${f.family} 는 한글을 그리지 못해 본문은 그대로 두고 제목만 바꿔요.` : `${f.family} can't draw Korean, so only headings change.`)
     if (!heads.length) return { ask: ko ? `${f.family} 는 이 레시피의 서체 규칙을 맞출 수 없어요. 비슷한 서체로 바꿀까요?` : `${f.family} doesn't fit this recipe's font rules. Try a similar one?`, reason: 'lint' }
     return { heads: heads.slice(0, n), notes }
@@ -353,7 +291,7 @@ function planType(head, value, { lang, n }) {
   for (const f of fresh) {
     if (heads.length >= n) break
     const h = fontHead(head, f, { body })
-    if (h) heads.push({ value: f.family, label: ko ? `${f.family} ${body ? '제목·본문' : '제목'}` : `${f.family} for ${body ? 'headings and body' : 'headings'}`, head: h, detail: { applies: body ? 'display+body' : 'display', category: value.category } })
+    if (h) heads.push({ value: f.family, label: say(body ? V.fontBoth : V.fontTitle, ko, { family: f.family }), head: h, detail: { applies: body ? 'display+body' : 'display', category: value.category } })
   }
   if (!heads.length) return { ask: ko ? `${cat.label} 계열로는 이 레시피의 서체 규칙을 맞출 수 없어요. 다른 서체로 바꿀까요?` : `No ${cat.en} font fits this recipe's rules. Try another style?`, reason: 'no-font' }
   notes.unshift(ko ? `${cat.label} 계열 서체로 읽었어요. 정확한 서체 이름이 있으면 알려 주세요.` : `Read it as a ${cat.en} font. If you have an exact font name, tell me.`)

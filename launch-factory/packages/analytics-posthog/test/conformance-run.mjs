@@ -3,8 +3,8 @@ import { createPostHogAnalytics } from "../src/index.ts"
 import { createServerAnalytics } from "../src/server.ts"
 import { consentOf, fakePostHogJs, fakePostHogNode, toSent } from "./fakes.mjs"
 
-/** 묶음이 돌려야 하는 검사 수(web-factory v0.0.12 기준 — b2fb648 의 34개에서 36개로: SAMPLE_EVENTS 에 web_vital·app_install 예시가 늘어 이벤트별 검사가 둘 늘었다. 4febd6e·840924e) */
-export const ANALYTICS_PINS = { total: 36, expectedFailures: {} }
+/** 묶음이 돌려야 하는 검사 수(web-factory v0.0.14 기준 — 36개에서 42개로: SAMPLE_EVENTS 에 add_to_cart·begin_checkout·purchase·booking_view·booking_submit·booking_cancel 예시가 늘어 이벤트별 검사가 여섯 늘었다. 그 앞 v0.0.12 기준 — b2fb648 의 34개에서 36개로: SAMPLE_EVENTS 에 web_vital·app_install 예시가 늘어 이벤트별 검사가 둘 늘었다. 4febd6e·840924e) */
+export const ANALYTICS_PINS = { total: 42, expectedFailures: {} }
 
 /** 브라우저 어댑터 make(posthog-js 가짜 — SDK 에 넘긴 capture 호출을 되읽음) */
 export const makeClient = ({ consent }) => {

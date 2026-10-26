@@ -30,7 +30,7 @@ export const LIVE_DUMMY = Object.freeze({
 })
 
 /** 스모크 서버·빌드에 새는 걸 막으려고 지우는 이 PC·러너의 환경 이름(시험이 자기 환경을 소유한다 — run-tests.mjs 의 AMBIENT 와 같은 발상) */
-export const AMBIENT_ENV = /^(?:LF_(?!CI_|SMOKE_)|PADDLE_|POSTHOG_|SENTRY_|RESEND_|TURNSTILE_|GUMROAD_|GOOGLE_CLIENT_|KAKAO_CLIENT_|NAVER_CLIENT_|DATABASE_URL$|BETTER_AUTH_|CRON_SECRET$|SUBJECT_REF_KEY$|EMAIL_FROM$|INQUIRY_OWNER_EMAIL$|NEXT_PUBLIC_|WF_SESSION$|NODE_ENV$)/
+export const AMBIENT_ENV = /^(?:LF_(?!CI_|SMOKE_)|PADDLE_|PORTONE_|POSTHOG_|SENTRY_|RESEND_|TURNSTILE_|GUMROAD_|GOOGLE_CLIENT_|KAKAO_CLIENT_|NAVER_CLIENT_|DATABASE_URL$|BETTER_AUTH_|CRON_SECRET$|SUBJECT_REF_KEY$|EMAIL_FROM$|INQUIRY_OWNER_EMAIL$|NEXT_PUBLIC_|WF_SESSION$|NODE_ENV$)/
 
 /** 환경에서 공급자·모드 이름을 지우고 extra 를 얹는다 */
 export function cleanEnv(base, extra = {}) {
@@ -43,6 +43,35 @@ export function modeEnv(mode, base = process.env) {
   if (mode === "mock") return cleanEnv(base, { LF_MODE: "mock", LF_ALLOW_MOCK_PROD: "1", LF_MOCK_SCENES: "1" })
   if (mode === "live") return cleanEnv(base, { ...LIVE_DUMMY })
   throw new Error(`모르는 모드: ${mode}`)
+}
+
+// ── 한 바퀴(loop) ───────────────────────────────────────────────────────────────────────
+
+/** 오케스트레이터의 모드 이름. all 은 이 셋을 mock → loop → live 순으로 돈다 */
+export const SMOKE_MODES = Object.freeze(["mock", "live", "loop"])
+
+/** 모드 → 돌릴 모드 목록. all = mock → loop(mock 빌드를 다시 쓴다, 서버만 새 env) → live */
+export function modesFor(mode) {
+  if (mode === "all") return ["mock", "loop", "live"]
+  if (SMOKE_MODES.includes(mode)) return [mode]
+  throw new Error(`모르는 모드: ${mode}`)
+}
+
+/** 어떤 빌드를 쓰는가 — loop 는 mock 빌드(LF_MODE=mock)에 장면 없이·새 env 로 서버만 다시 띄운다 */
+export const buildModeOf = (mode) => (mode === "loop" ? "mock" : mode)
+
+/**
+ * 한 바퀴 서버의 환경. 장면(LF_MOCK_SCENES)이 없다 — 방문자의 로그인이 요청 사이에 이어져야 한다(mock 포트가 프로세스 하나).
+ * LF_MOCK_SUB=none: 결제 전에는 구독이 없다. LF_MOCK_OUTBOX: 이번 실행의 새 메일 기록 파일(packages/email 이 한 줄씩 덧붙인다).
+ */
+export function loopEnv(outbox, base = process.env) {
+  if (!outbox) throw new Error("loopEnv: 메일 기록 경로(outbox)가 필요하다")
+  return cleanEnv(base, { LF_MODE: "mock", LF_ALLOW_MOCK_PROD: "1", LF_MOCK_SUB: "none", LF_MOCK_OUTBOX: outbox })
+}
+
+/** 시험(Playwright) 쪽 환경 — cleanEnv 가 LF_* 를 지우므로 이름이 다르다: SMOKE_OUTBOX(서버가 쓴 기록을 시험이 센다), LOOP_FEATURES(쉼표, 없으면 전부) */
+export function loopTestEnv(outbox, base = process.env) {
+  return { SMOKE_OUTBOX: outbox, ...(base.LOOP_FEATURES ? { LOOP_FEATURES: base.LOOP_FEATURES } : {}) }
 }
 
 // ── axe 기준선(알려진 실패 목록) ─────────────────────────────────────────────────────────

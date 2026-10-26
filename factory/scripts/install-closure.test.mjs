@@ -1,5 +1,5 @@
 // 설치 닫힘 탐침(최종 리뷰 I1·권고 2). 실행: node --test --test-force-exit --test-timeout=60000 "factory/scripts/*.test.mjs"
-// 실제 `shadcn build`(node_modules 의 4.21.0, 네트워크 없음)를 임시 폴더에 돌려 저장소에서 만든 항목과 같은지도 본다(2초 안팎).
+// 실제 `shadcn build`(node_modules 의 4.22.1, 네트워크 없음)를 임시 폴더에 돌려 저장소에서 만든 항목과 같은지도 본다(2초 안팎).
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
@@ -20,7 +20,7 @@ const probe = {
   files: [{ path: 'registry/factory/blocks/probe.tsx', type: 'registry:component', content: 'import { useReducedMotion } from "@/registry/factory/motion/use-reduced-motion"\nimport { usePauseOffscreen } from "@/registry/factory/motion/use-pause-offscreen"\n' }],
 }
 
-test('shadcn 4.21.0 rules: install spot and import rewrite for each layer shape', () => {
+test('shadcn 4.22.1 rules: install spot and import rewrite for each layer shape', () => {
   assert.equal(installPath({ path: 'registry/factory/r/r1-measure/ui/button.tsx', type: 'registry:ui', target: '@ui/button.tsx' }), 'components/ui/button.tsx')
   assert.equal(installPath({ path: 'registry/factory/ui/button.tsx', type: 'registry:ui' }), 'components/ui/button.tsx')
   assert.equal(installPath({ path: 'registry/factory/hooks/use-mobile.ts', type: 'registry:hook' }), 'hooks/use-mobile.ts')
@@ -72,7 +72,7 @@ test('positive control: the pre-fix hook shape (no target → hooks/) is caught 
 })
 
 // 자기 기한 300초(대장 A24 — 직렬 시험 부하 때 공통 기한 120초를 넘겨 1건 취소된 적이 있다. 관문 명령의 공통 기한은 올리지 않는다).
-test('the real `shadcn build` output (offline, local shadcn 4.21.0) equals the in-repo items and passes the same probe', { timeout: 300000 }, async () => {
+test('the real `shadcn build` output (offline, local shadcn 4.22.1) equals the in-repo items and passes the same probe', { timeout: 300000 }, async () => {
   const out = mkdtempSync(join(tmpdir(), 'wf-build-'))
   try {
     const code = await new Promise((res) => spawn(process.execPath, [join(root, 'node_modules', 'shadcn', 'dist', 'index.js'), 'build', '-o', out], { cwd: root, stdio: 'ignore' }).on('exit', res))

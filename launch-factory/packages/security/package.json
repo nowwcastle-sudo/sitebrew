@@ -23,6 +23,6 @@
     "nosecone": "1.14.1"
   },
   "devDependencies": {
-    "@types/node": "24.19.1"
+    "@types/node": "24.19.2"
   }
 }

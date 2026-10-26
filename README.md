@@ -6,7 +6,7 @@
 
 Sitebrew is a plugin for Claude Code and Codex. You describe your site in plain words. It builds three different candidates, you pick one, you adjust it in the conversation, and you take the code into your own folder. You do not need to know how to code, and you do not need an API key to start.
 
-Current version `v0.1.2` · MIT license · Windows 10 and 11
+Current version `v0.2.3` · MIT license · Windows 10 and 11
 
 ## Why Sitebrew
 
@@ -55,13 +55,13 @@ All five end in the same place: Sitebrew in a `sitebrew` folder and the plugin i
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.1.2 sitebrew
+npm create sitebrew@0.2.3 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.1.2 sitebrew
+npx create-sitebrew@0.2.3 sitebrew
 ```
 
 Both take the same options: `--dry-run` shows the plan and changes nothing, `--yes` answers yes to every question, and `--tool` chooses `claude`, `codex` or `both`.
@@ -69,14 +69,14 @@ Both take the same options: `--dry-run` shows the plan and changes nothing, `--y
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
 ```
 
 To see what it would do without installing anything:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 In Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.1.2
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.3
 /plugin install sitebrew@sitebrew
 ```
 
 In Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.1.2
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.3
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ The check before a merge is `npm run ci:verify`. The guide for agents is [docs/a
 You can also add the parts to another Next.js project. Always pin the tag:
 
 ```bash
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-default#v0.1.2 -y -o
-npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/factory-base#v0.1.2 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.3 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.3 -y -o
 ```
 
 ## Contributing
@@ -149,6 +149,10 @@ MIT. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 | Tag | Date | Changes | Record |
 |---|---|---|---|
+| `v0.2.3` | 2026-10-26 | Patch release: the eight plugin skills were reworked, with clearer routing and exit-code tables · one home per rule · a Node.js-missing path in setup · an exact release-tag check and Windows-safe npm in the install guide · browser checks that match the places the kit reads · safer handover in new · more skip reasons in deliver · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |
+| `v0.2.2` | 2026-10-25 | Skill audit fixes: the doctor skill no longer installs anything itself and hands over to the setup skill · deliver tells the Vercel preview link and the temporary public address apart · revise gets one exit-code table, runbook reads its chapter files by section, new marks the build time as a single measurement · the plugin guide lists the setup and runbook skills · the QA page no longer shows a real person's name · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |
+| `v0.2.1` | 2026-10-25 | Patch release: shadcn 4.22.1 pinned in one place (clears the nested zod advisory) · campaign pages are noindex by default · product lists carry ItemList and event landings carry Event structured data · the share card shows the brand logo · event landing briefs ask for date and venue · the add-recipe check follows the guide · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |
+| `v0.2.0` | 2026-10-24 | Back-end modules that run in mock mode without keys (shop and Korean payments, booking, notifications and push, reviews, search, storage, newsletter, my requests, admin) · shareable preview links through a Cloudflare quick tunnel · owner guides and a runbook shown once you decide to use the site · the skill now detects chatbot or agent mode, and a new setup skill installs what is missing · web-factory v0.0.14 + launch-factory v0.2.0 (internal versions) | — |
 | `v0.1.2` | 2026-10-16 | Plugin directory review: the doctor reads the clone address from compat.json, the plugin README lists its network calls, the release guide adds the GitHub release step; lucide-react 1.53.0 in the launch kit | — |
 | `v0.1.1` | 2026-10-15 | Ready for the Claude plugin directory: line-ending rules no longer touch `plugins/sitebrew`, plugin icon, clearer doctor note, five install methods, AGENT_INSTALL.md and CONTRIBUTING.md | — |
 | `v0.1.0` | 2026-10-15 | First public release · web-factory v0.0.13 + launch-factory v0.1.2 (internal versions) | — |

@@ -1,0 +1,18 @@
+{
+  "name": "feature-payments-kr",
+  "title": "결제 — 국내 카드·간편결제(PortOne V2)",
+  "description": "PortOne V2 결제 중개 조립: 결제 준비·재조회·전액 취소(PaymentGateway)와 웹훅 서명 확인을 환경에서 고른다. 키 없는 미리보기는 모의 게이트웨이, live 에서 PortOne 값이 빠지면 상점만 꺼진다.",
+  "npm": ["@launch-factory/payments-kr", "@launch-factory/env"],
+  "registryDependencies": [],
+  "envVars": ["LF_MODE", "NEXT_PUBLIC_PORTONE_STORE_ID", "NEXT_PUBLIC_PORTONE_CHANNEL_KEY", "PORTONE_API_SECRET", "PORTONE_WEBHOOK_SECRET"],
+  "files": ["files/lib/launch/payments.ts", "../_shared/lib/launch/env.ts"],
+  "noEntrypointReason": "서버 전용 조립이다. 공개 서버 액션·경로로 열면 결제 취소를 아무나 부를 수 있다. 상점 항목(feature-commerce)이 부른다.",
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 상점 항목(feature-commerce)과 함께 쓴다. 이 항목만으로는 쪽도 액션도 생기지 않는다.",
+    "2. .env.local 에 이름이 추가됐다. 값은 Windows 사용자 환경 변수 또는 배포 환경에 넣는다. 네 이름은 모두 선택이다 — live 에서 하나라도 없으면 **사이트는 켜지고 상점만 꺼진다**(payments().enabled 가 false, 상점 액션은 code provider_unavailable·retryable false). 앞의 둘(스토어 ID·채널 키)은 브라우저에 노출되는 값이고 뒤의 둘(API 시크릿·웹훅 시크릿)은 서버 비밀이다.",
+    "3. PortOne 관리자 콘솔에서 스토어 ID·채널 키를 확인하고, V2 API 시크릿을 만들고, 웹훅 엔드포인트(https://<도메인>/api/webhooks/portone)를 등록해 웹훅 시크릿(whsec_…)을 받는다. 결제창은 테스트 채널에서 먼저 시험한다.",
+    "4. mock 모드(LF_MODE=mock)는 키가 있어도 모의 게이트웨이를 쓴다 — 실결제로 새지 않는다. 결제는 서버가 모의 결제 확인(commerce 액션 payWithMock)으로 일으킨다.",
+    "5. 금액은 원화(KRW) 정수만 받는다. 다른 통화나 소수는 던진다."
+  ]
+}

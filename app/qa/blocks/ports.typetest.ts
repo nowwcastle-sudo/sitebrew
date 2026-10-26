@@ -16,7 +16,9 @@ import type {
 } from "@/registry/factory/contract/ports"
 import { CONTRACT_VERSION, type EventName, type EventProps } from "@/registry/factory/contract/events"
 import type { MOCK_SUBS } from "@/registry/factory/contract/adapter-mock"
+import type { MOCK_ORDER_STATUSES } from "@/registry/factory/contract/adapter-mock-commerce"
 import { withAttribution } from "@/registry/factory/contract/attribution"
+import type { CartTotals, CommercePort, Order, OrderStatus, PaymentSession } from "@/registry/factory/contract/commerce"
 
 declare const track: AnalyticsPort["track"]
 declare const email: string
@@ -86,3 +88,15 @@ track("cta_click", { id: "hero-primary", label: "시작하기", section: "hero",
 export const wrapped: AnalyticsPort = withAttribution(analyticsPort, { recipeId: "r1-measure" })
 export const contractVersion: 2 = CONTRACT_VERSION
 export const trialCheckout: Parameters<BillingPort["checkout"]>[0] = { planId: "pro", trial: false }
+
+// ⑨ 계획 3a(판매·결제) — 판매 포트 타입. 금액은 ports 의 Money 와 같고, 승인 행동 입력은 확인 칸(confirmed?: true)을 잇고, 판매 이벤트의 통화는 Currency 와 같다.
+same<Same<CartTotals["total"], Money>>(true)
+same<Same<Order["total"], PaymentSession["total"]>>(true)
+same<Same<Parameters<CommercePort["placeOrder"]>[0]["confirmed"], true | undefined>>(true)
+same<Same<Parameters<CommercePort["cancelOrder"]>[0]["confirmed"], true | undefined>>(true)
+same<Same<EventProps["begin_checkout"]["currency"], Currency>>(true)
+same<Same<EventProps["purchase"]["currency"], Currency>>(true)
+// 주문 상태는 일곱 개다(launch-factory 의 전이 표 키와 같아야 한다 — 그쪽 DB CHECK 가 이 타입을 포함 검사한다)
+same<Same<OrderStatus, "pending_payment" | "paid" | "preparing" | "shipped" | "delivered" | "canceled" | "refunded">>(true)
+// 판매 목의 ?order= 값은 주문 상태 일곱 개 전부다.
+same<Same<(typeof MOCK_ORDER_STATUSES)[number], OrderStatus>>(true)

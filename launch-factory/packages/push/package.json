@@ -1,0 +1,24 @@
+{
+  "name": "@launch-factory/push",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "웹 푸시(계획 3b) — 구독 저장(NotifyPort.subscribePush/unsubscribePush)과 VAPID 발송. 폐기된 구독(404/410)은 정리하고, 가짜 모드는 전송 없이 기록만.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/contract": "0.0.0",
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/security": "0.0.0",
+    "web-push": "3.6.7",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1",
+    "@types/web-push": "3.6.4"
+  }
+}

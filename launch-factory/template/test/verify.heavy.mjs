@@ -11,6 +11,7 @@ import { existsSync } from "node:fs"
 import { join } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
+import { MOCK_ONLY_NAMES } from "@launch-factory/env"
 
 const T = fileURLToPath(new URL("..", import.meta.url))
 const NPM = process.platform === "win32" ? "npm.cmd" : "npm"
@@ -45,7 +46,7 @@ const FAKE_LIVE = {
 /** 공급자 키·LF_MODE 를 뺀 환경 — 이 기계에 키가 있어도 「키 없음」을 시험한다 */
 function cleanEnv(extra = {}) {
   const env = { ...process.env, NEXT_TELEMETRY_DISABLED: "1", CI: "1" }
-  for (const n of [...PROVIDER_NAMES, ...TEMPLATE_NAMES, ...OPTIONAL_NAMES, "PADDLE_CLIENT_TOKEN", "LF_MODE", "LF_MOCK_SUB", "NODE_ENV", "SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"]) delete env[n]
+  for (const n of [...PROVIDER_NAMES, ...TEMPLATE_NAMES, ...OPTIONAL_NAMES, "PADDLE_CLIENT_TOKEN", "LF_MODE", ...MOCK_ONLY_NAMES, "NODE_ENV", "SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"]) delete env[n]
   return { ...env, ...extra }
 }
 const kill = (child) => {

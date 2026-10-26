@@ -1,6 +1,6 @@
 ﻿# Sitebrew installer for Windows (PowerShell 5.1 and PowerShell 7).
-#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/get.ps1 | iex
-#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.1.2/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
+#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
+#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
 #   .\install.ps1 [-Tool claude|codex|both] [-Folder <path>] [-Yes] [-WhatIf]
 # (This file starts with a BOM so Windows PowerShell 5.1 reads the Korean text when it runs as a file. A downloaded string keeps that BOM, so the
 #  one-line form goes through get.ps1 - plain ASCII - which removes it. The scriptblock form removes it itself with TrimStart.)
@@ -21,7 +21,7 @@ param(
   [string]$Tool = 'ask',
   [string]$Folder = '',
   [string]$Owner = 'nowwcastle-sudo',
-  [string]$Tag = 'v0.1.2',
+  [string]$Tag = 'v0.2.3',
   [switch]$Yes,
   [switch]$WhatIf
 )

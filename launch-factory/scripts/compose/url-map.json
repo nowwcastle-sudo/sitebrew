@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "why": "시안 쪽 URL 이 템플릿 제품 쪽과 같거나 같은 일을 하는 줄. route group 은 URL 에 들지 않는다. winner template: 시안 쪽은 버리고 시안 안의 링크를 template URL 로 바꾼다. 상점 쪽(/cart·/checkout·/orders)은 시안 원형(commerce)이 v0.2 로 미뤄 둔 쪽이라 지금 시안에는 없고, 시안이 켜면 템플릿의 진짜 장바구니·결제·주문 화면이 이긴다(/checkout/complete 는 템플릿에 따로 완료 쪽이 없어 결제 복귀 뒤에 가는 주문 목록으로 잇는다; /products 는 템플릿의 공개 상품 목록과 같은 URL 이라 시안이 자기 /products 를 가지면 시안이 이긴다 — 템플릿 쪽을 지우고 시안 쪽을 쓴다). winner site: 같은 URL 의 템플릿 쪽을 지우고 시안 쪽을 쓴다. siteWhenOff: 템플릿 쪽의 기능을 고르지 않아 그 쪽이 지워지면 시안 쪽을 쓴다(법정 쪽 — 환불 규정이 둘 다 사라지지 않게). 관리 화면(/admin)은 시안이 같은 주소를 쓰면 템플릿 쪽이 이기고, 관리 기능을 고르지 않아 지워지면 시안 쪽을 쓴다(계획 3d)",
+  "rows": [
+    { "site": "/", "template": "/", "winner": "site" },
+    { "site": "/pricing", "template": "/pricing", "winner": "template" },
+    { "site": "/account", "template": "/account", "winner": "template" },
+    { "site": "/billing", "template": "/account/billing", "winner": "template" },
+    { "site": "/cancel", "template": "/account/cancel", "winner": "template" },
+    { "site": "/login", "template": "/sign-in", "winner": "template" },
+    { "site": "/signup", "template": "/sign-up", "winner": "template" },
+    { "site": "/privacy", "template": "/privacy", "winner": "template" },
+    { "site": "/refund", "template": "/refund", "winner": "template", "siteWhenOff": true },
+    { "site": "/terms", "template": "/terms", "winner": "template" },
+    { "site": "/products", "template": "/products", "winner": "site" },
+    { "site": "/cart", "template": "/cart", "winner": "template" },
+    { "site": "/checkout", "template": "/checkout", "winner": "template" },
+    { "site": "/checkout/complete", "template": "/orders", "winner": "template" },
+    { "site": "/orders", "template": "/orders", "winner": "template" },
+    { "site": "/orders/[id]", "template": "/orders/[id]", "winner": "template" },
+    { "site": "/admin", "template": "/admin", "winner": "template", "siteWhenOff": true }
+  ]
+}

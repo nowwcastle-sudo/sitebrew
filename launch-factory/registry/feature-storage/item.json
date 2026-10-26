@@ -1,0 +1,33 @@
+{
+  "name": "feature-storage",
+  "title": "파일 올리기",
+  "description": "S3 호환 저장소(AWS S3·R2·MinIO)에 브라우저가 직접 올리는 파일 서버: 요청 제한(DB) → 정책 검사(종류·크기·형식) → 짧은 서명 티켓 → 끝낼 때 실제 크기·형식 재확인 → 보유 기간이 지나면 Cron 이 객체까지 지운다. mock 은 .tmp/uploads 폴더 드라이버.",
+  "npm": ["@launch-factory/storage", "@launch-factory/db", "@launch-factory/env", "@launch-factory/i18n", "@launch-factory/security", "drizzle-orm", "postgres"],
+  "registryDependencies": ["feature-auth-betterauth"],
+  "envVars": ["LF_MODE", "DATABASE_URL", "STORAGE_ENDPOINT", "STORAGE_BUCKET", "STORAGE_REGION", "STORAGE_ACCESS_KEY_ID", "STORAGE_SECRET_ACCESS_KEY", "STORAGE_PUBLIC_BASE_URL", "STORAGE_PATH_STYLE", "CRON_SECRET"],
+  "files": [
+    "files/lib/launch/storage.ts",
+    "files/app/api/storage/ticket/route.ts",
+    "files/app/api/storage/complete/route.ts",
+    "files/app/api/storage/local/[...key]/route.ts",
+    "files/app/api/cron/storage/route.ts",
+    "../_shared/lib/launch/db.ts",
+    "../_shared/lib/launch/env.ts",
+    "../_shared/lib/launch/config.ts",
+    "../_shared/lib/launch/cron.ts",
+    "../_shared/db/migrate.mjs"
+  ],
+  "schema": ["storage.ts"],
+  "migrations": true,
+  "docs": [
+    "설치 뒤 할 일",
+    "1. 인증 항목이 함께 설치된다(올린 파일 장부가 user 표를 가리킨다). 마이그레이션: DATABASE_URL=<직접 연결 5432> node db/migrate.mjs",
+    "2. 저장소를 정한다: S3 호환이면 어디든 된다. 필수 다섯 이름 STORAGE_ENDPOINT(예: https://s3.ap-northeast-2.amazonaws.com 또는 R2 계정 주소)·STORAGE_BUCKET·STORAGE_REGION(R2 는 auto)·STORAGE_ACCESS_KEY_ID·STORAGE_SECRET_ACCESS_KEY. 선택 둘: STORAGE_PATH_STYLE=true(R2·MinIO 처럼 경로식 주소를 쓸 때)·STORAGE_PUBLIC_BASE_URL(공개 종류 avatar·image 를 CDN·공개 도메인으로 읽을 때). 키는 객체 쓰기·읽기·지우기만 허용한 전용 키로 만들고 저장소에 적지 않는다.",
+    "3. 저장소 쪽 CORS: 브라우저가 직접 PUT 하므로 버킷 CORS 에 사이트 주소(AllowedOrigins)·PUT 메서드·content-type 머리를 허용한다. 읽기 공개 종류는 버킷(또는 공개 도메인)이 읽기 공개여야 한다. 비공개 종류(attachment)는 공개하지 않는다 — 짧은 서명 주소로만 읽는다.",
+    "4. 다섯 필수 이름 중 하나라도 없으면 live 에서 **사이트는 켜지고 올리기만 꺼진다**: storageEnabled() 가 false 이고 티켓·끝내기는 code provider_unavailable·503 으로 거절된다(올린 척 저장하지 않는다). 배포 확인이 경고를 낸다. mock 은 이름이 없어도 .tmp/uploads 폴더로 돈다 — 그 경로(app/api/storage/local)는 live 에서 404 다.",
+    "5. 화면에서 올리기: import { createStorageClient } from \"@launch-factory/storage/client\"; const storage = createStorageClient({ ticketUrl: \"/api/storage/ticket\", completeUrl: \"/api/storage/complete\" }); await storage.upload(file, { kind: \"image\" }) → { ok, data: { url, key } }. 종류별 상한·형식은 정책 표(packages/storage/src/policy.ts): avatar 2MB(로그인 필요)·image 5MB·attachment 10MB(비공개, 보유 365일).",
+    "6. vercel.json 에 Cron 을 더한다: { \"crons\": [{ \"path\": \"/api/cron/storage\", \"schedule\": \"40 4 * * *\" }] }. 끝내지 않은 올리기(24시간)와 보유 기간이 지난 파일의 객체를 지운다. CRON_SECRET 이 없으면 401 이다.",
+    "7. 탈퇴(account-lifecycle): 올린 파일은 기본으로 지워지지 않는다 — 장부의 사용자 연결만 끊긴다. 탈퇴한 사람의 파일을 지우려면 탈퇴 항목의 lib/launch/purgers.ts(제품 것)의 purgers 에 한 줄을 더한다: async (tx, { userId }) => { await scheduleUserFilesForPurge(tx, userId) } (import { scheduleUserFilesForPurge } from \"@launch-factory/storage\"). 장부에서 지울 때를 지금으로 당기고 파일 이름을 비우며, 객체는 파일 파기 Cron(또는 같은 파일 afterPurge() 에서 서비스의 purgeExpired())이 지운다. 전체 템플릿에는 켜져 있다.",
+    "8. next.config.ts: transpilePackages 에 쓰는 @launch-factory/* 를 모두 적고, serverExternalPackages 에 \"@electric-sql/pglite\" 를 더한다."
+  ]
+}

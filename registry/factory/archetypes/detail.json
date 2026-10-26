@@ -11,6 +11,7 @@
     {
       "id": "product-detail",
       "route": "/",
+      "kind": "product",
       "sections": [
         {
           "kind": "purchase-area",

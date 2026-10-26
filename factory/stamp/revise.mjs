@@ -1,177 +1,44 @@
 // 구획 단위 수정(factory v1 Task 4.3 · 합의안 D13) — 「히어로를 더 대담하게」 같은 말 한 줄을 사상해 그 구획만 2안으로 다시 만들고, 전·후 보드 자료를 낸다.
 //
-//   parseRevision(text, site)  → { scope: "section"|"axis"|"copy", target, intent } | { ask }
-//     scope section  target = 섹션 키("<쪽>/<섹션>", 예 home/hero)   axis  target = "color"|"type"|"motion"   copy  target = 섹션 키.
-//     intent: bolder(더 대담) · calmer(더 차분) · different(다르게 — 기본) · 문구는 shorter·warmer·formal 도.
-//     intent value (FIT-2): 색·서체 축에서 사용자가 값을 말했을 때 — 「초록색으로」「#0B6E4F 로」→ { …, intent: "value", value: { hex, from: "hex"|"name", name? } } · 「명조로」「Noto Serif KR 로」→ value: { category } | { family }.
-//             값 읽기·안 계획은 revise-values.mjs. 값이 없으면 예전 그대로(「색 다르게」).
-//     구획·축·문구 중 하나로 사상하지 못하면 {ask} — 짧은 질문 하나만 돌려주고 아무것도 바꾸지 않는다(Review Focus 4). 질문은 요청 언어(한글이 있으면 한국어, 아니면 영어)로 80자 미만.
-//   revise(runDir, candId, request, opts) → { index, boardFile, variants[{ id, block|axis, diff, blockers, weight, qa, siteRel, previewUrl }], notes[] } | { ask }
+//   parseRevision(text, site, design?)  → { scope: "section"|"copy", target, intent } | { scope: "design", classification, text } | 구조 요청(revise-structure.mjs) | { ask }
+//     scope section  target = 섹션 키("<쪽>/<섹션>", 예 home/hero)   copy  target = 섹션 키.   구획 이름이 붙은 교체와 문구만 낱말로 사상한다.
+//     intent: bolder(더 대담) · calmer(더 차분) · different(다르게 — 기본) · 문구는 shorter·warmer·formal 도. 크게·화려·단순·줄여·덜·많이 같은 말은 구획 이름이 있을 때만 구획 교체 의도다.
+//     scope design   그 밖의 디자인 말. 사전 분류(vocab/classify.mjs)를 그대로 싣는다 — 확정이면 읽기, 후보 둘이면 두 해석, 근사·모름이면 revise() 가 되묻는다.
+//                    CLI --revise-readings 는 분류 없이 { scope: "design", input: { readings } | { options }, text: null } 를 직접 만든다.
+//     구조(구획 더하기·빼기·옮기기)·문구·디자인 중 어느 것으로도 사상하지 못하면(빈 말 · 문구인데 구획이 없음) {ask} — 짧은 질문 하나만 돌려주고 아무것도 바꾸지 않는다(Review Focus 4). 질문은 요청 언어로 80자 미만.
+//   revise(runDir, candId, request, opts) → { index, boardFile, variants[{ id, block|say, diff, blockers, weight, qa, siteRel, previewUrl }], notes[] } | { boards: […] } | { ask }
 //     section: 같은 섹션의 허용 변형 중 지금 것(사이트에 그려진 것·03 이 고른 것)을 뺀 상위 n(기본 2)개 — 03 과 같은 chooseVariants 순서(못 채움·누설·내린 블록·덜 쓰인 것·브리프 선호·올린 블록)에
 //             선택 학습 가중치(4.4)를 동점 꼬리표로 더한다. 안마다 후보 폴더 사본에서 그 섹션만 바꿔 06 을 다시 돈다(지금 사이트·03·04 는 건드리지 않는다). 07 관문은 바뀐 쪽만(전역 섹션은 모든 쪽).
-//     axis:    레시피 축 두 값으로 전체를 다시 조립한다(구조 유지 — 섹션의 블록은 그대로) · 모션 강도 M0~M3, 색(B안·기본 테마 뒤집기), 서체(B안).
-//              값이 든 요청(intent value)은 사용자가 준 값을 지킨다: 색 = 그 색을 주색으로 한 안 + 같은 색조의 다른 명도 짝(brand.mjs 의 대비·색조 규칙), 서체 = 그 범주에서 한글을 그리는 키트 서체 상위 둘.
-//              맞출 수 없으면 아무것도 만들지 않고 {ask, reason?, suggestion?} 로 되묻는다.
+//     design:  읽기를 범위로 나눈다. site·element 범위 = 레시피 머리를 읽기대로 옮긴 안(planReadings, 구조 유지 — 섹션의 블록은 그대로) · section·page 범위 = 그 구획들의 블록 교체(sectionPlan 이 정한 뜻으로 구획마다 한 판).
+//              사이트 전체와 구획·쪽 범위가 섞이면 되묻는다. 맞출 수 없으면 아무것도 만들지 않고 {ask} 로 되묻는다. 판(board.json)은 version 2 — readings·say·변형별 changes·before(지금 머리 요약)·why 가 더해진다.
 //     copy:    04 문구 칸만 다시 요청한다 — 이 도구는 LLM 을 부르지 않는다: 요청 파일을 내고 멈춘다(status waiting-copy), 에이전트가 응답 파일을 쓴 뒤 같은 요청을 다시 돌리면 안을 만든다.
 //     결과는 후보 폴더의 09-revise/<번호>/board.json — 전·후 보드가 읽는다. 안의 사이트 사본은 09-revise/<번호>/<안>/ 아래에 있고 previewUrl 은 배포를 하지 않으면 null 이다.
-//   applyRevision(runDir, candId, index, variantId, opts) — 고른 안을 반영한다(입력 해시는 그대로, 06·07 은 낡음 표시): section = 03-variants(+선택 학습, 새 블록의 빈 화면 문구 칸은 04 요청에 싣고 waitingCopy) · axis = 후보 레시피 머리 갈아 끼우기 · copy = 04 본문 칸 바꾸기.
+//   applyRevision(runDir, candId, index, variantId, opts) — 고른 안을 반영한다(입력 해시는 그대로, 06·07 은 낡음 표시). 판을 만든 뒤 그 갈래의 파일이 바뀌었으면(board.stateHash 가 다르면) 아무것도 바꾸지 않고 { outdated: true, index, text } 를 돌려준다: section = 03-variants(+선택 학습, 새 블록의 빈 화면 문구 칸은 04 요청에 싣고 waitingCopy) · design = 후보 레시피 머리 갈아 끼우기 · copy = 04 본문 칸 바꾸기.
 //
 //   무엇을 하지 않나: 지금 사이트(site/)·03·04 를 고치지 않는다(제안만으로 바뀌지 않는다) · 분석 서버·네트워크로 보내지 않는다 · 문구를 지어내지 않는다(새 블록의 화면 문구 칸은 비어 「예시 문구 남음」 blocker 로 보인다).
 import { createHash } from 'node:crypto'
-import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { basename, dirname, join, resolve } from 'node:path'
 import { BLOCK_REGISTRY } from '../scripts/archetypes.mjs'
-import { applyAlternate, lintRecipeReport, parseRecipe } from '../scripts/recipe.mjs'
-import { GENERATED_MARK } from './compile-candidate.mjs'
 import { loadPreferences, recordPick, savePreferences, weightOf } from '../board/preferences.mjs'
 import { bindCopy, UI_ROLE, uiNumberKind, validateContent } from './content.mjs'
 import { generateSite } from './gen-pages.mjs'
 import { titleOverAdvice } from './revise-picks.mjs'
-import { recipeHeadOf } from './site-files.mjs'
+import { nextSeq, restoreSnapshot, snapshot, stateHash, writeJson } from './revise-history.mjs'
+import { STALE_STAGES, markStale } from './revise-stale.mjs'
 import { chooseVariants } from './variants.mjs'
-import { applyStructure, parseStructure, reviseStructure, STRUCTURE_SCOPES } from './revise-structure.mjs'
+import { applyStructure, reviseStructure, STRUCTURE_SCOPES } from './revise-structure.mjs'
+import { applyAxis, colorsOf, reviseHeads } from './revise-axis.mjs'
+import { writeCompare } from './revise-compare.mjs'
+import { recipeHeadOf } from './site-files.mjs'
+import { designLexicon } from './design-context.mjs'
+import { isPartScope, sectionNameOf, sectionPlan } from './section-plan.mjs'
+import { fill } from '../vocab/fill.mjs'
+import { askIn, grammar, langOf } from '../vocab/grammar.mjs'
 import { leakTable, readinessTable, uiSlotTable } from './ui-copy.mjs'
-import { impliedAxis, planAxisValue, valueRequest } from './revise-values.mjs'
 
-// ── 말 → 요청 ───────────────────────────────────────────────────────────────
-
-const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-/** 낱말 목록(문자열 | RegExp) 중 하나라도 있는가. 영어 낱말은 단어 경계로, 한글은 포함으로 본다. */
-function has(text, words) {
-  return words.some((w) => (w instanceof RegExp ? w.test(text) : /^[a-z][a-z' -]*$/i.test(w) ? new RegExp(`(?<![a-z])${esc(w)}(?![a-z])`, 'i').test(text) : text.includes(w)))
-}
-
-// 축 이름(사이트 전체에 적용되는 것)
-const AXIS_WORDS = {
-  color: ['색상', '색감', '컬러', '배색', '팔레트', /(?<![검탐사])색(?![다인출])/, 'color', 'colors', 'colour', 'colours', 'palette', 'hue'],
-  type: ['서체', '글꼴', '폰트', '글자체', '타이포', 'typeface', 'font', 'fonts', 'typography'],
-  motion: ['모션', '움직임', '애니메이션', 'animation', 'animations', 'motion', 'movement'],
-}
-const COPY_WORDS = ['문구', '카피', '문장', '텍스트', '슬로건', '헤드라인', '제목', '말투', '글귀', 'copy', 'wording', 'headline', 'tagline', 'slogan', 'text', 'message', 'title', 'sentence', 'sentences']
-
-// 구획 이름 → 섹션 kind 정규식. kind 는 원형 JSON 의 섹션 이름(쪽 안에서 하나)이다.
-const SECTION_WORDS = [
-  { kind: /^hero/, words: ['히어로', '첫 화면', '첫화면', '메인 배너', '상단 배너', '대문', '메인 화면', '메인 비주얼', '맨 위', 'hero', 'banner', 'above the fold', 'main visual'] },
-  { kind: /^(?:faq|qna)$/, words: ['자주 묻는 질문', '질문', 'q&a', 'faq', 'questions'] },
-  { kind: /^(?:pricing|paywall|plans?)(?:-|$)/, words: ['요금제', '요금', '가격', '플랜', '구독료', 'pricing', 'prices', 'price', 'plans', 'plan'] },
-  { kind: /(?:^|-)features?$/, words: ['기능', '특징', '장점', 'features', 'feature', 'benefits'] },
-  { kind: /^(?:social-proof|testimonials?|reviews?|external-reviews|review-list)$/, words: ['후기', '리뷰', '고객 평가', '추천사', '사용 후기', 'testimonials', 'reviews', 'social proof'] },
-  { kind: /^footer/, words: ['푸터', '바닥글', '맨 아래', '하단 정보', 'footer'] },
-  { kind: /^(?:final-cta|cta)$/, words: ['마지막 행동', '최종 행동', '행동 유도', '하단 버튼', 'final cta', 'call to action', 'cta'] },
-  { kind: /^contact-form$/, words: ['문의 폼', '문의', '연락', 'contact'] },
-  { kind: /^menu/, words: ['메뉴', '가격표', 'menu'] },
-  { kind: /^hours/, words: ['영업시간', '운영 시간', 'hours', 'opening hours'] },
-  { kind: /^directions$/, words: ['오시는 길', '찾아오는 길', '지도', 'directions', 'map', 'location'] },
-  { kind: /^gallery$/, words: ['갤러리', '사진', 'gallery', 'photos'] },
-  { kind: /^integrations?$/, words: ['연동', '통합', 'integrations', 'integration'] },
-  { kind: /^(?:how-it-works|workflow)/, words: ['사용 방법', '이용 방법', '진행 방식', '작동 방식', 'how it works'] },
-  { kind: /^(?:notice|announcement)/, words: ['공지', '알림 띠', 'announcement', 'notice'] },
-  { kind: /^auth$/, words: ['가입 폼', '로그인 폼', '인증', 'sign-in form', 'sign-up form'] },
-]
-// 쪽 이름(구획이 여러 쪽에 있을 때 어느 쪽인지)
-const PAGE_WORDS = { home: ['홈', '메인 페이지', '홈페이지', 'home', 'homepage'], campaign: ['캠페인', 'campaign'], pricing: ['요금제 쪽', '가격 쪽', 'pricing page'], signup: ['가입 쪽', 'signup page', 'sign-up page'], login: ['로그인 쪽', 'login page'] }
-
-const INTENT_WORDS = {
-  bolder: ['대담', '과감', '강렬', '강하게', '세게', '임팩트', '눈에 띄', '화려', '크게', '많이', 'bold', 'bolder', 'louder', 'stronger', 'dramatic', 'more impact', 'striking', 'more'],
-  calmer: ['차분', '조용', '절제', '약하게', '부드럽', '단순', '심플', '줄여', '낮춰', '덜', '없애', 'calm', 'calmer', 'quiet', 'quieter', 'subtle', 'softer', 'simpler', 'minimal', 'less', 'tone down', 'reduce'],
-  shorter: ['짧게', '간결', '줄여', '압축', 'shorter', 'concise', 'brief', 'shorten'],
-  warmer: ['친근', '따뜻', '다정', '캐주얼', 'friendly', 'friendlier', 'warmer', 'casual'],
-  formal: ['정중', '공식', '격식', '딱딱', 'formal', 'professional'],
-  different: ['다르게', '다른', '바꿔', '바꾸', '교체', '새로', '다시', 'change', 'swap', 'different', 'another', 'alternative', 'replace', 'redo', 'rewrite'],
-}
-const COPY_INTENTS = ['shorter', 'warmer', 'formal']
-
-const ASK = {
-  ko: {
-    vague: '어느 부분을 바꿀까요? 구획(예: 히어로)·색/서체/모션·문구 중 하나를 알려 주세요.',
-    axisSection: '색·서체·모션은 사이트 전체에 적용돼요. 전체를 바꿀까요, 구획만 바꿀까요?',
-    copyWhere: '문구를 바꿀 구획을 알려 주세요. 예: 히어로',
-    noSection: (names) => `이 사이트에 그 구획이 없어요. 구획: ${names}`,
-    pages: (names) => `그 구획이 여러 쪽에 있어요. 어느 쪽인가요? ${names}`,
-    kinds: (names) => `구획이 여러 개로 읽혀요. 하나만 알려 주세요: ${names}`,
-  },
-  en: {
-    vague: 'Which part? A section (e.g. hero), color/type/motion, or the copy.',
-    axisSection: 'Color, type and motion apply site-wide. Change all, or only a section?',
-    copyWhere: 'Which section’s copy should change? e.g. hero',
-    noSection: (names) => `No such section here. Sections: ${names}`,
-    pages: (names) => `That section is on several pages. Which? ${names}`,
-    kinds: (names) => `More than one section matches. Pick one: ${names}`,
-  },
-}
-const ASK_MAX = 79
-/** 질문을 80자 미만으로 맞춘다 — 목록은 길면 잘라 …로 닫는다. */
-function clip(prefix, list, suffix = '') {
-  let names = list.join(', ')
-  while ((prefix + names + suffix).length > ASK_MAX && list.length > 1) { list = list.slice(0, -1); names = `${list.join(', ')}…` }
-  return (prefix + names + suffix).slice(0, ASK_MAX)
-}
-
-/**
- * @param {string} text  사용자 말 한 줄
- * @param {{ sections?: Record<string, { block?: string }> }} site  content/site.json (섹션 키 목록만 쓴다)
- */
-export function parseRevision(text, site) {
-  const raw = String(text ?? '').trim()
-  const lang = /[가-힣]/.test(raw) ? 'ko' : 'en'
-  const A = ASK[lang]
-  const keys = Object.keys(site?.sections ?? {})
-  const lc = raw.toLowerCase()
-  if (!raw) return { ask: A.vague }
-
-  let axes = Object.entries(AXIS_WORDS).filter(([, w]) => has(lc, w)).map(([a]) => a)
-  const wantsCopy = has(lc, COPY_WORDS)
-
-  // 구획 더하기·빼기·순서 바꾸기(FIT-1) — 「FAQ 빼줘」가 FAQ 를 다른 변형으로 바꾸지 않게, 기존 낱말 판정보다 먼저 본다. 구조 말이 아니면 undefined 라 아래 사상으로 간다.
-  const structural = parseStructure({ raw, lc, lang, site, axes, wantsCopy, t: structureTools() })
-  if (structural) return structural
-
-  // 구획 찾기: 이름표 → kind 정규식 → 사이트에 실제로 있는 키
-  const named = SECTION_WORDS.filter((e) => has(lc, e.words))
-  const generic = [...new Set(keys.map((k) => k.split('/')[1]))].filter((kind) => kind.includes('-') && new RegExp(`(?<![a-z])${esc(kind)}(?![a-z])`, 'i').test(lc)) // 「workflow-features」처럼 kind 이름을 그대로 쓴 말
-  const sectionHits = new Set([...named.flatMap((e) => keys.filter((k) => e.kind.test(k.split('/')[1]))), ...keys.filter((k) => generic.includes(k.split('/')[1]))])
-  const namedSomething = named.length > 0 || generic.length > 0
-  if (!axes.length && !namedSomething && !wantsCopy) { const implied = impliedAxis(raw); if (implied) axes = [implied] } // 「#0B6E4F 로」·「명조로」 — 축 이름이 없어도 값이 분명하면 그 축 (revise-values.mjs)
-
-  const intent = (() => {
-    const found = Object.entries(INTENT_WORDS).filter(([, w]) => has(lc, w)).map(([i]) => i)
-    if (wantsCopy) { const c = COPY_INTENTS.find((i) => found.includes(i)); if (c) return c }
-    return ['bolder', 'calmer'].find((i) => found.includes(i)) ?? 'different'
-  })()
-
-  // 축 — 사이트 전체. 구획 이름이 함께 나오면 어느 쪽인지 묻는다.
-  if (axes.length) {
-    if (axes.length > 1 || namedSomething) return { ask: axes.length > 1 ? A.vague : A.axisSection }
-    const val = valueRequest(axes[0], raw) // 사용자가 값을 말했나(색·서체) — 말했으면 그 값을 지킨다, 모호하면 되묻는다
-    if (val?.ask) return { ask: val.ask }
-    if (val) return { scope: 'axis', target: axes[0], intent: 'value', value: val.value, text: raw }
-    return { scope: 'axis', target: axes[0], intent: COPY_INTENTS.includes(intent) ? 'different' : intent, text: raw }
-  }
-
-  if (!namedSomething) {
-    if (wantsCopy) return { ask: A.copyWhere }
-    return { ask: A.vague }
-  }
-  if (!sectionHits.size) return { ask: clip(A.noSection(''), [...new Set(keys.map((k) => k.split('/')[1]))]) }
-
-  // 같은 이름이 여러 kind 로 읽히면(요금제 FAQ) 하나만 묻는다
-  const kinds = [...new Set([...sectionHits].map((k) => k.split('/')[1]))]
-  if (kinds.length > 1) return { ask: clip(A.kinds(''), kinds) }
-
-  // 여러 쪽에 있으면: 쪽 이름이 나왔으면 그 쪽, 아니면 home, 그래도 여럿이면 묻는다
-  let hits = [...sectionHits]
-  if (hits.length > 1) {
-    const kind = kinds[0]
-    const pageIds = hits.map((k) => k.split('/')[0])
-    const pageMentioned = (id) => (PAGE_WORDS[id] && has(lc, PAGE_WORDS[id])) || (id !== kind && /^[a-z-]+$/.test(id) && new RegExp(`(?<![a-z])${esc(id)}(?![a-z])`, 'i').test(lc))
-    const mentioned = pageIds.filter(pageMentioned)
-    if (mentioned.length === 1) hits = hits.filter((k) => k.startsWith(`${mentioned[0]}/`))
-    else if (mentioned.length === 0 && pageIds.includes('home')) hits = hits.filter((k) => k.startsWith('home/'))
-    else return { ask: clip(A.pages(''), pageIds) }
-  }
-  const target = hits[0]
-  return { scope: wantsCopy ? 'copy' : 'section', target, intent, text: raw }
-}
+// 나눈 모듈의 이름을 그대로 다시 내보낸다 — 시험·호출부는 이 파일에서 가져온다.
+export { parseRevision } from './revise-parse.mjs'
 
 // ── 파일 도우미 ──────────────────────────────────────────────────────────────
 
@@ -180,12 +47,6 @@ const readJson = (file) => JSON.parse(readFileSync(file, 'utf8'))
 const unwrap = (saved) => (isObj(saved) && 'inputHash' in saved && 'data' in saved ? saved.data : saved)
 const sha = (buf) => createHash('sha256').update(buf).digest('hex')
 const norm = (p) => p.split('\\').join('/')
-function writeAtomic(file, text) {
-  mkdirSync(join(file, '..'), { recursive: true })
-  writeFileSync(`${file}.tmp`, text)
-  renameSync(`${file}.tmp`, file)
-}
-const writeJson = (file, v) => writeAtomic(file, JSON.stringify(v, null, 2) + '\n')
 function readStage(candDir, name) {
   const file = join(candDir, `${name}.json`)
   if (!existsSync(file)) throw new Error(`앞 단계 파일이 없다: ${file} — ${name} 단계를 먼저 돌린다`)
@@ -262,18 +123,17 @@ function findSection(sitemap, key) {
   return { section: null, page: null }
 }
 
-const labelOf = (intent) => ({ bolder: '더 대담한 쪽', calmer: '더 차분한 쪽', different: '다른 변형' }[intent] ?? '다른 변형')
-
 /**
  * 섹션 하나의 「지금 것을 뺀 상위 count개」. 03 의 chooseVariants 순서(못 채움·누설·내린 블록·브리프 선호·올린 블록 → 학습 가중치 → …)를 그대로 쓴다.
- * @param {{ sitemap: object, key: string, head: string|object, exclude?: string[], count?: number, intent?: string, current?: string, preferences?: object, readiness?: Map, leaks?: Map, seed?: number }} a
- * @returns {Promise<{ picks: string[], pool: string[], notes: string[] }>}
+ * density(spacious|compact)는 여백만 말한 읽기의 뜻이다 — 블록 메타 density 가 같은 변형만 고른다. intent(bolder|calmer)는 지금 것보다 대담한/차분한 변형만 고른다. 함께 오면 둘 다 만족하는 변형이다.
+ * 말한 방향의 변형이 모자라도 다른 방향의 변형으로 채우지 않는다 — 안이 적으면 그 까닭 한 줄을 why 에 싣는다(lang: ko|en).
+ * @param {{ sitemap: object, key: string, head: string|object, exclude?: string[], count?: number, intent?: string, density?: string, current?: string, preferences?: object, readiness?: Map, leaks?: Map, seed?: number, lang?: 'ko'|'en' }} a
+ * @returns {Promise<{ picks: string[], pool: string[], why: string|null }>}
  */
-export async function rankSection({ sitemap, key, head, exclude = [], count = 2, intent = 'different', current, preferences, readiness, leaks, seed = 0 }) {
+export async function rankSection({ sitemap, key, head, exclude = [], count = 2, intent = 'different', density, current, preferences, readiness, leaks, seed = 0, lang = 'ko' }) {
   const { section, page } = findSection(sitemap, key)
   if (!section || section.status !== 'block') throw new Error(`${key} 는 사이트맵의 블록 섹션이 아니다`)
   const pool = section.allowedVariants.filter((b) => !exclude.includes(b))
-  const notes = []
   const rd = readiness ?? (await readinessTable(pool))
   const lk = leaks ?? (await leakTable(sitemap))
   // 가장 좋은 변형 하나를 고르고, 그것을 뺀 나머지에서 또 하나 … — chooseVariants 의 순서(후보 하나일 때)를 그대로 쓴다.
@@ -292,14 +152,21 @@ export async function rankSection({ sitemap, key, head, exclude = [], count = 2,
     return out
   }
   let primary = pool
-  if ((intent === 'bolder' || intent === 'calmer') && current) {
+  if (density) primary = pool.filter((b) => metas().get(b)?.density === density)
+  const directed = (intent === 'bolder' || intent === 'calmer') && current
+  if (directed) {
     const cur = boldScore(current)
-    primary = pool.filter((b) => (intent === 'bolder' ? boldScore(b) > cur : boldScore(b) < cur))
-    if (primary.length < count) notes.push(`${labelOf(intent)} 변형이 ${primary.length}개뿐이라 나머지는 다른 변형으로 채웠다`)
+    primary = primary.filter((b) => (intent === 'bolder' ? boldScore(b) > cur : boldScore(b) < cur))
   }
   const picks = take(primary, count)
-  if (picks.length < count) picks.push(...take(pool.filter((b) => !picks.includes(b)), count - picks.length))
-  return { picks, pool, notes }
+  const why = picks.length >= count ? null : density || directed ? fill(grammar.text.section.few[lang], { label: directionLabel({ intent, density }, lang), count: picks.length }) : fill(grammar.text.section.fewTotal[lang], { count: picks.length, total: section.allowedVariants.length })
+  return { picks, pool, why }
+}
+
+/** 말한 방향의 이름(「더 대담한 쪽」 · 여백과 함께면 「더 여유로운 쪽 · 더 대담한 쪽」), 방향이 없으면 「다른 변형」. */
+function directionLabel({ intent, density }, lang) {
+  const names = [density, intent === 'bolder' || intent === 'calmer' ? intent : null].filter(Boolean)
+  return (names.length ? names : ['different']).map((k) => grammar.text.section.label[k][lang]).join(' · ')
 }
 
 // ── 후보·사이트 읽기 ─────────────────────────────────────────────────────────
@@ -397,25 +264,38 @@ export async function revise(runDir, candId, request, opts = {}) {
 
   if (STRUCTURE_SCOPES.includes(request.scope)) return reviseStructure({ ctx, request, n, opts, prefs, now, text, tools: structureTools() })
   if (request.scope === 'section') return reviseSection({ ctx, request, n, opts, prefs, archetype, now, text })
-  if (request.scope === 'axis') return reviseAxis({ ctx, request, n, opts, now, text })
+  if (request.scope === 'design') return reviseDesign({ ctx, request, n, opts, prefs, archetype, now, text })
   if (request.scope === 'copy') return reviseCopy({ ctx, request, n, opts, now, text })
   throw new Error(`revise: 모르는 scope ${request.scope}`)
 }
 
 function boardBase({ ctx, request, index, now, text, status }) {
-  return { kind: 'revise-board', version: 1, index, candidate: ctx.candId, request: text, scope: request.scope, target: request.target, intent: request.intent, status, createdAt: now() }
+  return { kind: 'revise-board', version: 1, index, candidate: ctx.candId, request: text, scope: request.scope, target: request.target, intent: request.intent, status, createdAt: now(), stateHash: stateHash(ctx.candDir) }
 }
 
-async function reviseSection({ ctx, request, n, opts, prefs, archetype, now, text }) {
+/**
+ * 구획 하나의 블록 교체 안. design = 디자인 읽기에서 왔을 때만 { plans, readings, say } — plans 는 이 구획에 닿는 읽기 묶음마다 하나(보통 하나, 후보 둘이면 둘)의
+ * { intent?, density?, say, readings } 이고, 둘이면 안마다 자기 뜻으로 하나씩 고른다. 이때 판은 version 2 로 readings·say·변형별 say·changes({ axis: 사전 축 id, section, from, to })를 더한다.
+ */
+async function reviseSection({ ctx, request, n, opts, prefs, archetype, now, text, design }) {
   const key = request.target
   const { section } = findSection(ctx.sitemap, key)
   if (!section || section.status !== 'block') throw new Error(`${key} 는 블록으로 그리는 구획이 아니다(블록 섹션: ${Object.keys(ctx.site.sections).join(', ')})`)
   const rendered = ctx.site.sections[key]?.block ?? null
   const chosen = ctx.variants[key] ?? null
   const exclude = [rendered ?? chosen].filter(Boolean) // 지금 눈에 보이는 변형 — 03 이 고른 것이 06 폴백으로 안 그려졌다면 그것은 아직 못 본 대안이다
-  const ranked = await rankSection({ sitemap: ctx.sitemap, key, head: ctx.cand.recipe, exclude, count: n, intent: request.intent, current: rendered ?? chosen, preferences: prefs, seed: opts.seed ?? 0 })
-  const notes = [...ranked.notes]
-  if (ranked.picks.length < n) notes.push(`다른 변형이 ${ranked.picks.length}개뿐이다(허용 변형 ${section.allowedVariants.length}개 중 지금 것을 빼면)`)
+  const plans = design?.plans ?? [{ intent: request.intent }]
+  const lang = langOf(text)
+  const rank = (more) => rankSection({ sitemap: ctx.sitemap, key, head: ctx.cand.recipe, current: rendered ?? chosen, preferences: prefs, seed: opts.seed ?? 0, lang, ...more })
+  const ranked = { picks: [], planOf: [], why: null } // planOf[i] = i 번째 안을 낸 plans 칸
+  for (const [p, plan] of plans.entries()) { // 후보 둘 — 안마다 자기 뜻으로 하나씩, 앞 안과 겹치지 않게. 해석이 하나면 그 해석이 n 안을 낸다
+    const one = await rank({ exclude: [...exclude, ...ranked.picks], count: plans.length === 1 ? n : 1, ...plan })
+    ranked.picks.push(...one.picks)
+    ranked.planOf.push(...one.picks.map(() => p))
+    ranked.why ??= one.why
+  }
+  if (!ranked.picks.length) return { ask: fill(grammar.text.section.none[lang], { section: sectionNameOf(key, designLexicon(), lang), label: directionLabel(plans[0], lang) }) }
+  const notes = []
   const index = nextIndex(ctx.candDir)
   const routes = routesFor(ctx.sitemap, key)
   const variants = []
@@ -442,65 +322,62 @@ async function reviseSection({ ctx, request, n, opts, prefs, archetype, now, tex
     const warnings = over ? [titleOverAdvice(over)] : []
     for (const w of warnings) notes.push(`${vid} ${block}: ${w}`)
     variants.push({
-      id: vid, block, label: `${vid} ${block}`,
+      id: vid, block, label: `${vid} ${block}`, ...(design ? { say: plans[ranked.planOf[i]].say, changes: plans[ranked.planOf[i]].readings.map((r) => ({ axis: r.axis, section: key, from: rendered ?? '', to: block })) } : {}),
       diff: { kind: 'section', key, from: rendered, to: block, sections: changed, files: p.files, blockersAdded: p.blockers, blockersRemoved: p.blockersRemoved, needsCopy: patch.needsCopy, ...(over ? { titleOverflow: over } : {}) },
       blockers: p.blockers, ...(warnings.length ? { warnings } : {}), weight: weightOf(prefs, archetype, block), qa: p.qa, siteRel: p.siteRel, previewUrl: null,
     })
   }
   const status = variants.length ? 'ready' : 'empty'
-  const board = { ...boardBase({ ctx, request, index, now, text, status }), route: routes.length === 1 ? routes[0] : null, routes, before: { block: rendered, chosen, blockers: candidateBlockers(ctx.candDir) }, variants, notes, picked: null }
+  const color = design ? colorsOf(recipeHeadOf(ctx.cand)) : null // 구획 교체는 색을 바꾸지 않는다 — 지금 색을 안에도 같이 실어 견본이 나오지 않게 한다(색이 같음)
+  const board = { ...boardBase({ ctx, request, index, now, text, status }), ...(design ? { version: 2, readings: design.readings, say: design.say, ...(plans.some((p) => p.density) ? { density: plans.find((p) => p.density).density } : {}) } : {}), route: routes.length === 1 ? routes[0] : null, routes, before: { block: rendered, chosen, blockers: candidateBlockers(ctx.candDir), ...(design ? { head: { color } } : {}) }, variants: design ? variants.map((v) => ({ ...v, colors: color })) : variants, ...(ranked.why ? { why: ranked.why } : {}), notes, picked: null }
   const boardFile = join(ctx.candDir, '09-revise', String(index), 'board.json')
   writeJson(boardFile, board)
-  return { index, boardFile, scope: 'section', target: key, intent: request.intent, status, variants, notes }
+  if (design) writeCompare(dirname(boardFile), board, designLexicon())
+  return { index, boardFile, scope: 'section', target: key, intent: request.intent, status, variants, notes, ...(ranked.why ? { why: ranked.why } : {}), ...(design ? { say: design.say } : {}) }
 }
 
-// ── 축 ───────────────────────────────────────────────────────────────────────
+// ── 디자인 읽기 ──────────────────────────────────────────────────────────────
 
-const MOTIONS = ['M0', 'M1', 'M2', 'M3']
-/** 축 하나의 두 값(레시피 머리 사본). 린트를 통과하지 못하는 머리는 안에 넣지 않는다. */
-export function axisHeads(head, axis, intent, n = 2) {
-  const out = []
-  const push = (value, label, h) => { if (h && !out.some((o) => o.value === value) && lintRecipeReport(h).violations.length === 0) out.push({ value, label, head: h }) }
-  if (axis === 'motion') {
-    const i = MOTIONS.indexOf(head.motion)
-    const order = intent === 'bolder' ? [i + 1, i + 2] : intent === 'calmer' ? [i - 1, i - 2] : [i + 1, i - 1, i + 2, i - 2] // 더 대담하게 = 높은 단계만, 더 차분하게 = 낮은 단계만 — 반대쪽을 채워 넣지 않는다
-    for (const j of order) if (MOTIONS[j]) push(MOTIONS[j], `모션 ${head.motion} → ${MOTIONS[j]}`, { ...structuredClone(head), motion: MOTIONS[j] })
-  } else if (axis === 'color') {
-    push('B', '색 B안', applyAlternate(head, ['colorLogic']))
-    if (head.color?.dark) push(head.defaultTheme === 'dark' ? 'light' : 'dark', `기본 테마 ${head.defaultTheme === 'dark' ? '라이트' : '다크'}`, { ...structuredClone(head), defaultTheme: head.defaultTheme === 'dark' ? 'light' : 'dark' })
-  } else if (axis === 'type') {
-    push('B', '서체 B안', applyAlternate(head, ['fonts']))
-  }
-  return out.slice(0, n)
+/** 요청 → 읽기 입력({ readings } | { options } | { copyFrom }) 또는 되물음. 분류가 시안 비교 말이면 copyFrom, 확정이면 읽기, 후보 둘이면 두 해석이고, 근사·모름은 되묻는다. */
+function designInput(request) {
+  if (request.input) return request.input
+  const c = request.classification
+  if (c.copyFrom !== undefined) return { copyFrom: c.copyFrom }
+  if (c.result === 'confirmed') return { readings: c.readings }
+  if (c.result === 'two') return { options: c.options.map((o) => ({ readings: o.readings })) }
+  return { ask: c.ask }
 }
 
-async function reviseAxis({ ctx, request, n, opts, now, text }) {
-  const head = recipeHeadOf(ctx.cand)
-  // 값이 든 요청(「초록색으로」「#0B6E4F 로」「명조로」)은 revise-values.mjs 가 안을 계획한다 — 맞출 수 없으면 아무것도 만들지 않고 질문 하나만 돌려준다.
-  const planned = request.intent === 'value' ? planAxisValue(head, request, { n }) : null
-  if (planned?.ask) return { ask: planned.ask, ...(planned.reason ? { reason: planned.reason } : {}), ...(planned.suggestion ? { suggestion: planned.suggestion } : {}) }
-  const heads = planned ? planned.heads.slice(0, n) : axisHeads(head, request.target, request.intent, n)
-  const notes = planned ? [...planned.notes] : []
-  if (!planned && heads.length < n) notes.push(`${request.target} 축에서 쓸 수 있는 값이 ${heads.length}개뿐이다(레시피 린트를 통과하는 값만 낸다)`)
-  const index = nextIndex(ctx.candDir)
-  const routes = ctx.sitemap.pages.map((p) => p.route)
-  const variants = []
-  for (const [i, h] of heads.entries()) {
-    const vid = `v${i + 1}`
-    const cand = { ...structuredClone(ctx.cand), source: 'brand', recipe: h.head } // 머리를 고친 사본은 임시 레시피로 컴파일된다(compile-candidate: brand 는 라이브러리와의 거리 검사를 하지 않는다)
-    const p = await buildProposal({ ctx, index, vid, cand, opts, routes, mutate: () => {} })
-    const changed = sectionsChanged(ctx.site, p.newSite)
-    variants.push({
-      id: vid, axis: request.target, value: h.value, label: `${vid} ${h.label}`,
-      diff: { kind: 'axis', axis: request.target, value: h.value, from: request.target === 'motion' ? head.motion : null, ...(h.detail ?? {}), sameStructure: changed.length === 0, sections: changed, files: p.files, blockersAdded: p.blockers, blockersRemoved: p.blockersRemoved },
-      blockers: p.blockers, weight: 1, qa: p.qa, siteRel: p.siteRel, previewUrl: null,
-    })
+/**
+ * 디자인 읽기 수정. site·element 범위 읽기는 레시피 머리를 옮긴 안(reviseHeads), section·page 범위 읽기는 그 구획들의 블록 교체(구획마다 한 판)다. 둘이 섞이면 되묻는다.
+ * 구획이 여럿이면 { boards: […] } — 구획마다 판 번호가 따로다.
+ */
+async function reviseDesign({ ctx, request, n, opts, prefs, archetype, now, text }) {
+  const input = designInput(request)
+  if (input.ask) return { ask: input.ask }
+  const lists = input.copyFrom !== undefined ? [] : input.readings ? [input.readings] : input.options.map((o) => o.readings) // 시안 따라 하기({ copyFrom })는 읽기가 없다 — 사이트 전체 안이다
+  const parts = lists.flat().filter(isPartScope)
+  if (!parts.length) return reviseHeads({ ctx, input, n, opts, now, text, tools: axisTools() })
+  if (parts.length < lists.flat().length) return { ask: askIn(grammar.text.ask.oneKindAtATime, text) }
+  const planned = lists.map((list) => ({ list, plan: sectionPlan(list, { lex: designLexicon(), site: ctx.site, lang: langOf(text) }) }))
+  const asked = planned.find((p) => p.plan.ask)
+  if (asked) return asked.plan
+  const isBlock = (k) => findSection(ctx.sitemap, k).section?.status === 'block' // 블록으로 그리지 않는 구획은 바꿀 블록이 없다
+  const keys = [...new Set(planned.flatMap((p) => p.plan.keys))].filter(isBlock)
+  if (!keys.length) return { ask: grammar.text.plan.noSection }
+  const made = []
+  for (const key of keys) { // 해석마다 자기 구획만 — 구획 하나에는 그 구획에 닿는 해석들만 안이 된다
+    const mine = planned.filter((p) => p.plan.keys.includes(key))
+    const design = {
+      plans: mine.map(({ list, plan }) => ({ intent: plan.intent, density: plan.density, say: plan.say, readings: list.filter((r) => !r.cap && r.strength > 0) })),
+      readings: mine.flatMap((p) => p.list), say: mine.map((p) => p.plan.say).join(' / '),
+    }
+    made.push(await reviseSection({ ctx, request: { scope: 'section', target: key, intent: mine[0].plan.intent ?? 'different' }, n, opts, prefs, archetype, now, text, design }))
   }
-  const status = variants.length ? 'ready' : 'empty'
-  const board = { ...boardBase({ ctx, request, index, now, text, status }), ...(request.value ? { value: request.value } : {}), route: null, routes, before: { recipe: typeof ctx.cand.recipe === 'string' ? ctx.cand.recipe : ctx.cand.recipe?.id ?? null, blockers: candidateBlockers(ctx.candDir) }, variants, notes, picked: null }
-  const boardFile = join(ctx.candDir, '09-revise', String(index), 'board.json')
-  writeJson(boardFile, board)
-  return { index, boardFile, scope: 'axis', target: request.target, intent: request.intent, status, variants, notes }
+  const [skipped, ready] = [made.filter((b) => b.ask), made.filter((b) => !b.ask)] // 말한 방향의 변형이 없는 구획은 판을 만들지 않는다 — 모두 없으면 그 되물음
+  if (!ready.length) return skipped[0]
+  const boards = ready.map((b, i) => (i === 0 && skipped.length ? { ...b, notes: [...b.notes, ...skipped.map((s) => s.ask)] } : b)) // 빠진 구획은 첫 판의 참고로 알린다
+  return boards.length === 1 ? boards[0] : { boards }
 }
 
 // ── 문구 ─────────────────────────────────────────────────────────────────────
@@ -595,16 +472,7 @@ function invalidCopy({ index, boardFile, base, key, request, problems }) {
 
 // ── 고르기 ───────────────────────────────────────────────────────────────────
 
-/** 고르면 지금 사이트(06)와 관문 결과(07)는 낡는다 — 단계 파일의 자료는 두고 입력 해시만 바꿔, 다음 찍어내기가 두 단계를 다시 돈다(파일이 없으면 건너뛴다). */
-export const STALE_STAGES = ['06', '07']
-function markStale(candDir, index) {
-  for (const name of ['06-pages', '07-qa']) {
-    const file = join(candDir, `${name}.json`)
-    if (!existsSync(file)) continue
-    const saved = readJson(file)
-    if (isObj(saved) && 'inputHash' in saved && 'data' in saved) writeJson(file, { ...saved, inputHash: `stale:revise-${index}` })
-  }
-}
+export { STALE_STAGES }
 
 /** 안의 사이트 사본이 있는 후보 폴더(09-revise/<번호>/<안>/<실행 이름>/<후보>) — revise 가 안마다 만든 사본이고 그 안에 임시 레시피 머리·04 요청 사본이 있다. */
 const proposalDir = (runDir, v) => (v.siteRel ? join(runDir, dirname(v.siteRel)) : null)
@@ -627,17 +495,25 @@ export async function applyRevision(runDir, candId, index, variantId, opts = {})
   if (board.status !== 'ready') throw new Error(`09-revise/${index} 는 아직 고를 수 없다(상태 ${board.status})`)
   const v = board.variants.find((x) => x.id === variantId)
   if (!v) throw new Error(`09-revise/${index} 에 안 ${variantId} 가 없다(안: ${board.variants.map((x) => x.id).join(', ')})`)
+  if (board.stateHash !== stateHash(candDir)) return { outdated: true, index, text: board.request ?? null } // 안을 만든 뒤 이 갈래의 파일이 바뀌었다(다른 안을 골랐거나 되돌렸다) — 낡은 안은 그 사이 바뀐 것을 덮어쓰므로 아무것도 바꾸지 않는다
   const at = (opts.now ?? (() => new Date().toISOString()))()
   const base = { index, id: v.id, scope: board.scope, applied: true, stale: [...STALE_STAGES] }
+  snapshot(runDir, candId, index) // 적용 전 상태를 둔다 — 「되돌려」가 이것으로 되살린다
   let result
-  if (board.scope === 'section') result = applySection({ runDir, candDir, board, v, opts })
-  else if (board.scope === 'axis') result = applyAxis({ runDir, candDir, v })
-  else if (board.scope === 'copy') result = applyCopy({ candDir, v })
-  else if (STRUCTURE_SCOPES.includes(board.scope)) result = await applyStructure({ candDir, board, v, opts })
-  else throw new Error(`09-revise/${index}: 모르는 수정 갈래 ${board.scope}`)
+  try {
+    if (board.scope === 'section') result = applySection({ runDir, candDir, board, v, opts })
+    else if (board.scope === 'design') result = applyAxis({ runDir, candDir, v, tools: axisTools() })
+    else if (board.scope === 'copy') result = applyCopy({ candDir, v })
+    else if (STRUCTURE_SCOPES.includes(board.scope)) result = await applyStructure({ candDir, board, v, opts })
+    else throw new Error(`09-revise/${index}: 모르는 수정 갈래 ${board.scope}`)
+  } catch (e) {
+    restoreSnapshot(candDir, index) // 쓰다 만 파일을 보관해 둔 처음 상태로 되돌린 뒤 던진다
+    throw e
+  }
+  const { learnedPicks, ...shown } = result
   markStale(candDir, index)
-  writeJson(boardFile, { ...board, picked: { id: v.id, ...(v.block ? { block: v.block } : {}), ...(v.value ? { value: v.value } : {}), at } })
-  return { ...base, ...result }
+  writeJson(boardFile, { ...board, picked: { id: v.id, ...(v.block ? { block: v.block } : {}), at, seq: nextSeq(candDir), ...(learnedPicks ? { learned: learnedPicks } : {}) } })
+  return { ...base, ...shown }
 }
 
 function applySection({ runDir, candDir, board, v, opts }) {
@@ -659,20 +535,7 @@ function applySection({ runDir, candDir, board, v, opts }) {
   savePreferences(next, opts.userFile ? { userFile: opts.userFile } : {})
   if (request) { writeJson(requestFile, request); waitingCopy = requestFile }
   const warnings = v.warnings ?? [] // 제안 때 본 「지금 제목으로는 이 디자인이 적용되지 않는다」(FIT-5) — 고를 때도 다시 알린다
-  return { block: v.block, target: board.target, learned: losers.length, ...(warnings.length ? { warnings } : {}), ...(waitingCopy ? { waitingCopy } : {}), next: waitingCopy ? `새 블록의 화면 문구 칸 ${needs.length}개가 비어 있다 — 문구 에이전트가 ${waitingCopy} 의 pendingSlots 를 factory/stamp/COPY.md 대로 채운 04-content.json 을 쓴 뒤 같은 --run 으로 찍어내기를 다시 돌린다` : `같은 --run 으로 찍어내기를 다시 돌린다 — 06·07 은 그 입력이 바뀌어 다시 돈다` }
-}
-
-function applyAxis({ runDir, candDir, v }) {
-  const dir = proposalDir(runDir, v)
-  const design = dir && join(dir, 'recipe', 'DESIGN.md')
-  if (!design || !existsSync(design)) throw new Error(`안 ${v.id} 의 임시 레시피 머리가 없다(DESIGN.md): ${design ?? '(안의 사이트 사본 자리를 모른다)'} — 수정 안을 다시 만든다`)
-  const { body = '', ...head } = parseRecipe(readFileSync(design, 'utf8'))
-  const mark = body.indexOf(GENERATED_MARK)
-  const recipe = { ...head, body: (mark >= 0 ? body.slice(0, mark) : body).trimEnd() } // 「생성 — 승격 전」 절은 컴파일이 다시 붙인다
-  mkdirSync(join(candDir, 'recipe'), { recursive: true })
-  copyFileSync(design, join(candDir, 'recipe', 'DESIGN.md'))
-  patchStage(candDir, '01-direction', (cand) => ({ ...cand, source: 'brand', recipe }))
-  return { target: v.axis, axis: v.axis, value: v.value, recipe: recipe.id, learned: 0, next: `같은 --run 으로 찍어내기를 다시 돌린다 — 06·07 이 새 레시피(${recipe.id})로 다시 만들어진다` }
+  return { block: v.block, target: board.target, learned: losers.length, ...(losers.length ? { learnedPicks: { archetype: sitemap.archetype, winner: v.block, losers, kind: 'section' } } : {}), ...(warnings.length ? { warnings } : {}), ...(waitingCopy ? { waitingCopy } : {}), next: waitingCopy ? `새 블록의 화면 문구 칸 ${needs.length}개가 비어 있다 — 문구 에이전트가 ${waitingCopy} 의 pendingSlots 를 factory/stamp/COPY.md 대로 채운 04-content.json 을 쓴 뒤 같은 --run 으로 찍어내기를 다시 돌린다` : `같은 --run 으로 찍어내기를 다시 돌린다 — 06·07 은 그 입력이 바뀌어 다시 돈다` }
 }
 
 function applyCopy({ candDir, v }) {
@@ -702,7 +565,12 @@ function applyCopy({ candDir, v }) {
 }
 
 // ── 구획 구조 조작(revise-structure.mjs)에 넘기는 내부 도우미 ─────────────────────────────────────────────────────────
-// 본체는 새 모듈이다. 이 파일의 낱말 표·제안 사본 도우미를 순환 import 없이 쓰게 호출 때 묶어 넘긴다.
+// 본체는 새 모듈이다. 이 파일의 제안 사본 도우미를 순환 import 없이 쓰게 호출 때 묶어 넘긴다.
 function structureTools() {
-  return { has, esc, SECTION_WORDS, PAGE_WORDS, buildProposal, nextIndex, routesFor, boardBase, candidateBlockers, sectionsChanged, rankSection }
+  return { buildProposal, nextIndex, routesFor, boardBase, candidateBlockers, sectionsChanged, rankSection }
+}
+
+// 디자인 읽기 수정(revise-axis.mjs)에 넘기는 내부 도우미 — 같은 이유로 호출 때 묶어 넘긴다.
+function axisTools() {
+  return { buildProposal, nextIndex, boardBase, candidateBlockers, sectionsChanged, writeJson, proposalDir, patchStage, readStage }
 }

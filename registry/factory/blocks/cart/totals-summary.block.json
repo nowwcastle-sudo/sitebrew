@@ -1,0 +1,13 @@
+{
+  "kind": "cart",
+  "variant": "totals-summary",
+  "title": "장바구니 합계 요약 — 담은 상품 한 줄씩 + 합계 목록(총액 먼저·VAT) · 읽기 전용",
+  "layout": "summary-list",
+  "density": "comfortable",
+  "archetypes": [ "commerce" ],
+  "archetypeKinds": [ "totals", "order-summary" ],
+  "states": [ "loading", "empty", "error", "ready" ],
+  "media": [],
+  "motion": [ "rise" ],
+  "notes": "읽기 전용 주문 요약: 담은 상품을 한 줄씩(작은 사진 · 이름 · 수량 · 줄 금액) → 합계 목록(결제할 금액이 맨 위·VAT 문구 곁, 상품 금액·배송비는 그 아래) → [장바구니 고치기] 링크. 쓰기 포트가 없다 — 수량을 바꾸는 쪽은 cart/lines-table·lines-cards. 결제 쪽(checkout) 위나 옆에 둔다. 포트: cart. 승인 행동 없음."
+}

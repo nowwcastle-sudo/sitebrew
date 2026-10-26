@@ -249,11 +249,21 @@ export async function staticExportBuild(siteDir, log) {
     rmSync(saved, { recursive: true, force: true })
     try { renameSync(next, saved); moved = true } catch { /* 못 옮기면 그대로 둔다 — 내보내기 빌드가 .next 를 덮어쓴다 */ }
   }
+  const inquiry = join(siteDir, 'app', 'api', 'inquiry')
+  const inquirySaved = join(siteDir, '.wf-saved-inquiry')
+  let inquiryMoved = false
+  // 앞서 강제로 끝난 내보내기가 치워 둔 채 남긴 폴더가 있으면 먼저 제자리로 되돌린다(사용자 파일을 잃지 않는다)
+  if (existsSync(inquirySaved) && !existsSync(inquiry)) renameSync(inquirySaved, inquiry)
   const t0 = Date.now()
   try {
+    // 소개형 전달물의 가짜 문의 접수(app/api/inquiry)는 서버 경로라 정적 내보내기에 못 들어간다 — 옆으로 치웠다가 빌드 뒤에 되돌린다. 문의 폼은 NEXT_PUBLIC_WF_STATIC=1 을 보고 mailto 로 간다.
+    if (existsSync(inquiry) && !existsSync(inquirySaved)) {
+      renameSync(inquiry, inquirySaved)
+      inquiryMoved = true
+    }
     const code = await new Promise((res) => {
       const out = []
-      const p = spawn('npm run build', { cwd: siteDir, shell: true, env: { ...process.env, WF_STATIC_EXPORT: '1' } })
+      const p = spawn('npm run build', { cwd: siteDir, shell: true, env: { ...process.env, WF_STATIC_EXPORT: '1', NEXT_PUBLIC_WF_STATIC: '1' } })
       p.stdout.on('data', (d) => out.push(d))
       p.stderr.on('data', (d) => out.push(d))
       p.on('close', (c) => { try { mkdirSync(dirname(log), { recursive: true }); writeFileSync(log, Buffer.concat(out)) } catch {} res(c) })
@@ -264,6 +274,7 @@ export async function staticExportBuild(siteDir, log) {
       rmSync(next, { recursive: true, force: true })
       renameSync(saved, next)
     }
+    if (inquiryMoved && !existsSync(inquiry)) renameSync(inquirySaved, inquiry)
   }
 }
 

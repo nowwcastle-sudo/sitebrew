@@ -26,9 +26,9 @@ import { Skeleton } from "@/registry/factory/ui/skeleton"
 // 비제어라 오류 뒤에도 입력이 남고, 칸마다 (필수)/(선택), 필드 오류는 그 칸에·서버 오류는 위 알림에) + 아래 「위험한 작업」: [지우기…]를 누르면 그 자리에
 // [취소][지우기] 대등한 확인(L3). 저장하지 않은 변경이 있으면 창을 닫을 때 브라우저가 묻는다(beforeunload — A49, 앱 안 이동 가로채기는 v0.2).
 /** autoComplete: 관리자가 남의 기록을 고치는 칸이라 기본은 "off"(브라우저가 관리자 본인 정보를 채우지 않게) */
-export type RecordField = { name: string; label: string; type?: "text" | "email" | "tel" | "textarea"; required?: boolean; value: string; autoComplete?: string }
+export type RecordField = { name: string; label: string; type?: "text" | "email" | "tel" | "textarea" | "number"; required?: boolean; value: string; autoComplete?: string }
 export type RecordAction = { id: string; label: string }
-export type RecordData = { title: string; summary: { label: string; value: string; kind?: "text" | "numeric" | "status" }[]; fields: RecordField[] }
+export type RecordData = { title: string; summary: { label: string; value: string; kind?: "text" | "numeric" | "status" | "contact" }[]; fields: RecordField[] }
 
 export type DataTableRecordPanelCopy = {
   title: string
@@ -41,7 +41,8 @@ export type DataTableRecordPanelCopy = {
   form: FormFlowCopy
   saved: string
   actionDone: string
-  danger: { title: string; body: string; trigger: string; question: string; cancel: string; confirm: string; pending: string; errorTitle: string; done: { title: string; body: string; link: Cta } }
+  // 위험한 작업 문구(선택) — remove 와 함께 줄 때만 구역을 그린다
+  danger?: { title: string; body: string; trigger: string; question: string; cancel: string; confirm: string; pending: string; errorTitle: string; done: { title: string; body: string; link: Cta } }
   empty: { title: string; body?: string; action?: Cta }
   loading: string
   error: { title: string; retryLabel: string }
@@ -52,7 +53,8 @@ export type DataTableRecordPanelProps = BlockBase<DataTableRecordPanelCopy> & {
   submit: ContactSubmit
   actions?: RecordAction[]
   act?: (input: { action: string }) => Promise<ActionResult<{ message?: string }>>
-  remove: () => Promise<ActionResult<Record<string, never>>>
+  // 위험한 작업(지우기 같은 되돌리기 어려운 일) — 없으면 「위험한 작업」 구역을 그리지 않는다(주면 예전 그대로). 결과의 data 는 읽지 않는다
+  remove?: () => Promise<ActionResult<{ message?: string }>>
 }
 
 const same = (a: Record<string, string>, fields: RecordField[]) => fields.every((f) => (a[f.name] ?? "") === f.value)
@@ -63,6 +65,8 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
     rise(s, s.q("[data-enter]"))
   })
   const data = state.status === "ready" ? state.data : null
+  const hasFields = (data?.fields.length ?? 0) > 0
+  const danger = remove ? copy.danger : undefined
   const required = (data?.fields ?? []).filter((f) => f.required).map((f) => f.name)
   const flow = useFormFlow(submit, { id, required, requiredMessage: copy.form.required, notices: copy.form.notices })
   const op = usePortForm({ id: `${id}-op`, notices: copy.form.notices })
@@ -109,6 +113,7 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
     if (r) setNote(r.message ?? copy.actionDone)
   }
   const confirmRemove = async () => {
+    if (!remove) return
     const r = await op.run(() => remove())
     if (!r) return
     setRemoved(true)
@@ -129,15 +134,15 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
         ) : null}
         {state.status === "error" ? <ListError title={copy.error.title} message={state.message} retryLabel={copy.error.retryLabel} retry={state.retry} /> : null}
         {state.status === "empty" ? <ListEmpty title={copy.empty.title} body={copy.empty.body} action={copy.empty.action} /> : null}
-        {removed ? (
+        {removed && danger ? (
           <div role="status" data-record-removed="" className="cn-block-rp-removed">
             <CheckCircle aria-hidden="true" className="cn-block-rp-removed-icon" />
             <h3 ref={doneRef} tabIndex={-1} className="cn-block-rp-removed-title font-heading">
-              {copy.danger.done.title}
+              {danger.done.title}
             </h3>
-            <p className="cn-block-rp-removed-body">{copy.danger.done.body}</p>
-            <Button variant="outline" nativeButton={false} render={<a href={copy.danger.done.link.href} />}>
-              {copy.danger.done.link.label}
+            <p className="cn-block-rp-removed-body">{danger.done.body}</p>
+            <Button variant="outline" nativeButton={false} render={<a href={danger.done.link.href} />}>
+              {danger.done.link.label}
             </Button>
           </div>
         ) : null}
@@ -171,79 +176,87 @@ export function DataTableRecordPanel({ copy, state, submit, actions = [], act, r
                 </div>
               ) : null}
             </div>
-            <div className="cn-block-rp-main">
-              <h3 className="cn-block-rp-sub font-heading">{copy.editTitle}</h3>
-              <FlowAlert flow={flow} copy={copy.form} />
-              {saved ? (
-                <p role="status" data-record-saved="" className="cn-block-rp-saved">
-                  <CheckCircle aria-hidden="true" className="cn-block-rp-saved-icon" />
-                  {flow.receipt?.message ?? copy.saved}
-                </p>
-              ) : null}
-              <form method="post" id={flow.formId} noValidate aria-busy={flow.pending || undefined} onSubmit={flow.onSubmit} onInput={onInput} className="cn-block-rp-form">
-                {data.fields.map((f) => {
-                  const inputId = `${id}-${f.name}`
-                  const aria = fieldAria(flow, id, f.name)
-                  return (
-                    <Field key={f.name} className="cn-block-form-field" data-invalid={aria["aria-invalid"]}>
-                      <FieldLabel htmlFor={inputId}>
-                        {f.label} <span className="cn-block-pf-marker">{f.required ? copy.required : copy.optional}</span>
-                      </FieldLabel>
-                      {f.type === "textarea" ? (
-                        <Textarea id={inputId} name={f.name} defaultValue={f.value} aria-required={f.required || undefined} className="cn-block-form-textarea" {...aria} />
-                      ) : (
-                        <Input
-                          id={inputId}
-                          name={f.name}
-                          type={f.type ?? "text"}
-                          defaultValue={f.value}
-                          autoComplete={f.autoComplete ?? "off"}
-                          autoCapitalize={f.type === "email" ? "off" : undefined}
-                          spellCheck={f.type === "email" ? false : undefined}
-                          aria-required={f.required || undefined}
-                          {...aria}
-                        />
-                      )}
-                      <FieldMessage flow={flow} id={id} name={f.name} />
-                    </Field>
-                  )
-                })}
-                <div className="cn-block-rp-save">
-                  <SubmitButton flow={flow} copy={copy.form} />
-                </div>
-              </form>
-              <div data-danger-zone="" className="cn-block-rp-danger">
-                <h3 className="cn-block-rp-sub font-heading">{copy.danger.title}</h3>
-                <p className="cn-block-rp-danger-body">{copy.danger.body}</p>
-                <FormAlert form={op} fieldTitle={copy.danger.errorTitle} serverTitle={copy.danger.errorTitle} />
-                {asking ? (
-                  <div className="cn-block-rp-confirm">
-                    <p ref={questionRef} tabIndex={-1} className="cn-block-rp-question font-heading">
-                      {copy.danger.question}
-                    </p>
-                    <ChoiceRow label={copy.danger.question}>
-                      <ChoiceButton
-                        choice="decline"
-                        type="button"
-                        onClick={() => {
-                          back.current = true
-                          setAsking(false)
-                        }}
-                      >
-                        {copy.danger.cancel}
-                      </ChoiceButton>
-                      <ChoiceButton choice="primary" type="button" disabled={op.pending} focusableWhenDisabled onClick={confirmRemove}>
-                        {op.pending ? copy.danger.pending : copy.danger.confirm}
-                      </ChoiceButton>
-                    </ChoiceRow>
+            {hasFields || danger ? (
+              <div className="cn-block-rp-main">
+                {hasFields ? (
+                  <>
+                    <h3 className="cn-block-rp-sub font-heading">{copy.editTitle}</h3>
+                    <FlowAlert flow={flow} copy={copy.form} />
+                    {saved ? (
+                      <p role="status" data-record-saved="" className="cn-block-rp-saved">
+                        <CheckCircle aria-hidden="true" className="cn-block-rp-saved-icon" />
+                        {flow.receipt?.message ?? copy.saved}
+                      </p>
+                    ) : null}
+                    <form method="post" id={flow.formId} noValidate aria-busy={flow.pending || undefined} onSubmit={flow.onSubmit} onInput={onInput} className="cn-block-rp-form">
+                      {data.fields.map((f) => {
+                        const inputId = `${id}-${f.name}`
+                        const aria = fieldAria(flow, id, f.name)
+                        return (
+                          <Field key={f.name} className="cn-block-form-field" data-invalid={aria["aria-invalid"]}>
+                            <FieldLabel htmlFor={inputId}>
+                              {f.label} <span className="cn-block-pf-marker">{f.required ? copy.required : copy.optional}</span>
+                            </FieldLabel>
+                            {f.type === "textarea" ? (
+                              <Textarea id={inputId} name={f.name} defaultValue={f.value} aria-required={f.required || undefined} className="cn-block-form-textarea" {...aria} />
+                            ) : (
+                              <Input
+                                id={inputId}
+                                name={f.name}
+                                type={f.type ?? "text"}
+                                defaultValue={f.value}
+                                autoComplete={f.autoComplete ?? "off"}
+                                autoCapitalize={f.type === "email" ? "off" : undefined}
+                                spellCheck={f.type === "email" ? false : undefined}
+                                aria-required={f.required || undefined}
+                                {...aria}
+                              />
+                            )}
+                            <FieldMessage flow={flow} id={id} name={f.name} />
+                          </Field>
+                        )
+                      })}
+                      <div className="cn-block-rp-save">
+                        <SubmitButton flow={flow} copy={copy.form} />
+                      </div>
+                    </form>
+                  </>
+                ) : null}
+                {danger ? (
+                  <div data-danger-zone="" className="cn-block-rp-danger">
+                    <h3 className="cn-block-rp-sub font-heading">{danger.title}</h3>
+                    <p className="cn-block-rp-danger-body">{danger.body}</p>
+                    <FormAlert form={op} fieldTitle={danger.errorTitle} serverTitle={danger.errorTitle} />
+                    {asking ? (
+                      <div className="cn-block-rp-confirm">
+                        <p ref={questionRef} tabIndex={-1} className="cn-block-rp-question font-heading">
+                          {danger.question}
+                        </p>
+                        <ChoiceRow label={danger.question}>
+                          <ChoiceButton
+                            choice="decline"
+                            type="button"
+                            onClick={() => {
+                              back.current = true
+                              setAsking(false)
+                            }}
+                          >
+                            {danger.cancel}
+                          </ChoiceButton>
+                          <ChoiceButton choice="primary" type="button" disabled={op.pending} focusableWhenDisabled onClick={confirmRemove}>
+                            {op.pending ? danger.pending : danger.confirm}
+                          </ChoiceButton>
+                        </ChoiceRow>
+                      </div>
+                    ) : (
+                      <Button ref={triggerRef} type="button" variant="outline" size="lg" onClick={() => setAsking(true)} data-danger-trigger="" className="cn-block-rp-trigger">
+                        {danger.trigger}
+                      </Button>
+                    )}
                   </div>
-                ) : (
-                  <Button ref={triggerRef} type="button" variant="outline" size="lg" onClick={() => setAsking(true)} data-danger-trigger="" className="cn-block-rp-trigger">
-                    {copy.danger.trigger}
-                  </Button>
-                )}
+                ) : null}
               </div>
-            </div>
+            ) : null}
           </div>
         ) : null}
       </div>

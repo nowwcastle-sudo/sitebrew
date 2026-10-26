@@ -13,9 +13,11 @@ export const TEMPLATE_LIVE_NAMES = ["EMAIL_FROM", "NEXT_PUBLIC_APP_URL", "CRON_S
  * POSTHOG_HOST: 없으면 분석(PostHog)만 꺼진다 — 분석 스크립트·동의 띠·서버 계측(운영자 결정 2026-10-05, LFOBS). 켜질 때 검사에 없어서, 없으면 live 의 모든 쪽이 500 이었다.
  * POSTHOG_PROJECT_KEY: POSTHOG_HOST 와 같다(운영자 결정 2026-10-05, LFOBS2). 둘 중 하나라도 없으면 분석이 꺼진다. 공급자 필수 목록에서 이리로 옮겼다 — 예전엔 이 이름 하나로 live 가 켜지지 않았다.
  * SENTRY_DSN: 없으면 오류 수집(Sentry)만 꺼진다(LFOBS). 쓰지도 않는 이름이 필수 목록에 있었다.
+ * NEXT_PUBLIC_PORTONE_STORE_ID·NEXT_PUBLIC_PORTONE_CHANNEL_KEY·PORTONE_API_SECRET·PORTONE_WEBHOOK_SECRET: 없으면 상점(카드·간편결제)만 꺼진다 — live 에서 넷 중 하나라도 없으면 commerceEnabled() 가 false 다(계획 3a). 사이트는 켜진다.
+ * STORAGE_*(일곱): 필수 다섯(종단점·버킷·지역·키 id·비밀 키)이 **모두** 있어야 파일 올리기가 켜지고, 하나라도 없으면 올리기만 꺼진다 — 사이트는 켜진다(계획 3c Task 3, 문의와 같은 방식).
  * scripts/env-check.mjs 가 이 두 목록을 .env.example 과 맞춰 본다. 값이 필요한 이름을 더하면 먼저 「없으면 사이트가 멈춰야 하는가」를 정한다(docs/qa/lfenv.md).
  */
-export const TEMPLATE_OPTIONAL_NAMES = ["INQUIRY_OWNER_EMAIL", "POSTHOG_HOST", "POSTHOG_PROJECT_KEY", "SENTRY_DSN"] as const
+export const TEMPLATE_OPTIONAL_NAMES = ["INQUIRY_OWNER_EMAIL", "BOOKING_OWNER_EMAIL", "POSTHOG_HOST", "POSTHOG_PROJECT_KEY", "SENTRY_DSN", "STORAGE_ENDPOINT", "STORAGE_BUCKET", "STORAGE_REGION", "STORAGE_ACCESS_KEY_ID", "STORAGE_SECRET_ACCESS_KEY", "STORAGE_PATH_STYLE", "STORAGE_PUBLIC_BASE_URL", "NEXT_PUBLIC_PORTONE_STORE_ID", "NEXT_PUBLIC_PORTONE_CHANNEL_KEY", "PORTONE_API_SECRET", "PORTONE_WEBHOOK_SECRET"] as const
 
 const FORMATS = {
   EMAIL_FROM: z.string().min(3),
@@ -29,6 +31,8 @@ const FORMATS = {
 const OPTIONAL_FORMATS = {
   // 문의 알림을 받을 운영자 메일(개인정보 — 저장소에 적지 않는다). 없으면 문의 창구만 꺼진다. 있는데 이메일이 아니면 켜질 때 멈춘다(켜진 척하며 메일이 안 가는 것이 가장 나쁘다)
   INQUIRY_OWNER_EMAIL: z.email(),
+  // 예약 알림을 받을 운영자 메일(개인정보). 없으면 예약 접수만 꺼진다(문의 창구와 같은 규칙). 있는데 이메일이 아니면 켜질 때 멈춘다
+  BOOKING_OWNER_EMAIL: z.email(),
   // PostHog 수집 호스트(us·eu). 지역을 정할 수 있는 값만 받는다 — 프록시·http 처럼 지역을 못 정하면 국외 이전 고지가 비므로 켜질 때 멈춘다(예전엔 모든 쪽 렌더에서 던졌다)
   POSTHOG_HOST: z.string().refine((v) => {
     try {
@@ -42,6 +46,21 @@ const OPTIONAL_FORMATS = {
   POSTHOG_PROJECT_KEY: POSTHOG_PROJECT_KEY_FORMAT,
   // https://공개키@호스트[/경로]/프로젝트번호
   SENTRY_DSN: SENTRY_DSN_FORMAT,
+  // 파일 올리기 저장소(S3 호환). 비밀 키는 형식만 본다 — 길이·모양은 공급자마다 다르다
+  STORAGE_ENDPOINT: z.url({ protocol: /^https?$/ }),
+  STORAGE_BUCKET: z.string().min(1),
+  STORAGE_REGION: z.string().min(1),
+  STORAGE_ACCESS_KEY_ID: z.string().min(1),
+  STORAGE_SECRET_ACCESS_KEY: z.string().min(1),
+  // 경로식 주소(R2·MinIO)면 "true". 그 밖의 글자는 켜질 때 멈춘다(오타로 가상호스트식이 켜지면 서명이 틀려 올리기가 전부 실패한다)
+  STORAGE_PATH_STYLE: z.enum(["true", "false"]),
+  // 공개 종류의 읽기 주소 앞부분(CDN·공개 도메인)
+  STORAGE_PUBLIC_BASE_URL: z.url({ protocol: /^https?$/ }),
+  // PortOne(상점). 앞 둘은 브라우저에 노출되는 값이고 뒤 둘은 서버 비밀이다. 모양은 공급자가 정하므로 비어 있지 않은지만 본다(공백 섞인 값이 켜진 척하지 않게)
+  NEXT_PUBLIC_PORTONE_STORE_ID: z.string().regex(/^\S+$/),
+  NEXT_PUBLIC_PORTONE_CHANNEL_KEY: z.string().regex(/^\S+$/),
+  PORTONE_API_SECRET: z.string().regex(/^\S+$/),
+  PORTONE_WEBHOOK_SECRET: z.string().regex(/^\S+$/),
 } satisfies Record<(typeof TEMPLATE_OPTIONAL_NAMES)[number], z.ZodType>
 
 type Source = Record<string, string | undefined>

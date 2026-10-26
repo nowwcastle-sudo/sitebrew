@@ -44,6 +44,8 @@ export const FACT_NAMES = [
   'naverMapUrl', 'kakaoMapUrl', 'productUrl',
   'companyUrl', 'ftcLookupUrl', 'termsUrl', 'privacyUrl', 'phoneNote', 'copyright', 'accessibilityPolicyUrl', 'bookableSlots', 'integrations',
   'shippingFee', 'returnsFeePayer', 'courier', 'noticeCategory', 'noticeRows',
+  // 행사형 랜딩(C416) — brief.mjs EVENT_FACTS, 콘텐츠 landing.event 가 채운다
+  'eventDate', 'eventVenue',
 ]
 
 // 스키마가 필수로 요구하는데 브리프 사실 이름이 따로 없는 자리(P3-3 Task 14 골든 — 문구 에이전트 6명이 모두 여기서 막히거나 값을 지어냈다).
@@ -150,6 +152,8 @@ export const FACT_SCHEMA_HOMES = {
   // 회사 정보 칸이 없는 원형(factPath 가 facts 에 둔다)의 구조 칸 — 사실이 비면 자리 표시는 facts.<이름> 에 적고 구조 칸의 형식 오류는 건너뛴다(P4GR 골든 실측).
   portfolio: { email: [['contact', 'email']] },
   pwa: { name: [['manifest', 'name'], ['manifest', 'short_name']] },
+  // 행사 일시·장소가 비면 event 칸 전체의 형식 오류를 건너뛴다(C416) — 사실이 없는데 지어낸 일시·장소를 두지 않는다
+  landing: { eventDate: [['event']], eventVenue: [['event']] },
 }
 
 /** 요청이 에이전트에게 알려 주는 「사실 → 채울 구조 칸」 표(문자열 경로) — 사실이 있으면 이 칸들을 그 사실로 채운다(가격 → product.price·taxIncluded 처럼). */

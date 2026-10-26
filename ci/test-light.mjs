@@ -18,6 +18,7 @@ export const COVERAGE_INCLUDE = [
   'factory/scripts/pincheck.mjs',
   'factory/scripts/block-states.mjs',
   'factory/board/block-board/jobs.mjs',
+  'factory/vocab/**/*.mjs',
 ]
 export const COVERAGE_DROP_PP = 0.5
 export const COVERAGE_RAISE_PP = 1.0

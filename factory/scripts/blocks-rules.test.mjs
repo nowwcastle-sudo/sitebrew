@@ -70,7 +70,8 @@ const { EVENTS } = await load(join(root, 'registry', 'factory', 'contract', 'eve
 
 // Task 7b 블록(account/security·credentials·delete-account)은 blocks-rules-7b.test.mjs 가 본다
 // account/permissions(FV1 Task 5.9)는 메타 rules 가 없다 — required-sections.test.mjs 가 본다
-const T7B = new Set(['account/security', 'account/credentials', 'account/delete-account', 'account/permissions'])
+// account/order-history·order-detail(3a C2)도 메타 rules 가 없다 — 승인 행동·표지는 blocks-cart.test.mjs·blocks-human-approval.test.mjs 가 본다
+const T7B = new Set(['account/security', 'account/credentials', 'account/delete-account', 'account/permissions', 'account/order-history', 'account/order-detail'])
 const blocks = loadBlocks(root).filter((b) => b.meta.success && b.meta.data.rules?.length && !T7B.has(`${b.kind}/${b.variant}`))
 const D1_KINDS = ['auth', 'account', 'paywall', 'retention', 'consent']
 const byName = new Map(blocks.map((b) => [`${b.kind}/${b.variant}`, b]))

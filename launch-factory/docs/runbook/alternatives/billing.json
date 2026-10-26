@@ -1,0 +1,48 @@
+[
+  {
+    "service": "Paddle",
+    "tags": [],
+    "support": "builtin",
+    "item": "billing-paddle",
+    "switchCost": {
+      "ko": "이 키트의 기본이에요. 바꿀 것이 없어요.",
+      "en": "This is the kit's default. Nothing to change."
+    },
+    "note": {
+      "ko": "키트에 어댑터가 있고 성과 payments 에 연결돼 있어요.",
+      "en": "The kit has the adapter and it is wired to the payments outcome."
+    },
+    "home": "https://paddle.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Gumroad",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "레지스트리에 대비 어댑터(feature-billing-gumroad)가 있지만 기능 표의 선택지로는 이어져 있지 않아요. 직접 조립하고, 해지·등급 변경·결제수단 변경은 Gumroad 화면에서 해야 해요.",
+      "en": "The registry has a standby adapter (feature-billing-gumroad) but it is not wired into the feature table's choices. You assemble it yourself, and cancel, plan change and payment-method change are done in Gumroad's own screens."
+    },
+    "note": {
+      "ko": "Paddle 승인 전 대비용으로 만들어진 어댑터예요.",
+      "en": "The adapter was made as a fallback before Paddle approval."
+    },
+    "home": "https://gumroad.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Stripe",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "키트에 어댑터가 없어요. 결제 포트(BillingPort)에 맞는 어댑터와 웹훅 경로를 직접 써야 해요.",
+      "en": "The kit has no adapter. You write an adapter for the billing port (BillingPort) and the webhook route yourself."
+    },
+    "note": {
+      "ko": "가격·세금 처리 방식은 이 목록에서 확인하지 않았어요.",
+      "en": "Pricing and tax handling were not checked for this list."
+    },
+    "home": "https://stripe.com",
+    "checked": "2026-10-22"
+  }
+]

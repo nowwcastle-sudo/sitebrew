@@ -50,7 +50,6 @@ export const APP_SHELL_UI = {
 
 const ICONS = { operational: 'home', analytics: 'analytics', 'admin-list': 'file' }
 const usable = (v) => typeof v === 'string' && v.trim() !== '' && !isNeedsCheck(v)
-const NOINDEX_PAGES = new Set(['signup', 'login', 'onboarding', 'account', 'billing', 'cancel', 'booking-complete'])
 
 /**
  * @param {object} a
@@ -67,7 +66,7 @@ export function planAppShell({ sitemap, chosen, sections, content, locale, brand
   const out = { sections: {}, leaves: [], appFiles: {}, unbound: [], fallbacks: [], placement: { sidebar: null, topBar: null, banner: null, toast: null } }
   const globals = new Map((sitemap.globals ?? []).filter((g) => g.status === 'block' && SHELL_GLOBALS.includes(g.kind)).map((g) => [g.kind, g]))
   if (!globals.size) return out
-  const pages = sitemap.pages.filter((p) => !p.legal && !NOINDEX_PAGES.has(p.id))
+  const pages = sitemap.pages.filter((p) => !p.legal && p.kind !== 'app') // 로그인한 사람용 화면(kind app)은 사이드바 쪽 목록에 넣지 않는다
   const legalPages = sitemap.pages.filter((p) => p.legal)
   const drawnBlock = (page, kind) => sections[`${page.id}/${kind}`]?.block
   const unbound = (kind, block, why) => out.unbound.push({ key: `global/${kind}`, block: block ?? SHELL_BLOCKS[kind] ?? kind, why })

@@ -42,6 +42,16 @@ export const LandingContent = z
     business: Business.optional().describe("푸터 사업자·연락처 정보 — 주최·운영 주체"),
     oneLiner: z.string().min(1).describe("제안을 한 문장으로 — H1 이 말하는 약속의 맥락"),
     offerUrl: Url.optional().describe("이 랜딩의 공개 주소 — 아직 없으면 비운다"),
+    event: z
+      .object({
+        name: z.string().min(1).describe("행사 이름"),
+        startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?([+-]\d{2}:\d{2}|Z)?)?$/, { error: "시작 일시는 YYYY-MM-DD 나 YYYY-MM-DDTHH:mm 형식입니다" }).describe("시작 일시 — 브리프 사실 eventDate 를 ISO 8601 로 옮긴 값"),
+        endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?([+-]\d{2}:\d{2}|Z)?)?$/, { error: "종료 일시는 YYYY-MM-DD 나 YYYY-MM-DDTHH:mm 형식입니다" }).optional().describe("종료 일시 — 사실이 있을 때만"),
+        venue: z.string().min(1).describe("장소 이름 — 브리프 사실 eventVenue"),
+        address: z.string().min(1).optional().describe("장소 주소 — 사실이 있을 때만"),
+      })
+      .optional()
+      .describe("행사형 랜딩의 일시·장소 — 사실(eventDate·eventVenue)이 있을 때만 채운다. 없는 일시·장소를 지어내지 않는다"),
     features: z
       .array(z.object({ title: z.string().min(1).describe("받는 것·들을 것·할 것의 이름"), body: z.string().min(1).describe("방문자에게 주는 결과 한 문장") }).describe("특징 한 항목"))
       .default([])

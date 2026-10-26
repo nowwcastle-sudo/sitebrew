@@ -4,12 +4,12 @@ import assert from "node:assert/strict"
 import { readFileSync } from "node:fs"
 import { test } from "node:test"
 import { fileURLToPath } from "node:url"
-import yaml from "js-yaml" // shadcn → cosmiconfig 의 하위 의존성(저장소 직접 의존 아님) — 없으면 이 시험이 설치 점검 구실을 한다
+import YAML from "yaml" // 저장소 직접 devDependency. shadcn 하위의 js-yaml 에 기대면 shadcn 판이 바뀔 때 설치에서 사라진다
 import { deployHost, inquiryState, observabilityState, patchPlans, reportInquiry, reportObservability, stripSensitive } from "../deploy-preview/ci.mjs"
 
 const root = fileURLToPath(new URL("../../", import.meta.url))
 const text = readFileSync(`${root}../.github/workflows/launch-preview.yml`, "utf8")
-const wf = yaml.load(text)
+const wf = YAML.parse(text)
 const steps = Object.values(wf.jobs).flatMap((j) => j.steps)
 const SECRETS = new Set(["VERCEL_TOKEN", "VERCEL_ORG_ID", "VERCEL_PROJECT_ID", "VERCEL_AUTOMATION_BYPASS_SECRET", "PREVIEW_DATABASE_URL"])
 const VARS = new Set(["LF_PREVIEW_ALIAS", "LF_PREVIEW_PLANS_JSON"])

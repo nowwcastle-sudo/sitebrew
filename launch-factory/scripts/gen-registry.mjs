@@ -28,9 +28,20 @@ export const ITEM_ORDER = [
   "feature-billing-paddle",
   "feature-billing-gumroad",
   "feature-inquiry",
+  "feature-payments-kr",
+  "feature-commerce",
+  "feature-reviews",
   "feature-consents",
   "feature-admin",
+  "feature-admin-console",
   "feature-account-lifecycle",
+  "feature-search",
+  "feature-storage",
+  "feature-newsletter",
+  "feature-booking",
+  "feature-notify-kr",
+  "feature-booking-deposit",
+  "feature-push",
 ]
 
 const slash = (p) => p.split("\\").join("/")

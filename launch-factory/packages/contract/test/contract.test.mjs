@@ -42,6 +42,10 @@ function fakeUpstream(t, { version = 2, extra = {} } = {}) {
     [`${C}/events.ts`]: `export const EVENTS = ["page_view"] as const\nexport type EventName = (typeof EVENTS)[number]\nexport const CONTRACT_VERSION = ${version}\nexport interface EventProps { page_view: { path: string } }\n`,
     [`${C}/ports.ts`]: `import type { ActionResult } from "@/${C}/block-contract"\nimport type { EventName, EventProps } from "@/${C}/events"\nexport interface Attribution { blockId?: string }\nexport interface AnalyticsPort { track<N extends EventName>(n: N, p: EventProps[N], m?: { attribution?: Attribution }): void; consent(): boolean; setConsent(v: boolean): ActionResult<null> }\n`,
     [`${C}/attribution.ts`]: `import type { AnalyticsPort, Attribution } from "@/${C}/ports"\nexport function withAttribution(p: AnalyticsPort, a: Attribution): AnalyticsPort { void a; return p }\n`,
+    [`${C}/commerce.ts`]: `import type { ActionResult } from "@/${C}/block-contract"\nexport interface CatalogItem { id: string }\nexport interface CommercePort { catalog(): Promise<ActionResult<CatalogItem[]>> }\n`,
+    // 판매 포트 적합성(계획 3d L4 — 목록에 한 줄) + 공용 core(import 로 따라온다)
+    [`${C}/conformance/conformance-core.ts`]: "export interface ConformanceResult { id: string; ok: boolean; message: string }\nexport const show = (v: unknown): string => String(v)\n",
+    [`${C}/conformance/commerce.ts`]: `import type { CommercePort } from "@/${C}/commerce"\nimport { type ConformanceResult, show } from "./conformance-core"\nexport async function commerceConformance(p: CommercePort): Promise<ConformanceResult[]> { return [{ id: "commerce.fake", ok: show(p) !== "", message: "ok" }] }\n`,
     ...extra,
   }
   for (const [p, body] of Object.entries(files)) {
@@ -101,8 +105,8 @@ test("가져오기 양성 대조: 판 2 가짜 저장소 → 0, 잠금·import �
   assert.equal(lock.source, "nowwcastle-sudo/sitebrew")
   assert.equal(lock.commit, commit)
   assert.equal(lock.contractVersion, 2)
-  // 목록 셋 + import 로 따라온 block-contract.ts
-  assert.deepEqual(lock.files.map((f) => f.path).sort(), [`${C}/attribution.ts`, `${C}/block-contract.ts`, `${C}/events.ts`, `${C}/ports.ts`])
+  // 목록 다섯 + import 로 따라온 block-contract.ts·conformance-core.ts
+  assert.deepEqual(lock.files.map((f) => f.path).sort(), [`${C}/attribution.ts`, `${C}/block-contract.ts`, `${C}/commerce.ts`, `${C}/conformance/commerce.ts`, `${C}/conformance/conformance-core.ts`, `${C}/events.ts`, `${C}/ports.ts`])
   for (const f of lock.files) assert.match(f.upstreamSha256, /^[0-9a-f]{64}$/)
   const ports = readFileSync(join(out, "src/web-factory/contract/ports.ts"), "utf8")
   assert.match(ports, /from "\.\/block-contract\.ts"/)

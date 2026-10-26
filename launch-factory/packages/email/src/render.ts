@@ -2,16 +2,23 @@
 import { render } from "react-email"
 import { welcome, type WelcomeInput } from "./templates/welcome.ts"
 import { orderConfirmation, type OrderConfirmationInput } from "./templates/order-confirmation.ts"
+import { shopOrderConfirmation, type ShopOrderConfirmationInput } from "./templates/shop-order-confirmation.ts"
 import { priceChange, type PriceChangeInput } from "./templates/price-change.ts"
 import { cancellation, type CancellationInput } from "./templates/cancellation.ts"
 import { paymentFailed, type PaymentFailedInput } from "./templates/payment-failed.ts"
 import { inquiryNotice, type InquiryNoticeInput } from "./templates/inquiry-notice.ts"
 import { inquiryReceipt, type InquiryReceiptInput } from "./templates/inquiry-receipt.ts"
+import { inquiryReply, type InquiryReplyInput } from "./templates/inquiry-reply.ts"
+import { bookingConfirmation, type BookingConfirmationInput } from "./templates/booking-confirmation.ts"
+import { bookingCancellation, type BookingCancellationInput } from "./templates/booking-cancellation.ts"
+import { bookingNotice, type BookingNoticeInput } from "./templates/booking-notice.ts"
 import { accountDeletionRequested, emailChangeConfirm, emailChanged, passwordChanged, passwordReset, verifyEmail } from "./templates/account.ts"
 import type { AccountDeletionRequestedInput, EmailChangeConfirmInput, EmailChangedInput, PasswordChangedInput, PasswordResetInput, VerifyEmailInput } from "./templates/account.ts"
 import { marketingConsentNotice, type MarketingConsentNoticeInput } from "./templates/marketing-consent-notice.ts"
 import { marketingReconfirm, type MarketingReconfirmInput } from "./templates/marketing-reconfirm.ts"
 import { marketingAnnouncement, type MarketingAnnouncementInput } from "./templates/marketing-announcement.ts"
+import { newsletterConfirm, type NewsletterConfirmInput } from "./templates/newsletter-confirm.ts"
+import { newsletterWelcome, type NewsletterWelcomeInput } from "./templates/newsletter-welcome.ts"
 import { newDeviceSignIn, type NewDeviceSignInInput } from "./templates/new-device-sign-in.ts"
 import type { BuiltEmail } from "./templates/layout.ts"
 import { adSubject, checkAdvertising } from "./advertising.ts"
@@ -21,11 +28,16 @@ import { kindOf } from "./kinds.ts"
 export interface TemplateInputs {
   welcome: WelcomeInput
   orderConfirmation: OrderConfirmationInput
+  shopOrderConfirmation: ShopOrderConfirmationInput
   priceChange: PriceChangeInput
   cancellation: CancellationInput
   paymentFailed: PaymentFailedInput
   inquiryNotice: InquiryNoticeInput
   inquiryReceipt: InquiryReceiptInput
+  inquiryReply: InquiryReplyInput
+  bookingConfirmation: BookingConfirmationInput
+  bookingCancellation: BookingCancellationInput
+  bookingNotice: BookingNoticeInput
   verifyEmail: VerifyEmailInput
   emailChangeConfirm: EmailChangeConfirmInput
   emailChanged: EmailChangedInput
@@ -36,17 +48,24 @@ export interface TemplateInputs {
   newDeviceSignIn: NewDeviceSignInInput
   marketingReconfirm: MarketingReconfirmInput
   marketingAnnouncement: MarketingAnnouncementInput
+  newsletterConfirm: NewsletterConfirmInput
+  newsletterWelcome: NewsletterWelcomeInput
 }
 export type TemplateName = keyof TemplateInputs
 
 const BUILDERS: { [N in TemplateName]: (input: TemplateInputs[N]) => BuiltEmail } = {
   welcome,
   orderConfirmation,
+  shopOrderConfirmation,
   priceChange,
   cancellation,
   paymentFailed,
   inquiryNotice,
   inquiryReceipt,
+  inquiryReply,
+  bookingConfirmation,
+  bookingCancellation,
+  bookingNotice,
   verifyEmail,
   emailChangeConfirm,
   emailChanged,
@@ -57,6 +76,8 @@ const BUILDERS: { [N in TemplateName]: (input: TemplateInputs[N]) => BuiltEmail 
   newDeviceSignIn,
   marketingReconfirm,
   marketingAnnouncement,
+  newsletterConfirm,
+  newsletterWelcome,
 }
 export const TEMPLATE_NAMES = Object.keys(BUILDERS) as TemplateName[]
 

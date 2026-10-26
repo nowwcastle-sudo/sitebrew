@@ -28,6 +28,8 @@ export const BLOCK_KINDS = ['nav', 'bottom-tab', 'footer', 'hero', 'social-proof
   'floating-action',
   // 거르기 줄(FV1 Task 5.9 — 분류 칩·도구 줄·검색 줄, 상태는 주소 쿼리)
   'filter-bar',
+  // 장바구니·주문(계획 3a C1 — 담은 줄 표·카드·합계 요약·배송지 + 결제. 판매 포트 CommercePort 의 읽기·쓰기를 화면으로, commerce 원형의 v0.2 쪽)
+  'cart',
 ]
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 // 레시피 히어로(recipe.mjs HERO_IDS — P3-1 레시피 검수대 구성의 승격)가 아닌 히어로 블록: 모션 그래픽 히어로(P3-5 MOTKIT — 실사 영상·사진 + 키네틱 타이포).

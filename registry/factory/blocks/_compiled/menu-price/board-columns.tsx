@@ -26,7 +26,7 @@ export function MenuPriceBoardColumns({ copy, categories, id = "menu", className
     rise(s, s.q("[data-enter]"), { stagger: 0.05 })
   })
   return (
-    <section ref={ref} id={id} data-block="menu-price-board-columns" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="menu-price-board-columns" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
       <div className="flex flex-col gap-8 bg-foreground px-6 py-10 text-background md:px-12 md:py-14">
         <div className="gap-12 md:columns-2">

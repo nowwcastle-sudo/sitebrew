@@ -26,7 +26,8 @@ import { ListEmpty, ListError } from "../_shared/list-status"
 export type TableColumn = {
   id: string
   label: string
-  kind?: "text" | "numeric" | "date" | "status"
+  // contact: 전화·메일처럼 서버가 가려서(마스킹) 보낸 글 — 글자로 그린다(검색 대상 아님)
+  kind?: "text" | "numeric" | "date" | "status" | "contact"
   sortable?: boolean
   // 이 열의 값으로 거르는 선택 칸을 만든다(text·status 열)
   filter?: boolean
@@ -81,9 +82,12 @@ const compare = (col: TableColumn, a: TableCellValue | undefined, b: TableCellVa
   return String(a).localeCompare(String(b), "ko")
 }
 
-/** 검색(글자·상태 열 부분 일치)·거르기(열 값 일치)·정렬을 적용한다. 쪽은 자르지 않는다(pageOf) */
-export function applyQuery(data: TableData, q: TableQuery): TableRowData[] {
-  const needle = q.search.trim().toLowerCase()
+/**
+ * 검색(글자·상태 열 부분 일치)·거르기(열 값 일치)·정렬을 적용한다. 쪽은 자르지 않는다(pageOf).
+ * `serverSearch` 면 검색어를 이 함수가 다시 거르지 않는다 — 서버가 이미 검색어로 읽어 온 행이고(가린 연락처·표에 안 보이는 칸까지 맞춘 결과), 보이는 칸으로 한 번 더 거르면 맞는 행이 사라진다.
+ */
+export function applyQuery(data: TableData, q: TableQuery, opts?: { serverSearch?: boolean }): TableRowData[] {
+  const needle = opts?.serverSearch ? "" : q.search.trim().toLowerCase()
   const textCols = data.columns.filter((c) => (c.kind ?? "text") === "text" || c.kind === "status")
   let rows = data.rows.filter((r) => {
     if (needle && !textCols.some((c) => String(r.cells[c.id] ?? "").toLowerCase().includes(needle))) return false

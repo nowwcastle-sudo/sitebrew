@@ -24,6 +24,7 @@ export const TEST_GLOBS = [
   "template/test/runfix.test.mjs",
   "template/test/lfada.test.mjs",
   "template/test/adb.test.mjs",
+  "template/test/book-push-client.test.mjs",
   "template/test/lfobs.test.mjs",
   "template/test/p1c.test.mjs",
   "template/test/p1ab.test.mjs",
@@ -33,7 +34,7 @@ export const TEST_GLOBS = [
 ]
 
 /** 이 PC 의 셸에 걸려 있을 수 있는 공급자·모드 이름. CI 러너에는 없다 — 시험이 이 값에 우연히 기대면 CI 에서만 깨진다(LFCI: lffix F2 CSP 가 POSTHOG_HOST 에 기대 있었다) */
-const AMBIENT = /^(?:LF_(?!WF_|CI_)|PADDLE_|POSTHOG_|SENTRY_|RESEND_|TURNSTILE_|GUMROAD_|GOOGLE_CLIENT_|KAKAO_CLIENT_|NAVER_CLIENT_|DATABASE_URL$|BETTER_AUTH_|CRON_SECRET$|SUBJECT_REF_KEY$|EMAIL_FROM$|INQUIRY_OWNER_EMAIL$|NEXT_PUBLIC_)/
+const AMBIENT = /^(?:LF_(?!WF_|CI_)|PADDLE_|PORTONE_|POSTHOG_|SENTRY_|RESEND_|TURNSTILE_|GUMROAD_|GOOGLE_CLIENT_|KAKAO_CLIENT_|NAVER_CLIENT_|DATABASE_URL$|BETTER_AUTH_|CRON_SECRET$|SUBJECT_REF_KEY$|EMAIL_FROM$|INQUIRY_OWNER_EMAIL$|BOOKING_OWNER_EMAIL$|SOLAPI_|VAPID_|NEXT_PUBLIC_)/
 export const cleanEnv = (env = process.env) => Object.fromEntries(Object.entries(env).filter(([k]) => !AMBIENT.test(k)))
 
 export function runTests({ tap } = {}) {

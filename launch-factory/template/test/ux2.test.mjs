@@ -86,9 +86,9 @@ test("문의 폼: 멱등 키·봇 토큰을 싣고, 필수 칸은 이름이 있�
   assert.ok(!/\sstyle=/.test(form), "style 속성이 없다(엄격 CSP)")
 })
 
-test("비밀번호 변경 메일이 「contact us」 가 가리킬 문의 화면 링크를 받는다(C02)", () => {
+test("비밀번호 변경 메일이 「contact us」 가 가리킬 문의 화면 링크를 받는다(C02) — 문의 화면이 남아 있을 때만", () => {
   assert.match(read("lib/launch/config.ts"), /contact: "\/contact"/)
-  assert.match(read("lib/launch/auth.ts"), /contactUrl: `\$\{appUrl\(\)\}\$\{ROUTES\.contact\}`/)
+  assert.match(read("lib/launch/auth.ts"), /contactUrl: hasUrl\(ROUTES\.contact\) \? `\$\{appUrl\(\)\}\$\{ROUTES\.contact\}` : undefined/)
 })
 
 // ── F04: 가격 변경 동의 ───────────────────────────────────────────────────────────────────

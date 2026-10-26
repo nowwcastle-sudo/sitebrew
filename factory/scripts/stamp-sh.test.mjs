@@ -5,7 +5,7 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { SHADCN, sh, shTimeoutMs } from '../stamp/site-install.mjs'
+import { sh, shTimeoutMs } from '../stamp/site-install.mjs'
 import { failMessage, tailLog } from '../stamp/fail-message.mjs'
 import { SECRET_ENV_NAMES, envWithoutSecrets, powershellPath } from '../lib/secret-env.mjs'
 import { root } from './lib/stamp-site-fixtures.mjs'
@@ -84,18 +84,17 @@ test('S5: 사용자 환경 읽기는 Windows PowerShell 5.1 의 절대 경로로
   assert.match(src, /execFileSync\(powershellPath\(env\)/)
 })
 
-// FINAL-WF P5: 템플릿의 shadcn 은 정확히 고정이고(registry:check 의 shadcn@4.21.0 과 같다), 잠금 파일이 package.json 과 맞아야 npm ci 가 돈다.
-test('P5: 사이트 템플릿 shadcn 은 4.21.0 정확 고정 · 잠금 파일의 루트 의존성이 package.json 과 같고 npm ci 로 설치한다', () => {
+// FINAL-WF P5: 템플릿의 shadcn 은 정확히 고정이고(registry:check 의 shadcn@4.22.1 과 같다), 잠금 파일이 package.json 과 맞아야 npm ci 가 돈다.
+test('P5: 사이트 템플릿 shadcn 은 4.22.1 정확 고정 · 잠금 파일의 루트 의존성이 package.json 과 같고 npm ci 로 설치한다', () => {
   const dir = join(root, 'factory', 'stamp', 'site-template')
   const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'))
-  assert.equal(pkg.dependencies.shadcn, '4.21.0')
-  assert.equal(SHADCN, `shadcn@${pkg.dependencies.shadcn}`, 'site-install SHADCN 과 같은 버전')
+  assert.equal(pkg.dependencies.shadcn, '4.22.1')
   const lock = JSON.parse(readFileSync(join(dir, 'package-lock.json'), 'utf8'))
   assert.equal(lock.lockfileVersion >= 3, true)
   const rootPkg = lock.packages['']
   assert.deepEqual(rootPkg.dependencies, pkg.dependencies, '잠금 파일을 package.json 에서 다시 만든다(docs/qa/site-template-lock.md)')
   assert.deepEqual(rootPkg.devDependencies, pkg.devDependencies)
-  assert.equal(lock.packages['node_modules/shadcn'].version, '4.21.0', '잠금 파일의 shadcn 도 같은 버전')
+  assert.equal(lock.packages['node_modules/shadcn'].version, '4.22.1', '잠금 파일의 shadcn 도 같은 버전')
   assert.equal(lock.packages['node_modules/next'].version, pkg.dependencies.next)
   const install = readFileSync(join(root, 'factory', 'stamp', 'site-install.mjs'), 'utf8')
   assert.match(install, /hasLock \? 'npm ci --no-audit --no-fund'/)

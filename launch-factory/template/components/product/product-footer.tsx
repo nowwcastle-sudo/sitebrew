@@ -1,6 +1,7 @@
 import { FooterProductLegal } from "@/components/blocks/footer/product-legal"
 import { footerCopy } from "@/content/copy.shell.en"
 import { footerBusiness } from "@/lib/footer-business"
+import { hasPart } from "@/lib/launch/enabled"
 import { ReportProblem } from "@/components/product/report-problem"
 import { REPORT_PROBLEM_ENABLED } from "@/lib/launch/feedback"
 import { analyticsEnabled, sentryDsn } from "@/lib/observability"
@@ -12,7 +13,8 @@ import { analyticsEnabled, sentryDsn } from "@/lib/observability"
 // 분석이 꺼진 제품(live 인데 POSTHOG_HOST 나 POSTHOG_PROJECT_KEY 없음 — LFOBS·LFOBS2)에는 바꿀 선택 쿠키가 없다: 「Cookie settings」 링크도 뺀다(눌러도 열 대화상자가 없다).
 export function ProductFooter() {
   const withoutCookies = { ...footerCopy, cookieSettings: undefined }
-  const copy = analyticsEnabled(process.env.LF_MODE, process.env.POSTHOG_HOST, process.env.POSTHOG_PROJECT_KEY) ? footerCopy : withoutCookies
+  // 분석을 고르지 않은 제품(enabled.json 에 analytics-posthog 없음)도 같다 — 동의 띠가 없어 「Cookie settings」가 열 대화상자가 없다
+  const copy = hasPart("analytics-posthog") && analyticsEnabled(process.env.LF_MODE, process.env.POSTHOG_HOST, process.env.POSTHOG_PROJECT_KEY) ? footerCopy : withoutCookies
   // 「Report a problem」(D95)은 제품이 스위치를 켰고(lib/launch/feedback.ts) 오류 수집이 켜져 있을 때만 — 피드백은 Sentry 로 가므로 DSN 이 없으면 보낼 곳이 없다
   const reportProblem = REPORT_PROBLEM_ENABLED && sentryDsn() !== undefined
   return (

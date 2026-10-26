@@ -1,0 +1,46 @@
+[
+  {
+    "service": "Netlify",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "이 키트는 Vercel 기준으로 확인했어요. 정기 실행(Cron) 설정이 Vercel 의 vercel.json 에 있어서, 다른 곳으로 옮기면 정기 실행을 그곳 방식으로 다시 만들어야 해요.",
+      "en": "This kit was checked on Vercel. The scheduled runs (Cron) are set in Vercel's vercel.json, so on another host you must rebuild them in that host's way."
+    },
+    "note": {
+      "ko": "가격과 기능은 [확인 안 됨] — 비교하지 않았어요.",
+      "en": "Price and features are [not verified] — they were not compared."
+    },
+    "home": "https://www.netlify.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Cloudflare",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "이 키트는 Vercel 기준으로 확인했어요. 정기 실행(Cron) 설정이 Vercel 의 vercel.json 에 있어서, 다른 곳으로 옮기면 정기 실행을 그곳 방식으로 다시 만들어야 해요.",
+      "en": "This kit was checked on Vercel. The scheduled runs (Cron) are set in Vercel's vercel.json, so on another host you must rebuild them in that host's way."
+    },
+    "note": {
+      "ko": "가격과 기능, 이 키트가 그대로 올라가는지는 [확인 안 됨] — 확인하지 않았어요.",
+      "en": "Price, features and whether this kit runs there as is are [not verified] — they were not checked."
+    },
+    "home": "https://www.cloudflare.com",
+    "checked": "2026-10-22"
+  },
+  {
+    "service": "Your own server",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "서버 준비, HTTPS 인증서, 정기 실행, 배포 자동화를 직접 맡아야 해요. 이 키트는 이런 서버에서 돌려 본 것을 확인하지 않았어요.",
+      "en": "You take over server setup, the HTTPS certificate, scheduled runs and deployment automation. This kit was not checked on such a server."
+    },
+    "note": {
+      "ko": "가격과 안정성은 [확인 안 됨].",
+      "en": "Price and reliability are [not verified]."
+    },
+    "checked": "2026-10-22"
+  }
+]

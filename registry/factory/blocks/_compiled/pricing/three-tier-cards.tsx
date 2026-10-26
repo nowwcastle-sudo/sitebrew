@@ -49,7 +49,7 @@ export function PricingThreeTierCards({ copy, prices, signedIn, currentPlanId, i
   })
   const pid = (i: number) => `${id}-plan-${i + 1}`
   return (
-    <section ref={ref} id={id} data-block="pricing-three-tier-cards" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="pricing-three-tier-cards" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <BlockHeading id={`${id}-title`} title={copy.title} lead={copy.lead} />
       <ul className="grid items-stretch gap-6 md:grid-cols-3 md:data-[count=1]:max-w-md md:data-[count=1]:grid-cols-1 md:data-[count=2]:grid-cols-2 lg:data-[count=4]:grid-cols-4" data-count={copy.plans.length}>
         {copy.plans.map((p, i) => {

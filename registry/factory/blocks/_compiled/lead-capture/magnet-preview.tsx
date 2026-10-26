@@ -76,7 +76,7 @@ export function LeadCaptureMagnetPreview({ copy, submit, track, id = "lead-magne
     track?.("form_start", { form: id })
   }
   return (
-    <section ref={ref} id={id} data-block="lead-capture-magnet-preview" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
+    <section ref={ref} id={id} data-block="lead-capture-magnet-preview" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8", className)}>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:items-start md:gap-12">
         <div data-enter data-magnet-preview="" className="flex flex-col gap-4 rounded-lg border bg-muted px-5 py-5">
           <ReviewPhoto photo={copy.preview.cover} className="mx-auto max-w-56 bg-background" />

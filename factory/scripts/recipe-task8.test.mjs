@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   parseRecipe, recipeIds, RECIPES_DIR, recipeItems, recipeRegistry, recipeCss, recipeReadme, applyAlternate, validCombos, altAxesOf, kitItems, knownRegistryItems,
-  shapeVars, surfaceShadow, SHAPE_VARS, heroTitleWidth, heroAxisParts, displayHeroReport, lintRecipeReport, HERO_IDS,
+  shapeVars, spacingVars, spacingVarsOf, surfaceShadow, SHAPE_VARS, heroTitleWidth, heroAxisParts, displayHeroReport, lintRecipeReport, HERO_IDS,
 } from './recipe.mjs'
 import { radiusToken, maskRadiusToken, BLOB } from './gen-radius-axis.mjs'
 import { altCss, scopedCss } from './gen-recipes-gallery.mjs'
@@ -117,6 +117,31 @@ test('A11: every library recipe ships the shape tokens in the base item (A and B
   const r3 = shapeVars({ ...g, axes: { ...g.axes, radius: 'R3' } })
   assert.equal(r3.radius, shapeVars(g).radius)
   assert.notEqual(r3['wf-mask-radius'], shapeVars(g)['wf-mask-radius'])
+})
+
+test('여백 토큰: 머리 spacing 이 normal 이 아니면 base 항목 cssVars.light(모양 토큰 앞)·순수 CSS·갤러리 범위에 --wf-section-* 네 개가 실린다 — normal·없음은 하나도 안 실린다', () => {
+  const r = load('r9-clay')
+  const airy = spacingVars('airy')
+  assert.deepEqual(Object.keys(airy), ['wf-section-py', 'wf-section-py-md', 'wf-section-gap', 'wf-section-gap-md'])
+  assert.deepEqual(spacingVarsOf({ ...r, spacing: 'airy' }), airy)
+  for (const it of itemsOf({ ...r, spacing: 'airy' }).filter((i) => i.type === 'registry:base')) {
+    const keys = Object.keys(it.cssVars.light)
+    assert.deepEqual(keys.slice(-7, -3), Object.keys(airy), `${it.name}: 여백 토큰은 모양 토큰 바로 앞`)
+    assert.deepEqual(keys.slice(-3), SHAPE_VARS)
+    for (const [k, v] of Object.entries(airy)) assert.equal(it.cssVars.light[k], v, `${it.name} ${k}`)
+  }
+  const css = recipeCss({ ...r, spacing: 'airy' })
+  const scoped = scopedCss({ ...r, spacing: 'airy' }, new Map())
+  for (const [k, v] of Object.entries(airy)) {
+    assert.ok(css.includes(`  --${k}: ${v};`), `순수 CSS --${k}`)
+    assert.ok(scoped.includes(`  --${k}: ${v};`), `갤러리 --${k}`)
+  }
+  assert.ok(css.indexOf('--wf-section-gap-md:') < css.indexOf('--radius:'), '순수 CSS 도 레지스트리·갤러리와 같은 순서: 여백 토큰이 모양 토큰 앞')
+  for (const head of [{ ...r, spacing: 'normal' }, { ...r, spacing: undefined }]) {
+    assert.deepEqual(spacingVarsOf(head), {})
+    for (const it of itemsOf(head).filter((i) => i.type === 'registry:base')) assert.ok(Object.keys(airy).every((k) => !(k in it.cssVars.light)), `${it.name}: normal·없음은 싣지 않는다`)
+    assert.ok(Object.keys(airy).every((k) => !recipeCss(head).includes(`--${k}:`) && !scopedCss(head, new Map()).includes(`--${k}:`)))
+  }
 })
 
 // ── A20 ────────────────────────────────────────────────────────────────

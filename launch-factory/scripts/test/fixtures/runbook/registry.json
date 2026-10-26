@@ -1,0 +1,37 @@
+{
+  "items": {
+    "feature-alpha": [
+      "LF_MODE",
+      "DATABASE_URL",
+      "A_KEY"
+    ],
+    "feature-beta": [
+      "LF_MODE",
+      "DATABASE_URL",
+      "B_TOKEN"
+    ]
+  },
+  "parts": {
+    "alpha": {
+      "feature": "feature-alpha",
+      "guides": [
+        "G-alpha",
+        "G-db"
+      ]
+    },
+    "beta": {
+      "feature": "feature-beta",
+      "guides": [
+        "G-beta"
+      ]
+    },
+    "db": {
+      "guides": [
+        "G-db"
+      ]
+    },
+    "lonely": {
+      "guides": []
+    }
+  }
+}

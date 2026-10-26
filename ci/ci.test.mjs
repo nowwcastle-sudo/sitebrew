@@ -129,9 +129,9 @@ test('워크플로: 모든 uses 는 40자 커밋 해시로 고정돼 있고, 체
   assert.ok(usesTotal >= 4, `uses ${usesTotal}`)
 })
 
-test('보안 워크플로: 모든 가지 푸시·PR 에서 돌고 paths-ignore 가 없다 — 문서만 바뀐 푸시·작업 가지 푸시도 비밀값 검사를 받는다(v0.0.12 리뷰 P1-1)', () => {
+test('보안 워크플로: main 푸시·모든 PR 에서 돌고 paths-ignore 가 없다 — 문서만 바뀐 푸시도 비밀값 검사를 받는다(v0.0.12 리뷰 P1-1 · 작업 가지 푸시는 2026-10-16 비용 절감으로 뺌)', () => {
   const sec = readFileSync(join(ROOT, '.github', 'workflows', 'security.yml'), 'utf8').replace(/\r\n/g, '\n')
-  assert.match(sec, /^on:\n  push:\n    branches: \['\*\*'\]$/m)
+  assert.match(sec, /^on:\n  push:\n    branches: \[main\]$/m)
   assert.match(sec, /^  pull_request:$/m)
   assert.doesNotMatch(sec, /^\s*(?:paths-ignore|paths):/m, '트리거에 경로 거르개가 없다')
   for (const step of ['gitleaks git', 'gitleaks dir', 'osv-scanner', 'zizmor', 'actionlint']) assert.ok(sec.includes(step), step)
@@ -143,6 +143,13 @@ test('ci:verify 는 README 5개 언어 대조(readme:check)를 버전 검사 바
   const names = STEPS.map(([n]) => n)
   assert.ok(names.includes('readme:check'), names.join(','))
   assert.equal(names.indexOf('readme:check'), names.indexOf('registry:pincheck') + 1)
+})
+
+test('ci:verify 는 dev 합격선(vocab:eval)을 holdout 격리 검사 바로 앞에서 돈다 — 어휘집 회귀를 push 전에 잡는다', () => {
+  const names = STEPS.map(([n]) => n)
+  assert.ok(names.includes('vocab:eval'), names.join(','))
+  assert.equal(names.indexOf('vocab:eval') + 1, names.indexOf('vocab-holdout-guard'))
+  assert.ok(names.indexOf('test:light') < names.indexOf('vocab:eval'))
 })
 
 test('ci:verify 마지막 단계는 security:osv — 새 취약점 공지를 push 전에 잡는다(Task 1.2)', () => {

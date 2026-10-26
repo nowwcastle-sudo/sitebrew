@@ -69,7 +69,7 @@ export function SocialProofWhipQuotes({ copy, id = "social-proof", className }: 
   }, [view, fid])
   const position = copy.positionLabel.replace("{current}", String(view.idx + 1)).replace("{total}", String(n))
   return (
-    <section ref={ref} id={id} data-block="social-proof-whip-quotes" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 relative overflow-x-clip", className)}>
+    <section ref={ref} id={id} data-block="social-proof-whip-quotes" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full max-w-6xl flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 relative overflow-x-clip", className)}>
       <svg aria-hidden="true" focusable="false" className="pointer-events-none absolute size-0">
         <filter id={fid} x="-20%" y="0" width="140%" height="100%">
           <feGaussianBlur ref={blur} stdDeviation="0 0" />

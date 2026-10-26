@@ -31,6 +31,7 @@ import { createRequire } from 'node:module'
 import { parse as parseYaml } from 'yaml'
 import { z } from 'zod'
 import { createStyleMap } from 'shadcn/utils'
+import { shadcnSpec } from './lib/pins.mjs'
 import { BASE_CSS, AXIS_ORDER, AXIS_DEFAULTS, axisValue, listValues } from './axes.mjs'
 import { checkCompat, checkCompatWarnings, checkRecipeRules, checkAxisRecipeRules, COMPAT, LINE_VALUES } from './compat.mjs'
 import { ratio, alphaOf, oklchToLinearSrgb } from './lib/contrast-lib.mjs'
@@ -50,6 +51,20 @@ export const R_DIR = join(FACTORY, 'r')
 export const REPO = 'nowwcastle-sudo/sitebrew'
 export const GENERATOR = 'factory/scripts/recipe.mjs'
 const BANNER = `생성물 — ${GENERATOR} 로 다시 만든다. 손으로 고치지 않는다.`
+
+// 구획 여백 토큰: 단계(tight|normal|airy)마다 .cn-block-section 의 py·gap(Tailwind 간격 단위)을 spacing.json 에 둔다.
+// 머리 spacing 이 normal 이 아니면 recipeCss 가 --wf-section-* 네 변수를 낸다(base.css 의 기본값이 normal 과 같다 — 시험이 맞춘다).
+const SPACING = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'spacing.json'), 'utf8'))
+export const SPACING_LEVELS = Object.keys(SPACING)
+export const SPACING_DEFAULT = 'normal'
+export function spacingVars(level) {
+  const s = SPACING[level]
+  if (!s) throw new Error(`여백 단계 ${level} 를 모른다(${SPACING_LEVELS.join('·')})`)
+  const unit = (n) => `calc(var(--spacing) * ${n})`
+  return { 'wf-section-py': unit(s.py), 'wf-section-py-md': unit(s.pyMd), 'wf-section-gap': unit(s.gap), 'wf-section-gap-md': unit(s.gapMd) }
+}
+/** 머리의 여백 토큰 — spacing 이 없거나 normal 이면 빈 객체(base.css 기본값이 normal). recipeCss·registry cssVars.light·갤러리 범위가 이 한 곳을 쓴다. */
+export const spacingVarsOf = (r) => (r.spacing && r.spacing !== SPACING_DEFAULT ? spacingVars(r.spacing) : {})
 
 // ── 스키마 ──────────────────────────────────────────────────────────────
 export const STATUS = ['success', 'warning', 'info']
@@ -173,6 +188,7 @@ export const RecipeHead = z.object({
   // display(D)·texture(X)는 선택 칸(Task 16a, J6) — 없으면 AXIS_DEFAULTS(D1·X0). 기존 10벌은 적지 않아 생성물이 그대로다.
   axes: z.object(Object.fromEntries(AXIS_ORDER.map((a) => [a, a in AXIS_DEFAULTS ? z.string().optional() : z.string()]))).strict(),
   motion: Motion,
+  spacing: z.enum(SPACING_LEVELS).optional(), // 구획 여백 단계(선택) — 없으면 normal. normal 이 아니면 recipeCss 가 --wf-section-* 를 싣는다.
   colorLogic: z.enum(COLOR_LOGICS),
   defaultTheme: z.enum(['light', 'dark']).optional(),
   dynamics: Dynamics,
@@ -972,8 +988,8 @@ export function recipeItems(r, sources, { repo = REPO, ref, versions = pkgVersio
         files: [ICONS_INDEX_FILE(r.id)],
         registryDependencies: [...compItems.map((i) => i.name), BASE_ITEM, ...kits.filter((n) => knownItems.has(n))].sort().map(dep),
         // 아이콘 결(G1~G5) → :root 의 --icon-stroke·--icon-linecap·--icon-linejoin(icons-<library> 항목 css 가 읽는다, Phosphor 는 어댑터 굵기로).
-        // 모양 토큰(shapeVars — --radius·--wf-mask-radius·--wf-shadow-surface, Task 8 A11)은 맨 뒤에 싣는다.
-        cssVars: { theme: { ...fontStacks(h.fonts), ...colorTheme(h) }, light: { ...h.color.light, ...iconVars(h.icons?.weight), ...motionVars(h.motion), ...recipeMarkers(h), ...headingWeightVars(h), ...shapeVars(h) }, dark: { ...h.color.dark } },
+        // 여백 토큰(spacingVarsOf — spacing 이 normal 이 아닐 때만)은 모양 토큰 앞에, 모양 토큰(shapeVars — --radius·--wf-mask-radius·--wf-shadow-surface, Task 8 A11)은 맨 뒤에 싣는다.
+        cssVars: { theme: { ...fontStacks(h.fonts), ...colorTheme(h) }, light: { ...h.color.light, ...iconVars(h.icons?.weight), ...motionVars(h.motion), ...recipeMarkers(h), ...headingWeightVars(h), ...spacingVarsOf(h), ...shapeVars(h) }, dark: { ...h.color.dark } },
         css: { '@layer base': { ...headingWeightRules(), ...faceRules(h) }, ...(singleWeightRules(h) ? { '@layer utilities': singleWeightRules(h) } : {}) },
         meta: { recipe: { ...meta, mood: h.mood, axes: h.axes, motion: h.motion, colorLogic: h.colorLogic, defaultTheme: h.defaultTheme ?? 'light', dynamics: h.dynamics, ...(h.hero ? { hero: h.hero } : {}), ...(h.alternates ? { alternates: h.alternates, alternateCombos: validCombos(h) } : {}), icons: h.icons, fonts: h.fonts, references: h.references, archetypes: h.archetypes, ...(h.archetypeConditions ? { archetypeConditions: h.archetypeConditions } : {}) } },
       },
@@ -1024,7 +1040,7 @@ export function recipeCss(r) {
   return [
     `/* ${BANNER} */`,
     `/* ${r.name}(${r.id}) 순수 CSS 변수 — shadcn 없이 단일 HTML 에 붙인다. 원천: registry/factory/recipes/${r.id}/DESIGN.md */`,
-    block(':root', { ...r.color.light, ...fontStacks(r.fonts, { plain: true }), ...iconVars(r.icons?.weight), ...motionVars(r.motion), ...recipeMarkers(r), ...headingWeightVars(r), ...shapeVars(r) }),
+    block(':root', { ...r.color.light, ...fontStacks(r.fonts, { plain: true }), ...iconVars(r.icons?.weight), ...motionVars(r.motion), ...recipeMarkers(r), ...headingWeightVars(r), ...spacingVarsOf(r), ...shapeVars(r) }),
     block('.dark', r.color.dark),
     `/* 제목 굵기(한글 제목 굵기 → fonts.display.weight → 700): 기본 층이라 굵기를 따로 준 요소가 이긴다 */\n@layer base {\n${cssText(headingWeightRules())}\n}\n`,
     ...(faceKeys(r).length ? [`/* 면 스코프(data-face): 면·칸 구획 안의 ring·primary·보조 글자·테두리를 그 면의 짝으로 */\n@layer base {\n${cssText(faceRules(r))}\n}\n`] : []),
@@ -1050,9 +1066,9 @@ export function recipeReadme(r, { repo = REPO, ref } = {}) {
     '## 설치',
     '',
     '```bash',
-    `npx shadcn@4.21.0 add ${repo}/${r.id}#${tag}        # 디자인 시스템 전체(registry:base)`,
-    `npx shadcn@4.21.0 add ${repo}/${r.id}-theme#${tag}  # 색만(registry:theme)`,
-    ...(r.alternates ? [`npx shadcn@4.21.0 add ${repo}/${r.id}-alt#${tag}    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)`] : []),
+    `npx ${shadcnSpec()} add ${repo}/${r.id}#${tag}        # 디자인 시스템 전체(registry:base)`,
+    `npx ${shadcnSpec()} add ${repo}/${r.id}-theme#${tag}  # 색만(registry:theme)`,
+    ...(r.alternates ? [`npx ${shadcnSpec()} add ${repo}/${r.id}-alt#${tag}    # 보드 B안(registry:base — 부품은 같고 색·서체·모션·히어로만 B, A 위에 -o 로 덮는다)`] : []),
     '```',
     '',
     `부품은 \`${r.id}-<부품>\`(예: \`${r.id}-button\`)으로 하나씩도 설치된다. 단일 HTML 에는 \`registry/factory/r/${r.id}/${r.id}.css\` 를 붙인다.`,

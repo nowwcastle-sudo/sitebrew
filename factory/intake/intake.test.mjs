@@ -6,10 +6,10 @@ import { ARCHETYPE_IDS, BriefSchema, loadBriefObject } from '../stamp/brief.mjs'
 import { INTAKE_ARCHETYPES, questionsFor } from './questions.mjs'
 import { missingFacts, toBrief } from './to-brief.mjs'
 
-test('원형 10종 모두 질문 5~10개', () => {
+test('원형 10종 모두 질문 5~11개', () => {
   for (const a of ['brand', 'commerce', 'dashboard', 'detail', 'local', 'portfolio', 'public', 'pwa', 'saas', 'landing']) {
     const q = questionsFor(a)
-    assert.ok(q.length >= 5 && q.length <= 10, `${a}: ${q.length}`)
+    assert.ok(q.length >= 5 && q.length <= 11, `${a}: ${q.length}`)
   }
 })
 

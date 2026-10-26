@@ -9,6 +9,7 @@ import { ARCHETYPE_PATH } from './archetypes.mjs'
 import { buildAll, claudeBlock, applyRegion, loadGotchas, loadRecipes, taskFile, recipeNote, decisionDate, DECISIONS_FILE, BEGIN, END, AI_DIR, CLAUDE_MD } from './gen-ai.mjs'
 import { TaskFile, GotchasFile, GotchasSource } from '../ai/schemas.mjs'
 import * as blocksLib from './blocks.mjs'
+import { SHADCN_VERSION } from './lib/pins.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'))
@@ -79,7 +80,7 @@ test('레시피 후보는 레시피 DESIGN.md 의 archetypes 에서만 온다 �
     assert.ok(t.recipes.note.includes('factory/board/recipe-decisions.json'), t.id)
     // M9(Task 5 리뷰): 낡은 안내문이 나가지 않는다.
     assert.doesNotMatch(t.recipes.note, /P3′|7벌|레시피 보드\(Task 8\)/, t.id)
-    for (const c of t.recipes.candidates) assert.equal(c.install, `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/${c.id}#${ref} -y -o`)
+    for (const c of t.recipes.candidates) assert.equal(c.install, `npx shadcn@${SHADCN_VERSION} add nowwcastle-sudo/sitebrew/${c.id}#${ref} -y -o`)
   }
   // 양성 대조: 후보가 있는 원형 = 레시피들이 적은 원형의 합집합 = 원형 9개 전부. r1-measure 는 dashboard·saas 를 적었다 → 둘에 r1 이 있다
   const covered = [...new Set(recipes.flatMap((r) => r.archetypes))].sort()
@@ -158,7 +159,7 @@ test('ai/tasks/<원형>.json 의 blocks — 블록 메타 archetypes 에 그 원
   assert.ok(saas.blocks.pricing, 'saas.blocks.pricing 없음')
   const tier = saas.blocks.pricing.find((b) => b.item === 'block-pricing-three-tier-cards')
   assert.ok(tier, 'block-pricing-three-tier-cards 가 saas 요금 목록에 없다')
-  assert.equal(tier.install, `npx shadcn@4.21.0 add nowwcastle-sudo/sitebrew/block-pricing-three-tier-cards#${ref} -y -o`)
+  assert.equal(tier.install, `npx shadcn@${SHADCN_VERSION} add nowwcastle-sudo/sitebrew/block-pricing-three-tier-cards#${ref} -y -o`)
   assert.deepEqual(tier.sectionKinds, ['pricing-plans', 'pricing'])
   assert.match(saas.blocksNote, /레시피/)
   for (const a of ARCHETYPES) {

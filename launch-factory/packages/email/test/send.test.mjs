@@ -1,5 +1,9 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
+import { z } from "zod"
 import { createMailer, MailerConfigError, EmailRenderError } from "../src/index.ts"
 import { inputs } from "./fixtures.mjs"
 
@@ -129,4 +133,88 @@ test("live: 주입한 클라이언트(ResendLike)도 받는다 — 입력 오류
   const i = inputs("en").priceChange
   await assert.rejects(mailer.send({ to: TO, template: "priceChange", input: { ...i, declineUrl: "" } }), EmailRenderError)
   assert.equal(sent.length, 1)
+})
+
+// 가짜 메일 기록(LF_MOCK_OUTBOX) — 뒤 시험이 보낸 메일 수를 셀 수 있게 mock 메일을 JSONL 한 줄로 남긴다.
+const OUTBOX_SCHEMA = z.fromJSONSchema(JSON.parse(readFileSync(new URL("../outbox.schema.json", import.meta.url), "utf8")))
+const readLines = (file) => readFileSync(file, "utf8").trim().split("\n").map((l) => JSON.parse(l))
+const tmpOutbox = () => {
+  const dir = mkdtempSync(join(tmpdir(), "lf-outbox-"))
+  return { dir, file: join(dir, "nested", "outbox.jsonl") }
+}
+
+test("outbox: 파일을 주면 mock 메일마다 한 줄을 덧붙이고 스키마를 지킨다", async () => {
+  const { dir, file } = tmpOutbox()
+  try {
+    const mailer = createMailer({ mode: "mock", log: () => {}, outbox: file })
+    await mailer.send({ to: TO, template: "welcome", input: inputs("ko").welcome })
+    await mailer.send({ to: TO, template: "orderConfirmation", input: inputs("en").orderConfirmation })
+    const lines = readLines(file)
+    assert.deepEqual(lines.map((l) => [l.template, l.to]), [["welcome", TO], ["orderConfirmation", TO]])
+    assert.notEqual(lines[0].id, lines[1].id)
+    assert.equal(lines[0].subject, "SampleCo 가입을 환영해요")
+    for (const l of lines) {
+      assert.ok(OUTBOX_SCHEMA.safeParse(l).success, JSON.stringify(l))
+      assert.ok(Number.isFinite(Date.parse(l.at)), "at 은 날짜다(fromJSONSchema 는 date-time 을 검사하지 않는다)")
+    }
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+test("outbox: 둘째 메일러(다른 인스턴스)가 같은 파일에 덧붙여도 id 가 겹치지 않는다", async () => {
+  const { dir, file } = tmpOutbox()
+  try {
+    for (let i = 0; i < 2; i++) await createMailer({ mode: "mock", log: () => {}, outbox: file }).send({ to: TO, template: "welcome", input: inputs("ko").welcome })
+    const ids = readLines(file).map((l) => l.id)
+    assert.equal(new Set(ids).size, 2)
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+test("outbox: 쓸 수 없는 경로면 경로를 담은 오류로 던진다", async () => {
+  const { dir } = tmpOutbox()
+  try {
+    const blocker = join(dir, "blocker")
+    writeFileSync(blocker, "x")
+    const bad = join(blocker, "outbox.jsonl") // 부모가 파일이라 폴더를 만들 수 없다
+    await assert.rejects(
+      createMailer({ mode: "mock", log: () => {}, outbox: bad }).send({ to: TO, template: "welcome", input: inputs("ko").welcome }),
+      (e) => e.message === `LF_MOCK_OUTBOX: cannot write ${bad}` && e.cause instanceof Error,
+    )
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+test("outbox: 파일을 안 주면 파일도 폴더도 만들지 않는다", async () => {
+  const { dir, file } = tmpOutbox()
+  try {
+    await createMailer({ mode: "mock", log: () => {} }).send({ to: TO, template: "welcome", input: inputs("ko").welcome })
+    assert.equal(existsSync(join(dir, "nested")), false)
+    assert.equal(existsSync(file), false)
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+test("outbox: 기록은 id·template·to·subject·at 다섯 칸뿐 — 본문·링크 토큰이 없다", async () => {
+  const { dir, file } = tmpOutbox()
+  try {
+    const input = { ...inputs("en").passwordReset, resetUrl: "https://sampleco.test/reset?token=secret-token-123" }
+    await createMailer({ mode: "mock", log: () => {}, outbox: file }).send({ to: TO, template: "passwordReset", input })
+    assert.deepEqual(Object.keys(readLines(file)[0]).sort(), ["at", "id", "subject", "template", "to"])
+    assert.ok(!readFileSync(file, "utf8").includes("secret-token-123"))
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+})
+
+test("outbox: fixture 는 스키마를 통과하고, 칸이 빠지거나 남으면 거절한다", () => {
+  const fixture = JSON.parse(readFileSync(new URL("./outbox.line.json", import.meta.url), "utf8"))
+  assert.ok(OUTBOX_SCHEMA.safeParse(fixture).success)
+  const noAt = Object.fromEntries(Object.entries(fixture).filter(([k]) => k !== "at"))
+  assert.equal(OUTBOX_SCHEMA.safeParse(noAt).success, false)
+  assert.equal(OUTBOX_SCHEMA.safeParse({ ...fixture, body: "x" }).success, false)
 })

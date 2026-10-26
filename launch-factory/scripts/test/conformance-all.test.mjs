@@ -51,7 +51,7 @@ test("renderTable: 열이 맞고 판정이 보인다", () => {
   assert.match(t, /PASS/)
 })
 
-test("실제 일괄: 어댑터 6개·검사 173개가 판정대로 — Gumroad 지원 안 함 20개는 예상 실패로 고정", { skip: wf.skip ?? false, timeout: 180_000 }, async () => {
+test("실제 일괄: 어댑터 6개·검사 185개가 판정대로 — Gumroad 지원 안 함 20개는 예상 실패로 고정", { skip: wf.skip ?? false, timeout: 180_000 }, async () => {
   const report = await runAll({ loaded: { ...wf, cleanup() {} } })
   assert.equal(report.skipped, undefined, report.skipped)
   assert.equal(report.exit, 0, renderReport(report))
@@ -61,7 +61,7 @@ test("실제 일괄: 어댑터 6개·검사 173개가 판정대로 — Gumroad �
   assert.deepEqual([by["billing-gumroad"].total, by["billing-gumroad"].passed, by["billing-gumroad"].expectedFail], [40, 20, 20])
   assert.equal(by["consent/notify"].total, 5) // 4 + notify.confirmation.* 1
   assert.equal(by.auth.total, 12) // 9 + auth.confirmation.* 3(requireConfirmation — 탈퇴·내려받기는 account-lifecycle 과 합친 조립 포트로, LFCI)
-  assert.equal(report.rows.reduce((a, r) => a + r.total, 0), 173)
+  assert.equal(report.rows.reduce((a, r) => a + r.total, 0), 185)
   // web-factory 의 네 묶음이 모두 어댑터를 하나 이상 만났다
   assert.deepEqual(Object.keys(report.suites).sort(), ["analyticsConformance", "authConformance", "billingConformance", "notifyConformance"])
   assert.equal(report.live.status, "not-requested")

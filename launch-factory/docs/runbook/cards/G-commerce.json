@@ -1,0 +1,25 @@
+{
+  "service": "launch-factory",
+  "role": "commerce",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-db",
+    "G-email",
+    "G-payments-kr"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "상점이 열리지 않아요. 장바구니와 주문, 재고 확보가 꺼지고, 사이트의 다른 부분은 그대로 켜져요.",
+    "en": "The shop does not open. The cart, orders and stock holds turn off, and the rest of the site keeps running."
+  },
+  "when": {
+    "outcomes": [
+      "shop"
+    ]
+  },
+  "devOnly": [],
+  "notEnv": []
+}

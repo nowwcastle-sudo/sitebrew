@@ -191,3 +191,23 @@ test("쪽 연결: 세 법정 경로가 있고 바닥글이 세 쪽·문의로 �
   const footer = read("content/copy.shell.en.ts")
   for (const href of ["/contact", "/terms", "/privacy", "/refund"]) assert.ok(footer.includes(`href: "${href}"`), href)
 })
+
+test("문의 쪽이 없는 제품: 본문의 「Contact page (/contact)」 안내가 사업자 이메일로 바뀌고 문장이 이어진다", () => {
+  const w = tok.withoutContactPage
+  assert.equal(w("Write to {{business.email}} or use our Contact page (/contact)."), "Write to {{business.email}}.")
+  assert.equal(w("you can reach us at {{business.email}} or on our Contact page (/contact)."), "you can reach us at {{business.email}}.")
+  assert.equal(w("write to us on our Contact page (/contact)."), "write to us at {{business.email}}.")
+  assert.equal(w("tell us at once on our Contact page (/contact)."), "tell us at once at {{business.email}}.")
+  assert.equal(w("- our Contact page (/contact), or {{business.email}}."), "- {{business.email}}.")
+  assert.equal(w("nothing to change here"), "nothing to change here")
+  for (const slug of SLUGS) {
+    assert.ok(textOf(slug).includes("(/contact)"), `${slug}: 원본에는 안내가 있다`)
+    const doc = tok.legalDocWithoutContactPage(docs[slug])
+    assert.ok(!allText(doc).includes("/contact"), `${slug}: /contact 가 남았다`)
+    assert.ok(!/Contact page/.test(allText(doc)), `${slug}: Contact page 가 남았다`)
+    const full = tok.fillLegalDoc(doc, FULL_VARS)
+    assert.deepEqual(full.unresolved, [])
+    assert.ok(allText(full.doc).includes("v-email"), `${slug}: 사업자 이메일이 들어간다`)
+  }
+  assert.equal(docs.terms.clauses.length, tok.legalDocWithoutContactPage(docs.terms).clauses.length)
+})

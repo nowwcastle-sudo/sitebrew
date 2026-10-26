@@ -1,0 +1,18 @@
+{
+  "service": "Web Push (VAPID)",
+  "role": "push",
+  "need": "feature",
+  "cost": [
+    "none"
+  ],
+  "after": [
+    "G-auth"
+  ],
+  "checked": "2026-10-22",
+  "ifSkipped": {
+    "ko": "웹 푸시만 꺼져요. 푸시 단추가 보이지 않아요.",
+    "en": "Only web push turns off. There is no push button."
+  },
+  "devOnly": [],
+  "notEnv": []
+}

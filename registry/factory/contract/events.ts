@@ -11,7 +11,8 @@ export const EVENTS = [
   "upgrade_prompt_view", "upgrade_click", "limit_reached",
   "cancel_start", "cancel_alternative_view", "cancel_alternative_accept", "cancel_complete", "pause", "resume",
   "payment_failed_view", "payment_method_update", "referral_share", "consent_update", "web_vital",
-  "app_install",
+  "app_install", "booking_view", "booking_submit", "booking_cancel",
+  "add_to_cart", "begin_checkout", "purchase",
 ] as const
 
 export type EventName = (typeof EVENTS)[number]
@@ -24,6 +25,8 @@ export type EventName = (typeof EVENTS)[number]
  * 계정 편의 메서드 · deleteAccount·exportMyData, ConsentInput.ageOver14, checkout.withdrawalConsent, BillingPort.portal · Subscription.graceEndsAt,
  * NotifyPort 푸시 구독, AnalyticsPort.identify, 이벤트 web_vital(CWV — 필드 이름은 metric: 이벤트 props 에 name 을 쓰지 않는다).
  * 이벤트 app_install(2026-09-30 운영자 판정 C74 — pwa 원형의 전환 「설치 또는 첫 핵심 행동(activation)」 중 설치 쪽. 브라우저 appinstalled 또는 설치 안내에서 수락).
+ * 이벤트 add_to_cart·begin_checkout·purchase(계획 3a 판매·결제 — commerce 원형의 전환 purchase. 구독 결제의 checkout_* 와 따로 센다: 상품 판매는 planId 가 없고 주문이 있다).
+ * 이벤트 booking_view·booking_submit·booking_cancel(sitebrew v0.2.0 계획 3b — 예약 포트 BookingPort 의 화면 계측. 서비스 식별자만 싣고 예약 번호·연락처·이름은 싣지 않는다).
  */
 export const CONTRACT_VERSION = 2
 
@@ -82,4 +85,16 @@ export interface EventProps {
   web_vital: { metric: "INP" | "CLS" | "LCP"; value: number; rating: "good" | "needs-improvement" | "poor"; path: string }
   /** 홈 화면 설치. source: prompt = 우리 설치 안내에서 수락, browser = 브라우저 자체 메뉴(appinstalled 만 받은 경우) */
   app_install: { source: "prompt" | "browser" }
+  /** 상품 담기. productId 는 상품표(서버)의 id, quantity 는 담은 수량이다 */
+  add_to_cart: { productId: string; quantity: number }
+  /** 주문하기(결제창 열기 전). amount 는 최소 단위 정수 합계(ports Money 와 같다) */
+  begin_checkout: { amount: number; currency: "KRW" | "USD" | "EUR" | "JPY" }
+  /** 결제 확정(서버가 결제 공급자에 다시 물어 확인한 뒤). orderId 는 주문 식별자 — 사람이 아니라 주문의 값이라 개인정보가 없다 */
+  purchase: { orderId: string; amount: number; currency: "KRW" | "USD" | "EUR" | "JPY" }
+  /** 예약 화면에서 시간 칸을 보여 줬다. service 는 서비스 식별자(예약 번호·연락처가 아니다) */
+  booking_view: { service: string }
+  /** 예약이 접수됐다(book 성공). status 는 접수 결과 그대로 — requested 는 운영자 확인 대기, confirmed 는 바로 확정 */
+  booking_submit: { service: string; status: "requested" | "confirmed" }
+  /** 예약한 사람이 직접 취소했다(cancel 성공) */
+  booking_cancel: { service: string }
 }

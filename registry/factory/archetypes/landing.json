@@ -11,6 +11,7 @@
     {
       "id": "home",
       "route": "/",
+      "kind": "home",
       "sections": [
         {
           "kind": "hero",

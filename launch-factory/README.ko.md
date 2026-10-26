@@ -4,7 +4,7 @@
 
 web-factory(화면 블록 저장소)와 짝을 이루는 출시 키트로, 뒷단인 인증·데이터·결제·메일·계측·작업을 이 저장소가 맡는다. 제품은 `template/` 을 복제해 시작하고 `@launch-factory/*` 패키지 판만 올려서 보안 패치를 받는다.
 
-현재 버전 `v0.1.2` · web-factory 고정 `v0.1.2`
+현재 버전 `v0.2.3` · web-factory 고정 `v0.2.3` · 블록 `2ec0b992` · contract `2ec0b992` (태그 v0.2.3 의 커밋)
 
 - 블록은 공급자를 모르고 어댑터가 web-factory 포트를 구현한다. 같은 적합성 묶음으로 어댑터가 mock 과 같은 시나리오를 재현하는지 검사한다.
 - 기능 번들(어댑터·서버 액션·웹훅 경로·스키마·마이그레이션)은 `registry.json` 의 항목 하나로 묶인다. 판을 고정한 내역은 [`docs/versions.md`](docs/versions.md)에 있다.
@@ -19,7 +19,7 @@ web-factory(화면 블록 저장소)와 짝을 이루는 출시 키트로, 뒷�
 | Node | >=24.13.0 | 필수 | `winget install OpenJS.NodeJS.LTS --version 24.13.0` | `nvm install 24.13.0` | `nvm install 24.13.0` |
 | npm | >=11.6.2 | 필수 | Node 와 함께 설치됨 | Node 와 함께 설치됨 | Node 와 함께 설치됨 |
 | git | 최신 | 필수 | `winget install Git.Git` | `brew install git` | `sudo apt install git` |
-| web-factory 체크아웃 | 태그 `v0.1.2` | 선택 | `git clone` 후 `LF_WF_REPO` 에 경로 | `git clone` 후 `LF_WF_REPO` 에 경로 | `git clone` 후 `LF_WF_REPO` 에 경로 |
+| web-factory 체크아웃 | 태그 `v0.0.12` | 선택 | `git clone` 후 `LF_WF_REPO` 에 경로 | `git clone` 후 `LF_WF_REPO` 에 경로 | `git clone` 후 `LF_WF_REPO` 에 경로 |
 | Chrome | 최신 | 선택 | `winget install Google.Chrome` | `brew install --cask google-chrome` | `sudo apt install chromium` |
 | gh | 최신 | 선택 | `winget install GitHub.cli` | `brew install gh` | `sudo apt install gh` |
 | vercel | 최신 | 선택 | `npm i -g vercel` | `npm i -g vercel` | `npm i -g vercel` |
@@ -30,7 +30,7 @@ web-factory(화면 블록 저장소)와 짝을 이루는 출시 키트로, 뒷�
 
 선택 항목이 없으면 이런 일이 안 된다.
 
-- web-factory 체크아웃: 없으면 적합성 시험이 SKIP 으로 표시된다. 있으면 `LF_WF_REPO` 가 가리키는 곳을 읽는데 거기에 `v0.1.2` 커밋이 있어야 한다. 환경 변수가 없으면 코드 기본 경로를 쓰므로, 다른 PC 에서는 `LF_WF_REPO` 를 꼭 지정한다.
+- web-factory 체크아웃: 없으면 적합성 시험이 SKIP 으로 표시된다. 있으면 `LF_WF_REPO` 가 가리키는 곳을 읽는데 거기에 `v0.0.12` 커밋이 있어야 한다. 환경 변수가 없으면 코드 기본 경로를 쓰므로, 다른 PC 에서는 `LF_WF_REPO` 를 꼭 지정한다.
 - Chrome: `npm run template:screens` 가 돌지 않는다. 설치 위치가 기본 경로가 아니면 `CHROME_PATH` 에 실행 파일 경로를 넣는다.
 - 보안 도구 넷: `npm run ci:verify` 가 해당 단계를 SKIP 으로 표시한다. CI 는 `scripts/ci/tools.json` 의 고정판을 받아 쓴다. 로컬에서도 없으면 실패로 세려면 `LF_CI_REQUIRE_TOOLS=1` 을 준다.
 - gitleaks: 커밋 전 비밀값 검사 훅이 안내만 하고 통과한다.
@@ -53,6 +53,7 @@ web-factory(화면 블록 저장소)와 짝을 이루는 출시 키트로, 뒷�
 | mock(기본 개발) | `LF_MODE=mock` 하나. 공급자 키가 없어도 켜진다. |
 | live | `LF_MODE=live` 와 공급자 키·`DATABASE_URL`. 빠진 이름은 `npm run env:check`(오프라인)와 `npm run doctor -- --stage sandbox` 가 알린다. |
 | 선택 | `INQUIRY_OWNER_EMAIL`·`POSTHOG_*`·`SENTRY_DSN`. 없으면 그 기능만 꺼진다. |
+| 상점(선택) | `NEXT_PUBLIC_PORTONE_STORE_ID`·`NEXT_PUBLIC_PORTONE_CHANNEL_KEY`·`PORTONE_API_SECRET`·`PORTONE_WEBHOOK_SECRET`. live 에서는 넷이 모두 있어야 한다. 하나라도 없으면 상점만 꺼진다. mock 에서는 키 없이 모의 결제 확인 단계로 돈다. |
 | 경로 | `LF_WF_REPO`(적합성 시험이 읽는 web-factory 체크아웃) · `WF_HOME`(`template:screens` 가 읽는 web-factory 체크아웃) · `CHROME_PATH` |
 
 ## 시작하기
@@ -115,7 +116,7 @@ git diff template/package.json
 | 보이는 것 | 원인 | 해결 |
 |---|---|---|
 | `setup: FAIL — 필수 누락 …` | 필수 도구가 없거나 낮은 판이다 | 줄마다 붙은 `→` 명령을 실행하고 `npm run setup` 을 다시 돌린다. |
-| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` 경로가 없거나 `v0.1.2` 커밋이 없다 | web-factory 를 clone 하고 `git -C <path> fetch --tags` 를 한 뒤 `LF_WF_REPO` 에 그 경로를 넣는다. |
+| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` 경로가 없거나 `v0.0.12` 커밋이 없다 | web-factory 를 clone 하고 `git -C <path> fetch --tags` 를 한 뒤 `LF_WF_REPO` 에 그 경로를 넣는다. |
 | `SKIP(도구 없음)` | 선택 보안 도구가 없다 | 실패가 아니다. 설치하면 단계가 돈다. |
 | `[pre-commit] gitleaks 가 설치돼 있지 않아 … 건너뛴다` | 훅은 걸려 있고 gitleaks 가 없다 | 필요 환경 표의 gitleaks 명령을 실행한다. |
 | `--only /pricing` 이 아무 쪽도 못 찾는다 | Git Bash 가 `/pricing` 을 경로로 바꾼다 | PowerShell 에서 돌린다. |
@@ -124,4 +125,4 @@ git diff template/package.json
 
 | 태그 | 날짜 | 내용 | 기록 |
 |---|---|---|---|
-| `v0.1.2` | 2026-10-08 | launch-factory v0.1.2 (internal version) · next 16.3.8 보안 패치(공지 6건) · 탈퇴 뒤 마케팅 동의 이력 3년 보관 · EU 판매 기본 열림 | — |
+| `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · 패치 판: shadcn 4.22.1을 정확한 한 판으로 고정(중첩 zod 공지와 OSV 예외 해소) · web-factory `v0.2.3` 고정 | — |

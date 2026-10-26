@@ -73,7 +73,7 @@ export function TrustPaymentTrustPanel({ copy, orderId, total, submit, onRedirec
   }
   const amount = formatMoney(total)
   return (
-    <section ref={ref} id={id} data-block="trust-payment-trust-panel" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full flex-col gap-10 px-4 py-16 md:gap-12 md:px-8 md:py-24 in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 max-w-3xl", className)}>
+    <section ref={ref} id={id} data-block="trust-payment-trust-panel" aria-labelledby={`${id}-title`} className={cn("mx-auto flex w-full flex-col gap-[var(--wf-section-gap,calc(var(--spacing)*10))] px-4 py-[var(--wf-section-py,calc(var(--spacing)*16))] md:gap-[var(--wf-section-gap-md,calc(var(--spacing)*12))] md:px-8 md:py-[var(--wf-section-py-md,calc(var(--spacing)*24))] in-data-[archetype=dashboard]:gap-6 in-data-[archetype=dashboard]:py-6 md:in-data-[archetype=dashboard]:gap-6 md:in-data-[archetype=dashboard]:py-8 max-w-3xl", className)}>
       <h2 id={`${id}-title`} data-enter className="text-[1.563rem] leading-[1.25] md:text-[1.953rem] md:leading-[1.2] font-heading-ko">
         {copy.title}
       </h2>

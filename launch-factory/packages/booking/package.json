@@ -1,0 +1,23 @@
+{
+  "name": "@launch-factory/booking",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "예약 서버(계획 3b) — 설정 데이터로 예약 가능 시간을 계산하고, 요청 제한·Turnstile·멱등 키로 지킨 접수를 수용량 안에서만 저장한다. 확인·취소·알림·보유 기간 파기. web-factory BookingPort 모양(ActionResult·fieldErrors).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@launch-factory/db": "0.0.0",
+    "@launch-factory/email": "0.0.0",
+    "@launch-factory/i18n": "0.0.0",
+    "@launch-factory/security": "0.0.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.1"
+  }
+}

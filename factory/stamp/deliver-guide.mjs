@@ -1,6 +1,7 @@
 // 전달물 안내 글(factory v1 흐름 5 Task 5.16) — README 「공개한 뒤에 할 일」 절(ko → en)과 AGENTS.md. 순수 함수만 있다(파일을 읽거나 쓰지 않는다).
-//   · 출처 규칙: 등록 절차·주소·금액은 아래 SOURCES 의 1차 출처에서 확인한 것만 적고, 절마다 출처 주소와 「확인 날짜」를 같이 둔다.
-//     열어 보지 못했거나 값이 갈리는 것은 「확인 필요」로 남긴다. 금액은 계산하거나 지어내지 않는다.
+//   · 출처 규칙: 등록 절차·주소는 아래 SOURCES 의 1차 출처에서 확인한 것만 적고, 절마다 출처 주소와 「확인 날짜」를 같이 둔다.
+//     열어 보지 못했거나 값이 갈리는 것은 「확인 필요」로 남긴다. 금액은 싣지 않는다 — 마지막 「운영 비용」 절은 금액표 대신 런북 호스팅 장을 가리키는
+//     한 문장이고(계획 5 Task 10 — 문 앞에 확인 없는 금액이 보이지 않게), 그 문장은 deliver-copy.json 의 runbookCosts 를 부르는 쪽이 넘긴다.
 //   · 남이 쓰는 공장이라 대표·사업 정보를 넣지 않는다. 영어 쪽에는 한글을 싣지 않는다(deliver.test.mjs 가 센다).
 //   · 출처를 다시 확인하면 CHECKED 날짜와 해당 줄을 같이 고친다.
 
@@ -25,7 +26,6 @@ export const SOURCES = {
   naverAiGuide: 'https://blog.naver.com/naver_search/224296857688',
   naverAiPractice: 'https://blog.naver.com/naver_search/224305800678',
   vercelPricing: 'https://vercel.com/pricing',
-  paddlePricing: 'https://www.paddle.com/pricing',
 }
 
 const S = SOURCES
@@ -39,7 +39,8 @@ export const OBJECT_HERO_NOTE = {
   en: 'The 3D object hero is built as image → GLB (3D model) → display. Without the tools it falls back to a 2.5D picture, then a poster, and the factory does not pick this hero when no source material exists.',
 }
 
-export function afterPublishKo() {
+/** @param {string} costs  운영 비용 절의 한 문장(deliver-copy.json runbookCosts.ko) */
+export function afterPublishKo(costs) {
   return [
     '### 공개한 뒤에 할 일',
     '',
@@ -159,23 +160,14 @@ export function afterPublishKo() {
     '',
     ko([S.nextPublic]),
     '',
-    '#### 운영 비용 예상표',
+    '#### 운영 비용',
     '',
-    '월 비용을 정할 때 쓰는 표예요. 금액은 공식 요금 쪽에서 확인한 값만 적었고, 확인하지 못한 칸은 확인 필요로 뒀어요. 값을 더해 총액을 내지는 않았어요.',
-    '',
-    '| 항목 | 확인한 값 | 출처 · 확인 날짜 |',
-    '|---|---|---|',
-    `| 호스팅 (예: Vercel) | 무료 플랜 월 $0, 유료 플랜 월 $20부터. 무료 플랜을 영리 사이트에 써도 되는지는 확인 필요 | <${S.vercelPricing}> · ${CHECKED} |`,
-    '| 도메인 | 확인 필요. 등록 대행사마다 값이 다르고 첫해와 갱신 값이 달라요. 사려는 대행사의 요금 쪽을 봐요 | 확인 필요 |',
-    `| 결제 수수료 (결제를 받는 사이트만, 예: Paddle) | 결제 한 건당 5% + 50¢. 다른 결제 서비스는 확인 필요 | <${S.paddlePricing}> · ${CHECKED} |`,
-    '| 유지보수 | 이 폴더는 내가 직접 고치는 구조예요. 맡길 경우 값은 확인 필요 | 확인 필요 |',
-    '',
-    ko([S.vercelPricing, S.paddlePricing]),
+    costs,
   ]
 }
 
-/** README 영어 쪽 「After you publish」 절 — 줄 배열. 한글을 싣지 않는다. */
-export function afterPublishEn() {
+/** README 영어 쪽 「After you publish」 절 — 줄 배열. 한글을 싣지 않는다. @param {string} costs  운영 비용 절의 한 문장(runbookCosts.en) */
+export function afterPublishEn(costs) {
   return [
     '### After you publish',
     '',
@@ -297,16 +289,7 @@ export function afterPublishEn() {
     '',
     '#### Running costs',
     '',
-    'Use this table to plan monthly cost. It lists only amounts read from official price pages. Cells that could not be confirmed say needs confirmation. No total is calculated.',
-    '',
-    '| Item | Confirmed value | Source and checked date |',
-    '|---|---|---|',
-    `| Hosting (for example Vercel) | Free plan $0 per month, paid plan from $20 per month. Whether the free plan may be used for a commercial site needs confirmation | <${S.vercelPricing}> · ${CHECKED} |`,
-    '| Domain | Needs confirmation. Price differs by registrar, and the first-year price differs from the renewal price. Check the price page of the registrar you plan to use | needs confirmation |',
-    `| Payment fee (only if the site takes payments, for example Paddle) | 5% + 50 cents per transaction. Other payment services need confirmation | <${S.paddlePricing}> · ${CHECKED} |`,
-    '| Maintenance | This folder is built for you to edit yourself. The price of hiring someone needs confirmation | needs confirmation |',
-    '',
-    en([S.vercelPricing, S.paddlePricing]),
+    costs,
   ]
 }
 

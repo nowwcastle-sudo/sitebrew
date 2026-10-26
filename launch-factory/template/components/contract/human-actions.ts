@@ -21,6 +21,8 @@ export const AGENT_ACTIONS = [
   { id: "resume-subscription", tier: "human-approval", ports: ["resume"], blocks: ["retention/cancel-flow"], why: "구독 재개 — 청구가 다시 시작된다" },
   { id: "accept-price-change", tier: "human-approval", ports: ["acceptPriceChange"], blocks: ["retention/renewal-consent"], why: "가격 변경 동의 — 새 금액에 동의한다" },
   { id: "accept-retention-offer", tier: "human-approval", ports: ["applyRetentionOffer"], blocks: ["retention/cancel-flow"], why: "해지 대신 할인·일시정지 제안 수락 — 구독 조건이 바뀐다" },
+  { id: "place-order", tier: "human-approval", ports: ["placeOrder"], blocks: ["cart/checkout-form"], why: "상품 주문하기 — 결제창이 열리고 재고가 잡힌다" },
+  { id: "cancel-order", tier: "human-approval", ports: ["cancelOrder"], blocks: ["account/order-detail"], why: "주문 취소 — 결제 완료 주문은 환불이 시작된다" },
   { id: "delete-account", tier: "human-approval", ports: ["deleteAccount"], blocks: ["account/delete-account"], why: "탈퇴 — 유예가 지나면 되돌릴 수 없다" },
   { id: "export-personal-data", tier: "human-approval", ports: ["exportMyData"], blocks: ["account/delete-account"], why: "개인정보 내보내기 — 개인 데이터가 파일로 나간다" },
   { id: "change-email", tier: "human-approval", ports: ["changeEmail"], blocks: ["account/credentials"], why: "이메일 변경 — 계정 되찾기 수단이 바뀐다" },

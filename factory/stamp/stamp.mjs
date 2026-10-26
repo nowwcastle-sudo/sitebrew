@@ -1,6 +1,7 @@
 // 찍어내기 CLI(P3-3 Task 14) — 한 줄 브리프 → 방향 3안 → 고른 안 완성 → 미리보기.
 //   node factory/stamp/stamp.mjs --brief <file> [--run <dir>] [--until <step>] [--pick a|b|c] [--deploy-preview]
 //   node factory/stamp/stamp.mjs --golden <id> | --all-golden [--run <dir>] [--until <step>]   (골든 세트 18 — factory/stamp/golden.mjs, 씨앗은 브리프 파일에 박혀 있다)
+//   node factory/stamp/stamp.mjs --run <dir> --redraw-wider   (「너무 똑같아」 — 그 실행 폴더의 방향 3안을 지난번보다 더 넓게 다시 고르고 03~07 을 낡게 한다)
 //
 //   흐름: doctor --stage stamp → 01 방향 → 02 사이트맵 → 03 변형 → 04 문구 → 05 미디어 → 06 쪽 → (--pick 이면 법률 검토) → 07 관문 → 08 보드.
 //   · --pick 이 없으면 3안 모두 08 까지 돌리고 보드 자료(08-board.json)를 낸다 — 법률 검토는 고른 안만 받으므로 「법률 검토 미완」이 보인다(§9 Q5 첫 개입).
@@ -22,7 +23,9 @@ import { STEP_NAMES, inputHash, openRun } from './run-dir.mjs'
 import { pagesCodeKey } from './pages-key.mjs'
 import { failMessage } from './fail-message.mjs'
 import { isPendingReview } from '../legal/drafts.mjs'
+import { askIn, grammar } from '../vocab/grammar.mjs'
 import { MOCK_PREVIEW_NOTICE, splitBlockers, withMockPreviewBlocker } from './blocker-class.mjs'
+import { REDRAW_FILES, markStale } from './revise-stale.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const EXIT = Object.freeze({ done: 0, fail: 1, args: 2, waiting: 3 })
@@ -38,7 +41,7 @@ export class UsageError extends Error {
   }
 }
 
-export const USAGE = '사용법: node factory/stamp/stamp.mjs (--brief <file> | --golden <id> | --all-golden) [--run <dir>] [--until <01..08>] [--pick a|b|c] [--deploy-preview]\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c (--revise "<수정 요청>" | --revise-pick <번호>:<안>)   (구획 단위 수정 — factory/stamp/revise.mjs)'
+export const USAGE = '사용법: node factory/stamp/stamp.mjs (--brief <file> | --golden <id> | --all-golden) [--run <dir>] [--until <01..08>] [--pick a|b|c] [--deploy-preview]\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c (--revise "<수정 요청>" [--explain] | --revise-readings "<읽기 JSON>" | --revise-pick <번호>:<안|none> | --revise-undo)   (수정 — factory/stamp/revise.mjs)\n        node factory/stamp/stamp.mjs --run <dir> --redraw-wider   (「너무 똑같아」 — 방향 3안을 더 넓게 다시 고른다)'
 
 /** 단계 이름 「01」·「1」·「01-direction」 → 정식 이름. */
 export function normalizeStep(v) {
@@ -67,20 +70,32 @@ export function parseArgs(argv) {
     else if (a === '--golden') opts.golden = take(i++, a)
     else if (a === '--all-golden') opts.allGolden = true
     else if (a === '--revise') opts.revise = take(i++, a)
+    else if (a === '--revise-readings') opts.reviseReadings = take(i++, a)
+    else if (a === '--explain') opts.explain = true
+    else if (a === '--revise-undo') opts.reviseUndo = true
+    else if (a === '--redraw-wider') opts.redrawWider = true
     else if (a === '--revise-pick') {
       const m = /^(\d+):([A-Za-z0-9_-]+)$/.exec(take(i++, a))
       if (!m) throw new UsageError(`--revise-pick 은 <번호>:<안> 모양이다(예: 1:v2): ${JSON.stringify(argv[i])}`)
       opts.revisePick = { index: Number(m[1]), id: m[2] }
     } else throw new UsageError(`모르는 인자: ${a}`)
   }
-  if (opts.revise != null || opts.revisePick) {
-    // 구획 단위 수정은 이미 06 까지 끝난 실행 폴더를 읽는다 — 브리프·골든이 필요 없다.
-    if (opts.revise != null && opts.revisePick) throw new UsageError('--revise 와 --revise-pick 은 하나만 쓴다(안을 만든 뒤에 고른다)')
-    if (!opts.run) throw new UsageError('--revise / --revise-pick 은 --run <dir> 이 필요하다')
-    if (!opts.pick) throw new UsageError('--revise / --revise-pick 은 --pick a|b|c 로 어느 안을 고칠지 알려야 한다')
-    if (opts.brief || opts.golden || opts.allGolden || opts.deployPreview || opts.until) throw new UsageError('--revise / --revise-pick 은 --brief·--golden·--all-golden·--until·--deploy-preview 와 함께 쓰지 않는다')
+  if (opts.redrawWider) {
+    // 「너무 똑같아」 — 이미 한 번 돈 실행 폴더의 방향 3안을 더 넓게 다시 고른다. 다른 모드와 함께 쓰지 않는다.
+    if (!opts.run) throw new UsageError('--redraw-wider 는 --run <dir> 이 필요하다')
+    if ([opts.brief, opts.golden, opts.allGolden, opts.until, opts.pick, opts.deployPreview, opts.revise != null, opts.reviseReadings != null, opts.revisePick, opts.reviseUndo, opts.explain].some(Boolean)) throw new UsageError('--redraw-wider 는 --run 과만 쓴다')
     return opts
   }
+  if (opts.revise != null || opts.reviseReadings != null || opts.revisePick || opts.reviseUndo) {
+    // 수정은 이미 06 까지 끝난 실행 폴더를 읽는다 — 브리프·골든이 필요 없다.
+    if ([opts.revise != null, opts.reviseReadings != null, Boolean(opts.revisePick), Boolean(opts.reviseUndo)].filter(Boolean).length > 1) throw new UsageError('--revise · --revise-readings · --revise-pick · --revise-undo 는 하나만 쓴다(안을 만든 뒤에 고른다)')
+    if (opts.explain && opts.revise == null) throw new UsageError('--explain 은 --revise "<수정 요청>" 과 함께만 쓴다')
+    if (!opts.run) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --run <dir> 이 필요하다')
+    if (!opts.pick) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --pick a|b|c 로 어느 안을 고칠지 알려야 한다')
+    if (opts.brief || opts.golden || opts.allGolden || opts.deployPreview || opts.until) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --brief·--golden·--all-golden·--until·--deploy-preview 와 함께 쓰지 않는다')
+    return opts
+  }
+  if (opts.explain) throw new UsageError('--explain 은 --revise "<수정 요청>" 과 함께만 쓴다')
   const sources = [opts.brief, opts.golden, opts.allGolden || null].filter(Boolean).length
   if (sources === 0) throw new UsageError('--brief <file> · --golden <id> · --all-golden 중 하나가 없다')
   if (sources > 1) throw new UsageError('--brief · --golden · --all-golden 은 하나만 쓴다')
@@ -245,14 +260,18 @@ export async function runStamp(opts, deps) {
   const state = {}
   let cands
   try {
-    const dirInputs = { brief, archetype: brief.archetype, seed, weights }
+    // 넓혀 다시 고른 실행 폴더(--redraw-wider)는 그 넓이가 directions.json 에 남아, 다음 평소 실행도 같은 넓이로 01 을 본다 — 아니면 평소 실행이 넓힌 3안을 되돌린다.
+    // 넓이가 있을 때만 01 입력 해시에 들어간다(그래서 넓히면 01 이 새로 만들어지고, 넓힌 적 없는 실행의 해시는 예전 그대로다).
+    const minAxes = opts.minAxes ?? readJsonMaybe(join(runDir, 'directions.json'))?.minAxes
+    const wider = minAxes ? { minAxes } : {}
+    const dirInputs = { brief, archetype: brief.archetype, seed, weights, ...wider }
     let all = null
     const compute = async () => {
       if (all) return all
       const exclude = []
       const rejected = []
       for (let round = 1; round <= MAX_SCREEN_ROUNDS; round++) {
-        const picked = await deps.directions({ brief, archetype, seed, exclude })
+        const picked = await deps.directions({ brief, archetype, seed, exclude, ...wider })
         rejected.push(...(picked.rejected ?? []))
         const bad = []
         for (const c of picked.candidates) {
@@ -277,7 +296,7 @@ export async function runStamp(opts, deps) {
       const data = await step(id, '01-direction', dirInputs, async () => (await compute()).candidates[i])
       cands.push(data)
     }
-    if (all) writeAtomic(join(runDir, 'directions.json'), JSON.stringify({ seed, rejected: all.rejected }, null, 2) + '\n')
+    if (all) writeAtomic(join(runDir, 'directions.json'), JSON.stringify({ seed, ...wider, rejected: all.rejected }, null, 2) + '\n')
   } catch (e) {
     const rejected = e.rejected ?? []
     say(`방향 3안을 채우지 못했다 — ${e.message}`)
@@ -492,9 +511,31 @@ export async function defaultDeps({ say = console.log, preferences = true } = {}
   }
 }
 
+/** --revise-readings 의 JSON → { input: { readings } | { options } | { copyFrom } } | { problems } (JSON 모양과 사전 기준 검사 — 예측 파일 모양 choices 도 받는다). */
+async function readingsInputOf(json) {
+  let raw
+  try { raw = JSON.parse(json) } catch (e) { return { problems: [`JSON 을 읽지 못했다: ${e.message}`] } }
+  const { designLexicon } = await import('./design-context.mjs')
+  const { checkReadingsInput } = await import('../vocab/eval/predictions.mjs')
+  const { isLiteralValue } = await import('./revise-values.mjs')
+  const problems = checkReadingsInput(raw, designLexicon(), isLiteralValue)
+  if (problems.length) return { problems }
+  return { input: raw.copyFrom !== undefined ? { copyFrom: raw.copyFrom } : raw.readings ? { readings: raw.readings } : { options: raw.options ?? raw.choices } }
+}
+
+/** --explain 이 보이는 해석 한 줄 — 확정은 이해한 내용, 후보 둘은 두 해석, 근사·모름은 되묻는 말. 디자인이 아닌 요청(구획·문구·구조)은 앞에 갈래와 대상을 붙인다. */
+function interpretation(request) {
+  const c = request.classification
+  const said = !c ? null : c.result === 'confirmed' ? c.say : c.result === 'two' ? c.options.map((o) => o.say).join(' / ') : c.ask
+  return [request.scope === 'design' ? null : `${request.scope} ${request.target}`, said].filter(Boolean).join(' — ')
+}
+
+/** --explain 이 보이는 JSON — 디자인 말은 분류(result·readings …), 그 밖(구획·문구·구조)은 요청({ scope, target, intent … }) 전체. 구획 말은 요청 안에 classification.readings 가 들어 있다. */
+const explained = (request) => (request.scope === 'design' ? request.classification : request)
+
 /**
- * 구획 단위 수정 명령(factory v1 4.3) — `--revise "<요청>"` 과 `--revise-pick <번호>:<안>`. 06 까지 끝난 실행 폴더가 필요하다(브리프·01~04 단계는 다시 돌지 않는다).
- * 종료: 0 안을 냈거나 골랐다 · 3 입력 대기(되묻기 · 문구 응답 대기 · 문구 응답 검사 실패 — 아무것도 바뀌지 않았다) · 1 도구 실패.
+ * 수정 명령(factory v1 4.3) — `--revise "<요청>"`(`--explain` 이면 해석만) · `--revise-readings '<읽기 JSON>'` · `--revise-pick <번호>:<안>`(안 `none` = 둘 다 아니에요) · `--revise-undo`. 06 까지 끝난 실행 폴더가 필요하다(브리프·01~04 단계는 다시 돌지 않는다).
+ * 종료: 0 안을 냈거나 골랐다 · 2 읽기 입력이 사전 기준에 안 맞는다 · 3 입력 대기(되묻기 · 되돌릴 수정 없음 · 둘 다 아니에요 · --explain · 문구 응답 대기 · 문구 응답 검사 실패 — 아무것도 바뀌지 않았다 · --revise-readings 가 판을 만든 뒤 고르기 대기) · 1 도구 실패.
  * revOpts: revise() 옵션(시험이 { install: false } 를 준다).
  */
 export async function runReviseCommand(opts, { say = console.log, revOpts = {} } = {}) {
@@ -504,10 +545,31 @@ export async function runReviseCommand(opts, { say = console.log, revOpts = {} }
   const cmd = `npm run stamp -- --run ${runDir} --pick ${opts.pick}`
   try {
     const mod = await import('./revise.mjs')
+    if (opts.reviseUndo) {
+      const { undoLast } = await import('./revise-history.mjs')
+      const r = undoLast(runDir, opts.pick)
+      if (r.none) { out(askIn(grammar.text.nothingToUndo)); return { code: EXIT.waiting, lines } }
+      const t = grammar.text
+      out(`[${opts.pick}] ${askIn(t.undone, r.text)} (${askIn(t.undoneDetail, r.text).replace('{index}', r.index).replace('{count}', r.restored)})`)
+      out(askIn(t.staleNote, r.text).replace('{stages}', mod.STALE_STAGES.join('·')))
+      return { code: EXIT.done, lines, result: r }
+    }
+    if (opts.revisePick?.id === 'none') { // 둘 다 아니에요 — 아무것도 적용하지 않고 스킬이 C 갈래처럼 되묻게 한다
+      const { pickNone } = await import('./revise-history.mjs')
+      const r = pickNone(runDir, opts.pick, opts.revisePick.index)
+      out(askIn(grammar.text.neitherAsk, r.text))
+      return { code: EXIT.waiting, lines, result: r }
+    }
     if (opts.revisePick) {
       const r = await mod.applyRevision(runDir, opts.pick, opts.revisePick.index, opts.revisePick.id)
-      if (r.scope === 'axis') out(`[${opts.pick}] ${r.axis} 축을 ${r.value} 로 정했다 — 후보 레시피 머리를 바꿨다 (${r.recipe})`)
-      else if (r.scope === 'copy') out(`[${opts.pick}] 문구 ${Object.keys(r.texts).length}칸을 바꿨다 (${Object.keys(r.texts).join(', ')})`)
+      if (r.outdated) { // 안을 만든 뒤 사이트가 바뀌었다 — 아무것도 바꾸지 않았다
+        out(askIn(grammar.text.ask.boardStale, r.text))
+        return { code: EXIT.waiting, lines, result: r }
+      }
+      if (r.scope === 'design') {
+        out(`[${opts.pick}] ${r.say} — 후보 레시피 머리를 바꿨다 (${r.recipe})`)
+        for (const c of r.changes) out(`  ${c.axis}: ${c.from} → ${c.to}`)
+      } else if (r.scope === 'copy') out(`[${opts.pick}] 문구 ${Object.keys(r.texts).length}칸을 바꿨다 (${Object.keys(r.texts).join(', ')})`)
       else if (r.scope === 'remove') out(`[${opts.pick}] ${r.target} 구획을 뺐다 (${r.pageOrder.before.join(' → ')} ⇒ ${r.pageOrder.after.join(' → ')})`)
       else if (r.scope === 'order') out(`[${opts.pick}] ${r.target} 구획의 자리를 옮겼다 (${r.pageOrder.before.join(' → ')} ⇒ ${r.pageOrder.after.join(' → ')})`)
       else if (r.scope === 'add') out(`[${opts.pick}] ${r.target} 구획을 더했다 → ${r.block} (${r.pageOrder.before.join(' → ')} ⇒ ${r.pageOrder.after.join(' → ')}; 학습에 기록: 진 변형 ${r.learned}개)`)
@@ -523,13 +585,25 @@ export async function runReviseCommand(opts, { say = console.log, revOpts = {} }
       out(`다음: ${r.next}`)
       return { code: EXIT.done, lines, result: r }
     }
+    // 읽기를 직접 받으면 파일을 열기 전에 사전 기준으로 검사한다 — 틀리면 목록을 보이고 종료 2.
+    const given = opts.reviseReadings == null ? null : await readingsInputOf(opts.reviseReadings)
+    if (given?.problems) {
+      out('읽기 입력이 틀렸다:')
+      for (const p of given.problems) out(`  문제 ${p}`)
+      return { code: EXIT.args, lines, problems: given.problems }
+    }
     const siteFile = join(runDir, opts.pick, 'site', 'content', 'site.json')
     if (!existsSync(siteFile)) throw new Error(`사이트(06-pages)가 없다: ${siteFile} — 먼저 \`${cmd} --until 06\``)
-    const request = mod.parseRevision(opts.revise, JSON.parse(readFileSync(siteFile, 'utf8')))
+    const request = given ? { scope: 'design', input: given.input, text: null } : mod.parseRevision(opts.revise, JSON.parse(readFileSync(siteFile, 'utf8')), undefined, { candidates: PICKS })
     if (request.ask) {
       out(`질문: ${request.ask}`)
       out('아무것도 바꾸지 않았다. 답을 넣어 같은 명령을 다시 돌린다.')
       return { code: EXIT.waiting, lines, ask: request.ask }
+    }
+    if (opts.explain) { // 해석만 보인다 — 파일은 바꾸지 않고, 사람이 맞는지 보고 이어 가도록 입력 대기(종료 3)로 끝낸다.
+      out(JSON.stringify(explained(request), null, 2))
+      out(`해석: ${interpretation(request)}`)
+      return { code: EXIT.waiting, lines, explain: true, request }
     }
     const r = await mod.revise(runDir, opts.pick, request, { log: (m) => out(`  ${m}`), ...revOpts })
     if (r.ask) {
@@ -537,28 +611,70 @@ export async function runReviseCommand(opts, { say = console.log, revOpts = {} }
       out('아무것도 바꾸지 않았다. 답을 넣어 같은 명령을 다시 돌린다.')
       return { code: EXIT.waiting, lines, ask: r.ask }
     }
-    for (const n of r.notes ?? []) out(`참고: ${n}`)
-    if (r.status === 'waiting-copy') {
-      out(`대기: 문구 수정 요청 ${r.waiting.requestFile}`)
-      out(`  → 문구 에이전트가 factory/stamp/COPY.md 대로 ${r.waiting.output} 을 쓴다. 끝나면 같은 명령을 다시 돌린다.`)
-      return { code: EXIT.waiting, lines, result: r }
+    for (const board of r.boards ?? [r]) { // 쪽 범위 읽기는 구획마다 판이 따로다
+      for (const n of board.notes ?? []) out(`참고: ${n}`)
+      if (board.status === 'waiting-copy') {
+        out(`대기: 문구 수정 요청 ${board.waiting.requestFile}`)
+        out(`  → 문구 에이전트가 factory/stamp/COPY.md 대로 ${board.waiting.output} 을 쓴다. 끝나면 같은 명령을 다시 돌린다.`)
+        return { code: EXIT.waiting, lines, result: board }
+      }
+      if (board.status === 'invalid-copy') {
+        out(`문구 응답이 검사에서 떨어졌다 — 고쳐 쓴 뒤 같은 명령을 다시 돌린다 (${board.boardFile})`)
+        for (const p of board.problems) out(`  문제 ${p}`)
+        return { code: EXIT.waiting, lines, result: board }
+      }
+      out(`[${opts.pick}] ${board.scope} ${board.target} — ${board.variants.length}안 (전·후 보드 자료 ${board.boardFile})`)
+      if (board.say) out(`  해석: ${board.say}`)
+      for (const v of board.variants) {
+        out(`  ${v.id}  ${v.block ?? v.label}${v.blockers.length ? ` — 공개 불가 사유 ${v.blockers.length}건 늘었다` : ''}${v.qa ? ` · 07 ${v.qa.publishable ? '공개 가능' : '공개 불가'}` : ''}`)
+        for (const c of v.changes ?? []) out(`      ${c.axis}: ${c.from} → ${c.to}`)
+        for (const w of v.warnings ?? []) out(`      주의: ${w}`) // 지금 04 문구로는 이 안이 06 에서 살아남지 못한다(FIT-5)
+      }
+      out(`고르려면: ${cmd} --revise-pick ${board.index}:<안>`)
     }
-    if (r.status === 'invalid-copy') {
-      out(`문구 응답이 검사에서 떨어졌다 — 고쳐 쓴 뒤 같은 명령을 다시 돌린다 (${r.boardFile})`)
-      for (const p of r.problems) out(`  문제 ${p}`)
-      return { code: EXIT.waiting, lines, result: r }
-    }
-    out(`[${opts.pick}] ${r.scope} ${r.target} — ${r.variants.length}안 (전·후 보드 자료 ${r.boardFile})`)
-    for (const v of r.variants) {
-      out(`  ${v.id}  ${v.block ?? v.label}${v.blockers.length ? ` — 공개 불가 사유 ${v.blockers.length}건 늘었다` : ''}${v.qa ? ` · 07 ${v.qa.publishable ? '공개 가능' : '공개 불가'}` : ''}`)
-      for (const w of v.warnings ?? []) out(`      주의: ${w}`) // 지금 04 문구로는 이 안이 06 에서 살아남지 못한다(FIT-5)
-    }
-    out(`고르려면: ${cmd} --revise-pick ${r.index}:<안>`)
-    return { code: EXIT.done, lines, result: r }
+    return { code: given ? EXIT.waiting : EXIT.done, lines, result: r } // 읽기를 직접 준 흐름은 판을 만든 뒤 사람이 고르기를 기다린다(종료 3)
   } catch (e) {
     out(`도구 실패: ${String(e?.message ?? e).split(/\r?\n/).slice(0, 4).join(' | ')}`)
     return { code: EXIT.fail, lines }
   }
+}
+
+/**
+ * 「너무 똑같아」 — 실행 폴더의 01 방향 3안을 지난번보다 더 다르게 다시 고르고, 그 위에 쌓인 단계를 낡게 한다.
+ * 넓이 minAxes = 지난번 넓이(directions.json 에 남은 값, 처음엔 MIN_AXES) + handles.yaml redraw.minAxesDelta, 안 사이 거리가 셀 수 있는 칸 수(AXIS_COUNT)까지.
+ * 이미 그 끝이면 아무것도 바꾸지 않고 더 못 넓힌다고 알린다(종료 3). 적용한 뒤 되돌리지 않은 디자인 수정이 있으면 다시 고르면 사라지므로 이것도 아무것도 바꾸지 않고 알린다(종료 3).
+ * 01 을 다시 도는 길은 runStamp 하나뿐이라 그것을 `until: 01-direction` 으로 다시 부른다: 브리프는 지난 실행 요약(stamp-summary.json)이 적은 파일이고,
+ * minAxes 가 01 의 입력 해시에 들어 01 만 새로 만들어진다. 02 는 01 에 기대지 않아 그대로 두고, 03~07 은 낡음 표시(markStale — 03 은 구획 수정이 남긴 열쇠까지)로 다시 돈다.
+ * @returns {Promise<{ code: number, lines: string[] }>}
+ */
+export async function runRedrawWider(opts, deps) {
+  const runDir = resolve(opts.run)
+  const summary = readJsonMaybe(join(runDir, 'stamp-summary.json'))
+  if (!summary?.brief) {
+    const line = askIn(grammar.text.redrawNoRun)
+    deps.say?.(line)
+    return { code: EXIT.args, lines: [line] }
+  }
+  const { hasAppliedRevision } = await import('./revise-history.mjs')
+  if (PICKS.some((cand) => hasAppliedRevision(join(runDir, cand)))) { // 적용한 수정은 새로 고른 방향 3안에 없다 — 아무것도 바꾸지 않고 먼저 되돌리게 한다
+    const line = askIn(grammar.text.ask.redrawDrops)
+    deps.say?.(line)
+    return { code: EXIT.waiting, lines: [line] }
+  }
+  const [{ AXIS_COUNT, MIN_AXES }, { loadHandles }, { designLexicon }] = await Promise.all([import('./directions.mjs'), import('./handles.mjs'), import('./design-context.mjs')])
+  const current = readJsonMaybe(join(runDir, 'directions.json'))?.minAxes ?? MIN_AXES
+  const minAxes = Math.min(AXIS_COUNT, current + loadHandles(designLexicon()).redraw.minAxesDelta)
+  if (minAxes <= current) {
+    const line = askIn(grammar.text.redrawLimit)
+    deps.say?.(line)
+    return { code: EXIT.waiting, lines: [line] }
+  }
+  const r = await runStamp({ brief: summary.brief, run: runDir, until: '01-direction', minAxes }, deps)
+  if (r.code !== EXIT.done) return r
+  for (const cand of PICKS) markStale(join(runDir, cand), 'redraw', REDRAW_FILES)
+  const line = askIn(grammar.text.redrawn).replace('{min}', String(minAxes))
+  deps.say?.(line)
+  return { ...r, lines: [...r.lines, line] }
 }
 
 // CLI
@@ -570,8 +686,11 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
     console.error(`${e.message}\n${USAGE}`)
     process.exitCode = EXIT.args
   }
-  if (opts && (opts.revise != null || opts.revisePick)) {
+  if (opts && (opts.revise != null || opts.reviseReadings != null || opts.revisePick || opts.reviseUndo)) {
     const r = await runReviseCommand(opts)
+    process.exitCode = r.code
+  } else if (opts?.redrawWider) {
+    const r = await runRedrawWider(opts, await defaultDeps())
     process.exitCode = r.code
   } else if (opts) {
     const deps = await defaultDeps({ preferences: !(opts.golden || opts.allGolden) })

@@ -1,0 +1,17 @@
+[
+  {
+    "service": "OneSignal",
+    "tags": [],
+    "support": "code",
+    "switchCost": {
+      "ko": "구독 저장과 보내기를 OneSignal 방식으로 바꿔야 해요. 구독 방식이 달라서 사용자가 알림을 다시 허용해야 할 수 있어요.",
+      "en": "Subscription storage and sending must move to OneSignal's way. Subscriptions differ, so users may need to allow notifications again."
+    },
+    "note": {
+      "ko": "공식 안내에 따르면 HTTPS, OneSignal 서비스 워커와 자바스크립트 SDK 가 필요해요(통합 방식에 따라 다름). 무료 요금제 여부는 확인하지 못했어요. 이 키트의 VAPID 방식은 외부 계정이 필요 없어요.",
+      "en": "Per the official setup page it needs HTTPS, the OneSignal service worker and its JavaScript SDK (depends on integration type). A free plan was not confirmed. This kit's VAPID way needs no outside account."
+    },
+    "home": "https://onesignal.com",
+    "checked": "2026-10-22"
+  }
+]

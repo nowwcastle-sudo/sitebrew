@@ -49,6 +49,24 @@ export interface LegalDoc {
   clauses: { title: string; text: string }[]
 }
 
+/**
+ * 문의 화면(/contact)이 없는 제품(문의를 고르지 않음)의 본문: 「our Contact page (/contact)」 안내를 사업자 이메일 자리표시로 바꾼다.
+ * 이메일이 이미 적힌 문장(「… or use our Contact page」)은 문의 화면 쪽만 뺀다. 자리표시는 fillLegalDoc 이 채우므로 값이 없으면 「to be confirmed」로 보인다
+ */
+export function withoutContactPage(text: string): string {
+  const email = "{{business.email}}"
+  return text
+    .replace(/\s+or\s+(?:use|on) our Contact page \(\/contact\)/g, "")
+    .replace(/\bon our Contact page \(\/contact\)/g, `at ${email}`)
+    .replace(/our Contact page \(\/contact\),\s+or\s+/g, "")
+    .replace(/our Contact page \(\/contact\)/g, email)
+}
+
+/** 문서 하나의 모든 글(안내·조항 본문)에 withoutContactPage 를 적용한다 */
+export function legalDocWithoutContactPage(doc: LegalDoc): LegalDoc {
+  return { ...doc, ...(doc.notice === undefined ? {} : { notice: withoutContactPage(doc.notice) }), clauses: doc.clauses.map((c) => ({ ...c, text: withoutContactPage(c.text) })) }
+}
+
 /** 문서 하나(안내·연락처·조항 제목과 본문)를 채운다. 못 채운 이름은 모아서 돌려준다 */
 export function fillLegalDoc(doc: LegalDoc, vars: LegalVars): { doc: LegalDoc; unresolved: string[] } {
   const unresolved: string[] = []

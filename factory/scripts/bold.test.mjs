@@ -9,7 +9,7 @@ import { loadArchetypes } from './archetypes.mjs'
 import { listPresets, pickPalettes, loadPalettePool, presetToRecipeHead, hintPair, loadPairs, loadLibrary, novelty } from './style-presets.mjs'
 import { checkCompat } from './compat.mjs'
 import { lintRecipe } from './recipe.mjs'
-import { DirectionsShortError, SeedRequiredError, axisDistance, diversityOrder, loadWeights, matchedConditions, mulberry32, paletteKey, pickDirections } from '../stamp/directions.mjs'
+import { DirectionsShortError, MIN_AXES, SeedRequiredError, axisDistance, diversityOrder, loadWeights, matchedConditions, mulberry32, paletteKey, pickDirections } from '../stamp/directions.mjs'
 import { BOLD_LAYOUT_ARCHETYPES, BOLD_THRESHOLDS, boldModeFor, boldSafetyForCandidate, evidenceFromGates, judgeBold, staticFlashRate } from '../qa/bold-safety.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
@@ -204,11 +204,10 @@ test('boldSafetyForCandidate: 재사용할 ops·a11y 결과가 없으면 Chrome 
 
 // ── 고정 사본: 대담안 표시를 더하기 전(main a54f1da)의 directions.mjs pickDirections ──────────────────────────────
 // 출처 구성(라이브러리·생성·브랜드)이 한 글자도 안 바뀌었음을 이 사본과의 비교로 고정한다. 고치지 않는다(원본이 바뀌어도 이 사본은 그대로다).
-// 바뀐 점은 이름(pickDirections → pickDirectionsV0)·기억 장소(V0_LINT_CACHE)·brand.mjs 상대 경로·상수 복사 셋뿐이다.
+// 바뀐 점은 이름(pickDirections → pickDirectionsV0)·기억 장소(V0_LINT_CACHE)·brand.mjs 상대 경로·상수 복사뿐이다(MIN_AXES 는 복사하지 않고 directions.mjs 에서 가져온다).
 const TOP_PRESETS = 20
 const PALETTES_PER_PRESET = 3
 const PALETTE_WINDOW = 24
-const MIN_AXES = 2
 const MIN_CONVERSIONS = 30
 
 const seededOrder = (list, rand) => {

@@ -32,5 +32,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "launch-factory", "packages", "plugins", "factory/scripts/fixtures", "factory/qa/fixtures", "factory/stamp/site-template", ".tmp"]
+  "exclude": ["node_modules", "launch-factory", "packages", "plugins", "factory/scripts/fixtures", "factory/qa/fixtures", "factory/stamp/site-template", "factory/stamp/deliver-assets", ".tmp"]
 }

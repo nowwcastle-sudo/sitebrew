@@ -1,5 +1,6 @@
 // mock 포트 조립(LFRUNNER — lib/ports.ts 에서 옮겼다). 장면(lib/mock-scene.ts)이 있으면 그 장면의 세션·구독으로, 없으면 기존 동작(로그아웃에서 시작, 구독은 LF_MOCK_SUB)으로 만든다.
 // 서버·Next 없이 시험할 수 있게 next/headers·env 를 부르지 않는다(모드·쿠키 읽기는 lib/ports.ts 가 한다).
+import type { Mailer } from "@launch-factory/email"
 import { MOCK_SESSION, mockAuth, mockBilling } from "@/components/contract/adapter-mock"
 import type { ActionResult } from "@/components/contract/block-contract"
 import type { Session } from "@/components/contract/ports"
@@ -14,6 +15,9 @@ export const MOCK_USER_NAME = "Alex Example"
 export const MOCK_TAKEN_EMAIL = "taken@example.com"
 /** 결제 실패(past_due) 장면의 접근 중지일(graceEndsAt)까지 남은 날 — live 어댑터는 실패 시각 + 유예(기본 7일)를 준다. mock 은 오늘 + 5일 */
 const MOCK_GRACE_DAYS = 5
+/** mock 메일 본문에 들어가는 이름·주소(가짜 값 — 메일 기록(LF_MOCK_OUTBOX)에는 본문이 남지 않는다) */
+// 한 바퀴 시험은 메일을 template 이름으로만 센다(subject 로 세지 않는다) — 이 값들이 바뀌어도 시험은 그대로다
+const MOCK_MAIL = { locale: "en" as const, productName: "Example", appUrl: "http://localhost:3000" }
 
 export interface MockPortsInput {
   /** 장면. null = 장면 없음(기존 동작) */
@@ -22,10 +26,12 @@ export interface MockPortsInput {
   defaultSub: string
   /** 계정 화면에서 저장한 이름(mock 전용) — 세션에 덮어 보인다. live 는 Better Auth 가 이름을 저장한다 */
   getName: () => string | undefined
+  /** 있으면 가입 성공 뒤 확인 메일(verifyEmail)과 결제 성공 뒤 주문 확인 메일(orderConfirmation)을 목 세션 이메일로 보낸다. mock 메일러가 LF_MOCK_OUTBOX 에 기록한다 */
+  mail?: Mailer
 }
 
 /** 목 포트 한 벌. 장면이 없으면 프로세스 하나에 쓰는 것을 전제로 하고(로그인이 요청 사이에 이어진다), 장면이 있으면 요청마다 새로 만들어 장면이 늘 같은 처음 상태다 */
-export function buildMockPorts({ scene, defaultSub, getName }: MockPortsInput): ProductPorts {
+export function buildMockPorts({ scene, defaultSub, getName, mail }: MockPortsInput): ProductPorts {
   // 장면이 없는 기본 mock 도 로그인하면 이 이름을 보인다(F6) — 세션은 늘 넘긴다
   const session: Session = { ...MOCK_SESSION, name: MOCK_USER_NAME, ...(scene?.signedIn ? { emailVerified: scene.verified } : {}) }
   const base = mockAuth(scene?.signedIn ? "auth=signed-in" : "", { requireAgeOver14: true, session })
@@ -42,10 +48,14 @@ export function buildMockPorts({ scene, defaultSub, getName }: MockPortsInput): 
     // 목에도 확인 메일 다시 보내기가 있다(로그인한 상태에서만 — 가입 직후는 로그인돼 있다)
     sendVerificationEmail: (input?: { redirectTo?: string }) => resend(input),
     // 이미 가입된 이메일: live 어댑터(packages/auth)와 같은 모양으로 거절한다 — 칸 오류 + code email_exists(가입 블록이 로그인·비밀번호 찾기 링크를 붙인다)
-    signUp: (async (input: Parameters<typeof baseSignUp>[0]) =>
-      input.method === "password" && typeof input.email === "string" && input.email.trim().toLowerCase() === MOCK_TAKEN_EMAIL
-        ? { ok: false as const, fieldErrors: { email: ["An account with this email already exists."] }, retryable: false, code: "email_exists" }
-        : baseSignUp(input)) as typeof baseSignUp,
+    signUp: (async (input: Parameters<typeof baseSignUp>[0]) => {
+      if (input.method === "password" && typeof input.email === "string" && input.email.trim().toLowerCase() === MOCK_TAKEN_EMAIL) {
+        return { ok: false as const, fieldErrors: { email: ["An account with this email already exists."] }, retryable: false, code: "email_exists" }
+      }
+      const r = await baseSignUp(input)
+      if (r.ok) await mail?.send({ to: session.email as string, template: "verifyEmail", input: { locale: MOCK_MAIL.locale, productName: MOCK_MAIL.productName, verifyUrl: `${MOCK_MAIL.appUrl}/verify-email?token=mock` } })
+      return r
+    }) as typeof baseSignUp,
     // 목에는 재설정 완료가 없다 — 토큰이 "invalid" 면 live 어댑터처럼 code invalid_token(블록이 만료 안내로 바꾼다), 아니면 성공(시험용)
     resetPassword: async ({ token }: { token: string; newPassword: string }): Promise<ActionResult<Record<string, never>>> => (token === "invalid" ? { ok: false, formError: "This reset link has expired or was already used. Ask for a new one.", retryable: false, code: "invalid_token" } : { ok: true, data: {} }),
   })
@@ -60,5 +70,15 @@ export function buildMockPorts({ scene, defaultSub, getName }: MockPortsInput): 
     const r = await billing.subscription()
     return r.ok && r.data.status !== "none" && session.email ? { ...r, data: { ...r.data, receiptEmail: session.email } } : r
   }
-  return { auth, billing: Object.assign(billing, { syncCheckout }) }
+  const baseCheckout = billing.checkout.bind(billing)
+  // 결제 성공 뒤 주문 확인 메일 — 요금제 이름·금액은 mock 요금제 표에서 읽는다
+  const checkout: typeof baseCheckout = async (input) => {
+    const r = await baseCheckout(input)
+    const plan = MOCK_PLANS.find((p) => p.id === input.planId)
+    if (r.ok && plan) {
+      await mail?.send({ to: session.email as string, template: "orderConfirmation", input: { locale: MOCK_MAIL.locale, productName: MOCK_MAIL.productName, orderId: `mock_order_${plan.id}`, planName: plan.name, amount: plan.price, orderedAt: new Date().toISOString(), manageUrl: `${MOCK_MAIL.appUrl}/billing` } })
+    }
+    return r
+  }
+  return { auth, billing: Object.assign(billing, { checkout, syncCheckout }) }
 }

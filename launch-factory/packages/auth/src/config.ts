@@ -542,7 +542,8 @@ export function createAuth(options: CreateAuthOptions) {
       },
     },
     // 개발·테스트에서도 켠다(기본값은 production 에서만). 저장소는 DB의 rate_limit 표. 민감 경로는 더 좁게(Task 19).
-    rateLimit: { enabled: true, storage: "database", customRules: { ...SENSITIVE_RATE_LIMITS } },
+    // 세션 읽기(/get-session)는 제한하지 않는다 — 쪽 하나를 그릴 때마다 서버 안에서 여러 번 부르는 읽기라 같은 주소(사무실·학교 공유 망)의 방문자들이 한도(10초 100번)를 나눠 쓰면 로그인한 사람이 로그아웃처럼 보인다. 쿠키 열쇠로만 열리는 읽기라 추측 공격 대상이 아니다
+    rateLimit: { enabled: true, storage: "database", customRules: { ...SENSITIVE_RATE_LIMITS, "/get-session": false } },
     plugins,
   })
   const lf: LaunchAuthSettings = { requireAgeOver14, signUpEnumeration }

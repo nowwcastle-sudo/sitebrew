@@ -11,6 +11,7 @@ export async function userDetail(input: unknown) {
   return runAdmin((a) => a.userDetail(input))
 }
 
+/** 정지는 사람 확인이 필요하다 — input.confirmed 가 정확히 true 가 아니면 confirmation_required(콘솔 구획의 정지와 같은 벽) */
 export async function banUser(input: unknown) {
   return runAdmin((a) => a.banUser(input))
 }
@@ -19,6 +20,7 @@ export async function unbanUser(input: unknown) {
   return runAdmin((a) => a.unbanUser(input))
 }
 
+/** 일괄 정지도 input.confirmed: true 가 필요하다 */
 export async function bulkBan(input: unknown) {
   return runAdmin((a) => a.bulkBan(input))
 }

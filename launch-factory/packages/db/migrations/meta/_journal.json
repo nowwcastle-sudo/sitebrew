@@ -92,6 +92,41 @@
       "when": 1791153537670,
       "tag": "0012_notice_outbox",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792638141199,
+      "tag": "0013_commerce",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792641320247,
+      "tag": "0014_booking_push_notify",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1792643633168,
+      "tag": "0015_p3c_content_features",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792656730124,
+      "tag": "0016_booking_deposit",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792660952282,
+      "tag": "0017_inquiry_replies",
+      "breakpoints": true
     }
   ]
 }

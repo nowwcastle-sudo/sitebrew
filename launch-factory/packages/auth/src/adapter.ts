@@ -141,7 +141,7 @@ export interface AuthHandlerLike {
   handler(request: Request): Promise<Response>
   /** createAuth 가 붙이는 우리 설정. 없으면 기본(만 14세 확인 필수·reveal) */
   lf?: LaunchAuthSettings
-  options: { baseURL?: unknown; basePath?: string; plugins?: readonly { id: string }[]; socialProviders?: object }
+  options: { baseURL?: unknown; basePath?: string; plugins?: readonly { id: string }[]; socialProviders?: object; advanced?: { ipAddress?: { ipAddressHeaders?: readonly string[] } } }
 }
 
 export interface AuthAdapterOptions {
@@ -178,6 +178,8 @@ export function authAdapter(auth: AuthHandlerLike, io: AuthIO, { callbackURL = "
   const baseURL = String(auth.options.baseURL)
   const basePath = auth.options.basePath ?? "/api/auth"
   const pluginIds = new Set((auth.options.plugins ?? []).map((p) => p.id))
+  // 요청 제한이 방문자 주소를 읽는 머리(LF_CLIENT_IP_HEADER · vercel)도 넘긴다 — 안 넘기면 서버 안 세션 읽기가 모두 한 통(주소 모름)에 쌓여 429 가 나고 로그인한 사람이 로그아웃처럼 보인다
+  const forwardedHeaders = [...new Set([...FORWARDED_HEADERS, ...(auth.options.advanced?.ipAddress?.ipAddressHeaders ?? []).map((h) => h.toLowerCase())])]
   const socials = SOCIAL_PROVIDERS.filter((p) => p in (auth.options.socialProviders ?? {}))
   const twoFactorOn = pluginIds.has("two-factor")
   const magicLinkOn = pluginIds.has("magic-link")
@@ -190,7 +192,7 @@ export function authAdapter(auth: AuthHandlerLike, io: AuthIO, { callbackURL = "
   async function call(method: "GET" | "POST", path: string, body?: object): Promise<Reply | Fail> {
     const incoming = await io.headers()
     const headers = new Headers({ origin: new URL(baseURL).origin })
-    for (const name of FORWARDED_HEADERS) {
+    for (const name of forwardedHeaders) {
       const v = incoming.get(name)
       if (v) headers.set(name, v)
     }
