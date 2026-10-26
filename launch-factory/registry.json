@@ -138,7 +138,7 @@
         "@launch-factory/email@0.0.0",
         "@launch-factory/env@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -536,7 +536,7 @@
         "@launch-factory/env@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -796,7 +796,7 @@
         "@launch-factory/env@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -1053,7 +1053,7 @@
         "@launch-factory/env@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -1362,7 +1362,7 @@
         "@launch-factory/db@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -1629,7 +1629,7 @@
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/inquiry@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -1851,7 +1851,7 @@
         "@launch-factory/db@0.0.0",
         "@launch-factory/email@0.0.0",
         "@launch-factory/i18n@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "@launch-factory/auth@0.0.0",
         "@launch-factory/security@0.0.0"
       ],
@@ -2059,7 +2059,7 @@
         "@launch-factory/admin-console@0.0.0",
         "@launch-factory/db@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3"
+        "drizzle-orm@0.45.4"
       ],
       "registryDependencies": [
         "@launch-factory/feature-auth-betterauth",
@@ -2155,7 +2155,7 @@
         "@launch-factory/db@0.0.0",
         "@launch-factory/email@0.0.0",
         "@launch-factory/env@0.0.0",
-        "drizzle-orm@0.45.3"
+        "drizzle-orm@0.45.4"
       ],
       "registryDependencies": [
         "@launch-factory/feature-auth-betterauth",
@@ -2268,7 +2268,7 @@
         "@launch-factory/env@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -2493,7 +2493,7 @@
         "@launch-factory/env@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -2737,7 +2737,7 @@
         "@launch-factory/db@0.0.0",
         "@launch-factory/env@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -2984,7 +2984,7 @@
         "@launch-factory/env@0.0.0",
         "@launch-factory/i18n@0.0.0",
         "@launch-factory/security@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -3250,7 +3250,7 @@
         "@launch-factory/booking@0.0.0",
         "@launch-factory/db@0.0.0",
         "@launch-factory/env@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [
@@ -3550,7 +3550,7 @@
         "@launch-factory/contract@0.0.0",
         "@launch-factory/db@0.0.0",
         "@launch-factory/env@0.0.0",
-        "drizzle-orm@0.45.3",
+        "drizzle-orm@0.45.4",
         "postgres@3.4.9"
       ],
       "registryDependencies": [

@@ -8,7 +8,7 @@
     "@launch-factory/admin-console@0.0.0",
     "@launch-factory/db@0.0.0",
     "@launch-factory/security@0.0.0",
-    "drizzle-orm@0.45.3"
+    "drizzle-orm@0.45.4"
   ],
   "registryDependencies": [
     "@launch-factory/feature-auth-betterauth",
