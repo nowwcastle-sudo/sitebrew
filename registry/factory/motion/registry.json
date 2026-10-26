@@ -177,7 +177,7 @@
         }
       ],
       "dependencies": [
-        "@lottiefiles/dotlottie-web@0.80.0"
+        "@lottiefiles/dotlottie-web@0.81.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/motion-core#v0.2.3",
