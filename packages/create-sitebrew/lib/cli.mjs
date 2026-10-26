@@ -14,7 +14,7 @@ const IS_WIN = process.platform === 'win32'
 const ASK_INSTALL = '설치할까요? Install it? [Y/n]'
 const ASK_ONEDRIVE = '그래도 이 폴더에 계속할까요? Go on with this folder anyway? [Y/n]'
 const AGENT_NAME = { claude: 'Claude Code', codex: 'Codex' }
-// The package name is pinned to the release (npx create-sitebrew@0.2.3): a bare name could be taken over by somebody else.
+// The package name is pinned to the release (npx create-sitebrew@0.2.4): a bare name could be taken over by somebody else.
 const VERSION = TAG.replace(/^v/, '')
 
 const say = (ko, en) => console.log(`${ko}\n${en}`)

@@ -73,29 +73,29 @@ winget install --id Google.Chrome -e --source winget --accept-package-agreements
 
 **5. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.3 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.4 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```powershell
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
 
 **6. Sitebrew 를 고정 태그로 맞추기**
 
-Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.3 로 맞춰요.
+Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.4 로 맞춰요.
 
 Sitebrew 를 내려받은 폴더(`sitebrew` 폴더가 들어 있는 폴더)에서 실행해요:
 
 ```powershell
 cd sitebrew
 git fetch --tags
-git checkout v0.2.3
+git checkout v0.2.4
 ```
 
-성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.3 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
+성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.4 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
 
-문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.3` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
+문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.4` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
 
 **7. Sitebrew 설치**
 
@@ -165,29 +165,29 @@ brew install --cask google-chrome
 
 **5. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.3 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.4 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
 
 **6. Sitebrew 를 고정 태그로 맞추기**
 
-Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.3 로 맞춰요.
+Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.4 로 맞춰요.
 
 Sitebrew 를 내려받은 폴더(`sitebrew` 폴더가 들어 있는 폴더)에서 실행해요:
 
 ```bash
 cd sitebrew
 git fetch --tags
-git checkout v0.2.3
+git checkout v0.2.4
 ```
 
-성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.3 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
+성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.4 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
 
-문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.3` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
+문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.4` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
 
 **7. Sitebrew 설치**
 
@@ -257,29 +257,29 @@ sudo apt install chromium
 
 **5. Sitebrew 내려받기**
 
-Sitebrew 폴더가 없어요. 고정 태그 v0.2.3 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
+Sitebrew 폴더가 없어요. 고정 태그 v0.2.4 로 내려받아요. 현재 폴더 안에 sitebrew 폴더가 생겨요.
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 성공하면: 현재 폴더 안에 `sitebrew` 폴더가 생겨요.
 
 **6. Sitebrew 를 고정 태그로 맞추기**
 
-Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.3 로 맞춰요.
+Sitebrew 가 다른 판에 있어요. 고정 태그 v0.2.4 로 맞춰요.
 
 Sitebrew 를 내려받은 폴더(`sitebrew` 폴더가 들어 있는 폴더)에서 실행해요:
 
 ```bash
 cd sitebrew
 git fetch --tags
-git checkout v0.2.3
+git checkout v0.2.4
 ```
 
-성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.3 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
+성공하면: 같은 터미널에서 `git describe --tags --exact-match` 를 쳐요. v0.2.4 가 나오면 돼요. 오류가 나오면 아직 그 태그에 있지 않은 거예요.
 
-문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.3` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
+문제 해결: `git checkout` 이 「local changes」 오류로 멈추면 `git stash` 를 한 번 치고 `git checkout v0.2.4` 를 다시 해요. 고친 내용은 사라지지 않고 stash 에 남아요.
 
 **7. Sitebrew 설치**
 
@@ -355,29 +355,29 @@ When it works: In a new terminal type this line: `"C:/Program Files/Google/Chrom
 
 **5. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.3. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.4. A sitebrew folder is created in the current folder.
 
 ```powershell
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
 
 **6. Move Sitebrew to the pinned tag**
 
-Sitebrew is on another version. Move it to the pinned tag v0.2.3.
+Sitebrew is on another version. Move it to the pinned tag v0.2.4.
 
 Run it from the folder where you downloaded Sitebrew (the folder that holds the `sitebrew` folder):
 
 ```powershell
 cd sitebrew
 git fetch --tags
-git checkout v0.2.3
+git checkout v0.2.4
 ```
 
-When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.3. An error means it is not on that tag yet.
+When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.4. An error means it is not on that tag yet.
 
-Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.3` again. Your edits are not lost: they stay in the stash.
+Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.4` again. Your edits are not lost: they stay in the stash.
 
 **7. Install Sitebrew**
 
@@ -447,29 +447,29 @@ When it works: In the terminal type `ls "/Applications/Google Chrome.app/Content
 
 **5. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.3. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.4. A sitebrew folder is created in the current folder.
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
 
 **6. Move Sitebrew to the pinned tag**
 
-Sitebrew is on another version. Move it to the pinned tag v0.2.3.
+Sitebrew is on another version. Move it to the pinned tag v0.2.4.
 
 Run it from the folder where you downloaded Sitebrew (the folder that holds the `sitebrew` folder):
 
 ```bash
 cd sitebrew
 git fetch --tags
-git checkout v0.2.3
+git checkout v0.2.4
 ```
 
-When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.3. An error means it is not on that tag yet.
+When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.4. An error means it is not on that tag yet.
 
-Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.3` again. Your edits are not lost: they stay in the stash.
+Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.4` again. Your edits are not lost: they stay in the stash.
 
 **7. Install Sitebrew**
 
@@ -539,29 +539,29 @@ When it works: In the terminal type `ls /usr/bin/google-chrome /usr/bin/chromium
 
 **5. Download Sitebrew**
 
-There is no Sitebrew folder. Download it at the pinned tag v0.2.3. A sitebrew folder is created in the current folder.
+There is no Sitebrew folder. Download it at the pinned tag v0.2.4. A sitebrew folder is created in the current folder.
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 ```
 
 When it works: A `sitebrew` folder appears in the current folder.
 
 **6. Move Sitebrew to the pinned tag**
 
-Sitebrew is on another version. Move it to the pinned tag v0.2.3.
+Sitebrew is on another version. Move it to the pinned tag v0.2.4.
 
 Run it from the folder where you downloaded Sitebrew (the folder that holds the `sitebrew` folder):
 
 ```bash
 cd sitebrew
 git fetch --tags
-git checkout v0.2.3
+git checkout v0.2.4
 ```
 
-When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.3. An error means it is not on that tag yet.
+When it works: In the same terminal type `git describe --tags --exact-match`. It worked if it prints v0.2.4. An error means it is not on that tag yet.
 
-Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.3` again. Your edits are not lost: they stay in the stash.
+Trouble: If `git checkout` stops with a "local changes" error, type `git stash` once and then `git checkout v0.2.4` again. Your edits are not lost: they stay in the stash.
 
 **7. Install Sitebrew**
 

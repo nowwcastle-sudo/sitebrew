@@ -6,7 +6,7 @@
 
 Sitebrew は Claude Code と Codex で使うプラグインです。作りたいサイトをふだんの言葉で説明すると、違う候補を三つ作ります。一つを選び、会話で直して、コードを自分のフォルダーに持ち帰ります。コードの知識も、始めるときの API キーもいりません。
 
-現在のバージョン `v0.2.3` · MIT ライセンス · Windows 10 と 11
+現在のバージョン `v0.2.4` · MIT ライセンス · Windows 10 と 11
 
 ## なぜ Sitebrew なのか
 
@@ -55,13 +55,13 @@ Sitebrew は Claude Code と Codex で使うプラグインです。作りたい
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.3 sitebrew
+npm create sitebrew@0.2.4 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.3 sitebrew
+npx create-sitebrew@0.2.4 sitebrew
 ```
 
 どちらも同じオプションを使えます。`--dry-run` は何も変えずに計画だけを表示し、`--yes` はすべての質問に「はい」と答え、`--tool` は `claude`、`codex`、`both` から選びます。
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.3 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.4/get.ps1 | iex
 ```
 
 何もインストールせずに、することだけを見るには:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.3/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.4/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code で:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.3
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.4
 /plugin install sitebrew@sitebrew
 ```
 
 Codex で:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.3
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.4
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 部品だけを別の Next.js プロジェクトに入れることもできます。アドレスには必ずタグを付けてください。
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.3 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.3 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.4 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.4 -y -o
 ```
 
 ## コントリビュート
@@ -149,6 +149,7 @@ MIT。[LICENSE](LICENSE) と [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) �
 
 | タグ | 日付 | 変更点 | 記録 |
 |---|---|---|---|
+| `v0.2.4` | 2026-10-26 | パッチ版：依存パッケージの更新のみ · react と react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 と posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · キットとプラグインのスキルは変更なし · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
 | `v0.2.3` | 2026-10-26 | パッチ版：プラグインの 8 つのスキルを見直し、分岐の案内と終了コードの表を明確に · ルールごとに置き場所を 1 つに · セットアップに Node.js がない場合の手順を追加 · インストールガイドに正確なリリースタグの確認と Windows で安全な npm の使い方 · キットが読む場所に合わせたブラウザ確認 · new の引き継ぎをより安全に · deliver のスキップ理由を追加 · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン）| — |
 | `v0.2.2` | 2026-10-25 | スキル監査の反映：doctor スキルが自分でインストールせずセットアップスキルに引き継ぐ · deliver が Vercel のプレビューリンクと一時公開アドレスを区別する · revise に終了コードの表を一つ追加、runbook は章ファイルを章ごとに読む、new はビルド時間を 1 回の測定として表示 · プラグインガイドにセットアップとランブックのスキルを追加 · QA ページから実在の人名を削除 · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
 | `v0.2.1` | 2026-10-25 | パッチ版：shadcn 4.22.1 を1か所で厳密に固定（入れ子の zod 公告を解消）· 広告用ページは既定で noindex · 商品一覧に ItemList、イベントのランディングに Event の構造化データ · 共有画像にブランドロゴ · イベント用ブリーフが日時と場所を質問 · レシピ追加の検査がガイド文書どおりに進む · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン）| — |

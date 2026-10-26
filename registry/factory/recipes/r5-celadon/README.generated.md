@@ -6,8 +6,8 @@
 ## 설치
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r5-celadon#v0.2.3        # 디자인 시스템 전체(registry:base)
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r5-celadon-theme#v0.2.3  # 색만(registry:theme)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r5-celadon#v0.2.4        # 디자인 시스템 전체(registry:base)
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/r5-celadon-theme#v0.2.4  # 색만(registry:theme)
 ```
 
 부품은 `r5-celadon-<부품>`(예: `r5-celadon-button`)으로 하나씩도 설치된다. 단일 HTML 에는 `registry/factory/r/r5-celadon/r5-celadon.css` 를 붙인다.

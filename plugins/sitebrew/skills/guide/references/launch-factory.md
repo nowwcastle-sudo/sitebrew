@@ -1,11 +1,11 @@
-# launch-factory at `v0.2.3`
+# launch-factory at `v0.2.4`
 
-launch-factory owns the back end (auth, data, payments, email, analytics, jobs). A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages. This release is the `launch-factory/` folder of Sitebrew `v0.2.3`.
+launch-factory owns the back end (auth, data, payments, email, analytics, jobs). A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages. This release is the `launch-factory/` folder of Sitebrew `v0.2.4`.
 
 ## Get the repository and start in mock mode
 
 ```bash
-git clone --branch v0.2.3 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 cd sitebrew/launch-factory
 npm run setup
 npm run ci:verify
