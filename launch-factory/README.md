@@ -4,7 +4,7 @@
 
 This repository is the launch kit that pairs with web-factory, the repository of screen blocks. It owns the back end: auth, data, payments, email, analytics, and jobs. A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages.
 
-Current version `v0.2.4` · web-factory pin `v0.2.4` · blocks `2ec0b992` · contract `2ec0b992` (the commit of tag v0.2.4)
+Current version `v0.2.4` · web-factory pin `v0.2.4` · blocks `19c81efc` · contract `19c81efc` (the commit of tag v0.2.4)
 
 - Blocks know nothing about providers. Adapters implement the web-factory ports. The same conformance suite checks that an adapter reproduces the same scenarios as the mock.
 - A feature bundle (adapter, server actions, webhook routes, schema, migrations) is one entry in `registry.json`. The record of pinned versions is in [`docs/versions.md`](docs/versions.md).

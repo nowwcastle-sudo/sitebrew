@@ -4,7 +4,7 @@
 
 Kit de lanzamiento que acompaña a web-factory (el repositorio de bloques de pantalla). Este repositorio se encarga de la parte de servidor: autenticación, datos, pagos, correo, medición y tareas. Cada producto empieza copiando `template/` y recibe los parches de seguridad con solo subir la versión de los paquetes `@launch-factory/*`.
 
-Versión actual `v0.2.4` · web-factory fijado `v0.2.4` · bloques `2ec0b992` · contract `2ec0b992` (el commit de la etiqueta v0.2.4)
+Versión actual `v0.2.4` · web-factory fijado `v0.2.4` · bloques `19c81efc` · contract `19c81efc` (el commit de la etiqueta v0.2.4)
 
 - Los bloques no conocen al proveedor: los adaptadores implementan los puertos de web-factory. Un mismo conjunto de pruebas de conformidad comprueba que cada adaptador reproduce los mismos escenarios que el mock.
 - Cada paquete de funcionalidad (adaptador, acciones de servidor, rutas de webhook, esquema y migraciones) se agrupa en una sola entrada de `registry.json`. Las versiones fijadas se detallan en [`docs/versions.md`](docs/versions.md).
