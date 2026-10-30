@@ -19,7 +19,7 @@
 | Node | >=24.13.0 | 必需 | `winget install OpenJS.NodeJS.LTS --version 24.13.0` | `nvm install 24.13.0` | `nvm install 24.13.0` |
 | npm | >=11.6.2 | 必需 | 随 Node 一起安装 | 随 Node 一起安装 | 随 Node 一起安装 |
 | git | 最新 | 必需 | `winget install Git.Git` | `brew install git` | `sudo apt install git` |
-| web-factory 检出副本 | 标签 `v0.0.12` | 可选 | `git clone` 后把路径填入 `LF_WF_REPO` | `git clone` 后把路径填入 `LF_WF_REPO` | `git clone` 后把路径填入 `LF_WF_REPO` |
+| web-factory 检出副本 | 标签 `v0.0.16` | 可选 | `git clone` 后把路径填入 `LF_WF_REPO` | `git clone` 后把路径填入 `LF_WF_REPO` | `git clone` 后把路径填入 `LF_WF_REPO` |
 | Chrome | 最新 | 可选 | `winget install Google.Chrome` | `brew install --cask google-chrome` | `sudo apt install chromium` |
 | gh | 最新 | 可选 | `winget install GitHub.cli` | `brew install gh` | `sudo apt install gh` |
 | vercel | 最新 | 可选 | `npm i -g vercel` | `npm i -g vercel` | `npm i -g vercel` |
@@ -30,7 +30,7 @@
 
 缺少可选项目时，下面这些事做不了。
 
-- web-factory 检出副本：没有它，一致性测试会标记为 SKIP。有的话，会读取 `LF_WF_REPO` 指向的位置，那里必须有 `v0.0.12` 提交。没有设置环境变量时使用代码里的默认路径，所以在其他电脑上一定要指定 `LF_WF_REPO`。
+- web-factory 检出副本：没有它，一致性测试会标记为 SKIP。有的话，会读取 `LF_WF_REPO` 指向的位置，那里必须有 `v0.0.16` 提交。没有设置环境变量时使用代码里的默认路径，所以在其他电脑上一定要指定 `LF_WF_REPO`。
 - Chrome：`npm run template:screens` 无法运行。如果安装位置不是默认路径，把可执行文件的路径填入 `CHROME_PATH`。
 - 四个安全工具：`npm run ci:verify` 会把对应步骤标记为 SKIP。CI 会下载并使用 `scripts/ci/tools.json` 中固定的版本。想在本地也把缺失算作失败，请设置 `LF_CI_REQUIRE_TOOLS=1`。
 - gitleaks：提交前的机密值扫描钩子只给出提示，然后放行。
@@ -116,7 +116,7 @@ git diff template/package.json
 | 现象 | 原因 | 解决办法 |
 |---|---|---|
 | `setup: FAIL — 필수 누락 …` | 缺少必需工具，或版本过低 | 执行每行带 `→` 的命令，然后重新运行 `npm run setup`。 |
-| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` 的路径不存在，或没有 `v0.0.12` 提交 | 克隆 web-factory，执行 `git -C <path> fetch --tags`，再把该路径填入 `LF_WF_REPO`。 |
+| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` 的路径不存在，或没有 `v0.0.16` 提交 | 克隆 web-factory，执行 `git -C <path> fetch --tags`，再把该路径填入 `LF_WF_REPO`。 |
 | `SKIP(도구 없음)` | 缺少可选的安全工具 | 这不是失败。安装之后该步骤就会运行。 |
 | `[pre-commit] gitleaks 가 설치돼 있지 않아 … 건너뛴다` | 钩子已经启用，但没有安装 gitleaks | 执行“环境要求”表中 gitleaks 的命令。 |
 | `--only /pricing` 找不到任何页面 | Git Bash 会把 `/pricing` 当作路径转换 | 在 PowerShell 中运行。 |

@@ -13,3 +13,9 @@ reason = "braces <=3.0.3 스택 소진 DoS(깊게 중첩한 글롭 패턴). 고�
 id = "GHSA-67mh-4wv8-2f99"
 ignoreUntil = 2026-12-31
 reason = "esbuild <=0.24.2 개발 서버가 아무 웹사이트의 요청을 받는 문제(개발 서버 실행 때만). 우리 쪽은 drizzle-kit 0.31.11 → @esbuild-kit/* → esbuild 0.18.20 사슬로 CLI(db:generate)에서만 쓰고 개발 서버를 켜지 않는다. drizzle-kit 은 better-auth 의 선택 peer 라 npm 이 제품 트리에 설치하지만 런타임에서 불러오지 않는다. drizzle-kit 이 @esbuild-kit 을 떼면 풀린다 — 만료일에 다시 본다."
+
+# 2026-10-30: deepmerge <= 4.3.1 mergeObject() 프로토타입 오염(GHSA-gcqx-w48m-w2h4, 2026-09-18 공개, 고친 버전 없음 — npm 최신 4.3.1). 경로 shadcn → deepmerge 는 레지스트리 항목·설정 JSON(우리 파일)을 합칠 때만 쓰고 외부 입력을 받지 않는다.
+[[IgnoredVulns]]
+id = "GHSA-gcqx-w48m-w2h4"
+ignoreUntil = 2026-12-05
+reason = "deepmerge <= 4.3.1 mergeObject() 프로토타입 오염(고친 버전 없음 — 2026-10-30 확인). 경로 shadcn → deepmerge 는 레지스트리 항목·설정 JSON(우리 파일)을 합칠 때만 쓰고 외부 입력을 받지 않는다. 고친 판이 나오면 올리고 이 예외를 지운다."

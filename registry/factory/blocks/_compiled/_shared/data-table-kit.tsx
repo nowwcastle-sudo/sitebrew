@@ -13,7 +13,7 @@ import { NativeSelect, NativeSelectOption } from "@/registry/factory/ui/native-s
 import { Skeleton } from "@/registry/factory/ui/skeleton"
 import { TableCell, TableHead } from "@/registry/factory/ui/table"
 
-import { fillText } from "../_shared/billing-format"
+import { fillText, formatDateParts, intlLocale } from "../_shared/billing-format"
 import { ListEmpty, ListError } from "../_shared/list-status"
 
 // 데이터 표 공유 조각(P3-2 Task 7b, 대장 A82 — block-shared-data-table-kit — data-table 네 변형이 같이 쓴다). NN/g Data Tables·Bulk Actions·Empty States.
@@ -63,30 +63,49 @@ export type TableCopy = {
   error: { title: string; retryLabel: string }
 }
 
-const NUMBER = new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 2 })
-const DATE = new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric" })
+/** 표가 읽는 언어·시간대(BlockBase 의 locale·timeZone 그대로) — 둘 다 없으면 ko-KR·Asia/Seoul 이라 한국어 출력이 예전 글자 그대로다 */
+export type TableFormat = { locale?: "ko" | "en"; timeZone?: string }
 
-/** 칸 글자(숫자는 자리 구분, 날짜는 서울 날짜, 빈 값은 —) */
-export function cellText(col: TableColumn, v: TableCellValue | undefined): string {
+const NUMBERS = new Map<string, Intl.NumberFormat>()
+const numberFormat = (locale?: string) => {
+  const tag = intlLocale(locale)
+  let f = NUMBERS.get(tag)
+  if (!f) NUMBERS.set(tag, (f = new Intl.NumberFormat(tag, { maximumFractionDigits: 2 })))
+  return f
+}
+/** 개수·쪽 번호 같은 숫자 글자(언어별 자리 구분) */
+export const formatCount = (n: number, locale?: string) => numberFormat(locale).format(n)
+
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/
+const DAY = { year: "numeric", month: "long", day: "numeric" } as const
+/** 날짜 칸 글자. 시각이 없는 날짜(「2026-10-05」)는 달력 날짜라 시간대로 밀지 않고, 순간(ISO 시각)은 표의 시간대 날짜로 읽는다 */
+export function dateText(v: string, fmt?: TableFormat): string {
+  const at = new Date(DATE_ONLY.test(v) ? `${v}T00:00:00Z` : v)
+  if (Number.isNaN(at.getTime())) return v
+  return formatDateParts(at, DAY, fmt?.locale, DATE_ONLY.test(v) ? "UTC" : fmt?.timeZone)
+}
+
+/** 칸 글자(숫자는 자리 구분, 날짜는 표의 언어·시간대 날짜, 빈 값은 —) */
+export function cellText(col: TableColumn, v: TableCellValue | undefined, fmt?: TableFormat): string {
   if (v === null || v === undefined || v === "") return "—"
-  if (col.kind === "numeric" && typeof v === "number") return NUMBER.format(v)
-  if (col.kind === "date" && typeof v === "string") return DATE.format(new Date(v))
+  if (col.kind === "numeric" && typeof v === "number") return formatCount(v, fmt?.locale)
+  if (col.kind === "date" && typeof v === "string") return dateText(v, fmt)
   return String(v)
 }
 
-const compare = (col: TableColumn, a: TableCellValue | undefined, b: TableCellValue | undefined) => {
+const compare = (a: TableCellValue | undefined, b: TableCellValue | undefined, locale?: string) => {
   const an = a === null || a === undefined || a === ""
   const bn = b === null || b === undefined || b === ""
   if (an || bn) return an === bn ? 0 : an ? 1 : -1 // 빈 값은 늘 뒤
   if (typeof a === "number" && typeof b === "number") return a - b
-  return String(a).localeCompare(String(b), "ko")
+  return String(a).localeCompare(String(b), intlLocale(locale))
 }
 
 /**
  * 검색(글자·상태 열 부분 일치)·거르기(열 값 일치)·정렬을 적용한다. 쪽은 자르지 않는다(pageOf).
  * `serverSearch` 면 검색어를 이 함수가 다시 거르지 않는다 — 서버가 이미 검색어로 읽어 온 행이고(가린 연락처·표에 안 보이는 칸까지 맞춘 결과), 보이는 칸으로 한 번 더 거르면 맞는 행이 사라진다.
  */
-export function applyQuery(data: TableData, q: TableQuery, opts?: { serverSearch?: boolean }): TableRowData[] {
+export function applyQuery(data: TableData, q: TableQuery, opts?: { serverSearch?: boolean; locale?: "ko" | "en" }): TableRowData[] {
   const needle = opts?.serverSearch ? "" : q.search.trim().toLowerCase()
   const textCols = data.columns.filter((c) => (c.kind ?? "text") === "text" || c.kind === "status")
   let rows = data.rows.filter((r) => {
@@ -105,8 +124,8 @@ export function applyQuery(data: TableData, q: TableQuery, opts?: { serverSearch
         const a = x.r.cells[col.id]
         const b = y.r.cells[col.id]
         const empty = (v: TableCellValue | undefined) => v === null || v === undefined || v === ""
-        if (empty(a) || empty(b)) return compare(col, a, b) || x.i - y.i // 빈 값은 방향과 상관없이 뒤
-        return compare(col, a, b) * dir || x.i - y.i
+        if (empty(a) || empty(b)) return compare(a, b, opts?.locale) || x.i - y.i // 빈 값은 방향과 상관없이 뒤
+        return compare(a, b, opts?.locale) * dir || x.i - y.i
       })
       .map((x) => x.r)
   }
@@ -121,8 +140,8 @@ export function pageOf<T>(rows: T[], page: number, pageSize: number) {
   return { rows: rows.slice(start, start + pageSize), page: at, pages, from: rows.length ? start + 1 : 0, to: Math.min(rows.length, start + pageSize), total: rows.length }
 }
 
-/** 열의 거르기 선택지(값 목록, 한글 순) */
-export const filterOptions = (data: TableData, col: string): string[] => [...new Set(data.rows.map((r) => r.cells[col]).filter((v): v is string | number => v !== null && v !== undefined && v !== "").map(String))].sort((a, b) => a.localeCompare(b, "ko"))
+/** 열의 거르기 선택지(값 목록, 표 언어의 정렬 순) */
+export const filterOptions = (data: TableData, col: string, locale?: string): string[] => [...new Set(data.rows.map((r) => r.cells[col]).filter((v): v is string | number => v !== null && v !== undefined && v !== "").map(String))].sort((a, b) => a.localeCompare(b, intlLocale(locale)))
 
 /** 질의 상태. 바꿀 때마다 1쪽으로(정렬·거르기·검색) — 쪽 이동만 그 쪽으로 간다. onChange 는 조립하는 쪽 알림 */
 export function useTableQuery(initial?: Partial<TableQuery>, onChange?: (q: TableQuery) => void) {
@@ -145,7 +164,7 @@ export function useTableQuery(initial?: Partial<TableQuery>, onChange?: (q: Tabl
 export type TableQueryApi = ReturnType<typeof useTableQuery>
 
 /** 검색 + 열 거르기 + 결과 수(role=status) + [필터 초기화]. 결과 수는 늘 그려 스크린리더가 거른 결과를 듣는다 */
-export function TableToolbar({ id, data, api, copy, shown, total, className }: { id: string; data: TableData; api: TableQueryApi; copy: TableCopy; shown: number; total: number; className?: string }) {
+export function TableToolbar({ id, data, api, copy, shown, total, locale, className }: { id: string; data: TableData; api: TableQueryApi; copy: TableCopy; shown: number; total: number; locale?: "ko" | "en"; className?: string }) {
   const filters = data.columns.filter((c) => c.filter)
   return (
     <div className={cn("flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end", className)}>
@@ -167,7 +186,7 @@ export function TableToolbar({ id, data, api, copy, shown, total, className }: {
           </label>
           <NativeSelect id={`${id}-filter-${c.id}`} value={api.query.filters[c.id] ?? ""} onChange={(e) => api.setFilter(c.id, e.target.value)} className="w-full">
             <NativeSelectOption value="">{copy.filterAll}</NativeSelectOption>
-            {filterOptions(data, c.id).map((v) => (
+            {filterOptions(data, c.id, locale).map((v) => (
               <NativeSelectOption key={v} value={v}>
                 {v}
               </NativeSelectOption>
@@ -177,7 +196,7 @@ export function TableToolbar({ id, data, api, copy, shown, total, className }: {
       ))}
       <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 md:ms-auto">
         <p role="status" data-result-count={shown} className="text-base leading-[1.5]">
-          {fillText(copy.count, { shown: NUMBER.format(shown), total: NUMBER.format(total) })}
+          {fillText(copy.count, { shown: formatCount(shown, locale), total: formatCount(total, locale) })}
         </p>
         {api.active ? (
           <Button type="button" variant="ghost" onClick={api.reset} className="gap-1">
@@ -211,15 +230,15 @@ export function SortHead({ col, api, copy }: { col: TableColumn; api: TableQuery
 }
 
 /** 칸 값 하나 — 열 종류대로(숫자 data-numeric·상태 글자 배지·날짜 time) */
-export function CellValue({ col, value }: { col: TableColumn; value: TableCellValue | undefined }) {
-  const text = cellText(col, value)
+export function CellValue({ col, value, fmt }: { col: TableColumn; value: TableCellValue | undefined; fmt?: TableFormat }) {
+  const text = cellText(col, value, fmt)
   if (col.kind === "status" && text !== "—") return <Badge variant="outline">{text}</Badge>
   if (col.kind === "numeric") return <span data-numeric>{text}</span>
   if (col.kind === "date" && typeof value === "string") return <time data-numeric dateTime={value}>{text}</time>
   return <>{text}</>
 }
 /** 행 하나의 칸들 — 첫 열(primary)은 행 머리(href 가 있으면 상세 링크), 나머지는 열 종류대로. name 은 링크 글자를 바꿔 쓸 때 */
-export function RowCells({ columns, row, name }: { columns: TableColumn[]; row: TableRowData; name?: string }) {
+export function RowCells({ columns, row, name, fmt }: { columns: TableColumn[]; row: TableRowData; name?: string; fmt?: TableFormat }) {
   return (
     <>
       {columns.map((c) =>
@@ -235,7 +254,7 @@ export function RowCells({ columns, row, name }: { columns: TableColumn[]; row: 
           </TableHead>
         ) : (
           <TableCell key={c.id} data-kind={c.kind ?? "text"} data-secondary={c.secondary ? "" : undefined} className="data-[kind=numeric]:text-end data-[secondary]:hidden md:data-[secondary]:table-cell">
-            <CellValue col={c} value={row.cells[c.id]} />
+            <CellValue col={c} value={row.cells[c.id]} fmt={fmt} />
           </TableCell>
         ),
       )}
@@ -244,12 +263,12 @@ export function RowCells({ columns, row, name }: { columns: TableColumn[]; row: 
 }
 
 /** 「이전·다음」 + 「1–10 / 전체 47건」. 한 쪽뿐이면 그리지 않는다 */
-export function TablePager({ copy, page, pages, from, to, total, onPage }: { copy: TableCopy; page: number; pages: number; from: number; to: number; total: number; onPage: (p: number) => void }) {
+export function TablePager({ copy, page, pages, from, to, total, locale, onPage }: { copy: TableCopy; page: number; pages: number; from: number; to: number; total: number; locale?: "ko" | "en"; onPage: (p: number) => void }) {
   if (pages <= 1) return null
   return (
     <nav aria-label={copy.pager.label} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-base leading-[1.5]">
-        {fillText(copy.pager.range, { from: NUMBER.format(from), to: NUMBER.format(to), total: NUMBER.format(total) })}
+        {fillText(copy.pager.range, { from: formatCount(from, locale), to: formatCount(to, locale), total: formatCount(total, locale) })}
       </p>
       <div className="flex items-center gap-3">
         <Button type="button" variant="outline" disabled={page <= 1} focusableWhenDisabled onClick={() => onPage(page - 1)}>

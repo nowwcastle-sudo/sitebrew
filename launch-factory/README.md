@@ -19,7 +19,7 @@ Current version `v0.2.4` · web-factory pin `v0.2.4` · blocks `19c81efc` · con
 | Node | >=24.13.0 | Required | `winget install OpenJS.NodeJS.LTS --version 24.13.0` | `nvm install 24.13.0` | `nvm install 24.13.0` |
 | npm | >=11.6.2 | Required | Installed with Node | Installed with Node | Installed with Node |
 | git | Latest | Required | `winget install Git.Git` | `brew install git` | `sudo apt install git` |
-| web-factory checkout | Tag `v0.0.12` | Optional | `git clone`, then put the path in `LF_WF_REPO` | `git clone`, then put the path in `LF_WF_REPO` | `git clone`, then put the path in `LF_WF_REPO` |
+| web-factory checkout | Tag `v0.0.16` | Optional | `git clone`, then put the path in `LF_WF_REPO` | `git clone`, then put the path in `LF_WF_REPO` | `git clone`, then put the path in `LF_WF_REPO` |
 | Chrome | Latest | Optional | `winget install Google.Chrome` | `brew install --cask google-chrome` | `sudo apt install chromium` |
 | gh | Latest | Optional | `winget install GitHub.cli` | `brew install gh` | `sudo apt install gh` |
 | vercel | Latest | Optional | `npm i -g vercel` | `npm i -g vercel` | `npm i -g vercel` |
@@ -30,7 +30,7 @@ Current version `v0.2.4` · web-factory pin `v0.2.4` · blocks `19c81efc` · con
 
 A missing optional item has these effects.
 
-- web-factory checkout: Without it, the conformance tests show SKIP. With it, the tests read the location `LF_WF_REPO` points to, and that location must contain the `v0.0.12` commit. If the environment variable is not set, the code uses a default path, so always set `LF_WF_REPO` on any other PC.
+- web-factory checkout: Without it, the conformance tests show SKIP. With it, the tests read the location `LF_WF_REPO` points to, and that location must contain the `v0.0.16` commit. If the environment variable is not set, the code uses a default path, so always set `LF_WF_REPO` on any other PC.
 - Chrome: `npm run template:screens` does not run. If Chrome is not installed in the default location, put the path to the executable in `CHROME_PATH`.
 - The four security tools: `npm run ci:verify` marks the matching steps as SKIP. CI downloads and uses the pinned versions in `scripts/ci/tools.json`. To count a missing tool as a failure locally too, set `LF_CI_REQUIRE_TOOLS=1`.
 - gitleaks: The pre-commit secret scan hook only prints a notice and lets the commit through.
@@ -116,7 +116,7 @@ Follow the steps in [`docs/RELEASING.md`](docs/RELEASING.md). Updating the READM
 | What you see | Cause | Fix |
 |---|---|---|
 | `setup: FAIL — 필수 누락 …` | A required tool is missing or its version is too low | Run the `→` command shown on each line, then run `npm run setup` again. |
-| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | The `LF_WF_REPO` path does not exist, or it has no `v0.0.12` commit | Clone web-factory, run `git -C <path> fetch --tags`, then put that path in `LF_WF_REPO`. |
+| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | The `LF_WF_REPO` path does not exist, or it has no `v0.0.16` commit | Clone web-factory, run `git -C <path> fetch --tags`, then put that path in `LF_WF_REPO`. |
 | `SKIP(도구 없음)` | An optional security tool is missing | This is not a failure. Install the tool and the step runs. |
 | `[pre-commit] gitleaks 가 설치돼 있지 않아 … 건너뛴다` | The hook is installed, but gitleaks is not | Run the gitleaks command from the Requirements table. |
 | `--only /pricing` finds no page | Git Bash turns `/pricing` into a path | Run it in PowerShell. |

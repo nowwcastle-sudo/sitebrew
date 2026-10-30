@@ -31,14 +31,14 @@ export type DataTableCompactProps = BlockBase<DataTableCompactCopy> & {
   initialQuery?: Partial<TableQuery>
 }
 
-export function DataTableCompact({ copy, locale, state, limit = 5, initialQuery, id = "compact-table", className }: DataTableCompactProps) {
+export function DataTableCompact({ copy, locale, timeZone, state, limit = 5, initialQuery, id = "compact-table", className }: DataTableCompactProps) {
   const ref = React.useRef<HTMLElement>(null)
   useGsapScene(ref, (s) => {
     rise(s, s.q("[data-enter]"))
   })
   const api = useTableQuery(initialQuery)
   const data = state.status === "ready" && state.data.rows.length ? state.data : null
-  const all = data ? applyQuery(data, api.query) : []
+  const all = data ? applyQuery(data, api.query, { locale }) : []
   const rows = all.slice(0, limit)
   return (
     <section ref={ref} id={id} data-block="data-table-compact" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("cn-block-section", className)}>
@@ -61,7 +61,7 @@ export function DataTableCompact({ copy, locale, state, limit = 5, initialQuery,
                 <TableBody>
                   {rows.map((r) => (
                     <TableRow key={r.id} data-row={r.id}>
-                      <RowCells columns={data.columns} row={r} />
+                      <RowCells columns={data.columns} row={r} fmt={{ locale, timeZone }} />
                     </TableRow>
                   ))}
                 </TableBody>

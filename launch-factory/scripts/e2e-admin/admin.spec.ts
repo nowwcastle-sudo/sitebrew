@@ -146,7 +146,10 @@ test.describe("관리 화면", () => {
       made.inquiries.push(((await r.json()) as { data: { id: string } }).data.id)
     }
 
-    const slotRes = await request.get("/api/booking/slots?service=consultation&from=2026-10-26&days=3")
+    // 예약 시간은 지금보다 미리 잡아야 열리므로 날짜를 고정하지 않는다 — 한 주 뒤에 오는 첫 월요일부터 3일(월~수)
+    const from = new Date(Date.now() + 7 * 86_400_000)
+    from.setUTCDate(from.getUTCDate() + ((8 - from.getUTCDay()) % 7))
+    const slotRes = await request.get(`/api/booking/slots?service=consultation&from=${from.toISOString().slice(0, 10)}&days=3`)
     const starts = ((await slotRes.json()) as { data: { days: { slots: { startsAt: string }[] }[] } }).data.days.flatMap((d) => d.slots.map((s) => s.startsAt))
     expect(starts.length, "예약 가능한 시간이 있다").toBeGreaterThan(4)
     for (let i = 0; i < 2; i++) {
