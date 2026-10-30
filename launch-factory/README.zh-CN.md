@@ -4,7 +4,7 @@
 
 这是与 web-factory（界面区块仓库）配套的上线套件，后端的认证、数据、支付、邮件、埋点和任务由本仓库负责。产品从复制 `template/` 开始，只需升级 `@launch-factory/*` 包版本，就能获得安全补丁。
 
-当前版本 `v0.2.4` · web-factory 固定 `v0.2.4` · 区块 `19c81efc` · contract `19c81efc`（标签 v0.2.4 的提交）
+当前版本 `v0.2.5` · web-factory 固定 `v0.2.5` · 区块 `689231fd` · contract `689231fd`（标签 v0.2.5 的提交）
 
 - 区块不了解具体的服务商，由适配器实现 web-factory 的端口。同一套一致性测试用来检查适配器能否复现与 mock 相同的场景。
 - 功能包（适配器、Server Action、Webhook 路由、schema、迁移）由 `registry.json` 中的一个条目打包。版本固定的记录见 [`docs/versions.md`](docs/versions.md)。
@@ -125,5 +125,6 @@ git diff template/package.json
 
 | 标签 | 日期 | 内容 | 记录 |
 |---|---|---|---|
+| `v0.2.5` | 2026-10-30 | launch-factory v0.2.2 (internal version) · 补丁版本：管理表格遵循界面语言与时区（模板区块副本已更新） · 修正本 README 中要求的 web-factory 版本 · systeminformation 5.33.16 · web-factory 固定为 `v0.2.5` | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · 补丁版本：仅更新依赖包 · drizzle-orm 0.45.4 · posthog-js 1.438.12 与 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 开发用 eslint 10.13.0 与 typescript-eslint 8.71.2 · web-factory 固定为 `v0.2.4` | — |
 | `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · 补丁版本：shadcn 4.22.1 精确固定为一个版本（消除嵌套 zod 公告及其 OSV 例外）· web-factory 固定为 `v0.2.3` | — |

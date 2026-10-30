@@ -6,7 +6,7 @@
 
 Sitebrew es un plugin para Claude Code y Codex. Describes tu sitio con palabras sencillas. Construye tres candidatos distintos, eliges uno, lo ajustas en la conversación y te llevas el código a tu propia carpeta. No necesitas saber programar ni una clave de API para empezar.
 
-Versión actual `v0.2.4` · licencia MIT · Windows 10 y 11
+Versión actual `v0.2.5` · licencia MIT · Windows 10 y 11
 
 ## Por qué Sitebrew
 
@@ -55,13 +55,13 @@ Las cinco terminan igual: Sitebrew en una carpeta `sitebrew` y el plugin en tu a
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.4 sitebrew
+npm create sitebrew@0.2.5 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.4 sitebrew
+npx create-sitebrew@0.2.5 sitebrew
 ```
 
 Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nada, `--yes` responde que sí a todas las preguntas y `--tool` elige `claude`, `codex` o `both`.
@@ -69,14 +69,14 @@ Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nad
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.4/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/get.ps1 | iex
 ```
 
 Para ver lo que haría sin instalar nada:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.4/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 En Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.4
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.5
 /plugin install sitebrew@sitebrew
 ```
 
 En Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.4
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.5
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ La comprobación antes de una fusión es `npm run ci:verify`. La guía para agen
 También puedes añadir las piezas a otro proyecto de Next.js. Fija siempre la etiqueta:
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.4 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.4 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.5 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.5 -y -o
 ```
 
 ## Contribuir
@@ -149,6 +149,7 @@ MIT. Consulta [LICENSE](LICENSE) y [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.
 
 | Etiqueta | Fecha | Cambios | Registro |
 |---|---|---|---|
+| `v0.2.5` | 2026-10-30 | Versión de parche: las tablas de administración siguen el idioma de pantalla y la zona horaria (fechas, números, orden y opciones de filtro de los bloques `data-table`) · la copia de la plantilla del kit de lanzamiento se actualiza igual · actualizaciones de seguridad de dependencias (@hono/node-server 2.1.3, systeminformation 5.33.16) · el resto del kit y los skills del plugin no cambian · web-factory v0.0.16 + launch-factory v0.2.2 (versiones internas) | — |
 | `v0.2.4` | 2026-10-26 | Versión de parche: solo actualizaciones de dependencias · react y react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 y posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · el kit y los skills del plugin no cambian · web-factory v0.0.16 + launch-factory v0.2.2 (versiones internas) | — |
 | `v0.2.3` | 2026-10-26 | Versión de parche: se reelaboraron los ocho skills del plugin, con rutas y tablas de códigos de salida más claras · cada regla tiene un solo lugar · el skill de instalación tiene un camino para cuando falta Node.js · la guía de instalación comprueba la etiqueta de versión exacta y usa npm de forma segura en Windows · las comprobaciones del navegador coinciden con los lugares que lee el kit · new entrega de forma más segura · deliver tiene más motivos de omisión · web-factory v0.0.16 + launch-factory v0.2.2 (versiones internas) | — |
 | `v0.2.2` | 2026-10-25 | Correcciones de la auditoría de skills: el skill doctor ya no instala nada por sí mismo y pasa al skill de instalación · deliver distingue el enlace de vista previa de Vercel de la dirección pública temporal · revise tiene una sola tabla de códigos de salida, runbook lee sus archivos de capítulos por secciones, new marca el tiempo de compilación como una sola medición · la guía del plugin lista los skills de instalación y de runbook · la página QA ya no muestra el nombre de una persona real · web-factory v0.0.16 + launch-factory v0.2.2 (versiones internas) | — |

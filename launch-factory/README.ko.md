@@ -4,7 +4,7 @@
 
 web-factory(화면 블록 저장소)와 짝을 이루는 출시 키트로, 뒷단인 인증·데이터·결제·메일·계측·작업을 이 저장소가 맡는다. 제품은 `template/` 을 복제해 시작하고 `@launch-factory/*` 패키지 판만 올려서 보안 패치를 받는다.
 
-현재 버전 `v0.2.4` · web-factory 고정 `v0.2.4` · 블록 `19c81efc` · contract `19c81efc` (태그 v0.2.4 의 커밋)
+현재 버전 `v0.2.5` · web-factory 고정 `v0.2.5` · 블록 `689231fd` · contract `689231fd` (태그 v0.2.5 의 커밋)
 
 - 블록은 공급자를 모르고 어댑터가 web-factory 포트를 구현한다. 같은 적합성 묶음으로 어댑터가 mock 과 같은 시나리오를 재현하는지 검사한다.
 - 기능 번들(어댑터·서버 액션·웹훅 경로·스키마·마이그레이션)은 `registry.json` 의 항목 하나로 묶인다. 판을 고정한 내역은 [`docs/versions.md`](docs/versions.md)에 있다.
@@ -125,5 +125,6 @@ git diff template/package.json
 
 | 태그 | 날짜 | 내용 | 기록 |
 |---|---|---|---|
+| `v0.2.5` | 2026-10-30 | launch-factory v0.2.2 (internal version) · 패치 판: 관리자 표가 화면 언어와 시간대를 따름(템플릿 블록 사본 갱신) · 이 README 의 요구 web-factory 판 표기를 바로잡음 · systeminformation 5.33.16 · web-factory `v0.2.5` 고정 | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · 패치 판: 의존 패키지 갱신만 — drizzle-orm 0.45.4 · posthog-js 1.438.12 와 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 개발용 eslint 10.13.0 과 typescript-eslint 8.71.2 · web-factory `v0.2.4` 고정 | — |
 | `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · 패치 판: shadcn 4.22.1을 정확한 한 판으로 고정(중첩 zod 공지와 OSV 예외 해소) · web-factory `v0.2.3` 고정 | — |

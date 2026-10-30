@@ -58,7 +58,7 @@
 | 항목 | 값 |
 |---|---|
 | 원본 | `nowwcastle-sudo/sitebrew` |
-| 고정 | 태그 `v0.2.3`(커밋 `19c81efca057` — 패치 판. 이전 고정은 v0.0.15 `23c8c305a72c`. 2026-10-25 LFPIN16 에서 올림 — 계약 파일 7개·판 2 그대로, 적합성 묶음 변화 없음. 자세한 것은 `docs/qa/lfpin-v0016.md`) |
+| 고정 | 태그 `v0.2.5`(커밋 `689231fdfeef` — 패치 판. v0.2.3·v0.2.4 도 같은 모양으로 올렸다. 이전 고정은 v0.0.15 `23c8c305a72c`. 2026-10-25 LFPIN16 에서 올림 — 계약 파일 7개·판 2 그대로, 적합성 묶음 변화 없음. 자세한 것은 `docs/qa/lfpin-v0016.md`) |
 | 계약 판 | `CONTRACT_VERSION = 2` (`CONTRACT_VERSION_EXPECTED = 2`) — 판 2 안의 선택 추가만 늘었다 |
 | 잠금 | `packages/contract/contract.lock.json`(계약 4파일), `template/template.lock.json`(템플릿의 web-factory 블록·레시피·목 파일과 이 저장소 기능 번들 파일의 sha256) |
 
