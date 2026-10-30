@@ -4,7 +4,7 @@
 
 这是与 web-factory（界面区块仓库）配套的上线套件，后端的认证、数据、支付、邮件、埋点和任务由本仓库负责。产品从复制 `template/` 开始，只需升级 `@launch-factory/*` 包版本，就能获得安全补丁。
 
-当前版本 `v0.2.5` · web-factory 固定 `v0.2.5` · 区块 `19c81efc` · contract `19c81efc`（标签 v0.2.5 的提交）
+当前版本 `v0.2.5` · web-factory 固定 `v0.2.5` · 区块 `689231fd` · contract `689231fd`（标签 v0.2.5 的提交）
 
 - 区块不了解具体的服务商，由适配器实现 web-factory 的端口。同一套一致性测试用来检查适配器能否复现与 mock 相同的场景。
 - 功能包（适配器、Server Action、Webhook 路由、schema、迁移）由 `registry.json` 中的一个条目打包。版本固定的记录见 [`docs/versions.md`](docs/versions.md)。
