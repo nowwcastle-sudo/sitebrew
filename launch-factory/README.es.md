@@ -4,7 +4,7 @@
 
 Kit de lanzamiento que acompaña a web-factory (el repositorio de bloques de pantalla). Este repositorio se encarga de la parte de servidor: autenticación, datos, pagos, correo, medición y tareas. Cada producto empieza copiando `template/` y recibe los parches de seguridad con solo subir la versión de los paquetes `@launch-factory/*`.
 
-Versión actual `v0.2.4` · web-factory fijado `v0.2.4` · bloques `19c81efc` · contract `19c81efc` (el commit de la etiqueta v0.2.4)
+Versión actual `v0.2.5` · web-factory fijado `v0.2.5` · bloques `19c81efc` · contract `19c81efc` (el commit de la etiqueta v0.2.5)
 
 - Los bloques no conocen al proveedor: los adaptadores implementan los puertos de web-factory. Un mismo conjunto de pruebas de conformidad comprueba que cada adaptador reproduce los mismos escenarios que el mock.
 - Cada paquete de funcionalidad (adaptador, acciones de servidor, rutas de webhook, esquema y migraciones) se agrupa en una sola entrada de `registry.json`. Las versiones fijadas se detallan en [`docs/versions.md`](docs/versions.md).
@@ -125,5 +125,6 @@ Se siguen los pasos de [`docs/RELEASING.md`](docs/RELEASING.md). Actualizar el R
 
 | Etiqueta | Fecha | Contenido | Registro |
 |---|---|---|---|
+| `v0.2.5` | 2026-10-30 | launch-factory v0.2.2 (internal version) · Versión de parche: las tablas de administración siguen el idioma de pantalla y la zona horaria (copia de bloques de la plantilla actualizada) · se corrige la versión de web-factory requerida en este README · systeminformation 5.33.16 · web-factory fijado en `v0.2.5` | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · Versión de parche: solo actualizaciones de dependencias · drizzle-orm 0.45.4 · posthog-js 1.438.12 y posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · eslint 10.13.0 y typescript-eslint 8.71.2 para desarrollo · web-factory fijado en `v0.2.4` | — |
 | `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · Versión de parche: shadcn 4.22.1 fijado en una versión exacta (elimina el aviso del zod anidado y su excepción OSV) · web-factory fijado en `v0.2.3` | — |

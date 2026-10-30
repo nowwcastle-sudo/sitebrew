@@ -4,7 +4,7 @@
 
 This repository is the launch kit that pairs with web-factory, the repository of screen blocks. It owns the back end: auth, data, payments, email, analytics, and jobs. A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages.
 
-Current version `v0.2.4` · web-factory pin `v0.2.4` · blocks `19c81efc` · contract `19c81efc` (the commit of tag v0.2.4)
+Current version `v0.2.5` · web-factory pin `v0.2.5` · blocks `19c81efc` · contract `19c81efc` (the commit of tag v0.2.5)
 
 - Blocks know nothing about providers. Adapters implement the web-factory ports. The same conformance suite checks that an adapter reproduces the same scenarios as the mock.
 - A feature bundle (adapter, server actions, webhook routes, schema, migrations) is one entry in `registry.json`. The record of pinned versions is in [`docs/versions.md`](docs/versions.md).
@@ -125,5 +125,6 @@ Follow the steps in [`docs/RELEASING.md`](docs/RELEASING.md). Updating the READM
 
 | Tag | Date | Changes | Record |
 |---|---|---|---|
+| `v0.2.5` | 2026-10-30 | launch-factory v0.2.2 (internal version) · Patch release: admin tables follow the screen language and time zone (template block copy updated) · the required web-factory version in this README corrected · systeminformation 5.33.16 · web-factory pinned to `v0.2.5` | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · Patch release: dependency updates only · drizzle-orm 0.45.4 · posthog-js 1.438.12 and posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · eslint 10.13.0 and typescript-eslint 8.71.2 for development · web-factory pinned to `v0.2.4` | — |
 | `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · Patch release: shadcn 4.22.1 pinned to one exact version (clears the nested zod advisory and its OSV exception) · web-factory pinned to `v0.2.3` | — |
