@@ -55,7 +55,7 @@ export type DataTableBulkSelectProps = BlockBase<DataTableBulkSelectCopy> & {
 type Selection = { scope: string; ids: string[]; all: boolean }
 const NONE = (scope: string): Selection => ({ scope, ids: [], all: false })
 
-export function DataTableBulkSelect({ copy, locale, state, bulk, undo, pageSize = 10, initialQuery, onQueryChange, id = "bulk-select", className }: DataTableBulkSelectProps) {
+export function DataTableBulkSelect({ copy, locale, timeZone, state, bulk, undo, pageSize = 10, initialQuery, onQueryChange, id = "bulk-select", className }: DataTableBulkSelectProps) {
   const ref = React.useRef<HTMLElement>(null)
   useGsapScene(ref, (s) => {
     rise(s, s.q("[data-enter]"))
@@ -78,7 +78,7 @@ export function DataTableBulkSelect({ copy, locale, state, bulk, undo, pageSize 
   }, [result])
 
   const data = state.status === "ready" && state.data.rows.length ? state.data : null
-  const matched = data ? applyQuery(data, api.query).filter((r) => !hidden.includes(r.id)) : []
+  const matched = data ? applyQuery(data, api.query, { locale }).filter((r) => !hidden.includes(r.id)) : []
   const page = pageOf(matched, api.query.page, pageSize)
   const pageIds = page.rows.map((r) => r.id)
   const count = sel.all ? matched.length : sel.ids.length
@@ -120,7 +120,7 @@ export function DataTableBulkSelect({ copy, locale, state, bulk, undo, pageSize 
         <TableStatus state={state} copy={copy} rows={Math.min(pageSize, 8)} />
         {data ? (
           <>
-            <TableToolbar id={id} data={data} api={api} copy={copy} shown={matched.length} total={data.rows.length - hidden.length} />
+            <TableToolbar id={id} data={data} api={api} copy={copy} shown={matched.length} total={data.rows.length - hidden.length} locale={locale} />
             {copy.export && matched.length ? <ExportActions columns={data.columns} rows={matched} copy={copy.export} /> : null}
             <div role="region" aria-label={copy.bar.label} data-bulk-bar="" data-count={count} className="flex min-h-18 flex-col justify-center gap-3 border px-4 py-3 md:flex-row md:items-center md:justify-between">
               {count > 0 && !confirming ? (
@@ -210,7 +210,7 @@ export function DataTableBulkSelect({ copy, locale, state, bulk, undo, pageSize 
                           <TableCell /* numeric-cell: 글자 열 */ data-kind="select" className="w-14 min-w-14 px-0 text-center [&_[data-slot=checkbox]]:mx-auto">
                             <Checkbox checked={on} disabled={sel.all} onCheckedChange={(v) => toggleRow(r.id, v === true)} aria-label={fillText(copy.select.row, { name })} data-select-row="" />
                           </TableCell>
-                          <RowCells columns={data.columns} row={r} name={name} />
+                          <RowCells columns={data.columns} row={r} fmt={{ locale, timeZone }} name={name} />
                         </TableRow>
                       )
                     })}
@@ -218,7 +218,7 @@ export function DataTableBulkSelect({ copy, locale, state, bulk, undo, pageSize 
                 </Table>
               </ScrollHint>
             )}
-            <TablePager copy={copy} page={page.page} pages={page.pages} from={page.from} to={page.to} total={page.total} onPage={api.setPage} />
+            <TablePager copy={copy} page={page.page} pages={page.pages} from={page.from} to={page.to} total={page.total} onPage={api.setPage} locale={locale} />
           </>
         ) : null}
       </div>

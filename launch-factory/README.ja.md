@@ -19,7 +19,7 @@ web-factory(画面ブロックのリポジトリ)と対になるリリースキ�
 | Node | >=24.13.0 | 必須 | `winget install OpenJS.NodeJS.LTS --version 24.13.0` | `nvm install 24.13.0` | `nvm install 24.13.0` |
 | npm | >=11.6.2 | 必須 | Node と一緒にインストールされます | Node と一緒にインストールされます | Node と一緒にインストールされます |
 | git | 最新 | 必須 | `winget install Git.Git` | `brew install git` | `sudo apt install git` |
-| web-factory のチェックアウト | タグ `v0.0.12` | 任意 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 |
+| web-factory のチェックアウト | タグ `v0.0.16` | 任意 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 | `git clone` の後、`LF_WF_REPO` にパスを設定 |
 | Chrome | 最新 | 任意 | `winget install Google.Chrome` | `brew install --cask google-chrome` | `sudo apt install chromium` |
 | gh | 最新 | 任意 | `winget install GitHub.cli` | `brew install gh` | `sudo apt install gh` |
 | vercel | 最新 | 任意 | `npm i -g vercel` | `npm i -g vercel` | `npm i -g vercel` |
@@ -30,7 +30,7 @@ web-factory(画面ブロックのリポジトリ)と対になるリリースキ�
 
 任意の項目が入っていない場合は、次のようになります。
 
-- web-factory のチェックアウト: ない場合、適合性テストは SKIP と表示されます。ある場合は `LF_WF_REPO` が指す場所を読むので、そこに `v0.0.12` のコミットが必要です。環境変数がなければコード内の既定パスを使うため、別の PC では必ず `LF_WF_REPO` を指定してください。
+- web-factory のチェックアウト: ない場合、適合性テストは SKIP と表示されます。ある場合は `LF_WF_REPO` が指す場所を読むので、そこに `v0.0.16` のコミットが必要です。環境変数がなければコード内の既定パスを使うため、別の PC では必ず `LF_WF_REPO` を指定してください。
 - Chrome: `npm run template:screens` が動きません。インストール先が既定のパスでない場合は、`CHROME_PATH` に実行ファイルのパスを入れます。
 - セキュリティツール4つ: `npm run ci:verify` が該当ステップを SKIP と表示します。CI は `scripts/ci/tools.json` の固定バージョンを取得して使います。ローカルでも、ない場合を失敗として数えるには `LF_CI_REQUIRE_TOOLS=1` を指定します。
 - gitleaks: コミット前のシークレット検査フックは、案内を出すだけで通過します。
@@ -116,7 +116,7 @@ git diff template/package.json
 | 表示される内容 | 原因 | 解決方法 |
 |---|---|---|
 | `setup: FAIL — 필수 누락 …` | 必須ツールがない、またはバージョンが低いです | 行ごとに付いている `→` のコマンドを実行し、`npm run setup` をもう一度実行します。 |
-| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` のパスが存在しないか、`v0.0.12` のコミットがありません | web-factory を clone し、`git -C <path> fetch --tags` を実行してから、`LF_WF_REPO` にそのパスを設定します。 |
+| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | `LF_WF_REPO` のパスが存在しないか、`v0.0.16` のコミットがありません | web-factory を clone し、`git -C <path> fetch --tags` を実行してから、`LF_WF_REPO` にそのパスを設定します。 |
 | `SKIP(도구 없음)` | 任意のセキュリティツールがありません | 失敗ではありません。インストールすればステップが動きます。 |
 | `[pre-commit] gitleaks 가 설치돼 있지 않아 … 건너뛴다` | フックは設定されていますが、gitleaks がありません | 「必要環境」の表にある gitleaks のコマンドを実行します。 |
 | `--only /pricing` がどのページも見つけられない | Git Bash が `/pricing` をパスに変換します | PowerShell で実行します。 |

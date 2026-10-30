@@ -28,14 +28,14 @@ export type DataTableAdminListProps = BlockBase<DataTableAdminListCopy> & {
   serverSearch?: boolean
 }
 
-export function DataTableAdminList({ copy, locale, state, pageSize = 10, initialQuery, onQueryChange, serverSearch, id = "admin-list", className }: DataTableAdminListProps) {
+export function DataTableAdminList({ copy, locale, timeZone, state, pageSize = 10, initialQuery, onQueryChange, serverSearch, id = "admin-list", className }: DataTableAdminListProps) {
   const ref = React.useRef<HTMLElement>(null)
   useGsapScene(ref, (s) => {
     rise(s, s.q("[data-enter]"))
   })
   const api = useTableQuery(initialQuery, onQueryChange)
   const data = state.status === "ready" && state.data.rows.length ? state.data : null
-  const matched = data ? applyQuery(data, api.query, { serverSearch }) : []
+  const matched = data ? applyQuery(data, api.query, { serverSearch, locale }) : []
   const page = pageOf(matched, api.query.page, pageSize)
   return (
     <section ref={ref} id={id} data-block="data-table-admin-list" data-state={state.status} aria-labelledby={`${id}-title`} aria-busy={state.status === "loading" || undefined} className={cn("cn-block-section", className)}>
@@ -44,7 +44,7 @@ export function DataTableAdminList({ copy, locale, state, pageSize = 10, initial
         <TableStatus state={state} copy={copy} rows={Math.min(pageSize, 8)} />
         {data ? (
           <>
-            <TableToolbar id={id} data={data} api={api} copy={copy} shown={matched.length} total={data.rows.length} />
+            <TableToolbar id={id} data={data} api={api} copy={copy} shown={matched.length} total={data.rows.length} locale={locale} />
             {copy.export && matched.length ? <ExportActions columns={data.columns} rows={matched} copy={copy.export} /> : null}
             {matched.length === 0 ? (
               <NoResults copy={copy} api={api} />
@@ -62,14 +62,14 @@ export function DataTableAdminList({ copy, locale, state, pageSize = 10, initial
                   <TableBody>
                     {page.rows.map((r) => (
                       <TableRow key={r.id} data-row={r.id}>
-                        <RowCells columns={data.columns} row={r} />
+                        <RowCells columns={data.columns} row={r} fmt={{ locale, timeZone }} />
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </ScrollHint>
             )}
-            <TablePager copy={copy} page={page.page} pages={page.pages} from={page.from} to={page.to} total={page.total} onPage={api.setPage} />
+            <TablePager copy={copy} page={page.page} pages={page.pages} from={page.from} to={page.to} total={page.total} onPage={api.setPage} locale={locale} />
           </>
         ) : null}
       </div>

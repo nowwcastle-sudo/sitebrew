@@ -16,7 +16,7 @@ const DATE = new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "n
 // locale·timeZone 을 받는다(D234) — 둘 다 없으면 위 DATE 그대로라 한국어 사이트의 출력 글자가 그대로다.
 // 로캘은 "ko"·"en"(BlockBase.locale) 또는 Intl 로캘 태그, 시간대는 IANA 이름(기본 Asia/Seoul). 조합마다 한 번만 만든다.
 const DATES = new Map<string, Intl.DateTimeFormat>()
-const intlLocale = (locale?: string) => (!locale || locale === "ko" ? "ko-KR" : locale === "en" ? "en-US" : locale)
+export const intlLocale = (locale?: string) => (!locale || locale === "ko" ? "ko-KR" : locale === "en" ? "en-US" : locale)
 const dateFormat = (locale?: string, timeZone?: string) => {
   const tag = intlLocale(locale)
   const zone = timeZone ?? "Asia/Seoul"

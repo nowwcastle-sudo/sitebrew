@@ -19,7 +19,7 @@ Versión actual `v0.2.4` · web-factory fijado `v0.2.4` · bloques `19c81efc` ·
 | Node | >=24.13.0 | Obligatorio | `winget install OpenJS.NodeJS.LTS --version 24.13.0` | `nvm install 24.13.0` | `nvm install 24.13.0` |
 | npm | >=11.6.2 | Obligatorio | Se instala con Node | Se instala con Node | Se instala con Node |
 | git | Última | Obligatorio | `winget install Git.Git` | `brew install git` | `sudo apt install git` |
-| Copia de web-factory | Etiqueta `v0.0.12` | Opcional | `git clone` y la ruta en `LF_WF_REPO` | `git clone` y la ruta en `LF_WF_REPO` | `git clone` y la ruta en `LF_WF_REPO` |
+| Copia de web-factory | Etiqueta `v0.0.16` | Opcional | `git clone` y la ruta en `LF_WF_REPO` | `git clone` y la ruta en `LF_WF_REPO` | `git clone` y la ruta en `LF_WF_REPO` |
 | Chrome | Última | Opcional | `winget install Google.Chrome` | `brew install --cask google-chrome` | `sudo apt install chromium` |
 | gh | Última | Opcional | `winget install GitHub.cli` | `brew install gh` | `sudo apt install gh` |
 | vercel | Última | Opcional | `npm i -g vercel` | `npm i -g vercel` | `npm i -g vercel` |
@@ -30,7 +30,7 @@ Versión actual `v0.2.4` · web-factory fijado `v0.2.4` · bloques `19c81efc` ·
 
 Sin los elementos opcionales no funciona lo siguiente.
 
-- Copia de web-factory: sin ella, las pruebas de conformidad se marcan como SKIP. Si existe, se lee la ruta a la que apunta `LF_WF_REPO`, y ahí tiene que estar el commit `v0.0.12`. Sin la variable de entorno se usa la ruta por defecto del código, así que en otro PC hay que definir siempre `LF_WF_REPO`.
+- Copia de web-factory: sin ella, las pruebas de conformidad se marcan como SKIP. Si existe, se lee la ruta a la que apunta `LF_WF_REPO`, y ahí tiene que estar el commit `v0.0.16`. Sin la variable de entorno se usa la ruta por defecto del código, así que en otro PC hay que definir siempre `LF_WF_REPO`.
 - Chrome: sin él no se ejecuta `npm run template:screens`. Si está instalado fuera de la ruta por defecto, se indica la ruta del ejecutable en `CHROME_PATH`.
 - Las cuatro herramientas de seguridad: `npm run ci:verify` marca los pasos correspondientes como SKIP. CI descarga y usa las versiones fijadas en `scripts/ci/tools.json`. Para que en local también cuente como fallo que falten, se define `LF_CI_REQUIRE_TOOLS=1`.
 - gitleaks: el hook de revisión de secretos previo al commit solo muestra un aviso y deja pasar el commit.
@@ -116,7 +116,7 @@ Se siguen los pasos de [`docs/RELEASING.md`](docs/RELEASING.md). Actualizar el R
 | Lo que se ve | Causa | Solución |
 |---|---|---|
 | `setup: FAIL — 필수 누락 …` | Falta una herramienta obligatoria o su versión es inferior a la requerida | Se ejecuta el comando marcado con `→` en cada línea y se vuelve a ejecutar `npm run setup`. |
-| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | La ruta de `LF_WF_REPO` no existe o no contiene el commit `v0.0.12` | Se clona web-factory, se ejecuta `git -C <path> fetch --tags` y se pone esa ruta en `LF_WF_REPO`. |
+| `web-factory 체크아웃 없음` · `web-factory 커밋 … 을 찾지 못함` | La ruta de `LF_WF_REPO` no existe o no contiene el commit `v0.0.16` | Se clona web-factory, se ejecuta `git -C <path> fetch --tags` y se pone esa ruta en `LF_WF_REPO`. |
 | `SKIP(도구 없음)` | Falta una herramienta de seguridad opcional | No es un fallo. Al instalarla, el paso se ejecuta. |
 | `[pre-commit] gitleaks 가 설치돼 있지 않아 … 건너뛴다` | El hook está activo pero falta gitleaks | Se ejecuta el comando de gitleaks de la tabla de requisitos del entorno. |
 | `--only /pricing` no encuentra ninguna página | Git Bash convierte `/pricing` en una ruta | Se ejecuta desde PowerShell. |

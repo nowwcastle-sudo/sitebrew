@@ -53,7 +53,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/billing-format.tsx",
-        "sha256": "d1151cc814c13bbd5793d60e4f77fe7b4cbb1d8e9dead854554eb2303a329b37"
+        "sha256": "fffbf440ba0370549efacaad42b493082b1ba4e751859ed59b9cb2e659d7fb7a"
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/block-heading.tsx",
@@ -105,7 +105,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/data-table-kit.tsx",
-        "sha256": "d2421877c368ae6f3fb9396e45360414bd7cf1f466ab34275baa6d55ffb0354a"
+        "sha256": "d3ff6c9eb990dbef6617c21456221c08eab2899e5592cf6a3ada268b871cb106"
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/export-actions.tsx",
@@ -269,7 +269,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/data-table/admin-list.tsx",
-        "sha256": "2470b5544f62cdd11a733e8dad9658eaff3f2b22adbcf7f4b7ee7da0b1e128de"
+        "sha256": "ca62c46c13baf217e2ffba75833664779ab8f14ee81ae2f8b478006cb992033f"
       },
       {
         "path": "registry/factory/blocks/_compiled/data-table/record-panel.tsx",
@@ -955,7 +955,7 @@
     {
       "path": "components/blocks/_shared/billing-format.tsx",
       "from": "web-factory",
-      "sha256": "4bdbec231eac818ae9e81d463d075ee1c1650f0ee0f5ad043358d07148718f10"
+      "sha256": "c2ed9b44e59a6465181a2476ee9df4832d026f9107d118cad9d6858eb6a066c7"
     },
     {
       "path": "components/blocks/_shared/block-heading.tsx",
@@ -1020,7 +1020,7 @@
     {
       "path": "components/blocks/_shared/data-table-kit.tsx",
       "from": "web-factory",
-      "sha256": "6bb4c67a57260ca58e9f872a3d9025b9eaa25e1270adf282c99d13fda5d4a9ef"
+      "sha256": "8bf9dffb435ab7ef9a9f091bc7a8d01927b10c1595af7433ae645c3c35080edc"
     },
     {
       "path": "components/blocks/_shared/export-actions.tsx",
@@ -1225,7 +1225,7 @@
     {
       "path": "components/blocks/data-table/admin-list.tsx",
       "from": "web-factory",
-      "sha256": "ec948de7602ff20abc0a00d6d35048437f398803a09ad98077c620f45da0a3e1"
+      "sha256": "968cc346ac5e67c2f2f13de2b03199e63d24818d3c560a50338808be2d1ab142"
     },
     {
       "path": "components/blocks/data-table/record-panel.tsx",
