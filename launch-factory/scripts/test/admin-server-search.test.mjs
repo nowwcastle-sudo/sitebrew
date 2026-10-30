@@ -36,5 +36,5 @@ test("구획 쪽이 선언을 읽어 목록 패널에, 패널이 블록에 넘�
   assert.match(panel, /const serverSide = truncated \|\| serverSearch \|\|/)
   assert.match(panel, /serverSearch=\{serverSearch\} \{\.\.\.prefs\}/)
   const block = read("template", "components", "blocks", "data-table", "admin-list.tsx")
-  assert.match(block, /applyQuery\(data, api\.query, \{ serverSearch \}\)/)
+  assert.match(block, /applyQuery\(data, api\.query, \{ serverSearch, locale \}\)/)
 })
