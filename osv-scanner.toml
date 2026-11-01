@@ -15,3 +15,9 @@ reason = "deepmerge <= 4.3.1 mergeObject() 프로토타입 오염(고친 버전 
 
 # 2026-10-07(REL12): 같은 날 첫 CI 실행에서 떴던 셋 — sharp(GHSA-wq5f-xc86-pv6w)·@modelcontextprotocol/sdk(GHSA-6qxp-vccf-f47h)·source-map-js(GHSA-68fv-2mgg-jv7q) —
 # 은 예외 없이 고쳤다: sharp 0.35.5(정확 고정) · sdk 1.32.1(shadcn 의 ^1.26.0 범위 안에서 잠금 갱신) · source-map-js 1.2.2(잠금 갱신). 예외 표에서 지웠다.
+
+# 2026-11-01: minimatch 의 globparts 증폭 DoS(GHSA-g3hv-75wg-m249, 2026-10-30 공개, 고친 판 11.0.1). 3.1.5(eslint 9·eslint-config-next 사슬)와 10.2.6(typescript-estree·@ts-morph/common·eslint 10)이 모두 걸리는데 상위 도구가 아직 ^3·^10 범위라 잠금 갱신으로는 못 올린다(major 두 단계).
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+ignoreUntil = 2026-12-05
+reason = "minimatch <11.0.1 의 optimizationLevel>=2 패턴 증폭 DoS. 고친 판 11.0.1 은 major 라 eslint·typescript-eslint·shadcn(ts-morph) 이 범위를 올려야 닿는다(2026-11-01 확인). 이 사슬은 모두 개발·빌드 도구이고 패턴은 우리 저장소 안 설정 파일뿐이라 외부 입력이 없다. 상위 도구가 올리면 잠금을 갱신하고 이 예외를 지운다 — 만료일에 다시 본다."
