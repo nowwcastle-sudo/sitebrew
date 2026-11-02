@@ -54,6 +54,10 @@ updates:
       - dependency-name: eslint
         versions:
           - '>=10'
+      # cn 0.5 는 Node 22 이상만 받는다(engines). 찍어낸 사이트는 Node 20.9 이상을 약속하므로(next 16.3.8 engines) 그 약속을 바꾸는 결정이 있을 때까지 0.5 이상을 막는다. (2026-11-02)
+      - dependency-name: cn
+        versions:
+          - '>=0.5'
     labels:
       - dependencies
 
