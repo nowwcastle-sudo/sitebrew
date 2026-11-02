@@ -950,7 +950,7 @@
       ],
       "dependencies": [
         "cn@^0.4.0",
-        "react-resizable-panels@^4.14.6"
+        "react-resizable-panels@^4.14.8"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.4",
