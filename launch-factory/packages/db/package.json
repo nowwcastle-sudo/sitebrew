@@ -21,13 +21,13 @@
     "db:seed": "node src/seed.ts"
   },
   "dependencies": {
-    "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite": "0.5.11",
     "@launch-factory/contract": "0.0.0",
     "drizzle-orm": "0.45.4",
     "postgres": "3.4.9"
   },
   "devDependencies": {
-    "@electric-sql/pglite-tools": "0.4.8",
+    "@electric-sql/pglite-tools": "0.4.11",
     "@types/node": "^24.19.2",
     "drizzle-kit": "0.31.11"
   }
