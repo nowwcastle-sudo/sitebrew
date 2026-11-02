@@ -5,7 +5,7 @@ description: Use Sitebrew (shadcn registry of components, recipes and blocks wit
 
 # Sitebrew guide
 
-Help the user use one repository, Sitebrew, that holds two parts which work together. One release tag, `v0.2.4`, covers both: pin every install and clone to it.
+Help the user use one repository, Sitebrew, that holds two parts which work together. One release tag, `v0.2.5`, covers both: pin every install and clone to it.
 
 <!-- env-block:start -->
 ## Where this runs (read first)
@@ -28,7 +28,7 @@ If the command cannot run: with a command tool, where the error says `node` is n
 
 ## Never
 
-- Never use `main` or an address without `#v0.2.4` (write `nowwcastle-sudo/sitebrew/<item>#v0.2.4`): with no tag the install reads the default branch and mixes versions.
+- Never use `main` or an address without `#v0.2.5` (write `nowwcastle-sudo/sitebrew/<item>#v0.2.5`): with no tag the install reads the default branch and mixes versions.
 - Never rewrite a shadcn command line from memory: the files pin `npx shadcn@4.22.1`, and a newer CLI changes flags and prompts. Copy the line from the route file.
 - Never ask for, paste or print a key value: a key in the chat is exposed. Name the environment variable to set. Report only whether a name is set and its length (what `scripts/doctor.mjs` does).
 - Never run `shadcn add` without `-y -o`: without `-o` a non-interactive shell stops at the overwrite prompt, writes nothing and still exits 0. With `-o` same-name files are overwritten: in a project with its own `components/ui` check `git status` first.
@@ -94,14 +94,14 @@ Read the last lines of the failing command first. `compat.json` in the plugin fo
 | any | Unsure what is missing | Run `node "${CLAUDE_PLUGIN_ROOT}/scripts/doctor.mjs"` first (computer, clone, key names; names and lengths only). Then the doctor of the route: **site** `node factory/doctor.mjs --stage <stage>`; **product** `npm run doctor -- --stage dev`. |
 | site, product | `npm run setup` ends with `setup: FAIL` | One line per missing item is above it. Install the items through the `setup` skill, then run `npm run setup` again. |
 | parts | An install returns 401 | See "401" below. |
-| parts | A part arrives as the latest version | The address had no `#v0.2.4`. Add it and run the `add` line again. |
+| parts | A part arrives as the latest version | The address had no `#v0.2.5`. Add it and run the `add` line again. |
 | parts | `shadcn add` exits 0 but nothing changed | `-y -o` is missing. Add both and run the `add` line again. |
 | site | `npm run stamp` exits 3 | It waits for input. Open the request file at the printed path, answer it per `factory/stamp/COPY.md` (copy) or `factory/legal/AGENT.md` (legal pages), then run the same command again. |
 | site | `npm run stamp` exits 1 | Read `<run>/stamp-summary.json` (`<run>` is the `--run` folder) as described below, fix what its `status` names, then run the same command again. |
 | site | `npm run stamp` exits 2 | An argument or the brief is wrong. Read the printed message (a summary, if written, has `status` `bad-brief`), fix it and run again. |
 | any | Anything else | Quote the last lines of the failing command to the user, run the plugin doctor, and do not retry the same command unchanged. |
 
-- **401.** The registry is public: it needs no token and `gh auth status` does not help. Check in order: (1) a stray token in that shell: bash `unset GH_TOKEN GITHUB_TOKEN`, PowerShell `Remove-Item Env:GH_TOKEN, Env:GITHUB_TOKEN -ErrorAction SilentlyContinue`, then run the `add` line again; (2) the address has the shape `nowwcastle-sudo/sitebrew/<item>#v0.2.4`; (3) `curl -I https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.4/registry.json` answers 200 (PowerShell: `curl.exe`). A 404 means a wrong owner or tag, not a missing token.
+- **401.** The registry is public: it needs no token and `gh auth status` does not help. Check in order: (1) a stray token in that shell: bash `unset GH_TOKEN GITHUB_TOKEN`, PowerShell `Remove-Item Env:GH_TOKEN, Env:GITHUB_TOKEN -ErrorAction SilentlyContinue`, then run the `add` line again; (2) the address has the shape `nowwcastle-sudo/sitebrew/<item>#v0.2.5`; (3) `curl -I https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/registry.json` answers 200 (PowerShell: `curl.exe`). A 404 means a wrong owner or tag, not a missing token.
 - **`stamp-summary.json`.** `tool-failed`: a tool did not run, so no gate result counts yet; fix `failures[0].stage` first. Stage `doctor`: run `node factory/doctor.mjs --stage stamp` and follow its line. Stage `07-qa` with `측정 못 함`: run the same command again (it re-measures; it needs about 3 GB of free memory, and on a slow PC `WF_NAV_TIMEOUT_MS` and `WF_CDP_TIMEOUT_MS` can be raised). `gate-failed`: the tools ran, but the picked candidate (`candidates[]` with `active: true`) is not publishable, or `01-direction` found no three directions (`failures[0].rejected` says why: change the brief). Each `blockers` line starts with `공개 불가 — `. Blockers that need the user's input (real photo, site address, fact to confirm, sample contact, legal review) are normal in preview mode: report them and invent nothing. Fix the other blockers (sample text left, broken link, section not drawn) first: user input does not clear them.
 - **Doctor `<stage>`.** `stamp`: before any stamp run. `legal`: Korean legal pages stay "unverified". `media`: photo or image slots stay placeholders. `publish`: `--deploy-preview` gives no link without `VERCEL_TOKEN` (a Vercel login alone does not give one). `learn`: PostHog only.
 

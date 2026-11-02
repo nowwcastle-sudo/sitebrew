@@ -1,6 +1,6 @@
 {
   "name": "create-sitebrew",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Download Sitebrew at its release tag and print the next steps.",
   "type": "module",
   "bin": {

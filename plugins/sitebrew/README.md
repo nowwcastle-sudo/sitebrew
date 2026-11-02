@@ -8,15 +8,15 @@ sitebrew is a Claude Code plugin with five skills. They guide you through web-fa
 
 | Part | Tag |
 |---|---|
-| web-factory | `v0.2.4` |
-| launch-factory | `v0.2.4` |
+| web-factory | `v0.2.5` |
+| launch-factory | `v0.2.5` |
 
 ## Install
 
 From the marketplace in this repository:
 
 ```bash
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.4
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.5
 /plugin install sitebrew@sitebrew
 ```
 
@@ -25,7 +25,7 @@ To try it without installing, start Claude Code with `claude --plugin-dir <path>
 In Codex, add the marketplace first and then the plugin (`codex plugin --help` lists both commands):
 
 ```bash
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.4
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.5
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -82,7 +82,7 @@ Setting up the kit downloads the repository from GitHub and packages from the np
 
 ## What sitebrew does
 
-- Installs web-factory parts into a Next.js project with `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.4 -y -o`.
+- Installs web-factory parts into a Next.js project with `npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/<item>#v0.2.5 -y -o`.
 - Walks you through `npm run stamp`, which turns a brief into site candidates.
 - Starts the launch-factory template in mock mode, then lists what live mode needs.
 - Tells you which keys you must create yourself. It lists names only and never asks you for a value.

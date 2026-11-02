@@ -1,13 +1,13 @@
-# web-factory at `v0.2.4`
+# web-factory at `v0.2.5`
 
 ## Get the repository
 
 ```bash
-git clone --branch v0.2.4 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
+git clone --branch v0.2.5 --depth 1 https://github.com/nowwcastle-sudo/sitebrew.git
 cd sitebrew
 npm run setup
 npm run check:regen
-npm run registry:pincheck -- v0.2.4
+npm run registry:pincheck -- v0.2.5
 npm run typecheck
 npm run dev
 ```
@@ -24,16 +24,16 @@ Run the commands in the project you are installing into.
 
 ```bash
 npx shadcn@4.22.1 init -t next -b base -p nova -n <project-name> -y --no-monorepo
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.4 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.4 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/alert-dialog#v0.2.4 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.5 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.5 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/alert-dialog#v0.2.5 -y -o
 ```
 
 - Skip `init` when the project already has `components.json`: it is already configured. Run only the `add` lines.
 - Pass every option to `init` so it does not stop at a prompt.
 - Add the theme (`factory-default`) and the baseline rules (`factory-base`) first, then the parts.
 - Add `-y -o` to every `add`. `init` creates the official `button.tsx` first, and `-o` lets this registry overwrite it.
-- Replace `<project-name>` with the folder name of the new project. For another item, take its name from the folder `registry/factory/ui/` of the repository at tag `v0.2.4` on GitHub: the names match its file names (`alert-dialog`, `button`, `dialog`, and so on). Other items are `utils` (lib) and `use-mobile` (hooks).
+- Replace `<project-name>` with the folder name of the new project. For another item, take its name from the folder `registry/factory/ui/` of the repository at tag `v0.2.5` on GitHub: the names match its file names (`alert-dialog`, `button`, `dialog`, and so on). Other items are `utils` (lib) and `use-mobile` (hooks).
 - This registry is public, so `add` needs no sign-in. A private copy of it needs read access set up in your CI provider's secret settings.
 - A recipe installs its typefaces as `font-<name>` items. Typeface files are not stored in the repository; the licenses and primary sources are in `docs/qa/font-licenses.md`.
 
