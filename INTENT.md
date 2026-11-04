@@ -36,7 +36,7 @@
 - [x] P1 architect 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md` (T7 null=`""` · T14 서체 Pretendard base64 · T20 가중 층별 · T21 계열 8종·colorStrategy 확정)
 - [x] P2 interrogate 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p2-findings.md` (높음 5·중간 3·낮음 2, 계획에 반영)
 - [x] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (PR `feat/v026-t0b-key-guard` → 이 가지)
-- [ ] T0c 계열·거리 실행 가능성 표 (Phase A 첫 레인, Phase B 전 필수)
+- [x] T0c 계열·거리 실행 가능성 표 — `docs/qa/v026-world-spread.md` · `factory/scripts/lib/world-spread-report.mjs` (거리 ≥ 2는 전 원형 가능 14.6~33.9%, 계열 모두 다름은 dashboard 1.4%·public 0.8% → 소프트 확정)
 
 ### Phase A — 06 열쇠 밖
 - [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
