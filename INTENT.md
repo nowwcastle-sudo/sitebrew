@@ -12,7 +12,7 @@
 - 모듈형 코드: 책임 하나인 모듈, 명시적 인터페이스, 낮은 결합. 새 npm 의존·CDN·원격 호출 0. 포트는 127.0.0.1만.
 - 새 단계 입력은 조건부 키 `...(x ? { x } : {})`. 시험은 `node --test --test-force-exit --test-timeout=300000 <파일>`.
 - 각 스레드: PR 올림 → CI 통과 보고 → 실패 시 자동 수정·재검사 → 자동 리뷰 검토 후 수정 라운드. 배포·게시·태그·npm은 대표.
-- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제) · `.gitleaks.toml`의 phase-a-key 허용 줄(시험과 함께 삭제).
+- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제) · `.gitleaks.toml`·`launch-factory/.gitleaks.toml`의 phase-a-key 허용 줄(범위 검사가 이력을 훑으므로 시험을 지운 뒤에도 공개 병합 전까지 둔다).
 - Node ≥ 24.13 필요. 클라우드 컨테이너는 기본 node 22라 `export PATH=/opt/node24/bin:$PATH`를 먼저 한다.
 
 ## 기준값 (T0)
@@ -36,7 +36,7 @@
 - [x] P1 architect 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md` (T7 null=`""` · T14 서체 Pretendard base64 · T20 가중 층별 · T21 계열 8종·colorStrategy 확정)
 - [x] P2 interrogate 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p2-findings.md` (높음 5·중간 3·낮음 2, 계획에 반영)
 - [x] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (PR `feat/v026-t0b-key-guard` → 이 가지)
-- [ ] T0c 계열·거리 실행 가능성 표 (Phase A 첫 레인, Phase B 전 필수)
+- [x] T0c 계열·거리 실행 가능성 표 — `docs/qa/v026-world-spread.md` · `factory/scripts/lib/world-spread-report.mjs` (거리 ≥ 2는 전 원형 가능 14.6~33.9%, 계열 모두 다름은 dashboard 1.4%·public 0.8% → 소프트 확정)
 
 ### Phase A — 06 열쇠 밖
 - [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
