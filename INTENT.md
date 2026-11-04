@@ -54,7 +54,7 @@
 - [ ] T13 마감 리뷰 루프와 상한
 - [ ] T14 로고 시안 생성 logo-candidates.mjs
 - [ ] T15 작은 개선 S8·S9·S10
-- [ ] T16 07 후보 병렬 옵션 S11
+- [x] T16 07 후보 병렬 옵션 S11 (WF_QA_PARALLEL=1, 기본 끔)
 - [ ] Phase A 마감: 열쇠 = T0 기준, ci:verify ≥ 기준선
 - [ ] P3 blast-radius 결과 반영
 

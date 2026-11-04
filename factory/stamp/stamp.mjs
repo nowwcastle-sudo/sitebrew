@@ -16,6 +16,7 @@
 //   무거운 단계(06 next build · 07 서버·Chrome)는 실행 잠금 안에서 부른다 — 이 CLI 가 잠금을 잡지 않는다.
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { freemem } from 'node:os'
 import { basename, dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { writePreviewUrl } from './deploy-preview.mjs'
@@ -24,6 +25,7 @@ import { pagesCodeKey } from './pages-key.mjs'
 import { failMessage } from './fail-message.mjs'
 import { isPendingReview } from '../legal/drafts.mjs'
 import { askIn, grammar } from '../vocab/grammar.mjs'
+import { mapLimit, qaParallelLimit } from './parallel.mjs'
 import { MOCK_PREVIEW_NOTICE, splitBlockers, withMockPreviewBlocker } from './blocker-class.mjs'
 import { REDRAW_FILES, markStale } from './revise-stale.mjs'
 
@@ -243,14 +245,16 @@ export async function runStamp(opts, deps) {
     return data
   }
   const failures = []
-  const tryEach = async (cands, stage, fn) => {
-    for (const c of cands) {
-      try { await fn(c) } catch (e) {
+  const tryEach = async (cands, stage, fn, { limit = 1 } = {}) => {
+    // 후보별 실패는 후보 순서로 모은다 — 동시에 돌려도 stamp-summary.json 의 failures 순서가 직렬과 같다.
+    const found = await mapLimit(cands, limit, async (c) => {
+      try { await fn(c); return null } catch (e) {
         const message = String(e?.message ?? e).split(/\r?\n/).slice(0, 6).join(' | ')
-        failures.push({ stage, cand: c.id, message })
         say(`[${c.id}] ${stage} 실패 — ${message}`)
+        return { stage, cand: c.id, message }
       }
-    }
+    })
+    failures.push(...found.filter(Boolean))
     return failures.length === 0
   }
   const stop = () => finish(EXIT.fail, 'tool-failed', { failures })
@@ -397,6 +401,10 @@ export async function runStamp(opts, deps) {
       return halt('waiting', EXIT.waiting)
     }
   }
+  // WF_QA_PARALLEL=1 이면 07 을 후보 동시 최대 3개로(기본 끔). 여유 메모리가 모자라면 직렬로 물러선다. 성능 점수는 동시에 돌리면 낮게 나올 수 있다.
+  const par = qaParallelLimit({ env: deps.env ?? process.env, count: active.length, freeBytes: (deps.freeBytes ?? freemem)() })
+  if (par.limit > 1) say(`07 을 후보 ${par.limit}개 동시에 돌린다(WF_QA_PARALLEL=1) — 같은 컴퓨터에서 함께 재므로 성능 점수(LCP·TBT)가 직렬보다 낮게 나올 수 있다`)
+  else if (par.reason === 'memory') say('WF_QA_PARALLEL=1 이지만 여유 메모리가 모자라 07 을 하나씩 돌린다')
   if (!(await tryEach(active, '07-qa', async (c) => {
     const s = state[c.id]
     const qaInputs = { pages: s.pages, legal: s.legal.hashes }
@@ -405,10 +413,10 @@ export async function runStamp(opts, deps) {
     const prev = readJsonMaybe(join(runDir, c.id, '07-qa.json'))
     const prevFailed = prev && prev.inputHash === inputHash(qaInputs) ? toolFailedGates(prev.data) : []
     if (prevFailed.length) say(`[${c.id}] 07-qa 지난 실행에 측정 못 함 ${prevFailed.length}건(${prevFailed.slice(0, 3).join(' · ')}${prevFailed.length > 3 ? ' …' : ''}) — 07 을 다시 잰다`)
-    s.qa = await step(c.id, '07-qa', qaInputs, () => deps.qa({ runDir, cand: c }), { refresh: prevFailed.length > 0 })
+    s.qa = await step(c.id, '07-qa', qaInputs, () => deps.qa({ runDir, cand: c, tag: par.limit > 1 ? `[${c.id}] ` : '' }), { refresh: prevFailed.length > 0 })
     // product 완성(saas·pwa)을 미리보기로 배포하면 공개 주소에서 실제 가입·결제가 안 된다 — 품질 사유로 더한다(E6). 단계 파일은 건드리지 않는다.
     if (mockPreview) { s.qa = withMockPreviewBlocker(s.qa); say(`[${c.id}] 미리보기 주의 — ${MOCK_PREVIEW_NOTICE}`) }
-  }))) return stop()
+  }, { limit: par.limit }))) return stop()
   if (!reaches('08-board')) return finish(EXIT.done, 'done', done('07'))
 
   // 8. 08 보드 자료 → (--deploy-preview) 미리보기 배포. 배포 주소는 08-board.json 의 previewUrl 에 합쳐 적힌다.
@@ -506,7 +514,7 @@ export async function defaultDeps({ say = console.log, preferences = true } = {}
       return { siteDir: r.siteDir, routes: r.routes, blockers: r.blockers.length, skipped: r.skipped.length, build: r.build ? { code: r.build.code, seconds: r.build.seconds } : null, builtAt: new Date().toISOString(), ...(reviseFallbacks.length ? { reviseFallbacks } : {}) }
     },
     pagesKey: () => pagesCodeKey(),
-    qa: ({ runDir, cand }) => qaMod.runCandidateQa(runDir, cand, { log: (m) => say(`  ${m}`) }),
+    qa: ({ runDir, cand, tag = '' }) => qaMod.runCandidateQa(runDir, cand, { log: (m) => say(`  ${tag}${m}`) }),
     deploy: (siteDir) => deployMod.deployPreview(siteDir, {}),
   }
 }
