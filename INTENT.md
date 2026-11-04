@@ -39,10 +39,10 @@
 - [x] T0c 계열·거리 실행 가능성 표 — `docs/qa/v026-world-spread.md` · `factory/scripts/lib/world-spread-report.mjs` (거리 ≥ 2는 전 원형 가능 14.6~33.9%, 계열 모두 다름은 dashboard 1.4%·public 0.8% → 소프트 확정)
 
 ### Phase A — 06 열쇠 밖
-- [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
-- [ ] T2 후보 중계 proxy.mjs
-- [ ] T3 bridge.js + 대시보드 page.mjs
-- [ ] T4 비교 서버 serve.mjs + `--serve`
+- [x] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
+- [x] T2 후보 중계 proxy.mjs
+- [x] T3 bridge.js + 대시보드 compare-page.mjs (CI 가름 가드가 block-board/page.mjs 와 이름을 혼동해 compare-page 로 바꿨다)
+- [x] T4 비교 서버 serve.mjs + `--serve`
 - [x] T5 예시 고정 표 sample-facts.mjs
 - [x] T6 stamp 병합·07 사유·법률 건너뛰기
 - [x] T7 `intake brief --facts`

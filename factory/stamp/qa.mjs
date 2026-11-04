@@ -29,6 +29,7 @@ import { opsGateForCandidate } from '../qa/ops-gate.mjs'
 import { boldSafetyForCandidate } from '../qa/bold-safety.mjs'
 import { STRICT_BY_ARCHETYPE, strictGateForCandidate } from '../qa/strict-archetype.mjs'
 import { MOCK_PREVIEW_BLOCKER, SAMPLE_LEFT_BLOCKER, splitBlockers } from './blocker-class.mjs'
+import { killTree as killPid } from './run-proc.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const FACTORY = join(ROOT, 'factory')
@@ -158,13 +159,14 @@ const freePort = () => new Promise((res, rej) => {
   s.listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)) })
 })
 
-/** `next start` 를 빈 포트에 띄운다. → { url, stop() }. 관문 잠금 안에서만 부른다. */
+/** `next start` 를 빈 포트에 띄운다. → { url, port, pid, stop() }. stop 은 PID 나무째 끄고 끝날 때까지 기다린다. 관문 잠금 안에서만 부른다. */
 export async function startSite(siteDir, { timeoutMs = 90_000 } = {}) {
   const nextBin = join(siteDir, 'node_modules', 'next', 'dist', 'bin', 'next')
   if (!existsSync(nextBin)) throw new Error(`도구 실패: ${nextBin} 없음 — 사이트에 npm 설치가 안 됐다`)
   if (!existsSync(join(siteDir, '.next', 'BUILD_ID'))) throw new Error(`도구 실패: ${join(siteDir, '.next', 'BUILD_ID')} 없음 — 사이트가 빌드되지 않았다`)
   const port = await freePort()
-  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true })
+  // detached: Linux·macOS 에서 자식이 제 프로세스 그룹을 가져야 killTree(pid)(= 그룹 전체 종료)가 듣는다. 예전에는 stop 이 child 객체를 넘겨 `next start` 가 남았다(v0.2.6 P2 F1).
+  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform !== 'win32' })
   let out = ''
   child.stdout.on('data', (d) => { out += d })
   child.stderr.on('data', (d) => { out += d })
@@ -172,12 +174,12 @@ export async function startSite(siteDir, { timeoutMs = 90_000 } = {}) {
   child.on('close', (c) => { exited = c ?? -1 })
   const url = `http://127.0.0.1:${port}`
   const stop = async () => {
-    if (exited === null) { killTree(child); for (let i = 0; i < 50 && exited === null; i++) await new Promise((r) => setTimeout(r, 100)) }
+    if (exited === null) { killPid(child.pid); for (let i = 0; i < 50 && exited === null; i++) await new Promise((r) => setTimeout(r, 100)) }
   }
   const t0 = Date.now()
   while (Date.now() - t0 < timeoutMs) {
     if (exited !== null) throw new Error(`도구 실패: next start 가 종료 ${exited} 로 끝났다 — ${out.trim().split('\n').slice(-3).join(' | ')}`)
-    try { const r = await fetch(`${url}/`, { signal: AbortSignal.timeout(3000) }); if (r.ok) return { url, stop } } catch { /* 아직 안 떴다 */ }
+    try { const r = await fetch(`${url}/`, { signal: AbortSignal.timeout(3000) }); if (r.ok) return { url, port, pid: child.pid, stop } } catch { /* 아직 안 떴다 */ }
     await new Promise((r) => setTimeout(r, 400))
   }
   await stop()
