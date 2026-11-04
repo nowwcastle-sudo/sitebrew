@@ -11,13 +11,14 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { resolveRun } from '../promote.mjs'
+import { resolveRun, readCandidateHead } from '../promote.mjs'
 import { artifactHtml } from '../recipe-board/build2.mjs'
 import { captureAll, manifestOf, checkManifest, fileNames } from '../recipe-board/video.mjs'
 import { loadHeads } from '../recipe-board/jobs.mjs'
 import { loadCandidates } from './record.mjs'
 import { loadRunPrescreen } from '../prescreen.mjs'
 import { blockerClass, splitBlockers } from '../../stamp/blocker-class.mjs'
+import { readRunBrief } from './run-brief.mjs'
 
 export const COLLECTION = 'picks'
 export const BOARD = 1
@@ -36,12 +37,14 @@ const KIND_HINT = { quality: '— 공장이 고칠 것(기계 기준은 0)', inp
 /** 후보 폴더들 → 보드 데이터. manifest = video.mjs manifestOf 결과(없으면 영상·정지 없이 그린다). */
 export function loadBoardData(run, { manifest = null, scoreFile } = {}) {
   const runDir = resolveRun(run)
-  const brief = readJson(join(runDir, 'brief.json'), {})
+  const brief = readRunBrief(runDir)
   // AI 예선(P3-4 Task 6): 측정에서 켜져 있고 실행 폴더에 예측(prescreen.json)이 있을 때만 값이 있다. 꺼져 있으면 null — 보드는 아무것도 더하지 않는다.
   const prescreen = loadRunPrescreen(runDir, scoreFile ? { scoreFile } : {})
   const cands = loadCandidates(runDir).map((base, i) => {
     const dir = join(runDir, base.id)
     const c = readJson(join(dir, 'candidate.json'))
+    // 찍어내기 실행은 candidate.json 에 blockers 만 두고 머리(why·팔레트·서체 …)를 01-direction.json 에 둔다 — 머리는 둘을 합친 값에서 읽는다(결함 G6).
+    const h = readCandidateHead(dir) ?? c
     const qa = readJson(join(dir, '07-qa', 'summary.json'))
     const b8 = readJson(join(dir, '08-board.json'))
     const blockers = [...new Set([...(c.blockers ?? []), ...(qa?.blockers ?? [])])]
@@ -56,9 +59,12 @@ export function loadBoardData(run, { manifest = null, scoreFile } = {}) {
       poster: opt.stills?.find((s) => s.width === 1440)?.file ?? null, phone: opt.stills?.find((s) => s.width === 375)?.file ?? null,
     } : null
     return {
-      id: base.id, slot: c.slot ?? SLOT_BY_INDEX[i] ?? null, source: base.source, recipe: base.name, preset: c.preset ?? null, palette: c.palette ?? null,
-      fonts: c.fonts ?? null, why: c.why ?? null, blockers, state, qa: qa ? { publishable: qa.publishable === true, gates, warnings: (qa.warnings ?? []).length } : null,
-      brand: c.brand ? { adjustments: c.brand.adjustments ?? [], fontSubstitutions: c.brand.fontSubstitutions ?? [] } : null,
+      id: base.id, slot: h.slot ?? SLOT_BY_INDEX[i] ?? null, source: base.source, recipe: base.name, preset: h.preset ?? null, palette: h.palette ?? null,
+      fonts: h.fonts ?? null, why: h.why ?? null,
+      // 대시보드·비교표가 읽는 머리. thesis·ownWorld·colorStrategy·materialFamily 는 Phase B(T21)가 01 머리에 더한다 — 없으면 null.
+      head: { why: h.why ?? null, preset: h.preset ?? null, palette: h.palette ?? null, fonts: h.fonts ?? null, thesis: h.thesis ?? null, ownWorld: h.ownWorld ?? null, colorStrategy: h.colorStrategy ?? null, materialFamily: h.materialFamily ?? null },
+      blockers, state, qa: qa ? { publishable: qa.publishable === true, gates, warnings: (qa.warnings ?? []).length } : null,
+      brand: h.brand ? { adjustments: h.brand.adjustments ?? [], fontSubstitutions: h.brand.fontSubstitutions ?? [] } : null,
       previewUrl: typeof url === 'string' && /^https:\/\/[^\s]+$/.test(url) ? url : null, media, aiPick: prescreen?.winner === base.id,
     }
   })
