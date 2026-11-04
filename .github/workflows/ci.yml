@@ -7,7 +7,9 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    # v0.2.6 라운드 임시: 레인 PR 은 feat/v026-compare-dashboard 로 간다 — 열쇠 고정 시험(phase-a-key.test.mjs)을 돌리려고 가지 필터를 넓혔다.
+    # 공개 main 에 병합하기 전에 `branches: [main]` 으로 되돌린다(INTENT.md 삭제·되돌림 목록).
+    branches: [main, 'feat/v026-*']
   workflow_dispatch:
 
 permissions:
