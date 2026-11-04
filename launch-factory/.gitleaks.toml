@@ -48,6 +48,6 @@ regexTarget = "line"
 regexes = ['''^\s*(const SECRET = "(test-secret-test-secret|newsletter-test-secret)-0123456789"|process\.env\.CRON_SECRET = "cron-secret-for-glue-test-0123456789")\s*$''']
 
 [[allowlists]]
-description = "Sitebrew: web-factory's tunnel tests hold made-up tokens (checked by the root config); launch-factory's range scan also walks the root files"
+description = "Sitebrew: web-factory's tunnel tests hold made-up tokens (checked by the root config); launch-factory's range scan also walks the root files; v0.2.6 Phase A key guard holds a sha256 reference value (not a secret)"
 targetRules = ["generic-api-key"]
-paths = ['''(^|/)factory/tunnel/(session|site-server|preview-link)\.test\.mjs$''']
+paths = ['''(^|/)factory/tunnel/(session|site-server|preview-link)\.test\.mjs$''', '''(^|/)factory/scripts/phase-a-key\.test\.mjs$''']
