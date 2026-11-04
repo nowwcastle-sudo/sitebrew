@@ -286,6 +286,30 @@ test('보드 데이터: 후보마다 출처·blockers·공개 상태·07-qa 요�
   assert.ok(d.cands.every((x) => x.media === null))
 })
 
+test('보드 데이터(실제 찍어내기 모양): candidate.json 에 blockers 만 있어도 01-direction 머리로 why·팔레트·서체·브랜드를 채우고, 브리프는 stamp-summary.json 의 경로에서 읽는다', () => {
+  const run = join(work, 'real-shaped-run'), outside = join(work, 'elsewhere')
+  write(join(outside, 'brief.json'), { topic: '청춘케어', archetype: 'saas' })
+  write(join(run, 'stamp-summary.json'), { kind: 'stamp-summary', brief: join(outside, 'brief.json'), run })
+  const brand = { adjustments: [{ role: 'primary', theme: 'light', from: '#fc0', to: '#e6b800', reason: '명도만 조정' }], fontSubstitutions: [] }
+  for (const c of cands) {
+    write(join(run, c.id, 'candidate.json'), { blockers: c.id === 'b' ? ['공개 불가 — 확인 필요 사실: business.phone'] : [] })
+    write(join(run, c.id, '01-direction.json'), { inputHash: 'x', producedAt: 'x', data: { id: c.id, slot: c.slot, source: c.source, recipe: c.source === 'library' ? c.recipe : c.recipe.id, preset: c.preset, palette: c.palette, fonts: c.fonts, why: c.why, ...(c.id === 'c' ? { brand } : {}) } })
+  }
+  assert.ok(!existsSync(join(run, 'brief.json')), '실행 폴더에는 brief.json 이 없다')
+  const d = loadBoardData(run)
+  assert.equal(d.brief, '청춘케어'); assert.equal(d.archetype, 'saas')
+  for (const [i, c] of d.cands.entries()) {
+    assert.ok(c.why && c.palette && c.fonts?.display, `${c.id}: 머리 칸이 비어 있지 않다`)
+    assert.deepEqual(c.head, { why: cands[i].why, preset: cands[i].preset ?? null, palette: cands[i].palette, fonts: cands[i].fonts, thesis: null, ownWorld: null, colorStrategy: null, materialFamily: null })
+  }
+  assert.deepEqual(d.cands[2].brand?.adjustments, brand.adjustments)
+  assert.equal(d.cands[1].blockers.length, 1, 'blockers 는 candidate.json 에서 그대로')
+  // 요약 경로가 가리키는 파일이 사라졌으면 <run>/brief.json 으로 물러난다.
+  write(join(run, 'brief.json'), { topic: '손으로 놓은 사본', archetype: 'saas' })
+  rmSync(join(outside, 'brief.json'))
+  assert.equal(loadBoardData(run).brief, '손으로 놓은 사본')
+})
+
 test('보드 HTML: 출처 배지 · blockers 전부(접힘 포함·이스케이프) · 공개 상태 · 고르기 버튼 · 생성·브랜드 카드에만 「라이브러리로 올리기」 · 스크립트 문법', () => {
   const d = loadBoardData(base)
   const html = buildDirectionBoard(d)
