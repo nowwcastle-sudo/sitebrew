@@ -2,9 +2,10 @@
 // The kit's intake (factory/intake/) is a set of functions, not a command. This script calls them so a skill can run them the same way in any shell.
 //   node intake.mjs archetypes                         -> JSON list of archetype ids the intake accepts
 //   node intake.mjs questions <archetype>              -> JSON list of { id, ask, hint? } to ask the user (Korean; translate when the user writes another language)
-//   node intake.mjs brief --input <answers.json> --out <brief.json>
+//   node intake.mjs brief --input <answers.json> --out <brief.json> [--facts <facts.json>]
+//        facts: { "<fact name or content path>": "real value" | null } - real values for facts the preview filled with samples; null = the user has no such fact. An unknown name is an error.
 //        input: { "topic": "...", "archetype": "...", "locale": "ko"|"en", "answers": { "<question id>": "..." } }
-//        out:   the brief for `npm run stamp -- --brief`; stdout is { brief, previewOnly, missing[], unread[{ id, answer, why }] } (unread: ask the user again)
+//        out:   the brief for `npm run stamp -- --brief`; stdout is { brief, previewOnly, missing[], unread[{ id, answer, why }], factsApplied[] } (unread: ask the user again)
 //   node intake.mjs features <archetype>               -> JSON list of { id, ko, en }: yes/no questions about what the site must do ([] when there is nothing to ask); an unknown archetype is an error
 //   node intake.mjs features-write --archetype <archetype> --input <answers.json> --run <run folder>
 //        input: { "<question id>": true|false } with ids from `features <archetype>` only; anything else is an error naming the input file.
@@ -18,13 +19,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { findKit, kitRange } from './lib/kit.mjs'
 
 const PLUGIN_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder>   [--kit <folder>] [--lf <folder>]'
+const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> [--facts <facts.json>] | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder>   [--kit <folder>] [--lf <folder>]'
 
 function parse(argv) {
   const o = { positional: [] }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
-    if (['--kit', '--input', '--out', '--run', '--archetype', '--lf'].includes(a)) {
+    if (['--kit', '--input', '--out', '--run', '--archetype', '--lf', '--facts'].includes(a)) {
       const v = argv[++i]
       if (!v || v.startsWith('--')) throw new Error(`${a} needs a value`)
       o[a.slice(2)] = v
@@ -82,12 +83,13 @@ async function main(argv) {
   if (!o.input || !o.out) throw new Error(USAGE)
   const { toBrief, missingFacts, toBriefReport } = await load('to-brief.mjs')
   const input = JSON.parse(readFileSync(resolve(o.input), 'utf8'))
+  if (o.facts) input.facts = { ...input.facts, ...JSON.parse(readFileSync(resolve(o.facts), 'utf8')) } // real values for sample facts; null = the user has no such fact
   // toBriefReport also returns the answers the kit could not take (a colour name instead of a code); a kit without it has no brand questions, so nothing is unread there
-  const { brief, unread } = toBriefReport ? toBriefReport(input) : { brief: toBrief(input), unread: [] }
+  const { brief, unread, factsApplied = [] } = toBriefReport ? toBriefReport(input) : { brief: toBrief(input), unread: [] }
   const out = resolve(o.out)
   mkdirSync(dirname(out), { recursive: true })
   writeFileSync(out, JSON.stringify(brief, null, 2) + '\n')
-  console.log(JSON.stringify({ brief: out, previewOnly: brief.previewOnly === true, missing: missingFacts(brief), unread }))
+  console.log(JSON.stringify({ brief: out, previewOnly: brief.previewOnly === true, missing: missingFacts(brief), unread, factsApplied }))
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
