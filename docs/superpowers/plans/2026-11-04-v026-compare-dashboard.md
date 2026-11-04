@@ -140,7 +140,6 @@ Produces: node factory/scripts/print-pages-key.mjs를 실행하면 stdout에 { k
 - [ ] Step 5: 설계·계획 문서를 커밋한다: docs: v0.2.6 개선 라운드 설계·계획.
 - [ ] Step 6: P1 정지. 대표에게 P1 명령을 주고 /pstack:architect 결과대로 Interfaces를 고쳐 커밋한다. 이어서 P2 정지: /pstack:interrogate에서 증명된 지적을 계획에 반영하고 커밋한다.
 
-## Phase A — 06 열쇠 밖 (T1~T16)
 
 
 ## Phase A — 06 열쇠 밖 (T0b·T0c·T1~T16)
