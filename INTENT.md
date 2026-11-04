@@ -41,7 +41,7 @@
 ### Phase A — 06 열쇠 밖
 - [x] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
 - [x] T2 후보 중계 proxy.mjs
-- [x] T3 bridge.js + 대시보드 page.mjs
+- [x] T3 bridge.js + 대시보드 compare-page.mjs (CI 가름 가드가 block-board/page.mjs 와 이름을 혼동해 compare-page 로 바꿨다)
 - [x] T4 비교 서버 serve.mjs + `--serve`
 - [ ] T5 예시 고정 표 sample-facts.mjs
 - [ ] T6 stamp 병합·07 사유·법률 건너뛰기

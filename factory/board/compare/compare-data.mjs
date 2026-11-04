@@ -1,4 +1,4 @@
-// 보드 자료 → 대시보드 자료(v0.2.6 T4). 순수 함수: 파일·프로세스를 만지지 않는다(그건 serve.mjs). page.mjs 의 CompareData 를 만든다.
+// 보드 자료 → 대시보드 자료(v0.2.6 T4). 순수 함수: 파일·프로세스를 만지지 않는다(그건 serve.mjs). compare-page.mjs 의 CompareData 를 만든다.
 // 칸마다 「있는 것만」 싣는다 — 사실이 없는 칸은 비워 두고 지어내지 않는다. 에이전트가 쓰는 notes.json({ "<id>": { name?, kind?, thesis?, msg?, act?, sig?, logo?, risk? } })이 있으면 그것이 이긴다.
 import { splitBlockers } from '../../stamp/blocker-class.mjs'
 

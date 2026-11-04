@@ -1,4 +1,4 @@
-// 비교 대시보드 단위 시험(v0.2.6 T2·T3) — 브라우저 없음. 중계(proxy.mjs)는 가짜 상위 서버 위에서, 페이지(page.mjs)·bridge 는 문자열로 본다.
+// 비교 대시보드 단위 시험(v0.2.6 T2·T3) — 브라우저 없음. 중계(proxy.mjs)는 가짜 상위 서버 위에서, 페이지(compare-page.mjs)·bridge 는 문자열로 본다.
 // Chrome 으로 실제 iframe 을 움직이는 시험은 compare.behavior.test.mjs.
 import { test, before, after } from 'node:test'
 import assert from 'node:assert/strict'
@@ -8,7 +8,7 @@ import { randomBytes, createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import vm from 'node:vm'
 import { startProxy, BRIDGE_TAG, rewriteCsp } from './proxy.mjs'
-import { renderComparePage, pageCsp } from './page.mjs'
+import { renderComparePage, pageCsp } from './compare-page.mjs'
 import { bridgeSourceFor, ORIGIN_PLACEHOLDER } from './bridge-source.mjs'
 
 const DASH = 'http://127.0.0.1:45555'

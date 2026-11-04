@@ -1,4 +1,4 @@
-// 비교 대시보드 브라우저 쪽 동작(v0.2.6 T3) — page.mjs 가 이 파일을 읽어 HTML 안에 넣는다. 자료는 <script type="application/json" id="cmp-data"> 에서 읽는다.
+// 비교 대시보드 브라우저 쪽 동작(v0.2.6 T3) — compare-page.mjs 가 이 파일을 읽어 HTML 안에 넣는다. 자료는 <script type="application/json" id="cmp-data"> 에서 읽는다.
 // 후보 사이트(iframe)와는 postMessage 로만 말한다(규약은 bridge.js 머리). 받을 때는 출처와 source 가 그 후보 iframe 일 때만 믿는다. targetOrigin 은 '*' 가 아니다.
 // 서버와는 상대 주소(api/ping · api/pick)로 말한다 — 대시보드 쪽 주소가 /c/<토큰>/ 로 끝나는 구조를 가정하지 않는다.
 ;(() => {

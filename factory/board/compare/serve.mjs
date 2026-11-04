@@ -1,4 +1,4 @@
-// 비교 서버(v0.2.6 T4 · 설계 D1~D4, P2 F1·F2·F7) — 후보 3개를 각자 `next start` 로 띄우고, 중계(proxy.mjs)를 앞에 세우고, 대시보드(page.mjs)를 내주며,
+// 비교 서버(v0.2.6 T4 · 설계 D1~D4, P2 F1·F2·F7) — 후보 3개를 각자 `next start` 로 띄우고, 중계(proxy.mjs)를 앞에 세우고, 대시보드(compare-page.mjs)를 내주며,
 // 사용자가 「이 안으로」를 누르면 picks.json 을 쓰고 모두 끈다. 파일·프로세스·소켓을 만지는 곳은 compare/ 에서 여기 하나뿐이다.
 //
 // 순서가 중요하다: 대시보드 서버가 먼저 listen 해서 포트를 얻고(그래야 중계가 frame-ancestors 에 그 출처를 넣는다) → 후보 서버 → 중계 → 페이지.
@@ -19,7 +19,7 @@ import { loadHeads } from '../recipe-board/jobs.mjs'
 import { readRunBrief } from '../direction-board/run-brief.mjs'
 import { parseRecipe } from '../../scripts/recipe.mjs'
 import { oklchToHex } from '../../scripts/style-presets.mjs'
-import { renderComparePage, pageCsp } from './page.mjs'
+import { renderComparePage, pageCsp } from './compare-page.mjs'
 import { startProxy } from './proxy.mjs'
 import { bridgeSourceFor } from './bridge-source.mjs'
 import { buildCompareData, commonRoutes } from './compare-data.mjs'
