@@ -12,6 +12,7 @@
 - 모듈형 코드: 책임 하나인 모듈, 명시적 인터페이스, 낮은 결합. 새 npm 의존·CDN·원격 호출 0. 포트는 127.0.0.1만.
 - 새 단계 입력은 조건부 키 `...(x ? { x } : {})`. 시험은 `node --test --test-force-exit --test-timeout=300000 <파일>`.
 - 각 스레드: PR 올림 → CI 통과 보고 → 실패 시 자동 수정·재검사 → 자동 리뷰 검토 후 수정 라운드. 배포·게시·태그·npm은 대표.
+- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제).
 - Node ≥ 24.13 필요. 클라우드 컨테이너는 기본 node 22라 `export PATH=/opt/node24/bin:$PATH`를 먼저 한다.
 
 ## 기준값 (T0)
@@ -25,7 +26,7 @@
 | 지점 | 상태 | 명령 |
 |---|---|---|
 | P1 — T0 직후 | 완료(수동 절차, 문서 반영) | `/pstack:architect` … (계획 7절) |
-| P2 — P1 반영 직후 | 대표 실행 대기 | `/pstack:interrogate` … |
+| P2 — P1 반영 직후 | 완료(수동 절차, 문서 반영) | `/pstack:interrogate` … |
 | P3 — Phase A 끝, T17 직전 | 대기 | `/pstack:blast-radius` … |
 | P4 — PR 직전(선택) | 대기 | `/pstack:interrogate` 전체 diff |
 
@@ -33,7 +34,9 @@
 ### Phase 0
 - [x] T0 가지·기준값·환경·설계/계획 문서 (PR #59)
 - [x] P1 architect 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md` (T7 null=`""` · T14 서체 Pretendard base64 · T20 가중 층별 · T21 계열 8종·colorStrategy 확정)
-- [ ] P2 interrogate 결과 반영
+- [x] P2 interrogate 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p2-findings.md` (높음 5·중간 3·낮음 2, 계획에 반영)
+- [ ] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (Phase A 첫 레인)
+- [ ] T0c 계열·거리 실행 가능성 표 (Phase A 첫 레인, Phase B 전 필수)
 
 ### Phase A — 06 열쇠 밖
 - [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
@@ -75,10 +78,11 @@
 - Phase B(T17~T21)는 06 열쇠 안 파일을 같이 건드리므로 한 스레드(또는 순차)로 한다. T22는 그 뒤.
 
 ## 변경 이력
+- 2026-11-04 · P2 반영: 높음 5건(F1 startSite 종료 버그·F2 정리 규칙·F3 계열 규칙 소프트화·F4 버전 올림 순서·F5 레인 CI 공백). 새 과제 T0b·T0c. ci.yml 가지 필터는 공개 main 병합 전에 되돌린다(삭제 목록).
 - 2026-11-04 · P1 반영: 시그니처 문서 신설. 닫은 결정 4건. 계획 상단에 우선 배너. 닫힘 파일 수는 Phase B 뒤 55→58 예상(directions.mjs가 새 모듈 3개 import).
 - 2026-11-04 · ci:verify 기준선 기록(위). T11 병합(#60)으로 열린 결정 중 리뷰어 정의 위치 확정.
 - 2026-11-04 · T0 착수. 계획 문서(제1부+부록→specs, 제2부→plans)를 저장소에 옮김. 환경 확인: 클라우드 기본 node 22 → `/opt/node24` 사용.
 
 ## 현재 상태 / 다음 한 작업
-- 상태: T0·T11·P1 완료. PR #59(드래프트).
-- 다음: 대표가 P2(`/pstack:interrogate …`)를 실행하면 결과로 계획·시그니처 문서를 고친다. 그 뒤 Phase A 병렬 분기.
+- 상태: T0·T11·P1·P2 완료. PR #59(드래프트).
+- 다음: 코디네이터가 Phase A 레인을 분기한다. 첫 레인은 T0b·T0c(+ T4의 startSite 고침). 병합 순서 주의: stamp.mjs·qa.mjs·blocker-class.mjs는 T6·T9·T10·T13·T16·T17이 같이 건드린다.

@@ -8,7 +8,9 @@ For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-develop
 **P1 확정(2026-11-04): 시그니처와 열린 결정은 `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md`가 우선한다. 아래 Interfaces와 충돌하면 그 문서를 따른다. 닫은 결정: T7 null = `brief.facts[키]=""`(별도 파일 없음) · T14 서체 = Pretendard OTF base64 임베드 · T20 가중 = 라이브러리 0.04/프리셋 0.06/팔레트 0.10(층별 상한) · T21 계열 8종·colorStrategy 표. T11 리뷰어 위치는 PR #60 값. T12 `finish-review.mjs`(순수)와 T13 `finish-loop.mjs`(nextStep)는 파일을 나눈다. `visualDistance`는 `visual-distance.mjs`에 둔다.**
 
 
-**Goal: 다음 다섯 가지를 Sitebrew 키트·플러그인에 넣고, 공개 main에 PR(v0.2.6)을 올린다.**
+**P2 확정(2026-11-04): 깨보기 결과는 `docs/superpowers/specs/2026-11-04-v026-p2-findings.md`. 높음 5건을 아래 과제에 반영했다 — F1 startSite 종료 고침(T4) · F2 정리 규칙·핑(T4) · F3 계열 규칙 소프트화(T21) · F4 버전 올림을 T22 앞으로(T22·T23) · F5 열쇠 고정 시험과 CI 가지 필터(새 T0b). 새 과제 T0b(열쇠 고정 시험)·T0c(계열·거리 실행 가능성 표)는 Phase A 첫 레인이다. 레인 지침: 닫힘 안 파일(cdp.mjs·bold-safety.mjs·session-scene.mjs·run-dir.mjs·revise-picks.mjs·brand.mjs·directions.mjs·mood.mjs·brief.mjs·content.mjs)은 Phase A에서 고치지 않는다.**
+
+를 Sitebrew 키트·플러그인에 넣고, 공개 main에 PR(v0.2.6)을 올린다.**
 
 후보 3개 실사이트 비교 대시보드
 
@@ -139,6 +141,23 @@ Produces: node factory/scripts/print-pages-key.mjs를 실행하면 stdout에 { k
 - [ ] Step 6: P1 정지. 대표에게 P1 명령을 주고 /pstack:architect 결과대로 Interfaces를 고쳐 커밋한다. 이어서 P2 정지: /pstack:interrogate에서 증명된 지적을 계획에 반영하고 커밋한다.
 
 ## Phase A — 06 열쇠 밖 (T1~T16)
+
+
+## Phase A — 06 열쇠 밖 (T0b·T0c·T1~T16)
+
+
+### Task 0b: 열쇠 고정 시험과 CI 가지 필터 (P2 F5)
+
+Files: Create factory/scripts/phase-a-key.test.mjs. Modify: .github/workflows/ci.yml(pull_request.branches에 feat/v026-* 추가 — 공개 main 병합 전에 되돌린다).
+
+시험은 pagesCodeKey()가 T0 기준값 558068537354068902e1c7ba4b710093d026847033d75ff0667099ea97b50768이고 importClosure() 길이가 55인지 단언한다. Phase B 첫 커밋(T17 앞)에서 지운다. 레인 PR 본문에는 「열쇠 일치: <64자>」 한 줄을 적는다.
+
+### Task 0c: 계열·거리 실행 가능성 표 (P2 F3)
+
+Files: Create factory/scripts/lib/world-spread-report.mjs(읽기 전용, 열쇠 밖), docs/qa/v026-world-spread.md.
+
+원형 10 × 프리셋·라이브러리 풀에서 계열 분포와 visualDistance ≥ 2 쌍 비율을 표로 낸다. Phase B 전에 T21 규칙이 실행 가능한지 본다. 위반이 구조적인 원형은 표에 적는다. 이 과제는 P1 문서 4.6절의 계열 분류표를 코드로 옮긴 임시 사본을 쓰며, T21이 같은 표를 material-family.mjs에 둔다.
+
 
 
 ### Task 1: 방향 보드 자료 결함 2건
@@ -303,6 +322,14 @@ stdout COMPARE <url>, PICK <id>
 
 종료 코드: 확정·stop 0, 무입력 초과 4, 후보 0개 기동 1
 
+P2 추가(F1·F2·F7):
+- qa.mjs startSite를 고친다: detached:!WIN, stop은 killTree(child.pid). 시험은 stop() 뒤 PID가 사라지는 것을 Linux 실제 프로세스로 본다.
+- serve.pids.json 항목은 { pid, port, startedAt, startTime }이다. 다음 --serve의 정리는 PID 생존 + startTime 일치 + 명령줄에 siteDir(path.resolve, Windows는 소문자)일 때만 끈다. 하나라도 못 읽으면 끄지 않고 한 줄로 알린다. Windows 명령줄은 Get-CimInstance Win32_Process(wmic 아님).
+- 대시보드가 10초마다 핑을 보내고 90초 핑이 없으면 서버를 끈다. exit·SIGINT·SIGTERM·SIGHUP에서 동기 killTree.
+- 대시보드 서버가 먼저 listen한 뒤 중계를 띄운다(frame-ancestors에 포트가 든다). 경로에 실행마다 랜덤 토큰(/c/<토큰>/…), Host는 127.0.0.1:<포트>, Origin이 있으면 대시보드 출처일 때만 허용(아니면 403).
+- postMessage: 대시보드는 event.origin이 중계 출처 셋 중 하나이고 event.source가 그 iframe일 때만, bridge는 event.origin === dashboardOrigin일 때만 받는다. targetOrigin은 '*'가 아니다.
+- 중계: 버퍼링한 HTML은 transfer-encoding을 지우고 content-length를 다시 잰다. CSP가 없으면 더하지 않는다. 헤더가 여러 줄이어도 각각 처리한다. Host는 요청 그대로 넘긴다. 시험 항목 추가: 청크 응답·304/HEAD·CSP 없음·상대 Location·PNG 바이트 동일.
+
 - [ ] Step 1: 실패 시험을 쓴다. 픽스처는 frame-ancestors 'none'·script-src 'self' 가짜 사이트 3개이고, run 폴더 이름은 런 폴더 공백/청춘이다. 시험은 이렇다.
 세 iframe title 메시지
 
@@ -372,7 +399,7 @@ remainingSamples(sample, brief) → string[]  (brief.facts에 키가 있으면 �
 
 가격: 원형별 둥근 숫자(saas 월 49,000원, commerce 29,000원)
 
-en 표: example.com, +1 555-0100
+en 표: example.com, +82-2-0000-0000 (Business.phone은 한국 번호만 받는다. +1 555-0100은 스키마를 통과하지 못한다 — P2 F6)
 
 - [ ] Step 1: 실패 시험을 쓴다.
 빈 필수 사업자 사실 채움
@@ -495,6 +522,8 @@ stderr에 예시 정보가 남아 전달하지 않습니다: <키 목록>을 쓴
 종료 1로 끝난다.
 
 다른 사유는 지금처럼 처리한다.
+
+P2 추가(F6): blockers만 믿지 않는다. 독립 검사로 고른 후보의 site/content/site.json에서 sample-facts.json의 값을 글자 그대로 찾는다(값 스캔 — 07이 안 돈 경우와 04 문구에 옮겨 적은 경우를 잡는다). 둘 중 하나라도 걸리면 종료 1. README 목록에서 같은 키의 「예시 연락처(예약 도메인)」와 「예시 정보 남음」은 한 줄로 합친다. 시험 추가: 07 없이 06까지만 한 실행에서 값 스캔이 막는다.
 
 - [ ] Step 1: 실패 시험을 쓴다.
 예시 사유 → 종료 1, 폴더 없음, 목록
@@ -869,6 +898,8 @@ Test: stamp-pages.test.mjs, 법정 초안 시험
 
 띠 크기: 375폭에서 ≤56px, 한 줄 12~14px
 
+P2 추가(F6): site.json.sample에 든 키는 JSON-LD에서도 뺀다(scrubNeedsCheck와 같은 경로). 시험: 예시 메일·전화가 JSON-LD에 실리지 않는다.
+
 - [ ] Step 1: 실패 시험을 쓴다.
 sample → 모든 쪽 banner
 
@@ -989,14 +1020,14 @@ materialFamily(head) → 'paper'|'print'|'collage'|'glass'|'editorial'|'kinetic'
 
 분류표는 P1 문서 4.6절이 확정한다(glass → collage → print → paper → kinetic → editorial → terminal → plain, 앞에서부터 첫 일치). visualDistance는 factory/stamp/visual-distance.mjs, 칸 7개(surface·header·shadow·display·texture·defaultTheme·hero).
 
-규칙: 모든 쌍에서 visualDistance ≥ 2이고 계열이 서로 달라야 한다. 위반은 rejected에 규칙 id로 기록한다.
+규칙(P2 F3 확정): 하드 규칙은 모든 쌍에서 visualDistance ≥ 2 하나이고 위반은 rejected에 규칙 id(visual-distance)로 기록한다. 「계열이 서로 달라야 한다」는 소프트다 — 점수 가산과 thesis 문장에만 쓰고, 풀에 다른 계열이 둘 미만인 원형(dashboard·public)에서는 위반으로 세지 않는다. family-clash는 rejected 사유가 아니라 why의 경고 문구다. 근거: dashboard 프리셋 49개 중 plain 44, public 43개 중 plain 39(P2 문서 F3).
 
 colorStrategy(P1 확정): K1·K3·K5·K9 Restrained, K4·K6·K7 Committed, K2·K8 Full.
 
 thesis 템플릿: {계열} 세계에서 {색 전략} 색으로 {포지셔닝 또는 원형 목표}를 보여 줘요.
 
 - [ ] Step 1: 실패 시험을 쓴다.
-부록 B: 쌍마다 ≥2·계열 3종
+부록 B: 쌍마다 ≥2 (계열 3종은 brand 원형에서만 기대한다)
 
 b primary hue 초록 ±30° 또는 보색
 
@@ -1012,6 +1043,10 @@ foreground 보라 C 0.30 탈락
 ### Task 22: 기준 갱신과 골든 재증명
 
 
+P2 확정(F4·F8): T22는 버전 올림(`node ci/bump-version.mjs 0.2.6` + gen:all)과 열쇠 고정 시험 삭제 뒤에 한다. 순서는 T17~T21 → 버전 올림 → T22. T22가 기록한 열쇠를 INTENT에 적고 T24가 같은지 본다. 범위는 싼 것부터 다섯이다: ① 골든 20개 01 전수 비교표(DirectionsShortError 확인) ② 씨앗 재탐색 ③ 06 정적 전수(install:false, 60 사이트 링크 검사) ④ 기준 파일 갱신 ⑤ 실빌드 3건 = brand-1(로고 이미지)·landing-2(영어)·dashboard-1(계열 규칙이 가장 빡빡).
+
+
+
 **Files:**
 
 Modify: factory/scripts/fixtures/stamp-app-shell/other-archetypes.json(머리 baseCommit), factory/scripts/stamp-mood-baseline.json, 골든 씨앗·표(docs/qa/p3-4-golden.md, factory/stamp/golden.mjs)
@@ -1020,11 +1055,11 @@ Modify: factory/scripts/fixtures/stamp-app-shell/other-archetypes.json(머리 ba
 - [ ] Step 2: mood 기준은 그 시험의 갱신 방법으로 재생성한다. diff 요약을 PR 「의도한 기준 변경」에 적는다.
 - [ ] Step 3: golden.test.mjs가 깨지면 golden.mjs findSeed 절차로 씨앗과 표를 갱신한다. 세트 조건을 못 채우는 원형은 D13의 뒤집는 조건을 적용한다.
 - [ ] Step 4: 골든 실빌드 3건을 백그라운드로 돌린다. 하나에 25~45분 걸린다.
-node factory/stamp/stamp.mjs --golden commerce-2
-
 node factory/stamp/stamp.mjs --golden brand-1
 
-비브랜드 1건
+node factory/stamp/stamp.mjs --golden landing-2
+
+node factory/stamp/stamp.mjs --golden dashboard-1
 
 확인할 것: 로고, header-1440-light-2x.png, brand-exposure, 계열
 
@@ -1039,6 +1074,8 @@ node factory/stamp/stamp.mjs --golden brand-1
 
 
 **Files:**
+
+P2 확정(F4): 버전 올림은 Phase B 마지막 코드 변경이다 — T22 앞에서 한다. 이 과제의 SKILL 갱신은 순서와 무관하다.
 
 Modify: plugins/sitebrew/skills/{new,deliver,revise}/SKILL.md, .../new/references/*, node ci/bump-version.mjs 0.2.6이 바꾸는 파일
 
