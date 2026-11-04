@@ -124,6 +124,62 @@ describe('the guides say what is true', () => {
   })
 })
 
+describe('logo drafts (intake.mjs logo-candidates)', () => {
+  const INTAKE = join(PLUGIN, 'scripts', 'intake.mjs')
+  const dirs = []
+  const scratch = () => { const d = mkdtempSync(join(tmpdir(), 'sitebrew-logo-')); dirs.push(d); return d }
+  after(() => dirs.forEach((d) => rmSync(d, { recursive: true, force: true })))
+  const run = (args) => {
+    const r = spawnSync(process.execPath, [INTAKE, ...args], { encoding: 'utf8', timeout: 60_000 })
+    return { code: r.status, err: r.stderr.trim() }
+  }
+
+  it('a kit that predates logo drafts says so in one line; answers without a name stop before any browser starts', () => {
+    const old = scratch()
+    mkdirSync(join(old, 'factory', 'intake'), { recursive: true })
+    writeFileSync(join(old, 'factory', 'doctor.mjs'), '// old kit\n')
+    const r1 = run(['--kit', old, 'logo-candidates', '--input', join(old, 'a.json'), '--out', join(old, 'out')])
+    assert.equal(r1.code, 1)
+    assert.match(r1.err, /no logo drafts yet/)
+    assert.ok(!existsSync(join(old, 'out')))
+  })
+
+  it(`answers without a name are an error naming the file, not an empty logo (${SKIP_KIT || 'kit found'})`, { skip: SKIP_KIT }, () => {
+    const dir = scratch()
+    const input = join(dir, 'answers.json')
+    writeFileSync(input, JSON.stringify({ topic: '동네 빵집', archetype: 'local', answers: { mood: '따뜻한' } }))
+    const r = run(['--kit', KIT, 'logo-candidates', '--input', input, '--out', join(dir, 'out')])
+    assert.equal(r.code, 1)
+    assert.match(r.err, /need a "name"/)
+    assert.ok(!existsSync(join(dir, 'out')))
+  })
+})
+
+describe(`the plugin doctor and the kit read HIGGSFIELD_DIR the same way (${SKIP_KIT || 'kit found'})`, { skip: SKIP_KIT }, () => {
+  it('same environment, same verdict: found folder -> ok, nothing -> note, a wrong explicit path -> fail', async () => {
+    const { diagnose } = await import(pathToFileURL(join(PLUGIN, 'scripts', 'doctor.mjs')).href)
+    const { higgsfieldDir } = await import(pathToFileURL(join(KIT, 'factory', 'lib', 'higgsfield-dir.mjs')).href)
+    const base = mkdtempSync(join(tmpdir(), 'sitebrew-hf-'))
+    try {
+      const mine = join(base, 'mine'); mkdirSync(mine)
+      const rules = join(base, 'rules'); mkdirSync(join(rules, 'factory', 'media', 'higgsfield'), { recursive: true })
+      const cases = [
+        { env: {}, status: 'note' },
+        { env: { HIGGSFIELD_DIR: mine }, status: 'ok' },
+        { env: { WF_DESIGN_RULES_DIR: rules }, status: 'ok' },
+        { env: { HIGGSFIELD_DIR: join(base, 'nope'), WF_DESIGN_RULES_DIR: rules }, status: 'fail' },
+        { env: { WF_DESIGN_RULES_DIR: base }, status: 'note' },
+      ]
+      for (const c of cases) {
+        const env = { PATH: process.env.PATH, ...c.env }
+        const row = diagnose({ env, cwd: KIT }).results.find((r) => r.id === 'HIGGSFIELD_DIR')
+        assert.equal(row.status, c.status, JSON.stringify(c.env))
+        assert.equal(row.status === 'ok', higgsfieldDir({ env }).dir !== null, `kit disagrees for ${JSON.stringify(c.env)}`)
+      }
+    } finally { rmSync(base, { recursive: true, force: true }) }
+  })
+})
+
 describe('feature questions (intake.mjs features, features-write)', () => {
   const INTAKE = join(PLUGIN, 'scripts', 'intake.mjs')
   const dirs = []

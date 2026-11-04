@@ -10,7 +10,7 @@ import { spawn } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
-import { designRulesPath } from '../lib/design-rules.mjs'
+import { higgsfieldDir } from '../lib/higgsfield-dir.mjs'
 
 export const OBJECT_HERO_BLOCK = 'block-hero-object-3d-orbit'
 export const CODEX_TIMEOUT_MS = 300_000
@@ -21,8 +21,7 @@ export const codexImagesEnabled = (env = process.env) => env.WF_CODEX_IMAGES ===
 
 /** Higgsfield 원본 폴더(HIGGSFIELD_DIR → $WF_DESIGN_RULES_DIR/factory/media/higgsfield). 폴더가 실제로 있을 때만. */
 export function higgsfieldDirOf(env = process.env, exists = existsSync) {
-  const dir = env.HIGGSFIELD_DIR?.trim() || designRulesPath('factory/media/higgsfield', { env }) || null
-  return dir && exists(dir) ? dir : null
+  return higgsfieldDir({ env, isDir: exists }).dir
 }
 
 /** codex 실행 파일이 있고 돈다(`codex --version`)? → 부울. 시험은 run 을 바꿔 끼운다. */

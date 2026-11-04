@@ -192,13 +192,22 @@ test('기본 경로: 시각 기준·Higgsfield 기본값이 design-rules 를 가
   assert.equal(v.hf, null, 'HIGGSFIELD_DIR 이 없으면 폴더도 없다')
 })
 
-test('기본 경로: WF_DESIGN_RULES_DIR 를 주면 세 길이 그 아래를 읽는다', async () => {
+test('기본 경로: WF_DESIGN_RULES_DIR 를 주면 세 길이 그 아래를 읽는다(Higgsfield 폴더는 실제로 있을 때만)', async () => {
   const probe = `
     const a = await import('./factory/board/block-board/jobs.mjs')
     const b = await import('./factory/qa/page-visual.mjs')
     const c = await import('./factory/media/build-media.mjs')
     console.log(JSON.stringify({ blocks: a.BASELINE_DIR, pages: b.PAGE_BASELINE_ROOT, hf: c.HIGGSFIELD_DIR }))`
-  const r = await run(['--input-type=module', '-e', probe], { env: cleanEnv({ WF_DESIGN_RULES_DIR: 'Z:/dr' }) })
+  const root = mkdtempSync(join(tmpdir(), 'fv1-dr-'))
+  made.push(root)
+  mkdirSync(join(root, 'factory', 'media', 'higgsfield'), { recursive: true })
+  const r = await run(['--input-type=module', '-e', probe], { env: cleanEnv({ WF_DESIGN_RULES_DIR: root }) })
   const v = JSON.parse(r.out.trim().split('\n').at(-1))
-  for (const x of Object.values(v)) assert.ok(x.replaceAll('\\', '/').startsWith('Z:/dr/factory/'), x)
+  const under = root.replaceAll('\\', '/')
+  for (const x of Object.values(v)) assert.ok(x.replaceAll('\\', '/').startsWith(`${under}/factory/`), x)
+  // 자료 폴더 아래 기본 자리가 없으면 Higgsfield 폴더는 없음이다(v0.2.6 S8 — 없는 경로를 있는 폴더로 읽지 않는다).
+  const none = mkdtempSync(join(tmpdir(), 'fv1-dr-'))
+  made.push(none)
+  const r2 = await run(['--input-type=module', '-e', probe], { env: cleanEnv({ WF_DESIGN_RULES_DIR: none }) })
+  assert.equal(JSON.parse(r2.out.trim().split('\n').at(-1)).hf, null)
 })
