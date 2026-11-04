@@ -1173,7 +1173,7 @@ impeccable 참고 고지
 
 이름 일관성: startProxy, renderComparePage, serveCompare, buildSampleFacts, remainingSamples, sampleScope, headerLogoOf, measureBrandExposure, brandExposureGate, positioningProfile, visualDistance, materialFamily, collectReviewInputs, parseReview, parseVerdict, nextStep, makeLogoCandidates
 
-열린 결정(P1에서 확정)
+열린 결정(P1에서 확정 — 2026-11-04 모두 닫음, 값은 P1 문서 2절)
 
 T7 null 저장 위치
 
