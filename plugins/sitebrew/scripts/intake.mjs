@@ -10,6 +10,10 @@
 //        input: { "<question id>": true|false } with ids from `features <archetype>` only; anything else is an error naming the input file.
 //        Writes <run folder>/features.json (the stamp reads it); stdout is { features: <path>, outcomes: [{ id, say: { ko, en } }] } - the chosen outcomes after `requires` closed them.
 //        A kit without feature questions: one line, nothing written.
+//   node intake.mjs logo-candidates --input <answers.json> --out <folder>
+//        input: the same answers.json as `brief`. Writes <folder>/1.png ... 6.png (transparent logo drafts at twice the header height) and sheet.png / sheet.html (each draft at 1x and 2x).
+//        stdout is { sheet, items[{ id, path, width, height, kind, symbol }], skipped?, warnings? }. skipped: "no-chrome" = no browser found, nothing written. Set WF_CODEX_IMAGES=1 to let Codex draw one symbol.
+//        The user picks one; put its path in the `logo` answer and run `brief`.
 //   Both feature commands also take --lf <launch-factory folder> (tried first, then LF_DIR and the folders beside the kit).
 // Add --kit <folder> (or set SITEBREW_DIR) when the Sitebrew clone is not in ./sitebrew. Node built-ins only. Nothing here reads or prints a key.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -18,7 +22,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { findKit, kitRange } from './lib/kit.mjs'
 
 const PLUGIN_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder>   [--kit <folder>] [--lf <folder>]'
+const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder> | logo-candidates --input <answers.json> --out <folder>   [--kit <folder>] [--lf <folder>]'
 
 function parse(argv) {
   const o = { positional: [] }
@@ -65,14 +69,27 @@ async function features({ cmd, archetype, o, kit, load }) {
   console.log(JSON.stringify({ features: join(run, 'features.json'), outcomes: table.outcomes.filter((x) => chosen.outcomes.includes(x.id)).map(({ id, say }) => ({ id, say })) }))
 }
 
+/** Logo drafts for the brand answers turn. Name, mood, colours and fonts come out of the same brief the `brief` command builds, so a colour name that is not a code is dropped here too. */
+async function logoCandidates({ o, kit, load }) {
+  if (!o.input || !o.out) throw new Error(USAGE)
+  if (!existsSync(join(kit.dir, 'factory', 'intake', 'logo-candidates.mjs'))) throw new Error('this Sitebrew has no logo drafts yet - update the clone (doctor.mjs shows the version)')
+  const { toBriefReport } = await load('to-brief.mjs')
+  const { makeLogoCandidates } = await load('logo-candidates.mjs')
+  const { brief } = toBriefReport(JSON.parse(readFileSync(resolve(o.input), 'utf8')))
+  if (!brief.facts.name) throw new Error(`${resolve(o.input)}: the answers need a "name" to draw a logo from`)
+  const result = await makeLogoCandidates({ name: brief.facts.name, mood: brief.facts.mood ?? '', colors: brief.brand?.colors ?? [], fonts: brief.brand?.fonts ?? [], outDir: resolve(o.out), codex: process.env.WF_CODEX_IMAGES === '1' })
+  console.log(JSON.stringify(result))
+}
+
 async function main(argv) {
   const o = parse(argv)
   const [cmd, archetype] = o.positional
-  if (!['archetypes', 'questions', 'brief', 'features', 'features-write'].includes(cmd)) throw new Error(USAGE)
+  if (!['archetypes', 'questions', 'brief', 'features', 'features-write', 'logo-candidates'].includes(cmd)) throw new Error(USAGE)
   const kit = findKit({ arg: o.kit, pluginRoot: PLUGIN_ROOT, range: kitRange(PLUGIN_ROOT) })
   if (kit.missing) throw new Error('Sitebrew clone not found - pass --kit <folder> or set SITEBREW_DIR (run doctor.mjs for the fix)')
   const load = (file) => import(pathToFileURL(join(kit.dir, 'factory', 'intake', file)).href)
   if (cmd.startsWith('features')) return features({ cmd, archetype, o, kit, load })
+  if (cmd === 'logo-candidates') return logoCandidates({ o, kit, load })
   const { INTAKE_ARCHETYPES, questionsFor } = await load('questions.mjs')
   if (cmd === 'archetypes') return console.log(JSON.stringify(INTAKE_ARCHETYPES))
   if (cmd === 'questions') {
