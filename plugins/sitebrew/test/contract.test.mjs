@@ -155,6 +155,31 @@ describe('logo drafts (intake.mjs logo-candidates)', () => {
   })
 })
 
+describe(`the plugin doctor and the kit read HIGGSFIELD_DIR the same way (${SKIP_KIT || 'kit found'})`, { skip: SKIP_KIT }, () => {
+  it('same environment, same verdict: found folder -> ok, nothing -> note, a wrong explicit path -> fail', async () => {
+    const { diagnose } = await import(pathToFileURL(join(PLUGIN, 'scripts', 'doctor.mjs')).href)
+    const { higgsfieldDir } = await import(pathToFileURL(join(KIT, 'factory', 'lib', 'higgsfield-dir.mjs')).href)
+    const base = mkdtempSync(join(tmpdir(), 'sitebrew-hf-'))
+    try {
+      const mine = join(base, 'mine'); mkdirSync(mine)
+      const rules = join(base, 'rules'); mkdirSync(join(rules, 'factory', 'media', 'higgsfield'), { recursive: true })
+      const cases = [
+        { env: {}, status: 'note' },
+        { env: { HIGGSFIELD_DIR: mine }, status: 'ok' },
+        { env: { WF_DESIGN_RULES_DIR: rules }, status: 'ok' },
+        { env: { HIGGSFIELD_DIR: join(base, 'nope'), WF_DESIGN_RULES_DIR: rules }, status: 'fail' },
+        { env: { WF_DESIGN_RULES_DIR: base }, status: 'note' },
+      ]
+      for (const c of cases) {
+        const env = { PATH: process.env.PATH, ...c.env }
+        const row = diagnose({ env, cwd: KIT }).results.find((r) => r.id === 'HIGGSFIELD_DIR')
+        assert.equal(row.status, c.status, JSON.stringify(c.env))
+        assert.equal(row.status === 'ok', higgsfieldDir({ env }).dir !== null, `kit disagrees for ${JSON.stringify(c.env)}`)
+      }
+    } finally { rmSync(base, { recursive: true, force: true }) }
+  })
+})
+
 describe('feature questions (intake.mjs features, features-write)', () => {
   const INTAKE = join(PLUGIN, 'scripts', 'intake.mjs')
   const dirs = []
