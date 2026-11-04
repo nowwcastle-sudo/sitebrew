@@ -42,6 +42,7 @@ export const QA_PREFIX = {
   ops: '공개 불가 — 운영 점검 실패: ',
   strict: '공개 불가 — 원형 엄격 기준: ',
   bold: '공개 불가 — 대담안 안전 기준: ',
+  sample: '공개 불가 — 예시 정보 남음: ', // 예시 정보(sample-facts.mjs)가 실제 값으로 안 바뀐 사실 — 한 줄에 키 하나, 입력 대기 갈래(stamp.mjs 가 남은 키를 opts.sample 로 넘긴다)
   mockPreview: MOCK_PREVIEW_BLOCKER, // product 후보의 미리보기 배포 — stamp.mjs 가 더한다(blocker-class.mjs)
 }
 const QA_PREFIXES = Object.values(QA_PREFIX)
@@ -205,6 +206,7 @@ export function writeQaBlockers(runDir, candId, lines) {
  *           runTool?: Function, fetch?: Function, log?: Function, opsOptions?: object, marketingSiteOptions?: object, a11yOptions?: object, strict?: boolean, strictOptions?: object }} [opts]
  *   url 을 안 주면 `next start` 를 빈 포트에 띄운다(관문 잠금 안에서만). 도구 실패는 toolRetries(기본 1, 최대 2)번 다시 돈다.
  *   strict(기본 켬)는 원형 엄격 기준 관문이다 — false 면 건너뛴다. strictOptions 는 어댑터(`strictGateForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
+ *   sample(선택)은 실제 값으로 안 바뀐 예시 정보의 사실 이름들이다 — 키마다 `예시 정보 남음` 사유 한 줄(입력 대기)이 더해져 공개 불가가 된다.
  *   bold(기본 켬)는 대담안 안전 관문이다 — cand.boldness 가 "bold" 일 때만 돌고, false 면 건너뛴다. boldOptions 는 어댑터(`boldSafetyForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
  *   opsOptions·marketingSiteOptions·a11yOptions 는 후보 어댑터(`opsGateForCandidate` 등)에 그대로 넘긴다(Lighthouse 쪽 고르기·시험용 가짜 측정기).
  */
@@ -358,7 +360,9 @@ export async function runCandidateQa(runDir, cand, opts = {}) {
     else if (g.tool === 'bold-safety') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.bold}${p}`)
     else qaLines.push(`${QA_PREFIX.gate}${g.id} — ${g.note}`)
   }
-  const blockers = writeQaBlockers(runDir, cand.id, [...new Set(qaLines)])
+  // 예시 정보가 남은 키마다 한 줄(opts.sample — 남은 게 없으면 줄도 없다). 같은 키가 05·06 쪽 사유로도 뜨는 것은 README 에서 합친다(deliver).
+  const sampleLines = (opts.sample ?? []).map((k) => `${QA_PREFIX.sample}${k}`)
+  const blockers = writeQaBlockers(runDir, cand.id, [...new Set([...qaLines, ...sampleLines])])
   const aiGates = gates.filter((g) => g.tool === 'ai-tell')
   const failedAi = aiGates.filter((g) => g.verdict === 'fail')
   // 사람 확인(관문이 못 재는 것 — marketing-site 의 manualChecks 9개)은 게이트 칸이 아니라 summary 한 곳에만 싣는다(보드 카드가 「사람 확인 n개」로 읽는다)

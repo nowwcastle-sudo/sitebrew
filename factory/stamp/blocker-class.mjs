@@ -1,7 +1,7 @@
 // 공개 불가 사유 두 갈래(factory v1 Task 6.1 · 합의안 D19) — 순수 모듈(import 없음). 07-qa(qa.mjs)와 방향 보드(direction-board/build.mjs)가 이것 하나를 부른다.
 //   input   = 대표 입력을 기다리는 사유: 실제 사진 필요 · 사이트 주소 미정 · 확인 필요 사실 · 예시 연락처 · 법률 검토 미완(검토 파일 없음) + 운영 점검의 facts-empty 줄(확인 필요 사실이 비어서 생긴다, FV1 5.2)
 //   quality = 그 밖 전부(접두가 없는 문장 포함). 기계 기준은 quality 0 이다 — input 은 운영자가 채우면 풀리고 quality 는 공장이 고친다.
-// 접두 표는 세 곳에 있다: gen-pages.mjs BLOCKER(14) · qa.mjs QA_PREFIX(7) · sitemap.mjs BLOCKER_PREFIX(1). 표에 접두를 더하면 아래 두 목록 중 한 곳에도 더한다 —
+// 접두 표는 세 곳에 있다: gen-pages.mjs BLOCKER(14) · qa.mjs QA_PREFIX(9) · sitemap.mjs BLOCKER_PREFIX(1). 표에 접두를 더하면 아래 두 목록 중 한 곳에도 더한다 —
 // 빼먹으면 factory/scripts/blocker-class.test.mjs 가 실패한다(표의 모든 접두가 정확히 한 목록에 있는지 · 소스의 「공개 불가 — 」 글자 상수가 전부 목록에 있는지 본다).
 // 이 모듈이 표를 import 하지 않는 이유: gen-pages·qa 는 무거워서(Next·Chrome 도구를 끌어온다) 보드 빌더가 이 함수 때문에 그것들을 읽으면 안 된다.
 
@@ -18,13 +18,14 @@ export function withMockPreviewBlocker(qa) {
   return { ...qa, publishable: false, blockers: [...(qa.blockers ?? []), MOCK_PREVIEW_BLOCKER] }
 }
 
-/** 대표 입력을 기다리는 접두 — 다섯 가지. */
+/** 대표 입력을 기다리는 접두 — 여섯 가지. */
 export const INPUT_PREFIXES = [
   '공개 불가 — 실제 사진 필요: ', // gen-pages BLOCKER.photo (「이미지 준비 중」 꼬리표가 붙어도 같은 접두)
   '공개 불가 — 사이트 주소 미정', // gen-pages BLOCKER.site
   '공개 불가 — 확인 필요 사실: ', // gen-pages BLOCKER.fact
   '공개 불가 — 예시 연락처(예약 도메인): ', // gen-pages BLOCKER.reserved
   '공개 불가 — 법률 검토 미완: ', // qa QA_PREFIX.legalPending
+  '공개 불가 — 예시 정보 남음: ', // qa QA_PREFIX.sample (예시 정보를 실제 값으로 바꾸면 풀린다, v0.2.6)
 ]
 
 /** 품질 접두 — 입력을 받아도 안 풀리는 사유(공장이 고친다). 목록은 분류가 빠지지 않았음을 시험이 확인하는 자리이고, 함수는 이 목록을 보지 않는다(input 이 아니면 quality). */

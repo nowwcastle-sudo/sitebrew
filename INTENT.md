@@ -43,8 +43,8 @@
 - [ ] T2 후보 중계 proxy.mjs
 - [ ] T3 bridge.js + 대시보드 page.mjs
 - [ ] T4 비교 서버 serve.mjs + `--serve`
-- [ ] T5 예시 고정 표 sample-facts.mjs
-- [ ] T6 stamp 병합·07 사유·법률 건너뛰기
+- [x] T5 예시 고정 표 sample-facts.mjs
+- [x] T6 stamp 병합·07 사유·법률 건너뛰기
 - [ ] T7 `intake brief --facts`
 - [ ] T8 deliver 차단
 - [ ] T9 07 머리글 2배 캡처·로고 관문
