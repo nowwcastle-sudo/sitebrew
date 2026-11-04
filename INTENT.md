@@ -17,9 +17,9 @@
 ## 기준값 (T0)
 | 항목 | 값 |
 |---|---|
-| 06 코드 열쇠 `pagesCodeKey()` | `PAGES_KEY_PLACEHOLDER` |
-| 닫힘 파일 수 | `CLOSURE_N_PLACEHOLDER` |
-| ci:verify Linux 기준선 | `CI_BASELINE_PLACEHOLDER` |
+| 06 코드 열쇠 `pagesCodeKey()` | `558068537354068902e1c7ba4b710093d026847033d75ff0667099ea97b50768` |
+| 닫힘 파일 수 | 55 |
+| ci:verify Linux 기준선 | Node 24.22.1·Chromium 있음(`CHROME_PATH=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`, `NODE_OPTIONS=--max-old-space-size=6000`)에서 `node ci/verify.mjs --keep-going` 11분 42초. 실패 시험 0(tests=3126 pass=3104 skipped=22). check:regen·pincheck·readme·lint·lint:ui·blocks:check·registry:check·closure·typecheck·vocab 모두 0. 종료 1은 test:light 래칫 하나뿐: 건너뜀 22 < 기준선 25(`ci/baselines/skipped-tests.txt`를 22로 줄이라는 메시지, 시험 실패 아님). security:osv는 도구 없음 SKIP. 기준선 파일은 GitHub CI 값을 본 뒤 정한다 |
 
 ## pstack 정지 지점
 | 지점 | 상태 | 명령 |
@@ -31,9 +31,8 @@
 
 ## 전체 작업 목록
 ### Phase 0
-- [~] T0 가지·기준값·환경·설계/계획 문서 (진행: 이 커밋)
-- [ ] P1 architect 결과 반영(Interfaces 확정) — 열린 결정: T7 null 저장 위치 · T14 서체 로드 경로 · T20 가중값 · T21 재료 계열 표·colorStrategy · T11 리뷰어 정의 위치
-- [ ] P2 interrogate 결과 반영
+- [x] T0 가지·기준값·환경·설계/계획 문서 (PR #59)
+- [ ] P1 architect 결과 반영(Interfaces 확정) — 열린 결정: T7 null 저장 위치 · T14 서체 로드 경로 · T20 가중값 · T21 재료 계열 표·colorStrategy · - [ ] P2 interrogate 결과 반영
 
 ### Phase A — 06 열쇠 밖
 - [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
@@ -46,7 +45,7 @@
 - [ ] T8 deliver 차단
 - [ ] T9 07 머리글 2배 캡처·로고 관문
 - [ ] T10 07 brand-exposure 관문
-- [ ] T11 마감 리뷰 조사(코드 없음, 문서)
+- [x] T11 마감 리뷰 조사 — PR #60 병합. `docs/superpowers/specs/2026-11-04-finish-review-mapping.md`. 확정: 리뷰어 정의 `plugins/sitebrew/agents/sitebrew-finish-reviewer.md`(tools: Read), Codex 대체 `plugins/sitebrew/skills/new/references/finish-reviewer.md`, 형식 정본 `references/review-format.md` 공유, ux-gate는 `hero-768-light.png`만 추가, T12 `factory/stamp/finish-review.mjs`(순수) · T13 `factory/stamp/finish-loop.mjs`(nextStep) 인터페이스는 문서 6절
 - [ ] T12 마감 리뷰어와 입출력 finish-review.mjs
 - [ ] T13 마감 리뷰 루프와 상한
 - [ ] T14 로고 시안 생성 logo-candidates.mjs
@@ -75,8 +74,9 @@
 - Phase B(T17~T21)는 06 열쇠 안 파일을 같이 건드리므로 한 스레드(또는 순차)로 한다. T22는 그 뒤.
 
 ## 변경 이력
+- 2026-11-04 · ci:verify 기준선 기록(위). T11 병합(#60)으로 열린 결정 중 리뷰어 정의 위치 확정.
 - 2026-11-04 · T0 착수. 계획 문서(제1부+부록→specs, 제2부→plans)를 저장소에 옮김. 환경 확인: 클라우드 기본 node 22 → `/opt/node24` 사용.
 
 ## 현재 상태 / 다음 한 작업
-- 상태: T0 진행 중.
-- 다음: ci:verify 기준선 기록 → 푸시·드래프트 PR → P1 명령을 대표에게 전달.
+- 상태: T0·T11 완료. PR #59(드래프트) CI 진행 중. P1 대기.
+- 다음: 대표가 P1(`/pstack:architect`)을 실행하면 결과로 계획 Interfaces·열린 결정 5건(T11은 닫힘)을 고친다.
