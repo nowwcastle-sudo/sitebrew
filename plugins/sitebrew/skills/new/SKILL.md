@@ -172,6 +172,14 @@ npm run stamp -- --brief out/brief.json --run out/my-site --pick a
 
 Replace `a` with the letter the user chose. For that candidate only, this also writes the legal pages as drafts. Exit 1: read `out/my-site/<pick>/candidate.json` (`blockers`) and `out/my-site/stamp-summary.json`, and run `doctor`. Exit 3 waits for a legal review file: follow `factory/legal/AGENT.md`, then run the same `--pick` command again. Without `LAW_API_OC` the review cannot be checked against the law, and the result stays "legal review not done, not publishable". That is correct, not a failure.
 
+### Finish review (only when the user asks for it)
+
+```bash
+npm run stamp -- --run out/my-site --pick a --finish-review
+```
+
+The first output line is `REVIEW <action> <round>`; do what it says. `review` or `verdict`: have the finish reviewer write the file (the `sitebrew-finish-reviewer` sub-agent in Claude Code; in Codex you review in this session, and you tell the user it is not an independent review: `references/finish-reviewer.md`). The file format is in `references/review-format.md`. `apply`: the kit already applied the `revise` prescriptions and rebuilt once. `ask-human`: say what the review lists for a person, then stop. `done`: go on to the hand-over below. The loop has at most 2 rounds.
+
 Then hand over to the `deliver` skill (copy the site to the user's folder) or the `revise` skill (change a design, colour or font, a section, or copy).
 
 ## Chatbot mode

@@ -41,7 +41,7 @@ export class UsageError extends Error {
   }
 }
 
-export const USAGE = '사용법: node factory/stamp/stamp.mjs (--brief <file> | --golden <id> | --all-golden) [--run <dir>] [--until <01..08>] [--pick a|b|c] [--deploy-preview]\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c (--revise "<수정 요청>" [--explain] | --revise-readings "<읽기 JSON>" | --revise-pick <번호>:<안|none> | --revise-undo)   (수정 — factory/stamp/revise.mjs)\n        node factory/stamp/stamp.mjs --run <dir> --redraw-wider   (「너무 똑같아」 — 방향 3안을 더 넓게 다시 고른다)'
+export const USAGE = '사용법: node factory/stamp/stamp.mjs (--brief <file> | --golden <id> | --all-golden) [--run <dir>] [--until <01..08>] [--pick a|b|c] [--deploy-preview]\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c (--revise "<수정 요청>" [--explain] | --revise-readings "<읽기 JSON>" | --revise-pick <번호>:<안|none> | --revise-undo)   (수정 — factory/stamp/revise.mjs)\n        node factory/stamp/stamp.mjs --run <dir> --redraw-wider   (「너무 똑같아」 — 방향 3안을 더 넓게 다시 고른다)\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c --finish-review   (마감 리뷰 — 다음 걸음을 `REVIEW <행동> <라운드>` 한 줄로 알린다. factory/stamp/finish-loop.mjs)'
 
 /** 단계 이름 「01」·「1」·「01-direction」 → 정식 이름. */
 export function normalizeStep(v) {
@@ -74,6 +74,7 @@ export function parseArgs(argv) {
     else if (a === '--explain') opts.explain = true
     else if (a === '--revise-undo') opts.reviseUndo = true
     else if (a === '--redraw-wider') opts.redrawWider = true
+    else if (a === '--finish-review') opts.finishReview = true
     else if (a === '--revise-pick') {
       const m = /^(\d+):([A-Za-z0-9_-]+)$/.exec(take(i++, a))
       if (!m) throw new UsageError(`--revise-pick 은 <번호>:<안> 모양이다(예: 1:v2): ${JSON.stringify(argv[i])}`)
@@ -84,6 +85,12 @@ export function parseArgs(argv) {
     // 「너무 똑같아」 — 이미 한 번 돈 실행 폴더의 방향 3안을 더 넓게 다시 고른다. 다른 모드와 함께 쓰지 않는다.
     if (!opts.run) throw new UsageError('--redraw-wider 는 --run <dir> 이 필요하다')
     if ([opts.brief, opts.golden, opts.allGolden, opts.until, opts.pick, opts.deployPreview, opts.revise != null, opts.reviseReadings != null, opts.revisePick, opts.reviseUndo, opts.explain].some(Boolean)) throw new UsageError('--redraw-wider 는 --run 과만 쓴다')
+    return opts
+  }
+  if (opts.finishReview) {
+    // 마감 리뷰 — 06 까지 끝난 실행 폴더에서 고른 안의 리뷰 파일 상태를 읽는다. 다른 모드와 함께 쓰지 않는다.
+    if (!opts.run || !opts.pick) throw new UsageError('--finish-review 는 --run <dir> 과 --pick a|b|c 가 필요하다')
+    if ([opts.brief, opts.golden, opts.allGolden, opts.until, opts.deployPreview, opts.revise != null, opts.reviseReadings != null, opts.revisePick, opts.reviseUndo, opts.explain].some(Boolean)) throw new UsageError('--finish-review 는 --run 과 --pick 만 함께 쓴다')
     return opts
   }
   if (opts.revise != null || opts.reviseReadings != null || opts.revisePick || opts.reviseUndo) {
@@ -677,6 +684,25 @@ export async function runRedrawWider(opts, deps) {
   return { ...r, lines: [...r.lines, line] }
 }
 
+/**
+ * 마감 리뷰(v0.2.6 T13) — `--run <dir> --pick <안> --finish-review`. 파일 상태가 정하는 다음 걸음 하나를 알리고(첫 줄 `REVIEW <행동> <라운드>`), apply 이면 처방을 적용해 고른 안의 06·07 을 한 번 다시 만든다.
+ * 종료: 0 끝(done · apply 를 마침) · 3 리뷰어나 사람이 할 일(review · verdict · ask-human · 문구 응답 대기) · 1 도구 실패. 행동 결정은 finish-loop.mjs 한 곳이다.
+ * @param {{ api?: object, rebuild?: Function }} [inject] 시험이 가짜를 준다
+ */
+export async function runFinishReviewCommand(opts, deps, inject = {}) {
+  const runDir = resolve(opts.run)
+  const { runFinishLoop } = await import('./finish-loop.mjs')
+  const rebuild = inject.rebuild ?? (async () => {
+    const summary = readJsonMaybe(join(runDir, 'stamp-summary.json'))
+    if (!summary?.brief) return { ok: false, message: `실행 요약(stamp-summary.json)이 없다: ${runDir}` }
+    const r = await runStamp({ brief: summary.brief, run: runDir, pick: opts.pick }, deps)
+    // --pick 한 안이 공개 불가이면 종료 1(gate-failed)이지만 06·07 은 다시 만들어졌다 — 도구 실패(tool-failed)만 실패다.
+    if (r.summary.status === 'waiting') return { ok: false, waiting: true, message: `찍어내기가 입력을 기다린다 (${r.summary.waiting.map((w) => w.file ?? w.stage).join(', ') || '요약 참고'})` }
+    return r.summary.status === 'done' || r.summary.status === 'gate-failed' ? { ok: true } : { ok: false, message: `찍어내기 ${r.summary.status}: ${(r.summary.failures ?? []).map((f) => f.message).join(' | ')}` }
+  })
+  return runFinishLoop({ runDir, pick: opts.pick }, { rebuild, say: deps.say ?? console.log, ...(inject.api ? { api: inject.api } : {}) })
+}
+
 // CLI
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
   let opts
@@ -688,6 +714,9 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
   }
   if (opts && (opts.revise != null || opts.reviseReadings != null || opts.revisePick || opts.reviseUndo)) {
     const r = await runReviseCommand(opts)
+    process.exitCode = r.code
+  } else if (opts?.finishReview) {
+    const r = await runFinishReviewCommand(opts, await defaultDeps({ preferences: false }))
     process.exitCode = r.code
   } else if (opts?.redrawWider) {
     const r = await runRedrawWider(opts, await defaultDeps())

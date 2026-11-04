@@ -1,6 +1,6 @@
 // UX gate: node ux-gate.mjs <url> <outDir>
 // - Page is captured as viewport tiles (tile_<w>_<n>.png) instead of captureBeyondViewport,
-//   which repeated the hero at the end under mobile emulation.
+//   which repeated the hero at the end under mobile emulation. hero-768-light.png is a review-only extra (finish review, v0.2.6); no check reads it.
 // - ux_gate.json: nav, persistent nav after scroll, body contrast >= 7:1 (fails when nothing was measured), horizontal scroll, clipped text,
 //   text-box overlap + text clipped by an overflow-hidden/clip ancestor (text-boxes.mjs, C296 — fails when no text box was measured).
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
@@ -101,6 +101,9 @@ for (const [w, h, mobile] of [[1440, 900, false], [375, 812, false]]) {
     gate[`${w}-${scheme}`] = g;
   }
 }
+// 마감 리뷰용 참고 캡처(v0.2.6 T12): 768 첫 화면 한 장 — 헤더가 접히는 경계는 1440·375 사이에서만 보인다. 판정에 쓰지 않는다(gate·fail 에 넣지 않는다).
+await load(768, 1024, false, 'light');
+await shot('hero-768-light');
 const fail = [];
 for (const [k, g] of Object.entries(gate)) {
   if (!g.topNav) fail.push(`${k}: no nav at top`);
