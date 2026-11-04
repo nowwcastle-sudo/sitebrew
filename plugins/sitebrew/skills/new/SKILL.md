@@ -149,7 +149,7 @@ npm run stamp -- --brief out/brief.json --run out/my-site
 | `0` | Done. | Go to section 4. |
 | `1` | A gate or tool failed. | Read `out/my-site/stamp-summary.json`, field `status`; run `doctor` and report the failing gate. Rerun only after a change (see Never). If the output says `Chrome/Edge not found`, the gates have no browser: follow the `browser` line of `doctor` (set `CHROME_PATH`), then run the same command again. |
 | `2` | Argument error. | Nothing was built. Fix the command (`--brief` and `--run` paths) and run it again. |
-| `3` | Waiting for you: step 04 wrote one `04-content.request.json` per candidate (the script never calls a language model). | Write the copy by following `factory/stamp/COPY.md` in the kit. Save each answer as `04-content.json` in the folder of its request (`out/my-site/<letter>/04-content.json`, letter `a`, `b` or `c`), then run the same command again. |
+| `3` | Waiting for you: step 04 wrote one `04-content.request.json` per candidate (the script never calls a language model). | Write the copy by following `factory/stamp/COPY.md` in the kit. Save each answer as `04-content.json` in the folder of its request (`out/my-site/<letter>/04-content.json`, letter `a`, `b` or `c`), then run the same command again. The three candidates' copy is independent: if your host supports sub-agents, write the three in parallel, one sub-agent per candidate; each reads only its own `04-content.request.json` and writes only its own `04-content.json`. Without sub-agents, write them one after another. |
 | anything else, or no code | The command was cut off. | Run the same command once more. The same result twice: stop and report it. |
 
 ## 4. Show the board and let the user pick

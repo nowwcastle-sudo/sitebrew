@@ -75,7 +75,7 @@ The JSON holds `plan.items`: each item has an `id`, a `status`, a `say` sentence
 |---|---|
 | `todo` | Ask for it (step 2). The plan has the exact steps; you run them with `run`. |
 | `manual` | Never run it. Show the `say` sentence and the printed steps: the user runs them (`manualOnly` steps such as `apt`, `sudo` or `npm install -g`). |
-| `blocked` | Nothing can run; say why, from `say`. `reason: unsafe-folder`: the current folder is the bare home folder or an operating-system folder. Ask whether to create an empty `Sitebrew` folder under Documents (if a cloud-sync service syncs the Documents folder, offer a folder outside it: a sync client can stop a clone and `npm install` with `EPERM` or `EBUSY`); after a yes, create it and start every later `plan` and `run` in it (`cd <folder> && node ...`): from any other folder the plan does not find the clone. This session's working folder stays the old one: step 3 says what to tell the user. No `reason`: this plugin build has no repository address (no owner) and is incomplete: stop and say so. |
+| `blocked` | Nothing can run; say why, from `say`. `reason: unsafe-folder`: the current folder is the bare home folder or an operating-system folder. Ask whether to create an empty `Sitebrew` folder at `~/dev/Sitebrew` (the default suggestion; on Windows `%USERPROFILE%\dev\Sitebrew`). Do not offer Documents first: a cloud-sync service such as OneDrive often syncs it, and a sync client can stop a clone and `npm install` with `EPERM` or `EBUSY`; if the user asks for Documents, warn about this once; after a yes, create it and start every later `plan` and `run` in it (`cd <folder> && node ...`): from any other folder the plan does not find the clone. This session's working folder stays the old one: step 3 says what to tell the user. No `reason`: this plugin build has no repository address (no owner) and is incomplete: stop and say so. |
 
 ### 2. Ask for each item, then run it
 
@@ -134,17 +134,16 @@ This window cannot run commands. Run nothing, and do not say you ran anything. C
 1. Ask which system the user has (Windows, macOS or Linux) and which folder their terminal is open in (the prompt shows it). If it is the bare home folder or an operating-system folder (`C:\Windows\System32`, `/usr`), give these lines first and have the user continue from the new folder:
 
    ```powershell
-   cd ([Environment]::GetFolderPath('MyDocuments'))
-   mkdir -Force Sitebrew
-   cd Sitebrew
+   mkdir -Force "$HOME\dev\Sitebrew"
+   cd "$HOME\dev\Sitebrew"
    ```
 
    ```bash
-   mkdir -p ~/Documents/Sitebrew
-   cd ~/Documents/Sitebrew
+   mkdir -p ~/dev/Sitebrew
+   cd ~/dev/Sitebrew
    ```
 
-   On Windows, if the user's Documents folder is synced by a cloud-sync service, ask for another folder outside it instead: syncing can stop the install with `EPERM` or `EBUSY`.
+   Do not put the folder under Documents unless the user asks: a cloud-sync service (OneDrive and the like) often syncs Documents, and syncing can stop the install with `EPERM` or `EBUSY`. If the user insists on Documents, warn once and continue.
 
 2. Load that system's section of the install guide (see "Reading the install guide").
 3. Check first, install second. For each item ask the user to run its check in the folder that holds `sitebrew` (type `cd ..` if the prompt shows `sitebrew`) and paste the result. Skip the item when the check passes.

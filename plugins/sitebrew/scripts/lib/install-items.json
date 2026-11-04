@@ -412,8 +412,8 @@
         "en": "This plugin build has no owner set, so there is no address to clone from. Use the address in the install instructions."
       },
       "unsafeFolder": {
-        "ko": "이 폴더에는 내려받지 않아요. 홈 폴더 맨 위나 운영체제 폴더(`C:\\Windows`, `Program Files`, `/usr` 같은 곳)에 파일이 흩어지면 되돌리기 어려워요. 새 빈 `Sitebrew` 폴더를 만들어요(예: 문서 폴더 안. 문서 폴더를 클라우드 동기화 서비스가 동기화하면 그 밖의 폴더를 써요: 동기화가 설치를 막아 `EPERM`·`EBUSY` 오류가 날 수 있어요). 설치는 그 폴더에서 이어가요.",
-        "en": "Nothing is downloaded into this folder. Files spread over the top of the home folder or an operating-system folder (`C:\\Windows`, `Program Files`, `/usr`) are hard to undo. Make a new empty `Sitebrew` folder (for example under Documents; if a cloud-sync service syncs your Documents folder, use a folder outside it, because syncing can stop the install with `EPERM` or `EBUSY` errors). The installation then continues in that folder."
+        "ko": "이 폴더에는 내려받지 않아요. 홈 폴더 맨 위나 운영체제 폴더(`C:\\Windows`, `Program Files`, `/usr` 같은 곳)에 파일이 흩어지면 되돌리기 어려워요. 새 빈 `Sitebrew` 폴더를 만들어요. 기본 제안은 홈 폴더 아래 `dev/Sitebrew`예요. 문서 폴더는 쓰지 않는 편이 좋아요: 클라우드 동기화 서비스(OneDrive 등)가 문서 폴더를 동기화하면 동기화가 설치를 막아 `EPERM`·`EBUSY` 오류가 날 수 있어요. 설치는 그 폴더에서 이어가요.",
+        "en": "Nothing is downloaded into this folder. Files spread over the top of the home folder or an operating-system folder (`C:\\Windows`, `Program Files`, `/usr`) are hard to undo. Make a new empty `Sitebrew` folder. The default suggestion is `dev/Sitebrew` under the home folder. Avoid the Documents folder: if a cloud-sync service (OneDrive and the like) syncs it, syncing can stop the install with `EPERM` or `EBUSY` errors. The installation then continues in that folder."
       },
       "all": {
         "steps": [

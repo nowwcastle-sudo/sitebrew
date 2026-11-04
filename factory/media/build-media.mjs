@@ -12,14 +12,14 @@ import { join, dirname, resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
-import { designRulesPath } from '../lib/design-rules.mjs'
+import { higgsfieldDir } from '../lib/higgsfield-dir.mjs'
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const SOURCES = join(ROOT, 'factory', 'media', 'media-sources.json')
 export const SRC_DIR = join(ROOT, '.tmp', 'media-src')
 export const OUT_DIR = join(ROOT, 'public', 'media')
-// Higgsfield 생성물 폴더(선택). HIGGSFIELD_DIR → $WF_DESIGN_RULES_DIR/factory/media/higgsfield → null. null 이면 생성 칸은 higgsfield.request.json 요청으로 남고 공장은 계속 돈다(D24).
-export const HIGGSFIELD_DIR = process.env.HIGGSFIELD_DIR?.trim() || designRulesPath('factory/media/higgsfield') || null
+// Higgsfield 생성물 폴더(선택). HIGGSFIELD_DIR → $WF_DESIGN_RULES_DIR/factory/media/higgsfield → null(폴더가 실제로 있을 때만 — 해석은 lib/higgsfield-dir.mjs 한 곳). null 이면 생성 칸은 higgsfield.request.json 요청으로 남고 공장은 계속 돈다(D24).
+export const HIGGSFIELD_DIR = higgsfieldDir().dir
 // hyperframes 렌더 결과(영상 원본) 폴더 — <폴더>/<recipe>/<slot>.mp4. 렌더 래퍼(render-hyperframes.mjs)가 쓰고 build-media 가 읽는다.
 export const HYPERFRAMES_DIR = process.env.HYPERFRAMES_DIR ?? join(ROOT, '.tmp', 'hyperframes')
 export const HF_LICENSE = 'Apache-2.0 도구로 합성, 내용은 공장 생성'

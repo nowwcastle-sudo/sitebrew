@@ -14,6 +14,7 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { readSecret as readSecretEnv, maskSecrets } from './lib/secret-env.mjs'
 import { designRulesPath, designRulesRoot, absentNoteParts } from './lib/design-rules.mjs'
+import { higgsfieldDir } from './lib/higgsfield-dir.mjs'
 
 export const STAGES = ['stamp', 'legal', 'media', 'publish', 'learn']
 export const TIMEOUT_MS = 10_000
@@ -84,8 +85,7 @@ const higgsfieldCheck = {
   id: 'HIGGSFIELD_DIR',
   guide: 'Higgsfield 원본 폴더를 만들거나 경로를 환경 변수 HIGGSFIELD_DIR 로 넣는다',
   async run(ctx) {
-    const explicit = ctx.env.HIGGSFIELD_DIR?.trim()
-    const dir = explicit || ctx.designRulesPath('factory/media/higgsfield')
+    const { candidate: dir, explicit } = higgsfieldDir({ env: ctx.env, isDir: ctx.isDir, rulesPath: ctx.designRulesPath })
     const absent = () => note(
       '선택: HIGGSFIELD_DIR 없음 — 생성 이미지 칸은 만들지 않고 higgsfield.request.json 요청으로 남긴다. 생성한 파일 폴더를 HIGGSFIELD_DIR 로 넣으면 쓴다.',
       'optional: HIGGSFIELD_DIR not set - generated-image slots are not produced; they are written to higgsfield.request.json as requests. Point HIGGSFIELD_DIR at a folder of generated files to use them.',
@@ -106,8 +106,7 @@ const objectHeroCheck = {
   id: '3D_OBJECT_HERO',
   guide: 'HIGGSFIELD_DIR 에 Higgsfield 원본 폴더를 두거나, WF_CODEX_IMAGES=1 과 codex 로그인으로 Codex CLI 이미지 생성을 켠다',
   async run(ctx) {
-    const hf = ctx.env.HIGGSFIELD_DIR?.trim() || ctx.designRulesPath('factory/media/higgsfield')
-    if (hf && ctx.isDir(hf)) return { ok: true, message: '3D 오브젝트 히어로 재료 있음 — Higgsfield 원본 폴더로 이미지·모델을 쓴다' }
+    if (higgsfieldDir({ env: ctx.env, isDir: ctx.isDir, rulesPath: ctx.designRulesPath }).dir) return { ok: true, message: '3D 오브젝트 히어로 재료 있음 — Higgsfield 원본 폴더로 이미지·모델을 쓴다' }
     if (ctx.env.WF_CODEX_IMAGES === '1') {
       const { code } = await ctx.exec('codex', ['--version'])
       if (code === 0) return { ok: true, message: '3D 오브젝트 히어로 재료 있음 — Codex CLI 이미지 생성(WF_CODEX_IMAGES=1)으로 이미지를 만든다(모델은 이미지-3D 변환 도구가 필요하다)' }

@@ -52,8 +52,8 @@
 - [x] T11 마감 리뷰 조사 — PR #60 병합. `docs/superpowers/specs/2026-11-04-finish-review-mapping.md`. 확정: 리뷰어 정의 `plugins/sitebrew/agents/sitebrew-finish-reviewer.md`(tools: Read), Codex 대체 `plugins/sitebrew/skills/new/references/finish-reviewer.md`, 형식 정본 `references/review-format.md` 공유, ux-gate는 `hero-768-light.png`만 추가, T12 `factory/stamp/finish-review.mjs`(순수) · T13 `factory/stamp/finish-loop.mjs`(nextStep) 인터페이스는 문서 6절
 - [ ] T12 마감 리뷰어와 입출력 finish-review.mjs
 - [ ] T13 마감 리뷰 루프와 상한
-- [ ] T14 로고 시안 생성 logo-candidates.mjs
-- [ ] T15 작은 개선 S8·S9·S10
+- [x] T14 로고 시안 생성 logo-candidates.mjs (PR #62)
+- [x] T15 작은 개선 S8·S9·S10 (PR #62 — HIGGSFIELD_DIR 해석 한 곳 factory/lib/higgsfield-dir.mjs, 기본 폴더 ~/dev/Sitebrew, 문구 병렬 안내)
 - [ ] T16 07 후보 병렬 옵션 S11
 - [ ] Phase A 마감: 열쇠 = T0 기준, ci:verify ≥ 기준선
 - [ ] P3 blast-radius 결과 반영
