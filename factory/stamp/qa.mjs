@@ -15,6 +15,8 @@
 //     strict(P3-4 Task 4) 0 원형 엄격 기준 어김 없음 · 1 어김(규칙이 요구한 쪽을 못 잰 `na` 포함) 또는 도구 실패(쪽이 안 열림·Chrome) — 원형마다 첫 화면에 있어야 할 것(`STRICT_BY_ARCHETYPE`), 열린 쪽만
 //     bold-safety(factory v1 Task 4.2, D20) 대담안(cand.boldness "bold")만. 0 안전 기준 어김 없음 · 1 어김(LCP·CLS·깜빡임·대비·동작 줄이기 정지·public/dashboard 모션 금지, 못 잰 값 포함) 또는 도구 실패
 //       (앞선 ops·a11y 결과가 없거나 Chrome 측정 예외) — LCP·CLS·대비는 앞선 관문 결과를 읽는다. 끄려면 opts.bold:false, 안쪽 측정기는 opts.boldOptions.measure
+//     logo(v0.2.6 T9) 브리프에 로고가 있을 때만. 0 머리글에 그림 로고가 보임 · 1 글자뿐·깨짐·높이 20px 미만(판정) 또는 도구 실패(ux 관문이 로고 계측을 못 남김) — ux 관문의 ux_gate.json 을 읽는다(Chrome 을 다시 띄우지 않는다). 끄려면 opts.logo:false
+//     brand-exposure(v0.2.6 T10) 브랜드 주색(brief.brand.colors[0])이 있을 때만. 0 히어로 1440 에서 주색 근처 면적이 하한 이상 · 1 미만(판정) 또는 도구 실패 — 하한은 colorStrategy 별(`factory/qa/brand-exposure.mjs`). 끄려면 opts.brandExposure:false, 안쪽 측정기는 opts.brandExposureOptions.measure
 //   공통: 2 = 인자 오류(묶음이 도구를 잘못 불렀다) · 신호·시간 초과 = 도구 실패 · 0 인데 결과 파일이 없거나 모양이 틀리면 도구 실패(「통과」가 아니라 검증 대상).
 // 도구 실패(측정 못 함)는 공개 가능이 아니다 — 다만 AI 티는 문턱이 없는 동안(대장 C80) 재기만 하는 관문이라 경고로만 남긴다.
 import { spawn } from 'node:child_process'
@@ -27,6 +29,8 @@ import { a11yGateForCandidate } from '../qa/a11y-gate.mjs'
 import { marketingSiteForCandidate } from '../qa/marketing-site.mjs'
 import { opsGateForCandidate } from '../qa/ops-gate.mjs'
 import { boldSafetyForCandidate } from '../qa/bold-safety.mjs'
+import { hasBrandLogo, logoGateForCandidate } from '../qa/logo-gate.mjs'
+import { brandColorOf, brandExposureForCandidate } from '../qa/brand-exposure.mjs'
 import { STRICT_BY_ARCHETYPE, strictGateForCandidate } from '../qa/strict-archetype.mjs'
 import { MOCK_PREVIEW_BLOCKER } from './blocker-class.mjs'
 import { splitBlockers } from './blocker-class.mjs'
@@ -42,6 +46,8 @@ export const QA_PREFIX = {
   ops: '공개 불가 — 운영 점검 실패: ',
   strict: '공개 불가 — 원형 엄격 기준: ',
   bold: '공개 불가 — 대담안 안전 기준: ',
+  logo: '공개 불가 — 로고가 머리글에 안 보임: ',
+  brand: '공개 불가 — 브랜드 주색이 화면에 거의 안 보임: ',
   mockPreview: MOCK_PREVIEW_BLOCKER, // product 후보의 미리보기 배포 — stamp.mjs 가 더한다(blocker-class.mjs)
 }
 const QA_PREFIXES = Object.values(QA_PREFIX)
@@ -205,6 +211,7 @@ export function writeQaBlockers(runDir, candId, lines) {
  *           runTool?: Function, fetch?: Function, log?: Function, opsOptions?: object, marketingSiteOptions?: object, a11yOptions?: object, strict?: boolean, strictOptions?: object }} [opts]
  *   url 을 안 주면 `next start` 를 빈 포트에 띄운다(관문 잠금 안에서만). 도구 실패는 toolRetries(기본 1, 최대 2)번 다시 돈다.
  *   strict(기본 켬)는 원형 엄격 기준 관문이다 — false 면 건너뛴다. strictOptions 는 어댑터(`strictGateForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
+ *   logo(기본 켬)는 머리글 로고 관문이다 — 후보 브랜드 입력에 로고가 있을 때만 돈다. brandExposure(기본 켬)는 주색 노출 관문이다 — 브랜드 색이 있을 때만 돈다(brandExposureOptions 는 어댑터에 그대로).
  *   bold(기본 켬)는 대담안 안전 관문이다 — cand.boldness 가 "bold" 일 때만 돌고, false 면 건너뛴다. boldOptions 는 어댑터(`boldSafetyForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
  *   opsOptions·marketingSiteOptions·a11yOptions 는 후보 어댑터(`opsGateForCandidate` 등)에 그대로 넘긴다(Lighthouse 쪽 고르기·시험용 가짜 측정기).
  */
@@ -314,6 +321,15 @@ export async function runCandidateQa(runDir, cand, opts = {}) {
       await gate(`ai-tell:${route}`, 'ai-tell', aiArgs, join(dirOf('ai-tell'), TOOLS['ai-tell'].result), { route })
     }
 
+    // 3b. 머리글 로고(v0.2.6 T9 — 브리프에 로고가 있을 때만): ux 관문이 남긴 로고 계측을 읽는다. 머리글은 모든 쪽에서 같으므로 쪽 하나(홈이 열렸으면 홈).
+    //     ux 관문 자체가 도구 실패였으면 계측이 없는 까닭이 이미 사유로 남으므로 다시 적지 않는다.
+    if (opts.logo !== false && hasBrandLogo(cand) && openedRoutes.length) {
+      const route = openedRoutes.includes('/') ? '/' : openedRoutes[0]
+      if (gates.find((g) => g.id === `ux:${route}`)?.verdict !== 'tool') {
+        await adapterGate('logo', async () => logoGateForCandidate(cand, { uxGateFile: join(qaDir, 'ux', routeSlug(route), 'gate', 'ux_gate.json') }))
+      }
+    }
+
     // 4. 마케팅 사이트 관문(P3-4 Task 2 — 쪽 단위 marketing-gate 는 그 안 pages[] 에 들어 있어 쪽마다 따로 돌리지 않는다): 02-sitemap 을 읽어 흐름·전환·문체
     await adapterGate('marketing-site', () => marketingSiteForCandidate(runDir, cand, { origin: url, ...(opts.marketingSiteOptions ?? {}) }))
 
@@ -322,6 +338,9 @@ export async function runCandidateQa(runDir, cand, opts = {}) {
 
     // 6. 원형 엄격 기준(P3-4 Task 4 — 원형마다 첫 화면에 있어야 할 것): 열린 쪽만, 기준이 있는 원형만.
     if (opts.strict !== false && openedRoutes.length && STRICT_BY_ARCHETYPE[siteJson.archetype]) await adapterGate('strict', () => strictGateForCandidate(runDir, cand, { origin: url, routes: openedRoutes, archetype: siteJson.archetype, ...(opts.strictOptions ?? {}) }))
+
+    // 6b. 브랜드 주색 노출(v0.2.6 T10 — 브랜드 색이 있을 때만): 홈(없으면 첫 열린 쪽)의 히어로 1440 에서 주색 근처 면적.
+    if (opts.brandExposure !== false && brandColorOf(cand) && openedRoutes.length) await adapterGate('brand-exposure', () => brandExposureForCandidate(runDir, cand, { origin: url, route: openedRoutes.includes('/') ? '/' : openedRoutes[0], ...(opts.brandExposureOptions ?? {}) }))
 
     // 7. 대담안 안전(factory v1 Task 4.2 · D20 — 대담안(cand.boldness "bold")만): LCP·CLS 는 위 ops-gate, 대비는 위 a11y 행렬의 결과를 읽고(다시 재지 않는다),
     //    새로 재는 것은 동작 줄이기에서 정지 화면인지와 깜빡임 상한뿐이다. 위 두 관문이 결과를 못 남겼으면 재지 못한 것이라 도구 실패다.
@@ -355,6 +374,8 @@ export async function runCandidateQa(runDir, cand, opts = {}) {
     if (g.tool === 'legal') qaLines.push(`${g.pendingReview ? QA_PREFIX.legalPending : QA_PREFIX.legalFail}${g.pendingReview ? legalPages.join('·') : g.note}${g.pendingReview ? ` — 조항 검토 전(${g.note})` : ''}`)
     else if (g.tool === 'ops') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.ops}${p}`)
     else if (g.tool === 'strict') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.strict}${p}`)
+    else if (g.tool === 'logo') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.logo}${p}`)
+    else if (g.tool === 'brand-exposure') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.brand}${p}`)
     else if (g.tool === 'bold-safety') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.bold}${p}`)
     else qaLines.push(`${QA_PREFIX.gate}${g.id} — ${g.note}`)
   }

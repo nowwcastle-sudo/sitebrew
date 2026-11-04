@@ -25,8 +25,8 @@ const KIND_OF = (prefix) => (INPUT_PREFIXES.includes(prefix) ? 'input' : QUALITY
 
 test('접두 표: 양성 대조 — 표를 못 읽었거나 비었으면 아래 전수 검사가 아무것도 안 본 채 통과하지 않게 개수를 못 박는다', () => {
   assert.equal(Object.keys(BLOCKER).length, 14)
-  assert.equal(Object.keys(QA_PREFIX).length, 8)
-  assert.equal(TABLES.length, 23)
+  assert.equal(Object.keys(QA_PREFIX).length, 10)
+  assert.equal(TABLES.length, 25)
   assert.ok(TABLES.every(([, p]) => p.startsWith('공개 불가 — ')))
 })
 
