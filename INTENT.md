@@ -35,7 +35,7 @@
 - [x] T0 가지·기준값·환경·설계/계획 문서 (PR #59)
 - [x] P1 architect 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md` (T7 null=`""` · T14 서체 Pretendard base64 · T20 가중 층별 · T21 계열 8종·colorStrategy 확정)
 - [x] P2 interrogate 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p2-findings.md` (높음 5·중간 3·낮음 2, 계획에 반영)
-- [ ] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (Phase A 첫 레인)
+- [x] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (PR `feat/v026-t0b-key-guard` → 이 가지)
 - [ ] T0c 계열·거리 실행 가능성 표 (Phase A 첫 레인, Phase B 전 필수)
 
 ### Phase A — 06 열쇠 밖
@@ -77,6 +77,17 @@
 - `factory/stamp/stamp.mjs`·`qa.mjs`·`blocker-class.mjs`는 T6·T9·T10·T13·T16·T17이 같이 건드린다 — 이 파일을 건드리는 과제는 순서대로 병합한다.
 - Phase B(T17~T21)는 06 열쇠 안 파일을 같이 건드리므로 한 스레드(또는 순차)로 한다. T22는 그 뒤.
 
+## 레인 배정 (2026-11-04, 코디네이터)
+| 레인 | 과제 | 비고 |
+|---|---|---|
+| guard (이 스레드) | T0b → T0c | T0b 병합 뒤 나머지 레인이 rebase한다 |
+| board | T1–T4 | `factory/board/**`, T4에서 qa.mjs `startSite` 종료 버그 고침(P2 F1) |
+| sample | T5–T8 | sample-facts·stamp 병합·intake·deliver. en 예시 전화는 +82 꼴(P2 F6) |
+| gates | T9–T10 | ux-gate 머리글·brand-exposure |
+| review | T12–T13 | finish-review·finish-loop |
+| small | T14–T16 | logo-candidates·S8~S10·07 병렬 |
+- 모든 레인 PR 본문에 「열쇠 일치: `558068…0768`」 한 줄. `stamp.mjs`·`qa.mjs`·`blocker-class.mjs`를 건드리는 레인(sample·gates·review·small)은 서로 순서대로 병합한다.
+
 ## 변경 이력
 - 2026-11-04 · P2 반영: 높음 5건(F1 startSite 종료 버그·F2 정리 규칙·F3 계열 규칙 소프트화·F4 버전 올림 순서·F5 레인 CI 공백). 새 과제 T0b·T0c. ci.yml 가지 필터는 공개 main 병합 전에 되돌린다(삭제 목록).
 - 2026-11-04 · P1 반영: 시그니처 문서 신설. 닫은 결정 4건. 계획 상단에 우선 배너. 닫힘 파일 수는 Phase B 뒤 55→58 예상(directions.mjs가 새 모듈 3개 import).
@@ -85,4 +96,4 @@
 
 ## 현재 상태 / 다음 한 작업
 - 상태: T0·T11·P1·P2 완료. PR #59(드래프트).
-- 다음: 코디네이터가 Phase A 레인을 분기한다. 첫 레인은 T0b·T0c(+ T4의 startSite 고침). 병합 순서 주의: stamp.mjs·qa.mjs·blocker-class.mjs는 T6·T9·T10·T13·T16·T17이 같이 건드린다.
+- 다음: T0b 병합 → 다른 레인 rebase. guard 레인이 T0c(계열·거리 표) 진행. 병합 순서 주의: stamp.mjs·qa.mjs·blocker-class.mjs는 T6·T9·T10·T13·T16·T17이 같이 건드린다.
