@@ -45,8 +45,8 @@
 - [ ] T4 비교 서버 serve.mjs + `--serve`
 - [x] T5 예시 고정 표 sample-facts.mjs
 - [x] T6 stamp 병합·07 사유·법률 건너뛰기
-- [ ] T7 `intake brief --facts`
-- [ ] T8 deliver 차단
+- [x] T7 `intake brief --facts`
+- [x] T8 deliver 차단
 - [ ] T9 07 머리글 2배 캡처·로고 관문
 - [ ] T10 07 brand-exposure 관문
 - [x] T11 마감 리뷰 조사 — PR #60 병합. `docs/superpowers/specs/2026-11-04-finish-review-mapping.md`. 확정: 리뷰어 정의 `plugins/sitebrew/agents/sitebrew-finish-reviewer.md`(tools: Read), Codex 대체 `plugins/sitebrew/skills/new/references/finish-reviewer.md`, 형식 정본 `references/review-format.md` 공유, ux-gate는 `hero-768-light.png`만 추가, T12 `factory/stamp/finish-review.mjs`(순수) · T13 `factory/stamp/finish-loop.mjs`(nextStep) 인터페이스는 문서 6절

@@ -28,8 +28,7 @@ import { marketingSiteForCandidate } from '../qa/marketing-site.mjs'
 import { opsGateForCandidate } from '../qa/ops-gate.mjs'
 import { boldSafetyForCandidate } from '../qa/bold-safety.mjs'
 import { STRICT_BY_ARCHETYPE, strictGateForCandidate } from '../qa/strict-archetype.mjs'
-import { MOCK_PREVIEW_BLOCKER } from './blocker-class.mjs'
-import { splitBlockers } from './blocker-class.mjs'
+import { MOCK_PREVIEW_BLOCKER, SAMPLE_LEFT_BLOCKER, splitBlockers } from './blocker-class.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const FACTORY = join(ROOT, 'factory')
@@ -42,7 +41,7 @@ export const QA_PREFIX = {
   ops: '공개 불가 — 운영 점검 실패: ',
   strict: '공개 불가 — 원형 엄격 기준: ',
   bold: '공개 불가 — 대담안 안전 기준: ',
-  sample: '공개 불가 — 예시 정보 남음: ', // 예시 정보(sample-facts.mjs)가 실제 값으로 안 바뀐 사실 — 한 줄에 키 하나, 입력 대기 갈래(stamp.mjs 가 남은 키를 opts.sample 로 넘긴다)
+  sample: SAMPLE_LEFT_BLOCKER, // 예시 정보(sample-facts.mjs)가 실제 값으로 안 바뀐 사실 — 한 줄에 키 하나, 입력 대기 갈래(stamp.mjs 가 남은 키를 opts.sample 로 넘긴다)
   mockPreview: MOCK_PREVIEW_BLOCKER, // product 후보의 미리보기 배포 — stamp.mjs 가 더한다(blocker-class.mjs)
 }
 const QA_PREFIXES = Object.values(QA_PREFIX)
