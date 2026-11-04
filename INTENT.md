@@ -24,15 +24,16 @@
 ## pstack 정지 지점
 | 지점 | 상태 | 명령 |
 |---|---|---|
-| P1 — T0 직후 | 대표 실행 대기 | `/pstack:architect` … (계획 7절) |
-| P2 — P1 반영 직후 | 대기 | `/pstack:interrogate` … |
+| P1 — T0 직후 | 완료(수동 절차, 문서 반영) | `/pstack:architect` … (계획 7절) |
+| P2 — P1 반영 직후 | 대표 실행 대기 | `/pstack:interrogate` … |
 | P3 — Phase A 끝, T17 직전 | 대기 | `/pstack:blast-radius` … |
 | P4 — PR 직전(선택) | 대기 | `/pstack:interrogate` 전체 diff |
 
 ## 전체 작업 목록
 ### Phase 0
 - [x] T0 가지·기준값·환경·설계/계획 문서 (PR #59)
-- [ ] P1 architect 결과 반영(Interfaces 확정) — 열린 결정: T7 null 저장 위치 · T14 서체 로드 경로 · T20 가중값 · T21 재료 계열 표·colorStrategy · - [ ] P2 interrogate 결과 반영
+- [x] P1 architect 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md` (T7 null=`""` · T14 서체 Pretendard base64 · T20 가중 층별 · T21 계열 8종·colorStrategy 확정)
+- [ ] P2 interrogate 결과 반영
 
 ### Phase A — 06 열쇠 밖
 - [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
@@ -74,9 +75,10 @@
 - Phase B(T17~T21)는 06 열쇠 안 파일을 같이 건드리므로 한 스레드(또는 순차)로 한다. T22는 그 뒤.
 
 ## 변경 이력
+- 2026-11-04 · P1 반영: 시그니처 문서 신설. 닫은 결정 4건. 계획 상단에 우선 배너. 닫힘 파일 수는 Phase B 뒤 55→58 예상(directions.mjs가 새 모듈 3개 import).
 - 2026-11-04 · ci:verify 기준선 기록(위). T11 병합(#60)으로 열린 결정 중 리뷰어 정의 위치 확정.
 - 2026-11-04 · T0 착수. 계획 문서(제1부+부록→specs, 제2부→plans)를 저장소에 옮김. 환경 확인: 클라우드 기본 node 22 → `/opt/node24` 사용.
 
 ## 현재 상태 / 다음 한 작업
-- 상태: T0·T11 완료. PR #59(드래프트) CI 진행 중. P1 대기.
-- 다음: 대표가 P1(`/pstack:architect`)을 실행하면 결과로 계획 Interfaces·열린 결정 5건(T11은 닫힘)을 고친다.
+- 상태: T0·T11·P1 완료. PR #59(드래프트).
+- 다음: 대표가 P2(`/pstack:interrogate …`)를 실행하면 결과로 계획·시그니처 문서를 고친다. 그 뒤 Phase A 병렬 분기.

@@ -5,6 +5,9 @@
 For agentic workers: REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (- [ ]) syntax for tracking. 제1부 7절의 pstack 지점(P1~P4)에서는 멈추고 대표에게 명령 실행을 요청한다.
 
 
+**P1 확정(2026-11-04): 시그니처와 열린 결정은 `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md`가 우선한다. 아래 Interfaces와 충돌하면 그 문서를 따른다. 닫은 결정: T7 null = `brief.facts[키]=""`(별도 파일 없음) · T14 서체 = Pretendard OTF base64 임베드 · T20 가중 = 라이브러리 0.04/프리셋 0.06/팔레트 0.10(층별 상한) · T21 계열 8종·colorStrategy 표. T11 리뷰어 위치는 PR #60 값. T12 `finish-review.mjs`(순수)와 T13 `finish-loop.mjs`(nextStep)는 파일을 나눈다. `visualDistance`는 `visual-distance.mjs`에 둔다.**
+
+
 **Goal: 다음 다섯 가지를 Sitebrew 키트·플러그인에 넣고, 공개 main에 PR(v0.2.6)을 올린다.**
 
 후보 3개 실사이트 비교 대시보드
@@ -353,7 +356,7 @@ sampleScope({ archetype, brief }) → string[]
 
 buildSampleFacts({ archetype, brief, locale }) → { version:1, label, facts }
 
-remainingSamples(sample, brief, factsFile?) → string[]
+remainingSamples(sample, brief) → string[]  (brief.facts에 키가 있으면 빈 문자열도 답한 것으로 본다. P1 확정)
 
 제외: SECTION_FACTS, legal.*, reviews|testimonials|clients|awards|recognition
 
@@ -457,14 +460,14 @@ build(answers, { facts })는 FACT_NAMES·factPath 키만 받는다. 모르는 �
 
 stdout에 factsApplied를 낸다.
 
-BriefSchema의 facts는 z.record(z.string(), z.string())이라 null을 담으려면 스키마를 고쳐야 하는데, 이 스키마는 열쇠 안이다. 그래서 null은 brief 밖 out/facts.json에 남긴다. stamp가 그 파일을 읽어 remainingSamples에서 뺀다. 정확한 경로는 P1에서 확정한다.
+null은 brief.facts[키]="" 로 쓴다(P1 확정). BriefSchema는 그대로이고 briefToSeed·content.mjs가 빈 문자열을 이미 "없음"으로 읽는다. stamp 병합 {...sample, ...brief.facts}에서 빈 문자열이 예시를 덮고, remainingSamples는 brief.facts에 키가 있으면 남은 예시에서 뺀다. 별도 facts.json 파일은 없다.
 
 - [ ] Step 1: 실패 시험을 쓴다.
 --facts bizNo가 brief.facts에 들어간다
 
 모르는 키 거절
 
-null 키는 남은 예시에서 빠지고 07 사유가 사라진다
+null 키는 brief.facts에 빈 문자열로 들어가 남은 예시에서 빠지고 07 예시 사유가 사라진다
 
 - [ ] Step 2: 실패를 확인한다.
 - [ ] Step 3: 구현한다.
@@ -698,7 +701,7 @@ makeLogoCandidates({ name, mood, colors, fonts, outDir, codex=false }) → Promi
 
 렌더링은 factory/qa/cdp.mjs Chrome으로 한다. Emulation.setDefaultBackgroundColorOverride({ color:{r:0,g:0,b:0,a:0} })로 투명 PNG를 만들고, 크기는 머리글 높이의 2배로 한다.
 
-서체 로드 경로는 P1에서 확정한다.
+서체는 node_modules/pretendard OTF(ExtraBold·Light)를 base64 data URL로 HTML @font-face에 넣는다. 네트워크 0. WF_LOGO_FONT_DIR가 있으면 그 폴더 서체를 추가 후보로 쓴다. Chrome이 없으면 던지지 않고 skipped:"no-chrome".
 
 시트에는 각 시안을 1배·2배로 함께 보인다(S13).
 
@@ -950,7 +953,7 @@ positioningProfile(text) → { tags, prefs: { motion?, colorLogic?, theme?, disp
 
 낱말 매칭은 mood.mjs 방식을 따른다.
 
-가중: 일치 축마다 +0.15. mood보다 크고 원형 적합도 1단계보다 작다. P1에서 확정한다.
+가중(P1 확정): 라이브러리 a 안 축당 POS_LIBRARY_W=0.04(최대 2축), 프리셋 점수 축당 POS_PRESET_W=0.06(최대 2축), 팔레트 테마 일치 POS_PALETTE_W=0.10. 원형 적합도 한 단계(0.1)를 뒤집지 못한다.
 
 - [ ] Step 1: 실패 시험을 쓴다.
 포지셔닝 없음 → 01 출력 T19 직후와 같음
@@ -984,11 +987,11 @@ visualDistance(a, b) → number: 셈하는 축은 surface·header·shadow·displ
 
 materialFamily(head) → 'paper'|'print'|'collage'|'glass'|'editorial'|'kinetic'|'terminal'|'plain'
 
-분류표는 factory/scripts/axes.mjs:15 AXIS_ORDER와 레지스트리 axes를 읽고 P1에서 확정한다.
+분류표는 P1 문서 4.6절이 확정한다(glass → collage → print → paper → kinetic → editorial → terminal → plain, 앞에서부터 첫 일치). visualDistance는 factory/stamp/visual-distance.mjs, 칸 7개(surface·header·shadow·display·texture·defaultTheme·hero).
 
 규칙: 모든 쌍에서 visualDistance ≥ 2이고 계열이 서로 달라야 한다. 위반은 rejected에 규칙 id로 기록한다.
 
-colorStrategy: K1·K3은 Restrained, K6·K7은 Committed, K8은 Full이다. 나머지는 P1에서 정한다.
+colorStrategy(P1 확정): K1·K3·K5·K9 Restrained, K4·K6·K7 Committed, K2·K8 Full.
 
 thesis 템플릿: {계열} 세계에서 {색 전략} 색으로 {포지셔닝 또는 원형 목표}를 보여 줘요.
 
