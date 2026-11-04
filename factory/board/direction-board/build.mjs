@@ -458,11 +458,18 @@ if (isMain) {
   const argv = process.argv.slice(2)
   const flag = (k) => { const i = argv.indexOf(k); return i >= 0 ? argv.splice(i, 2)[1] : undefined }
   const has = (k) => { const i = argv.indexOf(k); if (i >= 0) argv.splice(i, 1); return i >= 0 }
-  const capture = has('--capture'), urlsFlag = flag('--urls'), manifestFlag = flag('--manifest'), outFlag = flag('--out'), publish = flag('--publish')
+  const serve = has('--serve'), capture = has('--capture'), urlsFlag = flag('--urls'), manifestFlag = flag('--manifest'), outFlag = flag('--out'), publish = flag('--publish')
   const [run] = argv
-  if (!run) { console.error('사용: node factory/board/direction-board/build.mjs <run> [--capture [--urls a=…,b=…]] [--manifest f] [--out board.html] [--publish 폴더]'); process.exit(2) }
+  if (!run) { console.error('사용: node factory/board/direction-board/build.mjs <run> [--serve | --capture [--urls a=…,b=…]] [--manifest f] [--out board.html] [--publish 폴더]'); process.exit(2) }
   try {
     const runDir = resolveRun(run)
+    if (serve) {
+      // 후보 3개를 실제 사이트로 나란히 보는 대시보드(v0.2.6). stdout: COMPARE <주소> · PICK <id>. 종료 0 확정/중단 · 1 띄운 후보 없음 · 4 입력 없음.
+      const { serveCompare } = await import('../compare/serve.mjs')
+      const s = await serveCompare(runDir, { deps: { loadBoardData } })
+      const end = await s.done
+      process.exit(end.exitCode)
+    }
     const work = join(runDir, 'direction-board')
     mkdirSync(work, { recursive: true })
     const mf = manifestFlag ?? join(work, 'manifest.json')
@@ -491,6 +498,6 @@ if (isMain) {
     }
   } catch (e) {
     console.error(`도구 실패: ${e.message}`)
-    process.exit(1)
+    process.exit(e.exitCode ?? 1)
   }
 }

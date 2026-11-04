@@ -14,7 +14,7 @@
   })
   const live = () => cols.filter((c) => c.frame)
 
-  let W = D.widths[0], cur = D.routes[0]?.path ?? '/', layout = 'three', focusId = cols[0]?.id, fwd = { from: null, t: 0 }
+  let W = D.widths[0], cur = D.routes[0]?.path ?? '/', focusId = cols[0]?.id, fwd = { from: null, t: 0 }
 
   // ── 화면 폭 · 배율 ──
   const viewH = (w) => (w >= 1200 ? 900 : w >= 700 ? 1024 : 844)
@@ -54,6 +54,7 @@
     if (!m || m.sb !== 1) return
     const c = live().find((x) => e.source === x.frame.contentWindow && e.origin === x.origin)
     if (!c) return
+    if (m.type === 'nav' || m.type === 'scroll') active = true
     if (m.type === 'title' && typeof m.title === 'string') c.titleEl.textContent = m.title.slice(0, 80)
     else if (m.type === 'nav' && typeof m.path === 'string' && /^\/(?![/\\])/.test(m.path)) {
       c.ready = true
@@ -79,7 +80,6 @@
   $('#pg').onclick = (e) => { const b = e.target.closest('button'); if (b) goAll(b.dataset.p) }
   $('#lay').onclick = (e) => { const b = e.target.closest('button'); if (b) setLayout(b.dataset.l) }
   function setLayout(l, id) {
-    layout = l
     press('lay', 'l', l)
     grid.classList.toggle('focus', l === 'focus')
     if (l === 'focus') { focusId = id || focusId; cols.forEach((c) => c.el.classList.toggle('on', c.id === focusId)) }
@@ -126,7 +126,10 @@
   }
 
   // ── 살아 있음 알림: 서버는 90초 동안 이것이 없으면 후보 서버를 끈다 ──
-  const ping = () => fetch('api/ping', { method: 'POST' }).catch(() => {})
+  // active = 이번 핑 사이에 사람이 만졌나(서버의 「입력 없음」 한도 계산용).
+  let active = false
+  for (const ev of ['pointerdown', 'keydown', 'wheel']) addEventListener(ev, () => { active = true }, { passive: true })
+  const ping = () => { const body = JSON.stringify({ active }); active = false; fetch('api/ping', { method: 'POST', headers: { 'content-type': 'application/json' }, body }).catch(() => {}) }
   ping()
   setInterval(ping, 10000)
 

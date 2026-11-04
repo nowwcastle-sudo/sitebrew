@@ -39,10 +39,10 @@
 - [ ] T0c 계열·거리 실행 가능성 표 (Phase A 첫 레인, Phase B 전 필수)
 
 ### Phase A — 06 열쇠 밖
-- [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
-- [ ] T2 후보 중계 proxy.mjs
-- [ ] T3 bridge.js + 대시보드 page.mjs
-- [ ] T4 비교 서버 serve.mjs + `--serve`
+- [x] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
+- [x] T2 후보 중계 proxy.mjs
+- [x] T3 bridge.js + 대시보드 page.mjs
+- [x] T4 비교 서버 serve.mjs + `--serve`
 - [ ] T5 예시 고정 표 sample-facts.mjs
 - [ ] T6 stamp 병합·07 사유·법률 건너뛰기
 - [ ] T7 `intake brief --facts`
