@@ -12,7 +12,7 @@
 - 모듈형 코드: 책임 하나인 모듈, 명시적 인터페이스, 낮은 결합. 새 npm 의존·CDN·원격 호출 0. 포트는 127.0.0.1만.
 - 새 단계 입력은 조건부 키 `...(x ? { x } : {})`. 시험은 `node --test --test-force-exit --test-timeout=300000 <파일>`.
 - 각 스레드: PR 올림 → CI 통과 보고 → 실패 시 자동 수정·재검사 → 자동 리뷰 검토 후 수정 라운드. 배포·게시·태그·npm은 대표.
-- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제).
+- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제) · `.gitleaks.toml`의 phase-a-key 허용 줄(시험과 함께 삭제).
 - Node ≥ 24.13 필요. 클라우드 컨테이너는 기본 node 22라 `export PATH=/opt/node24/bin:$PATH`를 먼저 한다.
 
 ## 기준값 (T0)

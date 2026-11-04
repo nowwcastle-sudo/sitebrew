@@ -18,7 +18,10 @@ paths = [
   '''factory/tunnel/preview-link\.test\.mjs''',
   '''factory/tunnel/session\.test\.mjs''',
   '''factory/tunnel/site-server\.test\.mjs''',
+  '''factory/scripts/phase-a-key\.test\.mjs''',
 ]
+
+# 2026-11-04 v0.2.6 T0b: phase-a-key.test.mjs 의 T0_KEY 는 06 코드 열쇠의 sha256 기준값이다(비밀이 아니다). Phase B 에서 시험을 지울 때 이 줄도 지운다.
 
 # Sitebrew: the launch-factory/ folder is scanned on its own with launch-factory/.gitleaks.toml (its allow list is written for its own paths); see .github/workflows/security.yml.
 [[allowlists]]
