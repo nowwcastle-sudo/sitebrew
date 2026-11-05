@@ -25,8 +25,8 @@ const KIND_OF = (prefix) => (INPUT_PREFIXES.includes(prefix) ? 'input' : QUALITY
 
 test('접두 표: 양성 대조 — 표를 못 읽었거나 비었으면 아래 전수 검사가 아무것도 안 본 채 통과하지 않게 개수를 못 박는다', () => {
   assert.equal(Object.keys(BLOCKER).length, 14)
-  assert.equal(Object.keys(QA_PREFIX).length, 8)
-  assert.equal(TABLES.length, 23)
+  assert.equal(Object.keys(QA_PREFIX).length, 11)
+  assert.equal(TABLES.length, 26)
   assert.ok(TABLES.every(([, p]) => p.startsWith('공개 불가 — ')))
 })
 
@@ -55,8 +55,8 @@ test('접두 모호성: 한 접두가 다른 접두의 앞부분이면 두 접�
   for (const [na, a] of TABLES) for (const [nb, b] of TABLES) if (a !== b && a.startsWith(b)) assert.equal(KIND_OF(a), KIND_OF(b), `${na} 는 ${nb} 로 시작한다`)
 })
 
-test('input 은 운영자가 말한 다섯 가지다: 실제 사진 필요 · 사이트 주소 미정 · 확인 필요 사실 · 예시 연락처 · 법률 검토 미완', () => {
-  assert.deepEqual([...INPUT_PREFIXES].sort(), [BLOCKER.photo, BLOCKER.site, BLOCKER.fact, BLOCKER.reserved, QA_PREFIX.legalPending].sort())
+test('input 은 운영자가 말한 여섯 가지다: 실제 사진 필요 · 사이트 주소 미정 · 확인 필요 사실 · 예시 연락처 · 법률 검토 미완 · 예시 정보 남음', () => {
+  assert.deepEqual([...INPUT_PREFIXES].sort(), [BLOCKER.photo, BLOCKER.site, BLOCKER.fact, BLOCKER.reserved, QA_PREFIX.legalPending, QA_PREFIX.sample].sort())
 })
 
 test('새 접두는 표에만 더하면 안 된다: 접두 표를 가진 소스(gen-pages·qa·sitemap)의 「공개 불가 — 」 글자 상수는 전부 분류 목록의 접두로 시작한다', () => {

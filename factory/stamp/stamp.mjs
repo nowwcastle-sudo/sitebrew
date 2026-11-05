@@ -28,6 +28,7 @@ import { askIn, grammar } from '../vocab/grammar.mjs'
 import { mapLimit, qaParallelLimit } from './parallel.mjs'
 import { MOCK_PREVIEW_NOTICE, splitBlockers, withMockPreviewBlocker } from './blocker-class.mjs'
 import { REDRAW_FILES, markStale } from './revise-stale.mjs'
+import { SAMPLE_PREVIEW_NOTICE, buildSampleFacts, mergeFacts, readSampleFacts, remainingSamples, sampleFilePath, writeSampleFacts } from './sample-facts.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const EXIT = Object.freeze({ done: 0, fail: 1, args: 2, waiting: 3 })
@@ -43,7 +44,7 @@ export class UsageError extends Error {
   }
 }
 
-export const USAGE = '사용법: node factory/stamp/stamp.mjs (--brief <file> | --golden <id> | --all-golden) [--run <dir>] [--until <01..08>] [--pick a|b|c] [--deploy-preview]\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c (--revise "<수정 요청>" [--explain] | --revise-readings "<읽기 JSON>" | --revise-pick <번호>:<안|none> | --revise-undo)   (수정 — factory/stamp/revise.mjs)\n        node factory/stamp/stamp.mjs --run <dir> --redraw-wider   (「너무 똑같아」 — 방향 3안을 더 넓게 다시 고른다)'
+export const USAGE = '사용법: node factory/stamp/stamp.mjs (--brief <file> | --golden <id> | --all-golden) [--run <dir>] [--until <01..08>] [--pick a|b|c] [--deploy-preview] [--sample-facts]\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c (--revise "<수정 요청>" [--explain] | --revise-readings "<읽기 JSON>" | --revise-pick <번호>:<안|none> | --revise-undo)   (수정 — factory/stamp/revise.mjs)\n        node factory/stamp/stamp.mjs --run <dir> --redraw-wider   (「너무 똑같아」 — 방향 3안을 더 넓게 다시 고른다)\n        node factory/stamp/stamp.mjs --run <dir> --pick a|b|c --finish-review   (마감 리뷰 — 다음 걸음을 `REVIEW <행동> <라운드>` 한 줄로 알린다. factory/stamp/finish-loop.mjs)'
 
 /** 단계 이름 「01」·「1」·「01-direction」 → 정식 이름. */
 export function normalizeStep(v) {
@@ -54,7 +55,7 @@ export function normalizeStep(v) {
 }
 
 export function parseArgs(argv) {
-  const opts = { brief: null, run: null, until: null, pick: null, deployPreview: false, golden: null, allGolden: false }
+  const opts = { brief: null, run: null, until: null, pick: null, deployPreview: false, golden: null, allGolden: false, sampleFacts: false }
   const take = (i, flag) => {
     const v = argv[i + 1]
     if (v === undefined || v.startsWith('--')) throw new UsageError(`${flag} 값이 없다`)
@@ -71,11 +72,13 @@ export function parseArgs(argv) {
     } else if (a === '--deploy-preview') opts.deployPreview = true
     else if (a === '--golden') opts.golden = take(i++, a)
     else if (a === '--all-golden') opts.allGolden = true
+    else if (a === '--sample-facts') opts.sampleFacts = true
     else if (a === '--revise') opts.revise = take(i++, a)
     else if (a === '--revise-readings') opts.reviseReadings = take(i++, a)
     else if (a === '--explain') opts.explain = true
     else if (a === '--revise-undo') opts.reviseUndo = true
     else if (a === '--redraw-wider') opts.redrawWider = true
+    else if (a === '--finish-review') opts.finishReview = true
     else if (a === '--revise-pick') {
       const m = /^(\d+):([A-Za-z0-9_-]+)$/.exec(take(i++, a))
       if (!m) throw new UsageError(`--revise-pick 은 <번호>:<안> 모양이다(예: 1:v2): ${JSON.stringify(argv[i])}`)
@@ -85,7 +88,13 @@ export function parseArgs(argv) {
   if (opts.redrawWider) {
     // 「너무 똑같아」 — 이미 한 번 돈 실행 폴더의 방향 3안을 더 넓게 다시 고른다. 다른 모드와 함께 쓰지 않는다.
     if (!opts.run) throw new UsageError('--redraw-wider 는 --run <dir> 이 필요하다')
-    if ([opts.brief, opts.golden, opts.allGolden, opts.until, opts.pick, opts.deployPreview, opts.revise != null, opts.reviseReadings != null, opts.revisePick, opts.reviseUndo, opts.explain].some(Boolean)) throw new UsageError('--redraw-wider 는 --run 과만 쓴다')
+    if ([opts.brief, opts.golden, opts.allGolden, opts.until, opts.pick, opts.deployPreview, opts.sampleFacts, opts.revise != null, opts.reviseReadings != null, opts.revisePick, opts.reviseUndo, opts.explain].some(Boolean)) throw new UsageError('--redraw-wider 는 --run 과만 쓴다')
+    return opts
+  }
+  if (opts.finishReview) {
+    // 마감 리뷰 — 06 까지 끝난 실행 폴더에서 고른 안의 리뷰 파일 상태를 읽는다. 다른 모드와 함께 쓰지 않는다.
+    if (!opts.run || !opts.pick) throw new UsageError('--finish-review 는 --run <dir> 과 --pick a|b|c 가 필요하다')
+    if ([opts.brief, opts.golden, opts.allGolden, opts.until, opts.deployPreview, opts.revise != null, opts.reviseReadings != null, opts.revisePick, opts.reviseUndo, opts.explain].some(Boolean)) throw new UsageError('--finish-review 는 --run 과 --pick 만 함께 쓴다')
     return opts
   }
   if (opts.revise != null || opts.reviseReadings != null || opts.revisePick || opts.reviseUndo) {
@@ -94,7 +103,7 @@ export function parseArgs(argv) {
     if (opts.explain && opts.revise == null) throw new UsageError('--explain 은 --revise "<수정 요청>" 과 함께만 쓴다')
     if (!opts.run) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --run <dir> 이 필요하다')
     if (!opts.pick) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --pick a|b|c 로 어느 안을 고칠지 알려야 한다')
-    if (opts.brief || opts.golden || opts.allGolden || opts.deployPreview || opts.until) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --brief·--golden·--all-golden·--until·--deploy-preview 와 함께 쓰지 않는다')
+    if (opts.brief || opts.golden || opts.allGolden || opts.deployPreview || opts.until || opts.sampleFacts) throw new UsageError('--revise / --revise-readings / --revise-pick / --revise-undo 는 --brief·--golden·--all-golden·--until·--deploy-preview·--sample-facts 와 함께 쓰지 않는다')
     return opts
   }
   if (opts.explain) throw new UsageError('--explain 은 --revise "<수정 요청>" 과 함께만 쓴다')
@@ -152,7 +161,7 @@ export function toolFailedGates(qa) {
 }
 
 /** 결선 보드가 읽는 후보 자료(08-board.json data) — 출처 배지·공개 불가 이유·법률 상태. 보드 도구(Task 12)는 이 모양을 그대로 읽는다. */
-export function boardData({ cand, qa, pages, media, legal, mockPreview = false }) {
+export function boardData({ cand, qa, pages, media, legal, mockPreview = false, samplePreview = false }) {
   const blockers = qa?.blockers ?? []
   const missingFacts = blockers.filter(isMissingFactBlocker).map((b) => b.replace(/^.*확인 필요 사실:\s*/, ''))
   const legalPending = blockers.some(isLegalPendingBlocker)
@@ -180,6 +189,8 @@ export function boardData({ cand, qa, pages, media, legal, mockPreview = false }
     ...(pages?.reviseFallbacks?.length ? { reviseFallbacks: pages.reviseFallbacks } : {}),
     // product 완성 후보의 미리보기 배포 — 인증·결제가 mock 이라는 표지(E6). 없으면 키도 없다.
     ...(mockPreview ? { mockNotice: MOCK_PREVIEW_NOTICE } : {}),
+    // 예시 정보가 남은 채 미리보기를 올리는 실행의 표지(P2 F9) — 막지는 않는다. 없으면 키도 없다.
+    ...(samplePreview ? { sampleNotice: SAMPLE_PREVIEW_NOTICE } : {}),
   }
 }
 
@@ -218,6 +229,22 @@ export async function runStamp(opts, deps) {
   const mockPreview = !!(opts.pick && opts.deployPreview && archetype.completion === 'product')
   const reaches = (name) => untilIdx === null || STEP_NAMES.indexOf(name) <= untilIdx
   mkdirSync(runDir, { recursive: true })
+
+  // 예시 정보(v0.2.6 T6 · D5): 파일이 있으면 깃발 없이도 읽고, 없을 때만 --sample-facts 가 만든다. 예시는 메모리에서 brief.facts 에 깔린다(실제 값이 이긴다) — 보드 실행과 --pick 실행의 입력이 같다.
+  let sample = readSampleFacts(runDir)
+  if (sample) say(`예시 정보 파일 사용 중 ${Object.keys(sample.facts).length}키 (${sampleFilePath(runDir)})`)
+  else if (opts.sampleFacts) {
+    sample = buildSampleFacts({ archetype, brief })
+    writeSampleFacts(runDir, sample)
+    say(`예시 정보 파일을 만들었다 — ${Object.keys(sample.facts).length}키 (${sampleFilePath(runDir)})`)
+  }
+  const leftSamples = sample ? remainingSamples(sample, brief) : [] // 병합 전 브리프로 센다 — 실제 답(빈 문자열 포함)이 있는 키만 빠진다
+  if (sample) {
+    brief = mergeFacts(sample, brief)
+    summary.sample = { file: sampleFilePath(runDir), remaining: leftSamples }
+  }
+  const qaSample = leftSamples.length ? { sample: leftSamples } : {} // 남은 예시가 없는 07 은 옛 입력·옛 호출 그대로
+  const samplePreview = !!(opts.pick && opts.deployPreview && leftSamples.length)
 
   // 1. doctor — 키·도구가 실제로 도는지. 0 이 아니면 시작하지 않는다. 키가 **틀리면** 멈추고, 키가 **없으면** 미리보기 모드로 계속한다(D24 — 무엇이 꺼지는지 note 줄로 알린다.
   //    운영자가 없는 키도 막으려면 WF_REQUIRE_KEYS=1).
@@ -391,7 +418,9 @@ export async function runStamp(opts, deps) {
       s.legal = legalState(runDir, c.id, archetype)
       if (s.legal.missing.length) legalWaiting.push({ stage: 'legal', cand: c.id, status: 'needs-review', files: s.legal.missing.map((p) => p.draft), outputs: s.legal.missing.map((p) => p.review), guide: LEGAL_GUIDE })
     }
-    if (legalWaiting.length) {
+    // 예시 정보가 남은 안은 법률 검토를 기다리지 않는다(D9) — 예시 값으로 쓴 초안을 검토받는 일은 헛수고다. 07 이 입력 대기 사유로 막고 종료 1 로 끝난다.
+    if (legalWaiting.length && leftSamples.length) say(`예시 정보 ${leftSamples.length}건이 남아 법률 검토를 건너뛴다 — 실제 값으로 바꾼 뒤 다시 돌린다`)
+    else if (legalWaiting.length) {
       summary.waiting = legalWaiting
       for (const w of legalWaiting) {
         for (const f of w.files) say(`대기: 법률 검토 ${w.cand} — 초안 ${f}`)
@@ -407,22 +436,23 @@ export async function runStamp(opts, deps) {
   else if (par.reason === 'memory') say('WF_QA_PARALLEL=1 이지만 여유 메모리가 모자라 07 을 하나씩 돌린다')
   if (!(await tryEach(active, '07-qa', async (c) => {
     const s = state[c.id]
-    const qaInputs = { pages: s.pages, legal: s.legal.hashes }
+    const qaInputs = { pages: s.pages, legal: s.legal.hashes, ...qaSample }
     // 07 이 「측정 못 함」(도구 실패)으로 끝난 채 남아 있으면 입력이 같아도 다시 잰다(FIT-6) — 도구 실패는 입력 탓이 아니라 그때 PC 형편 탓이라 캐시가 거짓이 된다.
     // 판정 실패(측정은 했다)는 입력이 같으면 그대로다. 타임아웃 환경 변수(WF_NAV_TIMEOUT_MS·WF_CDP_TIMEOUT_MS)를 올려 같은 명령을 다시 돌리는 길이 이것이다.
     const prev = readJsonMaybe(join(runDir, c.id, '07-qa.json'))
     const prevFailed = prev && prev.inputHash === inputHash(qaInputs) ? toolFailedGates(prev.data) : []
     if (prevFailed.length) say(`[${c.id}] 07-qa 지난 실행에 측정 못 함 ${prevFailed.length}건(${prevFailed.slice(0, 3).join(' · ')}${prevFailed.length > 3 ? ' …' : ''}) — 07 을 다시 잰다`)
-    s.qa = await step(c.id, '07-qa', qaInputs, () => deps.qa({ runDir, cand: c, tag: par.limit > 1 ? `[${c.id}] ` : '' }), { refresh: prevFailed.length > 0 })
+    s.qa = await step(c.id, '07-qa', qaInputs, () => deps.qa({ runDir, cand: c, ...qaSample, tag: par.limit > 1 ? `[${c.id}] ` : '' }), { refresh: prevFailed.length > 0 })
     // product 완성(saas·pwa)을 미리보기로 배포하면 공개 주소에서 실제 가입·결제가 안 된다 — 품질 사유로 더한다(E6). 단계 파일은 건드리지 않는다.
     if (mockPreview) { s.qa = withMockPreviewBlocker(s.qa); say(`[${c.id}] 미리보기 주의 — ${MOCK_PREVIEW_NOTICE}`) }
+    if (samplePreview) say(`[${c.id}] 미리보기 주의 — ${SAMPLE_PREVIEW_NOTICE}`)
   }, { limit: par.limit }))) return stop()
   if (!reaches('08-board')) return finish(EXIT.done, 'done', done('07'))
 
   // 8. 08 보드 자료 → (--deploy-preview) 미리보기 배포. 배포 주소는 08-board.json 의 previewUrl 에 합쳐 적힌다.
   if (!(await tryEach(active, '08-board', async (c) => {
     const s = state[c.id]
-    await step(c.id, '08-board', { qa: s.qa, cand: c, media: s.media, legal: s.legal.hashes }, async () => boardData({ cand: c, qa: s.qa, pages: s.pages, media: s.media, legal: s.legal, mockPreview }))
+    await step(c.id, '08-board', { qa: s.qa, cand: c, media: s.media, legal: s.legal.hashes }, async () => boardData({ cand: c, qa: s.qa, pages: s.pages, media: s.media, legal: s.legal, mockPreview, samplePreview }))
   }))) return stop()
   if (opts.pick && opts.deployPreview) {
     const c = active[0]
@@ -452,7 +482,10 @@ export async function runStamp(opts, deps) {
     say(`관문 도구 실패(측정 못 함) ${toolFailed.length}건 — 같은 명령을 다시 돌리면 07 을 다시 잰다(느린 PC 는 WF_NAV_TIMEOUT_MS·WF_CDP_TIMEOUT_MS 를 늘린 뒤)`)
     return finish(EXIT.fail, 'tool-failed', { failures: [...failures, ...toolFailed] })
   }
-  if (opts.pick && state[active[0].id].qa?.publishable !== true) return finish(EXIT.fail, 'gate-failed', { failures })
+  if (opts.pick && state[active[0].id].qa?.publishable !== true) {
+    if (leftSamples.length) say(`예시 정보가 남아 공개 불가다 — 실제 값으로 바꿔야 한다: ${leftSamples.join(', ')} (질문에 있는 사실은 answers.json, 그 밖은 intake brief --facts)`)
+    return finish(EXIT.fail, 'gate-failed', { failures })
+  }
   return finish(EXIT.done, 'done', { failures })
 }
 
@@ -514,7 +547,7 @@ export async function defaultDeps({ say = console.log, preferences = true } = {}
       return { siteDir: r.siteDir, routes: r.routes, blockers: r.blockers.length, skipped: r.skipped.length, build: r.build ? { code: r.build.code, seconds: r.build.seconds } : null, builtAt: new Date().toISOString(), ...(reviseFallbacks.length ? { reviseFallbacks } : {}) }
     },
     pagesKey: () => pagesCodeKey(),
-    qa: ({ runDir, cand, tag = '' }) => qaMod.runCandidateQa(runDir, cand, { log: (m) => say(`  ${tag}${m}`) }),
+    qa: ({ runDir, cand, sample, tag = '' }) => qaMod.runCandidateQa(runDir, cand, { log: (m) => say(`  ${tag}${m}`), ...(sample ? { sample } : {}) }),
     deploy: (siteDir) => deployMod.deployPreview(siteDir, {}),
   }
 }
@@ -685,6 +718,25 @@ export async function runRedrawWider(opts, deps) {
   return { ...r, lines: [...r.lines, line] }
 }
 
+/**
+ * 마감 리뷰(v0.2.6 T13) — `--run <dir> --pick <안> --finish-review`. 파일 상태가 정하는 다음 걸음 하나를 알리고(첫 줄 `REVIEW <행동> <라운드>`), apply 이면 처방을 적용해 고른 안의 06·07 을 한 번 다시 만든다.
+ * 종료: 0 끝(done · apply 를 마침) · 3 리뷰어나 사람이 할 일(review · verdict · ask-human · 문구 응답 대기) · 1 도구 실패. 행동 결정은 finish-loop.mjs 한 곳이다.
+ * @param {{ api?: object, rebuild?: Function }} [inject] 시험이 가짜를 준다
+ */
+export async function runFinishReviewCommand(opts, deps, inject = {}) {
+  const runDir = resolve(opts.run)
+  const { runFinishLoop } = await import('./finish-loop.mjs')
+  const rebuild = inject.rebuild ?? (async () => {
+    const summary = readJsonMaybe(join(runDir, 'stamp-summary.json'))
+    if (!summary?.brief) return { ok: false, message: `실행 요약(stamp-summary.json)이 없다: ${runDir}` }
+    const r = await runStamp({ brief: summary.brief, run: runDir, pick: opts.pick }, deps)
+    // --pick 한 안이 공개 불가이면 종료 1(gate-failed)이지만 06·07 은 다시 만들어졌다 — 도구 실패(tool-failed)만 실패다.
+    if (r.summary.status === 'waiting') return { ok: false, waiting: true, message: `찍어내기가 입력을 기다린다 (${r.summary.waiting.map((w) => w.file ?? w.stage).join(', ') || '요약 참고'})` }
+    return r.summary.status === 'done' || r.summary.status === 'gate-failed' ? { ok: true } : { ok: false, message: `찍어내기 ${r.summary.status}: ${(r.summary.failures ?? []).map((f) => f.message).join(' | ')}` }
+  })
+  return runFinishLoop({ runDir, pick: opts.pick }, { rebuild, say: deps.say ?? console.log, ...(inject.api ? { api: inject.api } : {}) })
+}
+
 // CLI
 if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
   let opts
@@ -696,6 +748,9 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
   }
   if (opts && (opts.revise != null || opts.reviseReadings != null || opts.revisePick || opts.reviseUndo)) {
     const r = await runReviseCommand(opts)
+    process.exitCode = r.code
+  } else if (opts?.finishReview) {
+    const r = await runFinishReviewCommand(opts, await defaultDeps({ preferences: false }))
     process.exitCode = r.code
   } else if (opts?.redrawWider) {
     const r = await runRedrawWider(opts, await defaultDeps())

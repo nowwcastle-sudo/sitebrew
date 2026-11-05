@@ -204,13 +204,25 @@ function envValue(env, name) {
   return ''
 }
 
+function higgsfieldRulesDir(env) {
+  const root = typeof env.WF_DESIGN_RULES_DIR === 'string' ? env.WF_DESIGN_RULES_DIR.trim() : ''
+  if (!root) return ''
+  const dir = join(root, 'factory', 'media', 'higgsfield')
+  try {
+    return statSync(dir).isDirectory() ? dir : ''
+  } catch {
+    return ''
+  }
+}
+
 function keyResults(env, strict) {
   const results = []
   for (const name of KEY_NAMES) {
     const v = envValue(env, name)
     results.push(v ? ok(name, `set (length ${v.length})`) : off(strict ? 'fail' : 'note', name, `${strict ? '필수(엄격 모드)' : '선택'}: ${name} 없음 — ${KEY_TEXT[name].ko}`, `${strict ? 'required (strict mode)' : 'optional'}: ${name} not set - ${KEY_TEXT[name].en}`))
   }
-  const dir = envValue(env, 'HIGGSFIELD_DIR')
+  // Same candidates as the kit (factory/lib/higgsfield-dir.mjs): HIGGSFIELD_DIR, else $WF_DESIGN_RULES_DIR/factory/media/higgsfield when that folder exists.
+  const dir = envValue(env, 'HIGGSFIELD_DIR') || higgsfieldRulesDir(env)
   if (!dir) results.push(off(strict ? 'fail' : 'note', 'HIGGSFIELD_DIR', `${strict ? '필수(엄격 모드)' : '선택'}: HIGGSFIELD_DIR 없음 — ${KEY_TEXT.HIGGSFIELD_DIR.ko}`, `${strict ? 'required (strict mode)' : 'optional'}: HIGGSFIELD_DIR not set - ${KEY_TEXT.HIGGSFIELD_DIR.en}`))
   else {
     let isDir = false

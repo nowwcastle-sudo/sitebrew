@@ -5,11 +5,6 @@
 #   (npm ls braces --omit=dev → empty). 남은 두 ID 는 고칠 판이 없거나 상위 도구가 못 올린 개발 도구 사슬이다.
 
 [[IgnoredVulns]]
-id = "GHSA-vfj7-8cjw-p6xm"
-ignoreUntil = 2026-12-31
-reason = "braces <=3.0.3 스택 소진 DoS(깊게 중첩한 글롭 패턴). 고친 판이 아직 없다(first_patched 없음). shadcn CLI → fast-glob → micromatch → braces 사슬이라 개발 도구에만 있고 제품 런타임에는 안 들어간다(npm ls braces --omit=dev 가 비어 있다). 입력은 우리 저장소 안 파일 경로뿐. 만료일에 고친 판이 나왔는지 다시 본다."
-
-[[IgnoredVulns]]
 id = "GHSA-67mh-4wv8-2f99"
 ignoreUntil = 2026-12-31
 reason = "esbuild <=0.24.2 개발 서버가 아무 웹사이트의 요청을 받는 문제(개발 서버 실행 때만). 우리 쪽은 drizzle-kit 0.31.11 → @esbuild-kit/* → esbuild 0.18.20 사슬로 CLI(db:generate)에서만 쓰고 개발 서버를 켜지 않는다. drizzle-kit 은 better-auth 의 선택 peer 라 npm 이 제품 트리에 설치하지만 런타임에서 불러오지 않는다. drizzle-kit 이 @esbuild-kit 을 떼면 풀린다 — 만료일에 다시 본다."

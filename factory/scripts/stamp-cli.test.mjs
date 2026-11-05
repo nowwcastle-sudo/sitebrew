@@ -93,7 +93,7 @@ const reviewOut = (run, id) => { for (const p of ['privacy', 'terms']) writeFile
 
 test('parseArgs: 정상 · 단계 이름 · 잘못된 인자는 UsageError', () => {
   const o = parseArgs(['--brief', 'b.json', '--run', 'out', '--until', '4', '--pick', 'c', '--deploy-preview'])
-  assert.deepEqual(o, { brief: 'b.json', run: 'out', until: '04-content', pick: 'c', deployPreview: true, golden: null, allGolden: false })
+  assert.deepEqual(o, { brief: 'b.json', run: 'out', until: '04-content', pick: 'c', deployPreview: true, golden: null, allGolden: false, sampleFacts: false })
   assert.equal(parseArgs(['--brief', 'b.json', '--until', '05-media']).until, '05-media')
   assert.equal(parseArgs(['--brief', 'b.json']).pick, null)
   for (const bad of [[], ['--brief'], ['--brief', 'b', '--pick', 'd'], ['--brief', 'b', '--until', '09'], ['--brief', 'b', '--deploy-preview'], ['--brief', 'b', '--nope'], ['--brief', 'b', '--pick', '--until', '2']]) {

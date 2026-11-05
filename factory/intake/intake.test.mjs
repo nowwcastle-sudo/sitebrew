@@ -141,3 +141,43 @@ test('사진 안내 줄은 답 칸이 아니다 — 로고 답은 그대로 bran
   assert.equal(b.brand.logo, 'C:\\내 사이트\\logo.svg')
   assert.doesNotMatch(JSON.stringify(b), /사진 \d+장|권장 구도/)
 })
+
+// ── v0.2.6 T7: facts — 예시를 대신할 실제 값 ────────────────────────────────────
+
+import { toBriefReport } from './to-brief.mjs'
+import { loadArchetypes } from '../scripts/archetypes.mjs'
+import { briefToSeed } from '../stamp/brief.mjs'
+import { buildSampleFacts, mergeFacts, remainingSamples } from '../stamp/sample-facts.mjs'
+
+const LOCAL = { topic: '동네 빵집', archetype: 'local', answers: { name: '새벽빵', audience: '직장인', action: '전화 예약', mood: '따뜻한' } }
+
+test('facts: 사실 이름·콘텐츠 자리·회사 정보 칸 이름이 같은 사실로 brief.facts 에 들어가고 factsApplied 에 이름이 남는다', () => {
+  for (const key of ['bizNo', 'business.bizRegNo', 'bizRegNo']) {
+    const r = toBriefReport({ ...LOCAL, facts: { [key]: ' 123-45-67890 ' } })
+    assert.equal(r.brief.facts.bizNo, '123-45-67890', key)
+    assert.deepEqual(r.factsApplied, ['bizNo'], key)
+  }
+  assert.deepEqual(toBriefReport(LOCAL).factsApplied, [])
+  assert.equal(toBriefReport({ ...LOCAL, answers: { ...LOCAL.answers, contact: '02-111-2222' }, facts: { phone: '02-999-8888' } }).brief.facts.phone, '02-999-8888', 'facts 가 질문 답보다 나중이다')
+})
+
+test('facts: 모르는 키·글자도 null 도 아닌 값은 던진다(오타가 조용히 사라져 예시가 남는 길을 막는다)', () => {
+  assert.throws(() => toBriefReport({ ...LOCAL, facts: { bizNumber: '1' } }), /모르는 사실 칸: bizNumber/)
+  assert.throws(() => toBriefReport({ ...LOCAL, facts: { phone: 5 } }), /글자나 null/)
+  assert.throws(() => toBriefReport({ ...LOCAL, facts: ['phone'] }), /객체/)
+})
+
+test('facts: null 은 빈 문자열로 싣는다 — 예시가 그 칸을 덮지 못하고, 남은 예시에서 빠지며, 브리프 스키마를 통과한다', async () => {
+  const archetype = (await loadArchetypes()).local
+  const { brief, factsApplied } = toBriefReport({ ...LOCAL, facts: { phone: null } })
+  assert.equal(brief.facts.phone, '')
+  assert.deepEqual(factsApplied, ['phone'])
+  assert.doesNotThrow(() => loadBriefObject(brief))
+  const plain = toBriefReport(LOCAL).brief
+  const sample = buildSampleFacts({ archetype, brief: plain })
+  assert.ok(remainingSamples(sample, plain).includes('phone'), 'null 이 없으면 전화는 예시로 채워진다')
+  assert.ok(!remainingSamples(sample, brief).includes('phone'), 'null 이면 남은 예시에서 빠진다')
+  const merged = mergeFacts(sample, brief)
+  assert.equal(merged.facts.phone, '', '예시가 빈 답을 덮지 않는다')
+  assert.ok(briefToSeed(merged, archetype).missing.includes('phone'), '04 요청의 missing 에 전화가 남고 예시 값은 없다')
+})

@@ -12,7 +12,7 @@
 - 모듈형 코드: 책임 하나인 모듈, 명시적 인터페이스, 낮은 결합. 새 npm 의존·CDN·원격 호출 0. 포트는 127.0.0.1만.
 - 새 단계 입력은 조건부 키 `...(x ? { x } : {})`. 시험은 `node --test --test-force-exit --test-timeout=300000 <파일>`.
 - 각 스레드: PR 올림 → CI 통과 보고 → 실패 시 자동 수정·재검사 → 자동 리뷰 검토 후 수정 라운드. 배포·게시·태그·npm은 대표.
-- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제).
+- 공개 main 병합 전 삭제·되돌림 목록: 이 INTENT.md · `.github/workflows/ci.yml`의 feat/v026-* 가지 필터 · `factory/scripts/phase-a-key.test.mjs`(T17 앞에서 이미 삭제) · `.gitleaks.toml`·`launch-factory/.gitleaks.toml`의 phase-a-key 허용 줄(범위 검사가 이력을 훑으므로 시험을 지운 뒤에도 공개 병합 전까지 둔다).
 - Node ≥ 24.13 필요. 클라우드 컨테이너는 기본 node 22라 `export PATH=/opt/node24/bin:$PATH`를 먼저 한다.
 
 ## 기준값 (T0)
@@ -35,25 +35,25 @@
 - [x] T0 가지·기준값·환경·설계/계획 문서 (PR #59)
 - [x] P1 architect 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p1-interfaces.md` (T7 null=`""` · T14 서체 Pretendard base64 · T20 가중 층별 · T21 계열 8종·colorStrategy 확정)
 - [x] P2 interrogate 결과 반영 — `docs/superpowers/specs/2026-11-04-v026-p2-findings.md` (높음 5·중간 3·낮음 2, 계획에 반영)
-- [ ] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (Phase A 첫 레인)
-- [ ] T0c 계열·거리 실행 가능성 표 (Phase A 첫 레인, Phase B 전 필수)
+- [x] T0b 열쇠 고정 시험 + ci.yml 가지 필터 (PR `feat/v026-t0b-key-guard` → 이 가지)
+- [x] T0c 계열·거리 실행 가능성 표 — `docs/qa/v026-world-spread.md` · `factory/scripts/lib/world-spread-report.mjs` (거리 ≥ 2는 전 원형 가능 14.6~33.9%, 계열 모두 다름은 dashboard 1.4%·public 0.8% → 소프트 확정)
 
 ### Phase A — 06 열쇠 밖
-- [ ] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
-- [ ] T2 후보 중계 proxy.mjs
-- [ ] T3 bridge.js + 대시보드 page.mjs
-- [ ] T4 비교 서버 serve.mjs + `--serve`
-- [ ] T5 예시 고정 표 sample-facts.mjs
-- [ ] T6 stamp 병합·07 사유·법률 건너뛰기
-- [ ] T7 `intake brief --facts`
-- [ ] T8 deliver 차단
-- [ ] T9 07 머리글 2배 캡처·로고 관문
-- [ ] T10 07 brand-exposure 관문
+- [x] T1 방향 보드 자료 결함 2건 (build.mjs loadBoardData)
+- [x] T2 후보 중계 proxy.mjs
+- [x] T3 bridge.js + 대시보드 compare-page.mjs (CI 가름 가드가 block-board/page.mjs 와 이름을 혼동해 compare-page 로 바꿨다)
+- [x] T4 비교 서버 serve.mjs + `--serve`
+- [x] T5 예시 고정 표 sample-facts.mjs
+- [x] T6 stamp 병합·07 사유·법률 건너뛰기
+- [x] T7 `intake brief --facts`
+- [x] T8 deliver 차단
+- [x] T9 07 머리글 2배 캡처·로고 관문 — `factory/qa/logo-gate.mjs`(logoProbe·judgeLogo·logoGateForCandidate) + ux-gate가 `header-<폭>-light-2x.png`·`gate[키].logo` 기록. Phase A에서는 06이 글자 로고만 그리므로 로고 있는 브리프는 T17 전까지 이 관문에서 실패한다(의도)
+- [x] T10 07 brand-exposure 관문 — `factory/qa/brand-exposure.mjs`(8px 칸 문서순 칠하기, 하한 Restrained 1%·Committed 15%·그 밖 1%). `cand.colorStrategy`/`cand.head.colorStrategy`는 T21이 채울 때까지 없으면 1%
 - [x] T11 마감 리뷰 조사 — PR #60 병합. `docs/superpowers/specs/2026-11-04-finish-review-mapping.md`. 확정: 리뷰어 정의 `plugins/sitebrew/agents/sitebrew-finish-reviewer.md`(tools: Read), Codex 대체 `plugins/sitebrew/skills/new/references/finish-reviewer.md`, 형식 정본 `references/review-format.md` 공유, ux-gate는 `hero-768-light.png`만 추가, T12 `factory/stamp/finish-review.mjs`(순수) · T13 `factory/stamp/finish-loop.mjs`(nextStep) 인터페이스는 문서 6절
-- [ ] T12 마감 리뷰어와 입출력 finish-review.mjs
-- [ ] T13 마감 리뷰 루프와 상한
-- [ ] T14 로고 시안 생성 logo-candidates.mjs
-- [ ] T15 작은 개선 S8·S9·S10
+- [x] T12 마감 리뷰어와 입출력 finish-review.mjs — `factory/stamp/finish-review.mjs`(parseReview·parseVerdict·collectReviewInputs), 리뷰어 에이전트·Codex 대체 문서·`review-format.md`, ux-gate `hero-768-light.png` 추가
+- [x] T13 마감 리뷰 루프와 상한 — `factory/stamp/finish-loop.mjs`(nextStep·applyRound·runFinishLoop, 최대 2회), `stamp.mjs --finish-review`(첫 줄 `REVIEW <action> <round>`, 종료 3 = 파일 대기). 병합 순서는 T6→T9→T10→T13→T16
+- [x] T14 로고 시안 생성 logo-candidates.mjs (PR #62)
+- [x] T15 작은 개선 S8·S9·S10 (PR #62 — HIGGSFIELD_DIR 해석 한 곳 factory/lib/higgsfield-dir.mjs, 기본 폴더 ~/dev/Sitebrew, 문구 병렬 안내)
 - [x] T16 07 후보 병렬 옵션 S11 (WF_QA_PARALLEL=1, 기본 끔)
 - [ ] Phase A 마감: 열쇠 = T0 기준, ci:verify ≥ 기준선
 - [ ] P3 blast-radius 결과 반영
@@ -77,6 +77,17 @@
 - `factory/stamp/stamp.mjs`·`qa.mjs`·`blocker-class.mjs`는 T6·T9·T10·T13·T16·T17이 같이 건드린다 — 이 파일을 건드리는 과제는 순서대로 병합한다.
 - Phase B(T17~T21)는 06 열쇠 안 파일을 같이 건드리므로 한 스레드(또는 순차)로 한다. T22는 그 뒤.
 
+## 레인 배정 (2026-11-04, 코디네이터)
+| 레인 | 과제 | 비고 |
+|---|---|---|
+| guard (이 스레드) | T0b → T0c | T0b 병합 뒤 나머지 레인이 rebase한다 |
+| board | T1–T4 | `factory/board/**`, T4에서 qa.mjs `startSite` 종료 버그 고침(P2 F1) |
+| sample | T5–T8 | sample-facts·stamp 병합·intake·deliver. en 예시 전화는 +82 꼴(P2 F6) |
+| gates | T9–T10 | ux-gate 머리글·brand-exposure |
+| review | T12–T13 | finish-review·finish-loop |
+| small | T14–T16 | logo-candidates·S8~S10·07 병렬 |
+- 모든 레인 PR 본문에 「열쇠 일치: `558068…0768`」 한 줄. `stamp.mjs`·`qa.mjs`·`blocker-class.mjs`를 건드리는 레인(sample·gates·review·small)은 서로 순서대로 병합한다.
+
 ## 변경 이력
 - 2026-11-04 · P2 반영: 높음 5건(F1 startSite 종료 버그·F2 정리 규칙·F3 계열 규칙 소프트화·F4 버전 올림 순서·F5 레인 CI 공백). 새 과제 T0b·T0c. ci.yml 가지 필터는 공개 main 병합 전에 되돌린다(삭제 목록).
 - 2026-11-04 · P1 반영: 시그니처 문서 신설. 닫은 결정 4건. 계획 상단에 우선 배너. 닫힘 파일 수는 Phase B 뒤 55→58 예상(directions.mjs가 새 모듈 3개 import).
@@ -85,4 +96,4 @@
 
 ## 현재 상태 / 다음 한 작업
 - 상태: T0·T11·P1·P2 완료. PR #59(드래프트).
-- 다음: 코디네이터가 Phase A 레인을 분기한다. 첫 레인은 T0b·T0c(+ T4의 startSite 고침). 병합 순서 주의: stamp.mjs·qa.mjs·blocker-class.mjs는 T6·T9·T10·T13·T16·T17이 같이 건드린다.
+- 다음: T0b 병합 → 다른 레인 rebase. guard 레인이 T0c(계열·거리 표) 진행. 병합 순서 주의: stamp.mjs·qa.mjs·blocker-class.mjs는 T6·T9·T10·T13·T16·T17이 같이 건드린다.

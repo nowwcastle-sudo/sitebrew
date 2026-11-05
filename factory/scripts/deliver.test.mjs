@@ -263,3 +263,35 @@ test('COPY.md 문구 칸 규칙: FAQ·소개 첫 문단은 직접 답 + 근거(�
   assert.match(md, /FAQ[^\n]*소개[^\n]*첫 문단[^\n]*직접 답[^\n]*(수치|출처|날짜)/, 'geo-answer-structure')
   assert.match(md, /캡차[^\n]*로봇이 아닙니다[^\n]*3\.3\.8/, 'ax-captcha-bot-wall')
 })
+
+// ── v0.2.6 T8: 예시 정보가 남은 사이트는 전달하지 않는다 ──────────────────────────
+import { SAMPLE_LEFT_BLOCKER } from '../stamp/blocker-class.mjs'
+import { SampleLeftError } from '../stamp/deliver.mjs'
+import { SAMPLE_LABEL, SAMPLE_VERSION, writeSampleFacts } from '../stamp/sample-facts.mjs'
+
+test('예시 정보 남음 사유가 있으면 전달하지 않는다 — SampleLeftError(키 목록), 대상 폴더는 만들지 않고, 사유를 지우면 같은 곳으로 전달된다', async () => {
+  const cj = join(local.runDir, 'a', 'candidate.json')
+  const original = readFileSync(cj, 'utf8')
+  const data = JSON.parse(original)
+  const to = join(tmp, 'sample-left-blockers')
+  try {
+    writeFileSync(cj, JSON.stringify({ ...data, blockers: [...(data.blockers ?? []), `${SAMPLE_LEFT_BLOCKER}hours`, `${SAMPLE_LEFT_BLOCKER}bizNo`] }))
+    await assert.rejects(() => deliver(local.runDir, 'a', { to }), (e) => e instanceof SampleLeftError && /^예시 정보가 남아 전달하지 않습니다: hours, bizNo$/.test(e.message) && e.keys.length === 2)
+    assert.equal(existsSync(to), false, '대상 폴더를 만들지 않는다')
+  } finally { writeFileSync(cj, original) }
+  const r = await deliver(local.runDir, 'a', { to })
+  assert.equal(r.dir, resolve(to), '사유가 없으면 막지 않는다')
+})
+
+test('07 을 안 거쳐도 예시 파일의 값이 site.json 에 글자 그대로 있으면 막는다(독립 값 스캔) — 값이 없으면 막지 않는다', async () => {
+  const site = JSON.parse(readFileSync(join(local.runDir, 'a', 'site', 'content', 'site.json'), 'utf8'))
+  const present = site.business?.name ?? site.name
+  assert.ok(present && present.length > 2, '시험 재료: 사이트에 있는 글')
+  const file = join(local.runDir, 'sample-facts.json')
+  try {
+    writeSampleFacts(local.runDir, { version: SAMPLE_VERSION, label: SAMPLE_LABEL, facts: { seller: present, hours: '이 글은 사이트 어디에도 없다 ZZZ-0000' } })
+    const to = join(tmp, 'sample-left-scan')
+    await assert.rejects(() => deliver(local.runDir, 'a', { to }), (e) => e instanceof SampleLeftError && e.keys.join() === 'seller')
+    assert.equal(existsSync(to), false)
+  } finally { rmSync(file, { force: true }) }
+})
