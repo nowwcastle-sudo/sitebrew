@@ -248,6 +248,22 @@ describe('feature questions (intake.mjs features, features-write)', () => {
     assert.match(q.err, /no-such-type/)
   })
 
+  it(`brief --facts writes real values over the samples, null as "", and an unknown name is an error (${SKIP_KIT || 'kit found'})`, { skip: SKIP_KIT }, () => {
+    const d = scratch()
+    writeFileSync(join(d, 'a.json'), JSON.stringify({ topic: 'bakery', archetype: 'local', answers: { name: 'Dawn Bread' } }))
+    writeFileSync(join(d, 'f.json'), JSON.stringify({ bizNo: '123-45-67890', phone: null }))
+    const ok = run(['--kit', KIT, 'brief', '--input', join(d, 'a.json'), '--facts', join(d, 'f.json'), '--out', join(d, 'b.json')])
+    assert.equal(ok.code, 0, ok.err)
+    assert.deepEqual(JSON.parse(ok.out).factsApplied, ['bizNo', 'phone'])
+    const facts = JSON.parse(readFileSync(join(d, 'b.json'), 'utf8')).facts
+    assert.equal(facts.bizNo, '123-45-67890')
+    assert.equal(facts.phone, '')
+    writeFileSync(join(d, 'f.json'), JSON.stringify({ bizNumber: 'x' }))
+    const bad = run(['--kit', KIT, 'brief', '--input', join(d, 'a.json'), '--facts', join(d, 'f.json'), '--out', join(d, 'c.json')])
+    assert.notEqual(bad.code, 0)
+    assert.match(bad.err, /bizNumber/)
+  })
+
   it(`--lf names the launch-factory folder for features and features-write, ahead of LF_DIR (${SKIP_KIT || 'kit found'})`, { skip: SKIP_KIT }, () => {
     const lf = lfWith([outcome('signup', 1, '가입')])
     const other = lfWith([outcome('signup', 1, '다른표')])

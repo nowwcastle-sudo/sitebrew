@@ -30,7 +30,9 @@ import { assertPreviewOnly, deployPreview as realDeploy, previewCommands } from 
 import { afterPublishEn, afterPublishKo, OBJECT_HERO_NOTE, renderAgents } from './deliver-guide.mjs'
 import { deliverIntro, unappliedFeatures } from './deliver-intro.mjs'
 import { commandLine, deliverProduct, productSection } from './deliver-product.mjs'
+import { SAMPLE_LEFT_BLOCKER } from './blocker-class.mjs'
 import { isNeedsCheck } from './needs-check.mjs'
+import { readSampleFacts, sampleValuesIn } from './sample-facts.mjs'
 import { recordDelivery } from '../runbook/index.mjs'
 
 const SKIP_DIRS = new Set(['node_modules', '.next', '.next-export', '.vercel', '.turbo'])
@@ -182,6 +184,25 @@ function chooseBranch(runDir, { lf, env = process.env, wfRoot = WF_ROOT }) {
   return { branch: product ? 'product' : 'intro', features, table, lfDir }
 }
 
+/** 예시 정보가 남은 사이트는 전달하지 않는다 — CLI 는 이 오류를 「도구 실패」가 아니라 안내 글 그대로 stderr 에 낸다(종료 1). */
+export class SampleLeftError extends Error {
+  constructor(keys) {
+    super(`예시 정보가 남아 전달하지 않습니다: ${keys.join(', ')}`)
+    this.name = 'SampleLeftError'
+    this.keys = keys
+  }
+}
+
+/**
+ * 남은 예시 정보의 사실 이름. 두 길을 모두 본다 — ① 07 이 후보 candidate.json 에 적은 「예시 정보 남음」 사유 ② 실행 폴더의 예시 파일 값이 사이트 content/site.json 에 글자 그대로 있는지
+ * (07 을 안 돌렸거나 사유가 낡았어도 예시 값이 든 채 나가지 않게 하는 독립 검사, P2 F6).
+ */
+export function leftSampleKeys(runDir, candDir, siteJsonText) {
+  const cj = join(candDir, 'candidate.json')
+  const fromBlockers = (existsSync(cj) ? readJson(cj).blockers ?? [] : []).filter((b) => typeof b === 'string' && b.startsWith(SAMPLE_LEFT_BLOCKER)).map((b) => b.slice(SAMPLE_LEFT_BLOCKER.length).trim())
+  return [...new Set([...fromBlockers, ...sampleValuesIn(siteJsonText, readSampleFacts(runDir))])]
+}
+
 /**
  * @param {string} runDir  찍어내기 실행 폴더
  * @param {string|{ id: string }} cand  고른 안(a·b·c)
@@ -196,6 +217,8 @@ export async function deliver(runDir, cand, opts = {}) {
   if (!existsSync(join(srcSite, 'package.json')) || !existsSync(join(srcSite, 'content', 'site.json'))) {
     throw new Error(`사이트(06-pages)가 없다: ${srcSite} — 먼저 \`npm run stamp -- --run ${runDir} --pick ${candId} --until 06\` 으로 06 까지 돌린다`)
   }
+  const leftSamples = leftSampleKeys(runDir, candDir, readFileSync(join(srcSite, 'content', 'site.json'), 'utf8'))
+  if (leftSamples.length) throw new SampleLeftError(leftSamples) // 아무것도 만들기 전에 — 대상 폴더도 생기지 않는다
   const dest = resolve(to)
   if (isInside(dest, srcSite) || isInside(dest, resolve(runDir))) throw new Error(`대상 폴더가 원본 사이트 폴더 안(또는 실행 폴더 안)이다: ${dest} — 다른 곳을 고른다`)
   if (existsSync(dest)) {
@@ -345,7 +368,7 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
       }
       if (r.previewError) { console.log(`도구 실패: 미리보기 배포 — ${r.previewError}`); process.exitCode = 1 }
     } catch (e) {
-      console.error(`도구 실패: ${e.message}`)
+      console.error(e instanceof SampleLeftError ? e.message : `도구 실패: ${e.message}`)
       process.exitCode = 1
     }
   }
