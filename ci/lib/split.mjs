@@ -39,6 +39,7 @@ export function usesChromeTool(text, chromeTools) {
 export const CHROME_TOOL_EXEMPT = {
   'factory/board/recipe-board/board2.test.mjs': 'gates.mjs 의 순수 판정 함수(oklabChroma·상수)만 부른다',
   'factory/board/recipe-board/hero-motion.test.mjs': 'hero-contrast.mjs 의 상수·수집 식 문자열만 부른다',
+  'factory/qa/brand-exposure.test.mjs': '순수 판정(brandColorOf·floorFor·brandExposureGate)과 가짜 측정기를 넣은 어댑터만 본다(Chrome 은 brand-exposure.browser.test.mjs)',
   'factory/qa/consumer-markers.test.mjs': '판정 함수와 CLI 인자·--dry-run 만 본다(브라우저 없음)',
   'factory/qa/marketing-blocks.test.mjs': '행 목록·요약 순수 함수만 부른다',
   'factory/qa/ops-gate.test.mjs': '순수 판정·작은 http 픽스처 서버·CLI 종료 코드만 본다(Chrome 은 ops-gate.browser.test.mjs)',

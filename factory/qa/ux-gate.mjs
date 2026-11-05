@@ -3,10 +3,13 @@
 //   which repeated the hero at the end under mobile emulation. hero-768-light.png is a review-only extra (finish review, v0.2.6); no check reads it.
 // - ux_gate.json: nav, persistent nav after scroll, body contrast >= 7:1 (fails when nothing was measured), horizontal scroll, clipped text,
 //   text-box overlap + text clipped by an overflow-hidden/clip ancestor (text-boxes.mjs, C296 — fails when no text box was measured).
+// - header-<w>-light-2x.png: the header (banner included) at 2x for reading the logo — a reference capture, no verdict.
+//   gate[<w>-<scheme>].logo: logo measurement (logo-gate.mjs logoProbe); the verdict is the 07-qa logo gate's, not this file's.
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { startChrome, navigateAndWait, connect, assertOpened } from './cdp.mjs';
 import { textBoxScan, stableText, textBoxFailures } from './text-boxes.mjs';
+import { logoProbe } from './logo-gate.mjs';
 const [url, outDir] = process.argv.slice(2);
 mkdirSync(outDir, { recursive: true });
 rmSync(join(outDir, 'ux_gate.json'), { force: true }); // 앞 실행의 결과를 도구 실패 뒤에 남기지 않는다
@@ -19,6 +22,15 @@ const { ws, send, ev } = await connect(chrome.wsUrl); // 호출마다 기한(cdp
 const shot = async (name) => {
   const r = await send('Page.captureScreenshot', { format: 'png' });
   writeFileSync(join(outDir, name + '.png'), Buffer.from(r.result.data, 'base64'));
+};
+// 머리글 상자(배너 포함, 쪽 맨 위부터)를 2배로 찍는다 — 로고 시안이 작은 화면에서 어떻게 읽히는지 사람·리뷰어가 본다(S5·S13). 머리글이 없으면 찍지 않는다.
+const headerShot = async (w) => {
+  const bottom = await ev(`(() => { const h = document.querySelector('[data-slot="site-shell-header"]'); return h ? h.getBoundingClientRect().bottom : null })()`);
+  if (bottom === null) return false;
+  const height = Math.min(Math.ceil(bottom + 8), await ev('innerHeight'));
+  const r = await send('Page.captureScreenshot', { format: 'png', clip: { x: 0, y: 0, width: w, height, scale: 2 } });
+  writeFileSync(join(outDir, `header-${w}-light-2x.png`), Buffer.from(r.result.data, 'base64'));
+  return true;
 };
 const tiles = async (w, maxTiles = 14) => {
   const vh = await ev('innerHeight'); const H = await ev('document.documentElement.scrollHeight');
@@ -96,7 +108,8 @@ for (const [w, h, mobile] of [[1440, 900, false], [375, 812, false]]) {
   for (const scheme of ['light', 'dark']) {
     await load(w, h, mobile, scheme);
     await shot(`hero-${w}-${scheme}`);
-    const g = await ev(GATE); g.textBoxes = await scanTextBoxes(); g.persistentNav = await stickyAfterScroll();
+    if (scheme === 'light') await headerShot(w);
+    const g = await ev(GATE); g.logo = await ev(`(${logoProbe})()`); g.textBoxes = await scanTextBoxes(); g.persistentNav = await stickyAfterScroll();
     if (scheme === 'light') g.tiles = await tiles(w);
     gate[`${w}-${scheme}`] = g;
   }
