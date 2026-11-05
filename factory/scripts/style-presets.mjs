@@ -25,7 +25,8 @@ import {
 } from './recipe.mjs'
 import { ratio, oklchToLinearSrgb } from './lib/contrast-lib.mjs'
 import { hexToOklch, hueDist, ACCENT_C } from './lib/palette-lib.mjs'
-import { parseOklch, tailwindCopy, isCreamBackground, FIELD_CREAM, DUO } from './lib/palette-rules.mjs'
+import { parseOklch, tailwindCopy, isCreamBackground, FIELD_CREAM, DUO, violetRoleOf } from './lib/palette-rules.mjs'
+import { POS_PRESET_W, POS_PALETTE_W, positioningCapped } from '../stamp/positioning.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const PRESETS_FILE = join(ROOT, 'references', 'styles', 'presets.json')
@@ -323,21 +324,41 @@ export const MOOD_PRESET_W = 0.03
 export const MOOD_PALETTE_W = 0.12
 const moodHits = (list, set) => { let n = 0; for (const m of new Set(list ?? [])) if (set.has(m)) n++; return n }
 
-export function listPresets({ archetype, source = 'all', presets = loadPresets(), mood = null } = {}) {
+// 포지셔닝 가산(v0.2.6 T20): `positioning`(prefs — factory/stamp/positioning.mjs)을 주면 프리셋의 모션·색 논리·테마·디스플레이 규모·재료 계열이 선호와 맞은 축마다 POS_PRESET_W(최대 2축)를 더한다.
+// 안 주면 점수식이 그대로다. 원형 적합도(fit)가 0 인 프리셋은 그대로 빠진다.
+const presetHeadLike = (p, prefs) => {
+  const logics = p.recipeHints?.colorLogic ?? []
+  return { axes: p.axes, motion: p.recipeHints?.motion, defaultTheme: p.recipeHints?.defaultTheme ?? 'light', colorLogic: (prefs?.colorLogic ?? []).find((k) => logics.includes(k)) ?? logics[0] }
+}
+export function listPresets({ archetype, source = 'all', presets = loadPresets(), mood = null, positioning = null } = {}) {
   return presets
     .filter((p) => source === 'all' || p.source.startsWith(`${source}:`))
-    .map((p) => { const fit = fitOf(p, archetype); return { ...p, fit, score: round((p.rank_score ?? 0.5) * fit + (mood && fit > 0 ? MOOD_PRESET_W * moodHits(p.recipeHints?.paletteMoods, mood) : 0), 6) } })
+    .map((p) => { const fit = fitOf(p, archetype); return { ...p, fit, score: round((p.rank_score ?? 0.5) * fit + (mood && fit > 0 ? MOOD_PRESET_W * moodHits(p.recipeHints?.paletteMoods, mood) : 0) + (positioning && fit > 0 ? POS_PRESET_W * positioningCapped(positioning, presetHeadLike(p, positioning)) : 0), 6) } })
     .filter((p) => p.fit > 0)
     .sort((a, b) => b.score - a.score || (b.novelty ?? 0) - (a.novelty ?? 0) || (a.id < b.id ? -1 : 1))
 }
 // 팔레트 후보: use "recipe" 만(전체 순위 위쪽은 decor-only 수상 팔레트라 레시피에 못 쓴다 — T15m 우려 3), 그 안에서 rank_score(없으면 사전값 0.5) + 무드 겹침 하나마다 0.06.
 // 프리셋이 다크 기본이면 어두운 바탕 팔레트를 먼저, 아니면 밝은 바탕을 먼저 둔다.
 // `mood`(Set, FIT-3 F1)를 주면 팔레트 무드가 사용자의 분위기 낱말 집합과 겹친 수 하나마다 MOOD_PALETTE_W 를 더한다 — 안 주면 점수식이 그대로다.
-export function pickPalettes(preset, { n = 20, pool = loadPalettePool(), mood = null } = {}) {
+// `positioning`(prefs, v0.2.6 T20)에 테마 선호가 있으면 팔레트 밝기가 그 테마와 맞을 때 한 번 POS_PALETTE_W 를 더한다.
+// `brand`(브랜드 주색 OKLCH, v0.2.6 T21)를 주면 팔레트 주색의 색조가 브랜드 주색과 유사색(±BRAND_HUE_RANGE°) 또는 보색 근처일 때 한 번 BRAND_HUE_W 를 더한다 — 무채에 가까운 쪽은 색조가 뜻이 없어 건너뛴다.
+export const BRAND_HUE_W = 0.1
+export const BRAND_HUE_RANGE = 30
+const roleLch = (hex) => hexToOklch(String(hex).replace(/^#/, ''))
+// 보라 금지 확대(T21): 레퍼런스 팔레트(출처가 레시피가 아닌 것)는 글자색·강조·링이 AI 티 보라(265~300°·C > 0.15)면 풀에서 뺀다. palettes.json 은 원천이 저장소 밖이라 다시 만들 수 없어 고를 때 거른다.
+const violetBanned = (p) => !(typeof p.source === 'string' && p.source.startsWith('recipe:')) && !!violetRoleOf(Object.fromEntries(Object.entries(p.roles ?? {}).filter(([, v]) => /^#[0-9a-f]{6}$/i.test(v)).map(([k, v]) => [k, roleLch(v)])))
+export function pickPalettes(preset, { n = 20, pool = loadPalettePool(), mood = null, positioning = null, brand = null } = {}) {
   const moods = new Set(preset.recipeHints?.paletteMoods ?? [])
   const wantDark = preset.recipeHints?.defaultTheme === 'dark'
-  const score = (p) => (p.rank_score ?? 0.5) + 0.06 * (p.mood ?? []).filter((m) => moods.has(m)).length + (paletteIsDark(p) === wantDark ? 1 : 0) + (mood ? MOOD_PALETTE_W * moodHits(p.mood, mood) : 0)
-  return pool.filter((p) => p.use === 'recipe' && p.roles).sort((a, b) => score(b) - score(a) || (a.id < b.id ? -1 : 1)).slice(0, n)
+  const posTheme = positioning?.theme ?? null
+  const brandHue = brand && brand[1] >= ACCENT_C ? brand[2] : null
+  const hueNear = (p) => {
+    if (brandHue == null || !/^#[0-9a-f]{6}$/i.test(p.roles?.primary ?? '')) return false
+    const [, C, H] = roleLch(p.roles.primary)
+    return C >= ACCENT_C && (hueDist(H, brandHue) <= BRAND_HUE_RANGE || hueDist(H, (brandHue + 180) % 360) <= BRAND_HUE_RANGE)
+  }
+  const score = (p) => (p.rank_score ?? 0.5) + 0.06 * (p.mood ?? []).filter((m) => moods.has(m)).length + (paletteIsDark(p) === wantDark ? 1 : 0) + (mood ? MOOD_PALETTE_W * moodHits(p.mood, mood) : 0) + (posTheme && (paletteIsDark(p) ? 'dark' : 'light') === posTheme ? POS_PALETTE_W : 0) + (hueNear(p) ? BRAND_HUE_W : 0)
+  return pool.filter((p) => p.use === 'recipe' && p.roles && !violetBanned(p)).sort((a, b) => score(b) - score(a) || (a.id < b.id ? -1 : 1)).slice(0, n)
 }
 // 서체 짝: 프리셋 힌트(references/fonts id) 중 키트 항목이 있는 첫 서체를 제목으로, 본문은 한글 키트 서체(Pretendard), 고정폭 IBM Plex Mono.
 export function hintPair(preset) {

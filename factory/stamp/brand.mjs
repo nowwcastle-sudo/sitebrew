@@ -144,6 +144,13 @@ export function brandThemeOf(brand = {}) {
   return bg && bg.lch[0] < 0.35 ? 'dark' : 'light'
 }
 
+// 브랜드 입력의 주색(OKLCH [L,C,H]) — 방향 고르기가 b 팔레트의 색조를 브랜드 주색에 가깝게(유사색 ±30° 또는 보색) 끌 때 읽는다. 유채색이 없으면 null(색조가 뜻이 없다).
+export function brandPrimaryOf(brand = {}) {
+  const cols = (brand.colors ?? []).filter(Boolean).map((x) => parseColor(x)).filter(Boolean).map((c) => ({ lch: render(c) }))
+  const primary = assignRoles(cols).primary
+  return primary && primary.lch[1] >= ACCENT_C ? primary.lch : null
+}
+
 export function brandToRecipeHead(brand = {}, basePreset, opts = {}) {
   if (!basePreset?.recipeHints) throw new Error('brandToRecipeHead: 바탕 프리셋(references/styles/presets.json 원소)이 없다')
   const adjustments = []

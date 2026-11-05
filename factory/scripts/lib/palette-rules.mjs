@@ -50,6 +50,10 @@ export const hueGroups = (lchs) => clusters(lchs.filter((c) => c[1] >= ACCENT_C)
 // 금지 `ai-tell-violet` 로 decor-only. 채도가 낮은 보라·바탕·면으로 쓰는 보라는 대상이 아니다. 레퍼런스 데이터에만 걸고 lint 에는 없다.
 export const AI_TELL_VIOLET = { hueFrom: 265, hueTo: 300, minC: 0.15 }
 export const isAiTellViolet = ([, C, H]) => C > AI_TELL_VIOLET.minC && H >= AI_TELL_VIOLET.hueFrom && H <= AI_TELL_VIOLET.hueTo
+// v0.2.6 T21: 보라 금지는 주색만이 아니라 글자색(foreground)·강조(accent)·포커스 링(ring)에도 건다 — 부록 B 의 b 안은 주색이 아니라 글자색이 보라였다(C 0.30).
+// 역할 이름 → OKLCH 를 받아 걸린 첫 역할 이름을 돌려준다(없으면 null).
+export const AI_TELL_VIOLET_ROLES = ['primary', 'foreground', 'accent', 'ring']
+export const violetRoleOf = (lchByRole) => AI_TELL_VIOLET_ROLES.find((k) => lchByRole?.[k] && isAiTellViolet(lchByRole[k])) ?? null
 
 // ── 색 논리 다양성(DESIGN §5-B, div-01~05) ─────────────────────────────────
 // recipe.mjs(lintRecipeReport — K6·K7·K8·다크 기본)와 recipes-diversity.mjs(골격 분포)가 같은 문턱을 쓴다.

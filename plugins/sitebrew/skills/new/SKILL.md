@@ -101,7 +101,7 @@ A non-zero exit prints one error line: an unknown archetype lists the valid ones
 Write `out/answers.json` unless a handover gave it (a stale file was moved first). Every id is optional: leave `""` for an unanswered question. `locale` is `ko` or `en`, the language of the site. Replace each `<...>`:
 
 ```json
-{ "topic": "<one line>", "archetype": "<id>", "locale": "ko", "answers": { "name": "<answer>", "audience": "<answer>", "action": "<answer>", "contact": "<answer>", "logo": "<answer>", "mood": "<answer>", "brandColors": "<codes the user confirmed, or empty>", "brandFonts": "<heading font>, <body font>", "<archetype question id>": "<answer>" } }
+{ "topic": "<one line>", "archetype": "<id>", "locale": "ko", "answers": { "name": "<answer>", "audience": "<answer>", "action": "<answer>", "contact": "<answer>", "logo": "<answer>", "mood": "<answer>", "brandColors": "<codes the user confirmed, or empty>", "brandFonts": "<heading font>, <body font>", "positioning": "<answer, or empty>", "<archetype question id>": "<answer>" } }
 ```
 
 `answers` takes only the ids that `questions <archetype>` printed, the archetype's own too (`claim`, `hours`...). Run these in this order; `<archetype>` is the `archetype` field of `out/answers.json`; skip the first command when there is no `out/features.json` (no feature questions, or a handover without that file):

@@ -11,7 +11,7 @@ const make = (extra) => ({ topic: '동네 빵집', archetype: 'local', answers: 
 test('질문: 모든 원형에서 mood 바로 뒤에 brandColors · brandFonts 가 온다(앞 6개 순서는 그대로)', () => {
   for (const a of INTAKE_ARCHETYPES) {
     const q = questionsFor(a)
-    assert.deepEqual(q.slice(0, 8).map((x) => x.id), ['name', 'audience', 'action', 'contact', 'logo', 'mood', 'brandColors', 'brandFonts'], a)
+    assert.deepEqual(q.slice(0, 9).map((x) => x.id), ['name', 'audience', 'action', 'contact', 'logo', 'mood', 'brandColors', 'brandFonts', 'positioning'], a)
     assert.match(q[6].ask, /색 코드로 최대 3개.*#0B6E4F.*비워 두세요/, a)
     assert.match(q[7].ask, /서체.*제목용·본문용 순서.*비워 두세요/, a)
   }

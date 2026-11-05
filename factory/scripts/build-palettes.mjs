@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 import { absentNote, designRulesPath, skipAndExit } from '../lib/design-rules.mjs'
 import { hexToOklch, hueDist, ACCENT_C } from './lib/palette-lib.mjs'
 import { ratio } from './lib/contrast-lib.mjs'
-import { tailwindCopy, isCreamBackground, hueGroups, isAiTellViolet, MAX_HUE_GROUPS, DATA_LIGHT_BG_L, BG_MAX_C, SURFACE_MAX_C } from './lib/palette-rules.mjs'
+import { tailwindCopy, isCreamBackground, hueGroups, violetRoleOf, MAX_HUE_GROUPS, DATA_LIGHT_BG_L, BG_MAX_C, SURFACE_MAX_C } from './lib/palette-rules.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const WEIGHT = { sns: 0.2, dataset: 0.6 }
@@ -123,7 +123,8 @@ export function bansOf({ roles, cols, brand, brandDerived, exemptViolet = false 
   if (groups > MAX_HUE_GROUPS) { bans.push('accent-hue-groups'); detail.push(`강조 색상 묶음 ${groups}개`) }
   const tw = roles ? ['primary', 'accent'].filter((k) => roles[k]).map((k) => [k, roles[k], tailwindCopy(roles[k].exact)]).filter((x) => x[2]) : []
   if (tw.length) { bans.push('tailwind-default'); for (const [k, c, t] of tw) detail.push(`${k} ${c.hex} ≈ ${t.name} ${t.hex} (${t.dist.toFixed(4)})`) }
-  if (!exemptViolet && roles?.primary && isAiTellViolet(roles.primary.exact)) { bans.push('ai-tell-violet'); detail.push(`primary ${roles.primary.hex} h ${H(roles.primary).toFixed(0)} C ${C(roles.primary).toFixed(3)} — AI 티 보라(265~300°, C > 0.15)`) }
+  const violetRole = !exemptViolet && roles ? violetRoleOf(Object.fromEntries(Object.entries(roles).map(([k, c]) => [k, c.exact]))) : null
+  if (violetRole) { const c = roles[violetRole]; bans.push('ai-tell-violet'); detail.push(`${violetRole} ${c.hex} h ${H(c).toFixed(0)} C ${C(c).toFixed(3)} — AI 티 보라(265~300°, C > 0.15)`) }
   return { bans, detail }
 }
 

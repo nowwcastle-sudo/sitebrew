@@ -6,10 +6,10 @@ import { ARCHETYPE_IDS, BriefSchema, loadBriefObject } from '../stamp/brief.mjs'
 import { INTAKE_ARCHETYPES, questionsFor } from './questions.mjs'
 import { missingFacts, toBrief } from './to-brief.mjs'
 
-test('원형 10종 모두 질문 5~11개', () => {
+test('원형 10종 모두 질문 5~12개', () => {
   for (const a of ['brand', 'commerce', 'dashboard', 'detail', 'local', 'portfolio', 'public', 'pwa', 'saas', 'landing']) {
     const q = questionsFor(a)
-    assert.ok(q.length >= 5 && q.length <= 11, `${a}: ${q.length}`)
+    assert.ok(q.length >= 5 && q.length <= 12, `${a}: ${q.length}`)
   }
 })
 
@@ -35,7 +35,7 @@ test('질문 표: 원형 목록은 브리프 원형 10종(landing 포함) 그대
 })
 
 test('원형별 질문: local 은 영업시간, commerce 는 대표 상품, saas 는 요금제를 더 묻는다', () => {
-  const extra = (a) => questionsFor(a).slice(8).map((x) => x.id) // 공통 6 + FIT-3 브랜드 색·서체 2 뒤
+  const extra = (a) => questionsFor(a).slice(9).map((x) => x.id) // 공통 6 + FIT-3 브랜드 색·서체 2 + 포지셔닝 1 뒤
   assert.deepEqual(extra('local'), ['hours'])
   assert.deepEqual(extra('commerce'), ['bestsellers'])
   assert.deepEqual(extra('saas'), ['price'])
@@ -132,7 +132,7 @@ test('사진 안내 수는 원형마다 다르다(고정 문구가 아니다) ·
   const local = questionsFor('local').find((x) => x.logo).ask
   assert.match(local, /가로 16:9/)
   assert.match(local, /정사각 1:1/)
-  assert.equal(questionsFor('local').length, 9)
+  assert.equal(questionsFor('local').length, 10)
   assert.deepEqual(questionsFor('local').slice(0, 6).map((x) => x.id), ['name', 'audience', 'action', 'contact', 'logo', 'mood'])
 })
 

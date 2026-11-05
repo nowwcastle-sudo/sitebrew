@@ -21,6 +21,9 @@ import { recipeDistance } from '../scripts/recipes-distinct.mjs'
 import { boldModeFor } from '../qa/bold-safety.mjs'
 import { conditionIdsOf } from './brief.mjs'
 import { moodProfile, moodSet, moodOverlap } from './mood.mjs'
+import { positioningProfile, positioningMatches, positioningCapped, POS_LIBRARY_W } from './positioning.mjs'
+import { materialFamily } from './material-family.mjs'
+import { visualDistance, SPACE_RULE, ARCHETYPE_GOAL, worldFields, familyClash } from './visual-distance.mjs'
 import { listPresets, pickPalettes, loadPalettePool, presetToRecipeHead, hintPair, loadPairs, loadLibrary, novelty } from '../scripts/style-presets.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
@@ -34,6 +37,8 @@ export const MIN_CONVERSIONS = 30 // §9 Q17
 // 분위기 가산(FIT-3 F1): 라이브러리 a 안 고름에서 레시피 mood 3단어 중 사용자의 분위기와 겹친 낱말 하나마다 더하는 점수. 원형 적합도(fit)가 같은 묶음 안에서만 작동하고,
 // 가중치 lift(≥30 전환 행)가 있으면 그 곁에서 근소 차이를 가르는 크기다. 프리셋·팔레트 쪽 가산은 style-presets.mjs MOOD_PRESET_W·MOOD_PALETTE_W.
 export const MOOD_LIBRARY_W = 0.05
+// 재료 계열이 다른 쪽을 고르는 소프트 가산(v0.2.6 T21 · P2 F3): ② 칸에서 ①·③과 계열이 다르면 하나마다 더한다. 하드 규칙은 아니다 — 풀에 다른 계열이 없으면(dashboard·public 은 대부분 plain) 작동하지 않는다.
+export const FAMILY_BONUS = 0.05
 
 export class DirectionsShortError extends Error {
   constructor(rejected, message) {
@@ -105,7 +110,7 @@ export const matchedConditions = (recipe, arch, conditions = []) => conditionIds
 
 // ① 라이브러리 고름(원형 적합도가 먼저, 이 원형에 archetypeConditions 가 붙은 레시피는 브리프 조건이 맞을 때 1, 아니면 0.9 라 조건 없는 레시피가 없을 때만, 동률은 씨앗 순서).
 // pickDirections 와 골든 씨앗 탐색(golden.mjs)이 같은 식을 쓰게 한 곳에 둔다. 돌려주는 값: { libOrder, bestFit, safePool } — safePool[0] 이 a 안.
-function librarySafePool(arch, rand, w, library, conditions = [], moodP = null) {
+function librarySafePool(arch, rand, w, library, conditions = [], moodP = null, posPrefs = null) {
   const fitOf = (r) => (r.archetypes?.includes(arch) ? (r.archetypeConditions?.[arch] ? (matchedConditions(r, arch, conditions).length ? 1 : 0.9) : 1) : checkCompat(r.axes, arch).length ? 0 : 0.5)
   const libOrder = seededOrder(library, rand)
     .map((r) => ({ r, fit: fitOf(r), lift: liftOf(w, arch, [r.id]) }))
@@ -113,7 +118,8 @@ function librarySafePool(arch, rand, w, library, conditions = [], moodP = null) 
   const bestFit = Math.max(0, ...libOrder.map((x) => x.fit))
   // 분위기 겹침(FIT-3): 분위기가 표에 있을 때만 레시피 mood 와 센다. 없으면 key 가 예전 식 그대로(+0)라 정렬 결과가 바이트까지 같다.
   const moodWords = moodP ? new Set(moodP.recipeTokens) : null
-  const keyOf = (x) => x.fit * (1 + x.lift) + (moodWords ? MOOD_LIBRARY_W * moodOverlap(x.r.mood, moodWords) : 0)
+  // 포지셔닝(v0.2.6 T20): 선호와 맞는 축 하나마다 POS_LIBRARY_W(최대 2축). 없으면 +0.
+  const keyOf = (x) => x.fit * (1 + x.lift) + (moodWords ? MOOD_LIBRARY_W * moodOverlap(x.r.mood, moodWords) : 0) + (posPrefs ? POS_LIBRARY_W * positioningCapped(posPrefs, x.r) : 0)
   const safePool = libOrder.filter((x) => x.fit === bestFit).sort((a, b) => keyOf(b) - keyOf(a))
   const topKey = safePool.length ? keyOf(safePool[0]) : 0
   return { libOrder, bestFit, safePool, topKey, keyOf, moodWords }
@@ -123,14 +129,15 @@ function librarySafePool(arch, rand, w, library, conditions = [], moodP = null) 
  * 원형·씨앗이 주는 라이브러리 a 안의 레시피 id(lint·생성 후보 없이 싸게 — 골든 씨앗 탐색이 안 맞는 씨앗을 미리 거른다).
  * fitting 은 이 원형에서 a 안이 될 수 있는 레시피 전부(최고 적합도 묶음, 가중치 lift 는 무시 — 씨앗 순서만 바꾼다는 기록용).
  */
-export function libraryPick({ archetype, seed, weights, conditions = [], mood } = {}) {
+export function libraryPick({ archetype, seed, weights, conditions = [], mood, positioning } = {}) {
   const arch = typeof archetype === 'string' ? archetype : archetype?.id
   const w = (weights ?? loadWeights()).filter((x) => (x.conversions ?? 0) >= MIN_CONVERSIONS)
   const library = loadLibrary()
   const moodP = moodProfile(mood)
-  const { safePool } = librarySafePool(arch, mulberry32(seed), w, library, conditions, moodP)
+  const posPrefs = positioningProfile(positioning)?.prefs ?? null
+  const { safePool } = librarySafePool(arch, mulberry32(seed), w, library, conditions, moodP, posPrefs)
   // 분위기가 표에 있으면 a 안이 될 수 있는 것은 그 분위기 점수가 가장 높은 묶음뿐이다(분위기가 없으면 예전처럼 적합도 묶음 전부).
-  const base = librarySafePool(arch, mulberry32(0), [], library, conditions, moodP)
+  const base = librarySafePool(arch, mulberry32(0), [], library, conditions, moodP, posPrefs)
   const fitting = base.safePool.filter((x) => base.keyOf(x) === base.topKey).map((x) => x.r.id).sort()
   return { id: safePool[0]?.r.id ?? null, fitting }
 }
@@ -156,7 +163,20 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
   const moodP = moodWord ? moodProfile(moodWord) : null
   const moodTokens = moodSet(moodP)
   const moodShown = moodWord.length > 20 ? `${moodWord.slice(0, 20)}…` : moodWord
-  const { bestFit, safePool, moodWords } = librarySafePool(arch, rand, w, library, brief?.conditions ?? [], moodP)
+  // 포지셔닝(v0.2.6 T20): facts.positioning 을 표(positioning.mjs)로 선호에 옮겨 ① 라이브러리 고름 ② 프리셋 점수 ③ 팔레트 테마에 층별 상한 안에서 더한다. 표에 없으면 효과 없음(why 에 이유).
+  const posWord = typeof brief?.facts?.positioning === 'string' ? brief.facts.positioning.trim() : ''
+  const posP = posWord ? positioningProfile(posWord) : null
+  const posPrefs = posP?.prefs ?? null
+  const posShown = posWord.length > 20 ? `${posWord.slice(0, 20)}…` : posWord
+  const posClause = (head) => {
+    if (!posWord) return ''
+    if (!posP) return ` · 포지셔닝 '${posShown}' 은 표에 없어 반영 못 함`
+    const names = positioningMatches(posPrefs, head)
+    return names.length ? ` · 포지셔닝 '${posShown}' 반영(${names.join('·')} 일치)` : ` · 포지셔닝 '${posShown}' 과 맞는 재료가 이 안에는 없어 가산 없음`
+  }
+  const mod = brief?.brand ? await import('./brand.mjs').catch((e) => { throw new Error(`브랜드 입력이 있는데 factory/stamp/brand.mjs(P3-3 Task 4)를 불러오지 못했다 — ${e.message}`) }) : null
+  const brandPrimary = mod ? mod.brandPrimaryOf(brief.brand) : null
+  const { bestFit, safePool, moodWords } = librarySafePool(arch, rand, w, library, brief?.conditions ?? [], moodP, posPrefs)
   if (!safePool.length) throw new DirectionsShortError([{ id: 'slot:safe', reasons: [`no-library-recipe:${arch}`] }])
   const safeHead = safePool[0].r
   // 안마다 붙는 근거 한 줄 — 분위기가 없으면 빈 글(예전 why 그대로).
@@ -165,13 +185,13 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
   const safe = {
     id: 'a', slot: 'safe', source: 'library', recipe: safeHead.id, palette: `pal-recipe-${safeHead.id}`,
     fonts: { display: safeHead.fonts.display.family, body: safeHead.fonts.body.family }, novelty: 0,
-    why: `① 무난 — 라이브러리 레시피 ${safeHead.id}: ${bestFit === 0.5 ? `${arch} 원형을 적은 레시피가 없어 호환표를 통과한` : `${arch} 원형을 archetypes 에 적은`} ${safePool.length}벌 중${safePool[0].lift ? ` 가중치 lift ${safePool[0].lift}로` : ` 씨앗 ${s} 순서로`} 골랐다${safeHead.archetypeConditions?.[arch] ? ` · 조건: ${safeHead.archetypeConditions[arch]}(${matchedConditions(safeHead, arch, brief?.conditions).length ? `브리프 조건 ${matchedConditions(safeHead, arch, brief?.conditions).join('·')} 이 맞아 적합도 1` : '브리프가 맞는지 확인 필요'})` : ''}${moodClause(safeHit, `레시피 무드 ${safeHead.mood.filter((m) => moodWords?.has(m)).join('·')} 일치`)}`,
+    why: `① 무난 — 라이브러리 레시피 ${safeHead.id}: ${bestFit === 0.5 ? `${arch} 원형을 적은 레시피가 없어 호환표를 통과한` : `${arch} 원형을 archetypes 에 적은`} ${safePool.length}벌 중${safePool[0].lift ? ` 가중치 lift ${safePool[0].lift}로` : ` 씨앗 ${s} 순서로`} 골랐다${safeHead.archetypeConditions?.[arch] ? ` · 조건: ${safeHead.archetypeConditions[arch]}(${matchedConditions(safeHead, arch, brief?.conditions).length ? `브리프 조건 ${matchedConditions(safeHead, arch, brief?.conditions).join('·')} 이 맞아 적합도 1` : '브리프가 맞는지 확인 필요'})` : ''}${moodClause(safeHit, `레시피 무드 ${safeHead.mood.filter((m) => moodWords?.has(m)).join('·')} 일치`)}${posClause(safeHead)}`,
   }
 
   // ② ③ 생성 후보 풀
   const pool = loadPalettePool()
   const pairs = loadPairs().filter((p) => p.source !== `recipe:${safeHead.id}`)
-  let presets = listPresets({ archetype: arch, ...(moodTokens ? { mood: moodTokens } : {}) })
+  let presets = listPresets({ archetype: arch, ...(moodTokens ? { mood: moodTokens } : {}), ...(posPrefs ? { positioning: posPrefs } : {}) })
   if (_presetFilter) presets = presets.filter(_presetFilter)
   presets = presets.slice(0, TOP_PRESETS)
   const gens = []
@@ -179,7 +199,7 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
   presets.forEach((preset, pi) => {
     const pairB = pairs.length ? pairs[Math.floor(rand() * pairs.length)] : null
     const fontSets = [hintPair(preset), ...(pairB ? [pairB] : [])]
-    const window = pickPalettes(preset, { n: PALETTE_WINDOW, pool, ...(moodTokens ? { mood: moodTokens } : {}) })
+    const window = pickPalettes(preset, { n: PALETTE_WINDOW, pool, ...(moodTokens ? { mood: moodTokens } : {}), ...(posPrefs ? { positioning: posPrefs } : {}), ...(brandPrimary ? { brand: brandPrimary } : {}) })
     // 창에서 씨앗이 PALETTES_PER_PRESET 개를 뽑는다. 뽑힌 순서가 칸 안 동률 순서(ki)라 첫 번째가 창 안에서 고르게 나온다(순위순으로 다시 세우면 위쪽 팔레트로 쏠린다).
     const chosen = seededOrder(window, randPal).slice(0, PALETTES_PER_PRESET)
     chosen.forEach((palette, ki) => fontSets.forEach((pair, fi) => {
@@ -201,6 +221,7 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
     if (ex) { rejected.push({ id: g.key, reasons: [...ex] }); continue }
     const near = [
       ...(axisDistance(g.head, safeHead) < minAxes ? ['axis-distance:safe'] : []),
+      ...(visualDistance(g.head, safeHead) < SPACE_RULE.minDistance ? ['visual-distance:safe'] : []),
       ...library.filter((r) => r.id !== safeHead.id && axisDistance(g.head, r) < minAxes).map((r) => `axis-distance:library:${r.id}`),
     ]
     if (near.length) rejected.push({ id: g.key, reasons: near })
@@ -223,14 +244,13 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
   const byNovelty = (a, b) => b.novelty - a.novelty || b.lift - a.lift || byScore(a, b)
   const firstPassing = (list, avoid) => (_paletteDiversity ? diversityOrder(list, avoid) : list).find(passes)
   const shared = (g, avoid) => [...avoid].map(paletteKey).includes(paletteKey(g.palette))
+  const genPosClause = (g) => posClause(g.head)
   const genMoodClause = (g) => moodClause((g.moodHit?.preset ?? 0) + (g.moodHit?.palette ?? 0), `${[g.moodHit?.preset ? `프리셋 무드 ${g.moodHit.preset}` : '', g.moodHit?.palette ? `팔레트 무드 ${g.moodHit.palette}` : ''].filter(Boolean).join('·')} 일치`)
 
   // ③ 먼저: 통과한 생성 후보 중 새로움 최고(①과 팔레트가 다른 것 먼저). 그다음 ②: ③과 축 2개 이상 다르고 새로움이 ③ 이하인 것 중 점수 1등.
   let bold, boldHead, brandInfo
   const genBold = firstPassing([...alive].sort(byNovelty), [safe.palette])
   if (brief?.brand) {
-    let mod
-    try { mod = await import('./brand.mjs') } catch (e) { throw new Error(`브랜드 입력이 있는데 factory/stamp/brand.mjs(P3-3 Task 4)를 불러오지 못했다 — ${e.message}`) }
     // 바탕 프리셋(T19): 브랜드 색이 정한 테마와 같은 테마의 프리셋 중 새로움 최고 — 밝은 브랜드 색이 어두운 프리셋 위에 얹히지 않는다. 같은 테마가 없으면 예전 선택.
     const themeOf = (p) => (p.recipeHints?.defaultTheme === 'dark' ? 'dark' : 'light')
     const brandTheme = mod.brandThemeOf(brief.brand)
@@ -240,7 +260,7 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
     const r = mod.brandToRecipeHead(brief.brand, base, { archetype: arch })
     if (r.blocked) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: [`brand-blocked: ${r.blocked}`] }])
     const v = _lint(r.head)
-    const near = [...(axisDistance(r.head, safeHead) < minAxes ? ['axis-distance:safe'] : [])]
+    const near = [...(axisDistance(r.head, safeHead) < minAxes ? ['axis-distance:safe'] : []), ...(visualDistance(r.head, safeHead) < SPACE_RULE.minDistance ? ['visual-distance:safe'] : [])]
     if (v.length || near.length) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: [...ruleIds(v), ...near].map((x) => `brand-${x}`) }])
     boldHead = r.head
     brandInfo = { input: brief.brand, adjustments: r.adjustments ?? [], fontSubstitutions: r.fontSubstitutions ?? [], basePreset: base.id }
@@ -248,26 +268,46 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
       id: 'c', slot: 'bold', source: 'brand', recipe: r.head, preset: base.id,
       fonts: { display: r.head.fonts?.display?.family, body: r.head.fonts?.body?.family }, brand: brandInfo,
       novelty: novelty(r.head, library),
-      why: `③ 과감 — 브랜드 입력으로 만든 안(바탕 프리셋 ${base.id}, 색 조정 ${brandInfo.adjustments.length}건 · 서체 대체 ${brandInfo.fontSubstitutions.length}건)${!moodWord ? '' : !moodP ? ` · 분위기 '${moodShown}' 은 표에 없어 반영 못 함` : ` · 분위기 '${moodShown}' 은 브랜드 입력이 색·서체를 정해 반영 안 함`}`,
+      why: `③ 과감 — 브랜드 입력으로 만든 안(바탕 프리셋 ${base.id}, 색 조정 ${brandInfo.adjustments.length}건 · 서체 대체 ${brandInfo.fontSubstitutions.length}건)${!moodWord ? '' : !moodP ? ` · 분위기 '${moodShown}' 은 표에 없어 반영 못 함` : ` · 분위기 '${moodShown}' 은 브랜드 입력이 색·서체를 정해 반영 안 함`}${!posWord ? '' : !posP ? ` · 포지셔닝 '${posShown}' 은 표에 없어 반영 못 함` : ` · 포지셔닝 '${posShown}' 은 브랜드 입력이 색·서체를 정해 반영 안 함`}`,
     }
   } else if (genBold) {
     boldHead = genBold.head
-    bold = candidateOf(genBold, 'c', 'bold', `③ 과감 — 통과한 생성 후보 중 새로움 최고 ${genBold.novelty}(프리셋 ${genBold.preset.id}, 팔레트 ${genBold.palette})${shared(genBold, [safe.palette]) ? ' · ①과 팔레트가 같다: 통과한 다른 후보가 없다(C10 예외)' : ''}${genMoodClause(genBold)}`)
+    bold = candidateOf(genBold, 'c', 'bold', `③ 과감 — 통과한 생성 후보 중 새로움 최고 ${genBold.novelty}(프리셋 ${genBold.preset.id}, 팔레트 ${genBold.palette})${shared(genBold, [safe.palette]) ? ' · ①과 팔레트가 같다: 통과한 다른 후보가 없다(C10 예외)' : ''}${genMoodClause(genBold)}${genPosClause(genBold)}`)
   }
   if (!bold) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: ['no-passing-generated-candidate'] }])
 
   const avoidNew = [safe.palette, bold.palette].filter(Boolean)
-  const newPool = alive.filter((g) => g !== genBold || bold.source === 'brand')
+  // ②: ③과 축 2개 이상 + 눈에 보이는 거리 2칸 이상 다른 후보(하드 규칙 visual-distance), 그중 ①·③과 재료 계열이 다른 쪽에 소프트 가산(FAMILY_BONUS, P2 F3).
+  const famOf = (h) => materialFamily(h)
+  const famBonus = (g) => FAMILY_BONUS * ((famOf(g.head) !== famOf(safeHead) ? 1 : 0) + (famOf(g.head) !== famOf(boldHead) ? 1 : 0))
+  const byScoreWorld = (a, b) => (b.score + famBonus(b)) - (a.score + famBonus(a)) || cmpOrder(a, b)
+  const axisOk = alive.filter((g) => g !== genBold || bold.source === 'brand')
     .filter((g) => axisDistance(g.head, boldHead) >= minAxes && (bold.source === 'brand' || g.novelty <= bold.novelty))
-    .sort(byScore)
+  const newPool = axisOk.filter((g) => {
+    if (visualDistance(g.head, boldHead) >= SPACE_RULE.minDistance) return true
+    rejected.push({ id: g.key, reasons: ['visual-distance:bold'] })
+    return false
+  }).sort(byScoreWorld)
   const gNew = firstPassing(newPool, avoidNew)
-  if (!gNew) throw new DirectionsShortError([...rejected, { id: 'slot:new', reasons: [alive.length ? 'no-passing-candidate-2-axes-from-bold' : 'no-passing-generated-candidate'] }])
-  const newC = candidateOf(gNew, 'b', 'new', `② 새 조합 — 통과한 생성 후보 중 점수 1등(프리셋 ${gNew.preset.id} 점수 ${round(gNew.score)}, 팔레트 ${gNew.palette})${shared(gNew, avoidNew) ? ' · ①·③과 팔레트가 같다: 통과한 다른 후보가 없다(C10 예외)' : ''}${genMoodClause(gNew)}`)
+  if (!gNew) throw new DirectionsShortError([...rejected, { id: 'slot:new', reasons: [!alive.length ? 'no-passing-generated-candidate' : axisOk.length ? 'no-passing-candidate-visual-distance-from-bold' : 'no-passing-candidate-2-axes-from-bold'] }])
+  const newC = candidateOf(gNew, 'b', 'new', `② 새 조합 — 통과한 생성 후보 중 점수 1등(프리셋 ${gNew.preset.id} 점수 ${round(gNew.score)}, 팔레트 ${gNew.palette})${shared(gNew, avoidNew) ? ' · ①·③과 팔레트가 같다: 통과한 다른 후보가 없다(C10 예외)' : ''}${genMoodClause(gNew)}${genPosClause(gNew)}`)
 
   // 대담안 표시(factory v1 Task 4.2 · 합의안 D5·D20): 3안 중 정확히 1안(③ 과감 칸)이 대담안이다. 출처 구성·고름은 그대로 두고 표시만 더한다.
   // boldMode: public·dashboard 는 모션 대신 배치·서체로만 대담("layout"), 그 밖은 모션("motion"). 안전 판정은 factory/qa/bold-safety.mjs(07-qa 관문 bold-safety).
   Object.assign(bold, { boldness: 'bold', boldMode: boldModeFor(arch) })
   for (const c of [safe, newC]) c.boldness = 'standard'
+
+  // 「다른 세계」 표시(v0.2.6 T21): 후보 머리 4칸 { thesis, sig, world, risk } — 판정에 쓰지 않고 대시보드 표시용이다.
+  // 재료 계열이 같은 쌍은 why 의 경고 문구(family-clash)로만 알린다 — 풀에 계열이 셋보다 적은 원형(dashboard·public)은 어느 안도 달리 고를 수 없어 알리지 않는다.
+  const heads = { a: safeHead, b: gNew.head, c: boldHead }
+  const familyPool = new Set([...library, ...presets].map((x) => materialFamily(x.axes ? { axes: x.axes, motion: x.motion ?? x.recipeHints?.motion, defaultTheme: x.defaultTheme ?? x.recipeHints?.defaultTheme } : {})))
+  const goal = posP ? posP.text.slice(0, 24) : ARCHETYPE_GOAL[arch] ?? '핵심 과업'
+  for (const c of [safe, newC, bold]) {
+    const others = Object.entries(heads).filter(([id]) => id !== c.id)
+    const clash = familyPool.size >= 3 ? others.filter(([, h]) => familyClash(heads[c.id], h)).map(([id, h]) => `${id}안과 ${familyClash(heads[c.id], h)}`) : []
+    if (clash.length) c.why += ` · 경고: family-clash(${clash.join(', ')})`
+    Object.assign(c, worldFields(heads[c.id], { goal, others: others.map(([, h]) => h), warnings: clash }))
+  }
   return { candidates: [safe, newC, bold], rejected }
 }
 
