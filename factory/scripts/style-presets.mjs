@@ -378,7 +378,7 @@ export function presetToRecipeHead(preset, palette, fonts, opts = {}) {
   const logic = hints.colorLogic.includes(palette.colorLogic) ? palette.colorLogic : hints.colorLogic[0]
   const axes = lib ? { ...preset.axes } : Object.fromEntries(AXIS_ORDER.filter((a) => !(a in AXIS_DEFAULTS) || preset.axes[a] !== AXIS_DEFAULTS[a]).map((a) => [a, preset.axes[a]]))
   const colors = palette.theme && palette.colorLogic === logic ? derivePalette(palette) : derivePalette(palette.theme ? { ...palette, theme: undefined, roles: palette.roles, colors: palette.colors } : palette, { colorLogic: logic, axes })
-  const defaultTheme = lib ? preset.recipeHints.defaultTheme : (hints.defaultTheme ?? colors.defaultTheme)
+  const defaultTheme = lib ? preset.recipeHints.defaultTheme : (opts.defaultTheme ?? hints.defaultTheme ?? colors.defaultTheme) // opts.defaultTheme: 브랜드 색이 정한 테마(v0.2.6 T19) — 프리셋 힌트가 덮지 않는다
   const archetypes = opts.archetype ? [opts.archetype] : preset.archetypes.length ? preset.archetypes : ['brand', 'portfolio', 'saas'].filter((a) => !checkCompat(preset.axes, a).length)
   const head = lib ? {
     id: lib.id, name: lib.name, mood: [...lib.mood], axes, motion: hints.motion, colorLogic: logic, ...(defaultTheme ? { defaultTheme } : {}), dynamics: [...hints.dynamics],

@@ -60,8 +60,8 @@
 
 ### Phase B — 06 열쇠 묶음 (한 번에)
 - [x] T17 머리글 이미지 로고 — `headerLogoOf`(site-files.mjs)·`shell.logo`(site.json)·site.tsx LogoMark(img·mask·다크 짝)·stamp.mjs 06 입력 조건부 키 `logo`(경로+sha256)·로고 관문이 a·b 도 잰다(`briefLogo`)·`BLOCKER.logo`(입력 갈래)
-- [ ] T18 예시 띠와 법정 초안
-- [ ] T19 브랜드 주색·테마·바탕 프리셋
+- [x] T18 예시 띠와 법정 초안 — `sample-band.mjs`(예시 값 찾기)·site.json `sample`{label,count,scrub}·SiteShell banner(SampleBand)·`lib/sample-scrub.ts`(JSON-LD·메타에서 예시 칸 뺌)·법정 초안 `blankSamples`
+- [x] T19 브랜드 주색·테마·바탕 프리셋 — 첫 유채색=주색·`brandThemeOf`·`presetToRecipeHead` opts.defaultTheme·c 바탕=같은 테마 최고 novelty·질문 문구. 한계: 바탕 역할이 밝은 무채(L≥0.9)만이라 dark 는 아직 나오지 않는다(규칙은 구현됨)
 - [ ] T20 포지셔닝
 - [ ] T21 「다른 세계」·팔레트·보라·후보 머리 4칸
 - [ ] T22 기준 갱신과 골든 재증명(실빌드 3건)

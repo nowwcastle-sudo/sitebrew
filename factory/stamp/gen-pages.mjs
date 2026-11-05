@@ -33,6 +33,7 @@ import { localizeEnglishLabels } from './ui-labels-en.mjs'
 import { cutDescription, pickDescriptionSlot } from './page-meta.mjs'
 import { deadLinks as findDeadLinks, deadLinkSummary, readBuiltPages, staticDeadLinks } from './link-check.mjs'
 import { bindContentSection } from './content-sections.mjs'
+import { blankSamples, readSampleTable, remainingKeys, samplePaths } from './sample-band.mjs'
 import { headerLogoOf, recipeColors, recipeHeadOf, writeFavicons, SITE_FILE_ITEMS } from './site-files.mjs'
 import { addFallbackFaces, dropKoreanKitImports, recipeWeightsFor, subsetSiteFonts } from './site-fonts.mjs'
 import { failMessage } from './fail-message.mjs'
@@ -1188,7 +1189,10 @@ export async function generateSite(runDir, cand, opts = {}) {
   const withdrawalStripped = applyWithdrawalPolicy(sections, legalFacts.withdrawalPolicy)
   if (!['full', 'limited'].includes(legalFacts.withdrawalPolicy) && sectionsWithWithdrawalNotice(sections).length) blockers.push(`${BLOCKER.fact}legal.withdrawalPolicy`)
   const legalBusiness = legalBusinessOf(content, rawContent.facts)
-  const draftInput = { ...content, ...(legalBusiness && !content.business ? { business: legalBusiness } : {}), ...(isObj(rawContent.facts) ? { facts: rawContent.facts } : {}), ...(Object.keys(legalFacts).length ? { legal: legalFacts } : {}) }
+  // 예시 정보(T18): 예시 값이 그대로 남은 칸은 법정 초안에 쓰지 않는다 — 초안은 그 사실을 「확인 필요」로 읽는다(예시 사업자번호가 약관에 박히지 않게)
+  const sampleInfo = readSampleTable(runDir)
+  const draftInputRaw = { ...content, ...(legalBusiness && !content.business ? { business: legalBusiness } : {}), ...(isObj(rawContent.facts) ? { facts: rawContent.facts } : {}), ...(Object.keys(legalFacts).length ? { legal: legalFacts } : {}) }
+  const draftInput = sampleInfo ? blankSamples(draftInputRaw, sampleInfo.table, PLACEHOLDER[locale]) : draftInputRaw
   const drafts = draftLegalPages(draftInput, archetype, locale)
   // 초안 낡음(C122·C114): 초안은 만든 때의 입력 사실 해시(inputHash — 초안이 읽는 콘텐츠 객체 전체 + 원형 법정 칸 + 언어)를 적어 둔다. 기존 초안의 해시가 다르면 사실이 바뀐 것이다.
   const draftHash = inputHash({ input: draftInput, legal: archetype.legal, locale })
@@ -1311,6 +1315,11 @@ export async function generateSite(runDir, cand, opts = {}) {
   }
   delete siteJson.media
   if (factsRestored) delete siteJson.facts
+  // 예시 띠(T18): 예시 값이 사이트에 글자 그대로 남아 있으면 모든 쪽에 띠를 단다. scrub = JSON-LD·메타에서 뺄 칸(scrubNeedsCheck 와 같은 길)
+  if (sampleInfo) {
+    const left = remainingKeys(siteJson, sampleInfo.table)
+    if (left.length) siteJson.sample = { label: sampleInfo.label, count: left.length, scrub: samplePaths(content, sampleInfo.table) }
+  }
   const policyLinks = ownPolicyLinks(siteJson.business, sitemap)
   if (policyLinks.bound.length) siteJson.business = policyLinks.business
   // 법정 쪽은 푸터에만(FINAL-WF2 AB17): 푸터가 이미 그 쪽으로 가는 링크를 그리면 머리글 메뉴에서 뺀다 — 푸터가 안 그리면(링크 없는 푸터·푸터 없음) 법정 쪽이 고아가 되므로 메뉴에 둔다.
@@ -1449,8 +1458,8 @@ function readOptionalMedia(candDir) {
 
 /** 메타 설명·OG 설명·트위터 설명에 자리표시(「확인 필요」/"To be confirmed")가 남은 쪽 → 문제 문자열[] (FINAL-WF2 AB4). 한 쪽 = 한 줄. */
 export async function metaPlaceholderProblems(siteJson) {
-  const { sections: _s, pages: _p, legal: _l, shell: _h, ...content } = siteJson
-  void _s; void _l; void _h
+  const { sections: _s, pages: _p, legal: _l, shell: _h, sample: _m, ...content } = siteJson
+  void _s; void _l; void _h; void _m
   const c = { ...content, site: resolveRefs(siteJson.site, siteJson) }
   const meta = await loadTs(join(FACTORY, 'ax', 'seo-meta.ts'))
   const out = []
@@ -1468,8 +1477,8 @@ export async function metaPlaceholderProblems(siteJson) {
 /** seoMetadata·jsonLdFor 를 노드에서 돌려 본다 → 문제 문자열[]. */
 export async function checkSeo(siteJson, sitemap) {
   const problems = []
-  const { sections: _s, pages: _p, legal: _l, shell: _h, ...content } = siteJson
-  void _s; void _l; void _h
+  const { sections: _s, pages: _p, legal: _l, shell: _h, sample: _m, ...content } = siteJson
+  void _s; void _l; void _h; void _m
   const site = resolveRefs(siteJson.site, siteJson)
   const c = { ...content, site }
   const geo = await loadTs(join(FACTORY, 'ax', 'geo-entity.ts'))

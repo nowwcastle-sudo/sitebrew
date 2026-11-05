@@ -6,7 +6,8 @@ import siteJson from "@/content/site.json"
 import build from "@/lib/build.json"
 import ogMark from "@/lib/og-mark.json"
 import { normalizePhone } from "@/lib/phone"
-import { NEEDS_CHECK_LITERALS, isMailAddress, type ArchetypeId } from "@/components/content/content-core"
+import { scrubSamples } from "@/lib/sample-scrub"
+import { NEEDS_CHECK, NEEDS_CHECK_EN, NEEDS_CHECK_LITERALS, isMailAddress, type ArchetypeId } from "@/components/content/content-core"
 import { isIndexed, type SeoPage, type PageKind } from "@/components/ax/seo-meta"
 import type { SeoInput } from "@/components/ax/seo-files"
 import { toHex } from "@/components/ax/brand-color"
@@ -23,6 +24,7 @@ type SiteFile = {
   sections: Record<string, Section>
   pages: Record<string, PageMeta>
   legal: Record<string, Legal>
+  sample?: { label: string; count: number; scrub: string[] }
   shell: { brand: unknown; nav: { label: string; href: string }[]; action?: { label: unknown; href: unknown } | null; logo?: LogoFile }
 } & Record<string, unknown>
 
@@ -58,21 +60,11 @@ export const copyVariantOf = (key: string): string | undefined => site.sections[
 
 /** SEO 메타·JSON-LD 가 읽는 콘텐츠 객체(J9 — 원형 콘텐츠 + site 하나). */
 export function seoContent() {
-  const { sections: _s, pages: _p, legal: _l, shell: _h, ...content } = site
+  const { sections: _s, pages: _p, legal: _l, shell: _h, sample, ...content } = site
   void _s; void _p; void _l; void _h
-  return { ...content, site: resolve(site.site) } as never
+  const clean = sample?.scrub.length ? scrubSamples(content, sample.scrub, locale === "en" ? NEEDS_CHECK_EN : NEEDS_CHECK) : content
+  return { ...clean, site: resolve(site.site) } as never
 }
-
-const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined)
-
-/** 쪽 하나의 SEO 입력(seoMetadata·jsonLdFor 가 받는 모양). */
-export function pageSeo(route: string): SeoPage {
-  const p = site.pages[route]
-  return { path: route, type: p.type, title: str(resolve(p.title)), description: str(resolve(p.description)), noindex: p.noindex, showsPrice: p.showsPrice }
-}
-export const pageTitle = (route: string): string => str(resolve(site.pages[route].title)) ?? ""
-export const pageHasHero = (route: string) => site.pages[route].hero
-export const legalPage = (name: string) => site.legal[name]
 
 // 머리글 그림 로고(v0.2.6 T17) — 높이는 머리글 축이 정한다(H2 섬 28px · H5 마스트헤드 데스크톱 48px · 그 밖 32px, 모두 머리글 안쪽 높이 − 16px 이내). 클래스는 Tailwind 가 읽도록 글자 그대로 둔다.
 const LOGO_HEIGHT: Record<string, string> = { H2: "h-7", H5: "h-8 md:h-12" }
@@ -91,6 +83,15 @@ function LogoMark({ logo, brand }: { logo: LogoFile; brand: string }) {
       <img src={logo.srcDark} alt={brand} width={logo.width} height={logo.height} className={`${cls} hidden dark:block`} />
     </>
   )
+}
+
+// 예시 띠(T18) — 예시 정보가 남은 시안의 모든 쪽 맨 위. 375px 에서 두 줄(≤ 56px), 글자는 12px(데스크톱 14px). 바탕·글자는 반전색이라 어느 레시피에서도 대비가 높다.
+const SAMPLE_BAND: Record<"ko" | "en", (n: number) => string> = {
+  ko: (n) => `이 시안에는 예시 정보 ${n}개가 들어 있어요. 공개 전에 실제 정보로 바꿔야 해요.`,
+  en: (n) => `This draft contains ${n} sample details. Replace them with real ones before publishing.`,
+}
+function SampleBand({ count }: { count: number }) {
+  return <p className="bg-foreground text-background px-4 py-2 text-center text-xs leading-snug md:text-sm">{SAMPLE_BAND[locale](count)}</p>
 }
 
 /** SiteShell 에 펼치는 값: 로고·주 메뉴·헤더 행동. 푸터(사업자 정보)는 푸터 블록이 그린다. */
@@ -112,6 +113,7 @@ export function shellProps(route: string) {
     nav: s.nav,
     currentHref: route,
     action,
+    ...(site.sample ? { banner: <SampleBand count={site.sample.count} />, bannerLabel: locale === "en" ? "Sample details notice" : "예시 정보 안내" } : {}),
     // 영어 사이트: 셸의 접근 이름(건너뛰기·주 메뉴 …)과 사업자 정보 이름표를 영어 표로(ko 는 칸을 비워 출력이 그대로, D235)
     ...(locale === "en" ? { locale } : {}),
   }

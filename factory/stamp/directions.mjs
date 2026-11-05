@@ -231,7 +231,11 @@ export async function pickDirections({ brief, archetype, seed, weights, exclude 
   if (brief?.brand) {
     let mod
     try { mod = await import('./brand.mjs') } catch (e) { throw new Error(`브랜드 입력이 있는데 factory/stamp/brand.mjs(P3-3 Task 4)를 불러오지 못했다 — ${e.message}`) }
-    const base = genBold?.preset ?? presets[0]
+    // 바탕 프리셋(T19): 브랜드 색이 정한 테마와 같은 테마의 프리셋 중 새로움 최고 — 밝은 브랜드 색이 어두운 프리셋 위에 얹히지 않는다. 같은 테마가 없으면 예전 선택.
+    const themeOf = (p) => (p.recipeHints?.defaultTheme === 'dark' ? 'dark' : 'light')
+    const brandTheme = mod.brandThemeOf(brief.brand)
+    const sameTheme = firstPassing([...alive].filter((g) => themeOf(g.preset) === brandTheme).sort(byNovelty), [safe.palette])
+    const base = sameTheme?.preset ?? presets.find((p) => themeOf(p) === brandTheme) ?? genBold?.preset ?? presets[0]
     if (!base) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: ['brand-no-base-preset'] }])
     const r = mod.brandToRecipeHead(brief.brand, base, { archetype: arch })
     if (r.blocked) throw new DirectionsShortError([...rejected, { id: 'slot:bold', reasons: [`brand-blocked: ${r.blocked}`] }])
