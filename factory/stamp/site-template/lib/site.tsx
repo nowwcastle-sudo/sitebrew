@@ -66,6 +66,17 @@ export function seoContent() {
   return { ...clean, site: resolve(site.site) } as never
 }
 
+const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined)
+
+/** 쪽 하나의 SEO 입력(seoMetadata·jsonLdFor 가 받는 모양). */
+export function pageSeo(route: string): SeoPage {
+  const p = site.pages[route]
+  return { path: route, type: p.type, title: str(resolve(p.title)), description: str(resolve(p.description)), noindex: p.noindex, showsPrice: p.showsPrice }
+}
+export const pageTitle = (route: string): string => str(resolve(site.pages[route].title)) ?? ""
+export const pageHasHero = (route: string) => site.pages[route].hero
+export const legalPage = (name: string) => site.legal[name]
+
 // 머리글 그림 로고(v0.2.6 T17) — 높이는 머리글 축이 정한다(H2 섬 28px · H5 마스트헤드 데스크톱 48px · 그 밖 32px, 모두 머리글 안쪽 높이 − 16px 이내). 클래스는 Tailwind 가 읽도록 글자 그대로 둔다.
 const LOGO_HEIGHT: Record<string, string> = { H2: "h-7", H5: "h-8 md:h-12" }
 function LogoMark({ logo, brand }: { logo: LogoFile; brand: string }) {
