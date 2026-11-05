@@ -3,6 +3,7 @@
 # 줄 형식: <시험 파일 경로>  # <까닭>. 소스: REL10 직렬 실행 기록(.tmp/rel10-serial.log, 파일별 초) + 이 레인의 Windows 측정.
 # 가드: ci/lib/split.mjs — 목록에 없는 시험이 Chrome 을 직접 부르거나, 목록에 없는 파일이 적혀 있으면 npm run ci:verify 가 실패한다.
 
+factory/intake/logo-candidates.browser.test.mjs  # Chrome · v0.2.6 T14 로고 시안 실제 캡처(Chrome 없으면 건너뜀)
 factory/qa/qa.test.mjs  # Chrome · REL10 465초
 factory/qa/marketing-gate.test.mjs  # Chrome · REL10 234초
 factory/qa/marketing-site.test.mjs  # Chrome · REL10 221초
@@ -69,3 +70,4 @@ factory/scripts/revise-structure.test.mjs  # 구획 더하기·빼기·순서 �
 factory/scripts/deliver-product.test.mjs  # P3 Task 9 — 진짜 composeProduct·npm install·next build·next start·POST /api/inquiry·정적 빌드, 한 파일 수십 분(메모리 3.0 GB 미만이면 건너뜀)
 factory/qa/logo-gate.browser.test.mjs  # Chrome · v0.2.6 T9 — ux-gate.mjs 를 로고 고정 쪽 4개에 CLI 로 돌린다 · 이 레인 실측 89초
 factory/qa/brand-exposure.browser.test.mjs  # Chrome · v0.2.6 T10 — 고정 쪽 4개를 1440×900 으로 열어 주색 칸 비율을 잰다 · 이 레인 실측 11초
+factory/board/compare/compare.behavior.test.mjs  # Chrome · 진짜 iframe 셋 + 가짜 사이트 프로세스

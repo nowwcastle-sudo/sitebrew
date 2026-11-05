@@ -32,8 +32,8 @@ import { boldSafetyForCandidate } from '../qa/bold-safety.mjs'
 import { hasBrandLogo, logoGateForCandidate } from '../qa/logo-gate.mjs'
 import { brandColorOf, brandExposureForCandidate } from '../qa/brand-exposure.mjs'
 import { STRICT_BY_ARCHETYPE, strictGateForCandidate } from '../qa/strict-archetype.mjs'
-import { MOCK_PREVIEW_BLOCKER } from './blocker-class.mjs'
-import { splitBlockers } from './blocker-class.mjs'
+import { MOCK_PREVIEW_BLOCKER, SAMPLE_LEFT_BLOCKER, splitBlockers } from './blocker-class.mjs'
+import { killTree as killPid } from './run-proc.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const FACTORY = join(ROOT, 'factory')
@@ -48,6 +48,7 @@ export const QA_PREFIX = {
   bold: '공개 불가 — 대담안 안전 기준: ',
   logo: '공개 불가 — 로고가 머리글에 안 보임: ',
   brand: '공개 불가 — 브랜드 주색이 화면에 거의 안 보임: ',
+  sample: SAMPLE_LEFT_BLOCKER, // 예시 정보(sample-facts.mjs)가 실제 값으로 안 바뀐 사실 — 한 줄에 키 하나, 입력 대기 갈래(stamp.mjs 가 남은 키를 opts.sample 로 넘긴다)
   mockPreview: MOCK_PREVIEW_BLOCKER, // product 후보의 미리보기 배포 — stamp.mjs 가 더한다(blocker-class.mjs)
 }
 const QA_PREFIXES = Object.values(QA_PREFIX)
@@ -164,13 +165,14 @@ const freePort = () => new Promise((res, rej) => {
   s.listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)) })
 })
 
-/** `next start` 를 빈 포트에 띄운다. → { url, stop() }. 관문 잠금 안에서만 부른다. */
+/** `next start` 를 빈 포트에 띄운다. → { url, port, pid, stop() }. stop 은 PID 나무째 끄고 끝날 때까지 기다린다. 관문 잠금 안에서만 부른다. */
 export async function startSite(siteDir, { timeoutMs = 90_000 } = {}) {
   const nextBin = join(siteDir, 'node_modules', 'next', 'dist', 'bin', 'next')
   if (!existsSync(nextBin)) throw new Error(`도구 실패: ${nextBin} 없음 — 사이트에 npm 설치가 안 됐다`)
   if (!existsSync(join(siteDir, '.next', 'BUILD_ID'))) throw new Error(`도구 실패: ${join(siteDir, '.next', 'BUILD_ID')} 없음 — 사이트가 빌드되지 않았다`)
   const port = await freePort()
-  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true })
+  // detached: Linux·macOS 에서 자식이 제 프로세스 그룹을 가져야 killTree(pid)(= 그룹 전체 종료)가 듣는다. 예전에는 stop 이 child 객체를 넘겨 `next start` 가 남았다(v0.2.6 P2 F1).
+  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform !== 'win32' })
   let out = ''
   child.stdout.on('data', (d) => { out += d })
   child.stderr.on('data', (d) => { out += d })
@@ -178,12 +180,12 @@ export async function startSite(siteDir, { timeoutMs = 90_000 } = {}) {
   child.on('close', (c) => { exited = c ?? -1 })
   const url = `http://127.0.0.1:${port}`
   const stop = async () => {
-    if (exited === null) { killTree(child); for (let i = 0; i < 50 && exited === null; i++) await new Promise((r) => setTimeout(r, 100)) }
+    if (exited === null) { killPid(child.pid); for (let i = 0; i < 50 && exited === null; i++) await new Promise((r) => setTimeout(r, 100)) }
   }
   const t0 = Date.now()
   while (Date.now() - t0 < timeoutMs) {
     if (exited !== null) throw new Error(`도구 실패: next start 가 종료 ${exited} 로 끝났다 — ${out.trim().split('\n').slice(-3).join(' | ')}`)
-    try { const r = await fetch(`${url}/`, { signal: AbortSignal.timeout(3000) }); if (r.ok) return { url, stop } } catch { /* 아직 안 떴다 */ }
+    try { const r = await fetch(`${url}/`, { signal: AbortSignal.timeout(3000) }); if (r.ok) return { url, port, pid: child.pid, stop } } catch { /* 아직 안 떴다 */ }
     await new Promise((r) => setTimeout(r, 400))
   }
   await stop()
@@ -212,6 +214,7 @@ export function writeQaBlockers(runDir, candId, lines) {
  *   url 을 안 주면 `next start` 를 빈 포트에 띄운다(관문 잠금 안에서만). 도구 실패는 toolRetries(기본 1, 최대 2)번 다시 돈다.
  *   strict(기본 켬)는 원형 엄격 기준 관문이다 — false 면 건너뛴다. strictOptions 는 어댑터(`strictGateForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
  *   logo(기본 켬)는 머리글 로고 관문이다 — 후보 브랜드 입력에 로고가 있을 때만 돈다. brandExposure(기본 켬)는 주색 노출 관문이다 — 브랜드 색이 있을 때만 돈다(brandExposureOptions 는 어댑터에 그대로).
+ *   sample(선택)은 실제 값으로 안 바뀐 예시 정보의 사실 이름들이다 — 키마다 `예시 정보 남음` 사유 한 줄(입력 대기)이 더해져 공개 불가가 된다.
  *   bold(기본 켬)는 대담안 안전 관문이다 — cand.boldness 가 "bold" 일 때만 돌고, false 면 건너뛴다. boldOptions 는 어댑터(`boldSafetyForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
  *   opsOptions·marketingSiteOptions·a11yOptions 는 후보 어댑터(`opsGateForCandidate` 등)에 그대로 넘긴다(Lighthouse 쪽 고르기·시험용 가짜 측정기).
  */
@@ -379,7 +382,9 @@ export async function runCandidateQa(runDir, cand, opts = {}) {
     else if (g.tool === 'bold-safety') for (const p of g.problems?.length ? g.problems : [g.note || `${g.id} 실패`]) qaLines.push(`${QA_PREFIX.bold}${p}`)
     else qaLines.push(`${QA_PREFIX.gate}${g.id} — ${g.note}`)
   }
-  const blockers = writeQaBlockers(runDir, cand.id, [...new Set(qaLines)])
+  // 예시 정보가 남은 키마다 한 줄(opts.sample — 남은 게 없으면 줄도 없다). 같은 키가 05·06 쪽 사유로도 뜨는 것은 README 에서 합친다(deliver).
+  const sampleLines = (opts.sample ?? []).map((k) => `${QA_PREFIX.sample}${k}`)
+  const blockers = writeQaBlockers(runDir, cand.id, [...new Set([...qaLines, ...sampleLines])])
   const aiGates = gates.filter((g) => g.tool === 'ai-tell')
   const failedAi = aiGates.filter((g) => g.verdict === 'fail')
   // 사람 확인(관문이 못 재는 것 — marketing-site 의 manualChecks 9개)은 게이트 칸이 아니라 summary 한 곳에만 싣는다(보드 카드가 「사람 확인 n개」로 읽는다)
