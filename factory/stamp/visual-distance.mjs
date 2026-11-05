@@ -57,5 +57,9 @@ export function worldFields(head, { goal, others = [], warnings = [] } = {}) {
     sig: diffs ? `가장 큰 차이: ${diffs.fields.join('·') || '없음'}(${diffs.n}칸)` : '',
     world: FAMILY_LABEL[family],
     risk: warnings[0] ?? '',
+    // 대시보드·비교표·완성 리뷰·브랜드 노출 관문이 읽는 이름(T10·T12·T14 와 이어진다)
+    ownWorld: FAMILY_LABEL[family],
+    materialFamily: family,
+    colorStrategy: strategy,
   }
 }
