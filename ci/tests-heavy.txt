@@ -68,4 +68,6 @@ factory/scripts/revise-values.test.mjs  # 값이 든 수정 요청 — 실제 06
 factory/scripts/revise-values-golden.test.mjs  # REVISE_VALUES_GOLDEN=1 일 때만 도는 진짜 06(shadcn add) 왕복 · FIT-2 (잠금 안에서, 템플릿 npm ci 포함)
 factory/scripts/revise-structure.test.mjs  # 구획 더하기·빼기·순서 — 실제 06(install: false)을 제안·왕복으로 여러 번 돈다 · FIT-1 실측 약 25~40초
 factory/scripts/deliver-product.test.mjs  # P3 Task 9 — 진짜 composeProduct·npm install·next build·next start·POST /api/inquiry·정적 빌드, 한 파일 수십 분(메모리 3.0 GB 미만이면 건너뜀)
+factory/qa/logo-gate.browser.test.mjs  # Chrome · v0.2.6 T9 — ux-gate.mjs 를 로고 고정 쪽 4개에 CLI 로 돌린다 · 이 레인 실측 89초
+factory/qa/brand-exposure.browser.test.mjs  # Chrome · v0.2.6 T10 — 고정 쪽 4개를 1440×900 으로 열어 주색 칸 비율을 잰다 · 이 레인 실측 11초
 factory/board/compare/compare.behavior.test.mjs  # Chrome · 진짜 iframe 셋 + 가짜 사이트 프로세스
