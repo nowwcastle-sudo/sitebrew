@@ -6,7 +6,7 @@
 
 Sitebrew は Claude Code と Codex で使うプラグインです。作りたいサイトをふだんの言葉で説明すると、違う候補を三つ作ります。一つを選び、会話で直して、コードを自分のフォルダーに持ち帰ります。コードの知識も、始めるときの API キーもいりません。
 
-現在のバージョン `v0.2.5` · MIT ライセンス · Windows 10 と 11
+現在のバージョン `v0.2.6` · MIT ライセンス · Windows 10 と 11
 
 ## なぜ Sitebrew なのか
 
@@ -55,13 +55,13 @@ Sitebrew は Claude Code と Codex で使うプラグインです。作りたい
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.5 sitebrew
+npm create sitebrew@0.2.6 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.5 sitebrew
+npx create-sitebrew@0.2.6 sitebrew
 ```
 
 どちらも同じオプションを使えます。`--dry-run` は何も変えずに計画だけを表示し、`--yes` はすべての質問に「はい」と答え、`--tool` は `claude`、`codex`、`both` から選びます。
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.5 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
 ```
 
 何もインストールせずに、することだけを見るには:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code で:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.5
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
 /plugin install sitebrew@sitebrew
 ```
 
 Codex で:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.5
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 部品だけを別の Next.js プロジェクトに入れることもできます。アドレスには必ずタグを付けてください。
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.5 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.5 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
 ```
 
 ## コントリビュート
@@ -149,6 +149,7 @@ MIT。[LICENSE](LICENSE) と [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) �
 
 | タグ | 日付 | 変更点 | 記録 |
 |---|---|---|---|
+| `v0.2.6` | 2026-11-05 | 機能版：3 つの候補を実際のサイトとして並べて比較（`npm run board:direction -- <run> --serve`） · ブリーフのロゴが 3 候補すべてのヘッダーに入り、ロゴがなければ 6 つの案を提案 · 任意のサンプル情報（`--sample-facts`）——全ページにサンプル帯が出て、実際の回答に置き換えるまで `deliver` が止まる · ブランドの最初の色がメインカラーになる · 素材の系統・距離ルール・任意の質問（ポジショニング）で候補同士をより離す · 仕上げレビューのループ · ヘッダーのロゴとブランド色の露出の新しい検査 · プラグインのスキル `new`・`deliver`・`revise` を更新 · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
 | `v0.2.5` | 2026-11-02 | パッチ版：管理画面の表が画面の言語とタイムゾーンに従う（`data-table` ブロックの日付・数値・並べ替え・絞り込み候補） · ローンチキットのテンプレートの複製も合わせて更新 · 依存パッケージの更新（@hono/node-server 2.1.3、systeminformation 5.33.16、posthog-js 1.438.21、posthog-node 5.57.2、lucide-react 1.59.0、react-resizable-panels 4.14.8、playwright 1.64.1 と @axe-core/playwright 4.14.0、pglite 0.5.11 と pglite-tools 0.4.11、typescript-eslint 8.72.0） · それ以外のキットとプラグインのスキルは変更なし · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
 | `v0.2.4` | 2026-10-26 | パッチ版：依存パッケージの更新のみ · react と react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 と posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · キットとプラグインのスキルは変更なし · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
 | `v0.2.3` | 2026-10-26 | パッチ版：プラグインの 8 つのスキルを見直し、分岐の案内と終了コードの表を明確に · ルールごとに置き場所を 1 つに · セットアップに Node.js がない場合の手順を追加 · インストールガイドに正確なリリースタグの確認と Windows で安全な npm の使い方 · キットが読む場所に合わせたブラウザ確認 · new の引き継ぎをより安全に · deliver のスキップ理由を追加 · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン）| — |

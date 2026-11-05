@@ -83,6 +83,7 @@ Exit codes:
   - `원본 사이트 폴더 안`: nothing was copied; the target is inside the run folder. Ask for a folder outside `out/`, then run once more.
   - `비어 있지 않다` or `폴더가 아니라 파일이다`: nothing was copied; ask for a NEW empty folder, then run once more.
   - Other text: the tool can fail after it has begun writing, so the target folder may be partly filled, and a filled folder refuses the next delivery. Report the cause in plain words and say the folder may be partly filled. The user chooses: a NEW empty folder, or emptying this one themselves. Do not empty or delete it yourself. Then run once more.
+- `1` with the line `예시 정보가 남아 전달하지 않습니다: <names>` (a plain notice, not `도구 실패:`): nothing was copied, because the site still shows sample details the kit added (`--sample-facts`, see the `new` skill). Tell the user which facts are sample (the names in the line, in plain words), that the real values are needed first, and that the real answers go into the brief and the stamp command runs again (the `new` skill) before delivery. Do not delete the sample file and do not edit the site to hide the band: that publishes invented facts.
 - `1` with `전달 끝:` before the `도구 실패: …` line: the copy is done; the completion check or the preview deployment failed (the line names which). See step 3.
 - `2`: argument error (a missing value, an unknown flag, a `--pick` other than `a`, `b`, `c`); nothing was copied. Correct the command.
 - Any other code, or no output: report the last output lines; run nothing again.
