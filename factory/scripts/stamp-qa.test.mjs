@@ -531,6 +531,12 @@ test('logo: 브리프에 로고가 있으면 ux 의 로고 계측을 읽는다 �
   assert.equal(gateOf(none.s, 'logo'), undefined, '로고 없는 브리프는 생략')
   assert.equal((await qa(withBrand(fixture(), { logo: '/x/logo.svg' }), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text' }) }, { logo: false })).s.gates.some((g) => g.id === 'logo'), false)
 
+  // T17 — 브랜드 후보(c)가 아닌 a·b 는 브리프 로고(briefLogo)를 받고 06 이 머리글에 올렸을 때(site.json shell.logo)만 잰다
+  const onSite = await qa(fixture({ siteJson: { shell: { logo: { src: '/brand/logo.png', width: 240, height: 80, mode: 'img' } } } }), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text', naturalWidth: 0 }) }, { briefLogo: '/x/logo.png' })
+  assert.equal(gateOf(onSite.s, 'logo')?.verdict, 'fail', '브리프 로고를 머리글에 올렸는데 글자뿐이면 실패')
+  const notOnSite = await qa(fixture(), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text', naturalWidth: 0 }) }, { briefLogo: '/x/logo.png' })
+  assert.equal(gateOf(notOnSite.s, 'logo'), undefined, '06 이 로고를 못 올렸으면(미적용 사유가 따로 있다) 관문은 같은 까닭을 또 적지 않는다')
+
   const toolFail = await qa(withBrand(fixture(), { logo: '/x/logo.svg' }), { tools: { ux: () => ({ exit: 1, stderr: '도구 실패: Chrome 시작 실패' }) } })
   assert.equal(gateOf(toolFail.s, 'logo'), undefined, 'ux 가 도구 실패라 계측이 없는 것은 이미 사유가 있다')
   assert.equal(toolFail.s.blockers.filter((b) => b.startsWith(QA_PREFIX.tool)).length >= 1, true)

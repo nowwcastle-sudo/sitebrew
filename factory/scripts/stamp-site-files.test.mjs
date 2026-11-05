@@ -7,7 +7,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
 import { root, localBrief, localContent, SAAS_BRIEF, saasContent, makeRun as makeRunIn, gen } from './lib/stamp-site-fixtures.mjs'
-import { plannedFaviconPaths, recipeColors, recipeHeadOf, markSvg, SITE_FILE_ROUTES, SITE_FILE_ITEMS } from '../stamp/site-files.mjs'
+import { plannedFaviconPaths, headerLogoOf, recipeColors, recipeHeadOf, markSvg, SITE_FILE_ROUTES, SITE_FILE_ITEMS } from '../stamp/site-files.mjs'
 import { slotOf, wireMedia, copyMediaFiles, filesOf } from '../stamp/site-media.mjs'
 import { installNames } from '../stamp/gen-pages.mjs'
 import { tsLoader } from './gen-favicons.mjs'
@@ -102,6 +102,73 @@ test('C115: 표지 — 브랜드 로고 SVG(currentColor)가 있으면 그것을
   assert.equal(markSvg('x', { logoPath: logo }).source, 'brand-logo')
   writeFileSync(logo, '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="#000"/></svg>')
   assert.equal(markSvg('x', { logoPath: logo }).source, 'shape', 'currentColor 가 없는 로고는 레시피 색으로 칠할 수 없어 도형으로 대신한다')
+})
+
+// ── 머리글 로고(v0.2.6 T17, D10) ────────────────────────────────────────
+const LOGO_DIR = join(TMP, 'logos')
+const png = (name, w, h) => sharp({ create: { width: w, height: h, channels: 4, background: '#0f7b5f' } }).png().toFile(join(LOGO_DIR, name)).then(() => join(LOGO_DIR, name))
+mkdirSync(LOGO_DIR, { recursive: true })
+
+test('T17 headerLogoOf: currentColor SVG 는 mask · 색이 박힌 SVG 와 PNG 는 img, 크기는 viewBox·메타에서 읽는다', async () => {
+  writeFileSync(join(LOGO_DIR, 'cc.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40"><rect width="120" height="40" fill="currentColor"/></svg>')
+  writeFileSync(join(LOGO_DIR, 'fixed.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="#0f7b5f"/></svg>')
+  assert.deepEqual(await headerLogoOf(join(LOGO_DIR, 'cc.svg')), { ok: true, file: join(LOGO_DIR, 'cc.svg'), ext: '.svg', width: 120, height: 40, mode: 'mask' })
+  assert.equal((await headerLogoOf(join(LOGO_DIR, 'fixed.svg'))).mode, 'img')
+  const p = await headerLogoOf(await png('wide.png', 300, 100))
+  assert.deepEqual([p.ok, p.mode, p.width, p.height], [true, 'img', 300, 100])
+})
+
+test('T17 headerLogoOf: 쓸 수 없는 파일은 이유와 함께 거절한다 — 형식·비율 6:1 초과·1MB 초과·viewBox 없는 SVG·없는 파일', async () => {
+  writeFileSync(join(LOGO_DIR, 'novb.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>')
+  writeFileSync(join(LOGO_DIR, 'logo.gif'), 'GIF89a')
+  writeFileSync(join(LOGO_DIR, 'huge.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><!--${'x'.repeat(1024 * 1024)}--></svg>`)
+  const reasons = {
+    format: await headerLogoOf(join(LOGO_DIR, 'logo.gif')),
+    ratio: await headerLogoOf(await png('banner.png', 800, 100)),
+    size: await headerLogoOf(join(LOGO_DIR, 'huge.svg')),
+    viewBox: await headerLogoOf(join(LOGO_DIR, 'novb.svg')),
+    missing: await headerLogoOf(join(LOGO_DIR, 'nope.png')),
+  }
+  for (const [k, r] of Object.entries(reasons)) assert.equal(r.ok, false, k)
+  assert.match(reasons.format.reason, /형식/); assert.match(reasons.ratio.reason, /6배/); assert.match(reasons.size.reason, /1MB/)
+  assert.match(reasons.viewBox.reason, /viewBox/); assert.match(reasons.missing.reason, /찾지 못/)
+  assert.equal((await headerLogoOf(await png('edge.png', 600, 100))).ok, true, '6:1 은 경계 안')
+})
+
+test('T17 headerLogoOf: 다크 짝 logo.dark.<확장자> 는 img 모드에서만 받는다(mask 는 색이 따라가 필요 없다)', async () => {
+  const light = await png('brand.png', 200, 60)
+  assert.equal((await headerLogoOf(light)).darkFile, undefined)
+  await png('brand.dark.png', 200, 60)
+  assert.equal((await headerLogoOf(light)).darkFile, join(LOGO_DIR, 'brand.dark.png'))
+  writeFileSync(join(LOGO_DIR, 'm.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="currentColor" d="M0 0h10v10H0z"/></svg>')
+  writeFileSync(join(LOGO_DIR, 'm.dark.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="#fff" d="M0 0h10v10H0z"/></svg>')
+  assert.equal((await headerLogoOf(join(LOGO_DIR, 'm.svg'))).darkFile, undefined)
+  await sharp({ create: { width: 800, height: 60, channels: 4, background: '#000' } }).png().toFile(join(LOGO_DIR, 'brand.dark.png'))
+  assert.equal((await headerLogoOf(light)).darkFile, undefined, '짝이 검사를 못 통과하면 짝은 버리고 본 파일만 쓴다')
+})
+
+test('T17 generateSite: 로고가 있으면 세 안 어디서나 public/brand 에 복사하고 shell.logo 를 싣는다 · 없으면 site.json 이 예전 그대로', async () => {
+  const logo = await png('site-logo.png', 240, 80)
+  await png('site-logo.dark.png', 240, 80)
+  const R = await makeRun(localBrief(), localContent)
+  const r = await gen(R, { logo: { path: logo } })
+  const site = JSON.parse(read(r.siteDir, 'content', 'site.json'))
+  assert.deepEqual(site.shell.logo, { src: '/brand/logo.png', width: 240, height: 80, mode: 'img', srcDark: '/brand/logo.dark.png', headerAxis: recipeHeadOf(R.cand).axes?.header ?? 'H1' })
+  assert.ok(existsSync(join(r.siteDir, 'public', 'brand', 'logo.png')) && existsSync(join(r.siteDir, 'public', 'brand', 'logo.dark.png')))
+  assert.ok(!r.blockers.some((b) => b.startsWith('공개 불가 — 로고 머리글 미적용')))
+  const plain = JSON.parse(read(LS.siteDir, 'content', 'site.json'))
+  assert.equal('logo' in plain.shell, false)
+  assert.ok(!existsSync(join(LS.siteDir, 'public', 'brand')))
+  assert.match(read(LS.siteDir, 'lib', 'site.tsx'), /font-heading inline-flex min-h-11 items-center/, '글자 로고 모양은 그대로')
+})
+
+test('T17 generateSite: 쓸 수 없는 로고는 글자 로고로 두고 입력 갈래 사유 한 줄을 남긴다', async () => {
+  const bad = await png('flat.png', 900, 90)
+  const R = await makeRun(localBrief(), localContent)
+  const r = await gen(R, { logo: { path: bad } })
+  assert.equal('logo' in JSON.parse(read(r.siteDir, 'content', 'site.json')).shell, false)
+  const line = r.blockers.find((b) => b.startsWith('공개 불가 — 로고 머리글 미적용: '))
+  assert.match(line ?? '', /6배/)
 })
 
 // ── 미디어(C113) ─────────────────────────────────────────────────────────

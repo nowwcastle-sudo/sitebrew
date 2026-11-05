@@ -15,6 +15,7 @@ type Ref = { $ref: string; as?: "tel" | "mailto"; template?: string }
 type Section = { block: string; props: unknown; copyVariant?: string }
 type PageMeta = { id: string; type: PageKind; title: unknown; description?: unknown; noindex?: boolean; hero: boolean; legal?: boolean; showsPrice?: boolean }
 type Legal = { title: string; draft: boolean; clauses: { title: string; text: string }[] }
+type LogoFile = { src: string; width: number; height: number; mode: "img" | "mask"; srcDark?: string; headerAxis?: string }
 type SiteFile = {
   archetype: ArchetypeId
   locale: "ko" | "en"
@@ -22,7 +23,7 @@ type SiteFile = {
   sections: Record<string, Section>
   pages: Record<string, PageMeta>
   legal: Record<string, Legal>
-  shell: { brand: unknown; nav: { label: string; href: string }[]; action?: { label: unknown; href: unknown } | null }
+  shell: { brand: unknown; nav: { label: string; href: string }[]; action?: { label: unknown; href: unknown } | null; logo?: LogoFile }
 } & Record<string, unknown>
 
 const site = siteJson as unknown as SiteFile
@@ -73,6 +74,25 @@ export const pageTitle = (route: string): string => str(resolve(site.pages[route
 export const pageHasHero = (route: string) => site.pages[route].hero
 export const legalPage = (name: string) => site.legal[name]
 
+// 머리글 그림 로고(v0.2.6 T17) — 높이는 머리글 축이 정한다(H2 섬 28px · H5 마스트헤드 데스크톱 48px · 그 밖 32px, 모두 머리글 안쪽 높이 − 16px 이내). 클래스는 Tailwind 가 읽도록 글자 그대로 둔다.
+const LOGO_HEIGHT: Record<string, string> = { H2: "h-7", H5: "h-8 md:h-12" }
+function LogoMark({ logo, brand }: { logo: LogoFile; brand: string }) {
+  const h = LOGO_HEIGHT[logo.headerAxis ?? ""] ?? "h-8"
+  const ratio = `${logo.width} / ${logo.height}`
+  if (logo.mode === "mask") {
+    const url = `url(${logo.src})`
+    return <span role="img" aria-label={brand} className={`inline-block max-w-full bg-current ${h}`} style={{ aspectRatio: ratio, WebkitMaskImage: url, maskImage: url, WebkitMaskSize: "contain", maskSize: "contain", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskPosition: "left center", maskPosition: "left center" }} />
+  }
+  const cls = `${h} w-auto max-w-full object-contain object-left`
+  if (!logo.srcDark) return <img src={logo.src} alt={brand} width={logo.width} height={logo.height} className={cls} />
+  return (
+    <>
+      <img src={logo.src} alt={brand} width={logo.width} height={logo.height} className={`${cls} dark:hidden`} />
+      <img src={logo.srcDark} alt={brand} width={logo.width} height={logo.height} className={`${cls} hidden dark:block`} />
+    </>
+  )
+}
+
 /** SiteShell 에 펼치는 값: 로고·주 메뉴·헤더 행동. 푸터(사업자 정보)는 푸터 블록이 그린다. */
 export function shellProps(route: string) {
   const s = site.shell
@@ -80,7 +100,11 @@ export function shellProps(route: string) {
   const action = s.action ? { label: str(resolve(s.action.label)) ?? "", href: str(resolve(s.action.href)) ?? "#" } : null
   return {
     archetype: site.archetype,
-    logo: (
+    logo: s.logo ? (
+      <a href="/" className="inline-flex min-h-11 items-center">
+        <LogoMark logo={s.logo} brand={brand} />
+      </a>
+    ) : (
       <a href="/" className="font-heading inline-flex min-h-11 items-center">
         {brand}
       </a>

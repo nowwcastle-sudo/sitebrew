@@ -21,7 +21,7 @@ export function withMockPreviewBlocker(qa) {
 /** 예시 정보(sample-facts.mjs)가 실제 값으로 안 바뀐 사실 한 줄 — 입력 대기 갈래다. 07-qa 가 더하고 deliver 가 읽는다(둘이 같은 글자를 쓰도록 여기 한 곳에 둔다). */
 export const SAMPLE_LEFT_BLOCKER = '공개 불가 — 예시 정보 남음: '
 
-/** 대표 입력을 기다리는 접두 — 여섯 가지. */
+/** 대표 입력을 기다리는 접두 — 일곱 가지. */
 export const INPUT_PREFIXES = [
   '공개 불가 — 실제 사진 필요: ', // gen-pages BLOCKER.photo (「이미지 준비 중」 꼬리표가 붙어도 같은 접두)
   '공개 불가 — 사이트 주소 미정', // gen-pages BLOCKER.site
@@ -29,6 +29,7 @@ export const INPUT_PREFIXES = [
   '공개 불가 — 예시 연락처(예약 도메인): ', // gen-pages BLOCKER.reserved
   '공개 불가 — 법률 검토 미완: ', // qa QA_PREFIX.legalPending
   SAMPLE_LEFT_BLOCKER, // qa QA_PREFIX.sample (예시 정보를 실제 값으로 바꾸면 풀린다, v0.2.6)
+  '공개 불가 — 로고 머리글 미적용: ', // gen-pages BLOCKER.logo (다른 로고 파일을 주면 풀린다, v0.2.6 T17)
 ]
 
 /** 품질 접두 — 입력을 받아도 안 풀리는 사유(공장이 고친다). 목록은 분류가 빠지지 않았음을 시험이 확인하는 자리이고, 함수는 이 목록을 보지 않는다(input 이 아니면 quality). */

@@ -59,7 +59,7 @@
 - [ ] P3 blast-radius 결과 반영
 
 ### Phase B — 06 열쇠 묶음 (한 번에)
-- [ ] T17 머리글 이미지 로고
+- [x] T17 머리글 이미지 로고 — `headerLogoOf`(site-files.mjs)·`shell.logo`(site.json)·site.tsx LogoMark(img·mask·다크 짝)·stamp.mjs 06 입력 조건부 키 `logo`(경로+sha256)·로고 관문이 a·b 도 잰다(`briefLogo`)·`BLOCKER.logo`(입력 갈래)
 - [ ] T18 예시 띠와 법정 초안
 - [ ] T19 브랜드 주색·테마·바탕 프리셋
 - [ ] T20 포지셔닝

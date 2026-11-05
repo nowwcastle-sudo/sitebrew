@@ -12,6 +12,7 @@
 //     · 문구는 콘텐츠에서만 온다. 슬롯 밖 UI 이름표·캡션만 블록 예시(fixture)에서 오고, 예시 표지·예시 사업체 이름·숫자가 남으면 blocker 다(C101).
 //     · pending·묶을 자료가 없는 섹션은 그리지 않는다. 페이지는 빌드되고 blocker 가 남는다.
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import { copyFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { BLOCK_REGISTRY, loadArchetypes } from '../scripts/archetypes.mjs'
@@ -32,7 +33,7 @@ import { localizeEnglishLabels } from './ui-labels-en.mjs'
 import { cutDescription, pickDescriptionSlot } from './page-meta.mjs'
 import { deadLinks as findDeadLinks, deadLinkSummary, readBuiltPages, staticDeadLinks } from './link-check.mjs'
 import { bindContentSection } from './content-sections.mjs'
-import { recipeColors, recipeHeadOf, writeFavicons, SITE_FILE_ITEMS } from './site-files.mjs'
+import { headerLogoOf, recipeColors, recipeHeadOf, writeFavicons, SITE_FILE_ITEMS } from './site-files.mjs'
 import { addFallbackFaces, dropKoreanKitImports, recipeWeightsFor, subsetSiteFonts } from './site-fonts.mjs'
 import { failMessage } from './fail-message.mjs'
 import { TEMPLATE, robocopy, addItems, buildCandidateRegistry, ensureRepoRegistry, ensureTemplateCache, makeLocalRegistry, nextBuild, prepareSiteDir, dirBytes } from './site-install.mjs'
@@ -54,6 +55,7 @@ export const BLOCKER = {
   undrawn: '공개 불가 — 필수 섹션 그리지 않음: ',
   legalStale: '공개 불가 — 법정 초안이 콘텐츠와 다름: ',
   bizInfo: '공개 불가 — 사업자 정보 표시 없음: ', // C356 — 전자상거래법 제10조(상호·대표자·주소·전화·사업자등록번호를 소비자가 보는 곳에 표시)
+  logo: '공개 불가 — 로고 머리글 미적용: ', // v0.2.6 T17 — 브리프 로고가 머리글에 쓸 수 없는 파일이다(형식·가로세로 비율·1MB·viewBox)
   foreign: '공개 불가 — 다른 언어·다른 사업의 화면 문구 남음: ', // C359 — 영어 사이트의 한글 글, 콘텐츠에 없는 예약 사업 낱말(제품 화면 예시 말투, C333)
 }
 // SiteShell 이 그리는 전역 섹션(머리글·건너뛰기 링크) — sitemap 에서는 블록이 없어 status 가 shell·none 이지만 그려진다.
@@ -1292,13 +1294,20 @@ export async function generateSite(runDir, cand, opts = {}) {
   const action = toward(ctaTarget(), null) // 머리글은 모든 쪽에 있다 — 앵커 행선지는 늘 경로까지 적는다(/#폼-id)
   // 머리글 행동 버튼 글자는 짧을 때만 쓴다 — primaryCta 는 「02-1234-5678로 전화해 상담 예약하기」처럼 길 수 있고, 375px 한 줄 머리글에 그대로 넣으면 가로 스크롤이 생긴다(P3-3 Task 14b 골든 local-ko-ltc ux-gate 375 hScroll 50px). 길면 머리글 행동은 없고 히어로·하단 바가 그 행동을 맡는다
   const ctaSlot = (() => { for (const p of sitemap.pages) for (const s of p.sections) { const i = copyIndex.get(`${p.id}/${s.kind}/primaryCta#0`); if (i !== undefined && usableText(rawContent.slots.copy[i].text) && [...String(rawContent.slots.copy[i].text)].length <= SHELL_ACTION_MAX) return ref(`slots.copy.${i}.text`) } return null })()
+  // 머리글 로고(T17, D10): 브리프 로고(opts.logo.path — 세 안 모두) 또는 브랜드 후보 머리의 로고. 쓸 수 없으면 글자 로고로 두고 사유를 남긴다
+  const logoPath = opts.logo?.path ?? recipeHeadOf(cand).brand?.logo
+  const logoCheck = logoPath ? await headerLogoOf(logoPath, { baseDir: candDir }) : null
+  if (logoCheck && !logoCheck.ok) blockers.push(`${BLOCKER.logo}${logoCheck.reason}`)
+  const shellLogo = logoCheck?.ok
+    ? { src: `/brand/logo${logoCheck.ext}`, width: logoCheck.width, height: logoCheck.height, mode: logoCheck.mode, ...(logoCheck.darkFile ? { srcDark: `/brand/logo.dark${logoCheck.ext}` } : {}), headerAxis: recipeHeadOf(cand).axes?.header ?? 'H1' }
+    : null
   const siteJson = {
     ...content,
     archetype: sitemap.archetype, locale,
     site: siteObj,
     sections, pages, legal,
     // 머리글 행동은 글이 「확인 필요」가 아니고 가는 곳이 비지 않았을 때만 둔다(FIT-7, W1b C4) — 전화번호가 비면 「확인 필요」 글에 # 링크인 버튼이 머리글에 나갔다
-    shell: { brand: brandRef, nav: navLinks(), action: ctaSlot && !refTargetMissing(content, action.href) ? { label: ctaSlot, href: action.href } : headerContactActionOf(content, locale) },
+    shell: { brand: brandRef, nav: navLinks(), action: ctaSlot && !refTargetMissing(content, action.href) ? { label: ctaSlot, href: action.href } : headerContactActionOf(content, locale), ...(shellLogo ? { logo: shellLogo } : {}) },
   }
   delete siteJson.media
   if (factsRestored) delete siteJson.facts
@@ -1350,6 +1359,11 @@ export async function generateSite(runDir, cand, opts = {}) {
     robocopy(TEMPLATE, siteDir, { exclude: ['node_modules'] })
   }
   writeAtomic(join(siteDir, 'content', 'site.json'), JSON.stringify(siteJson, null, 2) + '\n')
+  if (logoCheck?.ok) {
+    mkdirSync(join(siteDir, 'public', 'brand'), { recursive: true })
+    copyFileSync(logoCheck.file, join(siteDir, 'public', 'brand', `logo${logoCheck.ext}`))
+    if (logoCheck.darkFile) copyFileSync(logoCheck.darkFile, join(siteDir, 'public', 'brand', `logo.dark${logoCheck.ext}`))
+  }
   const mediaFiles = wiredAssets.length ? copyMediaFiles(join(candDir, '05-media'), siteDir, wiredAssets) : []
   // 공유 그림·파비콘 색은 레시피에서(C115) — 기본 테마 쪽 색을 lib/build.json 에 두고 app/opengraph-image.tsx 가 읽는다
   const head = recipeHeadOf(cand)
@@ -1359,7 +1373,7 @@ export async function generateSite(runDir, cand, opts = {}) {
   // 영어 사이트에서 가입 블록이 나이 동의 칸을 안 그리면 목 인증 포트(lib/ports.ts)도 14세 확인을 요구하지 않는다(요구하면 가입이 늘 거절된다) — 한국어 사이트는 칸을 싣지 않아 그대로(FINAL-WF4 EN11)
   const noAgeGate = locale === 'en' && Object.values(sections).some((x) => /sign-up-consents$/.test(x.block ?? '')) && !Object.values(sections).some((x) => x.props?.copy?.ageOver14 !== undefined)
   writeAtomic(join(siteDir, 'lib', 'build.json'), JSON.stringify({ recipeId, theme: colors.theme, og: colors.og, locale, brand: typeof brandText === 'string' ? brandText : '', ...(noAgeGate ? { requireAgeOver14: false } : {}) }, null, 2) + '\n')
-  const favicons = await writeFavicons(siteDir, head, typeof brandText === 'string' ? brandText : '', { logoPath: head.brand?.logo, baseDir: candDir })
+  const favicons = await writeFavicons(siteDir, head, typeof brandText === 'string' ? brandText : '', { logoPath: logoPath ?? head.brand?.logo, baseDir: candDir })
   // 공유 그림 로고(C414): 브리프 로고 SVG 를 파비콘이 받아들인 경우에만 싣는다(같은 검증을 통과한 것). 도형 표지(자동)나 로고 없음은 글자 카드 그대로 — 템플릿의 lib/og-mark.json 은 { svg: null }
   if (favicons.markSource === 'brand-logo') writeAtomic(join(siteDir, 'lib', 'og-mark.json'), JSON.stringify({ svg: favicons.svg }, null, 2) + '\n')
   for (const l of leafFiles.values()) writeAtomic(join(siteDir, 'components', 'site', `${l.file}.tsx`), l.render ? l.render({ name: l.name, block: blockItems().get(l.block), recipeId }) : leafSource({ name: l.name, block: l.block, recipeId, h1: !!l.h1 }))
