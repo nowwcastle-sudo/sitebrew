@@ -68,7 +68,7 @@
 
 ### Phase C·D
 - [x] T23 스킬 갱신(new·deliver·revise)과 v0.2.6 버전 올림(bump-version·gen:all·pincheck·README 5개 언어 ×2 행·설치 주소 고정). 릴리스 행 문구·날짜(2026-11-05)는 임시 — 릴리스 때 다듬는다. LF README 의 web-factory 고정·블록·contract 해시는 릴리스 때 잠금 동기화로 맞춘다
-- [ ] T24 검증 라운드(ci:verify·플러그인 시험·실런·9절 대조표)
+- [x] T24 검증 라운드 — GitHub CI(ci:verify 전체) 녹색. 부록 B 실런(--sample-facts) 01~08 완료: c 주색 초록·라이트 테마, b 전경 보라 없음, 세 후보 거리 ≥2, --serve(COMPARE/PICK, 남은 node 0)·--pick b 종료 1·deliver 종료 1, 마감 리뷰 1회(review-1.md parseReview 통과, 다음 걸음 `REVIEW apply 1`, 처방 둘 revise 읽기 확인). 실런에서 lib/site.tsx 내보내기 누락 결함을 찾아 고침. 남음: 골든 실빌드 3건(brand-1 로고·landing-2 영어·dashboard-1)은 문구 작성(9후보)이 필요해 이 세션에서 못 돌렸다 → 로컬 PC 재증명 필요. c 첫 화면 주색 면적 0%는 07 brand-exposure 가 공개 불가로 잡았다(관문 정상 동작; 고침은 마감 리뷰·수정 몫). 클라우드 한정: node_modules/.bin/next 심볼릭 링크 경로로 next build 하면 prerender 가 useContext null 로 실패해, 후보 사이트의 .bin/next 를 셸 래퍼로 바꿔 우회했다(코드 변경 아님).
 - [ ] P4 최종 interrogate(선택)
 - [ ] T25 PR (병합은 대표 승인 뒤, 코디네이터)
 
