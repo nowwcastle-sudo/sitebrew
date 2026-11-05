@@ -50,8 +50,8 @@
 - [x] T9 07 머리글 2배 캡처·로고 관문 — `factory/qa/logo-gate.mjs`(logoProbe·judgeLogo·logoGateForCandidate) + ux-gate가 `header-<폭>-light-2x.png`·`gate[키].logo` 기록. Phase A에서는 06이 글자 로고만 그리므로 로고 있는 브리프는 T17 전까지 이 관문에서 실패한다(의도)
 - [x] T10 07 brand-exposure 관문 — `factory/qa/brand-exposure.mjs`(8px 칸 문서순 칠하기, 하한 Restrained 1%·Committed 15%·그 밖 1%). `cand.colorStrategy`/`cand.head.colorStrategy`는 T21이 채울 때까지 없으면 1%
 - [x] T11 마감 리뷰 조사 — PR #60 병합. `docs/superpowers/specs/2026-11-04-finish-review-mapping.md`. 확정: 리뷰어 정의 `plugins/sitebrew/agents/sitebrew-finish-reviewer.md`(tools: Read), Codex 대체 `plugins/sitebrew/skills/new/references/finish-reviewer.md`, 형식 정본 `references/review-format.md` 공유, ux-gate는 `hero-768-light.png`만 추가, T12 `factory/stamp/finish-review.mjs`(순수) · T13 `factory/stamp/finish-loop.mjs`(nextStep) 인터페이스는 문서 6절
-- [ ] T12 마감 리뷰어와 입출력 finish-review.mjs
-- [ ] T13 마감 리뷰 루프와 상한
+- [x] T12 마감 리뷰어와 입출력 finish-review.mjs — `factory/stamp/finish-review.mjs`(parseReview·parseVerdict·collectReviewInputs), 리뷰어 에이전트·Codex 대체 문서·`review-format.md`, ux-gate `hero-768-light.png` 추가
+- [x] T13 마감 리뷰 루프와 상한 — `factory/stamp/finish-loop.mjs`(nextStep·applyRound·runFinishLoop, 최대 2회), `stamp.mjs --finish-review`(첫 줄 `REVIEW <action> <round>`, 종료 3 = 파일 대기). 병합 순서는 T6→T9→T10→T13→T16
 - [x] T14 로고 시안 생성 logo-candidates.mjs (PR #62)
 - [x] T15 작은 개선 S8·S9·S10 (PR #62 — HIGGSFIELD_DIR 해석 한 곳 factory/lib/higgsfield-dir.mjs, 기본 폴더 ~/dev/Sitebrew, 문구 병렬 안내)
 - [ ] T16 07 후보 병렬 옵션 S11
