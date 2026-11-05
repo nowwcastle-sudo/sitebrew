@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import ts from 'typescript'
 import { root, localBrief, localContent, LOCAL_FACTS, makeRun as makeRunIn, gen } from './lib/stamp-site-fixtures.mjs'
-import { blankSamples, readSampleTable, remainingKeys, samplePaths } from '../stamp/sample-band.mjs'
+import { ENUM_KEYS, blankSamples, readSampleTable, remainingKeys, samplePaths } from '../stamp/sample-band.mjs'
 
 const TMP = join(root, '.tmp', 'stamp-sample-band-test')
 const read = (...p) => readFileSync(join(...p), 'utf8')
@@ -16,7 +16,7 @@ const SAMPLE_FACTS = { phone: '02-0000-0000', email: 'hello@example.com', bizNo:
 const writeSample = (runDir, facts = SAMPLE_FACTS, over = {}) => writeFileSync(join(runDir, 'sample-facts.json'), JSON.stringify({ version: 1, label: '예시 정보 — 공개 불가', facts, ...over }))
 const exampleBrief = () => localBrief({ ...LOCAL_FACTS, ...SAMPLE_FACTS })
 
-test('sample-band: 예시 표 읽기 — 없는 파일·낡은 판·모양 틀림은 null, 6자 미만 값은 뺀다', () => {
+test('sample-band: 예시 표 읽기 — 없는 파일·낡은 판·모양 틀림은 null, 열거형 키만 뺀다', () => {
   mkdirSync(TMP, { recursive: true })
   const run = mkdtempSync(join(TMP, 'unit-'))
   assert.equal(readSampleTable(run), null)
@@ -28,6 +28,20 @@ test('sample-band: 예시 표 읽기 — 없는 파일·낡은 판·모양 틀�
   const t = readSampleTable(run)
   assert.deepEqual(Object.keys(t.table).sort(), ['address', 'bizNo', 'email', 'phone'])
   assert.equal(t.label, '예시 정보 — 공개 불가')
+})
+
+test('sample-band: 짧은 예시 값(홍길동·예시상회·$29)도 표에 들고, 부분 글자 찾기는 칸 전체 일치로만 센다 · 열거형 목록은 sample-facts 의 scan:false 와 같다', () => {
+  mkdirSync(TMP, { recursive: true })
+  const run = mkdtempSync(join(TMP, 'short-'))
+  writeSample(run, { representative: '홍길동', seller: '예시상회', price: '$29', returnsFeePayer: 'buyer' })
+  const { table } = readSampleTable(run)
+  assert.deepEqual(Object.keys(table).sort(), ['price', 'representative', 'seller'])
+  assert.deepEqual(remainingKeys({ a: { name: '홍길동', cost: '$299' } }, table), ['representative'], '$299 는 $29 가 아니다')
+  assert.deepEqual(remainingKeys({ cost: '$29' }, table), ['price'])
+  assert.equal(blankSamples({ r: '홍길동' }, table, '확인 필요').r, '확인 필요', '법정 초안에서 대표자 예시가 빠진다')
+  const src = readFileSync(join(root, 'factory', 'stamp', 'sample-facts.mjs'), 'utf8')
+  const scanFalse = [...src.matchAll(/^\s{2}(\w+): \{[^\n]*scan: false/gm)].map((m) => m[1]).sort()
+  assert.deepEqual([...ENUM_KEYS].sort(), scanFalse)
 })
 
 test('sample-band: 글자 그대로 같은 칸만 예시로 본다 — 경로·남은 키·비우기(받은 값은 안 바꾼다)', () => {
@@ -72,6 +86,8 @@ test('T18 템플릿: 예시 띠는 모든 쪽 SiteShell banner 로, 구조 데�
   assert.match(src, /This draft contains \$\{n\} sample details\. Replace them with real ones before publishing\./)
   assert.match(src, /shell: _h, sample, \.\.\.content \} = site/, 'seoContent 가 sample 을 뺀다')
   assert.match(src, /text-xs leading-snug md:text-sm/, '띠 글자는 12px(데스크톱 14px)·두 줄 안에 든다')
+  assert.match(src, /resolve\(clean\.site \?\? site\.site, root\)/, 'site 칸은 예시 값을 지운 사본에서 푼다')
+  assert.match(src, /const root = \{ \.\.\.site, \.\.\.clean \}/)
 })
 
 test('T18 scrubSamples: 예시 칸만 자리 표시로 바꾸고 받은 값·다른 칸은 그대로 둔다', async () => {

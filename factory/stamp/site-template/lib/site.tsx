@@ -31,20 +31,20 @@ type SiteFile = {
 const site = siteJson as unknown as SiteFile
 
 const isRef = (v: unknown): v is Ref => !!v && typeof v === "object" && !Array.isArray(v) && typeof (v as Ref).$ref === "string"
-const at = (path: string): unknown => path.split(".").reduce<unknown>((o, k) => (o == null ? undefined : (o as Record<string, unknown>)[k]), site)
+const at = (path: string, root: unknown = site): unknown => path.split(".").reduce<unknown>((o, k) => (o == null ? undefined : (o as Record<string, unknown>)[k]), root)
 
-/** $ref 를 site.json 의 값으로 푼다(깊이 우선). 없는 자리는 던진다 — 조용히 빈 글자를 그리지 않는다. */
-export function resolve<T>(v: T): T {
+/** $ref 를 site.json 의 값으로 푼다(깊이 우선). 없는 자리는 던진다 — 조용히 빈 글자를 그리지 않는다. root 를 주면 그 객체에서 푼다(예시 값을 지운 사본 — seoContent). */
+export function resolve<T>(v: T, root: unknown = site): T {
   if (isRef(v)) {
-    const got = at(v.$ref)
+    const got = at(v.$ref, root)
     if (got === undefined) throw new Error(`site.json 에 ${v.$ref} 가 없다`)
     if (v.as === "tel") return (typeof got === "string" && !(NEEDS_CHECK_LITERALS as readonly string[]).includes(got.trim()) ? `tel:${normalizePhone(got) ?? got}` : "#") as T
     if (v.as === "mailto") return (typeof got === "string" && got.trim() !== "" && !(NEEDS_CHECK_LITERALS as readonly string[]).includes(got.trim()) && isMailAddress(got.trim()) ? `mailto:${got.trim()}` : "#") as T
-    const value = resolve(got)
+    const value = resolve(got, root)
     return (v.template && typeof value === "string" ? v.template.replace("{}", value) : value) as T
   }
-  if (Array.isArray(v)) return v.map((x) => resolve(x)) as T
-  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, resolve(x)])) as T
+  if (Array.isArray(v)) return v.map((x) => resolve(x, root)) as T
+  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, resolve(x, root)])) as T
   return v
 }
 
@@ -63,7 +63,9 @@ export function seoContent() {
   const { sections: _s, pages: _p, legal: _l, shell: _h, sample, ...content } = site
   void _s; void _p; void _l; void _h
   const clean = sample?.scrub.length ? scrubSamples(content, sample.scrub, locale === "en" ? NEEDS_CHECK_EN : NEEDS_CHECK) : content
-  return { ...clean, site: resolve(site.site) } as never
+  // site 칸도 예시 값을 지운 사본(clean)에서 푼다 — 원본으로 풀면 scrub 한 칸(site.description 등)이 메타·JSON-LD 로 되살아난다
+  const root = { ...site, ...clean }
+  return { ...clean, site: resolve(clean.site ?? site.site, root) } as never
 }
 
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined)

@@ -17,7 +17,7 @@
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { freemem } from 'node:os'
-import { basename, dirname, join, resolve } from 'node:path'
+import { basename, dirname, extname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { writePreviewUrl } from './deploy-preview.mjs'
 import { STEP_NAMES, inputHash, openRun } from './run-dir.mjs'
@@ -244,7 +244,10 @@ export async function runStamp(opts, deps) {
     summary.sample = { file: sampleFilePath(runDir), remaining: leftSamples }
   }
   // 브리프 로고(T17): 세 안 모두 머리글에 올린다. 입력 해시에는 경로와 파일 해시를 함께 싣는다 — 파일이 바뀌면 06 이 다시 돈다. 로고가 없는 브리프는 06 입력이 옛 모양 그대로다.
-  const logo = brief.brand?.logo && existsSync(brief.brand.logo) ? { path: brief.brand.logo, sha256: createHash('sha256').update(readFileSync(brief.brand.logo)).digest('hex') } : null
+  // 짝 파일 `<이름>.dark.<확장자>`(site-files.mjs headerLogoOf 가 찾는 것)도 입력이다: 더하거나 바꾸거나 지우면 06 이 다시 돈다. 짝이 없으면 입력 모양은 옛 그대로.
+  const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex')
+  const darkOf = (file) => { const ext = extname(file); const dark = `${file.slice(0, file.length - ext.length)}.dark${ext}`; return ext && existsSync(dark) ? dark : null }
+  const logo = brief.brand?.logo && existsSync(brief.brand.logo) ? { path: brief.brand.logo, sha256: sha(brief.brand.logo), ...(darkOf(brief.brand.logo) ? { darkSha256: sha(darkOf(brief.brand.logo)) } : {}) } : null
   const qaSample = leftSamples.length ? { sample: leftSamples } : {} // 남은 예시가 없는 07 은 옛 입력·옛 호출 그대로
   const samplePreview = !!(opts.pick && opts.deployPreview && leftSamples.length)
 

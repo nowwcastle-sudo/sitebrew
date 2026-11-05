@@ -266,6 +266,20 @@ test('T17: 브리프 로고는 세 안의 06 입력과 호출에 실리고(경�
   await runStamp({ brief, run, until: '06-pages' }, deps)
   assert.equal(seen.length, 6, '파일 내용이 바뀌면 06 이 다시 돈다')
   assert.notEqual(readJ(join(run, 'a', '06-pages.json')).inputHash, saved)
+  // 짝 파일 logo.dark.png — 더하기·바꾸기·지우기 모두 06 입력이 바뀐다
+  const darkFile = join(dir, 'logo.dark.png')
+  const h0 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  writeFileSync(darkFile, 'dark-1')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const h1 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.equal(seen.length, 9, '짝 파일을 더하면 06 이 다시 돈다'); assert.notEqual(h1, h0)
+  writeFileSync(darkFile, 'dark-2')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const h2 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.equal(seen.length, 12, '짝 파일이 바뀌면 06 이 다시 돈다'); assert.notEqual(h2, h1)
+  rmSync(darkFile)
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(seen.length, 15, '짝 파일을 지우면 06 이 다시 돈다'); assert.equal(readJ(join(run, 'a', '06-pages.json')).inputHash, h0)
   // 로고 없는 브리프 — 호출에도 입력에도 logo 가 없다
   const dir2 = fresh(); const run2 = join(dir2, 'run'); copyOut(run2)
   const deps2 = fakeDeps(); const seen2 = []; const inner2 = deps2.pages
