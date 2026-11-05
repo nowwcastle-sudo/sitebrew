@@ -165,8 +165,17 @@ const freePort = () => new Promise((res, rej) => {
   s.listen(0, '127.0.0.1', () => { const { port } = s.address(); s.close(() => res(port)) })
 })
 
-/** `next start` 를 빈 포트에 띄운다. → { url, port, pid, stop() }. stop 은 PID 나무째 끄고 끝날 때까지 기다린다. 관문 잠금 안에서만 부른다. */
-export async function startSite(siteDir, { timeoutMs = 90_000 } = {}) {
+// 빈 포트를 고르고(freePort) 닫은 뒤 next 가 그 포트를 여는 틈이 있다 — 후보를 동시에 돌려도(WF_QA_PARALLEL=1) 켜기만은 한 줄로 세워 같은 포트를 둘이 받지 않게 한다. 켜진 뒤의 측정은 겹쳐도 된다.
+let startQueue = Promise.resolve()
+
+/** `next start` 를 빈 포트에 띄운다. → { url, port, pid, stop() }. stop 은 PID 나무째 끄고 끝날 때까지 기다린다. 관문 잠금 안에서만 부른다. 동시에 불러도 켜기는 차례로 한다. */
+export function startSite(siteDir, opts) {
+  const started = startQueue.then(() => startSiteNow(siteDir, opts))
+  startQueue = started.catch(() => {})
+  return started
+}
+
+async function startSiteNow(siteDir, { timeoutMs = 90_000 } = {}) {
   const nextBin = join(siteDir, 'node_modules', 'next', 'dist', 'bin', 'next')
   if (!existsSync(nextBin)) throw new Error(`도구 실패: ${nextBin} 없음 — 사이트에 npm 설치가 안 됐다`)
   if (!existsSync(join(siteDir, '.next', 'BUILD_ID'))) throw new Error(`도구 실패: ${join(siteDir, '.next', 'BUILD_ID')} 없음 — 사이트가 빌드되지 않았다`)

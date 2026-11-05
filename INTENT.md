@@ -54,7 +54,7 @@
 - [x] T13 마감 리뷰 루프와 상한 — `factory/stamp/finish-loop.mjs`(nextStep·applyRound·runFinishLoop, 최대 2회), `stamp.mjs --finish-review`(첫 줄 `REVIEW <action> <round>`, 종료 3 = 파일 대기). 병합 순서는 T6→T9→T10→T13→T16
 - [x] T14 로고 시안 생성 logo-candidates.mjs (PR #62)
 - [x] T15 작은 개선 S8·S9·S10 (PR #62 — HIGGSFIELD_DIR 해석 한 곳 factory/lib/higgsfield-dir.mjs, 기본 폴더 ~/dev/Sitebrew, 문구 병렬 안내)
-- [ ] T16 07 후보 병렬 옵션 S11
+- [x] T16 07 후보 병렬 옵션 S11 (WF_QA_PARALLEL=1, 기본 끔)
 - [ ] Phase A 마감: 열쇠 = T0 기준, ci:verify ≥ 기준선
 - [ ] P3 blast-radius 결과 반영
 
