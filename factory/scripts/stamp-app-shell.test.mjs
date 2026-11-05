@@ -5,7 +5,7 @@
 //   ③ 회귀: dashboard·pwa 가 아닌 원형 9개의 06 출력(글자 파일 전부 sha256)은 앱 셸 변경 전(기준 커밋 5801cdd3)과 한 글자도 다르지 않다.
 //   ④ 블록: top-bar 의 검색·알림, offline-cached 의 저장 구획은 선택이고 안 주면 그 자리만 빠진다(예시는 예전 그대로).
 // 실행: node --test --test-force-exit --test-timeout=300000 factory/scripts/stamp-app-shell.test.mjs
-// 기준 해시를 다시 뜰 때(앱 셸이 아닌 다른 변경이 다른 원형의 06 출력을 일부러 바꿀 때만): WF_WRITE_APP_SHELL_BASELINE=1 node --test … (파일 머리 baseCommit 을 함께 고친다. FV1 Task 5.17 BOLD: 새 히어로 허용 목록으로 local·saas 두 곳이 일부러 바뀌어 다시 떴다. FINAL-WF2: 링크·메타 설명·요금제 버튼·빈 쪽 메뉴·문의 완료 문구 등 06 묶기 고침으로 9개 원형의 page.tsx·site.json 이 일부러 바뀌어 다시 떴다. FINAL-WF4: 목 포트·매니페스트 색 템플릿 파일과 요금제 id 로 모든 원형의 lib/ports.ts·lib/site.tsx 와 saas·landing 의 content/site.json 이 일부러 바뀌어 다시 떴다. QFIX3: local 홈 구획 순서(영업시간 표가 메뉴보다 앞)·brand·public 머리글 연락 행동으로 local·brand·public 의 page.tsx·site.json 이 일부러 바뀌어 다시 떴다)
+// 기준 해시를 다시 뜰 때(앱 셸이 아닌 다른 변경이 다른 원형의 06 출력을 일부러 바꿀 때만): WF_WRITE_APP_SHELL_BASELINE=1 node --test … (파일 머리 baseCommit 을 함께 고친다. FV1 Task 5.17 BOLD: 새 히어로 허용 목록으로 local·saas 두 곳이 일부러 바뀌어 다시 떴다. FINAL-WF2: 링크·메타 설명·요금제 버튼·빈 쪽 메뉴·문의 완료 문구 등 06 묶기 고침으로 9개 원형의 page.tsx·site.json 이 일부러 바뀌어 다시 떴다. FINAL-WF4: 목 포트·매니페스트 색 템플릿 파일과 요금제 id 로 모든 원형의 lib/ports.ts·lib/site.tsx 와 saas·landing 의 content/site.json 이 일부러 바뀌어 다시 떴다. QFIX3: local 홈 구획 순서(영업시간 표가 메뉴보다 앞)·brand·public 머리글 연락 행동으로 local·brand·public 의 page.tsx·site.json 이 일부러 바뀌어 다시 떴다. v0.2.6 T17~T19: 머리글 그림 로고·예시 띠·브랜드 주색으로 lib/site.tsx·site.json 이 일부러 바뀌어 다시 떴다)
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'

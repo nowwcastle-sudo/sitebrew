@@ -54,7 +54,7 @@ test('rejected generated candidates are replaced; if pool is exhausted it throws
     assert.ok(e instanceof DirectionsShortError)
     const cands = e.rejected.filter((r) => !r.id.startsWith('slot:'))
     assert.ok(cands.length > 0)
-    for (const r of cands) assert.ok(r.reasons.length && r.reasons.every((x) => /^axis-distance:(safe|library:[\w-]+)$/.test(x)), JSON.stringify(r))
+    for (const r of cands) assert.ok(r.reasons.length && r.reasons.every((x) => /^(axis-distance:(safe|library:[\w-]+)|visual-distance:(safe|bold))$/.test(x)), JSON.stringify(r))
     return true
   })
 })

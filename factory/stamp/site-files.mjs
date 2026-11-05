@@ -2,9 +2,10 @@
 //   robots·sitemap·공유 그림 라우트는 템플릿에 한 벌로 있고(site-template/app/…) 값은 content/site.json 과 lib/build.json 에서 읽는다(J9 — 코드에 콘텐츠 없음).
 //   이 파일은 후보마다 달라지는 것만 만든다: 레시피 색(공유 그림·파비콘)과 파비콘 래스터(gen-favicons — favicon-kit 계획대로 sharp 로 굽는다).
 //   표지(mark): 브랜드 로고 SVG(currentColor 로 칠할 곳을 적은 것)가 있으면 그것, 없으면 상호로 고른 도형 표지(글자를 쓰지 않는다 — 래스터 도구가 한글 서체를 못 찾는다).
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, statSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { isAbsolute, join, resolve } from 'node:path'
+import { extname, isAbsolute, join, resolve } from 'node:path'
+import sharp from 'sharp'
 import { loadLibrary } from '../scripts/style-presets.mjs'
 import { genFavicons, tsLoader } from '../scripts/gen-favicons.mjs'
 
@@ -48,6 +49,43 @@ export function markSvg(brandName, { logoPath, baseDir } = {}) {
   }
   const h = createHash('sha256').update(String(brandName ?? '')).digest()
   return { svg: wrap(MARKS[h[0] % MARKS.length]), source: 'shape' }
+}
+
+// 머리글 로고(v0.2.6 T17, D10) — 브리프 로고 파일이 머리글에 쓸 만한지 판정한다. 파비콘·공유 그림의 markSvg 와 따로다(markSvg 는 그대로).
+export const HEADER_LOGO = { maxBytes: 1024 * 1024, maxRatio: 6, formats: ['.svg', '.png', '.jpg', '.jpeg', '.webp'] }
+const fileOf = (logoPath, baseDir) => (isAbsolute(logoPath) ? logoPath : resolve(baseDir ?? process.cwd(), logoPath))
+/** 쓸 수 없는 이유를 한 줄로 돌려준다: { ok:false, reason }. 쓸 수 있으면 { ok:true, file, ext, width, height, mode:'mask'|'img' }. */
+async function probeLogoFile(file) {
+  const ext = extname(file).toLowerCase()
+  if (!HEADER_LOGO.formats.includes(ext)) return { ok: false, reason: `형식이 맞지 않아요(${ext || '확장자 없음'} — svg·png·jpg·webp 만 써요)` }
+  if (!existsSync(file)) return { ok: false, reason: '파일을 찾지 못했어요' }
+  if (statSync(file).size > HEADER_LOGO.maxBytes) return { ok: false, reason: '파일이 1MB 를 넘어요' }
+  let width, height, mode
+  if (ext === '.svg') {
+    const svg = readFileSync(file, 'utf8')
+    const vb = /viewBox\s*=\s*["']\s*([-\d.eE]+)[\s,]+([-\d.eE]+)[\s,]+([-\d.eE]+)[\s,]+([-\d.eE]+)\s*["']/i.exec(svg)
+    if (!vb) return { ok: false, reason: 'SVG 에 viewBox 가 없어요' }
+    width = Number(vb[3]); height = Number(vb[4])
+    mode = /currentColor/i.test(svg) ? 'mask' : 'img'
+  } else {
+    try { ({ width, height } = await sharp(file).metadata()) } catch { return { ok: false, reason: '그림 파일을 읽지 못했어요' } }
+    mode = 'img'
+  }
+  if (!(width > 0) || !(height > 0)) return { ok: false, reason: '그림 크기를 읽지 못했어요' }
+  if (width / height > HEADER_LOGO.maxRatio) return { ok: false, reason: `가로가 세로의 ${HEADER_LOGO.maxRatio}배를 넘어요` }
+  return { ok: true, file, ext, width: Math.round(width), height: Math.round(height), mode }
+}
+
+/** 머리글 로고 판정. 짝 파일 `<이름>.dark.<확장자>` 는 img 모드에서만 받는다(같은 검사를 통과해야). 값 모양: { ok, file, ext, width, height, mode, darkFile? } | { ok:false, reason }. */
+export async function headerLogoOf(logoPath, { baseDir } = {}) {
+  if (!logoPath) return { ok: false, reason: '로고 파일이 없어요' }
+  const base = await probeLogoFile(fileOf(logoPath, baseDir))
+  if (!base.ok) return base
+  if (base.mode !== 'img') return base
+  const dark = base.file.slice(0, -base.ext.length) + '.dark' + base.ext
+  if (!existsSync(dark)) return base
+  const pair = await probeLogoFile(dark)
+  return pair.ok && pair.mode === 'img' ? { ...base, darkFile: dark } : base
 }
 
 /** 파비콘 묶음을 siteDir 에 굽는다(favicon-kit 목록 그대로: app/icon.svg·app/favicon.ico·app/apple-icon.png·public/icon-192·512·maskable-512.png). */

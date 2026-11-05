@@ -1,5 +1,5 @@
 // 대화형 입구의 질문 표(factory v1 Task 4.1 · 합의안 D3·D4) — 주제 한 줄 + 원형 뒤에 묻는 짧은 대화 6~8문항.
-//   공통 6: 이름 · 대상 고객 · 핵심 행동 · 연락처 · 로고 · 분위기 단어 (D3 가 든 여섯 항목 그대로) + 브랜드 색 · 서체 2(FIT-3 — 필수 사실이 아니라 없어도 missing·previewOnly 가 안 바뀐다)
+//   공통 6: 이름 · 대상 고객 · 핵심 행동 · 연락처 · 로고 · 분위기 단어 (D3 가 든 여섯 항목 그대로) + 브랜드 색 · 서체 2(FIT-3) + 포지셔닝 1(v0.2.6) — 뒤 셋은 필수 사실이 아니라 없어도 missing·previewOnly 가 안 바뀐다
 //   원형별 0~2: 그 원형이 화면에서 꼭 쓰는 사실 하나씩(local 영업시간 · commerce 대표 상품 · saas 요금제 …)
 //   질문 하나 = 브리프 한 칸이다. `fact` 는 브리프 facts 의 이름(FACT_NAMES 안), 로고는 `brand.logo`.
 //   답이 비면 그 칸은 브리프에 없다 — 04-content 가 「확인 필요」 자리 표시로 남기고 공개 관문이 막는다(지어내지 않는다, §9 Q8).
@@ -46,8 +46,8 @@ export function photoNotice(archetype) {
 export const INTAKE_ARCHETYPES = [...ARCHETYPE_IDS]
 
 /**
- * @typedef {{ id: string, ask: string, hint?: string, fact?: string, logo?: true, brand?: 'colors'|'fonts', eventOnly?: true }} Question
- *   id = answers 의 키 · ask = 사용자에게 묻는 한 문장 · hint = 예시나 괜찮은 답 · fact = 브리프 facts 이름(contact 는 원형이 정한다) · logo = brand.logo 칸 · brand = brand.colors / brand.fonts 칸(FIT-3)
+ * @typedef {{ id: string, ask: string, hint?: string, fact?: string, logo?: true, brand?: 'colors'|'fonts', eventOnly?: true, optional?: true }} Question
+ *   id = answers 의 키 · ask = 사용자에게 묻는 한 문장 · hint = 예시나 괜찮은 답 · fact = 브리프 facts 이름(contact 는 원형이 정한다) · logo = brand.logo 칸 · brand = brand.colors / brand.fonts 칸(FIT-3) · optional = 전략 입력이라 비어도 missing·previewOnly 에 안 센다(v0.2.6)
  */
 
 /** @type {Question[]} */
@@ -59,8 +59,10 @@ const COMMON = [
   { id: 'logo', ask: '로고 파일이 있나요? 있다면 파일 위치를 알려 주세요.', hint: '없으면 비워 두세요. 미리보기용 로고를 쓰고 공개 전 교체 표지를 달아요.', logo: true },
   { id: 'mood', ask: '분위기를 한 단어로 고른다면 무엇인가요?', hint: '예: 따뜻한, 단정한, 대담한', fact: 'mood' },
   // FIT-3 F2: 대화로 브랜드 색·서체를 받는다. mood 뒤에 붙여 앞 6개 id 순서는 그대로 둔다. 색은 색 코드만 받는다(to-brief: 「초록」은 지어내 바꾸지 않고 되묻는다).
-  { id: 'brandColors', ask: '브랜드 색이 있나요? 색 코드로 최대 3개(예: #0B6E4F). 없으면 비워 두세요.', brand: 'colors' },
+  { id: 'brandColors', ask: '브랜드 색이 있나요? 색 코드로 최대 3개(예: #0B6E4F). 첫 번째 색이 주색이 돼요. 없으면 비워 두세요.', brand: 'colors' },
   { id: 'brandFonts', ask: '꼭 쓰고 싶은 서체가 있나요? 제목용·본문용 순서로. 없으면 비워 두세요.', brand: 'fonts' },
+  // v0.2.6 T20: 포지셔닝 — 방향 고르기의 전략 입력이다(factory/stamp/positioning.mjs). 사이트 문구로 그대로 쓰지 않고, 비워도 missing·previewOnly 가 바뀌지 않는다.
+  { id: 'positioning', ask: '어떤 자리를 노리나요? (예: 업계 최전선 기술, 믿을 수 있는 동네 전문가, 가장 쉬운 선택) 없으면 비워 두세요.', fact: 'positioning', optional: true },
 ]
 
 /** 원형별로 더 묻는 것(0~3개). 이름은 브리프 FACT_NAMES 안의 사실 이름이다. eventOnly 질문은 행사형 브리프에서만 빠진 사실로 센다. */

@@ -21,6 +21,9 @@ const ARCHS = ['brand', 'commerce', 'dashboard', 'detail', 'landing', 'local', '
 const sampleBrief = (archetype, extra = {}) => ({ topic: '시험 주제(예시)', archetype, locale: 'ko', facts: { name: '시험 상점' }, seed: 7, ...extra })
 const pick = (fn, archetype, extra) => fn({ brief: sampleBrief(archetype, extra), archetype: archetypes[archetype], seed: 7 })
 const withoutBold = (c) => { const rest = { ...c }; delete rest.boldness; delete rest.boldMode; return rest }
+// v0.2.6(T21)이 후보에 더한 머리 칸 — 고정 사본(대담안 표시 전)에는 없다. 칸 자체는 material-family.test.mjs 가 본다.
+const V026_HEAD_KEYS = ['thesis', 'sig', 'world', 'risk', 'ownWorld', 'materialFamily', 'colorStrategy']
+const withoutHead = (c) => { const rest = withoutBold(c); for (const k of V026_HEAD_KEYS) delete rest[k]; return rest }
 
 // ── 1. 방향 3안: 정확히 1안이 대담안 ─────────────────────────────────────────────
 
@@ -38,7 +41,7 @@ const settle = async (fn, a, extra) => {
   try { return { ok: await fn({ brief: sampleBrief(a, extra), archetype: archetypes[a], seed: 7, _lint: memoLint }) } } catch (e) { if (!(e instanceof DirectionsShortError)) throw e; return { blocked: e.message } }
 }
 
-test('원형 10종(+브랜드 입력 몇 가지): 대담안은 bold 칸(c) 하나·boldMode 는 원형이 정하고, 대담안 표시를 빼면 고정 사본과 한 글자도 다르지 않다(후보·탈락 모두)', async () => {
+test('원형 10종(+브랜드 입력 몇 가지): 대담안은 bold 칸(c) 하나·boldMode 는 원형이 정하고, 대담안 표시를 빼면 a 안은 고정 사본과 한 글자도 다르지 않고 b·c 는 출처 구성이 같다(v0.2.6 거리 규칙으로 b·c 의 고름은 달라질 수 있다)', async () => {
   assert.deepEqual([...BOLD_LAYOUT_ARCHETYPES].sort(), ['dashboard', 'public'])
   const cases = [...ARCHS.map((a) => [a, {}]), ...['brand', 'saas'].flatMap((a) => [['#0B5FFF', '#FFFFFF'], ['#7A2E1D', '#FFFFFF']].map((colors) => [a, { brand: { colors } }]))]
   let brandRuns = 0
@@ -53,8 +56,10 @@ test('원형 10종(+브랜드 입력 몇 가지): 대담안은 bold 칸(c) 하�
     assert.equal(c[2].boldMode, BOLD_LAYOUT_ARCHETYPES.includes(a) ? 'layout' : 'motion', tag)
     assert.equal(c[2].boldMode, boldModeFor(a), tag)
     assert.ok(!('boldMode' in c[0]) && !('boldMode' in c[1]), `${tag}: 대담안이 아닌 칸에는 boldMode 가 없다`)
-    assert.deepEqual(c.map(withoutBold), v0.ok.candidates, `${tag}: 출처 구성·레시피·팔레트·서체가 그대로다`)
-    assert.deepEqual(now.ok.rejected, v0.ok.rejected, `${tag}: 탈락 기록도 그대로다`)
+    // a(라이브러리)는 거리 규칙이 건드리지 않는다 — 경고 문구(why)만 더해질 수 있다. b·c 의 고름은 v0.2.6 에서 바뀌어도 되므로 출처·슬롯만 본다.
+    const noWarn = (x) => ({ ...withoutHead(x), why: x.why.replace(/ · 경고: family-clash\([^)]*\)/, '') })
+    assert.deepEqual(noWarn(c[0]), v0.ok.candidates[0], `${tag}: a 안의 레시피·팔레트·서체가 그대로다`)
+    assert.deepEqual(c.map((x) => [x.id, x.slot, x.source]), v0.ok.candidates.map((x) => [x.id, x.slot, x.source]), `${tag}: 슬롯·출처 구성이 그대로다`)
     assert.deepEqual(c.map((x) => x.source), v0.ok.candidates.map((x) => x.source), tag)
     assert.equal(c[2].source, extra.brand ? 'brand' : 'generated', tag)
   }

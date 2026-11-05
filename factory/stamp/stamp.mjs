@@ -17,7 +17,7 @@
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { freemem } from 'node:os'
-import { basename, dirname, join, resolve } from 'node:path'
+import { basename, dirname, extname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { writePreviewUrl } from './deploy-preview.mjs'
 import { STEP_NAMES, inputHash, openRun } from './run-dir.mjs'
@@ -243,6 +243,11 @@ export async function runStamp(opts, deps) {
     brief = mergeFacts(sample, brief)
     summary.sample = { file: sampleFilePath(runDir), remaining: leftSamples }
   }
+  // 브리프 로고(T17): 세 안 모두 머리글에 올린다. 입력 해시에는 경로와 파일 해시를 함께 싣는다 — 파일이 바뀌면 06 이 다시 돈다. 로고가 없는 브리프는 06 입력이 옛 모양 그대로다.
+  // 짝 파일 `<이름>.dark.<확장자>`(site-files.mjs headerLogoOf 가 찾는 것)도 입력이다: 더하거나 바꾸거나 지우면 06 이 다시 돈다. 짝이 없으면 입력 모양은 옛 그대로.
+  const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex')
+  const darkOf = (file) => { const ext = extname(file); const dark = `${file.slice(0, file.length - ext.length)}.dark${ext}`; return ext && existsSync(dark) ? dark : null }
+  const logo = brief.brand?.logo && existsSync(brief.brand.logo) ? { path: brief.brand.logo, sha256: sha(brief.brand.logo), ...(darkOf(brief.brand.logo) ? { darkSha256: sha(darkOf(brief.brand.logo)) } : {}) } : null
   const qaSample = leftSamples.length ? { sample: leftSamples } : {} // 남은 예시가 없는 07 은 옛 입력·옛 호출 그대로
   const samplePreview = !!(opts.pick && opts.deployPreview && leftSamples.length)
 
@@ -406,7 +411,7 @@ export async function runStamp(opts, deps) {
     s.legal = legalState(runDir, c.id, archetype)
     // 코드 열쇠(C314): 입력이 같아도 블록·템플릿·06 코드가 바뀌면 06 을 다시 만든다. 열쇠가 없는 묶음(가짜 단계)은 옛 입력 모양 그대로.
     const code = deps.pagesKey ? await deps.pagesKey() : null
-    s.pages = await step(c.id, '06-pages', { cand: c, sitemap: s.sitemap, variants: s.variants, content: s.content, media: s.media, legal: s.legal.hashes, ...(code ? { code } : {}) }, () => deps.pages({ runDir, cand: c }))
+    s.pages = await step(c.id, '06-pages', { cand: c, sitemap: s.sitemap, variants: s.variants, content: s.content, media: s.media, legal: s.legal.hashes, ...(logo ? { logo } : {}), ...(code ? { code } : {}) }, () => deps.pages({ runDir, cand: c, ...(logo ? { logo } : {}) }))
   }))) return stop()
   if (!reaches('07-qa')) return finish(EXIT.done, 'done', done('06'))
 
@@ -436,13 +441,13 @@ export async function runStamp(opts, deps) {
   else if (par.reason === 'memory') say('WF_QA_PARALLEL=1 이지만 여유 메모리가 모자라 07 을 하나씩 돌린다')
   if (!(await tryEach(active, '07-qa', async (c) => {
     const s = state[c.id]
-    const qaInputs = { pages: s.pages, legal: s.legal.hashes, ...qaSample }
+    const qaInputs = { pages: s.pages, legal: s.legal.hashes, ...qaSample, ...(logo ? { logo } : {}) }
     // 07 이 「측정 못 함」(도구 실패)으로 끝난 채 남아 있으면 입력이 같아도 다시 잰다(FIT-6) — 도구 실패는 입력 탓이 아니라 그때 PC 형편 탓이라 캐시가 거짓이 된다.
     // 판정 실패(측정은 했다)는 입력이 같으면 그대로다. 타임아웃 환경 변수(WF_NAV_TIMEOUT_MS·WF_CDP_TIMEOUT_MS)를 올려 같은 명령을 다시 돌리는 길이 이것이다.
     const prev = readJsonMaybe(join(runDir, c.id, '07-qa.json'))
     const prevFailed = prev && prev.inputHash === inputHash(qaInputs) ? toolFailedGates(prev.data) : []
     if (prevFailed.length) say(`[${c.id}] 07-qa 지난 실행에 측정 못 함 ${prevFailed.length}건(${prevFailed.slice(0, 3).join(' · ')}${prevFailed.length > 3 ? ' …' : ''}) — 07 을 다시 잰다`)
-    s.qa = await step(c.id, '07-qa', qaInputs, () => deps.qa({ runDir, cand: c, ...qaSample, tag: par.limit > 1 ? `[${c.id}] ` : '' }), { refresh: prevFailed.length > 0 })
+    s.qa = await step(c.id, '07-qa', qaInputs, () => deps.qa({ runDir, cand: c, ...qaSample, ...(logo ? { logo } : {}), tag: par.limit > 1 ? `[${c.id}] ` : '' }), { refresh: prevFailed.length > 0 })
     // product 완성(saas·pwa)을 미리보기로 배포하면 공개 주소에서 실제 가입·결제가 안 된다 — 품질 사유로 더한다(E6). 단계 파일은 건드리지 않는다.
     if (mockPreview) { s.qa = withMockPreviewBlocker(s.qa); say(`[${c.id}] 미리보기 주의 — ${MOCK_PREVIEW_NOTICE}`) }
     if (samplePreview) say(`[${c.id}] 미리보기 주의 — ${SAMPLE_PREVIEW_NOTICE}`)
@@ -536,18 +541,18 @@ export async function defaultDeps({ say = console.log, preferences = true } = {}
       const r = await mediaMod.fetchMedia(plan, out, { pexelsOptional: !doctor.strictFromEnv(), locale: content?.locale === 'en' ? 'en' : 'ko' })
       return { plan: plan.length, assets: r.manifest.assets.length, placeholders: r.manifest.placeholders.length, requests: r.requests.length, credits: r.credits.length, ...(preview ? { preview } : {}), ...(r.hyperframesRequests?.length ? { hyperframesRequests: r.hyperframesRequests.length } : {}) }
     },
-    pages: async ({ runDir, cand }) => {
+    pages: async ({ runDir, cand, logo }) => {
       // 첫 실행은 템플릿 설치(npm ci)로 오래 걸린다(실측 W1b: 첫 후보 06 22.6분, 이어지는 후보 10~16분) — 조용히 기다리는 것처럼 보이지 않게 시작 때 한 줄(FINAL-WF P4).
       say(`06 쪽 만들기 시작 — 첫 후보는 템플릿 설치까지 20분 안팎, 이어지는 후보는 10~15분 걸린다(PC가 느리거나 다른 일이 겹치면 더) · 로그: ${join(runDir, cand.id)}`)
       say(`06 building pages - the first run installs the site template and takes about 20 minutes for the first candidate and 10 to 15 for each next one (longer on a slow or busy PC) - logs: ${join(runDir, cand.id)}`)
-      const r = await pagesMod.generateSite(runDir, cand, { install: true, build: true, log: (m) => say(`  ${m}`) })
+      const r = await pagesMod.generateSite(runDir, cand, { install: true, build: true, ...(logo ? { logo } : {}), log: (m) => say(`  ${m}`) })
       if (r.build && r.build.code !== 0) throw new Error(failMessage('next build', r.build.code, join(runDir, cand.id, 'build.log')))
       // 수정으로 고른 블록이 폴백으로 바뀌었으면(FIT-5) 06 단계 자료에 남겨 08 보드·요약이 읽는다 — 경고 한 줄은 generateSite 가 이미 log 로 냈다
       const reviseFallbacks = (r.reviseFallbacks ?? []).map(({ key, block, to, why, index }) => ({ key, block, to, why, index }))
       return { siteDir: r.siteDir, routes: r.routes, blockers: r.blockers.length, skipped: r.skipped.length, build: r.build ? { code: r.build.code, seconds: r.build.seconds } : null, builtAt: new Date().toISOString(), ...(reviseFallbacks.length ? { reviseFallbacks } : {}) }
     },
     pagesKey: () => pagesCodeKey(),
-    qa: ({ runDir, cand, sample, tag = '' }) => qaMod.runCandidateQa(runDir, cand, { log: (m) => say(`  ${tag}${m}`), ...(sample ? { sample } : {}) }),
+    qa: ({ runDir, cand, sample, logo, tag = '' }) => qaMod.runCandidateQa(runDir, cand, { log: (m) => say(`  ${tag}${m}`), ...(sample ? { sample } : {}), ...(logo ? { briefLogo: logo.path } : {}) }),
     deploy: (siteDir) => deployMod.deployPreview(siteDir, {}),
   }
 }

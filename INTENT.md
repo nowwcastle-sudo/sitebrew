@@ -59,16 +59,16 @@
 - [ ] P3 blast-radius 결과 반영
 
 ### Phase B — 06 열쇠 묶음 (한 번에)
-- [ ] T17 머리글 이미지 로고
-- [ ] T18 예시 띠와 법정 초안
-- [ ] T19 브랜드 주색·테마·바탕 프리셋
-- [ ] T20 포지셔닝
-- [ ] T21 「다른 세계」·팔레트·보라·후보 머리 4칸
-- [ ] T22 기준 갱신과 골든 재증명(실빌드 3건)
+- [x] T17 머리글 이미지 로고 — `headerLogoOf`(site-files.mjs)·`shell.logo`(site.json)·site.tsx LogoMark(img·mask·다크 짝)·stamp.mjs 06 입력 조건부 키 `logo`(경로+sha256)·로고 관문이 a·b 도 잰다(`briefLogo`)·`BLOCKER.logo`(입력 갈래)
+- [x] T18 예시 띠와 법정 초안 — `sample-band.mjs`(예시 값 찾기)·site.json `sample`{label,count,scrub}·SiteShell banner(SampleBand)·`lib/sample-scrub.ts`(JSON-LD·메타에서 예시 칸 뺌)·법정 초안 `blankSamples`
+- [x] T19 브랜드 주색·테마·바탕 프리셋 — 첫 유채색=주색·`brandThemeOf`·`presetToRecipeHead` opts.defaultTheme·c 바탕=같은 테마 최고 novelty·질문 문구. 한계: 바탕 역할이 밝은 무채(L≥0.9)만이라 dark 는 아직 나오지 않는다(규칙은 구현됨)
+- [x] T20 포지셔닝 — 9번째 선택 질문 `positioning`(missingFacts 에서 제외)·`positioning.mjs`(표 5종 frontier·trusted-local·simplest·premium·playful; 축 선호는 최대 2개까지만 가산)·가중 라이브러리 0.04·프리셋 0.06·팔레트 0.10. 모르는 말이면 효과 없음. 사이트 문구로 쓰지 않는다(COPY.md). 한계: 팔레트 테마 가산은 밝기 ±1 기준이 압도해 사실상 순서를 못 바꾼다(문서화만)
+- [x] T21 「다른 세계」·팔레트·보라·후보 머리 — `material-family.mjs`(계열 8종·색 전략)·`visual-distance.mjs`(7칸 거리, 하드 규칙 ≥2 `visual-distance:safe|bold`, 계열은 소프트 FAMILY_BONUS 0.05 + `family-clash` 경고)·후보에 thesis·sig·world·risk·ownWorld·materialFamily·colorStrategy·b 팔레트 브랜드 색조 가산(±30°/보색)·보라 금지를 글자·강조·링으로 확장(레퍼런스 팔레트는 고르는 때 거름; palettes.json 원천은 저장소 밖이라 재생성 불가)
+- [x] T22(부분) 기준 갱신 — mood 기준 해시·골든 씨앗 6개(detail-2 3·local-2 2·portfolio-2 1·public-2 9·pwa-1 2·landing-1 1)·앱 셸 sha 파일·bold 고정 사본 비교 범위. 06 열쇠 e0f956311ee09dc0a08bc00aa09e2b0b1b5ba68b4b69f399dae33a27e9afbee5 (닫힘 59파일; lib/site.tsx 가 pageTitle 등 5개 내보내기를 잃었던 것을 실빌드(T24)에서 발견해 복구, 시험 stamp-site-exports 추가). 06 정적 스윕(골든 20×3 = 60 사이트, stamp-final-wf6-links) 통과. [ ] 실빌드 3건은 T24 에서
 
 ### Phase C·D
-- [ ] T23 스킬 갱신과 v0.2.6(버전 올림)
-- [ ] T24 검증 라운드(ci:verify·플러그인 시험·실런·9절 대조표)
+- [x] T23 스킬 갱신(new·deliver·revise)과 v0.2.6 버전 올림(bump-version·gen:all·pincheck·README 5개 언어 ×2 행·설치 주소 고정). 릴리스 행 문구·날짜(2026-11-05)는 임시 — 릴리스 때 다듬는다. LF README 의 web-factory 고정·블록·contract 해시는 릴리스 때 잠금 동기화로 맞춘다
+- [x] T24 검증 라운드 — GitHub CI(ci:verify 전체) 녹색. 부록 B 실런(--sample-facts) 01~08 완료: c 주색 초록·라이트 테마, b 전경 보라 없음, 세 후보 거리 ≥2, --serve(COMPARE/PICK, 남은 node 0)·--pick b 종료 1·deliver 종료 1, 마감 리뷰 1회(review-1.md parseReview 통과, 다음 걸음 `REVIEW apply 1`, 처방 둘 revise 읽기 확인). 실런에서 lib/site.tsx 내보내기 누락 결함을 찾아 고침. 남음: 골든 실빌드 3건(brand-1 로고·landing-2 영어·dashboard-1)은 문구 작성(9후보)이 필요해 이 세션에서 못 돌렸다 → 로컬 PC 재증명 필요. c 첫 화면 주색 면적 0%는 07 brand-exposure 가 공개 불가로 잡았다(관문 정상 동작; 고침은 마감 리뷰·수정 몫). 클라우드 한정: node_modules/.bin/next 심볼릭 링크 경로로 next build 하면 prerender 가 useContext null 로 실패해, 후보 사이트의 .bin/next 를 셸 래퍼로 바꿔 우회했다(코드 변경 아님).
 - [ ] P4 최종 interrogate(선택)
 - [ ] T25 PR (병합은 대표 승인 뒤, 코디네이터)
 

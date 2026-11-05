@@ -150,6 +150,8 @@ export function runToolDefault(tool, args, { timeoutMs = 300_000 } = {}) {
 const readJsonMaybe = (file) => {
   try { return JSON.parse(readFileSync(file, 'utf8')) } catch { return null }
 }
+/** 06 이 머리글에 그림 로고를 실제로 올렸는가(content/site.json 의 shell.logo) — 브리프 로고를 받은 a·b 의 로고 관문 조건(T17). */
+const siteHasHeaderLogo = (runDir, cand) => !!readJsonMaybe(join(runDir, cand.id, 'site', 'content', 'site.json'))?.shell?.logo
 const writeAtomic = (file, text) => {
   mkdirSync(dirname(file), { recursive: true })
   writeFileSync(`${file}.tmp`, text)
@@ -222,7 +224,7 @@ export function writeQaBlockers(runDir, candId, lines) {
  *           runTool?: Function, fetch?: Function, log?: Function, opsOptions?: object, marketingSiteOptions?: object, a11yOptions?: object, strict?: boolean, strictOptions?: object }} [opts]
  *   url 을 안 주면 `next start` 를 빈 포트에 띄운다(관문 잠금 안에서만). 도구 실패는 toolRetries(기본 1, 최대 2)번 다시 돈다.
  *   strict(기본 켬)는 원형 엄격 기준 관문이다 — false 면 건너뛴다. strictOptions 는 어댑터(`strictGateForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
- *   logo(기본 켬)는 머리글 로고 관문이다 — 후보 브랜드 입력에 로고가 있을 때만 돈다. brandExposure(기본 켬)는 주색 노출 관문이다 — 브랜드 색이 있을 때만 돈다(brandExposureOptions 는 어댑터에 그대로).
+ *   logo(기본 켬)는 머리글 로고 관문이다 — 후보 브랜드 입력에 로고가 있을 때 돈다. briefLogo(선택, 브리프 로고 경로)를 주면 a·b 도 06 이 머리글에 그림 로고를 올렸을 때 돈다(T17). brandExposure(기본 켬)는 주색 노출 관문이다 — 브랜드 색이 있을 때만 돈다(brandExposureOptions 는 어댑터에 그대로).
  *   sample(선택)은 실제 값으로 안 바뀐 예시 정보의 사실 이름들이다 — 키마다 `예시 정보 남음` 사유 한 줄(입력 대기)이 더해져 공개 불가가 된다.
  *   bold(기본 켬)는 대담안 안전 관문이다 — cand.boldness 가 "bold" 일 때만 돌고, false 면 건너뛴다. boldOptions 는 어댑터(`boldSafetyForCandidate`)에 그대로 넘긴다(시험용 가짜 측정기 `measure`).
  *   opsOptions·marketingSiteOptions·a11yOptions 는 후보 어댑터(`opsGateForCandidate` 등)에 그대로 넘긴다(Lighthouse 쪽 고르기·시험용 가짜 측정기).
@@ -335,7 +337,8 @@ export async function runCandidateQa(runDir, cand, opts = {}) {
 
     // 3b. 머리글 로고(v0.2.6 T9 — 브리프에 로고가 있을 때만): ux 관문이 남긴 로고 계측을 읽는다. 머리글은 모든 쪽에서 같으므로 쪽 하나(홈이 열렸으면 홈).
     //     ux 관문 자체가 도구 실패였으면 계측이 없는 까닭이 이미 사유로 남으므로 다시 적지 않는다.
-    if (opts.logo !== false && hasBrandLogo(cand) && openedRoutes.length) {
+    //     브랜드 후보(c)는 예전대로 늘 돈다. 브리프 로고를 받은 a·b 는 06 이 머리글에 실제로 올렸을 때(site.json shell.logo)만 — 못 올렸으면 06 의 「로고 머리글 미적용」이 이미 까닭이다.
+    if (opts.logo !== false && (hasBrandLogo(cand) || (opts.briefLogo && siteHasHeaderLogo(runDir, cand))) && openedRoutes.length) {
       const route = openedRoutes.includes('/') ? '/' : openedRoutes[0]
       if (gates.find((g) => g.id === `ux:${route}`)?.verdict !== 'tool') {
         await adapterGate('logo', async () => logoGateForCandidate(cand, { uxGateFile: join(qaDir, 'ux', routeSlug(route), 'gate', 'ux_gate.json') }))

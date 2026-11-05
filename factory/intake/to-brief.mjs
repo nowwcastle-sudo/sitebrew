@@ -135,6 +135,7 @@ export function missingFacts(brief) {
   for (const q of questionsFor(brief.archetype)) {
     if (q.logo) { if (!brief.brand?.logo) missing.push('logo'); continue }
     if (q.brand) continue // 브랜드 색·서체는 필수 사실이 아니다 — 없어도 missing·previewOnly 를 바꾸지 않는다(FIT-3)
+    if (q.optional) continue // 선택 질문(포지셔닝 등 전략 입력)도 같다(v0.2.6 T20)
     if (q.eventOnly && !isEventBrief(brief)) continue // 행사 일시·장소는 행사형 브리프에서만 필수다(C416)
     // 연락처: 전화가 필수인 원형은 전화가 있어야 하고, 아니면 전화나 이메일 중 하나면 된다.
     const filled = q.id === 'contact' ? (contactFact(brief.archetype) === 'phone' ? has('phone') : has('email') || has('phone')) : has(q.fact)

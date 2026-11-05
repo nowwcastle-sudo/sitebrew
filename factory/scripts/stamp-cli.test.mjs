@@ -247,6 +247,47 @@ test('C314: 06 입력 해시가 코드 열쇠를 본다 — 입력(02~05)은 같
   for (const id of PICKS) { assert.equal(deps.calls[`pages:${id}`], 3); assert.equal(deps.calls[`qa:${id}`], 2, `${id}: 06 이 새로 만들어졌는데 07 이 옛 결과를 썼다`) }
 })
 
+test('T17: 브리프 로고는 세 안의 06 입력과 호출에 실리고(경로+파일 해시), 로고가 없으면 06 입력은 예전 그대로다', async () => {
+  const dir = fresh()
+  const logoFile = join(dir, 'logo.png')
+  writeFileSync(logoFile, 'png-bytes-1')
+  const brief = writeBrief(dir, { ...BRIEF, brand: { logo: logoFile } })
+  const run = join(dir, 'run')
+  copyOut(run)
+  const deps = fakeDeps()
+  const seen = []
+  const inner = deps.pages
+  deps.pages = async (args) => { seen.push([args.cand.id, args.logo?.path]); return inner(args) }
+  const r1 = await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(r1.code, EXIT.done, r1.lines.join('\n'))
+  assert.deepEqual(seen.map(([, p]) => p), [logoFile, logoFile, logoFile], 'a·b·c 모두 로고를 받는다')
+  const saved = readJ(join(run, 'a', '06-pages.json')).inputHash
+  writeFileSync(logoFile, 'png-bytes-2')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(seen.length, 6, '파일 내용이 바뀌면 06 이 다시 돈다')
+  assert.notEqual(readJ(join(run, 'a', '06-pages.json')).inputHash, saved)
+  // 짝 파일 logo.dark.png — 더하기·바꾸기·지우기 모두 06 입력이 바뀐다
+  const darkFile = join(dir, 'logo.dark.png')
+  const h0 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  writeFileSync(darkFile, 'dark-1')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const h1 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.equal(seen.length, 9, '짝 파일을 더하면 06 이 다시 돈다'); assert.notEqual(h1, h0)
+  writeFileSync(darkFile, 'dark-2')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const h2 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.equal(seen.length, 12, '짝 파일이 바뀌면 06 이 다시 돈다'); assert.notEqual(h2, h1)
+  rmSync(darkFile)
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(seen.length, 15, '짝 파일을 지우면 06 이 다시 돈다'); assert.equal(readJ(join(run, 'a', '06-pages.json')).inputHash, h0)
+  // 로고 없는 브리프 — 호출에도 입력에도 logo 가 없다
+  const dir2 = fresh(); const run2 = join(dir2, 'run'); copyOut(run2)
+  const deps2 = fakeDeps(); const seen2 = []; const inner2 = deps2.pages
+  deps2.pages = async (args) => { seen2.push('logo' in args); return inner2(args) }
+  await runStamp({ brief: writeBrief(dir2), run: run2, until: '06-pages' }, deps2)
+  assert.deepEqual(seen2, [false, false, false])
+})
+
 test('C314: 진짜 코드 열쇠 — 블록·템플릿·06 코드(import 닫힘)를 보고, 같은 파일이면 같은 값이다', async () => {
   const { pagesCodeKey, importClosure } = await import('../stamp/pages-key.mjs')
   const k = pagesCodeKey()

@@ -6,7 +6,7 @@
 
 Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 싶은 사이트를 평소 말로 설명하면, 서로 다른 후보 세 개를 만듭니다. 하나를 고르고, 대화로 고친 뒤, 코드를 내 폴더로 가져갑니다. 코딩을 몰라도 되고, 처음 시작할 때 API 키도 필요 없습니다.
 
-현재 버전 `v0.2.5` · MIT 라이선스 · Windows 10·11
+현재 버전 `v0.2.6` · MIT 라이선스 · Windows 10·11
 
 ## 왜 Sitebrew인가
 
@@ -55,13 +55,13 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.5 sitebrew
+npm create sitebrew@0.2.6 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.5 sitebrew
+npx create-sitebrew@0.2.6 sitebrew
 ```
 
 두 방식은 옵션이 같습니다. `--dry-run` 은 아무것도 바꾸지 않고 할 일만 보여 줍니다. `--yes` 는 모든 질문에 「예」로 답합니다. `--tool` 은 `claude`, `codex`, `both` 중에서 고릅니다.
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.5 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
 ```
 
 아무것도 설치하지 않고 할 일만 보려면:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.5/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code에서:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.5
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
 /plugin install sitebrew@sitebrew
 ```
 
 Codex에서:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.5
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 부품만 다른 Next.js 프로젝트에 넣을 수도 있습니다. 주소에는 늘 태그를 붙이세요.
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.5 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.5 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
 ```
 
 ## 기여하기
@@ -149,6 +149,7 @@ MIT. [LICENSE](LICENSE)와 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)를 �
 
 | 태그 | 날짜 | 바뀐 것 | 기록 |
 |---|---|---|---|
+| `v0.2.6` | 2026-11-05 | 기능 판: 후보 세 개를 실제 사이트로 나란히 비교(`npm run board:direction -- <run> --serve`) · 브리프의 로고가 세 후보 머리글에 모두 올라가고, 로고가 없으면 시안 6개를 제안 · 선택 기능 예시 정보(`--sample-facts`) — 모든 쪽에 예시 띠가 뜨고 실제 답으로 바꾸기 전에는 `deliver` 가 멈춤 · 브랜드 첫 색이 주색이 됨 · 재료 계열·거리 규칙·선택 질문(포지셔닝)으로 후보끼리 더 다르게 · 마감 리뷰 루프 · 머리글 로고·브랜드 색 노출 새 관문 · 플러그인 스킬 `new`·`deliver`·`revise` 갱신 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.5` | 2026-11-02 | 패치 판: 관리자 표가 화면 언어와 시간대를 따름 — `data-table` 블록의 날짜·숫자·정렬·거르기 선택지 · 출시 키트 템플릿 사본도 같이 맞춤 · 의존 패키지 갱신(@hono/node-server 2.1.3, systeminformation 5.33.16, posthog-js 1.438.21, posthog-node 5.57.2, lucide-react 1.59.0, react-resizable-panels 4.14.8, playwright 1.64.1 과 @axe-core/playwright 4.14.0, pglite 0.5.11 과 pglite-tools 0.4.11, typescript-eslint 8.72.0) · 나머지 키트와 플러그인 스킬은 그대로 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.4` | 2026-10-26 | 패치 판: 의존 패키지 갱신만 — react·react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 와 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 키트와 플러그인 스킬은 그대로 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.3` | 2026-10-26 | 패치 판: 플러그인 스킬 8개를 다듬음 — 분기 안내와 종료 코드 표가 더 분명해짐 · 규칙마다 한 곳에만 둠 · 설치 스킬에 Node.js 가 없을 때의 경로 추가 · 설치 안내에 정확한 릴리스 태그 확인과 Windows 에서 안전한 npm 사용 · 키트가 읽는 위치와 맞춘 브라우저 확인 · new 의 인계가 더 안전해짐 · deliver 의 건너뛰기 사유가 늘어남 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |

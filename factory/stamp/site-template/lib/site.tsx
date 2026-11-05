@@ -6,7 +6,8 @@ import siteJson from "@/content/site.json"
 import build from "@/lib/build.json"
 import ogMark from "@/lib/og-mark.json"
 import { normalizePhone } from "@/lib/phone"
-import { NEEDS_CHECK_LITERALS, isMailAddress, type ArchetypeId } from "@/components/content/content-core"
+import { scrubSamples } from "@/lib/sample-scrub"
+import { NEEDS_CHECK, NEEDS_CHECK_EN, NEEDS_CHECK_LITERALS, isMailAddress, type ArchetypeId } from "@/components/content/content-core"
 import { isIndexed, type SeoPage, type PageKind } from "@/components/ax/seo-meta"
 import type { SeoInput } from "@/components/ax/seo-files"
 import { toHex } from "@/components/ax/brand-color"
@@ -15,6 +16,7 @@ type Ref = { $ref: string; as?: "tel" | "mailto"; template?: string }
 type Section = { block: string; props: unknown; copyVariant?: string }
 type PageMeta = { id: string; type: PageKind; title: unknown; description?: unknown; noindex?: boolean; hero: boolean; legal?: boolean; showsPrice?: boolean }
 type Legal = { title: string; draft: boolean; clauses: { title: string; text: string }[] }
+type LogoFile = { src: string; width: number; height: number; mode: "img" | "mask"; srcDark?: string; headerAxis?: string }
 type SiteFile = {
   archetype: ArchetypeId
   locale: "ko" | "en"
@@ -22,26 +24,27 @@ type SiteFile = {
   sections: Record<string, Section>
   pages: Record<string, PageMeta>
   legal: Record<string, Legal>
-  shell: { brand: unknown; nav: { label: string; href: string }[]; action?: { label: unknown; href: unknown } | null }
+  sample?: { label: string; count: number; scrub: string[] }
+  shell: { brand: unknown; nav: { label: string; href: string }[]; action?: { label: unknown; href: unknown } | null; logo?: LogoFile }
 } & Record<string, unknown>
 
 const site = siteJson as unknown as SiteFile
 
 const isRef = (v: unknown): v is Ref => !!v && typeof v === "object" && !Array.isArray(v) && typeof (v as Ref).$ref === "string"
-const at = (path: string): unknown => path.split(".").reduce<unknown>((o, k) => (o == null ? undefined : (o as Record<string, unknown>)[k]), site)
+const at = (path: string, root: unknown = site): unknown => path.split(".").reduce<unknown>((o, k) => (o == null ? undefined : (o as Record<string, unknown>)[k]), root)
 
-/** $ref 를 site.json 의 값으로 푼다(깊이 우선). 없는 자리는 던진다 — 조용히 빈 글자를 그리지 않는다. */
-export function resolve<T>(v: T): T {
+/** $ref 를 site.json 의 값으로 푼다(깊이 우선). 없는 자리는 던진다 — 조용히 빈 글자를 그리지 않는다. root 를 주면 그 객체에서 푼다(예시 값을 지운 사본 — seoContent). */
+export function resolve<T>(v: T, root: unknown = site): T {
   if (isRef(v)) {
-    const got = at(v.$ref)
+    const got = at(v.$ref, root)
     if (got === undefined) throw new Error(`site.json 에 ${v.$ref} 가 없다`)
     if (v.as === "tel") return (typeof got === "string" && !(NEEDS_CHECK_LITERALS as readonly string[]).includes(got.trim()) ? `tel:${normalizePhone(got) ?? got}` : "#") as T
     if (v.as === "mailto") return (typeof got === "string" && got.trim() !== "" && !(NEEDS_CHECK_LITERALS as readonly string[]).includes(got.trim()) && isMailAddress(got.trim()) ? `mailto:${got.trim()}` : "#") as T
-    const value = resolve(got)
+    const value = resolve(got, root)
     return (v.template && typeof value === "string" ? v.template.replace("{}", value) : value) as T
   }
-  if (Array.isArray(v)) return v.map((x) => resolve(x)) as T
-  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, resolve(x)])) as T
+  if (Array.isArray(v)) return v.map((x) => resolve(x, root)) as T
+  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, resolve(x, root)])) as T
   return v
 }
 
@@ -57,9 +60,12 @@ export const copyVariantOf = (key: string): string | undefined => site.sections[
 
 /** SEO 메타·JSON-LD 가 읽는 콘텐츠 객체(J9 — 원형 콘텐츠 + site 하나). */
 export function seoContent() {
-  const { sections: _s, pages: _p, legal: _l, shell: _h, ...content } = site
+  const { sections: _s, pages: _p, legal: _l, shell: _h, sample, ...content } = site
   void _s; void _p; void _l; void _h
-  return { ...content, site: resolve(site.site) } as never
+  const clean = sample?.scrub.length ? scrubSamples(content, sample.scrub, locale === "en" ? NEEDS_CHECK_EN : NEEDS_CHECK) : content
+  // site 칸도 예시 값을 지운 사본(clean)에서 푼다 — 원본으로 풀면 scrub 한 칸(site.description 등)이 메타·JSON-LD 로 되살아난다
+  const root = { ...site, ...clean }
+  return { ...clean, site: resolve(clean.site ?? site.site, root) } as never
 }
 
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined)
@@ -73,6 +79,34 @@ export const pageTitle = (route: string): string => str(resolve(site.pages[route
 export const pageHasHero = (route: string) => site.pages[route].hero
 export const legalPage = (name: string) => site.legal[name]
 
+// 머리글 그림 로고(v0.2.6 T17) — 높이는 머리글 축이 정한다(H2 섬 28px · H5 마스트헤드 데스크톱 48px · 그 밖 32px, 모두 머리글 안쪽 높이 − 16px 이내). 클래스는 Tailwind 가 읽도록 글자 그대로 둔다.
+const LOGO_HEIGHT: Record<string, string> = { H2: "h-7", H5: "h-8 md:h-12" }
+function LogoMark({ logo, brand }: { logo: LogoFile; brand: string }) {
+  const h = LOGO_HEIGHT[logo.headerAxis ?? ""] ?? "h-8"
+  const ratio = `${logo.width} / ${logo.height}`
+  if (logo.mode === "mask") {
+    const url = `url(${logo.src})`
+    return <span role="img" aria-label={brand} className={`inline-block max-w-full bg-current ${h}`} style={{ aspectRatio: ratio, WebkitMaskImage: url, maskImage: url, WebkitMaskSize: "contain", maskSize: "contain", WebkitMaskRepeat: "no-repeat", maskRepeat: "no-repeat", WebkitMaskPosition: "left center", maskPosition: "left center" }} />
+  }
+  const cls = `${h} w-auto max-w-full object-contain object-left`
+  if (!logo.srcDark) return <img src={logo.src} alt={brand} width={logo.width} height={logo.height} className={cls} />
+  return (
+    <>
+      <img src={logo.src} alt={brand} width={logo.width} height={logo.height} className={`${cls} dark:hidden`} />
+      <img src={logo.srcDark} alt={brand} width={logo.width} height={logo.height} className={`${cls} hidden dark:block`} />
+    </>
+  )
+}
+
+// 예시 띠(T18) — 예시 정보가 남은 시안의 모든 쪽 맨 위. 375px 에서 두 줄(≤ 56px), 글자는 12px(데스크톱 14px). 바탕·글자는 반전색이라 어느 레시피에서도 대비가 높다.
+const SAMPLE_BAND: Record<"ko" | "en", (n: number) => string> = {
+  ko: (n) => `이 시안에는 예시 정보 ${n}개가 들어 있어요. 공개 전에 실제 정보로 바꿔야 해요.`,
+  en: (n) => `This draft contains ${n} sample details. Replace them with real ones before publishing.`,
+}
+function SampleBand({ count }: { count: number }) {
+  return <p className="bg-foreground text-background px-4 py-2 text-center text-xs leading-snug md:text-sm">{SAMPLE_BAND[locale](count)}</p>
+}
+
 /** SiteShell 에 펼치는 값: 로고·주 메뉴·헤더 행동. 푸터(사업자 정보)는 푸터 블록이 그린다. */
 export function shellProps(route: string) {
   const s = site.shell
@@ -80,7 +114,11 @@ export function shellProps(route: string) {
   const action = s.action ? { label: str(resolve(s.action.label)) ?? "", href: str(resolve(s.action.href)) ?? "#" } : null
   return {
     archetype: site.archetype,
-    logo: (
+    logo: s.logo ? (
+      <a href="/" className="inline-flex min-h-11 items-center">
+        <LogoMark logo={s.logo} brand={brand} />
+      </a>
+    ) : (
       <a href="/" className="font-heading inline-flex min-h-11 items-center">
         {brand}
       </a>
@@ -88,6 +126,7 @@ export function shellProps(route: string) {
     nav: s.nav,
     currentHref: route,
     action,
+    ...(site.sample ? { banner: <SampleBand count={site.sample.count} />, bannerLabel: locale === "en" ? "Sample details notice" : "예시 정보 안내" } : {}),
     // 영어 사이트: 셸의 접근 이름(건너뛰기·주 메뉴 …)과 사업자 정보 이름표를 영어 표로(ko 는 칸을 비워 출력이 그대로, D235)
     ...(locale === "en" ? { locale } : {}),
   }

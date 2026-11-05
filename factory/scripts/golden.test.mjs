@@ -325,7 +325,7 @@ test('씨앗 강제(directions.mjs): 인자도 브리프 씨앗도 없으면 See
 })
 
 test('CLI 인자: --golden <id> · --all-golden 은 --brief 와 함께 못 쓰고, --all-golden 은 --pick 과도 못 쓴다', () => {
-  assert.deepEqual(parseArgs(['--golden', 'saas-2', '--until', '3']), { brief: null, run: null, until: '03-variants', pick: null, deployPreview: false, golden: 'saas-2', allGolden: false })
+  assert.deepEqual(parseArgs(['--golden', 'saas-2', '--until', '3']), { brief: null, run: null, until: '03-variants', pick: null, deployPreview: false, golden: 'saas-2', allGolden: false, sampleFacts: false })
   assert.equal(parseArgs(['--all-golden']).allGolden, true)
   assert.equal(parseArgs(['--golden', 'local-1', '--pick', 'a']).pick, 'a')
   for (const bad of [['--golden'], ['--golden', 'x', '--brief', 'b.json'], ['--all-golden', '--brief', 'b.json'], ['--all-golden', '--golden', 'saas-1'], ['--all-golden', '--pick', 'a'], ['--golden', 'saas-1', '--deploy-preview']]) {

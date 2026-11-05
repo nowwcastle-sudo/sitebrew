@@ -27,8 +27,9 @@ If the command cannot run: with a command tool, where the error says `node` is n
 ## Never
 
 - Ask for or print an API key or secret value in the chat: it stays in the chat history.
-- Invent a fact (phone, logo, photo, hours, price): the site publishes it as true.
-- Write a colour code the user did not confirm: it becomes the brand colour.
+- Invent a fact (phone, logo, photo, hours, price): the site publishes it as true. Two things are allowed because the site marks them: sample details the kit itself adds with `--sample-facts` (section 3), and a logo draft the user picked (section 2 item 3).
+- Write a colour code the user did not confirm: it becomes the brand colour. The first code is the main colour of all three candidates, so ask the order too.
+- Copy the `positioning` answer into the site's wording or repeat it as a slogan: it only steers which designs the kit offers; the copy step must not quote it.
 - Add a question beyond the printed ones, or ask for a key, account or setting in that step: `brief` refuses an answer key the kit did not print (`모르는 답 칸`) and `features-write` refuses an id that `features` did not print.
 - Describe a step as done that this window did not run: the user would believe a site exists that was never built.
 - Set `WF_REQUIRE_KEYS=1` for the user: `stamp` then refuses to start without keys.
@@ -84,7 +85,15 @@ A non-zero exit prints one error line: an unknown archetype lists the valid ones
 
 2. Run `questions <archetype>`. Ask the printed questions in order.
 3. Brand answers:
-   - `brandColors` (up to three codes such as `#0B6E4F`) makes candidate `c` a brand candidate. Pass the codes as the user gave them. For a colour name ("올리브 녹색") propose a code and write it only after the user says yes.
+   - `brandColors` (up to three codes such as `#0B6E4F`) makes candidate `c` a brand candidate. **The first code is the main colour**; the others only support it. Pass the codes as the user gave them. For a colour name ("올리브 녹색") propose a code and write it only after the user says yes.
+   - `positioning` is optional: the place the user wants to hold ("업계 최전선 기술", "믿을 수 있는 동네 전문가", "가장 쉬운 선택"). An empty answer is fine and changes nothing. A phrase the kit does not know has no effect and nothing is lost; do not rephrase it to fit.
+   - Logo: if the user has a file, put its path in `logo`. If they have none and the name is known, offer drafts once (needs Chrome; Codex is used only with `WF_CODEX_IMAGES=1`):
+
+     ```bash
+     node "${CLAUDE_PLUGIN_ROOT}/scripts/intake.mjs" --kit . logo-candidates --input out/answers.json --out out/logo-drafts
+     ```
+
+     It prints one JSON line and writes `out/logo-drafts/1.png` to `6.png` plus `sheet.png` / `sheet.html` (each draft at 1x and 2x). Show the sheet, let the user choose a number or none, and put the chosen file's path in the `logo` answer. `skipped` in the JSON (no Chrome) means no drafts: go on without a logo, which stays "to be confirmed". Every candidate then shows this logo in its header.
    - `brandFonts` (heading font, then body font): when the kit cannot install a font it uses the closest kit font and records the swap in `out/my-site/c/01-direction.json` (field `brand`). Tell the user about a swap.
 4. **Ask what the site must do** (after the questions above, before the brief):
 
@@ -101,7 +110,7 @@ A non-zero exit prints one error line: an unknown archetype lists the valid ones
 Write `out/answers.json` unless a handover gave it (a stale file was moved first). Every id is optional: leave `""` for an unanswered question. `locale` is `ko` or `en`, the language of the site. Replace each `<...>`:
 
 ```json
-{ "topic": "<one line>", "archetype": "<id>", "locale": "ko", "answers": { "name": "<answer>", "audience": "<answer>", "action": "<answer>", "contact": "<answer>", "logo": "<answer>", "mood": "<answer>", "brandColors": "<codes the user confirmed, or empty>", "brandFonts": "<heading font>, <body font>", "<archetype question id>": "<answer>" } }
+{ "topic": "<one line>", "archetype": "<id>", "locale": "ko", "answers": { "name": "<answer>", "audience": "<answer>", "action": "<answer>", "contact": "<answer>", "logo": "<answer>", "mood": "<answer>", "brandColors": "<codes the user confirmed, or empty>", "brandFonts": "<heading font>, <body font>", "positioning": "<answer, or empty>", "<archetype question id>": "<answer>" } }
 ```
 
 `answers` takes only the ids that `questions <archetype>` printed, the archetype's own too (`claim`, `hours`...). Run these in this order; `<archetype>` is the `archetype` field of `out/answers.json`; skip the first command when there is no `out/features.json` (no feature questions, or a handover without that file):
@@ -123,6 +132,7 @@ Before the first stamp, confirm the archetype matches the `action` answer and `u
 npm run stamp -- --brief out/brief.json --run out/my-site
 ```
 
+- **Sample details (optional).** When the brief has empty facts (phone, hours, price) and the user wants to judge the look with believable content, add `--sample-facts` to the first command. The kit writes `out/my-site/sample-facts.json` once and fills only the empty facts with marked sample values (the user's own answers always win). Each page then carries a top band "this draft contains N sample details", and the sample values stay out of search data and legal drafts. Say this before the run. A later run reads that file without the flag. Sample details are not publishable: `blockers` lists them and `deliver` refuses to copy a site while any remain (the user gives the real answers: update `out/answers.json`, run the `brief` command again, then run the stamp command again with the same run folder; steps whose input changed run again).
 - This builds candidates `a`, `b` and `c` up to step 08 and writes the board data. One Next.js site per candidate: the board takes **about an hour or more** (one measured run: 78 minutes on a busy PC) and about 3 GB of free memory. Say so before you start, and suggest closing heavy programs.
 - Run it in your host's background (Claude Code: Bash `run_in_background`, which sends a notice when the command exits). `out/my-site/stamp-timings.json` gains one entry per finished step; `out/my-site/stamp-summary.json` (fields `exit`, `status`) is written when the command ends, so before that it holds the previous run. With no background mode, give the user the command for their own terminal and ask them to say when it ended.
 - **Liveness check.** A step normally ends within 8 minutes; the slowest measured took 36 minutes beside other builds. With no new `stamp-timings.json` entry for 40 minutes, list the process (empty output means it ended):
@@ -158,7 +168,15 @@ npm run stamp -- --brief out/brief.json --run out/my-site
 npm run board:direction -- out/my-site
 ```
 
-It writes `out/my-site/direction-board/board.html` for the user to open. Summarise each candidate in two lines from `candidate.json` (where the look comes from, what blocks publishing). Then steer, do not decide:
+It writes `out/my-site/direction-board/board.html` for the user to open. To compare the three as real sites side by side, run this instead in your host's background (it keeps running until the user decides):
+
+```bash
+npm run board:direction -- out/my-site --serve
+```
+
+The output has a line `COMPARE <address>`: give that address to the user. It starts the three sites on this computer only (`127.0.0.1`) and shows them in one page; each card says its world (`thesis`) and what differs from the others. When the user presses 「이 안으로」 the line `PICK <letter>` appears, `picks.json` is written and every site is stopped; use that letter in section 5. Exit `0` means decided or stopped, `4` means nobody used it (the tab closed or two hours without input), `1` means no site could start: fall back to `board.html`. To stop it early, end the background command; nothing else stays running. Do not start it twice on one run folder.
+
+Summarise each candidate in two lines from `candidate.json` (where the look comes from, what blocks publishing). The candidate's `01-direction.json` also holds `thesis` (its look in one sentence) and `world`; a `family-clash` note in `why` means two of the three share a material family: say so plainly. Then steer, do not decide:
 
 - Compare the three on (1) fit to the `action` answer: the first screen leads a visitor to that action; (2) the number of `blockers`; (3) brand fit: when `brandColors` was given, `c` is built on them. Recommend one with one reason; the user chooses `a`, `b` or `c` in the chat.
 - The user likes parts of several: pick the closest one, then change the rest with `revise`.
@@ -180,7 +198,7 @@ npm run stamp -- --run out/my-site --pick a --finish-review
 
 The first output line is `REVIEW <action> <round>`; do what it says. `review` or `verdict`: have the finish reviewer write the file (the `sitebrew-finish-reviewer` sub-agent in Claude Code; in Codex you review in this session, and you tell the user it is not an independent review: `references/finish-reviewer.md`). The file format is in `references/review-format.md`. `apply`: the kit already applied the `revise` prescriptions and rebuilt once. `ask-human`: say what the review lists for a person, then stop. `done`: go on to the hand-over below. The loop has at most 2 rounds.
 
-Then hand over to the `deliver` skill (copy the site to the user's folder) or the `revise` skill (change a design, colour or font, a section, or copy).
+Then hand over to the `deliver` skill (copy the site to the user's folder) or the `revise` skill (change a design, colour or font, a section, or copy). If `blockers` still lists sample details, say that `deliver` will refuse until they are replaced with real answers.
 
 ## Chatbot mode
 
