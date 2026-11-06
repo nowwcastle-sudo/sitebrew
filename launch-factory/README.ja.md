@@ -4,7 +4,7 @@
 
 web-factory(画面ブロックのリポジトリ)と対になるリリースキットです。認証・データ・決済・メール・計測・ジョブといったバックエンド側を、このリポジトリが担います。プロダクトは `template/` を複製して始め、`@launch-factory/*` パッケージのバージョンだけを上げてセキュリティパッチを受け取ります。
 
-現在のバージョン `v0.2.6` · web-factory 固定 `v0.2.5` · ブロック `7d68e905` · contract `7d68e905`（タグ v0.2.5 のコミット）
+現在のバージョン `v0.2.6` · web-factory 固定 `v0.2.6` · ブロック `2930918e` · contract `2930918e`（タグ v0.2.6 のコミット）
 
 - ブロックはプロバイダーを知らず、アダプターが web-factory のポートを実装します。同じ適合性スイートで、アダプターが mock と同じシナリオを再現するかを検査します。
 - 機能バンドル(アダプター・サーバーアクション・Webhook ルート・スキーマ・マイグレーション)は、`registry.json` のエントリ1つにまとめられています。バージョンを固定した内訳は [`docs/versions.md`](docs/versions.md) にあります。
@@ -125,7 +125,7 @@ git diff template/package.json
 
 | タグ | 日付 | 内容 | 記録 |
 |---|---|---|---|
-| `v0.2.6` | 2026-11-05 | launch-factory v0.2.2 (internal version) · リポジトリの機能版；ローンチキット自体は変更なし · web-factory の固定は公開時に合わせる | — |
+| `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · リポジトリの機能版；ローンチキット自体は変更なし · web-factory の固定は公開時に合わせる | — |
 | `v0.2.5` | 2026-11-02 | launch-factory v0.2.2 (internal version) · パッチ版：管理画面の表が画面の言語とタイムゾーンに従う（テンプレートのブロック複製を更新） · この README の web-factory 要求バージョンの記載を修正 · posthog-js 1.438.21 · posthog-node 5.57.2 · pglite 0.5.11 と pglite-tools 0.4.11 · 開発用の playwright 1.64.1・@axe-core/playwright 4.14.0・typescript-eslint 8.72.0 · systeminformation 5.33.16 · web-factory を `v0.2.5` に固定 | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · パッチ版：依存パッケージの更新のみ · drizzle-orm 0.45.4 · posthog-js 1.438.12 と posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 開発用の eslint 10.13.0 と typescript-eslint 8.71.2 · web-factory を `v0.2.4` に固定 | — |
 | `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · パッチ版：shadcn 4.22.1 を厳密な1つの版に固定（入れ子の zod 公告とその OSV 例外を解消）· web-factory を `v0.2.3` に固定 | — |
