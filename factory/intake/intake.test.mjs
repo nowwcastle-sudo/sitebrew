@@ -6,10 +6,10 @@ import { ARCHETYPE_IDS, BriefSchema, loadBriefObject } from '../stamp/brief.mjs'
 import { INTAKE_ARCHETYPES, questionsFor } from './questions.mjs'
 import { missingFacts, toBrief } from './to-brief.mjs'
 
-test('원형 10종 모두 질문 5~11개', () => {
+test('원형 10종 모두 질문 5~12개', () => {
   for (const a of ['brand', 'commerce', 'dashboard', 'detail', 'local', 'portfolio', 'public', 'pwa', 'saas', 'landing']) {
     const q = questionsFor(a)
-    assert.ok(q.length >= 5 && q.length <= 11, `${a}: ${q.length}`)
+    assert.ok(q.length >= 5 && q.length <= 12, `${a}: ${q.length}`)
   }
 })
 
@@ -35,7 +35,7 @@ test('질문 표: 원형 목록은 브리프 원형 10종(landing 포함) 그대
 })
 
 test('원형별 질문: local 은 영업시간, commerce 는 대표 상품, saas 는 요금제를 더 묻는다', () => {
-  const extra = (a) => questionsFor(a).slice(8).map((x) => x.id) // 공통 6 + FIT-3 브랜드 색·서체 2 뒤
+  const extra = (a) => questionsFor(a).slice(9).map((x) => x.id) // 공통 6 + FIT-3 브랜드 색·서체 2 + 포지셔닝 1 뒤
   assert.deepEqual(extra('local'), ['hours'])
   assert.deepEqual(extra('commerce'), ['bestsellers'])
   assert.deepEqual(extra('saas'), ['price'])
@@ -132,7 +132,7 @@ test('사진 안내 수는 원형마다 다르다(고정 문구가 아니다) ·
   const local = questionsFor('local').find((x) => x.logo).ask
   assert.match(local, /가로 16:9/)
   assert.match(local, /정사각 1:1/)
-  assert.equal(questionsFor('local').length, 9)
+  assert.equal(questionsFor('local').length, 10)
   assert.deepEqual(questionsFor('local').slice(0, 6).map((x) => x.id), ['name', 'audience', 'action', 'contact', 'logo', 'mood'])
 })
 
@@ -140,4 +140,44 @@ test('사진 안내 줄은 답 칸이 아니다 — 로고 답은 그대로 bran
   const b = toBrief({ topic: '동네 빵집', archetype: 'local', answers: { name: '새벽빵', logo: 'C:\\내 사이트\\logo.svg' } })
   assert.equal(b.brand.logo, 'C:\\내 사이트\\logo.svg')
   assert.doesNotMatch(JSON.stringify(b), /사진 \d+장|권장 구도/)
+})
+
+// ── v0.2.6 T7: facts — 예시를 대신할 실제 값 ────────────────────────────────────
+
+import { toBriefReport } from './to-brief.mjs'
+import { loadArchetypes } from '../scripts/archetypes.mjs'
+import { briefToSeed } from '../stamp/brief.mjs'
+import { buildSampleFacts, mergeFacts, remainingSamples } from '../stamp/sample-facts.mjs'
+
+const LOCAL = { topic: '동네 빵집', archetype: 'local', answers: { name: '새벽빵', audience: '직장인', action: '전화 예약', mood: '따뜻한' } }
+
+test('facts: 사실 이름·콘텐츠 자리·회사 정보 칸 이름이 같은 사실로 brief.facts 에 들어가고 factsApplied 에 이름이 남는다', () => {
+  for (const key of ['bizNo', 'business.bizRegNo', 'bizRegNo']) {
+    const r = toBriefReport({ ...LOCAL, facts: { [key]: ' 123-45-67890 ' } })
+    assert.equal(r.brief.facts.bizNo, '123-45-67890', key)
+    assert.deepEqual(r.factsApplied, ['bizNo'], key)
+  }
+  assert.deepEqual(toBriefReport(LOCAL).factsApplied, [])
+  assert.equal(toBriefReport({ ...LOCAL, answers: { ...LOCAL.answers, contact: '02-111-2222' }, facts: { phone: '02-999-8888' } }).brief.facts.phone, '02-999-8888', 'facts 가 질문 답보다 나중이다')
+})
+
+test('facts: 모르는 키·글자도 null 도 아닌 값은 던진다(오타가 조용히 사라져 예시가 남는 길을 막는다)', () => {
+  assert.throws(() => toBriefReport({ ...LOCAL, facts: { bizNumber: '1' } }), /모르는 사실 칸: bizNumber/)
+  assert.throws(() => toBriefReport({ ...LOCAL, facts: { phone: 5 } }), /글자나 null/)
+  assert.throws(() => toBriefReport({ ...LOCAL, facts: ['phone'] }), /객체/)
+})
+
+test('facts: null 은 빈 문자열로 싣는다 — 예시가 그 칸을 덮지 못하고, 남은 예시에서 빠지며, 브리프 스키마를 통과한다', async () => {
+  const archetype = (await loadArchetypes()).local
+  const { brief, factsApplied } = toBriefReport({ ...LOCAL, facts: { phone: null } })
+  assert.equal(brief.facts.phone, '')
+  assert.deepEqual(factsApplied, ['phone'])
+  assert.doesNotThrow(() => loadBriefObject(brief))
+  const plain = toBriefReport(LOCAL).brief
+  const sample = buildSampleFacts({ archetype, brief: plain })
+  assert.ok(remainingSamples(sample, plain).includes('phone'), 'null 이 없으면 전화는 예시로 채워진다')
+  assert.ok(!remainingSamples(sample, brief).includes('phone'), 'null 이면 남은 예시에서 빠진다')
+  const merged = mergeFacts(sample, brief)
+  assert.equal(merged.facts.phone, '', '예시가 빈 답을 덮지 않는다')
+  assert.ok(briefToSeed(merged, archetype).missing.includes('phone'), '04 요청의 missing 에 전화가 남고 예시 값은 없다')
 })

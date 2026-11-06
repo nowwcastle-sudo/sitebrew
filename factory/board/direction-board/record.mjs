@@ -16,6 +16,7 @@ import { z } from 'zod'
 import { promoteCandidate, readCandidateHead, promotedAs, originOf, resolveRun, PromoteError, PAIRS_FILE } from '../promote.mjs'
 import { RECIPES_DIR } from '../../scripts/recipe.mjs'
 import { tmpRecipeId } from '../../stamp/compile-candidate.mjs'
+import { readRunBrief } from './run-brief.mjs'
 
 const SOURCES = ['library', 'generated', 'brand']
 export const PairRow = z.object({
@@ -93,7 +94,7 @@ export function recordFinal({ run, pick, promote = {}, archetype, brief, date, p
   const runDir = resolveRun(run)
   const cands = loadCandidates(runDir)
   if (cands.length < 2) throw new Error(`후보가 ${cands.length}개뿐이다(${runDir}) — 결선 기록은 둘 이상이 있어야 한다`)
-  const brf = existsSync(join(runDir, 'brief.json')) ? JSON.parse(readFileSync(join(runDir, 'brief.json'), 'utf8')) : {}
+  const brf = readRunBrief(runDir)
   const arch = archetype ?? brf.archetype
   const topic = brief ?? brf.topic
   if (!arch || !topic) throw new Error('원형(archetype)과 브리프(brief) 한 줄이 필요하다 — --archetype·--brief 로 주거나 실행 폴더에 brief.json 을 둔다')

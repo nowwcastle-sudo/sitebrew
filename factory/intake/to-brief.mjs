@@ -2,6 +2,7 @@
 //   지어내지 않는다(§9 Q8): 빈 답·「없음」류는 사실로 싣지 않는다. 빠진 사실은 브리프에 없고(04-content 가 「확인 필요」 자리 표시로 남긴다)
 //   `previewOnly: true` 표지와 missingFacts() 목록으로 사람에게 알린다 — 미리보기 자산 + 「공개 전 교체」 표지로 끝까지 가고, 공개 관문이 막는다.
 import { factPath, isEventBrief, loadBriefObject } from '../stamp/brief.mjs'
+import { FACT_NAMES } from '../stamp/content.mjs'
 import { contactFact, questionsFor } from './questions.mjs'
 
 // 「모른다」는 뜻의 흔한 답 — 사실 칸에 이 글자가 들어가면 04-content 가 그것을 사실로 읽는다.
@@ -46,10 +47,37 @@ function readFonts(answer) {
 }
 
 /**
+ * 질문 밖에서 따로 주는 사실(`facts` — v0.2.6 T7)의 키 → 브리프 사실 이름. 받는 모양은 셋이다.
+ *   사실 이름(`bizNo`) · 콘텐츠 자리(`business.bizRegNo`) · 회사 정보 칸 이름(`bizRegNo`).
+ * 어느 것도 아니면 던진다 — 오타가 조용히 사라져 예시가 그대로 남는 길을 막는다.
+ */
+function factNameOf(archetype, key) {
+  if (FACT_NAMES.includes(key)) return key
+  const byPath = FACT_NAMES.find((n) => factPath(archetype, n).join('.') === key)
+  if (byPath) return byPath
+  const byField = FACT_NAMES.find((n) => { const p = factPath(archetype, n); return p[0] !== 'facts' && p.at(-1) === key })
+  if (byField) return byField
+  throw new Error(`모르는 사실 칸: ${key}`)
+}
+
+/** `facts` 입력 → { 사실 이름: 값 }. 글자는 다듬고(「없음」류는 빈 값), null 은 「우리에게 없는 사실」이라 빈 문자열 `""` 로 싣는다(P1 T7). */
+function readFacts(archetype, facts) {
+  if (facts === undefined) return {}
+  if (facts === null || typeof facts !== 'object' || Array.isArray(facts)) throw new Error('facts 는 { 사실 이름: 글자 | null } 객체여야 한다')
+  const out = {}
+  for (const [key, v] of Object.entries(facts)) {
+    const name = factNameOf(archetype, key)
+    if (v !== null && typeof v !== 'string') throw new Error(`사실 값은 글자나 null 이어야 한다: ${key}`)
+    out[name] = v === null ? '' : clean(v)
+  }
+  return out
+}
+
+/**
  * 답 → 브리프와 되물을 것. toBrief 는 브리프만, toBriefReport 는 { brief, missing, unread } 를 돌려준다.
  * unread = 받지 못한 답 [{ id, answer, why }] — 에이전트가 사용자에게 다시 묻는다(예: 색 코드로).
  */
-function build({ topic, archetype, locale = 'ko', answers = {} } = {}) {
+function build({ topic, archetype, locale = 'ko', answers = {}, facts: extraFacts } = {}) {
   const questions = questionsFor(archetype) // 모르는 원형이면 여기서 던진다
   const known = new Set(questions.map((q) => q.id))
   const stray = Object.keys(answers).filter((k) => !known.has(k))
@@ -71,12 +99,14 @@ function build({ topic, archetype, locale = 'ko', answers = {} } = {}) {
     } else if (q.id === 'contact') facts[a.includes('@') ? 'email' : 'phone'] = a // 연락처 칸에는 이메일이나 전화번호가 온다
     else facts[q.fact] = a
   }
+  const given = readFacts(archetype, extraFacts) // 질문 답보다 나중이라 같은 사실이면 이긴다
+  Object.assign(facts, given)
   // brand 칸 순서: logo · colors · fonts (로고만 있는 브리프는 예전과 글자까지 같다)
   const ordered = Object.fromEntries(['logo', 'colors', 'fonts'].filter((k) => brand[k]).map((k) => [k, brand[k]]))
   const brief = { topic: title, archetype, locale, facts, ...(Object.keys(ordered).length ? { brand: ordered } : {}) }
   const checked = (b) => loadBriefObject(b, { label: '대화 입구' })
   const out = checked(brief)
-  return { brief: missingFacts(out).length ? checked({ ...out, previewOnly: true }) : out, unread }
+  return { brief: missingFacts(out).length ? checked({ ...out, previewOnly: true }) : out, unread, factsApplied: Object.keys(given) }
 }
 
 /**
@@ -88,10 +118,10 @@ export function toBrief(input) {
   return build(input).brief
 }
 
-/** toBrief + 입구가 아직 못 받은 것: { brief, missing: missingFacts(brief), unread: [{ id, answer, why }] } — unread 는 에이전트가 사용자에게 다시 묻는다. */
+/** toBrief + 입구가 아직 못 받은 것: { brief, missing: missingFacts(brief), unread: [{ id, answer, why }], factsApplied } — unread 는 에이전트가 사용자에게 다시 묻는다. factsApplied = `facts` 로 받아 싣은 사실 이름. */
 export function toBriefReport(input) {
-  const { brief, unread } = build(input)
-  return { brief, missing: missingFacts(brief), unread }
+  const { brief, unread, factsApplied } = build(input)
+  return { brief, missing: missingFacts(brief), unread, factsApplied }
 }
 
 /**
@@ -105,6 +135,7 @@ export function missingFacts(brief) {
   for (const q of questionsFor(brief.archetype)) {
     if (q.logo) { if (!brief.brand?.logo) missing.push('logo'); continue }
     if (q.brand) continue // 브랜드 색·서체는 필수 사실이 아니다 — 없어도 missing·previewOnly 를 바꾸지 않는다(FIT-3)
+    if (q.optional) continue // 선택 질문(포지셔닝 등 전략 입력)도 같다(v0.2.6 T20)
     if (q.eventOnly && !isEventBrief(brief)) continue // 행사 일시·장소는 행사형 브리프에서만 필수다(C416)
     // 연락처: 전화가 필수인 원형은 전화가 있어야 하고, 아니면 전화나 이메일 중 하나면 된다.
     const filled = q.id === 'contact' ? (contactFact(brief.archetype) === 'phone' ? has('phone') : has('email') || has('phone')) : has(q.fact)

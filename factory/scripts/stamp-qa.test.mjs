@@ -503,6 +503,66 @@ test('bold-safety: ops 가 LCP·CLS 를 남기지 않았으면(재지 못함) �
   assert.equal(gateOf(none.s, 'bold-safety'), undefined, '열린 쪽이 하나도 없으면 재지 않는다')
 })
 
+// ─── 머리글 로고·브랜드 주색 노출(v0.2.6 T9·T10) ───
+
+/** ux 가짜 도구 — report.json 과 함께 gate/ux_gate.json 에 로고 계측을 남긴다(진짜 ux-gate 가 하는 일). */
+const uxWithLogo = (logo) => ({ ux: (args) => {
+  mkdirSync(join(args[1], 'gate'), { recursive: true })
+  writeFileSync(join(args[1], 'report.json'), j({ gate: 0, behavior: 0, strict: false, pass: true }))
+  writeFileSync(join(args[1], 'gate', 'ux_gate.json'), j({ gate: { '1440-light': { logo }, '375-light': { logo } } }))
+  return { exit: 0 }
+} })
+const withBrand = (f, input) => { f.cand.brand = { input }; return f }
+const IMG_LOGO = { present: true, kind: 'img', renderedHeight: 36, naturalWidth: 300, complete: true }
+
+test('logo: 브리프에 로고가 있으면 ux 의 로고 계측을 읽는다 — 글자뿐이면 「로고가 머리글에 안 보임」으로 공개 불가 · 그림이면 통과 · 로고가 없는 브리프는 게이트가 없다 · ux 도구 실패면 같은 까닭을 또 적지 않는다', async () => {
+  const text = await qa(withBrand(fixture(), { logo: '/x/logo.svg' }), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text', naturalWidth: 0, renderedHeight: 21 }) })
+  assert.deepEqual([gateOf(text.s, 'logo').verdict, gateOf(text.s, 'logo').tool], ['fail', 'logo'])
+  assert.ok(text.s.blockers.some((b) => b.startsWith(QA_PREFIX.logo) && b.includes('글자로 그려졌어요')), text.s.blockers.join('\n'))
+  assert.equal(text.s.publishable, false)
+  assert.deepEqual(text.s.blockerKinds.input, [], '품질 갈래다 — 대표 입력으로 풀리지 않는다')
+  assert.equal(text.calls.filter((c) => c.tool === 'ux').length, 2, '로고 게이트는 ux 를 다시 돌리지 않는다(홈·개인정보 쪽 하나씩)')
+
+  const ok = await qa(withBrand(fixture(), { logo: '/x/logo.svg' }), { tools: uxWithLogo(IMG_LOGO) })
+  assert.equal(gateOf(ok.s, 'logo').verdict, 'pass')
+  assert.equal(ok.s.publishable, true, ok.s.blockers.join('\n'))
+
+  const none = await qa(withBrand(fixture(), { colors: [] }), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text' }) })
+  assert.equal(gateOf(none.s, 'logo'), undefined, '로고 없는 브리프는 생략')
+  assert.equal((await qa(withBrand(fixture(), { logo: '/x/logo.svg' }), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text' }) }, { logo: false })).s.gates.some((g) => g.id === 'logo'), false)
+
+  // T17 — 브랜드 후보(c)가 아닌 a·b 는 브리프 로고(briefLogo)를 받고 06 이 머리글에 올렸을 때(site.json shell.logo)만 잰다
+  const onSite = await qa(fixture({ siteJson: { shell: { logo: { src: '/brand/logo.png', width: 240, height: 80, mode: 'img' } } } }), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text', naturalWidth: 0 }) }, { briefLogo: '/x/logo.png' })
+  assert.equal(gateOf(onSite.s, 'logo')?.verdict, 'fail', '브리프 로고를 머리글에 올렸는데 글자뿐이면 실패')
+  const notOnSite = await qa(fixture(), { tools: uxWithLogo({ ...IMG_LOGO, kind: 'text', naturalWidth: 0 }) }, { briefLogo: '/x/logo.png' })
+  assert.equal(gateOf(notOnSite.s, 'logo'), undefined, '06 이 로고를 못 올렸으면(미적용 사유가 따로 있다) 관문은 같은 까닭을 또 적지 않는다')
+
+  const toolFail = await qa(withBrand(fixture(), { logo: '/x/logo.svg' }), { tools: { ux: () => ({ exit: 1, stderr: '도구 실패: Chrome 시작 실패' }) } })
+  assert.equal(gateOf(toolFail.s, 'logo'), undefined, 'ux 가 도구 실패라 계측이 없는 것은 이미 사유가 있다')
+  assert.equal(toolFail.s.blockers.filter((b) => b.startsWith(QA_PREFIX.tool)).length >= 1, true)
+})
+
+test('brand-exposure: 브랜드 색이 있을 때만 홈에서 잰다 — 하한 미만이면 「브랜드 주색이 화면에 거의 안 보임」 · 충분하면 통과 · 측정기 예외는 다시 돈 뒤 도구 실패 · 색 없음·끔은 게이트가 없다', async () => {
+  const seen = []
+  const measure = (ratio) => async (origin, route, o) => { seen.push({ origin, route, o }); return { ratio, samples: 100 } }
+  const low = await qa(withBrand(fixture(), { colors: ['#1F6B4A'] }), {}, { brandExposureOptions: { measure: measure(0.004) } })
+  const g = gateOf(low.s, 'brand-exposure')
+  assert.deepEqual([g.verdict, g.exit, g.toolFailure, g.tool], ['fail', 1, false, 'brand-exposure'])
+  assert.deepEqual(seen, [{ origin: 'http://x.test', route: '/', o: { colorHex: '#1F6B4A', threshold: 0.07 } }], '판정 실패는 다시 안 돈다')
+  assert.ok(low.s.blockers.some((b) => b.startsWith(QA_PREFIX.brand) && b.includes('#1F6B4A') && b.includes('0.4%')), low.s.blockers.join('\n'))
+  assert.equal(low.s.publishable, false)
+
+  assert.equal(gateOf((await qa(withBrand(fixture(), { colors: ['#1F6B4A'] }), {}, { brandExposureOptions: { measure: measure(0.2) } })).s, 'brand-exposure').verdict, 'pass')
+  const boom = await qa(withBrand(fixture(), { colors: ['#1F6B4A'] }), {}, { brandExposureOptions: { measure: async () => { throw new Error('탐색 실패') } } })
+  assert.deepEqual([gateOf(boom.s, 'brand-exposure').toolFailure, gateOf(boom.s, 'brand-exposure').attempts], [true, 2])
+  assert.ok(boom.s.blockers.some((b) => b.startsWith(QA_PREFIX.tool) && b.includes('brand-exposure')))
+  seen.length = 0
+  for (const [cand, opts] of [[withBrand(fixture(), { logo: '/x/logo.svg' }), {}], [fixture(), {}], [withBrand(fixture(), { colors: ['#1F6B4A'] }), { brandExposure: false }]]) {
+    assert.equal(gateOf((await qa(cand, {}, { ...opts, brandExposureOptions: { measure: measure(0) } })).s, 'brand-exposure'), undefined)
+  }
+  assert.equal(seen.length, 0)
+})
+
 // ─── 열림·쪽 목록·필수 입력 ───
 
 test('열리지 않는 쪽은 Chrome 관문을 돌리지 않는다: 404 = 판정 실패(open), 서버 응답 없음 = 도구 실패 — ux-gate 는 오류 페이지를 재서 3 을 내기 때문이다', async () => {

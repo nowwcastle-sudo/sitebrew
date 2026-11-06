@@ -5,7 +5,7 @@
 //     → 맞출 수 없으면 { blocked: 이유, adjustments, fontSubstitutions } (head 없음)
 //
 // 색(대표 판단 「명도만 조정」, Review Focus 3):
-//  - 역할 배정: 채도 가장 높은 색 = 주색. 나머지 중 밝고(L ≥ 0.9) 무채에 가까운(C ≤ 0.04) 가장 밝은 색 = 바탕, 어두운(L ≤ 0.4) 가장 어두운 색 = 글자.
+//  - 역할 배정: 처음 적은 유채색(C ≥ 0.05) = 주색(v0.2.6 T19 — 예전에는 채도가 가장 높은 색이라 두 번째로 적은 주황이 주색이 됐다). 나머지 중 밝고(L ≥ 0.9) 무채에 가까운(C ≤ 0.04) 가장 밝은 색 = 바탕, 어두운(L ≤ 0.4) 가장 어두운 색 = 글자.
 //    바탕·글자가 없으면 주색 색상각에 아주 옅게 물든 중립으로 채운다(브랜드 색이 아니라 기록하지 않는다).
 //  - 두 테마를 derivePalette(프리셋 파생과 같은 코드)로 펼친 뒤, 브랜드 색이 들어가는 주색만 여기서 다시 맞춘다: 테마 바탕 위 4.5:1(link 글자·체크 채움 —
 //    lint primary-surface), Tailwind 기본값 복사 피함, 질감(X1·X2) 무늬 위 4.5:1. OKLCH L 만 0.005 단위로 옮긴다.
@@ -126,14 +126,29 @@ function brandFonts(asked, preset) {
 
 // ── 색 ──────────────────────────────────────────────────────────────────
 function assignRoles(cols) {
-  const chroma = cols.filter((c) => c.lch[1] >= ACCENT_C).sort((a, b) => b.lch[1] - a.lch[1])
-  const primary = chroma[0] ?? [...cols].filter((c) => c.lch[0] <= 0.6).sort((a, b) => a.lch[0] - b.lch[0])[0] ?? null
+  // 주색은 입력 순서의 첫 유채색이다. 유채색이 없으면 가장 어두운 중간 명도 이하 색.
+  const primary = cols.find((c) => c.lch[1] >= ACCENT_C) ?? [...cols].filter((c) => c.lch[0] <= 0.6).sort((a, b) => a.lch[0] - b.lch[0])[0] ?? null
   const rest = cols.filter((c) => c !== primary)
   const background = rest.filter((c) => c.lch[0] >= 0.9 && c.lch[1] <= BG_MAX_C).sort((a, b) => b.lch[0] - a.lch[0])[0] ?? null
   const foreground = rest.filter((c) => c !== background && c.lch[0] <= 0.4).sort((a, b) => a.lch[0] - b.lch[0])[0] ?? null
   const accent = rest.filter((c) => c !== background && c !== foreground && c.lch[1] >= ACCENT_C).sort((a, b) => b.lch[1] - a.lch[1])[0] ?? null
   const unused = rest.filter((c) => ![background, foreground, accent].includes(c))
   return { primary, background, foreground, accent, unused }
+}
+
+// 브랜드 색에서 본 기본 테마(v0.2.6 T19): 브랜드가 준 바탕 역할 색이 어두우면(L < 0.35) dark, 그 밖은 light. 바탕 프리셋의 힌트가 정하지 않는다.
+//   바탕 역할은 밝은 무채 색(L ≥ 0.9)만 받으므로(assignRoles) 지금 브랜드 입력으로 dark 가 나오는 길은 없다 — 어두운 바탕 색을 받는 규칙은 후속 결정이다.
+export function brandThemeOf(brand = {}) {
+  const cols = (brand.colors ?? []).filter(Boolean).map((x) => parseColor(x)).filter(Boolean).map((c) => ({ lch: render(c) }))
+  const bg = assignRoles(cols).background
+  return bg && bg.lch[0] < 0.35 ? 'dark' : 'light'
+}
+
+// 브랜드 입력의 주색(OKLCH [L,C,H]) — 방향 고르기가 b 팔레트의 색조를 브랜드 주색에 가깝게(유사색 ±30° 또는 보색) 끌 때 읽는다. 유채색이 없으면 null(색조가 뜻이 없다).
+export function brandPrimaryOf(brand = {}) {
+  const cols = (brand.colors ?? []).filter(Boolean).map((x) => parseColor(x)).filter(Boolean).map((c) => ({ lch: render(c) }))
+  const primary = assignRoles(cols).primary
+  return primary && primary.lch[1] >= ACCENT_C ? primary.lch : null
 }
 
 export function brandToRecipeHead(brand = {}, basePreset, opts = {}) {
@@ -190,10 +205,10 @@ export function brandToRecipeHead(brand = {}, basePreset, opts = {}) {
 
   const palette = {
     id: `pal-brand-${id8}`, source: 'brand', use: 'recipe', mood: [], colorLogic: logic,
-    ...(theme ? { roles: {}, colors: [], theme, defaultTheme: 'light' } : {}),
+    ...(theme ? { roles: {}, colors: [], theme, defaultTheme: brandThemeOf(brand) } : {}),
   }
   const base = theme ? palette : pickBase(basePreset)
-  const head = presetToRecipeHead(basePreset, base, { fonts }, opts.archetype ? { archetype: opts.archetype } : {})
+  const head = presetToRecipeHead(basePreset, base, { fonts }, { ...(opts.archetype ? { archetype: opts.archetype } : {}), ...(theme ? { defaultTheme: brandThemeOf(brand) } : {}) })
   const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
   head.id = `brand-${slug(basePreset.styleId ?? basePreset.id).replace(/^preset-/, '')}-${id8}`
   head.name = `${basePreset.name} 브랜드 안`

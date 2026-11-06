@@ -1,6 +1,6 @@
 // FIT-3 — 인테이크 답이 방향 모양에 닿는다: 분위기 낱말(F1) · 브랜드 색(F2).
 //   F1: facts.mood 가 01 방향 고르기의 가중 요소다(라이브러리 a 고름 · 생성 프리셋 점수 · 팔레트 점수). 표에 없는 낱말은 효과 없음 + why 에 이유.
-//   회귀 가드: mood 가 없는 브리프의 01 출력은 FIT-3 전(abbe3be0)과 바이트 동일 — stamp-mood-baseline.json.
+//   회귀 가드: mood 가 없는 브리프의 01 출력은 v0.2.6 기준(stamp-mood-baseline.json, 처음 기준은 FIT-3 전 abbe3be0)과 바이트 동일.
 //   F2: 인테이크 답(색 코드 3개)이 질문 경로 끝까지 가서 c 안이 source:brand 가 된다.
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
@@ -39,7 +39,7 @@ test('mood 표: 한국어·영어 동의어가 같은 항목으로 읽히고, �
   assert.equal(moodProfile(undefined), null)
 })
 
-test('회귀 가드: mood 가 없는 골든 20개의 01 출력은 FIT-3 전(abbe3be0)과 바이트 동일하다', { timeout: 120_000 }, async () => {
+test('회귀 가드: mood 가 없는 골든 20개의 01 출력은 기준 파일(v0.2.6 에서 다시 찍음)과 바이트 동일하다', { timeout: 120_000 }, async () => {
   const base = JSON.parse(readFileSync(new URL('./stamp-mood-baseline.json', import.meta.url), 'utf8')).cases
   const set = goldenSet()
   assert.equal(Object.keys(base).length, set.length, '기준 파일이 골든 수와 같다')

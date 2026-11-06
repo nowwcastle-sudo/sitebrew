@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 import { EXIT, PICKS, defaultDeps, legalState, parseArgs, runRedrawWider, runStamp, boardData, UsageError } from '../stamp/stamp.mjs'
 import { inputHash } from '../stamp/run-dir.mjs'
+import { qaParallelLimit } from '../stamp/parallel.mjs'
 import { loadHandles } from '../stamp/handles.mjs'
 import { loadLexicon } from '../vocab/lexicon.mjs'
 import { loadBrief, briefToSeed } from '../stamp/brief.mjs'
@@ -92,7 +93,7 @@ const reviewOut = (run, id) => { for (const p of ['privacy', 'terms']) writeFile
 
 test('parseArgs: 정상 · 단계 이름 · 잘못된 인자는 UsageError', () => {
   const o = parseArgs(['--brief', 'b.json', '--run', 'out', '--until', '4', '--pick', 'c', '--deploy-preview'])
-  assert.deepEqual(o, { brief: 'b.json', run: 'out', until: '04-content', pick: 'c', deployPreview: true, golden: null, allGolden: false })
+  assert.deepEqual(o, { brief: 'b.json', run: 'out', until: '04-content', pick: 'c', deployPreview: true, golden: null, allGolden: false, sampleFacts: false })
   assert.equal(parseArgs(['--brief', 'b.json', '--until', '05-media']).until, '05-media')
   assert.equal(parseArgs(['--brief', 'b.json']).pick, null)
   for (const bad of [[], ['--brief'], ['--brief', 'b', '--pick', 'd'], ['--brief', 'b', '--until', '09'], ['--brief', 'b', '--deploy-preview'], ['--brief', 'b', '--nope'], ['--brief', 'b', '--pick', '--until', '2']]) {
@@ -244,6 +245,47 @@ test('C314: 06 입력 해시가 코드 열쇠를 본다 — 입력(02~05)은 같
   key = 'code-v3'
   await runStamp({ brief, run }, deps)
   for (const id of PICKS) { assert.equal(deps.calls[`pages:${id}`], 3); assert.equal(deps.calls[`qa:${id}`], 2, `${id}: 06 이 새로 만들어졌는데 07 이 옛 결과를 썼다`) }
+})
+
+test('T17: 브리프 로고는 세 안의 06 입력과 호출에 실리고(경로+파일 해시), 로고가 없으면 06 입력은 예전 그대로다', async () => {
+  const dir = fresh()
+  const logoFile = join(dir, 'logo.png')
+  writeFileSync(logoFile, 'png-bytes-1')
+  const brief = writeBrief(dir, { ...BRIEF, brand: { logo: logoFile } })
+  const run = join(dir, 'run')
+  copyOut(run)
+  const deps = fakeDeps()
+  const seen = []
+  const inner = deps.pages
+  deps.pages = async (args) => { seen.push([args.cand.id, args.logo?.path]); return inner(args) }
+  const r1 = await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(r1.code, EXIT.done, r1.lines.join('\n'))
+  assert.deepEqual(seen.map(([, p]) => p), [logoFile, logoFile, logoFile], 'a·b·c 모두 로고를 받는다')
+  const saved = readJ(join(run, 'a', '06-pages.json')).inputHash
+  writeFileSync(logoFile, 'png-bytes-2')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(seen.length, 6, '파일 내용이 바뀌면 06 이 다시 돈다')
+  assert.notEqual(readJ(join(run, 'a', '06-pages.json')).inputHash, saved)
+  // 짝 파일 logo.dark.png — 더하기·바꾸기·지우기 모두 06 입력이 바뀐다
+  const darkFile = join(dir, 'logo.dark.png')
+  const h0 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  writeFileSync(darkFile, 'dark-1')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const h1 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.equal(seen.length, 9, '짝 파일을 더하면 06 이 다시 돈다'); assert.notEqual(h1, h0)
+  writeFileSync(darkFile, 'dark-2')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const h2 = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.equal(seen.length, 12, '짝 파일이 바뀌면 06 이 다시 돈다'); assert.notEqual(h2, h1)
+  rmSync(darkFile)
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(seen.length, 15, '짝 파일을 지우면 06 이 다시 돈다'); assert.equal(readJ(join(run, 'a', '06-pages.json')).inputHash, h0)
+  // 로고 없는 브리프 — 호출에도 입력에도 logo 가 없다
+  const dir2 = fresh(); const run2 = join(dir2, 'run'); copyOut(run2)
+  const deps2 = fakeDeps(); const seen2 = []; const inner2 = deps2.pages
+  deps2.pages = async (args) => { seen2.push('logo' in args); return inner2(args) }
+  await runStamp({ brief: writeBrief(dir2), run: run2, until: '06-pages' }, deps2)
+  assert.deepEqual(seen2, [false, false, false])
 })
 
 test('C314: 진짜 코드 열쇠 — 블록·템플릿·06 코드(import 닫힘)를 보고, 같은 파일이면 같은 값이다', async () => {
@@ -751,4 +793,60 @@ test('--redraw-wider: 01 만 minAxes 를 올려 다시 고르고(입력 해시�
   const missing = await runRedrawWider({ run: join(dir, 'no-such-run') }, none)
   assert.equal(missing.code, EXIT.args)
   assert.equal(none.calls.directions, undefined, '실행 기록이 없으면 아무것도 돌리지 않는다')
+})
+
+// ─── 07 후보 병렬 선택 옵션(v0.2.6 T16 · S11) ───
+
+test('WF_QA_PARALLEL: 켠 때만, 후보 수·여유 메모리 안에서 최대 3개', () => {
+  const GIB = 1024 ** 3
+  const on = { WF_QA_PARALLEL: '1' }
+  assert.deepEqual(qaParallelLimit({ env: {}, count: 3, freeBytes: 64 * GIB }), { limit: 1, reason: 'off' })
+  assert.deepEqual(qaParallelLimit({ env: { WF_QA_PARALLEL: '0' }, count: 3, freeBytes: 64 * GIB }), { limit: 1, reason: 'off' })
+  assert.deepEqual(qaParallelLimit({ env: on, count: 1, freeBytes: 64 * GIB }), { limit: 1, reason: 'single' })
+  assert.deepEqual(qaParallelLimit({ env: on, count: 3, freeBytes: 64 * GIB }), { limit: 3 })
+  assert.deepEqual(qaParallelLimit({ env: on, count: 2, freeBytes: 64 * GIB }), { limit: 2 })
+  assert.deepEqual(qaParallelLimit({ env: on, count: 3, freeBytes: 5 * GIB }), { limit: 2 }, '여유 메모리 2 GiB 당 1개')
+  assert.deepEqual(qaParallelLimit({ env: on, count: 3, freeBytes: 3 * GIB }), { limit: 1, reason: 'memory' })
+})
+
+test('07 병렬 == 07 직렬: 결과 파일·요약·실패 순서가 같고, 병렬은 실제로 겹쳐 돈다', async () => {
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+  const GIB = 1024 ** 3
+  async function once(parallel, failing = []) {
+    const dir = fresh()
+    const run = join(dir, 'run')
+    let live = 0
+    let peak = 0
+    const deps = fakeDeps({
+      deps: {
+        env: parallel ? { WF_QA_PARALLEL: '1' } : {},
+        freeBytes: () => 64 * GIB,
+        qa: async ({ cand }) => {
+          live++; peak = Math.max(peak, live)
+          await sleep(cand.id === 'a' ? 80 : 20) // a 가 가장 늦게 끝나도 결과 순서는 후보 순서여야 한다
+          live--
+          if (failing.includes(cand.id)) throw new Error(`도구 실패: 관문 ${cand.id}`)
+          return { candidate: cand.id, routes: ['/'], gates: [], aiTell: { threshold: null, scores: {} }, seconds: 1, finishedAt: 'x', publishable: cand.id !== 'b', blockers: cand.id === 'b' ? ['공개 불가 — 확인 필요 사실: business.phone'] : [], warnings: [] }
+        },
+      },
+    })
+    const brief = writeBrief(dir)
+    await runStamp({ brief, run }, deps) // 문구 요청을 내고 멈춘다
+    copyOut(run)
+    const r = await runStamp({ brief, run }, deps)
+    const files = {}
+    for (const id of PICKS) for (const s of ['07-qa', '08-board']) { const f = join(run, id, `${s}.json`); if (existsSync(f)) files[`${id}/${s}`] = readJ(f).data }
+    return { peak, files, candidates: r.summary.candidates, failures: r.summary.failures, code: r.code }
+  }
+  const serial = await once(false)
+  const parallel = await once(true)
+  assert.equal(serial.peak, 1)
+  assert.equal(parallel.peak, 3, '병렬은 후보 3개가 겹쳐 돌았다')
+  assert.deepEqual(parallel.files, serial.files)
+  assert.deepEqual(parallel.candidates, serial.candidates)
+  const sFail = await once(false, ['a', 'c'])
+  const pFail = await once(true, ['a', 'c'])
+  assert.equal(pFail.code, sFail.code)
+  assert.deepEqual(pFail.failures.map((f) => f.cand), ['a', 'c'], '실패는 끝난 순서가 아니라 후보 순서로 남는다')
+  assert.deepEqual(pFail.failures, sFail.failures)
 })

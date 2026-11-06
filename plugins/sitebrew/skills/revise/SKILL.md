@@ -191,6 +191,7 @@ Expected: exit code 0. Tell the user, then rebuild all three candidates with the
 - A new block may arrive without its on-screen texts: "example text left" is a blocker until the copy is written.
 - A colour name is read as one representative code, and the board says which; ask for the exact code if it matters. A colour that cannot be made readable (a pale yellow as the main colour) gets a question, not a broken alternative.
 - A change to one element applies to the whole site unless the tool says it can change that element alone; the `질문:` rule of Classify covers the question.
+- Facts and the logo are brief answers, not design: a phone number, hours, price, a sample detail the kit added or a new logo is not changed here. The real value goes into the brief and the stamp command runs again (the `new` skill, sections 2 and 3). `revise` never writes a fact into the site.
 - The user's choice is remembered on this computer only (`preferences.json`, in the folder named by `CLAUDE_PLUGIN_DATA` if set, otherwise `~/.factory`). Nothing is sent anywhere.
 
 ## Chatbot mode

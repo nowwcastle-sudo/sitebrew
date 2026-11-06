@@ -2,14 +2,19 @@
 // The kit's intake (factory/intake/) is a set of functions, not a command. This script calls them so a skill can run them the same way in any shell.
 //   node intake.mjs archetypes                         -> JSON list of archetype ids the intake accepts
 //   node intake.mjs questions <archetype>              -> JSON list of { id, ask, hint? } to ask the user (Korean; translate when the user writes another language)
-//   node intake.mjs brief --input <answers.json> --out <brief.json>
+//   node intake.mjs brief --input <answers.json> --out <brief.json> [--facts <facts.json>]
+//        facts: { "<fact name or content path>": "real value" | null } - real values for facts the preview filled with samples; null = the user has no such fact. An unknown name is an error.
 //        input: { "topic": "...", "archetype": "...", "locale": "ko"|"en", "answers": { "<question id>": "..." } }
-//        out:   the brief for `npm run stamp -- --brief`; stdout is { brief, previewOnly, missing[], unread[{ id, answer, why }] } (unread: ask the user again)
+//        out:   the brief for `npm run stamp -- --brief`; stdout is { brief, previewOnly, missing[], unread[{ id, answer, why }], factsApplied[] } (unread: ask the user again)
 //   node intake.mjs features <archetype>               -> JSON list of { id, ko, en }: yes/no questions about what the site must do ([] when there is nothing to ask); an unknown archetype is an error
 //   node intake.mjs features-write --archetype <archetype> --input <answers.json> --run <run folder>
 //        input: { "<question id>": true|false } with ids from `features <archetype>` only; anything else is an error naming the input file.
 //        Writes <run folder>/features.json (the stamp reads it); stdout is { features: <path>, outcomes: [{ id, say: { ko, en } }] } - the chosen outcomes after `requires` closed them.
 //        A kit without feature questions: one line, nothing written.
+//   node intake.mjs logo-candidates --input <answers.json> --out <folder>
+//        input: the same answers.json as `brief`. Writes <folder>/1.png ... 6.png (transparent logo drafts at twice the header height) and sheet.png / sheet.html (each draft at 1x and 2x).
+//        stdout is { sheet, items[{ id, path, width, height, kind, symbol }], skipped?, warnings? }. skipped: "no-chrome" = no browser found, nothing written. Set WF_CODEX_IMAGES=1 to let Codex draw one symbol.
+//        The user picks one; put its path in the `logo` answer and run `brief`.
 //   Both feature commands also take --lf <launch-factory folder> (tried first, then LF_DIR and the folders beside the kit).
 // Add --kit <folder> (or set SITEBREW_DIR) when the Sitebrew clone is not in ./sitebrew. Node built-ins only. Nothing here reads or prints a key.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -18,13 +23,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { findKit, kitRange } from './lib/kit.mjs'
 
 const PLUGIN_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder>   [--kit <folder>] [--lf <folder>]'
+const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> [--facts <facts.json>] | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder> | logo-candidates --input <answers.json> --out <folder>   [--kit <folder>] [--lf <folder>]'
 
 function parse(argv) {
   const o = { positional: [] }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
-    if (['--kit', '--input', '--out', '--run', '--archetype', '--lf'].includes(a)) {
+    if (['--kit', '--input', '--out', '--run', '--archetype', '--lf', '--facts'].includes(a)) {
       const v = argv[++i]
       if (!v || v.startsWith('--')) throw new Error(`${a} needs a value`)
       o[a.slice(2)] = v
@@ -65,14 +70,27 @@ async function features({ cmd, archetype, o, kit, load }) {
   console.log(JSON.stringify({ features: join(run, 'features.json'), outcomes: table.outcomes.filter((x) => chosen.outcomes.includes(x.id)).map(({ id, say }) => ({ id, say })) }))
 }
 
+/** Logo drafts for the brand answers turn. Name, mood, colours and fonts come out of the same brief the `brief` command builds, so a colour name that is not a code is dropped here too. */
+async function logoCandidates({ o, kit, load }) {
+  if (!o.input || !o.out) throw new Error(USAGE)
+  if (!existsSync(join(kit.dir, 'factory', 'intake', 'logo-candidates.mjs'))) throw new Error('this Sitebrew has no logo drafts yet - update the clone (doctor.mjs shows the version)')
+  const { toBriefReport } = await load('to-brief.mjs')
+  const { makeLogoCandidates } = await load('logo-candidates.mjs')
+  const { brief } = toBriefReport(JSON.parse(readFileSync(resolve(o.input), 'utf8')))
+  if (!brief.facts.name) throw new Error(`${resolve(o.input)}: the answers need a "name" to draw a logo from`)
+  const result = await makeLogoCandidates({ name: brief.facts.name, mood: brief.facts.mood ?? '', colors: brief.brand?.colors ?? [], fonts: brief.brand?.fonts ?? [], outDir: resolve(o.out), codex: process.env.WF_CODEX_IMAGES === '1' })
+  console.log(JSON.stringify(result))
+}
+
 async function main(argv) {
   const o = parse(argv)
   const [cmd, archetype] = o.positional
-  if (!['archetypes', 'questions', 'brief', 'features', 'features-write'].includes(cmd)) throw new Error(USAGE)
+  if (!['archetypes', 'questions', 'brief', 'features', 'features-write', 'logo-candidates'].includes(cmd)) throw new Error(USAGE)
   const kit = findKit({ arg: o.kit, pluginRoot: PLUGIN_ROOT, range: kitRange(PLUGIN_ROOT) })
   if (kit.missing) throw new Error('Sitebrew clone not found - pass --kit <folder> or set SITEBREW_DIR (run doctor.mjs for the fix)')
   const load = (file) => import(pathToFileURL(join(kit.dir, 'factory', 'intake', file)).href)
   if (cmd.startsWith('features')) return features({ cmd, archetype, o, kit, load })
+  if (cmd === 'logo-candidates') return logoCandidates({ o, kit, load })
   const { INTAKE_ARCHETYPES, questionsFor } = await load('questions.mjs')
   if (cmd === 'archetypes') return console.log(JSON.stringify(INTAKE_ARCHETYPES))
   if (cmd === 'questions') {
@@ -82,12 +100,13 @@ async function main(argv) {
   if (!o.input || !o.out) throw new Error(USAGE)
   const { toBrief, missingFacts, toBriefReport } = await load('to-brief.mjs')
   const input = JSON.parse(readFileSync(resolve(o.input), 'utf8'))
+  if (o.facts) input.facts = { ...input.facts, ...JSON.parse(readFileSync(resolve(o.facts), 'utf8')) } // real values for sample facts; null = the user has no such fact
   // toBriefReport also returns the answers the kit could not take (a colour name instead of a code); a kit without it has no brand questions, so nothing is unread there
-  const { brief, unread } = toBriefReport ? toBriefReport(input) : { brief: toBrief(input), unread: [] }
+  const { brief, unread, factsApplied = [] } = toBriefReport ? toBriefReport(input) : { brief: toBrief(input), unread: [] }
   const out = resolve(o.out)
   mkdirSync(dirname(out), { recursive: true })
   writeFileSync(out, JSON.stringify(brief, null, 2) + '\n')
-  console.log(JSON.stringify({ brief: out, previewOnly: brief.previewOnly === true, missing: missingFacts(brief), unread }))
+  console.log(JSON.stringify({ brief: out, previewOnly: brief.previewOnly === true, missing: missingFacts(brief), unread, factsApplied }))
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
