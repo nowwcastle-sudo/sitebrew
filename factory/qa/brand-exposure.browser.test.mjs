@@ -20,3 +20,8 @@ test('주색 칸 비율: 32px 띠는 약 3.5% · 주색이 없으면 0 · 겹쳐
   const text = await at('text') // 주색 큰 글자 한 줄 + 위 테두리 8px 한 줄
   assert.ok(text.ratio > 0.04 && text.ratio < 0.2, `글자·테두리 비율 ${text.ratio}`)
 })
+
+test('연한 글자가 주색 상자 위에 있어도 상자는 주색으로 센다 — 글자 줄 상자가 바탕을 지우지 않는다(v0.2.6 골든 brand-1 c: 초록 상자·버튼이 0.5% 로 잰 결함)', async () => {
+  const box = await at('textbox') // 글자 크기에 딱 맞는 초록 상자 하나(글자색은 연한 초록빛 흰색)
+  assert.ok(box.ratio > 0.03, `주색 상자 비율 ${box.ratio}`)
+})

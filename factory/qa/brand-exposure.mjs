@@ -1,6 +1,6 @@
 // 브랜드 주색 노출 관문(v0.2.6 T10 · S4 · 설계 D16) — 브리프의 첫 색이 첫 화면(히어로 1440×900)에 거의 안 보이면 공개 불가.
 //   ① exposureProbe()            쪽 안에서 도는 자기완결 함수. DOM 을 문서 순서로 8px 칸 위에 칠한다(나중에 칠한 요소가 이긴다 — 겹친 상자를 두 번 세지 않는다).
-//                                 칠하는 것: 배경색 · 테두리색 · 글자색(글자 줄 상자). 사진·그라데이션·영상은 DOM 색이 아니라 세지 않는다(그 칸은 「주색 아님」으로 남는다).
+//                                 칠하는 것: 배경색 · 테두리색 · 글자색(글자 줄 상자). 글자색은 배경 층과 따로 둔다 — 칸이 「배경이 주색」이거나 「그 위 글자가 주색」이면 센다(연한 글자가 주색 상자를 지우지 않는다). 사진·그라데이션·영상은 DOM 색이 아니라 세지 않는다(그 칸은 「주색 아님」으로 남는다).
 //   ② measureBrandExposure(page) page = { ev } 로 ①을 돌려 { ratio, samples } 를 받는다 — 주색 근처(OKLab 거리 ≤ threshold) 칸 / 전체 칸.
 //   ③ brandExposureGate(cand, { ratio }) 순수 판정 → { pass, ratio, floor }. 하한은 colorStrategy 별(Restrained 1% · Committed 15% · 그 밖 1%) — 골든 실측 뒤 조정한다.
 //   ④ brandExposureForCandidate  07-qa 어댑터(Chrome 을 띄워 ②를 부른다. 안쪽 측정기 measure 는 시험용으로 바꿀 수 있다).
@@ -34,16 +34,20 @@ const strategyOf = (cand) => cand?.colorStrategy ?? cand?.head?.colorStrategy ??
 export function exposureProbe({ colorHex, threshold, cell = 8 }) {
   const W = innerWidth, H = innerHeight
   const cols = Math.ceil(W / cell), rows = Math.ceil(H / cell)
-  const grid = new Float32Array(cols * rows * 3).fill(255) // 캔버스 기본색(흰색)에서 시작한다
+  const grid = new Float32Array(cols * rows * 3).fill(255) // 캔버스 기본색(흰색)에서 시작한다. 배경·테두리만 칠한다
+  const ink = new Float32Array(cols * rows * 3) // 글자색 층: 글자는 바탕을 지우지 않는다(연한 글자가 주색 상자를 덮어 0% 가 되던 결함). 같은 칸에 나중 배경이 칠해지면 비운다
+  const inkOn = new Uint8Array(cols * rows)
   const cv = document.createElement('canvas'); cv.width = cv.height = 1
   const cx = cv.getContext('2d', { willReadFrequently: true })
   const rgba = (c) => { cx.clearRect(0, 0, 1, 1); cx.fillStyle = '#000'; cx.fillStyle = c; cx.fillRect(0, 0, 1, 1); const d = cx.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2], d[3] / 255] }
-  const paint = (r, [cr, cg, cb, ca]) => {
+  const paint = (r, [cr, cg, cb, ca], asInk = false) => {
     if (ca <= 0) return
     const x0 = Math.max(0, Math.floor(r.left / cell)), x1 = Math.min(cols, Math.ceil(r.right / cell))
     const y0 = Math.max(0, Math.floor(r.top / cell)), y1 = Math.min(rows, Math.ceil(r.bottom / cell))
     for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
-      const i = (y * cols + x) * 3
+      const j = y * cols + x, i = j * 3
+      if (asInk) { ink[i] = cr * ca + grid[i] * (1 - ca); ink[i + 1] = cg * ca + grid[i + 1] * (1 - ca); ink[i + 2] = cb * ca + grid[i + 2] * (1 - ca); inkOn[j] = 1; continue }
+      inkOn[j] = 0
       grid[i] = cr * ca + grid[i] * (1 - ca); grid[i + 1] = cg * ca + grid[i + 1] * (1 - ca); grid[i + 2] = cb * ca + grid[i + 2] * (1 - ca)
     }
   }
@@ -89,21 +93,22 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
     for (const node of el.childNodes) {
       if (node.nodeType !== 3 || !node.textContent.trim()) continue
       const range = document.createRange(); range.selectNodeContents(node)
-      for (const line of range.getClientRects()) if (inView(line)) paint(line, [fg[0], fg[1], fg[2], fg[3] * op])
+      for (const line of range.getClientRects()) if (inView(line)) paint(line, [fg[0], fg[1], fg[2], fg[3] * op], true)
     }
   }
   const cache = new Map()
   let near = 0
-  for (let i = 0; i < grid.length; i += 3) {
-    const key = (Math.round(grid[i]) << 16) | (Math.round(grid[i + 1]) << 8) | Math.round(grid[i + 2])
+  const isNear = (src, i) => {
+    const key = (Math.round(src[i]) << 16) | (Math.round(src[i + 1]) << 8) | Math.round(src[i + 2])
     let hit = cache.get(key)
     if (hit === undefined) {
-      const [L, a, b] = oklab(Math.round(grid[i]), Math.round(grid[i + 1]), Math.round(grid[i + 2]))
+      const [L, a, b] = oklab(Math.round(src[i]), Math.round(src[i + 1]), Math.round(src[i + 2]))
       hit = Math.hypot(L - target[0], a - target[1], b - target[2]) <= threshold
       cache.set(key, hit)
     }
-    if (hit) near++
+    return hit
   }
+  for (let j = 0; j < cols * rows; j++) if (isNear(grid, j * 3) || (inkOn[j] && isNear(ink, j * 3))) near++
   const samples = cols * rows
   return { ratio: Math.round((near / samples) * 10000) / 10000, samples }
 }
