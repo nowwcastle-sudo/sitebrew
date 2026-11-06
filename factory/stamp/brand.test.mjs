@@ -12,7 +12,7 @@ import { parseOklch } from '../scripts/lib/palette-rules.mjs'
 
 const COLORS = ['#0F7B5F', '#FF6B35', '#14213D']
 const archetype = (await loadArchetypes()).saas
-const brief = { topic: '청춘케어(예시)', archetype: 'saas', locale: 'ko', facts: { name: '청춘케어' }, seed: 7, brand: { colors: COLORS } }
+const brief = { topic: '솔결재(예시)', archetype: 'saas', locale: 'ko', facts: { name: '솔결재' }, seed: 7, brand: { colors: COLORS } }
 const themeOfPreset = (p) => (p.recipeHints?.defaultTheme === 'dark' ? 'dark' : 'light')
 
 test('T19 주색: 처음 적은 유채색이 주색이다 — 초록이 먼저면 주황이 아니라 초록(색조 160±15°)', async () => {
