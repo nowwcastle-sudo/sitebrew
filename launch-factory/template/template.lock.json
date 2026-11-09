@@ -2252,13 +2252,13 @@
     {
       "path": "scripts/ci/tools.json",
       "from": "launch-factory-ci",
-      "sha256": "f0bb75409da2c53bf97a8d3af1ae9357a4aa9292349e62c917c1bfb05d48ffb6",
+      "sha256": "2290d27bc46ce21f7f486240843c0edf56eb934ebedb0510b0c7bf79a5b1dcca",
       "source": "scripts/ci/tools.json"
     },
     {
       "path": "scripts/ci/tools.mjs",
       "from": "launch-factory-ci",
-      "sha256": "66400b2cd7c279316010843bef76b50120669aa657c642e8451c6b769c856036",
+      "sha256": "dd32f6f9dceb4c8068aa568d1b4b18f7f697b854a928ab0ea4ff5de9afdfee84",
       "source": "scripts/ci/tools.mjs"
     },
     {
