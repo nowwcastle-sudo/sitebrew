@@ -69,7 +69,7 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
   for (const el of [document.documentElement, document.body, ...document.body.querySelectorAll('*')]) {
     if (SKIP.has(el.tagName)) continue
     const s = getComputedStyle(el)
-    if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.05) continue
+    if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.05 || !el.checkVisibility({ opacityProperty: true })) continue
     const op = +s.opacity
     // html 의 배경은 캔버스 전체에, html 배경이 없으면 body 의 배경이 캔버스 전체에 깔린다(CSS 배경 전파)
     const wide = el === document.documentElement || (el === document.body && htmlBgClear)
@@ -117,14 +117,14 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
 export async function measureBrandExposure(page, { colorHex, threshold = DEFAULT_THRESHOLD }) {
   if (!HEX.test(colorHex ?? '')) throw new Error(`도구 실패: 브랜드 주색이 #hex 가 아니다 — ${colorHex}`)
   const r = await page.ev(`(${exposureProbe})(${JSON.stringify({ colorHex, threshold })})`)
-  if (!r || typeof r.ratio !== 'number' || !(r.samples > 0)) throw new Error('도구 실패: 노출 계측이 값을 돌려주지 않았다')
+  if (!r || !Number.isFinite(r.ratio) || r.ratio < 0 || r.ratio > 1 || !(r.samples > 0)) throw new Error('도구 실패: 노출 계측이 값을 돌려주지 않았다')
   return r
 }
 
 /** 순수 판정 — 못 잰 값(ratio 가 숫자가 아님)은 통과가 아니다. */
 export function brandExposureGate(cand, { ratio }) {
   const floor = floorFor(strategyOf(cand))
-  return { pass: typeof ratio === 'number' && ratio >= floor, ratio, floor }
+  return { pass: Number.isFinite(ratio) && ratio >= floor && ratio <= 1, ratio, floor }
 }
 
 /** 기본 측정기: Chrome 을 띄워 히어로(1440×900, 라이트, 동작 줄이기)에서 잰다. 관문 잠금 안에서만 부른다. */

@@ -280,6 +280,14 @@ test('T17: 브리프 로고는 세 안의 06 입력과 호출에 실리고(경�
   rmSync(darkFile)
   await runStamp({ brief, run, until: '06-pages' }, deps)
   assert.equal(seen.length, 15, '짝 파일을 지우면 06 이 다시 돈다'); assert.equal(readJ(join(run, 'a', '06-pages.json')).inputHash, h0)
+  rmSync(logoFile)
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  const missing = readJ(join(run, 'a', '06-pages.json')).inputHash
+  assert.notEqual(missing, h0, '지정된 로고가 없어지면 06 이 다시 돈다')
+  assert.deepEqual(seen.slice(-3).map(([, path]) => path), [logoFile, logoFile, logoFile], '06 이 세 안 모두에서 누락 사유를 남길 수 있다')
+  writeFileSync(logoFile, 'png-bytes-2')
+  await runStamp({ brief, run, until: '06-pages' }, deps)
+  assert.equal(readJ(join(run, 'a', '06-pages.json')).inputHash, h0, '파일이 돌아오면 누락 결과를 다시 쓰지 않는다')
   // 로고 없는 브리프 — 호출에도 입력에도 logo 가 없다
   const dir2 = fresh(); const run2 = join(dir2, 'run'); copyOut(run2)
   const deps2 = fakeDeps(); const seen2 = []; const inner2 = deps2.pages

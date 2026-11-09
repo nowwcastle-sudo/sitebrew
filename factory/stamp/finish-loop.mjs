@@ -60,7 +60,7 @@ export function nextStep(runDir, pick) {
     }
     const applied = readJsonMaybe(appliedFileOf(runDir, pick, round))
     if (!applied?.complete) return { action: 'apply', round }
-    if (!Object.values(applied.outcomes ?? {}).some((o) => o.status === 'applied')) { // 되묻거나 낡아서 하나도 못 적용했다 — 다시 만들어도 같다
+    if (!Object.values(applied.outcomes ?? {}).some((o) => o.status === 'applied' || o.applied?.some((a) => !a.outdated))) { // 되묻거나 낡아서 하나도 못 적용했다 — 다시 만들어도 같다
       return { action: 'ask-human', round, why: 'revise 처방을 하나도 적용하지 못했다 (되묻기나 낡은 판)' }
     }
     const verdictFile = verdictFileOf(runDir, pick, round)
@@ -88,13 +88,15 @@ const PICKS = ['a', 'b', 'c']
  * 한 라운드의 revise 처방을 차례로 적용한다. 처방마다 사이트를 새로 읽고(앞 처방이 바꿨을 수 있다) revise(n: 1, install: false) → 첫 안을 고른다.
  * 진행은 applied-<n>.json 에 처방별로 남겨, 문구 응답을 기다리다 멈춘 뒤 같은 명령을 다시 돌려도 끝난 처방을 되풀이하지 않는다.
  * @param {{ parseRevision: Function, revise: Function, applyRevision: Function }} api  revise.mjs 의 세 함수(시험이 가짜를 준다)
- * @returns {Promise<{ waiting?: { id: string, file: string, status: string, problems?: string[] }, outcomes: Record<string, { status: 'applied'|'asked'|'outdated' }> }>}
+ * @returns {Promise<{ waiting?: { id: string, file: string, status: string, problems?: string[] }, outcomes: Record<string, { status: 'applied'|'asked'|'outdated' }>, changed?: boolean }>}
  */
 export async function applyRound(runDir, pick, round, api) {
   const review = parseReview(readText(reviewFileOf(runDir, pick, round)))
   const file = appliedFileOf(runDir, pick, round)
   const state = readJsonMaybe(file) ?? { round, outcomes: {}, complete: false }
+  if (state.waitingAfterApply) return { waiting: state.waitingAfterApply, outcomes: state.outcomes }
   const siteFile = join(runDir, pick, 'site', 'content', 'site.json')
+  let changed = false
   for (const f of review.findings) {
     if (state.outcomes[f.id]) continue
     const request = api.parseRevision(f.prescription.command, JSON.parse(readFileSync(siteFile, 'utf8')), undefined, { candidates: PICKS })
@@ -110,14 +112,20 @@ export async function applyRound(runDir, pick, round, api) {
           return { waiting: { id: f.id, file: waiting.waiting?.requestFile ?? waiting.boardFile, status: waiting.status, problems: waiting.problems }, outcomes: state.outcomes }
         }
         const applied = []
-        for (const board of made.boards ?? [made]) {
+        const boards = made.boards ?? [made]
+        for (const [i, board] of boards.entries()) {
           const r = await api.applyRevision(runDir, pick, board.index, board.variants[0].id)
           if (r.outdated) { applied.push({ index: board.index, outdated: true }); continue }
-          if (r.waitingCopy) {
-            writeJson(file, state)
-            return { waiting: { id: f.id, file: r.waitingCopy, status: 'waiting-copy' }, outcomes: state.outcomes }
-          }
+          changed = true
           applied.push({ index: board.index, variant: board.variants[0].id })
+          if (r.waitingCopy) {
+            // 선택은 이미 반영됐다. 같은 상태에서 만든 나머지 판은 낡았다.
+            applied.push(...boards.slice(i + 1).map((b) => ({ index: b.index, outdated: true })))
+            state.outcomes[f.id] = { status: applied.some((a) => a.outdated) ? 'outdated' : 'applied', applied }
+            state.waitingAfterApply = { id: f.id, file: r.waitingCopy, status: 'waiting-copy' }
+            writeJson(file, state)
+            return { waiting: state.waitingAfterApply, outcomes: state.outcomes }
+          }
         }
         outcome = applied.some((a) => a.outdated) ? { status: 'outdated', applied } : { status: 'applied', applied }
       }
@@ -125,7 +133,7 @@ export async function applyRound(runDir, pick, round, api) {
     state.outcomes[f.id] = outcome
     writeJson(file, state)
   }
-  return { outcomes: state.outcomes }
+  return { outcomes: state.outcomes, changed }
 }
 
 /** applyRound 가 끝났고 다시 만들기도 끝났을 때 라운드를 닫는다. */
@@ -166,6 +174,28 @@ export async function runFinishLoop({ runDir, pick }, { rebuild, api, say = cons
   // apply
   try {
     const impl = api ?? (await import('./revise.mjs'))
+    const build = async () => {
+      const built = await rebuild()
+      if (built.waiting) {
+        out(`  대기: ${built.message ?? '다시 만들기가 입력을 기다린다'}`)
+        return FINISH_EXIT.waiting
+      }
+      if (!built.ok) {
+        out(`도구 실패: ${built.message ?? '06·07 을 다시 만들지 못했다'}`)
+        return FINISH_EXIT.fail
+      }
+      return FINISH_EXIT.done
+    }
+    const file = appliedFileOf(runDir, pick, step.round)
+    const state = readJsonMaybe(file)
+    const resumed = !!state?.waitingAfterApply
+    if (resumed) {
+      // 04 응답을 검사하고 사이트를 갱신한 뒤 다음 처방을 처리한다.
+      const code = await build()
+      if (code !== FINISH_EXIT.done) return done(code)
+      delete state.waitingAfterApply
+      writeJson(file, state)
+    }
     const applied = await applyRound(runDir, pick, step.round, impl)
     if (applied.waiting) {
       out(`  대기: ${applied.waiting.id} 처방이 문구 응답을 기다린다 (${applied.waiting.file})`)
@@ -174,14 +204,9 @@ export async function runFinishLoop({ runDir, pick }, { rebuild, api, say = cons
       return done(FINISH_EXIT.waiting)
     }
     for (const [id, o] of Object.entries(applied.outcomes)) out(`  ${id}: ${o.status}${o.ask ? ` — ${o.ask}` : ''}`)
-    const built = await rebuild()
-    if (built.waiting) {
-      out(`  대기: ${built.message ?? '다시 만들기가 입력을 기다린다'}`)
-      return done(FINISH_EXIT.waiting)
-    }
-    if (!built.ok) {
-      out(`도구 실패: ${built.message ?? '06·07 을 다시 만들지 못했다'}`)
-      return done(FINISH_EXIT.fail)
+    if (!resumed || applied.changed) {
+      const code = await build()
+      if (code !== FINISH_EXIT.done) return done(code)
     }
     markComplete(runDir, pick, step.round)
     out(`  다음: 고친 안을 다시 보고 verdict-${step.round}.md 를 쓴다 (npm run stamp -- --run ${runDir} --pick ${pick} --finish-review)`)
