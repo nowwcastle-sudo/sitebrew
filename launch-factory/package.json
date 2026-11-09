@@ -44,6 +44,7 @@
     "compose:verify": "node --test --import ./scripts/test/no-user-env.mjs --test-force-exit --test-timeout=2400000 scripts/test/compose-product.heavy.mjs"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.14",
     "@eslint/js": "10.0.1",
     "eslint": "10.14.0",
     "globals": "17.14.0",
