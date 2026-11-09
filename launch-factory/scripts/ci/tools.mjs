@@ -84,8 +84,17 @@ export async function fetchTool(name, target = currentTarget()) {
   const dir = targetDir(name, target)
   const bin = join(dir, binName)
   if (existsSync(bin)) return bin
-  const res = await fetch(x.url, { redirect: "follow" })
-  if (!res.ok) throw new Error(`${name}: ${x.url} → HTTP ${res.status}`)
+  let url = x.url
+  let res
+  try { res = await fetch(url, { redirect: "follow" }) } catch (error) {
+    if (!x.restUrl) throw error
+  }
+  if ((!res || !res.ok) && x.restUrl) {
+    console.warn(`기본 다운로드 실패: ${name} — GitHub REST asset 으로 다시 받는다`)
+    url = x.restUrl
+    res = await fetch(url, { redirect: "follow", headers: { Accept: "application/octet-stream", "X-GitHub-Api-Version": "2022-11-28" } })
+  }
+  if (!res.ok) throw new Error(`${name}: ${url} → HTTP ${res.status}`)
   const buf = Buffer.from(await res.arrayBuffer())
   const got = sha256(buf)
   if (got !== x.sha256) throw new Error(`${name}: sha256 불일치 — 기대 ${x.sha256}, 받은 것 ${got}. 실행하지 않는다`)
