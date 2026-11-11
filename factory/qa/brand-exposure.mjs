@@ -19,7 +19,7 @@ const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i
 
 /** 브랜드 역할 배정과 같은 주색 — #hex 입력만 계측한다. */
 export const brandColorOf = (cand) => {
-  const c = brandPrimaryInputOf(cand?.brand?.input)
+  const c = brandPrimaryInputOf(cand?.brand?.input ?? {})
   return typeof c === 'string' && HEX.test(c.trim()) ? c.trim() : null
 }
 

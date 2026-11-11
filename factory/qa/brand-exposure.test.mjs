@@ -22,7 +22,7 @@ test('brandExposureGate: 하한은 colorStrategy 별 — Restrained 1% · Commit
 test('brandColorOf: 브랜드 역할과 같은 첫 유채색 — 색 없음 · 브랜드 없음 · 색 이름은 null(관문 생략)', () => {
   assert.equal(brandColorOf(cand()), '#1F6B4A')
   assert.equal(brandColorOf({ brand: { input: { colors: ['#0a0'] } } }), '#0a0')
-  for (const c of [{}, { brand: { input: {} } }, { brand: { input: { colors: [] } } }, { brand: { input: { colors: ['초록'] } } }]) assert.equal(brandColorOf(c), null)
+  for (const c of [{}, { brand: { input: null } }, { brand: { input: {} } }, { brand: { input: { colors: [] } } }, { brand: { input: { colors: ['초록'] } } }]) assert.equal(brandColorOf(c), null)
 })
 
 test('brandExposureForCandidate: 통과면 사유 없음 · 미만이면 사유 한 줄과 결과 파일 · 측정기가 던지면 도구 실패(통과 아님) · 이전 결과 파일은 지운다', async () => {
