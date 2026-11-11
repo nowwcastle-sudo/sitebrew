@@ -72,8 +72,8 @@ export function pageFacts(cfg) {
   }
   const norm = (s) => (s ?? '').replace(/\s+/g, ' ').trim()
   const q = (sel) => [...document.querySelectorAll(sel)].filter(inScope)
-  const PRICE_RE = /(?:[₩$€]\s?\d[\d,]*(?:\.\d+)?)|(?:\d[\d,]*(?:\.\d+)?\s?(?:원|₩|KRW|USD|달러|€))/
-  const KRW_RE = /\d[\d,]*\s?원|₩\s?\d/
+  const KRW_RE = /₩\s?\d[\d,]*(?:\.\d+)?|\d[\d,]*(?:\.\d+)?\s?(?:(?:만(?:\s?\d[\d,]*\s?천)?|천|억)\s?)?(?:원|₩|KRW)/
+  const PRICE_RE = new RegExp(`${KRW_RE.source}|${/(?:[$€]\s?\d[\d,]*(?:\.\d+)?)|(?:\d[\d,]*(?:\.\d+)?\s?(?:USD|달러|€))/.source}`)
   const REWARD_RE = /적립|포인트|쿠폰|리워드|보상|캐시백/ // 보상 금액은 파는 값이 아니다(review-list 의 「적립금 1,000원」)
   // 파는 값이 아닌 금액(운영자 대시보드의 지표·상태 화면·`data-money=metric` 표지)은 가격 규칙(총액·VAT)과 소비자용 재고·남은 시간 규칙에서 뺀다.
   // 뺀 곳은 결과 요약에 남기지 않지만 규칙표의 「측정」 칸에 적혀 있다.

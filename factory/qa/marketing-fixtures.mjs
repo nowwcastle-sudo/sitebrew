@@ -25,6 +25,7 @@ export const MUTATIONS = [
   { name: 'cta-icon-only-no-name', rule: 'cta-name', expect: 'fail', edit: [['<a class="b" href="#next"', '<button type="button" class="b"><svg width="12" height="12"><circle cx="6" cy="6" r="5"/></svg></button><a class="b" href="#next"']] },
   { name: 'price-not-number', rule: 'price-text', expect: 'fail', edit: [['<span data-price="billed">9,900원</span>', '<span data-price="billed">이만큼</span>']] },
   { name: 'price-only-in-image-alt', rule: 'price-text', expect: 'fail', edit: [['<h2>요금</h2>', '<h2>요금</h2><img alt="월 19,900원" width="40" height="20" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">']] },
+  { name: 'korean-unit-price-only-in-image-alt', rule: 'price-text', expect: 'fail', edit: [['<h2>요금</h2>', '<h2>요금</h2><img alt="월 3만 5천원" width="40" height="20" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">']] },
   { name: 'pricing-table-div-grid', rule: 'pricing-table', expect: 'fail', edit: [[TABLE, '<div role="table" aria-label="요금제 비교"><div role="row"><span role="columnheader">요금제</span><span role="columnheader">월 요금</span></div><div role="row"><span role="cell">베이직</span><span role="cell"><span data-price="billed">9,900원</span></span></div></div>']] },
   { name: 'pricing-table-th-no-scope', rule: 'pricing-table', expect: 'fail', edit: [['<th scope="col">요금제</th><th scope="col">월 요금</th>', '<th>요금제</th><th>월 요금</th>']] },
   { name: 'price-no-vat', rule: 'price-notation', expect: 'fail', edit: [['총 결제 금액 9,900원(VAT 포함) · 배송비·설치비 없음', '총 결제 금액 9,900원 · 배송비·설치비 없음']] },

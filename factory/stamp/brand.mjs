@@ -151,6 +151,14 @@ export function brandPrimaryOf(brand = {}) {
   return primary && primary.lch[1] >= ACCENT_C ? primary.lch : null
 }
 
+// 생성기와 관문은 같은 파싱·렌더·중복 제거 후 주색 입력을 고른다.
+const brandColorsOf = (raw) => [...new Map(raw.map((x) => [oklchToHex(css(parseColor(x))), { input: x, lch: render(parseColor(x)) }])).values()]
+export function brandPrimaryInputOf(brand = {}) {
+  const raw = (brand.colors ?? []).filter((x) => x !== undefined && x !== null && x !== '')
+  if (raw.some((x) => !parseColor(x))) return null
+  return assignRoles(brandColorsOf(raw)).primary?.input ?? null
+}
+
 export function brandToRecipeHead(brand = {}, basePreset, opts = {}) {
   if (!basePreset?.recipeHints) throw new Error('brandToRecipeHead: 바탕 프리셋(references/styles/presets.json 원소)이 없다')
   const adjustments = []
@@ -160,7 +168,7 @@ export function brandToRecipeHead(brand = {}, basePreset, opts = {}) {
   const raw = (brand.colors ?? []).filter((x) => x !== undefined && x !== null && x !== '')
   const bad = raw.filter((x) => !parseColor(x))
   if (bad.length) return blocked(`색 형식을 읽을 수 없다: ${bad.join(', ')} — #RGB·#RRGGBB·oklch(…)로 준다`)
-  const cols = [...new Map(raw.map((x) => [oklchToHex(css(parseColor(x))), { input: x, lch: render(parseColor(x)) }])).values()]
+  const cols = brandColorsOf(raw)
   const roles = assignRoles(cols)
   const hints = basePreset.recipeHints
   const logic = hints.colorLogic?.[0] ?? 'K1'
