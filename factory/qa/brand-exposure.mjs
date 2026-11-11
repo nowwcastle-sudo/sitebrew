@@ -1,23 +1,25 @@
-// 브랜드 주색 노출 관문(v0.2.6 T10 · S4 · 설계 D16) — 브리프의 첫 색이 첫 화면(히어로 1440×900)에 거의 안 보이면 공개 불가.
+// 브랜드 주색 노출 관문(v0.2.6 T10 · S4 · 설계 D16) — 브리프의 주색이 첫 화면(히어로 1440×900)에 거의 안 보이면 공개 불가.
 //   ① exposureProbe()            쪽 안에서 도는 자기완결 함수. DOM 을 문서 순서로 8px 칸 위에 칠한다(나중에 칠한 요소가 이긴다 — 겹친 상자를 두 번 세지 않는다).
 //                                 칠하는 것: 배경색 · 테두리색 · 글자색(글자 줄 상자). 글자색은 배경 층과 따로 둔다 — 칸이 「배경이 주색」이거나 「그 위 글자가 주색」이면 센다(연한 글자가 주색 상자를 지우지 않는다). 사진·그라데이션·영상은 DOM 색이 아니라 세지 않는다(그 칸은 「주색 아님」으로 남는다).
 //   ② measureBrandExposure(page) page = { ev } 로 ①을 돌려 { ratio, samples } 를 받는다 — 주색 근처(OKLab 거리 ≤ threshold) 칸 / 전체 칸.
 //   ③ brandExposureGate(cand, { ratio }) 순수 판정 → { pass, ratio, floor }. 하한은 colorStrategy 별(Restrained 1% · Committed 15% · 그 밖 1%) — 골든 실측 뒤 조정한다.
 //   ④ brandExposureForCandidate  07-qa 어댑터(Chrome 을 띄워 ②를 부른다. 안쪽 측정기 measure 는 시험용으로 바꿀 수 있다).
-// 브랜드 색(cand.brand.input.colors[0])이 없는 후보는 이 관문을 돌리지 않는다(qa.mjs 가 brandColorOf 로 거른다).
+// 브랜드 색(입력 순서의 첫 유채색, 없으면 어두운 무채색)이 없는 후보는 이 관문을 돌리지 않는다(qa.mjs 가 brandColorOf 로 거른다).
 // 픽셀 방식(스크린샷 해석)은 sharp 가 devDependency 뿐이라 쓰지 않는다(설계 D16).
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { assertOpened, connect, navigateAndWait, startChrome } from './cdp.mjs'
+
+import { brandPrimaryInputOf } from '../stamp/brand.mjs'
 
 export const DEFAULT_THRESHOLD = 0.07
 export const EXPOSURE_FLOOR = { Restrained: 0.01, Committed: 0.15 }
 export const DEFAULT_FLOOR = 0.01
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i
 
-/** 후보의 브랜드 주색(첫 색) — 올바른 #hex 일 때만. 없으면 null(관문 생략). */
+/** 브랜드 역할 배정과 같은 주색 — #hex 입력만 계측한다. */
 export const brandColorOf = (cand) => {
-  const c = cand?.brand?.input?.colors?.[0]
+  const c = brandPrimaryInputOf(cand?.brand?.input)
   return typeof c === 'string' && HEX.test(c.trim()) ? c.trim() : null
 }
 

@@ -19,9 +19,9 @@ test('brandExposureGate: 하한은 colorStrategy 별 — Restrained 1% · Commit
   assert.equal(brandExposureGate(cand(), { ratio: undefined }).pass, false)
 })
 
-test('brandColorOf: 올바른 #hex 첫 색만 — 색 없음 · 브랜드 없음 · 색 이름은 null(관문 생략)', () => {
+test('brandColorOf: 브랜드 역할과 같은 첫 유채색 — 색 없음 · 브랜드 없음 · 색 이름은 null(관문 생략)', () => {
   assert.equal(brandColorOf(cand()), '#1F6B4A')
-  assert.equal(brandColorOf({ brand: { input: { colors: ['#abc'] } } }), '#abc')
+  assert.equal(brandColorOf({ brand: { input: { colors: ['#0a0'] } } }), '#0a0')
   for (const c of [{}, { brand: { input: {} } }, { brand: { input: { colors: [] } } }, { brand: { input: { colors: ['초록'] } } }]) assert.equal(brandColorOf(c), null)
 })
 
@@ -42,4 +42,17 @@ test('brandExposureForCandidate: 통과면 사유 없음 · 미만이면 사유 
   assert.deepEqual([boom.verdict, boom.toolFailure], ['tool', true])
   assert.match(boom.note, /^도구 실패: 탐색 실패/)
   assert.equal(existsSync(resultFile), false, '도구 실패는 앞 실행의 결과 파일을 남기지 않는다')
+})
+
+test('brandColorOf: 흰 바탕을 주색으로 세지 않고 첫 유채색을 고른다', () => {
+  const pick = (colors) => brandColorOf({ brand: { input: { colors } } })
+  assert.equal(pick(['#fff', '#1F6B4A', '#f00']), '#1F6B4A')
+  assert.equal(pick(['#111', '#1F6B4A', '#f00']), '#1F6B4A')
+  assert.equal(pick(['#fff', '#777', '#111']), '#111')
+  assert.equal(pick(['#fff']), null)
+  assert.equal(pick([' #0a0 ']), '#0a0')
+  assert.equal(pick(['invalid', '#0a0']), null)
+  assert.equal(pick([42, '#0a0']), null)
+  assert.equal(pick(['oklch(0.6 0.15 150)', '#f00']), null)
+  assert.equal(pick(['oklch(1 0 0)', '#f00']), '#f00')
 })

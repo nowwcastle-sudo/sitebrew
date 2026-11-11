@@ -146,5 +146,18 @@ export function writeSampleFacts(runDir, sample) {
 /** text 안에 예시 파일의 값이 글자 그대로 들어 있는 키들. 열거형·짧은 값(scan:false)은 뺀다. 04 문구에 옮겨 적은 경우도 잡는다. */
 export function sampleValuesIn(text, sample) {
   const hay = String(text ?? '')
-  return Object.entries(sample?.facts ?? {}).filter(([key, value]) => scannable(key) && value && hay.includes(value)).map(([key]) => key)
+  return Object.entries(sample?.facts ?? {}).filter(([key, value]) => scannable(key) && value && containsSampleValue(hay, value)).map(([key]) => key)
+}
+
+// 금액 숫자가 더 긴 금액의 앞부분이면 다른 값이다($29 ≠ $299·$29.99).
+// 문장부호 뒤 숫자만 이어지는 소수점·천 단위 구분자를 숫자의 일부로 본다.
+function containsSampleValue(text, value) {
+  if (!/^[$₩€]\s?\d[\d,]*(?:\.\d+)?$/.test(value)) return text.includes(value)
+  let at = text.indexOf(value)
+  while (at !== -1) {
+    const tail = text.slice(at + value.length)
+    if (!/^(?:\d|[.,]\d)/.test(tail)) return true
+    at = text.indexOf(value, at + value.length)
+  }
+  return false
 }
