@@ -54,26 +54,27 @@ export const contentAt = (path: string): unknown => at(path)
 export const locale = site.locale
 export const archetype = site.archetype
 
+const seoSite = site.sample?.scrub.length
+  ? scrubSamples(site, site.sample.scrub, locale === "en" ? NEEDS_CHECK_EN : NEEDS_CHECK)
+  : site
+
 /** 섹션 props(문구·값). 블록·변형 이름은 잎 코드가 안다. */
 export const sectionProps = (key: string) => resolve((site.sections[key] as Section).props) as never
 export const copyVariantOf = (key: string): string | undefined => site.sections[key]?.copyVariant
 
 /** SEO 메타·JSON-LD 가 읽는 콘텐츠 객체(J9 — 원형 콘텐츠 + site 하나). */
 export function seoContent() {
-  const { sections: _s, pages: _p, legal: _l, shell: _h, sample, ...content } = site
-  void _s; void _p; void _l; void _h
-  const clean = sample?.scrub.length ? scrubSamples(content, sample.scrub, locale === "en" ? NEEDS_CHECK_EN : NEEDS_CHECK) : content
-  // site 칸도 예시 값을 지운 사본(clean)에서 푼다 — 원본으로 풀면 scrub 한 칸(site.description 등)이 메타·JSON-LD 로 되살아난다
-  const root = { ...site, ...clean }
-  return { ...clean, site: resolve(clean.site ?? site.site, root) } as never
+  const { sections: _s, pages: _p, legal: _l, shell: _h, sample: _sample, ...content } = seoSite
+  void _s; void _p; void _l; void _h; void _sample
+  return { ...content, site: resolve(content.site, seoSite) } as never
 }
 
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined)
 
 /** 쪽 하나의 SEO 입력(seoMetadata·jsonLdFor 가 받는 모양). */
 export function pageSeo(route: string): SeoPage {
-  const p = site.pages[route]
-  return { path: route, type: p.type, title: str(resolve(p.title)), description: str(resolve(p.description)), noindex: p.noindex, showsPrice: p.showsPrice }
+  const p = seoSite.pages[route]
+  return { path: route, type: p.type, title: str(resolve(p.title, seoSite)), description: str(resolve(p.description, seoSite)), noindex: p.noindex, showsPrice: p.showsPrice }
 }
 export const pageTitle = (route: string): string => str(resolve(site.pages[route].title)) ?? ""
 export const pageHasHero = (route: string) => site.pages[route].hero

@@ -109,3 +109,21 @@ test('requiredFacts 에 든 키는 모두 표에서 값을 얻는다(상호 제�
     assert.ok(SAMPLE_KEYS.includes(k), `${id}: ${k}`)
   }
 })
+
+test('값 스캔: 금액의 숫자 경계를 지키고 실제 예시가 나중에 나오면 잡는다', () => {
+  const sample = { facts: { price: '$29', shippingFee: '$5' } }
+  for (const text of ['$299', '$29.99', '$29,900', '$50', '$5.99'])
+    assert.deepEqual(sampleValuesIn(text, sample), [], text)
+  for (const text of ['$29', 'Price: $29 per item', '"$29"', '$29.', '$299 then $29'])
+    assert.deepEqual(sampleValuesIn(text, sample), ['price'], text)
+  assert.deepEqual(sampleValuesIn('$5 shipping', sample), ['shippingFee'])
+})
+
+test('값 스캔: 한국어 기본 가격·배송비의 앞 숫자 경계를 지킨다', () => {
+  const sample = { facts: { price: '29,000원(부가세 포함)', shippingFee: '3,000원' } }
+  for (const text of ['129,000원(부가세 포함)', '13,000원', '1,3,000원', '1.3,000원'])
+    assert.deepEqual(sampleValuesIn(text, sample), [], text)
+  assert.deepEqual(sampleValuesIn('요금 29,000원(부가세 포함)', sample), ['price'])
+  assert.deepEqual(sampleValuesIn('배송비 3,000원.', sample), ['shippingFee'])
+  assert.deepEqual(sampleValuesIn('13,000원 또는 3,000원', sample), ['shippingFee'])
+})
