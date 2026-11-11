@@ -149,14 +149,18 @@ export function sampleValuesIn(text, sample) {
   return Object.entries(sample?.facts ?? {}).filter(([key, value]) => scannable(key) && value && containsSampleValue(hay, value)).map(([key]) => key)
 }
 
-// 금액 숫자가 더 긴 금액의 앞부분이면 다른 값이다($29 ≠ $299·$29.99).
-// 문장부호 뒤 숫자만 이어지는 소수점·천 단위 구분자를 숫자의 일부로 본다.
+// 금액의 숫자 경계: $29 ≠ $299·$29.99, 3,000원 ≠ 13,000원.
+// 자연어 예시는 기존 그대로 찾고, 숫자로 시작/끝나는 금액만 경계를 더한다.
 function containsSampleValue(text, value) {
-  if (!/^[$₩€]\s?\d[\d,]*(?:\.\d+)?$/.test(value)) return text.includes(value)
+  const prefixMoney = /^[$₩€]\s?\d[\d,]*(?:\.\d+)?$/.test(value)
+  const suffixMoney = /^\d[\d,]*(?:\.\d+)?\s?(?:원|₩|KRW)/.test(value)
+  if (!prefixMoney && !suffixMoney) return text.includes(value)
   let at = text.indexOf(value)
   while (at !== -1) {
-    const tail = text.slice(at + value.length)
-    if (!/^(?:\d|[.,]\d)/.test(tail)) return true
+    const head = text.slice(0, at), tail = text.slice(at + value.length)
+    const longerBefore = suffixMoney && /(?:\d|\d[.,])$/.test(head)
+    const longerAfter = prefixMoney && /^(?:\d|[.,]\d)/.test(tail)
+    if (!longerBefore && !longerAfter) return true
     at = text.indexOf(value, at + value.length)
   }
   return false

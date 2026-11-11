@@ -118,3 +118,12 @@ test('값 스캔: 금액의 숫자 경계를 지키고 실제 예시가 나중�
     assert.deepEqual(sampleValuesIn(text, sample), ['price'], text)
   assert.deepEqual(sampleValuesIn('$5 shipping', sample), ['shippingFee'])
 })
+
+test('값 스캔: 한국어 기본 가격·배송비의 앞 숫자 경계를 지킨다', () => {
+  const sample = { facts: { price: '29,000원(부가세 포함)', shippingFee: '3,000원' } }
+  for (const text of ['129,000원(부가세 포함)', '13,000원', '1,3,000원', '1.3,000원'])
+    assert.deepEqual(sampleValuesIn(text, sample), [], text)
+  assert.deepEqual(sampleValuesIn('요금 29,000원(부가세 포함)', sample), ['price'])
+  assert.deepEqual(sampleValuesIn('배송비 3,000원.', sample), ['shippingFee'])
+  assert.deepEqual(sampleValuesIn('13,000원 또는 3,000원', sample), ['shippingFee'])
+})
