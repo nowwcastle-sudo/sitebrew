@@ -99,14 +99,16 @@ test('B 경계: PATH 가 Path·path·없음이어도 돌고, POSIX 실행 파일
   writeFileSync(join(dir, 'node_modules', 'a', 'cli.js'), '')
   writeFileSync(join(dir, 'node_modules', 'a', 'package.json'), JSON.stringify({ bin: './cli.js' }))
   assert.equal(shimEntry(join(dir, 'a.cmd'), 'a'), join(dir, 'node_modules', 'a', 'cli.js'), 'bin 문자열 형식')
+  // 작업 폴더는 CLI 폴더 밖이어야 한다 — 안이면 resolveTrustedBin 이 그 PATH 항목을 일부러 건너뛴다(tmpdir() 를 cwd 로 주면 tmp('…') 폴더가 그 안이다).
+  const away = tmp('wf-cwd-')
   if (WIN) {
     const g = tmp('wf-g-')
     writeFileSync(join(g, 'b.cmd'), '@echo off\r\n')
-    assert.equal(trustedCommand('b', [], { env: { PATH: g, PATHEXT: '.CMD' }, cwd: tmpdir() }), null, '.cmd 인데 패키지 bin 없음')
+    assert.equal(trustedCommand('b', [], { env: { PATH: g, PATHEXT: '.CMD' }, cwd: away }), null, '.cmd 인데 패키지 bin 없음')
   } else {
     const g = tmp('wf-g-')
     writeFileSync(join(g, 'b'), '#!/bin/sh\n', { mode: 0o755 })
-    assert.deepEqual(trustedCommand('b', ['x'], { env: { PATH: g }, cwd: tmpdir() }), [join(g, 'b'), ['x']])
+    assert.deepEqual(trustedCommand('b', ['x'], { env: { PATH: g }, cwd: away }), [join(g, 'b'), ['x']])
   }
 })
 
