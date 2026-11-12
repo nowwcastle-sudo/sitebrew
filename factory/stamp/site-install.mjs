@@ -11,11 +11,14 @@ import { fileURLToPath } from 'node:url'
 import { localRegistry } from '../scripts/recipe-swap.mjs'
 import { shadcnSpec } from '../scripts/lib/pins.mjs'
 import { envWithoutSecrets } from '../lib/secret-env.mjs'
+import { npmCommand } from '../lib/trusted-bin.mjs'
 import { failMessage, tailLog } from './fail-message.mjs'
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const TEMPLATE = join(dirname(fileURLToPath(import.meta.url)), 'site-template')
 const SHADCN = shadcnSpec()
+/** npx 를 셸 없이(npm 설치본을 node 로). npm 설치본을 못 찾은 Windows 만 옛 셸 문자열로 — Windows cmd 는 $( )·백틱을 풀지 않고 경로에 " 가 올 수 없다. */
+const npx = (args) => npmCommand('npx', args) ?? `npx ${args.map((a) => `"${a}"`).join(' ')}`
 const CACHE = join(ROOT, '.tmp', 'stamp-template')
 const REG_CACHE = join(ROOT, '.tmp', 'stamp-registry')
 
@@ -33,7 +36,9 @@ export const sh = (cmd, cwd, log, { env, append = false, timeoutMs = shTimeoutMs
   const out = createWriteStream(log, append ? { flags: 'a' } : undefined)
   // POSIX 에서는 셸(/bin/sh)과 그 자식을 한 프로세스 묶음으로 띄운다 — 셸만 죽이면 자식(npm·node)이 출력 파이프를 쥔 채 남아 close 가 오지 않았다(리눅스 CI 실측)
   const posix = process.platform !== 'win32'
-  const p = spawn(cmd, { cwd, shell: true, detached: posix, env: { ...envWithoutSecrets(process.env), ...(env ?? {}) } })
+  // 배열 [실행 파일, 인자] 이면 셸 없이 부른다(보안 수정 B — 폴더 경로가 명령 문자열에 들어가면 POSIX 셸이 $( )·백틱을 푼다)
+  const childEnv = { ...envWithoutSecrets(process.env), ...(env ?? {}) }
+  const p = Array.isArray(cmd) ? spawn(cmd[0], cmd[1], { cwd, shell: false, detached: posix, env: childEnv, windowsHide: true }) : spawn(cmd, { cwd, shell: true, detached: posix, env: childEnv })
   const killTree = () => {
     if (!posix) return void spawnSync('taskkill', ['/PID', String(p.pid), '/T', '/F'], { stdio: 'ignore' })
     try { process.kill(-p.pid, 'SIGKILL') } catch { p.kill('SIGKILL') }
@@ -145,7 +150,7 @@ export async function ensureRepoRegistry() {
   mkdirSync(REG_CACHE, { recursive: true })
   rmSync(out, { recursive: true, force: true })
   const log = join(REG_CACHE, 'build-repo.log')
-  const code = await sh(`npx -y ${SHADCN} build -o "${out}"`, ROOT, log)
+  const code = await sh(npx(['-y', SHADCN, 'build', '-o', out]), ROOT, log)
   if (code !== 0) throw new Error(failMessage('shadcn build', code, log))
   writeFileSync(marker, key)
   return out
@@ -155,7 +160,7 @@ export async function ensureRepoRegistry() {
 export async function buildCandidateRegistry(registryDir, outDir) {
   rmSync(outDir, { recursive: true, force: true })
   const log = join(dirname(outDir), 'build-candidate.log')
-  const code = await sh(`npx -y ${SHADCN} build -o "${outDir}"`, registryDir, log)
+  const code = await sh(npx(['-y', SHADCN, 'build', '-o', outDir]), registryDir, log)
   if (code !== 0) throw new Error(failMessage('후보 레지스트리 shadcn build', code, log))
   return outDir
 }
@@ -171,8 +176,7 @@ export function prepareSiteDir(siteDir, cache) {
 
 /** shadcn add — 로컬 레지스트리(../localreg)의 항목 이름들을 한 번에. → { code, log } */
 export async function addItems(siteDir, names, log) {
-  const args = names.map((n) => `../localreg/${n}.json`).join(' ')
-  const code = await sh(`npx -y ${SHADCN} add ${args} -y -o`, siteDir, log)
+  const code = await sh(npx(['-y', SHADCN, 'add', ...names.map((n) => `../localreg/${n}.json`), '-y', '-o']), siteDir, log)
   return { code, log }
 }
 
@@ -191,8 +195,11 @@ export async function nextBuild(siteDir, log) {
   let typecheck = 'next'
   if (process.env.WF_BUILD_SPLIT_TYPECHECK === '1') {
     typecheck = 'split'
-    const bin = (n) => `"${join(siteDir, 'node_modules', '.bin', n)}"` // 사이트 폴더의 설치본만 쓴다(npx 는 위쪽 폴더의 같은 이름을 먼저 잡을 수 있다)
-    code = await sh(`${bin('next')} typegen && ${bin('tsc')} --noEmit`, siteDir, log)
+    // 사이트 폴더의 설치본만 쓴다(npx 는 위쪽 폴더의 같은 이름을 먼저 잡을 수 있다) — 셸 없이 node 로 진입 파일을 부른다(보안 수정 B)
+    const nodeBin = (...p) => [process.execPath, [join(siteDir, 'node_modules', ...p)]]
+    const [nx, nxArgs] = nodeBin('next', 'dist', 'bin', 'next')
+    code = await sh([nx, [...nxArgs, 'typegen']], siteDir, log)
+    if (code === 0) { const [tc, tcArgs] = nodeBin('typescript', 'bin', 'tsc'); code = await sh([tc, [...tcArgs, '--noEmit']], siteDir, log, { append: true }) }
     if (code === 0) code = await sh('npm run build', siteDir, log, { append: true, env: { WF_BUILD_SKIP_TYPECHECK: '1' } })
     else appendFileSync(log, '\n[타입 검사 실패 — tsc 단계(WF_BUILD_SPLIT_TYPECHECK=1), next build 는 돌리지 않았다]\n')
   } else code = await sh('npm run build', siteDir, log)
