@@ -14,6 +14,7 @@ import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { parseRecipe, buildRecipe, knownRegistryItems } from './recipe.mjs'
 import { shadcnSpec } from './lib/pins.mjs'
+import { childEnv } from '../lib/secret-env.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const SHADCN = shadcnSpec()
@@ -54,7 +55,7 @@ export function secondWins(css) {
 // 셸 명령 한 줄을 비동기로 돌려 출력은 로그 파일에 쓴다(Windows 의 npx.cmd 때문에 shell).
 export const sh = (cmd, cwd, log) => new Promise((res) => {
   const out = createWriteStream(log)
-  const p = spawn(cmd, { cwd, shell: true })
+  const p = spawn(cmd, { cwd, shell: true, env: childEnv() })
   p.stdout.pipe(out); p.stderr.pipe(out)
   p.on('close', (code) => out.end(() => res(code)))
 })

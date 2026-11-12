@@ -13,9 +13,30 @@ const NAME = /^[A-Z0-9_]+$/
  */
 export const SECRET_ENV_NAMES = Object.freeze(['LAW_API_OC', 'PEXELS_API_KEY', 'VERCEL_TOKEN', 'POSTHOG_PROJECT_KEY', 'INDEXNOW_KEY', 'HIGGSFIELD_DIR', 'HIGGSFIELD_API_KEY', 'HIGGSFIELD_TOKEN'])
 
-/** 키 이름을 뺀 환경(받은 값은 바꾸지 않는다). HIGGSFIELD_ 로 시작하는 이름도 뺀다. */
+/**
+ * 이름 모양으로 본 자격증명(보안 수정 A, daybreak generated-build-secret-environment) — 목록에 없는 배포·클라우드·모델 키도 자식에게 넘기지 않는다.
+ * NEXT_PUBLIC_* 는 브라우저에 실리는 공개 값이라 남긴다(사이트 빌드가 읽는다).
+ */
+const SECRET_NAME_SHAPE = /(?:^|_)(?:TOKEN|SECRET|PASSWORD|PASSWD|PASSPHRASE|CREDENTIALS?|API_?KEY|ACCESS_KEY|PRIVATE_KEY|AUTH)(?:_|$)|^(?:AWS_SECRET|OPENAI_|ANTHROPIC_)/i
+
+/** 자식 프로세스에 넘기면 안 되는 이름인가. */
+export function isSecretEnvName(name) {
+  const k = String(name)
+  if (/^NEXT_PUBLIC_/i.test(k)) return false
+  return SECRET_ENV_NAMES.includes(k) || /^HIGGSFIELD_/i.test(k) || SECRET_NAME_SHAPE.test(k)
+}
+
+/** 키 이름을 뺀 환경(받은 값은 바꾸지 않는다). 목록·HIGGSFIELD_*·자격증명 모양(isSecretEnvName)을 뺀다. */
 export function envWithoutSecrets(env = process.env) {
-  return Object.fromEntries(Object.entries(env).filter(([k]) => !SECRET_ENV_NAMES.includes(k) && !/^HIGGSFIELD_/i.test(k)))
+  return Object.fromEntries(Object.entries(env).filter(([k]) => !isSecretEnvName(k)))
+}
+
+/** 신뢰하지 않는 코드(사이트 빌드·npm·npx·next·외부 CLI)를 돌리는 자식의 환경: 비밀을 뺀 바탕 + 이 명령에만 더하는 값. */
+export const childEnv = (extra = {}, env = process.env) => ({ ...envWithoutSecrets(env), ...extra })
+
+/** 문장에서 환경의 비밀 이름 값(4자 이상)을 모두 가린다 — 자식 출력·로그를 파일에 남기기 전에 쓴다. */
+export function maskEnvSecrets(text, env = process.env) {
+  return maskSecrets(text, Object.entries(env).filter(([k, v]) => isSecretEnvName(k) && typeof v === 'string' && v.trim().length >= 4).map(([, v]) => v))
 }
 
 /**

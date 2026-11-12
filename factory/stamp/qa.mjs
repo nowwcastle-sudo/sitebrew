@@ -34,6 +34,7 @@ import { brandColorOf, brandExposureForCandidate } from '../qa/brand-exposure.mj
 import { STRICT_BY_ARCHETYPE, strictGateForCandidate } from '../qa/strict-archetype.mjs'
 import { MOCK_PREVIEW_BLOCKER, SAMPLE_LEFT_BLOCKER, splitBlockers } from './blocker-class.mjs'
 import { killTree as killPid } from './run-proc.mjs'
+import { childEnv } from '../lib/secret-env.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const FACTORY = join(ROOT, 'factory')
@@ -183,7 +184,7 @@ async function startSiteNow(siteDir, { timeoutMs = 90_000 } = {}) {
   if (!existsSync(join(siteDir, '.next', 'BUILD_ID'))) throw new Error(`도구 실패: ${join(siteDir, '.next', 'BUILD_ID')} 없음 — 사이트가 빌드되지 않았다`)
   const port = await freePort()
   // detached: Linux·macOS 에서 자식이 제 프로세스 그룹을 가져야 killTree(pid)(= 그룹 전체 종료)가 듣는다. 예전에는 stop 이 child 객체를 넘겨 `next start` 가 남았다(v0.2.6 P2 F1).
-  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform !== 'win32' })
+  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, env: childEnv(), stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform !== 'win32' })
   let out = ''
   child.stdout.on('data', (d) => { out += d })
   child.stderr.on('data', (d) => { out += d })

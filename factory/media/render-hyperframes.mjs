@@ -10,6 +10,7 @@ import { cpSync, copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, stat
 import { join, dirname, resolve, basename } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { childEnv } from '../lib/secret-env.mjs'
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const HF_VERSION = '0.8.111'
@@ -41,7 +42,7 @@ export function hyperframesAvailable({ env = process.env, exec = defaultExec } =
 function defaultExec(cmd, args, { cwd }) {
   const npxCli = join(dirname(process.execPath), 'node_modules', 'npm', 'bin', 'npx-cli.js')
   const [bin, argv] = cmd === 'npx' && existsSync(npxCli) ? [process.execPath, [npxCli, ...args]] : [cmd, args]
-  const r = spawnSync(bin, argv, { cwd, encoding: 'utf8', timeout: 15 * 60 * 1000, maxBuffer: 64 * 1024 * 1024 })
+  const r = spawnSync(bin, argv, { cwd, env: childEnv(), encoding: 'utf8', timeout: 15 * 60 * 1000, maxBuffer: 64 * 1024 * 1024 })
   return { status: r.status ?? 1, stdout: r.stdout ?? '', stderr: r.stderr ?? '' }
 }
 

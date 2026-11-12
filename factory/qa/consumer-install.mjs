@@ -15,6 +15,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, 
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { childEnv } from '../lib/secret-env.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const DEP_RE = /^nowwcastle-sudo\/sitebrew\/([a-z0-9-]+)#v\d+\.\d+\.\d+$/
@@ -54,14 +55,14 @@ const fail = (msg) => { console.error(`도구 실패: ${msg}`); process.exit(1) 
 const shadcn = join(ROOT, 'node_modules', 'shadcn', 'dist', 'index.js')
 
 function run(label, cmd, args, cwd, log) {
-  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', shell: cmd === 'npm', maxBuffer: 64 * 1024 * 1024 })
+  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', shell: cmd === 'npm', env: childEnv(), maxBuffer: 64 * 1024 * 1024 }) // 설치·빌드는 신뢰하지 않는 코드 — 키 이름을 뺀 환경(보안 수정 A)
   log.push({ step: label, exit: r.status, tail: `${r.stdout ?? ''}${r.stderr ?? ''}`.trim().split('\n').slice(-6).join('\n') })
   console.log(`${r.status === 0 ? '통과' : '실패'} ${label} (종료 ${r.status})`)
   return r.status === 0
 }
 
 async function probe(consumer, port, list, log) {
-  const server = spawn(process.execPath, [join(ROOT, 'node_modules', 'next', 'dist', 'bin', 'next'), 'start', '-p', String(port)], { cwd: consumer, stdio: 'ignore' })
+  const server = spawn(process.execPath, [join(ROOT, 'node_modules', 'next', 'dist', 'bin', 'next'), 'start', '-p', String(port)], { cwd: consumer, env: childEnv(), stdio: 'ignore' })
   const kill = () => spawnSync('taskkill', ['/PID', String(server.pid), '/T', '/F'], { stdio: 'ignore' })
   try {
     let up = false
