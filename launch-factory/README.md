@@ -4,7 +4,7 @@
 
 This repository is the launch kit that pairs with web-factory, the repository of screen blocks. It owns the back end: auth, data, payments, email, analytics, and jobs. A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages.
 
-Current version `v0.2.6` · web-factory pin `v0.2.5` · blocks `7d68e905` · contract `7d68e905` (the commit of tag v0.2.5)
+Current version `v0.2.6` · web-factory pin `v0.2.6` · blocks `2930918e` · contract `2930918e` (the commit of tag v0.2.6)
 
 - Blocks know nothing about providers. Adapters implement the web-factory ports. The same conformance suite checks that an adapter reproduces the same scenarios as the mock.
 - A feature bundle (adapter, server actions, webhook routes, schema, migrations) is one entry in `registry.json`. The record of pinned versions is in [`docs/versions.md`](docs/versions.md).
@@ -125,7 +125,7 @@ Follow the steps in [`docs/RELEASING.md`](docs/RELEASING.md). Updating the READM
 
 | Tag | Date | Changes | Record |
 |---|---|---|---|
-| `v0.2.6` | 2026-11-05 | launch-factory v0.2.2 (internal version) · Feature release of the repository; the launch kit itself is unchanged · web-factory pin follows at release | — |
+| `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · Feature release of the repository; the launch kit itself is unchanged · web-factory pin follows at release | — |
 | `v0.2.5` | 2026-11-02 | launch-factory v0.2.2 (internal version) · Patch release: admin tables follow the screen language and time zone (template block copy updated) · the required web-factory version in this README corrected · posthog-js 1.438.21 · posthog-node 5.57.2 · pglite 0.5.11 and pglite-tools 0.4.11 · playwright 1.64.1 and @axe-core/playwright 4.14.0 and typescript-eslint 8.72.0 for development · systeminformation 5.33.16 · web-factory pinned to `v0.2.5` | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · Patch release: dependency updates only · drizzle-orm 0.45.4 · posthog-js 1.438.12 and posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · eslint 10.13.0 and typescript-eslint 8.71.2 for development · web-factory pinned to `v0.2.4` | — |
 | `v0.2.3` | 2026-10-25 | launch-factory v0.2.2 (internal version) · Patch release: shadcn 4.22.1 pinned to one exact version (clears the nested zod advisory and its OSV exception) · web-factory pinned to `v0.2.3` | — |

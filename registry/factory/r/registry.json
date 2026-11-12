@@ -1631,7 +1631,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -3784,7 +3784,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -5794,7 +5794,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -7784,7 +7784,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -9812,7 +9812,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -11815,7 +11815,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -13827,7 +13827,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -15989,7 +15989,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -18307,7 +18307,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -20485,7 +20485,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -22237,7 +22237,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -24357,7 +24357,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -26517,7 +26517,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -28726,7 +28726,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",
@@ -31047,7 +31047,7 @@
       ],
       "dependencies": [
         "cn@0.4.0",
-        "react-resizable-panels@4.14.8"
+        "react-resizable-panels@4.15.0"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/factory-base#v0.2.6",

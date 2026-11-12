@@ -160,6 +160,32 @@ describe('runFinishLoop', () => {
     assert.equal(again.n, 1)
   })
 
+  it('resumes after a picked board requests copy without applying it again', async () => {
+    const r = review(1, 'fix', [['F1', REVISE('첫째')], ['F2', REVISE('둘째')]])
+    const runDir = runWith({ '09-review/review-1.md': r })
+    const calls = []
+    let copyReady = false
+    const api = {
+      ...apiOk,
+      revise: async (_run, _pick, { text }) => ({ index: text === '첫째' ? 1 : 2, variants: [{ id: 'v1' }] }),
+      parseRevision: (text) => ({ scope: 'section', text }),
+      applyRevision: async (_run, _pick, index) => {
+        calls.push(`apply:${index}`)
+        return index === 1 ? { waitingCopy: '04-content.request.json' } : { applied: true }
+      },
+    }
+    const stepWithCopy = () => runFinishLoop({ runDir, pick: 'b' }, {
+      api, say: () => {}, rebuild: async () => { calls.push('build'); return copyReady ? { ok: true } : { waiting: true } },
+    })
+    assert.equal((await stepWithCopy()).code, 3)
+    assert.equal((await stepWithCopy()).code, 3)
+    assert.deepEqual(calls, ['apply:1', 'build'])
+    copyReady = true
+    assert.equal((await stepWithCopy()).code, 0)
+    assert.deepEqual(calls, ['apply:1', 'build', 'build', 'apply:2', 'build'])
+    assert.deepEqual(step(runDir), ['verdict', 1])
+  })
+
   it('recapture: puts the review aside and marks 07 stale so the next stamp takes new screenshots', async () => {
     const run = runWith({ '09-review/review-1.md': review(1, 'recapture') })
     writeFileSync(join(run, 'b', '07-qa.json'), JSON.stringify({ inputHash: 'abc', data: {} }))

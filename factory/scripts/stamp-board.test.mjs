@@ -288,7 +288,7 @@ test('보드 데이터: 후보마다 출처·blockers·공개 상태·07-qa 요�
 
 test('보드 데이터(실제 찍어내기 모양): candidate.json 에 blockers 만 있어도 01-direction 머리로 why·팔레트·서체·브랜드를 채우고, 브리프는 stamp-summary.json 의 경로에서 읽는다', () => {
   const run = join(work, 'real-shaped-run'), outside = join(work, 'elsewhere')
-  write(join(outside, 'brief.json'), { topic: '청춘케어', archetype: 'saas' })
+  write(join(outside, 'brief.json'), { topic: '솔결재', archetype: 'saas' })
   write(join(run, 'stamp-summary.json'), { kind: 'stamp-summary', brief: join(outside, 'brief.json'), run })
   const brand = { adjustments: [{ role: 'primary', theme: 'light', from: '#fc0', to: '#e6b800', reason: '명도만 조정' }], fontSubstitutions: [] }
   for (const c of cands) {
@@ -297,7 +297,7 @@ test('보드 데이터(실제 찍어내기 모양): candidate.json 에 blockers 
   }
   assert.ok(!existsSync(join(run, 'brief.json')), '실행 폴더에는 brief.json 이 없다')
   const d = loadBoardData(run)
-  assert.equal(d.brief, '청춘케어'); assert.equal(d.archetype, 'saas')
+  assert.equal(d.brief, '솔결재'); assert.equal(d.archetype, 'saas')
   for (const [i, c] of d.cands.entries()) {
     assert.ok(c.why && c.palette && c.fonts?.display, `${c.id}: 머리 칸이 비어 있지 않다`)
     assert.deepEqual(c.head, { why: cands[i].why, preset: cands[i].preset ?? null, palette: cands[i].palette, fonts: cands[i].fonts, thesis: null, ownWorld: null, colorStrategy: null, materialFamily: null })

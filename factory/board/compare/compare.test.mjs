@@ -109,7 +109,7 @@ const cand = (id, extra = {}) => ({
   ...extra,
 })
 const DATA = {
-  run: '청춘', title: '청춘케어 · 시안 3개 비교', briefLine: '대상: 운영자',
+  run: '청춘', title: '솔결재 · 시안 3개 비교', briefLine: '대상: 운영자',
   routes: [{ path: '/', label: '홈' }, { path: '/pricing', label: '요금' }, { path: '/about', label: '소개' }],
   candidates: [cand('a'), cand('b'), cand('c')], scaleNote: true,
 }

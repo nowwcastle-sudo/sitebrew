@@ -8,7 +8,7 @@
 
 작성일은 2026-11-04다.
 
-설계 출처는 셋이다. 청춘케어 사이트 시안 제작(impeccable 방식 3안 + 비교 대시보드)에서 나온 개선안 S1~S13, arena 선별(2후보 합성), 코드 조사 3건.
+설계 출처는 셋이다. 솔결재 사이트 시안 제작(impeccable 방식 3안 + 비교 대시보드)에서 나온 개선안 S1~S13, arena 선별(2후보 합성), 코드 조사 3건.
 
 
 ## 제1부 — 통합 설계
@@ -16,7 +16,7 @@
 
 ## 1. 의도와 이유
 
-Sitebrew는 사이트 후보 3개(a·b·c)를 사람 없이 빌드한 뒤 운영자가 하나를 고르게 한다. 실제 제작(청춘케어)에서 문제 다섯 가지가 드러났다.
+Sitebrew는 사이트 후보 3개(a·b·c)를 사람 없이 빌드한 뒤 운영자가 하나를 고르게 한다. 실제 제작(솔결재)에서 문제 다섯 가지가 드러났다.
 
 고르는 화면이 약하다.
 
@@ -596,7 +596,7 @@ v0.2.6 태그·GitHub Release·npm 게시는 대표가 직접 한다.
 
 ## 부록 A — 확정된 비교 대시보드 시제품 (대표 「이대로 진행해」)
 
-청춘케어 시안 3개용 정적 시제품이다. 실제 구현과 다른 점은 셋이다.
+솔결재 시안 3개용 정적 시제품이다. 실제 구현과 다른 점은 셋이다.
 
 C 배열은 예시다. 실제로는 loadBoardData·notes.json으로 채운다.
 
@@ -661,7 +661,7 @@ Pretendard CDN은 시스템 글꼴로 바꾼다.
 </head>
 <body>
 <div class="bar">
-  <h1>청춘케어 · 시안 3개 비교</h1>
+  <h1>솔결재 · 시안 3개 비교</h1>
   <span class="brief">대상: 장기요양기관 운영자 · 첫 행동: 무료로 시작하기 · 분위기: 대담한</span>
   <div class="group seg" id="vp"><span>화면 폭</span>
     <button data-w="1440" aria-pressed="true">데스크톱</button><button data-w="768">태블릿</button><button data-w="390">휴대폰</button></div>
@@ -695,9 +695,9 @@ const C = [
   { id:'a', dir:'a-passbook', name:'A · 운영 통장', kind:'추첨이 고른 안', thesis:'AI가 이번 달 운영을 통장정리처럼 한 줄씩 적어 줘요.',
     sw:['#13234a','#c9a24a','#e6ece8'], fonts:'Hahmlet · Pretendard', det:0, blockers:['사업자 정보 확인 필요','요금 금액 없음','기능 출시 시기 「준비 중」 13개'],
     row:{ msg:'이번 달 운영, AI가 통장정리하듯 한 줄씩 적어 드려요', act:'무료로 시작하기(금색 버튼)', sig:'기록이 한 줄씩 찍히고 마지막 줄이 「확인 필요」로 멈춤', logo:'금박 글자 + 지폐 문양', risk:'은행 통장 연상이 AI 제품으로 읽힐지' } },
-  { id:'b', dir:'b-gyeoljae', name:'B · 결재판', kind:'impeccable 추천 안', thesis:'AI가 기안하고 대표님은 결재만 해요.',
+  { id:'b', dir:'b-gyeoljae', name:'B · 결재판', kind:'impeccable 추천 안', thesis:'AI가 기안하고 운영자님은 결재만 해요.',
     sw:['#4a1519','#f4f5f3','#d23b2a'], fonts:'나눔명조 · Pretendard', det:2, blockers:['사업자 정보 확인 필요','요금 금액 없음','재료 재제작 중(리뷰 판정 rebuild)'],
-    row:{ msg:'서류는 AI가 기안해요. 대표님은 결재만 하세요.', act:'빈 결재 칸 누르기 → 도장 → 신청', sig:'결재 칸을 누르면 인주 도장이 찍힘', logo:'돌에 새긴 「청춘」 낙관 + 명조 글자', risk:'가장 익숙한 사무 의식이라 새로움이 덜할 수 있음' } },
+    row:{ msg:'서류는 AI가 기안해요. 운영자님은 결재만 하세요.', act:'빈 결재 칸 누르기 → 도장 → 신청', sig:'결재 칸을 누르면 인주 도장이 찍힘', logo:'돌에 새긴 「청춘」 낙관 + 명조 글자', risk:'가장 익숙한 사무 의식이라 새로움이 덜할 수 있음' } },
   { id:'c', dir:'c-catalog', name:'C · CC 카탈로그', kind:'도전 안', thesis:'업계 최전선 AI를 번호 붙은 카탈로그로 보여 줘요.',
     sw:['#0b0b0b','#f2f2ee','#7a8f6a'], fonts:'Wanted Sans · Pretendard', det:12, blockers:['사업자 정보 확인 필요','요금 금액 없음','자동 점검 경고 12건(구분선 오판 추정)'],
     row:{ msg:'말하면, 조회하고 계산하고 초안까지 해요.', act:'무료로 시작하기(흰 버튼)', sig:'맥박선이 흐르고 색 띠에 올리면 기능 이름이 보임', logo:'맥박선 마크 + 직접 그린 글자 + CC-00', risk:'50~60대에게 검은 바탕이 차갑게 느껴질 수 있음' } },
@@ -801,14 +801,14 @@ render();
 ```
 
 
-## 부록 B — 시험·실런용 청춘케어형 브리프
+## 부록 B — 시험·실런용 솔결재형 브리프
 
 out/answers.json(intake 입력)에 넣을 값이다. 연락처는 예약 형식의 예시이고, 실제 개인 정보는 넣지 않는다.
 
 
 ```json
 { "topic": "장기요양기관 운영자를 위한 AI 업무 도구 가입", "archetype": "saas", "locale": "ko",
-  "answers": { "name": "청춘케어", "audience": "장기요양기관 운영자(시설장·사회복지사), 다기관 법인 대표와 단일 기관 시설장", "action": "무료로 시작하기", "contact": "hello@example.com", "logo": "", "mood": "대담한", "brandColors": "#0F7B5F, #FF6B35, #14213D", "brandFonts": "", "positioning": "업계 최전선 AI" } }
+  "answers": { "name": "솔결재", "audience": "장기요양기관 운영자(시설장·사회복지사), 다기관 법인 대표와 단일 기관 시설장", "action": "무료로 시작하기", "contact": "hello@example.com", "logo": "", "mood": "대담한", "brandColors": "#0F7B5F, #FF6B35, #14213D", "brandFonts": "", "positioning": "업계 최전선 AI" } }
 
 ```
 

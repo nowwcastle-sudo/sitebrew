@@ -25,3 +25,7 @@ test('연한 글자가 주색 상자 위에 있어도 상자는 주색으로 센
   const box = await at('textbox') // 글자 크기에 딱 맞는 초록 상자 하나(글자색은 연한 초록빛 흰색)
   assert.ok(box.ratio > 0.03, `주색 상자 비율 ${box.ratio}`)
 })
+
+test('투명한 부모 아래의 주색은 화면에 보이지 않으므로 세지 않는다', async () => {
+  assert.equal((await at('invisible')).ratio, 0)
+})

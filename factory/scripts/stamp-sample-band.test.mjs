@@ -84,10 +84,27 @@ test('T18 템플릿: 예시 띠는 모든 쪽 SiteShell banner 로, 구조 데�
   assert.match(src, /site\.sample \? \{ banner: <SampleBand count=\{site\.sample\.count\} \/>/)
   assert.match(src, /이 시안에는 예시 정보 \$\{n\}개가 들어 있어요\. 공개 전에 실제 정보로 바꿔야 해요\./)
   assert.match(src, /This draft contains \$\{n\} sample details\. Replace them with real ones before publishing\./)
-  assert.match(src, /shell: _h, sample, \.\.\.content \} = site/, 'seoContent 가 sample 을 뺀다')
+  assert.match(src, /shell: _h, sample: _sample, \.\.\.content \} = seoSite/, 'seoContent 가 sample 을 뺀다')
   assert.match(src, /text-xs leading-snug md:text-sm/, '띠 글자는 12px(데스크톱 14px)·두 줄 안에 든다')
-  assert.match(src, /resolve\(clean\.site \?\? site\.site, root\)/, 'site 칸은 예시 값을 지운 사본에서 푼다')
-  assert.match(src, /const root = \{ \.\.\.site, \.\.\.clean \}/)
+  assert.match(src, /resolve\(content\.site, seoSite\)/, 'site 칸은 예시 값을 지운 사본에서 푼다')
+})
+
+test('T18 SEO: 페이지 제목·설명의 $ref 가 예시 값을 다시 드러내지 않는다', async () => {
+  const lib = join(root, 'factory', 'stamp', 'site-template', 'lib')
+  const src = read(lib, 'site.tsx')
+  const site = {
+    locale: 'ko', business: { phone: '02-0000-0000', name: '달빛' },
+    site: { description: { $ref: 'business.phone' } },
+    pages: { '/': { title: { $ref: 'business.name' }, description: { $ref: 'business.phone' } } },
+    sample: { scrub: ['business.phone'] },
+  }
+  const code = `const siteJson = ${JSON.stringify(site)}\nconst NEEDS_CHECK = '확인 필요', NEEDS_CHECK_EN = 'To be confirmed'\n${read(lib, 'sample-scrub.ts')}\n${src.slice(src.indexOf('type Ref ='), src.indexOf('export const pageTitle'))}`
+  const js = ts.transpileModule(code, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText
+  const { pageSeo, seoContent, contentAt } = await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`)
+  assert.equal(pageSeo('/').title, '달빛')
+  assert.equal(pageSeo('/').description, '확인 필요')
+  assert.equal(seoContent().site.description, '확인 필요')
+  assert.equal(contentAt('business.phone'), '02-0000-0000', '시안 본문은 예시 정보를 보여 준다')
 })
 
 test('T18 scrubSamples: 예시 칸만 자리 표시로 바꾸고 받은 값·다른 칸은 그대로 둔다', async () => {

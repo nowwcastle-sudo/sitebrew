@@ -248,7 +248,12 @@ export async function runStamp(opts, deps) {
   // 짝 파일 `<이름>.dark.<확장자>`(site-files.mjs headerLogoOf 가 찾는 것)도 입력이다: 더하거나 바꾸거나 지우면 06 이 다시 돈다. 짝이 없으면 입력 모양은 옛 그대로.
   const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex')
   const darkOf = (file) => { const ext = extname(file); const dark = `${file.slice(0, file.length - ext.length)}.dark${ext}`; return ext && existsSync(dark) ? dark : null }
-  const logo = brief.brand?.logo && !isNetworkOrDevicePath(brief.brand.logo) && existsSync(brief.brand.logo) ? { path: brief.brand.logo, sha256: sha(brief.brand.logo), ...(darkOf(brief.brand.logo) ? { darkSha256: sha(darkOf(brief.brand.logo)) } : {}) } : null
+  const logoPath = brief.brand?.logo
+  // 네트워크(UNC)·장치 경로는 파일 시스템을 건드리기 전에 거른다(보안 수정 C, SB-9) — 경로는 남겨 06 의 headerLogoOf 가 거절 사유를 적게 한다.
+  const netLogo = !!logoPath && isNetworkOrDevicePath(logoPath)
+  const darkLogo = logoPath && !netLogo && darkOf(logoPath)
+  // 지정한 파일이 없을 때도 경로를 남겨 06 이 누락 사유를 적게 한다.
+  const logo = logoPath ? { path: logoPath, sha256: !netLogo && existsSync(logoPath) ? sha(logoPath) : null, ...(darkLogo ? { darkSha256: sha(darkLogo) } : {}) } : null
   const qaSample = leftSamples.length ? { sample: leftSamples } : {} // 남은 예시가 없는 07 은 옛 입력·옛 호출 그대로
   const samplePreview = !!(opts.pick && opts.deployPreview && leftSamples.length)
 
