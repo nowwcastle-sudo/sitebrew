@@ -37,7 +37,7 @@ import { blankSamples, readSampleTable, remainingKeys, samplePaths } from './sam
 import { headerLogoOf, recipeColors, recipeHeadOf, writeFavicons, SITE_FILE_ITEMS } from './site-files.mjs'
 import { addFallbackFaces, dropKoreanKitImports, recipeWeightsFor, subsetSiteFonts } from './site-fonts.mjs'
 import { failMessage } from './fail-message.mjs'
-import { TEMPLATE, robocopy, addItems, buildCandidateRegistry, ensureRepoRegistry, ensureTemplateCache, makeLocalRegistry, nextBuild, prepareSiteDir, dirBytes } from './site-install.mjs'
+import { TEMPLATE, robocopy, addItems, buildCandidateRegistry, ensureRepoRegistry, ensureTemplateCache, makeLocalRegistry, nextBuild, prepareSiteDir, emptySiteDir, dirBytes } from './site-install.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const FACTORY = join(ROOT, 'registry', 'factory')
@@ -1360,9 +1360,9 @@ export async function generateSite(runDir, cand, opts = {}) {
   let installLog = null
   if (install) {
     const cache = await ensureTemplateCache()
-    prepareSiteDir(siteDir, cache)
+    prepareSiteDir(siteDir, cache, { runDir })
   } else {
-    if (existsSync(siteDir)) for (const e of readdirSync(siteDir)) if (e !== 'node_modules') rmSync(join(siteDir, e), { recursive: true, force: true })
+    emptySiteDir(siteDir, { runDir })
     mkdirSync(siteDir, { recursive: true })
     // 정적 검사용: 템플릿 파일만(node_modules 없이)
     robocopy(TEMPLATE, siteDir, { exclude: ['node_modules'] })

@@ -23,6 +23,7 @@ import { writePreviewUrl } from './deploy-preview.mjs'
 import { STEP_NAMES, inputHash, openRun } from './run-dir.mjs'
 import { pagesCodeKey } from './pages-key.mjs'
 import { failMessage } from './fail-message.mjs'
+import { isNetworkOrDevicePath } from '../lib/safe-path.mjs'
 import { isPendingReview } from '../legal/drafts.mjs'
 import { askIn, grammar } from '../vocab/grammar.mjs'
 import { mapLimit, qaParallelLimit } from './parallel.mjs'
@@ -247,7 +248,7 @@ export async function runStamp(opts, deps) {
   // 짝 파일 `<이름>.dark.<확장자>`(site-files.mjs headerLogoOf 가 찾는 것)도 입력이다: 더하거나 바꾸거나 지우면 06 이 다시 돈다. 짝이 없으면 입력 모양은 옛 그대로.
   const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex')
   const darkOf = (file) => { const ext = extname(file); const dark = `${file.slice(0, file.length - ext.length)}.dark${ext}`; return ext && existsSync(dark) ? dark : null }
-  const logo = brief.brand?.logo && existsSync(brief.brand.logo) ? { path: brief.brand.logo, sha256: sha(brief.brand.logo), ...(darkOf(brief.brand.logo) ? { darkSha256: sha(darkOf(brief.brand.logo)) } : {}) } : null
+  const logo = brief.brand?.logo && !isNetworkOrDevicePath(brief.brand.logo) && existsSync(brief.brand.logo) ? { path: brief.brand.logo, sha256: sha(brief.brand.logo), ...(darkOf(brief.brand.logo) ? { darkSha256: sha(darkOf(brief.brand.logo)) } : {}) } : null
   const qaSample = leftSamples.length ? { sample: leftSamples } : {} // 남은 예시가 없는 07 은 옛 입력·옛 호출 그대로
   const samplePreview = !!(opts.pick && opts.deployPreview && leftSamples.length)
 

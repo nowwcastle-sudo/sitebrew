@@ -5,12 +5,13 @@
 //   무거운 실행(shadcn build·add·next build)은 부르는 쪽이 실행 잠금(원장 gate 줄) 안에서 한다.
 import { spawn, spawnSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { appendFileSync, cpSync, createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
-import { basename, dirname, join } from 'node:path'
+import { appendFileSync, cpSync, createWriteStream, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, unlinkSync, writeFileSync } from 'node:fs'
+import { basename, dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { localRegistry } from '../scripts/recipe-swap.mjs'
 import { shadcnSpec } from '../scripts/lib/pins.mjs'
 import { envWithoutSecrets } from '../lib/secret-env.mjs'
+import { assertNoLinkInPath } from '../lib/safe-path.mjs'
 import { npmCommand } from '../lib/trusted-bin.mjs'
 import { failMessage, tailLog } from './fail-message.mjs'
 
@@ -168,10 +169,26 @@ export async function buildCandidateRegistry(registryDir, outDir) {
 /**
  * 사이트 폴더 준비: 템플릿 캐시(node_modules 포함)를 복사한다. 이미 있으면 node_modules 는 두고 생성 폴더만 비운 뒤 템플릿 파일을 다시 덮는다.
  */
-export function prepareSiteDir(siteDir, cache) {
+export function prepareSiteDir(siteDir, cache, { runDir } = {}) {
   const keep = join(siteDir, 'node_modules')
-  if (existsSync(siteDir)) for (const e of readdirSync(siteDir)) if (e !== 'node_modules') rmSync(join(siteDir, e), { recursive: true, force: true })
+  emptySiteDir(siteDir, { runDir })
   robocopy(cache, siteDir, { exclude: existsSync(keep) ? ['node_modules'] : [] })
+}
+
+/**
+ * 사이트 폴더를 비운다(node_modules 는 둔다). 재개 산출물이라 믿지 않는다: siteDir 이나 실행 폴더(runDir) 아래 그 상위가 링크·junction 이면 던진다 —
+ * 링크를 따라 readdir 하면 링크 대상 폴더의 내용을 재귀로 지운다. 지울 항목이 링크면 링크만 끊고 대상은 건드리지 않는다.
+ * runDir 을 안 주면 siteDir 의 상위 둘(후보 폴더까지)을 본다. runDir 자신은 사용자가 고른 곳이라 링크여도 된다.
+ */
+export function emptySiteDir(siteDir, { runDir } = {}) {
+  assertNoLinkInPath(siteDir, { stopAt: runDir ?? dirname(dirname(resolve(siteDir))) })
+  if (!existsSync(siteDir)) return
+  for (const e of readdirSync(siteDir)) {
+    if (e === 'node_modules') continue
+    const p = join(siteDir, e)
+    if (lstatSync(p).isSymbolicLink()) unlinkSync(p)
+    else rmSync(p, { recursive: true, force: true })
+  }
 }
 
 /** shadcn add — 로컬 레지스트리(../localreg)의 항목 이름들을 한 번에. → { code, log } */

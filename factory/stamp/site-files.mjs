@@ -2,10 +2,10 @@
 //   robots·sitemap·공유 그림 라우트는 템플릿에 한 벌로 있고(site-template/app/…) 값은 content/site.json 과 lib/build.json 에서 읽는다(J9 — 코드에 콘텐츠 없음).
 //   이 파일은 후보마다 달라지는 것만 만든다: 레시피 색(공유 그림·파비콘)과 파비콘 래스터(gen-favicons — favicon-kit 계획대로 sharp 로 굽는다).
 //   표지(mark): 브랜드 로고 SVG(currentColor 로 칠할 곳을 적은 것)가 있으면 그것, 없으면 상호로 고른 도형 표지(글자를 쓰지 않는다 — 래스터 도구가 한글 서체를 못 찾는다).
-import { existsSync, readFileSync, statSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { extname, isAbsolute, join, resolve } from 'node:path'
 import sharp from 'sharp'
+import { isNetworkOrDevicePath, readLocalInputFile } from '../lib/safe-path.mjs'
 import { loadLibrary } from '../scripts/style-presets.mjs'
 import { genFavicons, tsLoader } from '../scripts/gen-favicons.mjs'
 
@@ -38,13 +38,17 @@ const MARKS = [
 ]
 const wrap = (d) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="currentColor" fill-rule="evenodd" d="${d}"/></svg>`
 
+const LOGO_MAX_BYTES = 2 * 1024 * 1024
+
 /** 표지 SVG 문자열. logoPath(브랜드 입력의 SVG — currentColor 가 있어야 레시피 색으로 칠한다)가 쓸 만하면 그것. */
 export function markSvg(brandName, { logoPath, baseDir } = {}) {
-  if (logoPath) {
+  // 네트워크(UNC)·장치 경로는 파일 시스템을 건드리기 전에 거른다 — Windows 는 열기만 해도 외부 호스트에 SMB 접속을 시도한다. 링크·일반 파일 아님도 도형 표지로 대체한다(빌드는 계속).
+  if (logoPath && !isNetworkOrDevicePath(logoPath)) {
     const file = isAbsolute(logoPath) ? logoPath : resolve(baseDir ?? process.cwd(), logoPath)
-    if (/\.svg$/i.test(file) && existsSync(file)) {
-      const svg = readFileSync(file, 'utf8')
-      if (/currentColor/i.test(svg) && /viewBox/i.test(svg)) return { svg, source: 'brand-logo' }
+    if (!isNetworkOrDevicePath(file) && /\.svg$/i.test(file)) {
+      let svg = null
+      try { svg = readLocalInputFile(file, { maxBytes: LOGO_MAX_BYTES }).toString('utf8') } catch { /* 링크·큰 파일·일반 파일 아님 → 도형 표지 */ }
+      if (svg && /currentColor/i.test(svg) && /viewBox/i.test(svg)) return { svg, source: 'brand-logo' }
     }
   }
   const h = createHash('sha256').update(String(brandName ?? '')).digest()
@@ -55,20 +59,32 @@ export function markSvg(brandName, { logoPath, baseDir } = {}) {
 export const HEADER_LOGO = { maxBytes: 1024 * 1024, maxRatio: 6, formats: ['.svg', '.png', '.jpg', '.jpeg', '.webp'] }
 const fileOf = (logoPath, baseDir) => (isAbsolute(logoPath) ? logoPath : resolve(baseDir ?? process.cwd(), logoPath))
 /** 쓸 수 없는 이유를 한 줄로 돌려준다: { ok:false, reason }. 쓸 수 있으면 { ok:true, file, ext, width, height, mode:'mask'|'img' }. */
+// 읽기 실패를 사용자가 고칠 수 있는 한 줄로(보안 수정 C — 링크·일반 파일 아님·네트워크 경로는 읽지 않는다).
+const logoReadReason = (e) => {
+  if (e?.code === 'ENOENT' || e?.code === 'ENOTDIR') return '파일을 찾지 못했어요'
+  if (e?.reason === 'tooLarge') return '파일이 1MB 를 넘어요'
+  if (e?.reason === 'link') return '바로가기(링크) 파일은 쓸 수 없어요 — 실제 파일을 골라 주세요'
+  if (e?.reason === 'networkPath') return NETWORK_LOGO_REASON
+  return '일반 그림 파일이 아니에요'
+}
+const NETWORK_LOGO_REASON = '네트워크·장치 경로의 파일은 쓸 수 없어요 — 이 컴퓨터 안의 파일을 골라 주세요'
 async function probeLogoFile(file) {
+  // 글자만 보는 검사를 파일 시스템 호출보다 먼저 한다 — Windows 는 UNC 경로를 열기만 해도 외부 호스트에 SMB 접속(NTLM 인증)을 시도한다(보안 수정 C, SB-9).
+  if (isNetworkOrDevicePath(file) || isNetworkOrDevicePath(resolve(file))) return { ok: false, reason: NETWORK_LOGO_REASON }
   const ext = extname(file).toLowerCase()
   if (!HEADER_LOGO.formats.includes(ext)) return { ok: false, reason: `형식이 맞지 않아요(${ext || '확장자 없음'} — svg·png·jpg·webp 만 써요)` }
-  if (!existsSync(file)) return { ok: false, reason: '파일을 찾지 못했어요' }
-  if (statSync(file).size > HEADER_LOGO.maxBytes) return { ok: false, reason: '파일이 1MB 를 넘어요' }
+  // 한 번에 검사하고 읽는다(링크·일반 파일 아님·크기 상한·검사와 열기 사이 교체). 그림 해석도 읽은 바이트로 한다 — 경로를 두 번 열지 않는다.
+  let bytes
+  try { bytes = readLocalInputFile(file, { maxBytes: HEADER_LOGO.maxBytes }) } catch (e) { return { ok: false, reason: logoReadReason(e) } }
   let width, height, mode
   if (ext === '.svg') {
-    const svg = readFileSync(file, 'utf8')
+    const svg = bytes.toString('utf8')
     const vb = /viewBox\s*=\s*["']\s*([-\d.eE]+)[\s,]+([-\d.eE]+)[\s,]+([-\d.eE]+)[\s,]+([-\d.eE]+)\s*["']/i.exec(svg)
     if (!vb) return { ok: false, reason: 'SVG 에 viewBox 가 없어요' }
     width = Number(vb[3]); height = Number(vb[4])
     mode = /currentColor/i.test(svg) ? 'mask' : 'img'
   } else {
-    try { ({ width, height } = await sharp(file).metadata()) } catch { return { ok: false, reason: '그림 파일을 읽지 못했어요' } }
+    try { ({ width, height } = await sharp(bytes).metadata()) } catch { return { ok: false, reason: '그림 파일을 읽지 못했어요' } }
     mode = 'img'
   }
   if (!(width > 0) || !(height > 0)) return { ok: false, reason: '그림 크기를 읽지 못했어요' }
@@ -79,12 +95,12 @@ async function probeLogoFile(file) {
 /** 머리글 로고 판정. 짝 파일 `<이름>.dark.<확장자>` 는 img 모드에서만 받는다(같은 검사를 통과해야). 값 모양: { ok, file, ext, width, height, mode, darkFile? } | { ok:false, reason }. */
 export async function headerLogoOf(logoPath, { baseDir } = {}) {
   if (!logoPath) return { ok: false, reason: '로고 파일이 없어요' }
+  if (isNetworkOrDevicePath(logoPath)) return { ok: false, reason: NETWORK_LOGO_REASON } // 상대 경로로 풀기 전에 원문부터 거른다
   const base = await probeLogoFile(fileOf(logoPath, baseDir))
   if (!base.ok) return base
   if (base.mode !== 'img') return base
   const dark = base.file.slice(0, -base.ext.length) + '.dark' + base.ext
-  if (!existsSync(dark)) return base
-  const pair = await probeLogoFile(dark)
+  const pair = await probeLogoFile(dark) // 짝 파일이 없거나 링크이면 쓸 수 없는 것 — 짝 없이 base 만 쓴다
   return pair.ok && pair.mode === 'img' ? { ...base, darkFile: dark } : base
 }
 
