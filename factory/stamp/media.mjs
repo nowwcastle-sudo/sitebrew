@@ -27,6 +27,7 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync, statSync } 
 import { join, extname, basename, resolve, dirname } from 'node:path'
 import { createRequire } from 'node:module'
 import { readSecret as readSecretEnv, maskSecrets } from '../lib/secret-env.mjs'
+import { safeFetch, bareUrl, HOSTS, LIMITS } from '../lib/safe-fetch.mjs'
 import { missingKey, PEXELS_WHERE } from '../doctor.mjs'
 import { searchUrl, candidate, rankCandidates, filterMinDuration, pickVideoDownload, sourceRecord } from '../media/fetch-pexels.mjs'
 import { ROOT, SOURCES, HIGGSFIELD_DIR, stills, videoAsset, creditRow, overBudget } from '../media/build-media.mjs'
@@ -189,15 +190,24 @@ export async function fetchMedia(plan, outDir, deps = {}) {
   const pendingLabel = PLACEHOLDER_LABEL.pending[deps.locale === 'en' ? 'en' : 'ko']
   const pexelsLocale = deps.locale === 'ko' ? 'ko-KR' : undefined // 한국어 사이트의 검색어는 한국어 주제어라 Pexels 에 언어를 알린다(없으면 예전 주소 그대로)
   const masked = (msg) => maskSecrets(msg, [key])
-  const get = async (url, init) => {
+  // Pexels 에서 받는 모든 길(검색 JSON·사진·영상)은 safeFetch 를 거친다 — https·허용 호스트·리디렉션 재검사·크기 한도(보안 E, WF-9).
+  // 사진·영상 주소는 Pexels 응답 JSON 이 준 2차 주소라 공급자가 아무 곳이나 가리킬 수 있다. 오류 문장에는 쿼리 없이 호스트+경로만 싣는다.
+  const get = async (url, { allow, max, headers } = {}) => {
     let r
     try {
-      r = await fetch(url, init)
+      r = await safeFetch(url, { allowHosts: allow, maxBytes: max, headers, fetch })
     } catch (e) {
-      throw new Error(masked(`도구 실패: Pexels 호출 실패(${e?.message ?? e}) — ${url}`))
+      throw new Error(masked(`도구 실패: Pexels 호출 실패(${e?.message ?? e}) — ${bareUrl(url)}`))
     }
-    if (!r.ok) throw new Error(masked(`도구 실패: Pexels ${r.status} ${r.statusText ?? ''} — ${url}`))
-    return r
+    if (r.status < 200 || r.status >= 300) throw new Error(masked(`도구 실패: Pexels ${r.status} — ${bareUrl(url)}`))
+    return r.buffer
+  }
+  const parseJson = (buf, url) => {
+    try {
+      return JSON.parse(buf.toString('utf8'))
+    } catch {
+      throw new Error(masked(`도구 실패: Pexels 응답이 JSON 이 아니다 — ${bareUrl(url)}`))
+    }
   }
 
   const hfLicense = JSON.parse(readFileSync(SOURCES, 'utf8')).higgsfieldLicenseUrl ?? null
@@ -250,7 +260,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
   }
   const searched = new Map() // 같은 검색 주소는 한 번만(stills 네 줄이 같은 검색어를 쓴다)
   const search = async (url) => {
-    if (!searched.has(url)) searched.set(url, await (await get(url, { headers: { Authorization: key } })).json())
+    if (!searched.has(url)) searched.set(url, parseJson(await get(url, { allow: HOSTS.pexelsApi, max: LIMITS.json, headers: { Authorization: key } }), url)) // 인증 머리는 API 호스트 요청에만(2차 받기에는 보내지 않는다)
     return searched.get(url)
   }
   const hyperframesRender = deps.renderHyperframes ?? (hyperframesAvailable() ? renderTemplate : null)
@@ -268,7 +278,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
       const link = pickVideoDownload(video, { minDuration: MIN_VIDEO_SECONDS }).link
       used.add(video.id)
       const file = join(srcDir, `${fileName(row.slot)}.mp4`)
-      writeFileSync(file, Buffer.from(await (await get(link)).arrayBuffer()))
+      writeFileSync(file, await get(link, { allow: HOSTS.pexelsVideo, max: LIMITS.video }))
       sourceFiles.set(row.slot, file)
       const main = await build(file, row)
       const rec = sourceRecord({ kind: 'videos', item: video, recipe: row.recipe, slot: row.slot, file: `.src/${basename(file)}`, fetchedAt: at() })
@@ -281,7 +291,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
       if (!photo?.src?.original) throw new Error(`도구 실패: Pexels 검색 「${row.query}」 결과에 쓸 사진이 없다 — ${row.slot}`)
       used.add(photo.id)
       const file = join(srcDir, `${fileName(row.slot)}.jpg`)
-      writeFileSync(file, Buffer.from(await (await get(`${photo.src.original}?auto=compress&cs=tinysrgb&w=2400`)).arrayBuffer()))
+      writeFileSync(file, await get(`${photo.src.original}?auto=compress&cs=tinysrgb&w=2400`, { allow: HOSTS.pexelsPhoto, max: LIMITS.photo }))
       sourceFiles.set(row.slot, file)
       const main = await build(file, row)
       const rec = sourceRecord({ kind: 'photos', item: photo, recipe: row.recipe, slot: row.slot, file: `.src/${basename(file)}`, fetchedAt: at() })

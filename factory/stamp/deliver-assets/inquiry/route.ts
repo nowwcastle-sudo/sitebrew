@@ -10,6 +10,8 @@ import { NEEDS_CHECK_LITERALS, isMailAddress } from "@/components/content/conten
 import copy from "@/lib/inquiry-copy.json"
 import { contentAt, locale } from "@/lib/site"
 
+import { readCapped } from "./read-capped"
+
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
@@ -21,8 +23,10 @@ const usable = (v: unknown): v is string => typeof v === "string" && v.trim() !=
 const fail = (status: number, key: SayKey, retryable = false) => Response.json({ ok: false, formError: copy[key][locale], retryable }, { status })
 
 export async function POST(request: Request) {
-  const raw = await request.text()
-  if (Buffer.byteLength(raw) > MAX_BYTES) return fail(413, "tooBig")
+  // 크기는 읽으면서 센다(content-length 가 크면 본문을 읽지 않는다) — read-capped.ts
+  const read = await readCapped(request, MAX_BYTES)
+  if (!read.ok) return read.reason === "tooBig" ? fail(413, "tooBig") : fail(400, "badBody")
+  const raw = read.text
   let body: unknown
   try {
     body = JSON.parse(raw)
