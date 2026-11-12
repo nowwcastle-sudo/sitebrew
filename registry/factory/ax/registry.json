@@ -47,7 +47,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "nowwcastle-sudo/sitebrew/brand-color#v0.2.6"
+        "nowwcastle-sudo/sitebrew/brand-color#v0.2.6",
+        "nowwcastle-sudo/sitebrew/svg-allowlist#v0.2.6"
       ]
     },
     {
@@ -157,6 +158,21 @@
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/content-core#v0.2.6"
       ]
+    },
+    {
+      "name": "svg-allowlist",
+      "type": "registry:lib",
+      "title": "svg-allowlist",
+      "description": "web-factory ax: svg-allowlist",
+      "files": [
+        {
+          "path": "svg-allowlist.ts",
+          "type": "registry:lib",
+          "target": "@components/ax/svg-allowlist.ts"
+        }
+      ],
+      "dependencies": [],
+      "registryDependencies": []
     }
   ]
 }

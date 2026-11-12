@@ -1,5 +1,5 @@
 // 소개형 전달(sitebrew v0.2.0 계획 3 Task 9) — 사이트는 지금처럼 복사하고(deliver.mjs), 「문의 받기」를 골랐고 시안에 문의 폼·신청(lead) 블록이 있으면
-// 가짜 문의 접수를 더한다: app/api/inquiry/route.ts 를 넣고 lib/contact.ts 를 contact.mock.ts 로 바꾼다(전화·카카오 갈래와 makeContactPorts·makeLeadPorts 이름은 그대로, 보내기만 /api/inquiry).
+// 가짜 문의 접수를 더한다: app/api/inquiry/route.ts(와 read-capped.ts)를 넣고 lib/contact.ts 를 contact.mock.ts 로 바꾼다(전화·카카오 갈래와 makeContactPorts·makeLeadPorts 이름은 그대로, 보내기만 /api/inquiry).
 // 자산은 deliver-assets/inquiry/ — stamp 가 사이트에 복사하는 폴더 밖이라 찍어낸 사이트(골든)는 달라지지 않는다. expect.json 은 접수 한 번 뒤 가짜 메일 기록의 template 별 줄 수다.
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -10,7 +10,7 @@ export const INQUIRY_EXPECT = JSON.parse(readFileSync(join(INQUIRY_ASSETS, 'expe
 /** 완성 확인이 보내는 시험용 문의(보낸 사람 정보) — 가짜 메일 기록에 이 값이 새지 않는지 본다. 사용자 문장이 아니라 시험 자료라 데이터 파일(sample.json)에 둔다. */
 export const INQUIRY_SAMPLE = JSON.parse(readFileSync(join(INQUIRY_ASSETS, 'sample.json'), 'utf8'))
 /** 소개형 전달물 안에서 자산이 들어가는 자리 */
-export const INQUIRY_TARGETS = { route: join('app', 'api', 'inquiry', 'route.ts'), contact: join('lib', 'contact.ts'), copy: join('lib', 'inquiry-copy.json') }
+export const INQUIRY_TARGETS = { route: join('app', 'api', 'inquiry', 'route.ts'), readCapped: join('app', 'api', 'inquiry', 'read-capped.ts'), contact: join('lib', 'contact.ts'), copy: join('lib', 'inquiry-copy.json') }
 
 /** 시안(site.json)의 섹션 블록 중 문의 폼(contact 특성)이나 신청 폼(lead 특성)이 있는가. gen-pages 의 blockTraits 가 정한다. */
 export async function hasInquiryForm(site) {
@@ -38,9 +38,10 @@ export function addInquiryMock(dest, runtimeCopy) {
   const route = join(dest, INQUIRY_TARGETS.route)
   mkdirSync(dirname(route), { recursive: true })
   copyFileSync(join(INQUIRY_ASSETS, 'route.ts'), route)
+  copyFileSync(join(INQUIRY_ASSETS, 'read-capped.ts'), join(dest, INQUIRY_TARGETS.readCapped)) // route.ts 가 읽는 크기 제한 읽기(Next 라우트 파일은 다른 이름을 내보낼 수 없어 따로 둔다)
   copyFileSync(join(INQUIRY_ASSETS, 'contact.mock.ts'), join(dest, INQUIRY_TARGETS.contact))
   writeFileSync(join(dest, INQUIRY_TARGETS.copy), JSON.stringify(runtimeCopy, null, 2) + '\n')
-  return [INQUIRY_TARGETS.route, INQUIRY_TARGETS.contact, INQUIRY_TARGETS.copy].map((p) => p.split('\\').join('/'))
+  return [INQUIRY_TARGETS.route, INQUIRY_TARGETS.readCapped, INQUIRY_TARGETS.contact, INQUIRY_TARGETS.copy].map((p) => p.split('\\').join('/'))
 }
 
 /**

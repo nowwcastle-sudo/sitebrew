@@ -7,12 +7,11 @@
 //   키는 어디에도 찍지 않는다 — 로그·오류·기록 파일 어디에도(오류 문장은 redact 를 거친다). 인증 머리는 키 그대로(Pexels API 규약).
 // 라이선스: Pexels License(https://www.pexels.com/license/) — 상업 무료·출처 표기 의무 없음. 그래도 출처를 credits.json 에 남긴다.
 //   사람이 알아볼 수 있게 나오는 사진은 피하고(PEOPLE), 추천·보증으로 읽히게 쓰지 않는다.
-import { mkdirSync, writeFileSync, createWriteStream } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { join, dirname, resolve, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Readable } from 'node:stream'
-import { pipeline } from 'node:stream/promises'
 import { readSecret } from '../lib/secret-env.mjs'
+import { safeFetch, bareUrl, HOSTS, LIMITS } from '../lib/safe-fetch.mjs'
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const SRC_DIR = join(ROOT, '.tmp', 'media-src')
@@ -85,17 +84,30 @@ export function sourceRecord({ kind, item, recipe, slot, file, fetchedAt = new D
 // 키를 문장에서 지운다(오류 문장·응답 본문이 키를 되돌려 줄 때를 막는다).
 export const redact = (s, key) => (key ? String(s).split(key).join('[redacted]') : String(s))
 
-async function api(url, key) {
-  const r = await fetch(url, { headers: { Authorization: key } })
-  if (!r.ok) throw new Error(redact(`Pexels ${r.status} ${r.statusText} — ${url}`, key))
-  return r.json()
+// 받는 길은 모두 safeFetch 다(보안 E, WF-9): API 는 api.pexels.com 만(인증 머리는 여기서만), 사진·영상 주소는 Pexels 응답이 준 2차 주소라
+// 허용 호스트·https·리디렉션 재검사·크기 한도를 거친다. 오류 문장에는 쿼리 없이 호스트+경로만 싣는다.
+export async function pexelsApi(url, key, fetchImpl = globalThis.fetch) {
+  let r
+  try {
+    r = await safeFetch(url, { allowHosts: HOSTS.pexelsApi, maxBytes: LIMITS.json, headers: { Authorization: key }, fetch: fetchImpl })
+  } catch (e) {
+    throw new Error(redact(`${e?.message ?? e}`, key))
+  }
+  if (r.status < 200 || r.status >= 300) throw new Error(redact(`Pexels ${r.status} — ${bareUrl(url)}`, key))
+  try {
+    return JSON.parse(r.buffer.toString('utf8'))
+  } catch {
+    throw new Error(`Pexels 응답이 JSON 이 아니다 — ${bareUrl(url)}`)
+  }
 }
 
-async function download(url, file) {
+/** kind: 'photos' | 'videos' — 한도·호스트가 갈린다. */
+export async function pexelsDownload(url, file, kind, fetchImpl = globalThis.fetch) {
+  const photos = kind === 'photos'
+  const r = await safeFetch(url, { allowHosts: photos ? HOSTS.pexelsPhoto : HOSTS.pexelsVideo, maxBytes: photos ? LIMITS.photo : LIMITS.video, fetch: fetchImpl })
+  if (r.status < 200 || r.status >= 300) throw new Error(`받기 실패 ${r.status} — ${bareUrl(url)}`)
   mkdirSync(dirname(file), { recursive: true })
-  const r = await fetch(url)
-  if (!r.ok || !r.body) throw new Error(`받기 실패 ${r.status} — ${url}`)
-  await pipeline(Readable.fromWeb(r.body), createWriteStream(file))
+  writeFileSync(file, r.buffer)
 }
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]
@@ -108,7 +120,7 @@ if (isMain) {
   try {
     if (!key) throw new Error('PEXELS_API_KEY 가 없다(프로세스 환경·Windows 사용자 환경)')
     if (cmd === 'search') {
-      const res = await api(searchUrl({ kind, query: flag('--query'), orientation: flag('--orientation'), size: flag('--size'), perPage: Number(flag('--n', 15)) }), key)
+      const res = await pexelsApi(searchUrl({ kind, query: flag('--query'), orientation: flag('--orientation'), size: flag('--size'), perPage: Number(flag('--n', 15)) }), key)
       const minDuration = Number(flag('--min-duration', 0))
       const list = filterMinDuration(rankCandidates((res[kind] ?? []).map((x) => candidate(kind, x)), { minWidth: Number(flag('--min-width', 1440)), aspect: flag('--aspect') ? Number(flag('--aspect')) : null, minDuration }), kind === 'videos' ? minDuration : 0)
       for (const c of list) console.log(`${c.people ? '사람? ' : ''}${c.id}\t${c.width}x${c.height}${c.duration ? `\t${c.duration}s` : ''}\t${c.author}\t${c.alt}\t${c.url}`)
@@ -116,11 +128,11 @@ if (isMain) {
     } else if (cmd === 'get') {
       const id = flag('--id'), recipe = flag('--recipe'), slot = flag('--slot')
       if (!id || !recipe || !slot) throw new Error('get 은 --id --recipe --slot 이 필요하다')
-      const item = await api(itemUrl(kind, id), key)
+      const item = await pexelsApi(itemUrl(kind, id), key)
       const link = kind === 'photos' ? photoLink(item, Number(flag('--width', 0))) : pickVideoDownload(item, { minDuration: Number(flag('--min-duration', 0)), maxWidth: Number(flag('--max-width', VIDEO_MAX_WIDTH)) }).link
       if (!link) throw new Error(`받을 파일이 없다 — ${kind} ${id}`)
       const file = join(outDir, recipe, `${slot}.${kind === 'photos' ? 'jpg' : 'mp4'}`)
-      await download(link, file)
+      await pexelsDownload(link, file, kind)
       const rec = sourceRecord({ kind, item, recipe, slot, file: relative(ROOT, file).replace(/\\/g, '/') })
       writeFileSync(join(outDir, recipe, `${slot}.json`), JSON.stringify(rec, null, 2) + '\n')
       console.log(`받음 ${rec.file} (${rec.width}x${rec.height}, ${rec.author}) — ${rec.url}`)

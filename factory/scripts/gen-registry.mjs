@@ -1,12 +1,12 @@
 // 층 폴더의 원본 파일 → shadcn registry.json. 사용: node factory/scripts/gen-registry.mjs [--ref <태그> | --ref=<태그>]
 // --ref 를 주면 registryDependencies 를 <repo>/<이름>#<태그> 로 고정한다(shadcn은 ref 없는 주소를 HEAD로 읽는다).
-// npm 의존은 package.json 의 버전 범위로 고정한다(pkg@^x.y.z). 버전이 이미 붙은 의존은 그대로 둔다.
+// npm 의존은 package-lock.json 의 정확한 판으로 고정한다(pkg@x.y.z — lockedVersions, SB-15). 버전이 이미 붙은 의존은 그대로 둔다.
 // 레시피 층 r(registry/factory/r/registry.json)은 recipe.mjs recipeRegistry() 가 만든다 — npm run gen:all 순서(recipe → gen-registry)로 돌린다.
 // CSS 층(themes·base)은 파일을 내보내지 않고 CSS를 읽어 cssVars·css 로 바꾼다 — shadcn 은 이 두 필드만 globals.css 에 합친다.
 import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join, relative, basename, extname, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { BASE_ITEM, parseImports, pinDependency, parseRef, parseCss } from './lib/registry-lib.mjs'
+import { BASE_ITEM, parseImports, pinDependency, parseRef, parseCss, lockedVersions } from './lib/registry-lib.mjs'
 
 export { BASE_ITEM, parseImports, pinDependency, parseRef, parseCss }
 
@@ -83,8 +83,7 @@ if (isMain) {
   const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
   const REPO = 'nowwcastle-sudo/sitebrew'
   const REF = parseRef(process.argv.slice(2))
-  const pkg = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8'))
-  const versions = { ...pkg.devDependencies, ...pkg.dependencies }
+  const versions = lockedVersions(repoRoot)
   for (const layer of ['ui', 'lib', 'hooks', 'themes', 'base', 'contract', 'content', 'ax']) {
     const dir = join(repoRoot, 'registry', 'factory', layer)
     if (!existsSync(dir)) continue

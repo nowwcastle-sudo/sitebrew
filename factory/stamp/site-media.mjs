@@ -4,7 +4,15 @@
 //   · 「실제 사진 필요」·「이미지 준비 중」 자리 표시는 media 를 비워 두고(블록은 media 없이 그려진다) 공개 불가 사유로 남는다(gen-pages BLOCKER.photo).
 //   칸 이름은 "<쪽>/<섹션>/<칸 id>" — 05-media 의 slot 과 같다. 자산은 후보 레시피의 것만 쓴다(다른 레시피 자산이 섞여 들어오지 않게).
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, isAbsolute, join, posix, win32 } from 'node:path'
+import { assertNoLinkInPath, isNetworkOrDevicePath, realInside, statLocalInputFile } from '../lib/safe-path.mjs'
+
+/** 05-media 안 상대 경로로 쓸 수 있는 글인가(절대·드라이브·UNC·`..`·빈 조각·NUL 은 아니다). */
+export function isSafeRel(rel) {
+  if (typeof rel !== 'string' || rel === '' || rel.includes('\0')) return false
+  if (isAbsolute(rel) || posix.isAbsolute(rel) || win32.isAbsolute(rel) || isNetworkOrDevicePath(rel) || /^[a-zA-Z]:/.test(rel)) return false
+  return rel.split(/[\\/]/).every((seg) => seg !== '' && seg !== '..' && seg !== '.')
+}
 
 const BASE = '/media/'
 /** manifest 자산 출처 → block-contract MediaSource. */
@@ -63,11 +71,17 @@ export const filesOf = (asset) => [...new Set((asset.files ?? []).map((f) => f.f
 /** 자산 파일을 05-media 폴더에서 siteDir/public/media 로 복사한다. → 복사한 상대 경로[] (없는 파일은 던진다). */
 export function copyMediaFiles(mediaDir, siteDir, assets) {
   const copied = []
+  const mediaRoot = join(siteDir, 'public', 'media')
   for (const a of assets) for (const rel of filesOf(a)) {
+    // manifest 는 재개 산출물이라 믿지 않는다: 상대 경로·`..` 없음·05-media 안의 일반 파일(링크 아님)만 읽고, 사이트 public/media 안에만 쓴다.
+    if (!isSafeRel(rel)) throw new Error(`미디어 파일 경로가 안전하지 않다: ${String(rel)} — 05-media manifest 를 확인한다`)
     const from = join(mediaDir, rel)
     if (!existsSync(from)) throw new Error(`미디어 파일이 없다: ${from} — 05-media 를 다시 돈다`)
-    const to = join(siteDir, 'public', 'media', rel)
+    try { statLocalInputFile(from) } catch (e) { throw new Error(`미디어 파일을 쓸 수 없다: ${rel} — ${e.message}`) }
+    if (!realInside(mediaDir, from)) throw new Error(`미디어 파일이 05-media 폴더 밖을 가리킨다: ${rel}`)
+    const to = join(mediaRoot, rel)
     mkdirSync(dirname(to), { recursive: true })
+    assertNoLinkInPath(to, { stopAt: siteDir }) // 목적지 쪽에 링크가 낀 경로로 쓰지 않는다
     copyFileSync(from, to)
     copied.push(rel)
   }

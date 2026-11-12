@@ -23,14 +23,16 @@
 // Pexels 키는 stock-ok 칸이 있을 때만 읽고, 없으면 doctor(--stage media)와 같은 문장으로 던진다. 오류 문장에서 키 값은 *** 로 가린다.
 //   예외(D24 · 키 없는 미리보기): deps.pexelsOptional 이면 키가 없을 때 던지지 않고 스톡 칸을 placeholders(reason "stock-pending", 「이미지 준비 중」 틀)로 남긴다 —
 //   06 이 「공개 불가 — 사진 필요」 blocker 로 받아 사이트는 만들어진다. Higgsfield 폴더(HIGGSFIELD_DIR)가 없어도 생성 칸은 요청 파일로 남고 계속된다.
-import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync, copyFileSync, statSync } from 'node:fs'
+import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync, statSync } from 'node:fs'
 import { join, extname, basename, resolve, dirname } from 'node:path'
 import { createRequire } from 'node:module'
 import { readSecret as readSecretEnv, maskSecrets } from '../lib/secret-env.mjs'
+import { safeFetch, bareUrl, HOSTS, LIMITS } from '../lib/safe-fetch.mjs'
 import { missingKey, PEXELS_WHERE } from '../doctor.mjs'
 import { searchUrl, candidate, rankCandidates, filterMinDuration, pickVideoDownload, sourceRecord } from '../media/fetch-pexels.mjs'
 import { ROOT, SOURCES, HIGGSFIELD_DIR, stills, videoAsset, creditRow, overBudget } from '../media/build-media.mjs'
 import { hyperframesAvailable, renderTemplate } from '../media/render-hyperframes.mjs'
+import { isNetworkOrDevicePath, readLocalInputFile, statLocalInputFile } from '../lib/safe-path.mjs'
 import { codexImage, codexImagesEnabled, defaultObjectPrompt, objectRequests, GLB_BUDGET } from './object-media.mjs'
 import { BLOCK_REGISTRY } from '../scripts/archetypes.mjs'
 import { parseOklch } from '../scripts/lib/palette-rules.mjs'
@@ -188,15 +190,24 @@ export async function fetchMedia(plan, outDir, deps = {}) {
   const pendingLabel = PLACEHOLDER_LABEL.pending[deps.locale === 'en' ? 'en' : 'ko']
   const pexelsLocale = deps.locale === 'ko' ? 'ko-KR' : undefined // 한국어 사이트의 검색어는 한국어 주제어라 Pexels 에 언어를 알린다(없으면 예전 주소 그대로)
   const masked = (msg) => maskSecrets(msg, [key])
-  const get = async (url, init) => {
+  // Pexels 에서 받는 모든 길(검색 JSON·사진·영상)은 safeFetch 를 거친다 — https·허용 호스트·리디렉션 재검사·크기 한도(보안 E, WF-9).
+  // 사진·영상 주소는 Pexels 응답 JSON 이 준 2차 주소라 공급자가 아무 곳이나 가리킬 수 있다. 오류 문장에는 쿼리 없이 호스트+경로만 싣는다.
+  const get = async (url, { allow, max, headers } = {}) => {
     let r
     try {
-      r = await fetch(url, init)
+      r = await safeFetch(url, { allowHosts: allow, maxBytes: max, headers, fetch })
     } catch (e) {
-      throw new Error(masked(`도구 실패: Pexels 호출 실패(${e?.message ?? e}) — ${url}`))
+      throw new Error(masked(`도구 실패: Pexels 호출 실패(${e?.message ?? e}) — ${bareUrl(url)}`))
     }
-    if (!r.ok) throw new Error(masked(`도구 실패: Pexels ${r.status} ${r.statusText ?? ''} — ${url}`))
-    return r
+    if (r.status < 200 || r.status >= 300) throw new Error(masked(`도구 실패: Pexels ${r.status} — ${bareUrl(url)}`))
+    return r.buffer
+  }
+  const parseJson = (buf, url) => {
+    try {
+      return JSON.parse(buf.toString('utf8'))
+    } catch {
+      throw new Error(masked(`도구 실패: Pexels 응답이 JSON 이 아니다 — ${bareUrl(url)}`))
+    }
   }
 
   const hfLicense = JSON.parse(readFileSync(SOURCES, 'utf8')).higgsfieldLicenseUrl ?? null
@@ -204,6 +215,25 @@ export async function fetchMedia(plan, outDir, deps = {}) {
   const hfCredit = (file) => {
     hfCredits ??= hfDir && existsSync(join(hfDir, 'credits.json')) ? JSON.parse(readFileSync(join(hfDir, 'credits.json'), 'utf8')) : []
     return hfCredits.find((x) => x.file === file) ?? null
+  }
+
+  // 대표 제공 파일(content.media[칸].file): 네트워크·장치 경로와 링크는 거절한다(UNC 는 열기만 해도 Windows 가 SMB 접속을 시도한다). 디스크 어디의 정상 사진이든 쓴다.
+  const ownerFile = (raw, slot) => {
+    if (isNetworkOrDevicePath(raw) || isNetworkOrDevicePath(resolve(raw))) throw new Error(`대표 제공 파일 경로가 네트워크·장치 경로라 쓰지 않는다 — ${slot}`)
+    const src = resolve(raw)
+    if (!existsSync(src)) throw new Error(`대표 제공 파일이 없다 — ${slot}: ${raw}`)
+    try { statLocalInputFile(src) } catch (e) { throw new Error(`대표 제공 파일을 쓸 수 없다 — ${slot}: ${e.message}`) }
+    return src
+  }
+  const GLB_MAGIC = 'glTF'
+  // GLB 모델(content.media[칸].model·higgsfieldModel): 열기 전에 경로 글자부터 본다. 파일은 링크·일반 파일·glTF 첫 4바이트를 확인한 뒤에만 복사한다.
+  const modelFile = (name, slot) => {
+    const bad = () => new Error(`모델 파일 경로가 네트워크·장치 경로라 쓰지 않는다 — ${slot}`)
+    if (isNetworkOrDevicePath(name)) throw bad()
+    const inHfPath = hfDir ? join(hfDir, name) : null
+    const src = inHfPath && existsSync(inHfPath) ? inHfPath : resolve(name)
+    if (isNetworkOrDevicePath(src)) throw bad()
+    return src
   }
 
   const assets = [], placeholders = [], credits = [], requests = [], hfRequests = [], used = new Set()
@@ -230,7 +260,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
   }
   const searched = new Map() // 같은 검색 주소는 한 번만(stills 네 줄이 같은 검색어를 쓴다)
   const search = async (url) => {
-    if (!searched.has(url)) searched.set(url, await (await get(url, { headers: { Authorization: key } })).json())
+    if (!searched.has(url)) searched.set(url, parseJson(await get(url, { allow: HOSTS.pexelsApi, max: LIMITS.json, headers: { Authorization: key } }), url)) // 인증 머리는 API 호스트 요청에만(2차 받기에는 보내지 않는다)
     return searched.get(url)
   }
   const hyperframesRender = deps.renderHyperframes ?? (hyperframesAvailable() ? renderTemplate : null)
@@ -248,7 +278,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
       const link = pickVideoDownload(video, { minDuration: MIN_VIDEO_SECONDS }).link
       used.add(video.id)
       const file = join(srcDir, `${fileName(row.slot)}.mp4`)
-      writeFileSync(file, Buffer.from(await (await get(link)).arrayBuffer()))
+      writeFileSync(file, await get(link, { allow: HOSTS.pexelsVideo, max: LIMITS.video }))
       sourceFiles.set(row.slot, file)
       const main = await build(file, row)
       const rec = sourceRecord({ kind: 'videos', item: video, recipe: row.recipe, slot: row.slot, file: `.src/${basename(file)}`, fetchedAt: at() })
@@ -261,7 +291,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
       if (!photo?.src?.original) throw new Error(`도구 실패: Pexels 검색 「${row.query}」 결과에 쓸 사진이 없다 — ${row.slot}`)
       used.add(photo.id)
       const file = join(srcDir, `${fileName(row.slot)}.jpg`)
-      writeFileSync(file, Buffer.from(await (await get(`${photo.src.original}?auto=compress&cs=tinysrgb&w=2400`)).arrayBuffer()))
+      writeFileSync(file, await get(`${photo.src.original}?auto=compress&cs=tinysrgb&w=2400`, { allow: HOSTS.pexelsPhoto, max: LIMITS.photo }))
       sourceFiles.set(row.slot, file)
       const main = await build(file, row)
       const rec = sourceRecord({ kind: 'photos', item: photo, recipe: row.recipe, slot: row.slot, file: `.src/${basename(file)}`, fetchedAt: at() })
@@ -285,8 +315,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
       const inHf = (name) => (name && hfDir ? join(hfDir, name) : null)
       let imgSrc = null, kind = null, hf = null
       if (row.file) {
-        imgSrc = resolve(row.file); kind = 'brand'
-        if (!existsSync(imgSrc)) throw new Error(`대표 제공 파일이 없다 — ${row.slot}: ${row.file}`)
+        imgSrc = ownerFile(row.file, row.slot); kind = 'brand'
       } else if (row.higgsfield) {
         if (!hfDir) throw new Error(`Higgsfield 원본 폴더가 없다(HIGGSFIELD_DIR 미설정) — ${row.slot}: ${row.higgsfield} 를 쓰려면 폴더를 설정한다`)
         imgSrc = inHf(row.higgsfield); kind = 'higgsfield'; hf = hfCredit(row.higgsfield)
@@ -305,12 +334,18 @@ export async function fetchMedia(plan, outDir, deps = {}) {
       if (kind === 'brand') credits.push({ recipe: row.recipe, slot: row.slot, file: main, source: 'brand', url: `owner:${basename(imgSrc)}`, author: '대표 제공', license: '대표 제공 자료 — 사용권은 운영자가 확인', licenseUrl: null, fetchedAt: at() })
       else if (kind === 'higgsfield') credits.push(creditRow({ recipe: row.recipe, slot: row.slot, source: 'higgsfield', file: row.higgsfield }, { higgsfield: hf, license: `생성물 — 운영자 계정 Higgsfield 생성(${hf.created})`, licenseUrl: hfLicense, file: main }))
       else credits.push({ recipe: row.recipe, slot: row.slot, file: main, source: 'codex', url: 'codex-exec:image_generation', author: 'Codex CLI 이미지 생성(OpenAI)', license: '생성물 — 사용 약관 확인 필요(docs/qa/factory-v1/asset-licenses.md)', licenseUrl: null, fetchedAt: at() })
-      const modelSrc = row.model ? (inHf(row.model) && existsSync(inHf(row.model)) ? inHf(row.model) : resolve(row.model)) : null
+      const modelSrc = row.model ? modelFile(row.model, row.slot) : null
       if (modelSrc && existsSync(modelSrc)) {
         const rel = `${row.recipe}/${fileName(row.slot)}.glb`, out = join(outDir, rel)
         mkdirSync(dirname(out), { recursive: true })
-        if (statSync(modelSrc).size <= GLB_BUDGET) copyFileSync(modelSrc, out)
-        else await (deps.optimizeGlb ?? (async (a, b) => (await import('../media/optimize-glb.mjs')).optimizeGlb(a, b)))(modelSrc, out)
+        const unusable = (e) => new Error(`모델 파일을 쓸 수 없다 — ${row.slot}: ${e.message}`)
+        let size
+        try { size = statLocalInputFile(modelSrc, { magic: GLB_MAGIC }).size } catch (e) { throw unusable(e) }
+        if (size <= GLB_BUDGET) {
+          let bytes
+          try { bytes = readLocalInputFile(modelSrc, { maxBytes: GLB_BUDGET, magic: GLB_MAGIC }) } catch (e) { throw unusable(e) }
+          writeFileSync(out, bytes)
+        } else await (deps.optimizeGlb ?? (async (a, b) => (await import('../media/optimize-glb.mjs')).optimizeGlb(a, b)))(modelSrc, out)
         const bytes = statSync(out).size
         asset.kind = 'model'
         asset.model = { glb: rel, bytes }
@@ -323,8 +358,7 @@ export async function fetchMedia(plan, outDir, deps = {}) {
         requests.push(...objectRequests({ slot: row.slot, recipe: row.recipe, aspect: row.aspect, haveImage: true, imageFile: row.higgsfield ?? row.file ?? basename(imgSrc) })) // 이미지는 있다 — 그 칸은 2.5D 로 그려지고 모델은 요청으로 남는다
       }
     } else if (row.source === 'brand') {
-      const src = resolve(row.file)
-      if (!existsSync(src)) throw new Error(`대표 제공 파일이 없다 — ${row.slot}: ${row.file}`)
+      const src = ownerFile(row.file, row.slot)
       const main = await build(src, row)
       credits.push({ recipe: row.recipe, slot: row.slot, file: main, source: 'brand', url: `owner:${basename(src)}`, author: '대표 제공', license: '대표 제공 자료 — 사용권은 운영자가 확인', licenseUrl: null, fetchedAt: at() })
     } else if (row.source === 'higgsfield') {

@@ -117,12 +117,15 @@ describe('start', () => {
     const [s] = d.rec.spawned
     assert.equal(s.cmd, process.execPath)
     assert.deepEqual(s.args.slice(0, 2), [CLI_FILE, 'serve'])
-    assert.deepEqual(s.args.slice(2), ['--site', site, '--provider', 'auto', '--minutes', '30', '--lang', 'en'])
+    assert.deepEqual(s.args.slice(2, 10), ['--site', site, '--provider', 'auto', '--minutes', '30', '--lang', 'en'])
+    assert.equal(s.args[10], '--session', '데몬은 세션 id 를 받는다(보안 수정 D)')
+    assert.match(s.args[11], /^[0-9a-f-]{8,64}$/)
+    assert.equal(readState(site).sessionId, s.args[11], '같은 id 가 상태의 소유자다')
     assert.equal(s.opts.detached, true)
     assert.equal(s.opts.stdio, 'ignore')
     assert.equal(s.opts.windowsHide, true)
     assert.equal(d.rec.unref, 1)
-    assert.deepEqual(d.rec.stderr, ['step: building', 'step: ready'])
+    assert.deepEqual(d.rec.stderr, ['step: preparing', 'step: building', 'step: ready'])
   })
 
   it('제품형은 --allow-mock 없이는 데몬을 띄우지 않고 종료 3(need allowMock) + 가짜 로그인 알림', async () => {
@@ -264,6 +267,7 @@ describe('stop', () => {
     const site = makeSite()
     readyBy(site)()
     const d = fakes()
+    d.isAlive = (pid) => !d.rec.killed.includes(pid) // 끄면 죽는다 — 중지는 실제로 끝나기를 기다린다
     const r = await main(['stop', '--site', site], d)
     assert.equal(r.code, 0)
     assert.equal(r.out.status, 'stopped')
@@ -288,7 +292,7 @@ describe('serve(내부 명령)', () => {
     const r = await main(['serve', '--site', site, '--provider', 'cloudflare', '--minutes', '30', '--allow-mock', '--lang', 'en'], fakes({ run: async (opts) => { seen = opts; return { status: 'stopped' } } }))
     assert.equal(r.code, 0)
     assert.equal(r.out, undefined)
-    assert.deepEqual({ ...seen, signal: typeof seen.signal }, { site, providerId: 'cloudflare', minutes: 30, allowMock: true, lang: 'en', signal: 'object' })
+    assert.deepEqual({ ...seen, signal: typeof seen.signal }, { site, providerId: 'cloudflare', minutes: 30, allowMock: true, lang: 'en', signal: 'object', sessionId: undefined })
   })
 })
 
