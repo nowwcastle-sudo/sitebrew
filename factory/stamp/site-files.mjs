@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto'
 import { extname, isAbsolute, join, resolve } from 'node:path'
 import sharp from 'sharp'
 import { isNetworkOrDevicePath, readLocalInputFile } from '../lib/safe-path.mjs'
+import { inspectMarkSvg } from '../../registry/factory/ax/svg-allowlist.ts'
 import { loadLibrary } from '../scripts/style-presets.mjs'
 import { genFavicons, tsLoader } from '../scripts/gen-favicons.mjs'
 
@@ -48,7 +49,12 @@ export function markSvg(brandName, { logoPath, baseDir } = {}) {
     if (!isNetworkOrDevicePath(file) && /\.svg$/i.test(file)) {
       let svg = null
       try { svg = readLocalInputFile(file, { maxBytes: LOGO_MAX_BYTES }).toString('utf8') } catch { /* 링크·큰 파일·일반 파일 아님 → 도형 표지 */ }
-      if (svg && /currentColor/i.test(svg) && /viewBox/i.test(svg)) return { svg, source: 'brand-logo' }
+      // 허용 목록 검사(보안 수정 F) — 활성 요소(SMIL·링크·style·foreignObject)·이벤트·href·바깥 url() 은 도형 표지로 대체한다(빌드는 계속). 파비콘 소비자 쪽 parseMark 와 같은 검사 하나다.
+      if (svg) {
+        const check = inspectMarkSvg(svg)
+        if (!check.ok) console.warn(`표지: 브랜드 로고 SVG 가 허용 목록을 벗어나 도형 표지로 대신한다 — ${check.reason}`)
+        else if (/currentColor/i.test(check.inner) && check.viewBox) return { svg, source: 'brand-logo' }
+      }
     }
   }
   const h = createHash('sha256').update(String(brandName ?? '')).digest()

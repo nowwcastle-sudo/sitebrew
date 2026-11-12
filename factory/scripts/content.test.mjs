@@ -756,7 +756,7 @@ test('registry: content (core · 10 schemas · to-jsonld) and ax (json-ld · age
   assert.deepEqual(by['content-core'].dependencies, ['zod@^4.6.5'])
   assert.deepEqual(by['content-to-jsonld'].registryDependencies, [`${REPO}/content-core#v9.9.9`, `${REPO}/content-local#v9.9.9`])
   const ax = Object.fromEntries(buildItems(join(FACTORY, 'ax'), 'ax', REPO, join(FACTORY, 'ax'), 'v9.9.9').map((i) => [i.name, i]))
-  assert.deepEqual(Object.keys(ax).sort(), ['agent-form-attrs', 'brand-color', 'favicon-kit', 'freshness', 'geo-entity', 'json-ld', 'og-image', 'seo-files', 'seo-meta'])
+  assert.deepEqual(Object.keys(ax).sort(), ['agent-form-attrs', 'brand-color', 'favicon-kit', 'freshness', 'geo-entity', 'json-ld', 'og-image', 'seo-files', 'seo-meta', 'svg-allowlist'])
   assert.equal(ax['json-ld'].type, 'registry:component')
   assert.equal(ax['json-ld'].files[0].target, '@components/ax/json-ld.tsx')
   assert.deepEqual(ax['json-ld'].registryDependencies, [])
