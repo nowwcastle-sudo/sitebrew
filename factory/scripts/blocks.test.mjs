@@ -11,6 +11,7 @@ import { BLOCK_KINDS, BlockMeta, loadBlocks, loadShared, blockProblems, blockIte
 import { compileAll } from './gen-blocks.mjs'
 import { galleryModule, metaModule, recipeCopy } from './gen-blocks-gallery.mjs'
 import { LAYERS } from './pincheck.mjs'
+import { lockedVersions } from './lib/registry-lib.mjs'
 import { steps } from './gen-all.mjs'
 import { recipeMarkers, recipeMotionLevel, recipeLocalImports } from './recipe.mjs'
 import { axisOfHook } from './axes.mjs'
@@ -148,6 +149,7 @@ test('gen-blocks: 문제가 있는 조각이면 스택 없이 문제 줄과 종�
   mkdirSync(join(r, 'registry', 'factory', 'styles'), { recursive: true })
   writeFileSync(join(r, 'registry', 'factory', 'styles', 'base.css'), '.cn-block-heading {\n  @apply flex;\n}\n.cn-block-section {\n  @apply flex;\n}\n')
   writeFileSync(join(r, 'package.json'), '{"version":"0.0.0","dependencies":{}}')
+  writeFileSync(join(r, 'package-lock.json'), '{"lockfileVersion":3,"packages":{}}')
   mkdirSync(join(r, 'registry', 'factory', 'blocks', '_compiled'), { recursive: true })
   writeFileSync(join(r, 'registry', 'factory', 'blocks', '_compiled', 'old.tsx'), 'old')
   const { code, err } = await runOut([join(root, 'factory', 'scripts', 'gen-blocks.mjs'), '--root', r])
@@ -171,6 +173,7 @@ test('gen-blocks: 삼항식 안의 훅이 컴파일본에 남으면 문제 줄(�
   mkdirSync(join(r, 'registry', 'factory', 'styles'), { recursive: true })
   writeFileSync(join(r, 'registry', 'factory', 'styles', 'base.css'), '.cn-block-heading {\n  @apply flex;\n}\n.cn-block-section {\n  @apply grid;\n}\n')
   writeFileSync(join(r, 'package.json'), '{"version":"0.0.0","dependencies":{}}')
+  writeFileSync(join(r, 'package-lock.json'), '{"lockfileVersion":3,"packages":{}}')
   mkdirSync(join(r, 'registry', 'factory', 'blocks', '_compiled'), { recursive: true })
   writeFileSync(join(r, 'registry', 'factory', 'blocks', '_compiled', 'old.tsx'), 'old')
   const { code, err } = await runOut([join(root, 'factory', 'scripts', 'gen-blocks.mjs'), '--root', r])
@@ -294,7 +297,7 @@ test('저장소 블록: hero kind = HERO_IDS(원래 19개 + r12~r16 이 올려 �
 test('저장소 블록: 생성물 blocks/registry.json·_compiled 가 원천과 같다(gen-blocks 결과)', async () => {
   const reg = JSON.parse(readFileSync(join(root, 'registry', 'factory', 'blocks', 'registry.json'), 'utf8'))
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
-  assert.deepEqual(reg.items, blockItems({ repo: 'nowwcastle-sudo/sitebrew', ref: `v${pkg.version}`, versions: { ...pkg.devDependencies, ...pkg.dependencies }, root }))
+  assert.deepEqual(reg.items, blockItems({ repo: 'nowwcastle-sudo/sitebrew', ref: `v${pkg.version}`, versions: lockedVersions(root), root }))
   const files = await compileAll(root)
   for (const [rel, text] of Object.entries(files)) assert.equal(readFileSync(join(root, 'registry', 'factory', 'blocks', '_compiled', rel), 'utf8'), text, rel)
   // 컴파일본에는 훅이 남지 않는다(모르는 훅은 blockProblems 가 먼저 막는다).

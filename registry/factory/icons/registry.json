@@ -19,7 +19,7 @@
         }
       ],
       "dependencies": [
-        "lucide-react@^1.59.0"
+        "lucide-react@1.59.0"
       ],
       "registryDependencies": [],
       "css": {
@@ -63,7 +63,7 @@
         }
       ],
       "dependencies": [
-        "@phosphor-icons/react@^2.1.10"
+        "@phosphor-icons/react@2.1.10"
       ],
       "registryDependencies": [],
       "meta": {
@@ -95,7 +95,7 @@
         }
       ],
       "dependencies": [
-        "@tabler/icons-react@^3.49.0"
+        "@tabler/icons-react@3.49.0"
       ],
       "registryDependencies": [],
       "css": {

@@ -1,4 +1,6 @@
 // 레지스트리 생성기들이 함께 쓰는 도움 함수. gen-registry.mjs 가 다시 내보낸다(recipe.mjs 가 gen-registry 를 import 하면 순환이 생긴다).
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 const BUILTIN = new Set(['react', 'react-dom', 'next'])
 // 모든 ui 부품이 기대는 전역 바닥 규칙 항목(reduced-motion·포커스 외곽선·본문 크기·keep-all).
 export const BASE_ITEM = 'factory-base'
@@ -36,12 +38,27 @@ export function parseImports(source) {
   return { npm: [...npm], internal: [...internal] }
 }
 
-// 'pkg' → 'pkg@<package.json 범위>'. 'pkg@1'·'@scope/pkg@^2' 처럼 이미 버전이 있으면 그대로.
+// 모든 생성기(gen-registry·gen-fonts·gen-kits·gen-blocks·recipe)가 쓰는 의존 버전 표의 유일한 창구(SB-15 supply-chain.registry-semver-drift).
+// package.json 에 적힌 의존 이름마다 package-lock.json 에 실제로 검토·설치된 정확한 판(packages["node_modules/<이름>"].version)을 돌려준다.
+// 소비자의 새 설치가 package.json 의 ^ 범위 때문에 검토되지 않은 상위 판을 받지 않게 한다. lock 에 없는 이름이면 범위로 물러나지 않고 던진다.
+export function lockedVersions(root) {
+  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
+  const lock = JSON.parse(readFileSync(join(root, 'package-lock.json'), 'utf8'))
+  const out = {}
+  for (const name of Object.keys({ ...pkg.devDependencies, ...pkg.dependencies })) {
+    const v = lock.packages?.[`node_modules/${name}`]?.version
+    if (typeof v !== 'string' || !v) throw new Error(`package-lock.json 에 없는 의존입니다: ${name} — npm install 로 lock 을 갱신한 뒤 다시 생성하세요`)
+    out[name] = v
+  }
+  return out
+}
+
+// 'pkg' → 'pkg@<표의 버전>'(생성기는 lockedVersions 표를 넘긴다 — 정확한 판). 'pkg@1'·'@scope/pkg@^2' 처럼 이미 버전이 있으면 그대로.
 export function pinDependency(dep, versions) {
   const hasVersion = dep.lastIndexOf('@') > 0
   if (hasVersion || !versions) return dep
   const v = versions[dep]
-  if (!v) throw new Error(`package.json 에 없는 의존입니다: ${dep}`)
+  if (!v) throw new Error(`버전 표에 없는 의존입니다(package.json·package-lock.json 확인): ${dep}`)
   return `${dep}@${v}`
 }
 

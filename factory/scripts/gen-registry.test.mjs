@@ -59,15 +59,15 @@ test('parseRef accepts --ref vX and --ref=vX, and rejects a missing value', () =
   assert.throws(() => parseRef(['--ref', '--other']), /태그가 필요/)
 })
 
-test('npm dependencies take the package.json range; an explicit version is kept', () => {
-  const versions = { '@base-ui-components/react': '^1.2.3', 'class-variance-authority': '^0.7.1' }
-  assert.equal(pinDependency('class-variance-authority', versions), 'class-variance-authority@^0.7.1')
-  assert.equal(pinDependency('@base-ui-components/react', versions), '@base-ui-components/react@^1.2.3')
+test('npm dependencies take the exact version from the table (lockedVersions — package-lock.json); an explicit version is kept', () => {
+  const versions = { '@base-ui-components/react': '1.2.3', 'class-variance-authority': '0.7.1' }
+  assert.equal(pinDependency('class-variance-authority', versions), 'class-variance-authority@0.7.1')
+  assert.equal(pinDependency('@base-ui-components/react', versions), '@base-ui-components/react@1.2.3')
   assert.equal(pinDependency('react-day-picker@10', versions), 'react-day-picker@10')
   assert.equal(pinDependency('@scope/pkg@^2', versions), '@scope/pkg@^2')
   assert.throws(() => pinDependency('left-pad', versions), /package.json/)
   const button = buildItems(fx, 'ui', REPO, fx, undefined, versions).find((i) => i.name === 'button')
-  assert.deepEqual(button.dependencies, ['@base-ui-components/react@^1.2.3', 'class-variance-authority@^0.7.1'])
+  assert.deepEqual(button.dependencies, ['@base-ui-components/react@1.2.3', 'class-variance-authority@0.7.1'])
 })
 
 test('the real ui registry has every npm dependency versioned', () => {
