@@ -59,7 +59,7 @@ test('A: 신뢰하지 않는 자식을 띄우는 곳은 모두 환경을 명시�
   const sites = [
     ['factory/export/single-html.mjs', /spawn\('npm run build'[^\n]*env: childEnv\(/],
     ['factory/qa/consumer-install.mjs', /spawnSync\(cmd, args, \{[^\n]*env: childEnv\(\)/],
-    ['factory/qa/consumer-install.mjs', /'start', '-p', String\(port\)\], \{ cwd: consumer, env: childEnv\(\)/],
+    ['factory/qa/consumer-install.mjs', /env = childEnv\(\) \} = \{\}\) \{\n  const server = launchNext\(nextBin, \{ cwd: consumer, env, port \}\)/],
     ['factory/media/render-hyperframes.mjs', /spawnSync\(bin, argv, \{ cwd, env: childEnv\(\)/],
     ['factory/stamp/qa.mjs', /cwd: siteDir, env: childEnv\(\)/],
     ['factory/scripts/recipe-swap.mjs', /spawn\(cmd, \{ cwd, shell: true, env: childEnv\(\) \}\)/],

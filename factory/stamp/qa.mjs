@@ -33,8 +33,8 @@ import { hasBrandLogo, logoGateForCandidate } from '../qa/logo-gate.mjs'
 import { brandColorOf, brandExposureForCandidate } from '../qa/brand-exposure.mjs'
 import { STRICT_BY_ARCHETYPE, strictGateForCandidate } from '../qa/strict-archetype.mjs'
 import { MOCK_PREVIEW_BLOCKER, SAMPLE_LEFT_BLOCKER, splitBlockers } from './blocker-class.mjs'
-import { killTree as killPid } from './run-proc.mjs'
 import { childEnv } from '../lib/secret-env.mjs'
+import { launchNext } from './run-proc.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const FACTORY = join(ROOT, 'factory')
@@ -184,16 +184,15 @@ async function startSiteNow(siteDir, { timeoutMs = 90_000 } = {}) {
   if (!existsSync(join(siteDir, '.next', 'BUILD_ID'))) throw new Error(`도구 실패: ${join(siteDir, '.next', 'BUILD_ID')} 없음 — 사이트가 빌드되지 않았다`)
   const port = await freePort()
   // detached: Linux·macOS 에서 자식이 제 프로세스 그룹을 가져야 killTree(pid)(= 그룹 전체 종료)가 듣는다. 예전에는 stop 이 child 객체를 넘겨 `next start` 가 남았다(v0.2.6 P2 F1).
-  const child = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], { cwd: siteDir, env: childEnv(), stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform !== 'win32' })
+  // 127.0.0.1 에만 열고 POSIX 에서도 프로세스 묶음째 끈다 — launchNext(run-proc)가 -H·detached·나무째 종료를 맡는다(보안 수정 D).
+  const { child, stop: stopTree } = launchNext(nextBin, { cwd: siteDir, env: childEnv(), port, stdio: ['ignore', 'pipe', 'pipe'] })
   let out = ''
   child.stdout.on('data', (d) => { out += d })
   child.stderr.on('data', (d) => { out += d })
   let exited = null
   child.on('close', (c) => { exited = c ?? -1 })
   const url = `http://127.0.0.1:${port}`
-  const stop = async () => {
-    if (exited === null) { killPid(child.pid); for (let i = 0; i < 50 && exited === null; i++) await new Promise((r) => setTimeout(r, 100)) }
-  }
+  const stop = async () => { await stopTree() }
   const t0 = Date.now()
   while (Date.now() - t0 < timeoutMs) {
     if (exited !== null) throw new Error(`도구 실패: next start 가 종료 ${exited} 로 끝났다 — ${out.trim().split('\n').slice(-3).join(' | ')}`)
