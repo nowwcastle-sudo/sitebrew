@@ -57,6 +57,19 @@ test('assertNoLinkInPath·realInside·readLocalInputFile: 링크는 거절하고
   assert.equal(statLocalInputFile(join(root, 'real', 'a.bin')).size, 14)
 })
 
+test('safe-path 경계: UNC·빈 경로·폴더·없는 경로를 이유와 함께 거절하고, 링크 아닌 단독 경로·Buffer 형식표는 통과한다', () => {
+  const root = dirOf('sp-edge')
+  writeFileSync(join(root, 'a.bin'), GLB(4))
+  assert.throws(() => assertNoLinkInPath('\\\\h\\s\\x'), (e) => e.reason === 'networkPath')
+  assert.doesNotThrow(() => assertNoLinkInPath(join(root, 'a.bin')), 'stopAt 없이 일반 파일은 통과')
+  assert.doesNotThrow(() => assertNoLinkInPath(root, { stopAt: root }), '신뢰 뿌리 자신은 통과')
+  assert.throws(() => readLocalInputFile(''), (e) => e.reason === 'empty')
+  assert.throws(() => readLocalInputFile(root), (e) => e.reason === 'notFile')
+  assert.equal(realInside(root, join(root, 'no-such')), false, '없는 경로는 안이 아니다')
+  assert.equal(realInside(root, root), false, '뿌리 자신은 안이 아니다')
+  assert.deepEqual(readLocalInputFile(join(root, 'a.bin'), { magic: Buffer.from('glTF') }), GLB(4))
+})
+
 // ── WF-3: 미디어 모델 경로 ───────────────────────────────────────────────────────────────────────
 const SLOT = 'home/hero/hero-visual'
 const arch = (source) => ({ id: 'landing', pages: [{ id: 'home', route: '/', sections: [{ kind: 'hero', imageSlots: [{ id: 'hero-visual', aspect: '4:3', source }] }] }] })

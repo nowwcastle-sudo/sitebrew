@@ -71,6 +71,45 @@ test('B: shimEntry 는 package.json bin 이 패키지 밖을 가리키면 거절
   assert.equal(trustedCommand('no-such-cli-xyz', [], { env: { PATH: dir }, cwd: tmpdir() }), null)
 })
 
+test('B 경계: npm 설치본을 못 찾으면 Windows 는 부르지 않고 POSIX 는 PATH 이름, 찾으면 node 로 직접 부른다', () => {
+  const none = () => false
+  assert.equal(npmCommand('npx', ['-y'], { execPath: '/opt/node/bin/node', exists: none, platform: 'win32' }), null)
+  assert.deepEqual(npmCommand('npx', ['-y'], { execPath: '/opt/node/bin/node', exists: none, platform: 'linux' }), ['npx', ['-y']])
+  const posixCli = (p) => p.replace(/\\/g, '/').endsWith('lib/node_modules/npm/bin/npm-cli.js')
+  const r = npmCommand('npm', ['ci'], { execPath: '/opt/node/bin/node', exists: posixCli })
+  assert.equal(r[0], '/opt/node/bin/node')
+  assert.match(r[1][0].replace(/\\/g, '/'), /lib\/node_modules\/npm\/bin\/npm-cli\.js$/)
+  assert.deepEqual(r[1].slice(1), ['ci'])
+})
+
+test('B 경계: PATH 가 Path·path·없음이어도 돌고, POSIX 실행 파일은 그대로 · .cmd 인데 bin 이 없으면 null', () => {
+  const files = new Set(['/g/vercel'])
+  const exists = (p) => files.has(p)
+  assert.equal(resolveTrustedBin('vercel', { env: { Path: '/g' }, cwd: '/w', platform: 'linux', fileExists: exists }), '/g/vercel')
+  assert.equal(resolveTrustedBin('vercel', { env: { path: '/g' }, cwd: '/w', platform: 'linux', fileExists: exists }), '/g/vercel')
+  assert.equal(resolveTrustedBin('vercel', { env: {}, cwd: '/w', platform: 'linux', fileExists: exists }), null)
+  // shimEntry: package.json 없음 · 깨진 JSON · bin 문자열 · bin 칸 없음
+  const dir = tmp('wf-shim2-')
+  assert.equal(shimEntry(join(dir, 'a.cmd'), 'a'), null, 'package.json 없음')
+  mkdirSync(join(dir, 'node_modules', 'a'), { recursive: true })
+  writeFileSync(join(dir, 'node_modules', 'a', 'package.json'), '{깨짐')
+  assert.equal(shimEntry(join(dir, 'a.cmd'), 'a'), null, '깨진 JSON')
+  writeFileSync(join(dir, 'node_modules', 'a', 'package.json'), JSON.stringify({ bin: { other: './x.js' } }))
+  assert.equal(shimEntry(join(dir, 'a.cmd'), 'a'), null, 'bin 에 그 이름이 없음')
+  writeFileSync(join(dir, 'node_modules', 'a', 'cli.js'), '')
+  writeFileSync(join(dir, 'node_modules', 'a', 'package.json'), JSON.stringify({ bin: './cli.js' }))
+  assert.equal(shimEntry(join(dir, 'a.cmd'), 'a'), join(dir, 'node_modules', 'a', 'cli.js'), 'bin 문자열 형식')
+  if (WIN) {
+    const g = tmp('wf-g-')
+    writeFileSync(join(g, 'b.cmd'), '@echo off\r\n')
+    assert.equal(trustedCommand('b', [], { env: { PATH: g, PATHEXT: '.CMD' }, cwd: tmpdir() }), null, '.cmd 인데 패키지 bin 없음')
+  } else {
+    const g = tmp('wf-g-')
+    writeFileSync(join(g, 'b'), '#!/bin/sh\n', { mode: 0o755 })
+    assert.deepEqual(trustedCommand('b', ['x'], { env: { PATH: g }, cwd: tmpdir() }), [join(g, 'b'), ['x']])
+  }
+})
+
 test('SB-5 재현: 폴더 이름의 $( )·백틱·따옴표가 명령으로 풀리지 않는다(셸 없는 인자 배열)', async () => {
   const base = tmp('wf-inj-')
   const pwn = join(base, 'PWNED')
