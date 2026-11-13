@@ -103,9 +103,16 @@ test.describe("관리 화면", () => {
     const context = await browser.newContext({ baseURL: process.env.SMOKE_BASE_URL, locale: "en-US", extraHTTPHeaders: { "x-test-ip": "203.0.113.200" } })
     const up = await post(context.request, "/api/auth/sign-up/email", { email: adminEmail, password: PASSWORD, name: "Admin Tester", lfConsents: CONSENTS })
     expect(up.status(), "시험 계정 가입").toBe(200)
-    // preload 가 메일을 확인됨으로 바꾼 뒤에 로그인해도 같은 세션이다. 2단계 인증 칸은 로그인한 다음에 켠다(먼저 켜면 로그인이 세션을 주지 않는다)
-    const signIn = await post(context.request, "/api/auth/sign-in/email", { email: adminEmail, password: PASSWORD })
-    expect(signIn.status(), "시험 계정 로그인").toBe(200)
+    // 메일러가 있으면 가입 기본이 conceal 이라 메일 확인 전 로그인은 403 EMAIL_NOT_VERIFIED 다(의도한 동작 — 실제 화면은 「먼저 이메일 인증을 마쳐 주세요」).
+    // preload 가 100ms 마다 확인됨으로 바꾸므로, 다시 로그인하는 것은 그 응답일 때뿐이다 — 다른 실패(401·429·500 …)는 바로 떨어뜨려 실제 결함을 가리지 않는다.
+    // 2단계 인증 칸은 로그인한 다음에 켠다(먼저 켜면 로그인이 세션을 주지 않는다)
+    const until = Date.now() + 15_000
+    let signIn = await post(context.request, "/api/auth/sign-in/email", { email: adminEmail, password: PASSWORD })
+    while (signIn.status() === 403 && (await signIn.json().catch(() => ({}))).code === "EMAIL_NOT_VERIFIED" && Date.now() < until) {
+      await new Promise((r) => setTimeout(r, 500))
+      signIn = await post(context.request, "/api/auth/sign-in/email", { email: adminEmail, password: PASSWORD })
+    }
+    expect(signIn.status(), "시험 계정 로그인(preload 가 메일을 확인됨으로 둔 뒤)").toBe(200)
     writeFileSync(twoFactorFile, "1")
     const page = await context.newPage()
     admin = { context, page }

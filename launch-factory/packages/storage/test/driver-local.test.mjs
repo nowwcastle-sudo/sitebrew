@@ -36,13 +36,15 @@ const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2
 test("한 바퀴: 티켓 → PUT → 끝내기(디스크에서 크기·형식 확인) → 공개 종류는 서명 없이 GET, 비공개는 서명 있어야 GET", async () => {
   const { dir, driver, service } = setup()
   const t = (await service.createUpload({ kind: "image", contentType: "image/png", size: PNG.length }, { ip: "198.51.100.9" })).data
-  assert.ok(t.url.startsWith("/api/storage/local/image/2026/"), "상대 주소다 — 어느 호스트에서 열어도 같은 서버로 간다")
+  assert.ok(t.url.startsWith("/api/storage/local/uploads/pending/"), "상대 주소다 — 어느 호스트에서 열어도 같은 서버로 간다(PUT 은 임시 키)")
   assert.equal((await put(driver, t, PNG)).status, 200)
   assert.deepEqual(readFileSync(join(dir, t.key)), Buffer.from(PNG))
   const done = await service.complete({ id: t.id }, { ip: "198.51.100.9" })
   assert.equal(done.ok, true)
   assert.equal(done.data.size, PNG.length)
-  assert.equal(done.data.url, `/api/storage/local/${t.key}`)
+  assert.equal(done.data.url, `/api/storage/local/${done.data.key}`)
+  assert.equal(existsSync(join(dir, t.key)), false, "임시 객체는 지웠다")
+  assert.deepEqual(readFileSync(join(dir, done.data.key)), Buffer.from(PNG))
   const got = await driver.handle(new Request(ORIGIN + done.data.url))
   assert.equal(got.status, 200)
   assert.equal(got.headers.get("content-type"), "image/png")
@@ -52,7 +54,8 @@ test("한 바퀴: 티켓 → PUT → 끝내기(디스크에서 크기·형식 �
   const a = (await service.createUpload({ kind: "attachment", contentType: "application/pdf", size: 3 }, { ip: "198.51.100.9" })).data
   await put(driver, a, new Uint8Array([1, 2, 3]))
   const adone = (await service.complete({ id: a.id }, { ip: "198.51.100.9" })).data
-  assert.equal((await driver.handle(new Request(ORIGIN + `/api/storage/local/${a.key}`))).status, 403, "서명 없는 비공개 읽기는 거절")
+  assert.equal((await driver.handle(new Request(ORIGIN + `/api/storage/local/${adone.key}`))).status, 403, "서명 없는 비공개 읽기는 거절")
+  assert.equal((await driver.handle(new Request(ORIGIN + `/api/storage/local/${a.key}`))).status, 403, "임시 키는 서명 없이 읽히지 않는다(어느 종류의 공개 주소도 아니다)")
   const signed = await driver.handle(new Request(ORIGIN + adone.url))
   assert.equal(signed.status, 200)
   assert.match(signed.headers.get("content-disposition"), /^attachment/, "비공개 첨부는 열지 않고 내려받는다")
@@ -92,7 +95,9 @@ test("head·delete: 디스크 왕복 — 없으면 null, 지우면 없어지고 
   assert.equal(await driver.head(key), null)
   const r = await driver.handle(new Request(ORIGIN + driver.presign({ method: "PUT", key, contentType: "image/png", expiresIn: 900, now: c.now() }).url, { method: "PUT", body: PNG, headers: { "content-type": "image/png" } }))
   assert.equal(r.status, 200)
-  assert.deepEqual(await driver.head(key), { size: PNG.length, contentType: "image/png" })
+  const info = await driver.head(key)
+  assert.deepEqual({ size: info.size, contentType: info.contentType }, { size: PNG.length, contentType: "image/png" })
+  assert.match(info.etag, /^"[0-9a-f]{64}"$/)
   await driver.delete(key)
   await driver.delete(key)
   assert.equal(await driver.head(key), null)
@@ -114,4 +119,37 @@ test("비밀 파일: 폴더에 한 번 만들고 다시 열어도 같다(다른 
   assert.equal((await createLocalDriver({ dir: other }).handle(new Request(ORIGIN + p.url, { method: "PUT", body: PNG, headers: p.headers }))).status, 403)
   // 비밀 파일 자체는 어떤 요청으로도 읽히지 않는다
   assert.equal((await a.handle(new Request(ORIGIN + "/api/storage/local/.secret"))).status, 404)
+})
+
+test("재사용 방지(실제 드라이버): 끝낸 뒤 같은 서명 주소로 다른 내용을 PUT 해도 읽는 주소의 내용은 그대로다", async () => {
+  const { dir, driver, service } = setup()
+  const who = { ip: "198.51.100.40" }
+  const t = (await service.createUpload({ kind: "image", contentType: "image/png", size: PNG.length }, who)).data
+  assert.equal((await put(driver, t, PNG)).status, 200)
+  const done = (await service.complete({ id: t.id }, who)).data
+  const evil = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 9, 9, 9, 9, 9, 9, 9, 9, 9])
+  assert.equal((await put(driver, t, evil)).status, 200, "올리기 주소는 15분 동안 살아 있어 PUT 자체는 받는다")
+  const got = await driver.handle(new Request(ORIGIN + done.url))
+  assert.deepEqual(new Uint8Array(await got.arrayBuffer()), PNG, "읽는 주소는 검사한 내용을 그대로 내려준다")
+  assert.deepEqual(readFileSync(join(dir, done.key)), Buffer.from(PNG))
+  assert.deepEqual(await service.complete({ id: t.id }, who), { ok: true, data: done }, "다시 끝내기도 같은 결과")
+})
+
+test("copy: etag 가 맞을 때만 바이트와 형식을 옮긴다 · 달라졌으면 changed(복사 없음) · 원본이 없으면 missing", async () => {
+  const { dir, driver, c } = setup()
+  const from = "uploads/pending/0b9f3c2a-6c1d-4d57-9a53-0f3e7f6a1b2c.png"
+  const to = "image/2026/11111111-1111-4111-8111-111111111111.png"
+  const putPng = (body) => driver.handle(new Request(ORIGIN + driver.presign({ method: "PUT", key: from, contentType: "image/png", expiresIn: 900, now: c.now() }).url, { method: "PUT", body, headers: { "content-type": "image/png" } }))
+  assert.equal(await driver.copy(from, to, { ifMatch: '"x"' }), "missing")
+  assert.equal((await putPng(PNG)).status, 200)
+  const { etag } = await driver.head(from)
+  assert.equal((await putPng(new Uint8Array([0x89, 0x50, 0x4e, 0x47, 7, 7]))).status, 200) // 검사한 뒤 바뀜
+  assert.equal(await driver.copy(from, to, { ifMatch: etag }), "changed")
+  assert.equal(existsSync(join(dir, to)), false, "바뀐 내용은 최종 키에 쓰지 않는다")
+  const fresh = (await driver.head(from)).etag
+  assert.equal(await driver.copy(from, to, { ifMatch: fresh }), "copied")
+  assert.deepEqual(readFileSync(join(dir, to)), Buffer.from([0x89, 0x50, 0x4e, 0x47, 7, 7]))
+  assert.equal((await driver.head(to)).contentType, "image/png")
+  assert.equal(existsSync(join(dir, from)), true, "원본은 그대로다(지우는 일은 서비스가 한다)")
+  await assert.rejects(driver.copy("../x", to, { ifMatch: fresh }), /key/)
 })

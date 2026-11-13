@@ -1843,9 +1843,14 @@
       "sha256": "6fa04af21ae7c7824372bf9517b95c3cdcbab6000be77862c362ce0d3ea4c201"
     },
     {
+      "path": "db/migrations/0019_retention_offer_uses.sql",
+      "from": "launch-factory",
+      "sha256": "e6523f27940482f5aae93bb14cc01b813276b5f0336de1a228556891126a4e98"
+    },
+    {
       "path": "db/migrations/meta/_journal.json",
       "from": "launch-factory",
-      "sha256": "8020eb92a140657d59a0c2678177b427599568667d3cb9db056da55b4d98c6d1"
+      "sha256": "aa49a7b5e6f1d7c5ad713254b4b1fa1d4e99b590d6dc19dd7f25fd9edb57fb14"
     },
     {
       "path": "db/schema/auth-base.ts",
@@ -1915,7 +1920,7 @@
     {
       "path": "db/schema/subscriptions.ts",
       "from": "launch-factory",
-      "sha256": "2eb062075e73d902c8eb359c0aedab6306dad002529353118be59226a8890303"
+      "sha256": "873be940935ba614d2b99bbd2c5289d77f479a17cb8dfb472e58d171a0318680"
     },
     {
       "path": "db/schema/webhook-events.ts",
@@ -2020,7 +2025,7 @@
     {
       "path": "lib/launch/auth.ts",
       "from": "launch-factory",
-      "sha256": "74bb471b8f6dfa37effa511a94a3919de68d631cb60740128901d13120294291"
+      "sha256": "e25ada8a1e6a189d9b3f2fd549bd52492daed26e2cd6f1d1bc70c38d95b74d5a"
     },
     {
       "path": "lib/launch/billing.ts",

@@ -2,7 +2,7 @@
 // 그 파일은 아직 계약 잠금(packages/contract/contract.lock.json, 9b4d4a6)에 없어 런타임으로 부를 수 없다(잠금은 D10 에서 태그로 바꾼다).
 // 그래서 같은 규칙을 여기 두고, test/retention-parity.test.mjs 가 web-factory p3-3 원본과 같은 판정을 내는지 표로 대조한다.
 // 계약 가져오기에 lib 가 들어오면 이 파일을 지우고 그것을 부른다(대장 D50).
-import type { RetentionOffer } from "@launch-factory/contract"
+import type { Plan, RetentionOffer } from "@launch-factory/contract"
 
 export const RETENTION_DISCOUNT_MAX_PERCENT = 30
 export const RETENTION_DISCOUNT_MONTHS = [2, 3] as const
@@ -27,4 +27,25 @@ export function retentionOfferIssues(offer: RetentionOffer): string[] {
     if (!offer.planId) v.push(`${at}: downgrade offer needs planId`)
   } else v.push(`${at}: kind must be pause, downgrade or discount (got ${String((offer as { kind: unknown }).kind)})`)
   return v
+}
+
+const OFFER_ORDER: Record<RetentionOffer["kind"], number> = { pause: 0, downgrade: 1, discount: 2 }
+
+/**
+ * 이 구독이 받을 수 있는 해지 대안 하나 — 서버가 정한다. 해지 화면(web-factory cancel-flow 의 pickRetentionOffer)이 보이는 대안과 같은 규칙이다:
+ * 일시정지 → 다운그레이드 → 할인 순으로 한도 안이고(retentionOfferIssues) 쓸 수 있는 첫 대안. 다운그레이드는 지금보다 싼 다른 요금제로만, 할인은 지금 요금제가 있을 때만.
+ * 화면이 고른 offerId 는 이 값과 같을 때만 받는다 — 화면에 보이지 않는 설정상의 다른 대안을 직접 제출해도 거절된다.
+ */
+export function eligibleRetentionOffer(offers: readonly RetentionOffer[], ctx: { planId: string | null; plans: readonly Plan[] }): RetentionOffer | null {
+  const current = ctx.plans.find((p) => p.id === ctx.planId)
+  const usable = (o: RetentionOffer): boolean => {
+    if (retentionOfferIssues(o).length) return false
+    if (o.kind === "downgrade") {
+      const to = ctx.plans.find((p) => p.id === o.planId)
+      return !!to && to.id !== ctx.planId && (!current || to.price.amount < current.price.amount)
+    }
+    if (o.kind === "discount") return !!current
+    return true
+  }
+  return [...offers].sort((a, b) => OFFER_ORDER[a.kind] - OFFER_ORDER[b.kind]).find(usable) ?? null
 }

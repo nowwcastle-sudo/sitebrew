@@ -4,7 +4,7 @@
 import { test } from "node:test"
 import assert from "node:assert/strict"
 import { retentionOfferIssues } from "../src/index.ts"
-import { PADDLE_PINS, runPaddleConformance } from "./conformance-run.mjs"
+import { EXPECTED_FAILURES, PADDLE_PINS, runPaddleConformance } from "./conformance-run.mjs"
 import { loadWfConformance } from "../../../scripts/lib/wf-conformance.mjs"
 
 const wf = await loadWfConformance()
@@ -26,8 +26,12 @@ test("적합성: billingConformance — Paddle 어댑터(진짜 SDK + 가짜 Pad
   assert.equal(ids.filter((id) => id.startsWith("billing.price-change.")).length, 3)
   assert.equal(ids.filter((id) => id.startsWith("billing.retention.")).length, 10)
   assert.ok(ids.includes("billing.trial.trial-unavailable"))
-  assert.deepEqual(failed, [], `실패 ${failed.length}/${results.length}`)
-  console.log(`# billingConformance: ${results.length}개 검사 · 통과 ${results.length - failed.length} · 실패 ${failed.length}`)
+  // 실패는 정해 둔 목록(서버가 정한 대안만 받는 설계 — conformance-run.mjs 의 EXPECTED_FAILURES)과 정확히 같아야 한다
+  const unexpected = failed.filter((r) => !(r.id in EXPECTED_FAILURES))
+  assert.deepEqual(unexpected, [], `목록 밖 실패 ${unexpected.length}/${results.length}`)
+  assert.deepEqual(failed.map((r) => r.id).sort(), Object.keys(EXPECTED_FAILURES).sort(), "예상 실패가 모두 실패해야 한다(통과하면 목록을 줄인다)")
+  for (const r of failed) assert.ok(r.message.includes(EXPECTED_FAILURES[r.id]), `${r.id}: 이유가 ${EXPECTED_FAILURES[r.id]} 가 아니다 — ${r.message}`)
+  console.log(`# billingConformance: ${results.length}개 검사 · 통과 ${results.length - failed.length} · 예상 실패 ${failed.length}`)
 })
 
 test("해지 대안 한도: 우리 retentionOfferIssues 가 web-factory 원본과 같은 판정(통과·거절)을 낸다", { skip }, () => {

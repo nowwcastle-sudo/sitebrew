@@ -20,6 +20,7 @@ import { bookByCapacity, claimReminder, getBookingByDepositRef, getBookingByRefe
 import type { Mailer } from "@launch-factory/email"
 import { isLocale, t, type Locale } from "@launch-factory/i18n"
 import { maskPii } from "@launch-factory/security"
+import { BodyTooLargeError, DEFAULT_FORM_BODY_BYTES, payloadTooLarge, readFormInput } from "@launch-factory/security/body"
 import { blockedByBot, blockedByRate, blockedResult } from "@launch-factory/security/protect"
 import type { RateLimiter, RateRule } from "@launch-factory/security/rate-limit"
 import { TURNSTILE_FIELD, type Turnstile } from "@launch-factory/security/turnstile"
@@ -64,6 +65,8 @@ const isHolding = (status: BookingRow["status"]) => status === "requested" || st
 
 export interface BookingServiceOptions {
   db: Database
+  /** 요청 본문 상한(바이트). 기본 64KB — 이보다 큰 본문은 칸 검사·요청 제한 전에 읽기를 끊고 413 으로 답한다 */
+  maxBodyBytes?: number
   mailer: Mailer
   limiter: RateLimiter
   turnstile: Turnstile
@@ -829,9 +832,10 @@ export function createBookingService(o: BookingServiceOptions): BookingService {
       if (request.method !== "POST") return new Response(null, { status: 405, headers: { allow: "POST" } })
       let input: BookingInput
       try {
-        input = (request.headers.get("content-type") ?? "").includes("application/json") ? ((await request.json()) as Record<string, unknown>) : await request.formData()
-      } catch {
-        input = {}
+        input = await readFormInput(request, o.maxBodyBytes ?? DEFAULT_FORM_BODY_BYTES) // 상한까지만 읽는다(CWE-400)
+      } catch (e) {
+        if (e instanceof BodyTooLargeError) return payloadTooLarge()
+        throw e
       }
       const result = await submit(input, { ...ctx, headers: request.headers })
       return toResponse(result, isLocale(ctx.locale) ? ctx.locale : "ko")

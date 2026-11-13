@@ -1,6 +1,6 @@
 // 구독 상태(Task 5가 쓴다). 한 행 = 공급자 구독 하나. 상태는 웹훅 + 공급자 재조회로만 바뀐다(Review Focus 1).
 import { sql } from "drizzle-orm"
-import { check, index, jsonb, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core"
+import { check, index, jsonb, pgTable, primaryKey, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core"
 import type { PendingPriceChange, Subscription, SubscriptionStatus } from "@launch-factory/contract"
 import { user } from "./auth-base.ts"
 
@@ -52,3 +52,22 @@ export const subscriptions = pgTable(
     check("subscriptions_status_ck", sql.raw(`status in (${SUBSCRIPTION_STATUSES.map((s) => `'${s}'`).join(", ")})`)),
   ],
 )
+
+/**
+ * 해지 대안 사용 예약표. 한 행 = (공급자, 공급자 구독, 대안) 하나를 이미 받았거나 받는 중이다.
+ * 공급자를 부르기 전에 INSERT … ON CONFLICT DO NOTHING 으로 먼저 예약한다 — 이긴 쪽만 공급자를 부르고 두 번째부터는 거절된다(같은 대안의 반복 적용 막기).
+ * 공급자 호출이 실패하면 예약 행을 지워 정상 고객이 다시 받을 수 있게 한다. 성공하면 applied_at 을 채운다 —
+ * applied_at 이 비어 있는 오래된 행이 「결과를 알 수 없는 채 남은 예약」(처리가 중간에 끊긴 것)이라 사람이 대조해 지운다.
+ * 구독 행(subscriptions)과 외래키로 잇지 않는다 — 구독이 해지·교체돼도 사용 기록은 남아야 하고, 공급자 구독 id 가 같으면 같은 구독이다.
+ */
+export const retentionOfferUses = pgTable(
+  "retention_offer_uses",
+  {
+    provider: text("provider").notNull(),
+    providerSubId: text("provider_sub_id").notNull(),
+    offerId: text("offer_id").notNull(),
+    reservedAt: timestamp("reserved_at", tz).notNull(),
+    appliedAt: timestamp("applied_at", tz),
+  },
+  (t) => [primaryKey({ columns: [t.provider, t.providerSubId, t.offerId] })],
+).enableRLS() // 공개 표는 RLS 를 명시로 켠다(정책은 만들지 않는다 — 0010_explicit_rls)

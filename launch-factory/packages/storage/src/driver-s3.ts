@@ -1,7 +1,7 @@
 // S3 호환 드라이버(AWS S3 · Cloudflare R2 · MinIO). 서명은 sigv4.ts(순수), 이 파일은 fetch 입출력만 한다.
-// head·delete 도 presigned 주소(HEAD·DELETE)로 부른다 — 머리 서명 방식 코드를 따로 두지 않는다.
+// head·delete·copy 도 presigned 주소(HEAD·DELETE·PUT+x-amz-copy-source)로 부른다 — 머리 서명 방식 코드를 따로 두지 않는다.
 // 오류 문구에는 상태 코드와 동작 이름만 싣는다: 서명 주소(서명이 든다)·자격 증명·응답 본문·fetch 원인은 싣지 않는다.
-import type { ObjectInfo, Presign, PresignRequest, StorageDriver } from "./driver.ts"
+import type { CopyResult, ObjectInfo, Presign, PresignRequest, StorageDriver } from "./driver.ts"
 import { presignUrl } from "./sigv4.ts"
 
 export interface S3DriverOptions {
@@ -37,14 +37,18 @@ export function createS3Driver(o: S3DriverOptions): StorageDriver {
   const sign = (method: "PUT" | "GET" | "HEAD" | "DELETE", key: string, now: Date, expiresIn: number, headers?: Record<string, string>) =>
     presignUrl({ method, endpoint: o.endpoint, bucket: o.bucket, key, region: o.region, accessKeyId: o.accessKeyId, secretAccessKey: o.secretAccessKey, expiresIn, now, ...(o.pathStyle ? { pathStyle: true } : {}), ...(headers ? { headers } : {}) })
 
-  /** 서명한 요청을 보낸다. 네트워크 오류는 원인 없이 이름만 던진다 */
-  async function call(action: string, method: "HEAD" | "DELETE", key: string): Promise<Response> {
+  /** 서명한 요청을 보낸다. 네트워크 오류는 원인 없이 이름만 던진다. headers 는 서명에 들어간 머리라 그대로 실어 보낸다 */
+  async function call(action: string, method: "HEAD" | "DELETE" | "PUT", key: string, headers?: Record<string, string>): Promise<Response> {
     try {
-      return await doFetch(sign(method, key, new Date(), 60).url, { method, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
+      const signed = sign(method, key, new Date(), 60, headers)
+      return await doFetch(signed.url, { method, ...(headers ? { headers: signed.headers } : {}), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
     } catch {
       throw new Error(`storage ${action} failed (network)`)
     }
   }
+
+  /** x-amz-copy-source 값 — `/버킷/키`(키는 구간마다 인코딩) */
+  const copySource = (key: string) => `/${encodeURIComponent(o.bucket)}/${key.split("/").map(encodeURIComponent).join("/")}`
 
   return {
     presign(req: PresignRequest): Presign {
@@ -57,7 +61,22 @@ export function createS3Driver(o: S3DriverOptions): StorageDriver {
       const length = r.headers.get("content-length")
       const size = length === null || length.trim() === "" ? Number.NaN : Number(length)
       if (!Number.isFinite(size)) throw new Error("storage head failed (no size)") // 크기를 모르는 채로 정책 위반으로 보고 지우지 않는다
-      return { size, contentType: r.headers.get("content-type") }
+      const etag = r.headers.get("etag")
+      return { size, contentType: r.headers.get("content-type"), ...(etag ? { etag } : {}) }
+    },
+    async copy(from, to, opts): Promise<CopyResult> {
+      // 원본 etag 가 ifMatch 일 때만 복사한다(412 → changed). 서명에 두 머리가 들어가므로 이 주소로는 다른 원본을 복사할 수 없다
+      const r = await call("copy", "PUT", to, { "x-amz-copy-source": copySource(from), "x-amz-copy-source-if-match": opts.ifMatch })
+      if (r.status === 412) return "changed"
+      if (r.status === 404) return "missing"
+      if (!r.ok) throw new Error(`storage copy failed (status ${r.status})`)
+      // S3 는 복사 중 오류도 200 으로 줄 수 있다 — 본문이 <Error> 면 코드로 가른다(본문 원문은 싣지 않는다)
+      const body = await r.text().catch(() => "")
+      if (!/<Error[>\s]/.test(body)) return "copied"
+      const code = /<Code>([^<]*)<\/Code>/.exec(body)?.[1]
+      if (code === "PreconditionFailed") return "changed"
+      if (code === "NoSuchKey") return "missing"
+      throw new Error("storage copy failed (error body)")
     },
     async delete(key) {
       const r = await call("delete", "DELETE", key)

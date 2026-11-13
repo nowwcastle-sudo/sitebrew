@@ -1,6 +1,9 @@
 // 올리기 서비스(계획 3c Task 3). 흐름: ① createUpload — 요청 제한 → 정책 검사 → 키·장부 행(pending)·짧은 PUT 서명 → 티켓
-//   ② 브라우저가 티켓 주소로 저장소에 직접 PUT ③ complete — 저장소에 실제 크기·형식을 물어 정책에 맞으면 ready, 속였으면 객체를 지우고 거절
-//   ④ purgeExpired(Cron) — 끝내지 않은 것(24시간)·보유 기간이 지난 것의 객체를 지우고 행에 purgedAt.
+//   ② 브라우저가 티켓 주소(임시 키 uploads/pending/…)로 저장소에 직접 PUT
+//   ③ complete — 임시 객체의 실제 크기·형식을 물어 정책에 맞으면, 검사한 etag 가 그대로일 때만 서버만 아는 최종 키로 복사하고 ready. 속였으면 객체를 지우고 거절.
+//      복사 뒤 임시 객체를 지운다. 같은 올리기 주소로 다시 PUT 해도 최종 객체는 바뀌지 않는다(검사한 뒤 덮어쓰기 — CWE-367). 검사~복사 사이에 바뀌면 복사가 거절되어 끝내기가 실패한다.
+//      복사를 못 하는 드라이버(driver.copy 없음)는 PUT 키 = 최종 키로 동작한다 — 올리기 주소 재사용을 막지 못한다(문서 G-storage).
+//   ④ purgeExpired(Cron) — 끝내지 않은 것(24시간)·보유 기간이 지난 것의 객체(최종·임시 키)를 지우고 행에 purgedAt.
 // 저장소는 드라이버 인터페이스 하나(driver.ts)로만 만난다. 드라이버가 없으면(환경 이름이 없을 때) 서비스는 꺼진 채로 provider_unavailable 만 답한다 —
 // 사이트는 켜지고 올리기만 꺼진다(문의 창구와 같은 방식). 비밀값·저장소 오류 원문은 응답과 로그에 싣지 않는다(오류는 이름만).
 import { randomUUID } from "node:crypto"
@@ -9,7 +12,7 @@ import { isLocale, t, type Locale } from "@launch-factory/i18n"
 import { blockedByRate, blockedResult, type LaunchFailure } from "@launch-factory/security/protect"
 import type { RateLimiter } from "@launch-factory/security/rate-limit"
 import type { StorageDriver } from "./driver.ts"
-import { buildKey, cleanFileName, formatList } from "./key.ts"
+import { buildKey, buildPendingKey, cleanFileName, formatList, isDirectUploadKey } from "./key.ts"
 import { checkUpload, isKind, MAX_PRESIGN_SECONDS, PENDING_TTL_MS, STORAGE_POLICY, type StorageKind, type UploadIssue } from "./policy.ts"
 
 /** 실패 + 상태 코드 힌트(HTTP 처리기가 읽고 본문에서는 뺀다 — http.ts). code 로 정해지는 실패(rate_limited·provider_unavailable)에는 없다 */
@@ -24,7 +27,7 @@ export interface UploadInput {
   fileName?: unknown
 }
 
-/** 브라우저가 저장소에 PUT 할 때 필요한 전부. expiresAt 은 ISO 8601 */
+/** 브라우저가 저장소에 PUT 할 때 필요한 전부. expiresAt 은 ISO 8601. key 는 PUT 하는 객체 키(임시 키)다 — 끝낸 파일의 읽는 키는 StoredFile.key */
 export interface UploadTicket {
   id: string
   key: string
@@ -89,6 +92,9 @@ const PURGE_BATCH = 100
 /** 저장소가 알려 준 형식을 비교용으로 맞춘다(소문자·매개변수 제거) */
 const bareType = (v: string) => (v.split(";")[0] ?? "").trim().toLowerCase()
 
+/** 브라우저가 PUT 한 객체의 키. 복사 방식 행은 id 로 정한 임시 키, 옛 방식·복사 불가 드라이버 행은 장부 키(= 최종 키) 그대로다 */
+const uploadKeyOf = (row: StoredFileRow): string => (isDirectUploadKey(row.key, row.id) ? row.key : buildPendingKey({ id: row.id, contentType: row.contentType }))
+
 export function createStorageService(o: StorageServiceOptions): StorageService {
   const driver = o.driver
   const now = o.now ?? (() => new Date())
@@ -151,8 +157,11 @@ export function createStorageService(o: StorageServiceOptions): StorageService {
       if (!checked.ok) return issueFailure(checked.issue, input, locale)
       const at = now()
       const id = newId()
-      const key = buildKey({ kind: checked.kind, id, contentType: checked.contentType, now: at })
-      const signed = driver.presign({ method: "PUT", key, contentType: checked.contentType, expiresIn: MAX_PRESIGN_SECONDS, now: at })
+      // 복사를 할 수 있으면 읽는 키(최종)는 id 와 무관한 새 uuid 로 만들어 장부에만 둔다 — 올리기 주소를 가진 사람은 임시 키만 안다
+      const copies = typeof driver.copy === "function"
+      const key = buildKey({ kind: checked.kind, id: copies ? newId() : id, contentType: checked.contentType, now: at })
+      const putKey = copies ? buildPendingKey({ id, contentType: checked.contentType }) : key
+      const signed = driver.presign({ method: "PUT", key: putKey, contentType: checked.contentType, expiresIn: MAX_PRESIGN_SECONDS, now: at })
       await insertStoredFile(o.db, {
         id,
         key,
@@ -164,7 +173,7 @@ export function createStorageService(o: StorageServiceOptions): StorageService {
         createdAt: at,
         expiresAt: new Date(at.getTime() + PENDING_TTL_MS),
       })
-      return { ok: true, data: { id, key, method: "PUT", url: signed.url, headers: signed.headers, expiresAt: signed.expiresAt.toISOString(), maxBytes: STORAGE_POLICY[checked.kind].maxBytes } }
+      return { ok: true, data: { id, key: putKey, method: "PUT", url: signed.url, headers: signed.headers, expiresAt: signed.expiresAt.toISOString(), maxBytes: STORAGE_POLICY[checked.kind].maxBytes } }
     } catch (e) {
       report("createUpload", e)
       return fail(locale, "storage.failed", 500, { retryable: true })
@@ -185,19 +194,37 @@ export function createStorageService(o: StorageServiceOptions): StorageService {
       const at = now()
       if (row.expiresAt && at.getTime() > row.expiresAt.getTime()) return fail(locale, "storage.expired", 410)
 
-      const info = await driver.head(row.key)
-      if (!info) return fail(locale, "storage.notUploaded", 409, { retryable: true })
+      const putKey = uploadKeyOf(row)
+      const info = await driver.head(putKey)
+      // 임시 객체가 없을 때: 동시에 끝낸 다른 요청이 복사하고 임시 객체를 지웠을 수 있다 — 장부가 ready 면 그 결과를 돌려준다
+      const gone = async (): Promise<StorageResult<StoredFile>> => {
+        const done = await getStoredFile(o.db, row.id)
+        return done?.status === "ready" ? { ok: true, data: shape(done, driver) } : fail(locale, "storage.notUploaded", 409, { retryable: true })
+      }
+      if (!info) return gone()
       const policy = STORAGE_POLICY[row.kind as StorageKind]
       // 서명은 형식을 묶지만 크기는 못 묶는다 — 실제 크기가 정책을 넘거나 비었거나 형식이 서명과 다르면 객체를 지우고 거절한다
       const sizeOk = Number.isInteger(info.size) && info.size >= 1 && info.size <= policy.maxBytes
       const typeOk = info.contentType === null || bareType(info.contentType) === row.contentType
       if (!sizeOk || !typeOk) {
-        await driver.delete(row.key)
+        await driver.delete(putKey)
         await markStoredFilePurged(o.db, row.id, at)
         return fail(locale, "storage.rejected", 422)
       }
+      if (putKey !== row.key) {
+        // 검사한 바로 그 내용(etag)만 최종 키로 옮긴다. etag 를 모르면 어느 내용을 검사했는지 알 수 없으므로 복사하지 않는다
+        if (!driver.copy || !info.etag) throw new Error("storage: cannot copy the checked object")
+        const copied = await driver.copy(putKey, row.key, { ifMatch: info.etag })
+        // 검사한 뒤 같은 주소로 다시 올려 내용이 바뀌었다 — 최종 키는 만들지 않았다. 다시 끝내기를 부르면 바뀐 내용을 처음부터 검사한다
+        if (copied === "changed") return fail(locale, "storage.failed", 409, { retryable: true })
+        if (copied === "missing") return gone()
+      }
       const ready = await markStoredFileReady(o.db, row.id, { sizeBytes: info.size, at, expiresAt: policy.retentionDays ? new Date(at.getTime() + policy.retentionDays * 86_400_000) : null })
       const final = ready ?? (await getStoredFile(o.db, row.id)) // 동시에 끝낸 다른 요청이 먼저 바꿨다
+      if (putKey !== row.key) {
+        // 임시 객체는 더 쓸 데가 없다. 지우다 실패해도 파일은 ready 다 — 남은 임시 객체는 이 행의 파기 때(또는 버킷 수명 규칙이) 지운다
+        await driver.delete(putKey).catch((e: unknown) => report("cleanupPending", e))
+      }
       return final?.status === "ready" ? { ok: true, data: shape(final, driver) } : notFound(locale)
     } catch (e) {
       report("complete", e)
@@ -232,6 +259,8 @@ export function createStorageService(o: StorageServiceOptions): StorageService {
       for (const row of batch) {
         try {
           await driver.delete(row.key)
+          const upload = uploadKeyOf(row)
+          if (upload !== row.key) await driver.delete(upload) // 끝내지 않았거나 끝낸 뒤 임시 객체를 못 지운 행의 임시 객체
           if (await markStoredFilePurged(o.db, row.id, at)) purged++
         } catch (e) {
           failed++

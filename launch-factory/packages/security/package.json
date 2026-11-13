@@ -6,6 +6,7 @@
   "description": "Sentry 개인정보 가림, 보안 헤더(CSP nonce), 접속기록 도우미, 요청 제한(rate-limit)·봇 방어(Turnstile)·차단 결과 모양(protect) — 뒤 셋은 서버 전용 하위 경로.",
   "exports": {
     ".": "./src/index.ts",
+    "./body": "./src/body.ts",
     "./pii": "./src/pii.ts",
     "./sentry": "./src/sentry.ts",
     "./rate-limit": "./src/rate-limit.ts",

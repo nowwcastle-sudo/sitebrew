@@ -2,11 +2,11 @@
 // 서비스 코드는 진짜이고 갈아 끼우는 것은 이 어댑터뿐이다: presign 은 sigv4.ts 로 서명한 상대 주소를 만들고, handle 은 같은 서명을 verifyPresigned 로 다시 계산해 받는다.
 // 서명 비밀은 폴더 안 `.secret`(처음에 한 번 무작위로 만든다)라 모듈 사본이 여럿이어도·재시작해도 티켓이 통하고, 코드에 고정 비밀이 없다.
 // 읽기: 공개 종류(avatar·image)는 서명 없이, 비공개는 서명 주소로만. 쓰기는 늘 서명 + 서명한 content-type + 가장 큰 정책 상한 이하의 몸통.
-import { randomBytes } from "node:crypto"
+import { createHash, randomBytes } from "node:crypto"
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
-import type { ObjectInfo, Presign, PresignRequest, StorageDriver } from "./driver.ts"
+import type { CopyResult, ObjectInfo, Presign, PresignRequest, StorageDriver } from "./driver.ts"
 import { isStorageKey } from "./key.ts"
 import { STORAGE_KINDS, STORAGE_POLICY, type StorageKind } from "./policy.ts"
 import { presignUrl, verifyPresigned } from "./sigv4.ts"
@@ -28,6 +28,8 @@ export interface LocalDriver extends StorageDriver {
 const SIGN = { endpoint: "http://local.invalid", bucket: "local", region: "local", accessKeyId: "local" } as const
 const MAX_BODY = Math.max(...STORAGE_KINDS.map((k) => STORAGE_POLICY[k].maxBytes))
 const plain = (status: number) => new Response(null, { status })
+/** 내용 태그 — S3 ETag 처럼 같은 내용이면 같고 내용이 바뀌면 달라진다 */
+const etagOf = (body: Uint8Array) => `"${createHash("sha256").update(body).digest("hex")}"`
 
 /** `.secret` 를 읽고, 없으면 무작위로 한 번 만든다(동시에 둘이 만들면 먼저 쓴 쪽 것을 쓴다) */
 function loadSecret(dir: string): string {
@@ -62,13 +64,21 @@ export function createLocalDriver(o: LocalDriverOptions): LocalDriver {
     return join(o.dir, key)
   }
   const typeOf = async (file: string) => (await readFile(`${file}.type`, "utf8").catch(() => null)) ?? null
-  const kindOf = (key: string) => key.slice(0, key.indexOf("/")) as StorageKind
+  /** 최종 키의 종류. 임시 키(uploads/pending/…)는 어느 종류도 아니라 undefined — 공개로 읽히지 않는다 */
+  const kindOf = (key: string): StorageKind | undefined => {
+    const head = key.slice(0, key.indexOf("/"))
+    return (STORAGE_KINDS as readonly string[]).includes(head) ? (head as StorageKind) : undefined
+  }
+  const isPublicKey = (key: string) => {
+    const kind = kindOf(key)
+    return kind !== undefined && STORAGE_POLICY[kind].public
+  }
 
   async function serve(key: string): Promise<Response> {
     const file = pathOf(key)
     const body = await readFile(file).catch(() => null)
     if (!body) return plain(404)
-    const isPublic = STORAGE_POLICY[kindOf(key)].public
+    const isPublic = isPublicKey(key)
     return new Response(new Uint8Array(body), {
       status: 200,
       headers: {
@@ -90,7 +100,21 @@ export function createLocalDriver(o: LocalDriverOptions): LocalDriver {
     async head(key): Promise<ObjectInfo | null> {
       const file = pathOf(key)
       const s = await stat(file).catch(() => null)
-      return s?.isFile() ? { size: s.size, contentType: await typeOf(file) } : null
+      if (!s?.isFile()) return null
+      const body = await readFile(file).catch(() => null)
+      return body ? { size: body.length, contentType: await typeOf(file), etag: etagOf(body) } : null
+    },
+    async copy(from, to, opts): Promise<CopyResult> {
+      const src = pathOf(from)
+      const body = await readFile(src).catch(() => null)
+      if (!body) return "missing"
+      // 읽은 바이트의 태그가 맞을 때만, 그 바이트를 그대로 쓴다(검사와 복사 사이에 파일이 바뀌어도 검사한 내용만 들어간다)
+      if (etagOf(body) !== opts.ifMatch) return "changed"
+      const dst = pathOf(to)
+      await mkdir(dirname(dst), { recursive: true })
+      await writeFile(dst, body)
+      await writeFile(`${dst}.type`, (await typeOf(src)) ?? "")
+      return "copied"
     },
     async delete(key) {
       const file = pathOf(key)
@@ -111,7 +135,7 @@ export function createLocalDriver(o: LocalDriverOptions): LocalDriver {
       }
       if (request.method === "GET" && !url.searchParams.has("X-Amz-Signature")) {
         if (!isStorageKey(key)) return plain(404)
-        return STORAGE_POLICY[kindOf(key)].public ? serve(key) : plain(403)
+        return isPublicKey(key) ? serve(key) : plain(403)
       }
       const verified = verifyPresigned({ method: request.method, url: `/${SIGN.bucket}/${url.pathname.slice(prefix.length)}${url.search}`, headers: { "content-type": request.headers.get("content-type") }, ...SIGN, secretAccessKey, now: now() })
       if (!verified.ok) return plain(403)

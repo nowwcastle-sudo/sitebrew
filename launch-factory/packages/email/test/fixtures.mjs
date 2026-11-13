@@ -113,6 +113,7 @@ export function inputs(locale) {
       adminUrl: `${APP}/admin/bookings`,
     },
     verifyEmail: { ...base, verifyUrl: `${APP}/api/auth/verify-email?token=test-token`, linkValidMinutes: 60, notMeUrl: `${APP}/api/auth/not-me?t=test-not-me` },
+    existingAccount: { ...base, signInUrl: `${APP}/sign-in`, resetUrl: `${APP}/forgot-password` },
     emailChangeConfirm: { ...base, newEmail: "new-address@example.test", approveUrl: `${APP}/api/auth/verify-email?token=test-approve`, linkValidMinutes: 60 },
     emailChanged: { ...base, newEmail: "new-address@example.test", securityUrl: `${APP}/forgot-password` },
     passwordReset: { ...base, resetUrl: `${APP}/api/auth/reset-password/test-token?callbackURL=%2Freset-password`, linkValidMinutes: 60 },

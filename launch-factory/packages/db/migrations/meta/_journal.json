@@ -134,6 +134,13 @@
       "when": 1794528109476,
       "tag": "0018_order_refund_claim",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1794539533994,
+      "tag": "0019_retention_offer_uses",
+      "breakpoints": true
     }
   ]
 }

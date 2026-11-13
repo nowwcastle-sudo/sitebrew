@@ -59,6 +59,8 @@ async function build(): Promise<Auth> {
     productName: PRODUCT_NAME,
     defaultLocale: DEFAULT_LOCALE,
     securityUrl: `${appUrl()}${ROUTES.security}`,
+    // CWE-203: 이미 있는 주소로 가입을 시도하면 새 가입과 같은 응답을 주고, 그 주소의 주인에게만 「이미 계정이 있어요 — 로그인·비밀번호 재설정」 메일을 보낸다(재설정 버튼은 securityUrl)
+    signInUrl: `${appUrl()}/sign-in`,
     // C02: 비밀번호·이메일 변경 알림의 「문의하기」 버튼 — 문의 화면이 없는 제품(문의를 고르지 않음)은 버튼을 싣지 않는다(contactUrl 은 선택이다)
     contactUrl: hasUrl(ROUTES.contact) ? `${appUrl()}${ROUTES.contact}` : undefined,
     // G05: 이메일을 확인한 뒤 한 번 보내는 환영 메일의 「열기」 링크
@@ -84,6 +86,8 @@ async function build(): Promise<Auth> {
     botCheck: createTurnstile(live ? { mode: "live", secretKey: required("TURNSTILE_SECRET_KEY") } : { mode: "mock" }),
     // 재설정 메일(sendResetPassword)을 포함한 계정 보안 메일 다섯이 authEmails 로 나간다(D180). 보내기 실패는 Better Auth 가 onError 로만 알린다.
     mailer: emails,
+    // CWE-203: 있는 주소도 새 가입과 같은 응답(가입 여부를 드러내지 않는다). 새 계정은 인증 메일의 링크를 누른 뒤 로그인된다. 이 템플릿의 메일러(위 emails)는 verifyEmail·existingAccount 를 모두 가져 기본값도 같다
+    signUpEnumeration: "conceal",
     runInBackground,
     // A06: 가입 때 마케팅 수신에 동의했으면 처리 결과 통지 메일(정보통신망법 제50조제7항 · 시행령 제62조의2 — 14일 안에 전송자·사실과 날짜·결과). 설정 화면의 통지(lib/launch/consents.ts)와 같은 메일이다.
     // 보내기가 실패하면 발신함에 남고 Cron(/api/cron/notices)이 다시 보낸다(D210). 가입은 되돌리지 않는다.

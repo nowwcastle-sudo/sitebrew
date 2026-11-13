@@ -32,17 +32,22 @@ function setup(over = {}) {
 }
 const rows = async () => (await d.select({ n: count() }).from(storedFiles))[0].n
 const rowOf = async (id) => (await d.select().from(storedFiles).where(eq(storedFiles.id, id)))[0]
+/** 장부의 최종 키 — 읽는 주소가 가리키는 곳(티켓의 key 는 PUT 하는 임시 키다) */
+const finalKeyOf = async (id) => (await rowOf(id)).key
 const ask = { kind: "image", contentType: "image/png", size: 1000 }
 
-test("티켓: 키는 종류/연도/uuid.확장자, 사용자 파일명은 키에 없고, pending 행과 15분 PUT 주소가 나온다", async () => {
+test("티켓: PUT 키는 임시 키(uploads/pending/id.확장자)이고 읽는 키(종류/연도/새 uuid.확장자)는 장부에만 있다. 파일명은 키에 없고, pending 행과 15분 PUT 주소가 나온다", async () => {
   const { service, driver, ctx, c } = setup()
   const r = await service.createUpload({ ...ask, fileName: "../../내 사진 final.png" }, ctx())
   assert.equal(r.ok, true)
   const t = r.data
-  assert.match(t.key, /^image\/2026\/[0-9a-f-]{36}\.png$/)
+  assert.equal(t.key, `uploads/pending/${t.id}.png`)
   assert.ok(isStorageKey(t.key))
   assert.ok(!t.key.includes("final"), "파일명은 키에 없다")
-  assert.equal(t.id, t.key.split("/")[2].split(".")[0])
+  const row0 = await rowOf(t.id)
+  assert.match(row0.key, /^image\/2026\/[0-9a-f-]{36}\.png$/)
+  assert.ok(isStorageKey(row0.key))
+  assert.ok(!row0.key.includes(t.id), "읽는 키에는 올리기 주소가 아는 id 가 없다")
   assert.equal(t.method, "PUT")
   assert.deepEqual(t.headers, { "content-type": "image/png" })
   assert.equal(t.maxBytes, STORAGE_POLICY.image.maxBytes)
@@ -94,8 +99,9 @@ test("끝내기: 올린 객체의 실제 크기·형식을 확인하고 ready �
   c.tick(60_000)
   const r = await service.complete({ id: t.id }, ctx())
   assert.equal(r.ok, true)
-  assert.deepEqual(r.data, { id: t.id, key: t.key, url: `https://cdn.test/${t.key}`, kind: "image", contentType: "image/png", size: 900 })
   const row = await rowOf(t.id)
+  assert.deepEqual(r.data, { id: t.id, key: row.key, url: `https://cdn.test/${row.key}`, kind: "image", contentType: "image/png", size: 900 })
+  assert.deepEqual([...driver.objects.keys()], [row.key], "최종 키에만 객체가 있고 임시 객체는 지웠다")
   assert.equal(row.status, "ready")
   assert.equal(row.sizeBytes, 900)
   assert.equal(row.expiresAt, null)
@@ -113,7 +119,7 @@ test("끝내기: 비공개 종류(attachment)는 짧은 GET 서명 주소와 보
   driver.objects.set(t.key, { size: 4 * MB, contentType: "application/pdf" })
   const r = await service.complete({ id: t.id }, ctx({ userId: "u1" }))
   assert.equal(r.ok, true)
-  assert.equal(r.data.url, `https://mem.test/${t.key}?m=GET&e=900`)
+  assert.equal(r.data.url, `https://mem.test/${await finalKeyOf(t.id)}?m=GET&e=900`)
   assert.equal(r.data.urlExpiresAt, new Date(c.at.getTime() + 900_000).toISOString())
   assert.equal((await rowOf(t.id)).expiresAt.toISOString(), new Date(c.at.getTime() + 365 * 86_400_000).toISOString())
 })
@@ -210,7 +216,7 @@ test("내려받기 주소: 비공개는 올린 사람과 관리자만, 공개는
   assert.equal((await service.getDownloadUrl({ id: anonPriv.id }, { userId: "u1" })).ok, false, "주인이 없는 비공개는 관리자만")
   assert.equal((await service.getDownloadUrl({ id: anonPriv.id }, { isAdmin: true })).ok, true)
   const pub = await file("image", "image/png", null)
-  assert.deepEqual((await service.getDownloadUrl({ id: pub.id }, {})).data, { url: `https://cdn.test/${pub.key}` })
+  assert.deepEqual((await service.getDownloadUrl({ id: pub.id }, {})).data, { url: `https://cdn.test/${await finalKeyOf(pub.id)}` })
   const pending = (await service.createUpload(ask, ctx())).data
   assert.equal((await service.getDownloadUrl({ id: pending.id }, { isAdmin: true })).ok, false)
 })
@@ -221,7 +227,7 @@ test("파기: 끝내지 않은 것(24시간)과 보유 기간(365일)이 지난 
     const t = (await service.createUpload(input, ctx({ userId: "u1" }))).data
     driver.objects.set(t.key, { size: 10, contentType: input.contentType })
     if (ready) await service.complete({ id: t.id }, ctx({ userId: "u1" }))
-    return t
+    return { ...t, final: await finalKeyOf(t.id) }
   }
   const abandoned = await make({ ...ask, fileName: "x.png" }, false)
   const attach = await make({ kind: "attachment", contentType: "application/pdf", size: 10, fileName: "secret.pdf" }, true)
@@ -235,7 +241,7 @@ test("파기: 끝내지 않은 것(24시간)과 보유 기간(365일)이 지난 
   assert.ok(r.purged >= 2, "끝내지 않은 둘(abandoned·recent) 이상(다른 시험이 남긴 만료 행도 지운다)")
   assert.equal(driver.objects.has(abandoned.key), false)
   assert.equal(driver.objects.has(recent.key), false)
-  assert.equal(driver.objects.has(attach.key), true)
+  assert.equal(driver.objects.has(attach.final), true)
   const gone = await rowOf(abandoned.id)
   assert.equal(gone.status, "purged")
   assert.equal(gone.fileName, null)
@@ -244,10 +250,10 @@ test("파기: 끝내지 않은 것(24시간)과 보유 기간(365일)이 지난 
   c.tick(365 * 86_400_000)
   r = await service.purgeExpired()
   assert.equal(r.failed, 0)
-  assert.equal(driver.objects.has(attach.key), false)
+  assert.equal(driver.objects.has(attach.final), false)
   assert.equal((await rowOf(attach.id)).status, "purged")
   assert.equal((await rowOf(attach.id)).fileName, null)
-  assert.equal(driver.objects.has(keeper.key), true, "보유 기간 없는 공개 종류는 남는다")
+  assert.equal(driver.objects.has(keeper.final), true, "보유 기간 없는 공개 종류는 남는다")
   assert.equal((await rowOf(keeper.id)).status, "ready")
   assert.deepEqual(await service.purgeExpired(), { purged: 0, failed: 0 }, "다시 돌려도 더 지울 것이 없다")
 })
@@ -296,4 +302,126 @@ test("비밀값: 서명·저장소 오류의 원문(자격 증명이 든 문구)
   assert.equal(r.retryable, true)
   assert.ok(!JSON.stringify(r).includes(secret))
   assert.ok(errors.length === 1 && !errors[0].message.includes(secret), errors[0]?.message)
+})
+
+// ── 검증 뒤에도 재사용되는 올리기 주소(CWE-367) ────────────────────────────────────────────────────────────────────
+
+const served = (driver, key) => driver.objects.get(key)?.body?.toString() // 읽는 주소가 내려주는 내용
+
+test("재사용 방지: 끝낸 뒤 같은 서명 주소로 다른 내용을 PUT 해도 읽는 객체는 바뀌지 않고, 다시 끝내기도 같은 결과다", async () => {
+  const { service, driver, ctx } = setup()
+  const t = (await service.createUpload(ask, ctx())).data
+  driver.put(t.key, { body: "good-image", contentType: "image/png" })
+  const done = await service.complete({ id: t.id }, ctx())
+  assert.equal(done.ok, true)
+  assert.equal(served(driver, done.data.key), "good-image")
+
+  driver.put(t.key, { body: "evil-content-evil", contentType: "image/png" }) // 15분 안에 같은 주소로 다시 올린다
+  assert.equal(served(driver, done.data.key), "good-image", "읽는 객체는 그대로다")
+  assert.deepEqual(await service.complete({ id: t.id }, ctx()), done, "ready 는 저장된 결과를 돌려준다 — 최종 객체는 검사한 내용이다")
+  assert.equal(driver.calls.copy.length, 1, "복사는 한 번뿐이다")
+  assert.notEqual(done.data.key, t.key, "읽는 키는 PUT 키와 다르다")
+})
+
+test("검사~복사 사이 교체: 검사한 etag 와 달라지면 복사하지 않고 끝내기가 실패한다 — 최종 객체는 없고 행은 pending, 다시 끝내면 바뀐 내용을 처음부터 검사한다", async () => {
+  const { service, driver, ctx } = setup()
+  const t = (await service.createUpload(ask, ctx())).data
+  driver.put(t.key, { body: "good-image", contentType: "image/png" })
+  const final = await finalKeyOf(t.id)
+  driver.beforeCopy = (from) => driver.put(from, { body: "swapped-image", contentType: "image/png" })
+  const r = await service.complete({ id: t.id }, ctx())
+  assert.equal(r.ok, false)
+  assert.equal(r.status, 409)
+  assert.equal(r.retryable, true)
+  assert.equal(driver.objects.has(final), false, "바뀐 내용은 최종 키에 들어가지 않았다")
+  assert.equal((await rowOf(t.id)).status, "pending")
+
+  driver.beforeCopy = null
+  const retry = await service.complete({ id: t.id }, ctx())
+  assert.equal(retry.ok, true)
+  assert.equal(served(driver, final), "swapped-image", "다시 끝내기는 바뀐 내용을 정책으로 검사한 뒤 받는다")
+
+  // 바뀐 내용이 정책을 어기면 지우고 거절한다
+  const big = (await service.createUpload(ask, ctx())).data
+  driver.put(big.key, { body: "ok", contentType: "image/png" })
+  driver.beforeCopy = (from) => driver.put(from, { body: Buffer.alloc(6 * MB), contentType: "image/png" })
+  assert.equal((await service.complete({ id: big.id }, ctx())).status, 409)
+  driver.beforeCopy = null
+  assert.equal((await service.complete({ id: big.id }, ctx())).status, 422)
+  assert.equal(driver.objects.has(big.key), false)
+  assert.equal(driver.objects.has(await finalKeyOf(big.id)), false)
+})
+
+test("etag 를 알려 주지 않는 저장소: 검사한 내용을 특정할 수 없으므로 복사하지 않고 실패한다(최종 객체 없음)", async () => {
+  const driver = memoryDriver()
+  const head = driver.head
+  driver.head = async (key) => ({ ...(await head(key)), etag: null })
+  const { service, ctx, errors } = setup({ driver })
+  const t = (await service.createUpload(ask, ctx())).data
+  driver.put(t.key, { body: "good-image", contentType: "image/png" })
+  const r = await service.complete({ id: t.id }, ctx())
+  assert.equal(r.ok, false)
+  assert.equal(r.status, 500)
+  assert.equal(driver.calls.copy.length, 0)
+  assert.equal(driver.objects.has(await finalKeyOf(t.id)), false)
+  assert.equal(errors.length, 1)
+})
+
+test("복사를 못 하는 드라이버(copy 없음): PUT 키 = 읽는 키로 동작한다 — 올리기 주소 재사용을 막지 못한다는 한계가 문서(G-storage)와 같다", async () => {
+  const driver = memoryDriver({ copy: false })
+  const { service, ctx } = setup({ driver })
+  const t = (await service.createUpload(ask, ctx())).data
+  assert.equal(t.key, (await rowOf(t.id)).key)
+  assert.match(t.key, /^image\/2026\/[0-9a-f-]{36}\.png$/)
+  driver.put(t.key, { body: "good-image", contentType: "image/png" })
+  const done = await service.complete({ id: t.id }, ctx())
+  assert.equal(done.ok, true)
+  assert.equal(done.data.key, t.key)
+  assert.equal(served(driver, done.data.key), "good-image")
+  driver.put(t.key, { body: "evil-content-evil", contentType: "image/png" })
+  assert.equal(served(driver, done.data.key), "evil-content-evil", "한계: 복사 없이는 덮어쓰기를 막을 수 없다")
+})
+
+test("옛 행 호환: 임시 키 도입 전에 만든 행(키의 uuid = 장부 id)은 그 키에서 그대로 끝내고, 이미 ready 인 옛 파일은 옛 키로 내려받는다", async () => {
+  const { service, driver, ctx, c } = setup()
+  const legacy = async (id, status) => {
+    const key = `image/2026/${id}.png`
+    await d.insert(storedFiles).values({ id, key, kind: "image", contentType: "image/png", declaredBytes: 1000, userId: null, status, createdAt: c.at, expiresAt: status === "pending" ? new Date(c.at.getTime() + 24 * 3600_000) : null, ...(status === "ready" ? { sizeBytes: 1000, completedAt: c.at } : {}) })
+    return key
+  }
+  const pendingId = "00000000-0000-4000-8000-0000000000a1"
+  const readyId = "00000000-0000-4000-8000-0000000000a2"
+  const pendingKey = await legacy(pendingId, "pending")
+  const readyKey = await legacy(readyId, "ready")
+  driver.put(pendingKey, { body: "old-flow", contentType: "image/png" })
+  const done = await service.complete({ id: pendingId }, ctx())
+  assert.equal(done.ok, true)
+  assert.equal(done.data.key, pendingKey)
+  assert.equal(driver.calls.copy.length, 0, "옛 행은 복사하지 않는다")
+  assert.equal(driver.objects.has(pendingKey), true)
+  assert.deepEqual((await service.getDownloadUrl({ id: readyId }, {})).data, { url: `https://cdn.test/${readyKey}` })
+})
+
+test("임시 객체 정리: 복사 뒤 임시 객체를 못 지워도 파일은 ready 이고, 그 행을 파기할 때 임시 객체도 지운다", async () => {
+  const driver = memoryDriver()
+  const del = driver.delete
+  driver.delete = async (key) => {
+    if (key.startsWith("uploads/pending/")) throw new Error("boom")
+    return del(key)
+  }
+  const { service, ctx, c, errors } = setup({ driver })
+  const t = (await service.createUpload({ kind: "attachment", contentType: "application/pdf", size: 10 }, ctx({ userId: "u1" }))).data
+  driver.put(t.key, { body: "0123456789", contentType: "application/pdf" })
+  const done = await service.complete({ id: t.id }, ctx({ userId: "u1" }))
+  assert.equal(done.ok, true)
+  assert.equal(driver.objects.has(t.key), true, "임시 객체가 남았다")
+  assert.equal(errors.length, 1)
+  assert.ok(!errors[0].message.includes("boom"), "저장소 오류 원문은 로그에 싣지 않는다")
+
+  driver.delete = del
+  c.tick(366 * 86_400_000)
+  const r = await service.purgeExpired()
+  assert.equal(r.failed, 0)
+  assert.equal(driver.objects.has(t.key), false)
+  assert.equal(driver.objects.has(done.data.key), false)
 })

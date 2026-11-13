@@ -138,7 +138,8 @@ export const signUpCopy: AuthSignUpConsentsCopy = {
     retry: "Reload",
   },
   done: { title: "You're all set", body: `Your account is ready.${NEXT_AFTER_SIGNUP.plan}`, label: NEXT_AFTER_SIGNUP.label, href: NEXT_AFTER_SIGNUP.href },
-  emailSent: { title: "Check your email", body: "Open the link in the email we sent to finish signing up." },
+  // CWE-203: 이미 있는 주소로 가입해도 같은 화면이다 — 새 주소는 확인 링크, 있는 주소는 로그인·재설정 안내가 메일로 간다
+  emailSent: { title: "Check your email", body: "Open the link in the email we sent to finish signing up. If you already have an account, that email tells you how to sign in." },
   signIn: { text: "Already have an account?", label: "Sign in", href: "/sign-in" },
   // A04: 약관·정책 링크는 새 탭에서 열어 가입 단계·입력값이 남는다 — 링크 이름에 그 사실을 붙인다
   newTab: "Opens in a new tab",

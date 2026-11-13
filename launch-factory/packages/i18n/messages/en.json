@@ -197,6 +197,15 @@
       "notMeNote": "Didn't create this account? Use the link below and we will delete it.",
       "notMeCta": "This wasn't me"
     },
+    "existingAccount": {
+      "subject": "You already have a {productName} account",
+      "preview": "Someone tried to sign up with your email address. Sign in or reset your password.",
+      "heading": "You already have an account",
+      "body": "Someone just tried to create a {productName} account with this email address, but you already have one. If that was you, sign in. If you forgot your password, reset it.",
+      "ignoreNote": "If it wasn't you, you don't need to do anything. Your account and password have not changed.",
+      "cta": "Sign in",
+      "resetCta": "Reset password"
+    },
     "emailChangeConfirm": {
       "subject": "Approve your {productName} email change",
       "preview": "Someone asked to change your sign-in email to {newEmail}.",
