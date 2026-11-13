@@ -53,19 +53,25 @@ export function rangeBase() {
   return null
 }
 
+// 커밋 트리를 dir 에 푼다. 실패하면 사유 문자열, 성공하면 null.
+// core.autocrlf=false 로 고정한다 — Windows 기본(true)이면 git archive 가 줄끝을 CRLF 로 바꿔 쓰고,
+// gitleaks 의 generic-api-key 가 빈 값 줄(`KEY=` + CRLF)에서 다음 줄의 변수 이름을 값으로 읽어 오탐한다.
+export function extractTree(root, dir) {
+  const arc = spawnSync("git", ["-c", "core.autocrlf=false", "archive", "--format=tar", "HEAD"], { cwd: root, maxBuffer: 512 << 20, encoding: "buffer" })
+  if (arc.status !== 0) return `git archive 실패(종료 ${arc.status}): ${String(arc.stderr ?? "").trim() || String(arc.error ?? "")}`
+  // 풀 폴더는 -C 인자가 아니라 cwd 로 준다 — Git Bash 의 GNU tar 는 `C:` 로 시작하는 경로를 `호스트:경로`(원격)로 읽는다. 인자에 콜론 든 경로가 없으면 GNU tar·bsdtar·리눅스 어디서나 같다
+  const x = spawnSync("tar", ["-xf", "-"], { cwd: dir, input: arc.stdout })
+  if (x.status !== 0) return `tar 로 푸는 데 실패했다(종료 ${x.status}): ${String(x.stderr ?? "").trim() || String(x.error ?? "")}`
+  return null
+}
+
 function gitleaksTree(bin) {
   // 추적 파일만(node_modules·.tmp 제외) 커밋 상태 그대로 푼 폴더를 훑는다
   const dir = mkdtempSync(join(tmpdir(), "lf-gitleaks-"))
   try {
-    const arc = spawnSync("git", ["archive", "--format=tar", "HEAD"], { cwd: ROOT, maxBuffer: 512 << 20, encoding: "buffer" })
-    if (arc.status !== 0) {
-      console.log(`git archive 실패(종료 ${arc.status}): ${String(arc.stderr ?? "").trim() || String(arc.error ?? "")}`)
-      return 1
-    }
-    // 풀 폴더는 -C 인자가 아니라 cwd 로 준다 — Git Bash 의 GNU tar 는 `C:` 로 시작하는 경로를 `호스트:경로`(원격)로 읽는다. 인자에 콜론 든 경로가 없으면 GNU tar·bsdtar·리눅스 어디서나 같다
-    const x = spawnSync("tar", ["-xf", "-"], { cwd: dir, input: arc.stdout })
-    if (x.status !== 0) {
-      console.log(`tar 로 푸는 데 실패했다(종료 ${x.status}): ${String(x.stderr ?? "").trim() || String(x.error ?? "")}`)
+    const failed = extractTree(ROOT, dir)
+    if (failed) {
+      console.log(failed)
       return 1
     }
     return run(bin, ["dir", dir, "--config", join(ROOT, ".gitleaks.toml"), "--redact", "--no-banner", "--verbose"])
