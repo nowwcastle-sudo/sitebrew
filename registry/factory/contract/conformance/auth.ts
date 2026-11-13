@@ -2,7 +2,7 @@
 // 목에서는 ?auth=signed-out · ?auth=signed-in · ?state=error 다. 실제 어댑터(Better Auth 등)는 make 가 그 장면의 새 포트를 돌려준다 —
 // error 는 백엔드가 응답하지 않는 포트(샌드박스 주소를 막거나 녹화한 5xx)다.
 import type { AuthMethod, AuthPort, ConsentInput, Session } from "@/registry/factory/contract/ports"
-import { type ConformanceOptions, type ConformanceResult, confirmationProblem, runCheck, show } from "./conformance-core"
+import { type ConformanceOptions, type ConformanceResult, confirmationProblem, deepEqual, idemKey, runCheck, show } from "./conformance-core"
 
 const isDate = (v: unknown) => typeof v === "string" && !Number.isNaN(Date.parse(v))
 
@@ -130,6 +130,21 @@ export async function authConformance(make: MakeAuth, options: ConformanceOption
       if (problem) return problem
       const done = await port.exportMyData({ confirmed: true })
       return done.ok && typeof done.data === "object" && done.data !== null ? null : `확인과 함께 부르면 데이터 객체가 와야 해요: ${show(done)}`
+    })
+  }
+
+  // 멱등 키(WF-7 — options.requireIdempotency 인 어댑터만): 같은 키의 가입 되풀이는 두 번째 계정을 만들려다 「이미 있어요」로 거절되지 않고 첫 결과를 그대로 돌려준다.
+  // (같은 이메일을 키 없이 또 가입하면 어떻게 되는지는 공급자 몫이라 보지 않는다 — 키가 없으면 예전과 같다)
+  if (options.requireIdempotency) {
+    await check("auth.idempotency.sign-up-same-key-replay", async () => {
+      const port = await make({ auth: "signed-out" })
+      const key = idemKey("auth-sign-up", 1)
+      const input = { method: "password" as const, email: `conformance-idem-${key.slice(-8)}@example.com`, password: "conformance-Example-1", consents: { terms: true as const, privacy: true as const, ageOver14: true as const }, idempotencyKey: key }
+      const first = await port.signUp(input)
+      if (!first.ok) return `signUp 실패: ${show(first)}`
+      const replay = await port.signUp(input)
+      if (!replay.ok) return `같은 키의 되풀이는 첫 결과를 돌려줘야 해요: ${show(replay)}`
+      return deepEqual(first.data, replay.data) ? null : `같은 키의 되풀이가 첫 결과와 달라요: ${show(first.data)} ≠ ${show(replay.data)}`
     })
   }
   return out

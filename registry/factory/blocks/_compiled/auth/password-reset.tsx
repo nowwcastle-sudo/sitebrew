@@ -60,12 +60,12 @@ export function AuthPasswordReset({ copy, requestPasswordReset, track, id = "pas
     e.preventDefault()
     const v = form.validate(["email"])
     if (!v) return
-    const r = await form.run(() => requestPasswordReset({ email: v.email }))
+    const r = await form.run((key) => requestPasswordReset({ email: v.email, ...key }))
     if (r) setSentTo(v.email)
   }
   const resend = async () => {
     if (!sentTo) return
-    const r = await form.run(() => requestPasswordReset({ email: sentTo }))
+    const r = await form.run((key) => requestPasswordReset({ email: sentTo, ...key }))
     if (r) setResent((n) => n + 1)
   }
   return (
