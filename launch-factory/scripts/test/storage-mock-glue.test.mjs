@@ -21,7 +21,7 @@ test("mock 한 바퀴: 티켓(상대 주소) → PUT → 끝내기 → 공개 �
   const ticketRes = await (await g.route("storage/ticket")).POST(postJson(`${ORIGIN}/api/storage/ticket`, { kind: "image", contentType: "image/png", size: png.length }))
   assert.equal(ticketRes.status, 200)
   const t = (await ticketRes.json()).data
-  assert.ok(t.url.startsWith("/api/storage/local/image/"), t.url)
+  assert.ok(t.url.startsWith("/api/storage/local/uploads/pending/"), t.url)
   const local = await g.route("storage/local/[...key]")
 
   assert.equal((await local.PUT(new Request(`${ORIGIN}${t.url}`, { method: "PUT", headers: t.headers, body: png }))).status, 200)
