@@ -29,3 +29,12 @@ test('연한 글자가 주색 상자 위에 있어도 상자는 주색으로 센
 test('투명한 부모 아래의 주색은 화면에 보이지 않으므로 세지 않는다', async () => {
   assert.equal((await at('invisible')).ratio, 0)
 })
+
+test('그림이 가린 주색 바탕은 노출로 세지 않는다 — img·배경 그림이 띠를 덮으면 0, 절반만 덮으면 약 절반 · 덮지 않은 띠는 그대로 센다(정상 선례)', async () => {
+  const band = 23 / 113 // 180px 띠 = 8px 칸 23줄
+  assert.ok((await at('media-img')).ratio < 0.002, '사진이 덮은 주색 띠를 노출로 셌다')
+  assert.ok((await at('media-bg')).ratio < 0.002, '배경 그림이 덮은 주색 띠를 노출로 셌다')
+  const half = await at('media-half')
+  assert.ok(Math.abs(half.ratio - band / 2) < 0.006, `절반만 덮은 띠 ${half.ratio}`)
+  assert.ok(Math.abs((await at('nested')).ratio - band) < 0.002, '정상 선례: 덮지 않은 띠')
+})
