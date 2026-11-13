@@ -24,10 +24,12 @@ test("티켓: 가상호스트식 서명 주소 · 키에 사용자 파일명 없
   assert.equal(url.searchParams.get("X-Amz-Algorithm"), "AWS4-HMAC-SHA256")
   assert.ok(url.searchParams.get("X-Amz-Signature"))
   assert.equal(t.method, "PUT")
-  assert.match(t.key, /^image\/\d{4}\/[0-9a-f-]{36}\.png$/)
+  assert.equal(t.key, `uploads/pending/${t.id}.png`, "PUT 키는 임시 키")
   assert.ok(!text.includes(FAKE_STORAGE_ENV.STORAGE_SECRET_ACCESS_KEY) && !text.includes("내 사진"))
-  const row = (await g.db.$client.query("select status from stored_files where id = $1", [t.id])).rows[0]
+  const row = (await g.db.$client.query("select status, key from stored_files where id = $1", [t.id])).rows[0]
   assert.equal(row.status, "pending")
+  assert.match(row.key, /^image\/\d{4}\/[0-9a-f-]{36}\.png$/, "읽는 키는 장부에만 있다")
+  assert.ok(!text.includes(row.key), "읽는 키는 티켓 응답에 없다")
 })
 
 test("avatar 는 로그인 없이 401, 로컬 폴더 경로는 설정이 있어도 live 에서 404", async () => {
