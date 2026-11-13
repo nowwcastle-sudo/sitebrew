@@ -128,7 +128,7 @@ npm create sitebrew@0.2.7 sitebrew -- --yes --tool <tool>
 ```
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
+$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 ```
 
 The second one asks its questions in the terminal, so it suits a person typing, not an agent. More about Sitebrew is in [README.md](README.md).

@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.7 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
+$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 ```
 
 不安装任何东西、只看会做什么：
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
+$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -149,7 +149,7 @@ MIT。见 [LICENSE](LICENSE) 和 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md
 
 | 标签 | 日期 | 变更 | 记录 |
 |---|---|---|---|
-| `v0.2.7` | 2026-11-13 | 安全版本（daybreak 审查）。web-factory：子进程不再收到机密环境变量 · npm、npx 和 vercel 以可信绝对路径、不经 shell 运行 · 检查本地文件路径（网络路径、链接、越界） · 注册表依赖固定为锁文件中的确切版本 · 外部下载按主机、大小和重定向限制 · 修复预览隧道启动竞争，QA 服务器只绑定本机 · 标志和网站图标 SVG 按允许列表检查 · 表单幂等键传到端口 · 标志关卡拒绝隐藏或透明的标志，品牌色检查不再计入被图片覆盖的颜色。启动套件：新闻通讯确认改用 POST · 退款与发货竞争 · 挽留优惠只能使用一次 · 上传地址不能重复使用 · 请求正文只读到上限 · 每个账户的推送订阅有上限 · 注册响应不再透露邮箱是否已注册 — **行为变更：有邮件发送器时，新账户在验证邮箱前不能登录**。安装：PowerShell 命令可以固定发布提交，被移动的标签会被拒绝。依赖：next 16.4.5, hono 4.13.16 | — |
+| `v0.2.7` | 2026-11-13 | 安全版本（daybreak 审查）。web-factory：子进程不再收到机密环境变量 · npm、npx 和 vercel 以可信绝对路径、不经 shell 运行 · 检查本地文件路径（网络路径、链接、越界） · 注册表依赖固定为锁文件中的确切版本 · 外部下载按主机、大小和重定向限制 · 修复预览隧道启动竞争，QA 服务器只绑定本机 · 标志和网站图标 SVG 按允许列表检查 · 表单幂等键传到端口 · 标志关卡拒绝隐藏或透明的标志，品牌色检查不再计入被图片覆盖的颜色。启动套件：新闻通讯确认改用 POST · 退款与发货竞争 · 挽留优惠只能使用一次 · 上传地址不能重复使用 · 请求正文只读到上限 · 每个账户的推送订阅有上限 · 注册响应不再透露邮箱是否已注册 — **行为变更：只有同时配置 `verifyEmail` 和 `existingAccount` 邮件发送器时，注册默认使用 conceal，新账户在验证邮箱前不能登录（可用 `signUpEnumeration: "reveal"` 关闭）**。安装：PowerShell 命令可以固定发布提交，被移动的标签会被拒绝。依赖：next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | 功能版本：三个候选可作为真实网站并排对比（`npm run board:direction -- <run> --serve`） · 简报中的标志出现在三个候选的页头，没有标志时提供 6 个草案 · 可选的示例信息（`--sample-facts`）——每页显示示例横幅，在换成真实答案之前 `deliver` 会停止 · 品牌的第一个颜色成为主色 · 通过材质族、距离规则和可选的定位问题让候选之间差异更大 · 收尾评审循环 · 页头标志与品牌色曝光的新检查 · 插件技能 `new`、`deliver`、`revise` 已更新 · web-factory v0.0.16 + launch-factory v0.2.2（内部版本） | — |
 | `v0.2.5` | 2026-11-02 | 补丁版本：管理表格遵循界面语言与时区（`data-table` 区块的日期、数字、排序与筛选项） · 启动套件模板副本同步更新 · 依赖包更新（@hono/node-server 2.1.3、systeminformation 5.33.16、posthog-js 1.438.21、posthog-node 5.57.2、lucide-react 1.59.0、react-resizable-panels 4.14.8、playwright 1.64.1 与 @axe-core/playwright 4.14.0、pglite 0.5.11 与 pglite-tools 0.4.11、typescript-eslint 8.72.0） · 其余套件与插件技能不变 · web-factory v0.0.16 + launch-factory v0.2.2（内部版本） | — |
 | `v0.2.4` | 2026-10-26 | 补丁版本：仅更新依赖包 · react 与 react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 与 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 套件与插件技能不变 · web-factory v0.0.16 + launch-factory v0.2.2（内部版本） | — |

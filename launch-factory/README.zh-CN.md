@@ -125,7 +125,7 @@ git diff template/package.json
 
 | 标签 | 日期 | 内容 | 记录 |
 |---|---|---|---|
-| `v0.2.7` | 2026-11-13 | 安全版本：新闻通讯确认改用 POST · 退款与发货竞争 · 挽留优惠只能使用一次 · 上传地址不能重复使用 · 请求正文只读到上限 · 每个账户的推送订阅有上限 · 注册响应不再透露邮箱是否已注册 — **行为变更：有邮件发送器时，新账户在验证邮箱前不能登录** · 模板区块和 contract 跟随 web-factory（表单幂等键） · web-factory 固定在发布时跟随 | — |
+| `v0.2.7` | 2026-11-13 | 安全版本：新闻通讯确认改用 POST · 退款与发货竞争 · 挽留优惠只能使用一次 · 上传地址不能重复使用 · 请求正文只读到上限 · 每个账户的推送订阅有上限 · 注册响应不再透露邮箱是否已注册 — **行为变更：只有同时配置 `verifyEmail` 和 `existingAccount` 邮件发送器时，注册默认使用 conceal，新账户在验证邮箱前不能登录（可用 `signUpEnumeration: "reveal"` 关闭）** · 模板区块和 contract 跟随 web-factory（表单幂等键） · web-factory 固定在发布时跟随 | — |
 | `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · 仓库功能版本；启动套件本身不变 · web-factory 固定版本在发布时同步 | — |
 | `v0.2.5` | 2026-11-02 | launch-factory v0.2.2 (internal version) · 补丁版本：管理表格遵循界面语言与时区（模板区块副本已更新） · 修正本 README 中要求的 web-factory 版本 · posthog-js 1.438.21 · posthog-node 5.57.2 · pglite 0.5.11 与 pglite-tools 0.4.11 · 开发用 playwright 1.64.1、@axe-core/playwright 4.14.0、typescript-eslint 8.72.0 · systeminformation 5.33.16 · web-factory 固定为 `v0.2.5` | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · 补丁版本：仅更新依赖包 · drizzle-orm 0.45.4 · posthog-js 1.438.12 与 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 开发用 eslint 10.13.0 与 typescript-eslint 8.71.2 · web-factory 固定为 `v0.2.4` | — |
