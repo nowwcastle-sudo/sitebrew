@@ -1838,9 +1838,14 @@
       "sha256": "9c84abd1846e8d00f967b18e23b6c6fe0ab4b38409563daf742c03b1433bde49"
     },
     {
+      "path": "db/migrations/0018_order_refund_claim.sql",
+      "from": "launch-factory",
+      "sha256": "6fa04af21ae7c7824372bf9517b95c3cdcbab6000be77862c362ce0d3ea4c201"
+    },
+    {
       "path": "db/migrations/meta/_journal.json",
       "from": "launch-factory",
-      "sha256": "85b6c2ea0a2ce73b76c0015f56f77d07ff284070639e3fbf0c61b6a8e8061dc2"
+      "sha256": "8020eb92a140657d59a0c2678177b427599568667d3cb9db056da55b4d98c6d1"
     },
     {
       "path": "db/schema/auth-base.ts",
@@ -1855,7 +1860,7 @@
     {
       "path": "db/schema/commerce.ts",
       "from": "launch-factory",
-      "sha256": "6f5d79c00aca299f861c7fe75e4689eb2a541561a7a891100980e59e21fa7d9e"
+      "sha256": "7226c9af85214b533afbd79fe191e4dcd56aee7d6bdebf9dd1b0fa2da50b9683"
     },
     {
       "path": "db/schema/consents.ts",

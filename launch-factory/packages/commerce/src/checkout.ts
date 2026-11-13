@@ -1,6 +1,6 @@
 // 주문 생명주기 — 만들기 · 결제 확정 · 취소/환불 · 만료 · 앞걸음. 결제 공급자는 주입받은 PaymentGateway 로만 부른다(공급자를 모른다).
 // 예상되는 실패는 던지지 않고 Outcome 으로 돌려준다. 던지는 것은 인프라 오류(DB 끊김·공급자 조회 실패)뿐이다 — 웹훅·Cron 이 다시 시도한다.
-// 한 번만 일어나야 하는 일(결제 확정·환불·재고 반환)은 모두 moveOrder 의 조건부 UPDATE 를 이긴 쪽만 한다.
+// 한 번만 일어나야 하는 일(결제 확정·환불·재고 반환)은 모두 moveOrder 의 조건부 UPDATE 를 이긴 쪽만 한다. 결제 후 환불은 공급자를 부르기 전에 환불 예약표(claimRefund)를 먼저 붙여 배송 전이를 막는다.
 import { and, asc, count, eq, gt, lte } from "drizzle-orm"
 import type { OrderStatus } from "@launch-factory/contract"
 import { cartItems, orderItems, orders } from "@launch-factory/db"
@@ -9,7 +9,7 @@ import { won, type PaymentSession } from "@launch-factory/payments-kr"
 import { checkAddress } from "./address.ts"
 import type { Ctx } from "./deps.ts"
 import { sendOrderConfirmation } from "./mail.ts"
-import { moveOrder, restockOrder } from "./order-writes.ts"
+import { claimRefund, moveOrder, releaseRefund, restockOrder } from "./order-writes.ts"
 import { FORWARD_STEPS, CUSTOMER_CANCELABLE, canMove } from "./order-states.ts"
 import { fail, succeed, type Failure, type Outcome } from "./outcome.ts"
 import { loadOrder, loadOrderByPayment, ownedOrder, type OrderRecord } from "./orders.ts"
@@ -157,16 +157,24 @@ async function refundLatePayment(ctx: Ctx, order: OrderRecord): Promise<Failure>
   return fail("order_canceled", { status: order.status, refunded })
 }
 
-/** 최선을 다한 환불(던지지 않는다 — 실패하면 운영 알림). 돌려줬으면 true */
-async function refund(ctx: Ctx, paymentId: string, reason: string): Promise<boolean> {
+/** 공급자 환불의 결과: done = 돌려줬다(이미 취소된 건 포함) · refused = 공급자가 거절했다(돈은 나가지 않았다) · unknown = 호출이 던졌다(나갔는지 모른다) */
+type RefundResult = "done" | "refused" | "unknown"
+
+async function attemptRefund(ctx: Ctx, paymentId: string, reason: string): Promise<RefundResult> {
   try {
     const result = await ctx.gateway.cancel({ paymentId, reason })
-    if (!result.ok && result.code !== "already_canceled") ctx.onError(new Error(`refund failed for payment ${paymentId} (${result.code})`))
-    return result.ok || result.code === "already_canceled"
+    if (result.ok || result.code === "already_canceled") return "done"
+    ctx.onError(new Error(`refund failed for payment ${paymentId} (${result.code})`))
+    return "refused"
   } catch (e) {
     ctx.onError(asError(e))
-    return false
+    return "unknown"
   }
+}
+
+/** 최선을 다한 환불(던지지 않는다 — 실패하면 운영 알림). 돌려줬으면 true */
+async function refund(ctx: Ctx, paymentId: string, reason: string): Promise<boolean> {
+  return (await attemptRefund(ctx, paymentId, reason)) === "done"
 }
 
 // ── 취소 · 환불 ───────────────────────────────────────────────────────────────
@@ -201,21 +209,34 @@ export async function cancelOrder(ctx: Ctx, input: CancelOrderInput): Promise<Ou
       continue // 그 사이 결제됐거나 다른 곳에서 취소됐다 — 다시 읽고 판단한다
     }
 
-    // paid · preparing: 돈을 먼저 돌려주고(실패하면 상태 그대로) 상태를 맞춘다
-    if (!order.paymentId || !(await refund(ctx, order.paymentId, reason))) return fail("refund_failed")
+    // paid · preparing: 환불을 부르기 전에 주문에 환불 예약표를 붙인다 — 붙은 주문은 배송 쪽으로 넘어갈 수 없다(앞걸음이 거절한다).
+    // 예약이 먼저, 돈이 그다음, 닫기가 마지막이다. 중간에 죽거나 다시 불러도 같은 길을 다시 걷는다(공급자 환불은 이미 취소된 건을 already_canceled 로 알려 멱등이다).
+    if (!order.paymentId) return fail("refund_failed")
+    const claim = ctx.newId()
+    if (!(await claimRefund(ctx.db, order.id, claim))) continue // 그 사이 상태가 바뀌었다 — 다시 읽고 판단한다
+    const sent = await attemptRefund(ctx, order.paymentId, reason)
+    if (sent === "refused") {
+      await releaseRefund(ctx.db, order.id, claim) // 돈이 나가지 않았다 — 예약을 풀어 주문을 다시 다룰 수 있게 한다
+      return fail("refund_failed")
+    }
+    if (sent === "unknown") {
+      // 환불이 나갔는지 모른다 — 예약을 풀면 환불된 주문이 배송될 수 있다. 예약을 둔 채(배송 막힘) 알리고, 다시 취소를 부르면 이어서 닫는다
+      ctx.onError(new Error(`order ${order.id}: refund outcome unknown — held as cancel-in-progress (refund_claim set); retry the cancel to settle it`))
+      return fail("refund_failed")
+    }
     const now = ctx.now()
     const closed = await ctx.db.transaction(async (tx) => {
       // 준비가 시작된 주문(상품이 포장돼 나갔을 수 있다)은 재고를 되돌리지 않는다
-      if (await moveOrder(tx, order.id, ["paid"], "refunded", { canceledAt: now })) {
+      if (await moveOrder(tx, order.id, ["paid"], "refunded", { canceledAt: now, refundClaim: null })) {
         await restockOrder(tx, order.items, now)
         return true
       }
-      return moveOrder(tx, order.id, ["preparing"], "refunded", { canceledAt: now })
+      return moveOrder(tx, order.id, ["preparing"], "refunded", { canceledAt: now, refundClaim: null })
     })
     const after = (await loadOrder(ctx.db, order.id)) ?? order
     // 동시에 두 번 눌러 다른 쪽이 먼저 환불로 닫았으면 같은 결과다(멱등)
     if (!closed && after.status !== "refunded") {
-      // 환불은 나갔는데 그 사이 주문이 배송 중으로 넘어갔다 — 성공이라고 알리지 않고 운영자이 직접 처리하도록 알린다
+      // 환불은 나갔는데 주문이 닫히지 않았다 — 예약표가 배송 전이를 막으므로 앞걸음 경로로는 일어나지 않는다. 다른 경로가 상태를 바꿨다면 성공이라고 알리지 않고 운영자이 직접 처리하도록 알린다
       ctx.onError(new Error(`order ${order.id}: refunded at the provider but the order is now ${after.status} — handle by hand`))
       return fail("not_cancelable", { status: after.status })
     }
@@ -287,7 +308,8 @@ export async function advanceOrder(ctx: Ctx, input: AdvanceOrderInput): Promise<
   const order = await loadOrder(ctx.db, input.orderId)
   if (!order) return fail("not_found")
   if (!canMove(order.status, to)) return fail("invalid_transition", { status: order.status })
-  const moved = await moveOrder(ctx.db, order.id, [order.status], to, to === "shipped" && tracking ? { trackingNumber: tracking } : {})
+  // 환불 예약(취소 진행 중)이 붙은 주문은 옮기지 않는다 — 환불이 나가는 사이 배송으로 넘어가 환불과 배송이 둘 다 성립하는 일을 막는다
+  const moved = await moveOrder(ctx.db, order.id, [order.status], to, to === "shipped" && tracking ? { trackingNumber: tracking } : {}, { unclaimed: true })
   const current = await loadOrder(ctx.db, order.id)
   if (!current) return fail("not_found")
   return moved ? succeed(current) : fail("invalid_transition", { status: current.status })
