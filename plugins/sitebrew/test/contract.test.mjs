@@ -301,7 +301,8 @@ describe('feature questions (intake.mjs features, features-write)', () => {
 })
 
 describe('environment branching (plan 6): every skill starts with the same block and has a chatbot mode', () => {
-  const BLOCK = read(PLUGIN, 'scripts', 'lib', 'env-block.md').trimEnd()
+  // SKILL.md 쪽처럼 줄바꿈을 맞춘다 — plugins/ 에는 .gitattributes 를 둘 수 없어 Windows 작업 사본은 CRLF 다
+  const BLOCK = read(PLUGIN, 'scripts', 'lib', 'env-block.md').replace(/\r\n/g, '\n').trimEnd()
   const NAMES = ['deliver', 'doctor', 'guide', 'new', 'preview', 'revise', 'runbook', 'setup']
   const frontmatterOf = (t) => Object.fromEntries(/^---\r?\n([\s\S]*?)\r?\n---/.exec(t)[1].split(/\r?\n/).map((l) => [l.slice(0, l.indexOf(':')).trim(), l.slice(l.indexOf(':') + 1).trim()]))
 
