@@ -711,6 +711,52 @@ test("가입 열거 정책(D48): 기본 reveal 은 필드 오류, conceal 은 �
   assert.deepEqual(await noConsent(taken), await noConsent(nextEmail()))
 })
 
+test("가입 열거 기본(CWE-203): 인증·안내 메일이 있으면 기본이 conceal — 있는 주소도 새 가입과 같은 응답이고 주인에게만 안내 메일이 간다", async () => {
+  const sent = []
+  const mailer = {
+    passwordReset: async () => {},
+    verifyEmail: async (to, url) => void sent.push({ kind: "verify", to, url }),
+    existingAccount: async (to, who) => void sent.push({ kind: "existing", to, who }),
+  }
+  const auth = createAuth(baseOptions({ mailer })) // signUpEnumeration 을 주지 않는다
+  const taken = nextEmail()
+  const fresh = nextEmail()
+  // 정상 선례: 새 주소 가입은 전과 같이 인증 메일을 받는다
+  const first = await authAdapter(auth, memoryIO(), quiet).signUp({ method: "password", email: taken, password: PASSWORD, consents })
+  assert.deepEqual(first, { ok: true, data: { emailSent: true } })
+  assert.deepEqual(sent.map((m) => [m.kind, m.to]), [["verify", taken]])
+
+  // 이미 있는 주소: email_exists·다른 화면이 아니라 새 가입과 같은 응답
+  const again = await authAdapter(auth, memoryIO(), quiet).signUp({ method: "password", email: taken, password: PASSWORD, consents })
+  const other = await authAdapter(auth, memoryIO(), quiet).signUp({ method: "password", email: fresh, password: PASSWORD, consents })
+  assert.deepEqual(again, first)
+  assert.deepEqual(other, first)
+  // 같은 상태 코드·같은 모양(토큰 없음)으로 직접 호출도 같다
+  const shape = async (email) => {
+    const res = await raw(auth, memoryIO(), "POST", "/sign-up/email", { email, password: PASSWORD, name: "x", lfConsents: consents })
+    const body = await res.json()
+    return [res.status, body.token, Object.keys(body.user).sort()]
+  }
+  assert.deepEqual(await shape(taken), await shape(nextEmail()))
+  // 주인에게만 안내 메일이 간다(받는 사람 칸으로 언어를 고른다) — 시도한 사람은 알 길이 없다
+  const existing = sent.filter((m) => m.kind === "existing")
+  assert.ok(existing.length >= 2 && existing.every((m) => m.to === taken))
+  const [owner] = await d.select().from(userTable).where(eq(userTable.email, taken))
+  assert.equal(existing[0].who.id, owner.id)
+  assert.equal(await userCount(taken), 1)
+
+  // 메일을 보낼 수 없는 설정(인증·안내 메일 없음)은 conceal 이 불가능하다 — 전과 같이 reveal 로 남는다
+  const off = createAuth(baseOptions())
+  const dup = nextEmail()
+  await authAdapter(off, memoryIO(), quiet).signUp({ method: "password", email: dup, password: PASSWORD, consents })
+  assert.deepEqual(await authAdapter(off, memoryIO(), quiet).signUp({ method: "password", email: dup, password: PASSWORD, consents }), { ok: false, fieldErrors: { email: [AUTH_MESSAGES.userExists] }, retryable: false, code: "email_exists" })
+  // 업계 관행(가입 즉시 로그인)은 명시로 고른다
+  const reveal = createAuth(baseOptions({ mailer, signUpEnumeration: "reveal" }))
+  const mine = nextEmail()
+  assert.deepEqual(await authAdapter(reveal, memoryIO(), quiet).signUp({ method: "password", email: mine, password: PASSWORD, consents }), { ok: true, data: {} })
+  assert.equal((await authAdapter(reveal, memoryIO(), quiet).signUp({ method: "password", email: mine, password: PASSWORD, consents })).code, "email_exists")
+})
+
 test("문구 언어: locale ko 면 오류 문구가 메시지 목록의 ko 다", async () => {
   const auth = createAuth(baseOptions())
   const ko = authAdapter(auth, memoryIO(), { ...quiet, locale: "ko" })

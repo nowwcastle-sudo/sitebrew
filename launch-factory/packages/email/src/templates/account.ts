@@ -35,6 +35,39 @@ export function verifyEmail(input: VerifyEmailInput): BuiltEmail {
   }
 }
 
+export interface ExistingAccountInput extends BaseInput<EmailMessages["email"]["existingAccount"]> {
+  /** 로그인 화면 */
+  signInUrl: string
+  /** 비밀번호 재설정 화면 */
+  resetUrl: string
+}
+
+/**
+ * 이미 계정이 있는 주소로 누군가 가입을 시도했다는 안내(signUpEnumeration: "conceal" — CWE-203).
+ * 시도한 사람은 가입 화면에서 새 가입과 같은 응답을 받고, 이 메일은 그 주소의 주인에게만 간다. 링크는 로그인·재설정 화면이라 서명 토큰이 없다.
+ */
+export function existingAccount(input: ExistingAccountInput): BuiltEmail {
+  const problems: string[] = []
+  checkBase(input, problems)
+  requireLink(input.signInUrl, "signInUrl", problems)
+  requireLink(input.resetUrl, "resetUrl", problems)
+  throwIfProblems("existingAccount", problems)
+  const t = copyOf(input, "existingAccount")
+  const v = { productName: input.productName }
+  return {
+    subject: fill(t.subject, v, "existingAccount.subject"),
+    element: layout(input, {
+      preview: fill(t.preview, v, "existingAccount.preview"),
+      heading: t.heading,
+      children: [
+        p(fill(t.body, v, "existingAccount.body")),
+        actions(input.locale, [{ href: input.signInUrl, label: t.cta }, { href: input.resetUrl, label: t.resetCta, secondary: true }]),
+        p(t.ignoreNote),
+      ],
+    }),
+  }
+}
+
 export interface EmailChangeConfirmInput extends BaseInput<EmailMessages["email"]["emailChangeConfirm"]> {
   newEmail: string
   approveUrl: string

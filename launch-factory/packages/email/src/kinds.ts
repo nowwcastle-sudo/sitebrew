@@ -31,6 +31,7 @@ export const TEMPLATE_META: Record<TemplateName, TemplateMeta> = {
   bookingCancellation: { kind: "transactional", action: "none" },
   bookingNotice: { kind: "transactional", action: "one" },
   verifyEmail: { kind: "transactional", action: "one", expires: "duration" },
+  existingAccount: { kind: "transactional", action: "one" },
   emailChangeConfirm: { kind: "transactional", action: "one", expires: "duration" },
   emailChanged: { kind: "transactional", action: "none" },
   accountDeletionRequested: { kind: "transactional", action: "one" },
