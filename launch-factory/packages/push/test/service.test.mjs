@@ -296,3 +296,71 @@ test("영어 로캘: 오류 문구가 영어로 나온다", async () => {
   assert.match(r.formError, /check/i)
   assert.match(r.fieldErrors.endpoint[0], /https/)
 })
+
+// ── 사용자별 구독 상한(CWE-770) ─────────────────────────────────────────────────────
+
+test("구독 상한: 서로 다른 endpoint 를 상한+N 개 등록하면 상한에서 거절된다 — 오래된 것을 몰래 지우지 않고 명확한 오류(invalid_state, 기본 10)", async () => {
+  const { service } = live()
+  const first = Array.from({ length: 10 }, () => makeSub())
+  for (const s of first) assert.equal((await service.subscribe(U1, s)).ok, true)
+  for (let i = 0; i < 5; i++) {
+    const r = await service.subscribe(U1, makeSub())
+    assert.equal(r.ok, false)
+    assert.equal(r.code, "invalid_state")
+    assert.equal(r.retryable, false)
+    assert.match(r.formError, /10대/)
+  }
+  const saved = await rows(U1)
+  assert.equal(saved.length, 10)
+  assert.deepEqual(new Set(saved.map((r) => r.endpoint)), new Set(first.map((s) => s.endpoint)), "쓰던 기기가 지워지지 않았다")
+  // 설정으로 바꾼다(작게) · 다른 사용자는 따로 센다
+  const small = live({ maxSubscriptionsPerUser: 2 }).service
+  assert.equal((await small.subscribe(U2, makeSub())).ok, true)
+  assert.equal((await small.subscribe(U2, makeSub())).ok, true)
+  assert.equal((await small.subscribe(U2, makeSub())).code, "invalid_state")
+  assert.equal((await rows(U1)).length, 10, "다른 사용자의 한도가 내 것에 영향을 주지 않는다")
+  assert.throws(() => createPushService({ db: d, mode: "mock", maxSubscriptionsPerUser: 0 }), TypeError)
+})
+
+test("구독 상한: 동시에 보낸 요청 묶음에서도 상한을 넘지 않는다", async () => {
+  const { service } = live()
+  const results = await Promise.all(Array.from({ length: 25 }, () => service.subscribe(U1, makeSub())))
+  assert.equal(results.filter((r) => r.ok).length, 10)
+  assert.equal(results.filter((r) => !r.ok && r.code === "invalid_state").length, 15)
+  assert.equal((await rows(U1)).length, 10)
+})
+
+test("구독 상한: 상한에 닿아 있어도 같은 endpoint 재등록(기기 키 갱신)은 성공하고 개수는 그대로다", async () => {
+  const { service } = live()
+  const subs = Array.from({ length: 10 }, () => makeSub())
+  for (const s of subs) await service.subscribe(U1, s)
+  const rotated = makeSub().keys
+  const r = await service.subscribe(U1, { ...subs[3], keys: rotated, expirationTime: 1_900_000_000_000 })
+  assert.equal(r.ok, true)
+  const saved = await rows(U1)
+  assert.equal(saved.length, 10)
+  const row = saved.find((x) => x.endpoint === subs[3].endpoint)
+  assert.equal(row.p256dh, rotated.p256dh)
+  assert.equal(row.expirationTime, 1_900_000_000_000)
+  // 동시에 갱신 요청이 섞여 와도 모두 성공한다
+  const mixed = await Promise.all(subs.map((s) => service.subscribe(U1, { ...s, keys: makeSub().keys })))
+  assert.equal(mixed.every((x) => x.ok), true)
+  assert.equal((await rows(U1)).length, 10)
+})
+
+test("구독 상한: 가득 차면 만료된 구독만 정리하고 받는다 — 만료 안 된 기기는 지우지 않는다. 남의 endpoint 를 가져오는 것(소유자 이전)은 내 개수에 센다", async () => {
+  const { service } = live({ maxSubscriptionsPerUser: 3 })
+  const alive = makeSub({ expirationTime: T0.getTime() + 60_000 })
+  const stale = [makeSub({ expirationTime: T0.getTime() - 1 }), makeSub({ expirationTime: T0.getTime() - 5 })]
+  for (const s of [alive, ...stale]) assert.equal((await service.subscribe(U1, s)).ok, true)
+  const fresh = makeSub()
+  assert.equal((await service.subscribe(U1, fresh)).ok, true, "만료된 둘을 치우고 자리가 났다")
+  assert.deepEqual(new Set((await rows(U1)).map((r) => r.endpoint)), new Set([alive.endpoint, fresh.endpoint]))
+  // 다시 가득(3) 차게 하고, 남의 기기를 가져오려 하면 거절 — 원래 주인의 행은 그대로다
+  assert.equal((await service.subscribe(U1, makeSub())).ok, true)
+  const theirs = makeSub()
+  assert.equal((await service.subscribe(U2, theirs)).ok, true)
+  const grab = await service.subscribe(U1, theirs)
+  assert.equal(grab.code, "invalid_state")
+  assert.deepEqual((await rows(U2)).map((r) => r.endpoint), [theirs.endpoint])
+})
