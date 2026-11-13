@@ -1,8 +1,8 @@
 {
   "blocks": {
     "source": "nowwcastle-sudo/sitebrew",
-    "ref": "d58bbd887d439c0707089bd4556cd72cf87815d0",
-    "commit": "d58bbd887d439c0707089bd4556cd72cf87815d0",
+    "ref": "cbe0ded65f948374f7cf0961833c2a4f259a2d0b",
+    "commit": "cbe0ded65f948374f7cf0961833c2a4f259a2d0b",
     "shadcn": "4.22.1",
     "items": [
       "r1-measure",
@@ -45,7 +45,7 @@
       "block-nav-app-sidebar",
       "block-nav-top-bar"
     ],
-    "rewrittenAddresses": 11064,
+    "rewrittenAddresses": 11068,
     "rootFiles": [
       {
         "path": "registry/factory/blocks/_compiled/_shared/billing-actions.tsx",
@@ -157,7 +157,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/port-form.tsx",
-        "sha256": "6887c7b9ddb5063f7afba9adb97afa618935031ba7530dbfbd13c8752e4e0054"
+        "sha256": "f896ccfccead59eea6fbdfe33bac841ef6c2dc7754268af2915af6569cb07536"
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/port-read.tsx",
@@ -185,7 +185,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/_shared/submit-guard.tsx",
-        "sha256": "2a3a21ad1aef9c34dd8b64d8d8e6fcc9ae66b51d0e7e2ee2093e6738a7869e5d"
+        "sha256": "04ce978dbd72814e3fa05a7975dd3069c36e5750f19508bf63e6c4e84891fca2"
       },
       {
         "path": "registry/factory/blocks/_compiled/account/billing-manage.tsx",
@@ -197,7 +197,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/account/delete-account.tsx",
-        "sha256": "9884811dbb8f96343a4e73d4a7befb6f22303807c4af10518ddd9156a76bce77"
+        "sha256": "7a6c508f66917bfe51c7f5eadcde547731038c856c9254eafb88c217082e0f6c"
       },
       {
         "path": "registry/factory/blocks/_compiled/account/notification-consents.tsx",
@@ -225,7 +225,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/auth/password-reset.tsx",
-        "sha256": "15f881885b7681e723ffcc8008b831797959ef7b7872cf23b0d49653546a437e"
+        "sha256": "4d592f2b760e9a3d09b1ccd65070ff79cfa2f572b93f67ec9034f93629080851"
       },
       {
         "path": "registry/factory/blocks/_compiled/auth/sign-in.tsx",
@@ -233,7 +233,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/auth/sign-up-consents.tsx",
-        "sha256": "27b5eeccff47536f93eba21f56077df40be764481101c8340e144b32f264e5c4"
+        "sha256": "629dac720fd5ab1fe9ec54387e410a22c404c0d5cc226a60851b44215f5af0df"
       },
       {
         "path": "registry/factory/blocks/_compiled/cart/checkout-form.tsx",
@@ -345,7 +345,7 @@
       },
       {
         "path": "registry/factory/contract/adapter-mock.ts",
-        "sha256": "f6a567cf377ef30640f9da5687dd741cdcc94275064ed0d33fd0301fc34db03c"
+        "sha256": "e331f00dd77b0b4ad6a130113b836a76ae69d27d8407d0091cc414b5c7da32eb"
       },
       {
         "path": "registry/factory/contract/attribution.ts",
@@ -369,7 +369,7 @@
       },
       {
         "path": "registry/factory/contract/ports.ts",
-        "sha256": "e5d075e76fb4367b509b134ed015f48f47c5dc438392b379a05f36e793809133"
+        "sha256": "642dabf644e4173102c13a882aaef545453900f59a8a6d3bb43e47e496f062c7"
       },
       {
         "path": "registry/factory/hooks/use-mobile.ts",
@@ -1085,7 +1085,7 @@
     {
       "path": "components/blocks/_shared/port-form.tsx",
       "from": "web-factory",
-      "sha256": "8270b0e07b6fdd2d2264bdfc38a9bb70780ba283b4f86a916751f704de8c70de"
+      "sha256": "0bf31ba8ea93cba362fc548500284d0bb35c52d74ee334f4e94f6faffe085052"
     },
     {
       "path": "components/blocks/_shared/port-read.tsx",
@@ -1120,7 +1120,7 @@
     {
       "path": "components/blocks/_shared/submit-guard.tsx",
       "from": "web-factory",
-      "sha256": "cff6230c920ac0c196b7a56150f261e15b9a8d39104442022ced4113221caa54"
+      "sha256": "31c881b1e5b45932c47fc3a0b7c9c3865e176f66bd2556edccd9d2f39601a643"
     },
     {
       "path": "components/blocks/account/billing-manage.tsx",
@@ -1135,7 +1135,7 @@
     {
       "path": "components/blocks/account/delete-account.tsx",
       "from": "web-factory",
-      "sha256": "65b90f51984dc103ad60adcd79c098d76173c0af4d70550b1f9a8f5e9062ece5"
+      "sha256": "99c8b352013fdceb84345336a0f9db958b6ac8ba6b147bd5337aee634e1a7f3f"
     },
     {
       "path": "components/blocks/account/notification-consents.tsx",
@@ -1170,7 +1170,7 @@
     {
       "path": "components/blocks/auth/password-reset.tsx",
       "from": "web-factory",
-      "sha256": "8f6b1bb13aac5c1ec93c4b4dcce4d5958736862d1da9e173bf316ace7c2a51d7"
+      "sha256": "dcec603e04fc21b58ae26a7e703ce2a51d1448f54360ee0e984004df76cb56ce"
     },
     {
       "path": "components/blocks/auth/sign-in.tsx",
@@ -1180,7 +1180,7 @@
     {
       "path": "components/blocks/auth/sign-up-consents.tsx",
       "from": "web-factory",
-      "sha256": "751eca20886f299caa7eebc820b77cb1a7d173dfebe3fb6cb15d917b05fbf2b3"
+      "sha256": "2cf47b1bd96fd002d62fbb2242a0c93c3197f861ab3aa93fae878172bbb8d140"
     },
     {
       "path": "components/blocks/cart/checkout-form.tsx",
@@ -1320,7 +1320,7 @@
     {
       "path": "components/contract/adapter-mock.ts",
       "from": "web-factory",
-      "sha256": "7cf02e969ff9cabe1e074a1d4dcbf74ab89b932485316f6eeeda973f99c56c99"
+      "sha256": "1b4031887014fcb5ccb11136c54fbece2ee6cc201e63114f5164605dc748052f"
     },
     {
       "path": "components/contract/attribution.ts",
@@ -1350,7 +1350,7 @@
     {
       "path": "components/contract/ports.ts",
       "from": "web-factory",
-      "sha256": "704f1012d230e2bf4310cd7b0a19f3adbdc90af938342b664b7b2dfa58af2697"
+      "sha256": "1ad9f0e814f91fd6a581bdbd832465c540d20cd458f7b664543a43d2a62d978c"
     },
     {
       "path": "components/icons/icon.tsx",
