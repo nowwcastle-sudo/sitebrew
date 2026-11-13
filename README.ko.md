@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.7 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
+$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 ```
 
 아무것도 설치하지 않고 할 일만 보려면:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
+$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -149,7 +149,7 @@ MIT. [LICENSE](LICENSE)와 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)를 �
 
 | 태그 | 날짜 | 바뀐 것 | 기록 |
 |---|---|---|---|
-| `v0.2.7` | 2026-11-13 | 보안 릴리스(daybreak 검토). web-factory: 자식 프로세스에 비밀 환경 변수를 넘기지 않음 · npm·npx·vercel 을 셸 없이 신뢰한 절대 경로로 실행 · 로컬 파일 경로 검사(네트워크 경로·링크·경로 이탈) · 레지스트리 의존을 잠금의 정확한 판으로 고정 · 외부 내려받기를 호스트·크기·리디렉션으로 제한 · 미리보기 터널 시작 경쟁을 고치고 QA 서버를 이 컴퓨터에만 열기 · 로고·파비콘 SVG 를 허용 목록으로 검사 · 폼 멱등 키를 포트까지 전달 · 로고 관문이 숨김·투명 로고를 거절하고 브랜드 색 검사가 그림이 덮은 색을 세지 않음. 출시 키트: 뉴스레터 확인을 POST 로 · 환불·배송 경합 · 구독 유지 제안은 한 번만 · 업로드 주소 재사용 막음 · 요청 본문을 상한까지만 읽음 · 계정마다 푸시 구독 상한 · 가입 응답이 이메일 등록 여부를 드러내지 않음 — **동작 변경: 메일러가 있으면 새 계정은 메일 인증 전 로그인할 수 없음**. 설치: PowerShell 줄이 릴리스 커밋을 고정할 수 있고 옮겨진 태그를 거절. 의존성: next 16.4.5, hono 4.13.16 | — |
+| `v0.2.7` | 2026-11-13 | 보안 릴리스(daybreak 검토). web-factory: 자식 프로세스에 비밀 환경 변수를 넘기지 않음 · npm·npx·vercel 을 셸 없이 신뢰한 절대 경로로 실행 · 로컬 파일 경로 검사(네트워크 경로·링크·경로 이탈) · 레지스트리 의존을 잠금의 정확한 판으로 고정 · 외부 내려받기를 호스트·크기·리디렉션으로 제한 · 미리보기 터널 시작 경쟁을 고치고 QA 서버를 이 컴퓨터에만 열기 · 로고·파비콘 SVG 를 허용 목록으로 검사 · 폼 멱등 키를 포트까지 전달 · 로고 관문이 숨김·투명 로고를 거절하고 브랜드 색 검사가 그림이 덮은 색을 세지 않음. 출시 키트: 뉴스레터 확인을 POST 로 · 환불·배송 경합 · 구독 유지 제안은 한 번만 · 업로드 주소 재사용 막음 · 요청 본문을 상한까지만 읽음 · 계정마다 푸시 구독 상한 · 가입 응답이 이메일 등록 여부를 드러내지 않음 — **동작 변경: 인증 메일(`verifyEmail`)과 기존 계정 안내 메일(`existingAccount`) 메일러가 둘 다 있을 때만 가입 응답 기본값이 conceal 이 되어 새 계정은 메일 인증 전 로그인할 수 없음(`signUpEnumeration: "reveal"` 로 끌 수 있음)**. 설치: PowerShell 줄이 릴리스 커밋을 고정할 수 있고 옮겨진 태그를 거절. 의존성: next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | 기능 판: 후보 세 개를 실제 사이트로 나란히 비교(`npm run board:direction -- <run> --serve`) · 브리프의 로고가 세 후보 머리글에 모두 올라가고, 로고가 없으면 시안 6개를 제안 · 선택 기능 예시 정보(`--sample-facts`) — 모든 쪽에 예시 띠가 뜨고 실제 답으로 바꾸기 전에는 `deliver` 가 멈춤 · 브랜드 첫 색이 주색이 됨 · 재료 계열·거리 규칙·선택 질문(포지셔닝)으로 후보끼리 더 다르게 · 마감 리뷰 루프 · 머리글 로고·브랜드 색 노출 새 관문 · 플러그인 스킬 `new`·`deliver`·`revise` 갱신 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.5` | 2026-11-02 | 패치 판: 관리자 표가 화면 언어와 시간대를 따름 — `data-table` 블록의 날짜·숫자·정렬·거르기 선택지 · 출시 키트 템플릿 사본도 같이 맞춤 · 의존 패키지 갱신(@hono/node-server 2.1.3, systeminformation 5.33.16, posthog-js 1.438.21, posthog-node 5.57.2, lucide-react 1.59.0, react-resizable-panels 4.14.8, playwright 1.64.1 과 @axe-core/playwright 4.14.0, pglite 0.5.11 과 pglite-tools 0.4.11, typescript-eslint 8.72.0) · 나머지 키트와 플러그인 스킬은 그대로 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
 | `v0.2.4` | 2026-10-26 | 패치 판: 의존 패키지 갱신만 — react·react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 와 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 키트와 플러그인 스킬은 그대로 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |
