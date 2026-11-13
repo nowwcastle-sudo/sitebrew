@@ -1,8 +1,8 @@
 {
   "blocks": {
     "source": "nowwcastle-sudo/sitebrew",
-    "ref": "02974f2bede0d0c2913eeb4c9ad512d863df3855",
-    "commit": "02974f2bede0d0c2913eeb4c9ad512d863df3855",
+    "ref": "cbe0ded65f948374f7cf0961833c2a4f259a2d0b",
+    "commit": "cbe0ded65f948374f7cf0961833c2a4f259a2d0b",
     "shadcn": "4.22.1",
     "items": [
       "r1-measure",

@@ -6,7 +6,7 @@
 
 Sitebrew is a plugin for Claude Code and Codex. You describe your site in plain words. It builds three different candidates, you pick one, you adjust it in the conversation, and you take the code into your own folder. You do not need to know how to code, and you do not need an API key to start.
 
-Current version `v0.2.6` · MIT license · Windows 10 and 11
+Current version `v0.2.7` · MIT license · Windows 10 and 11
 
 ## Why Sitebrew
 
@@ -55,13 +55,13 @@ All five end in the same place: Sitebrew in a `sitebrew` folder and the plugin i
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.6 sitebrew
+npm create sitebrew@0.2.7 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.6 sitebrew
+npx create-sitebrew@0.2.7 sitebrew
 ```
 
 Both take the same options: `--dry-run` shows the plan and changes nothing, `--yes` answers yes to every question, and `--tool` chooses `claude`, `codex` or `both`.
@@ -69,14 +69,14 @@ Both take the same options: `--dry-run` shows the plan and changes nothing, `--y
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 ```
 
 To see what it would do without installing anything:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 In Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
 /plugin install sitebrew@sitebrew
 ```
 
 In Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ The check before a merge is `npm run ci:verify`. The guide for agents is [docs/a
 You can also add the parts to another Next.js project. Always pin the tag:
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
 ```
 
 ## Contributing
@@ -149,6 +149,7 @@ MIT. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 | Tag | Date | Changes | Record |
 |---|---|---|---|
+| `v0.2.7` | 2026-11-13 | Security release (daybreak review). web-factory: child processes no longer receive secret environment variables · npm, npx and vercel run from trusted absolute paths without a shell · local file paths are checked (network paths, links, escapes) · registry dependencies pinned to the exact lock versions · external downloads limited by host, size and redirects · preview tunnel start race fixed and QA servers bound to this computer · logo and favicon SVGs pass an allow list · form idempotency keys reach the ports · the logo gate rejects a hidden or transparent logo and the brand-colour check no longer counts colour covered by images. Launch kit: newsletter confirmation by POST · refund and shipping race · a retention offer is used once · upload addresses cannot be reused · request bodies are read only up to a limit · push subscriptions capped per account · sign-up no longer reveals whether an email is registered — **behaviour change: with a mailer, a new account cannot sign in before the email is verified**. Install: the PowerShell line can pin the release commit, and a moved tag is refused. Dependencies: next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | Feature release: compare the three candidates as real sites side by side (`npm run board:direction -- <run> --serve`) · the logo from the brief sits in the header of all three candidates, and six logo drafts are offered when there is none · optional sample details (`--sample-facts`) with a sample band on every page, and `deliver` stops until real answers replace them · the first brand colour becomes the main colour · candidates are set apart by material family, a distance rule and an optional positioning question · finish-review loop · new checks for the header logo and brand-colour exposure · plugin skills `new`, `deliver` and `revise` updated · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |
 | `v0.2.5` | 2026-11-02 | Patch release: admin tables follow the screen language and time zone (dates, numbers, sorting and filter options in the `data-table` blocks) · the launch kit template copy follows · dependency updates (@hono/node-server 2.1.3, systeminformation 5.33.16, posthog-js 1.438.21, posthog-node 5.57.2, lucide-react 1.59.0, react-resizable-panels 4.14.8, playwright 1.64.1 and @axe-core/playwright 4.14.0, pglite 0.5.11 and pglite-tools 0.4.11, typescript-eslint 8.72.0) · the rest of the kit and the plugin skills are unchanged · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |
 | `v0.2.4` | 2026-10-26 | Patch release: dependency updates only · react and react-dom 19.3.1 · @base-ui/react 1.9.0 · @tabler/icons-react 3.49.0 · react-resizable-panels 4.14.6 · drizzle-orm 0.45.4 · posthog-js 1.438.12 and posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · the kit and the plugin skills are unchanged · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |
