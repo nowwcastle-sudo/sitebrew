@@ -1,7 +1,10 @@
 ﻿# Sitebrew installer for Windows (PowerShell 5.1 and PowerShell 7).
-#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
-#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
-#   .\install.ps1 [-Tool claude|codex|both] [-Folder <path>] [-Yes] [-WhatIf]
+#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
+#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
+#   .\install.ps1 [-Tool claude|codex|both] [-Folder <path>] [-Commit <40-hex SHA>] [-Yes] [-WhatIf]
+# -Commit: the full commit SHA the release tag must point to. After the clone (or with a folder that is already there) the installer compares
+# `git rev-parse HEAD` with it and refuses to go on (code 4) when they differ - a tag can be moved by anyone with write access, a SHA cannot.
+# get.ps1 passes it when SITEBREW_COMMIT is set. Without it the installer only warns that the tag alone was not checked.
 # (This file starts with a BOM so Windows PowerShell 5.1 reads the Korean text when it runs as a file. A downloaded string keeps that BOM, so the
 #  one-line form goes through get.ps1 - plain ASCII - which removes it. The scriptblock form removes it itself with TrimStart.)
 # What it does, in this order: (1) check Git and Node.js (and npm) - if one is missing it says why, asks "[Y/n]" and installs it with winget only after you agree;
@@ -21,7 +24,8 @@ param(
   [string]$Tool = 'ask',
   [string]$Folder = '',
   [string]$Owner = 'nowwcastle-sudo',
-  [string]$Tag = 'v0.2.6',
+  [string]$Tag = 'v0.2.7',
+  [string]$Commit = '',
   [switch]$Yes,
   [switch]$WhatIf
 )
@@ -262,6 +266,31 @@ function Remember-KitFolder([string]$repo) {
 }
 
 # ─────────────────────────────────────────────────────────────
+# The commit the folder is at, or '' when git cannot tell (not a clone, git missing). Errors are output here, as in Get-ToolVersion.
+function Get-HeadCommit([string]$repo) {
+  $ErrorActionPreference = 'Continue'
+  try { $out = (& git -C $repo rev-parse HEAD 2>&1 | Out-String) } catch { return '' }
+  if ($out -match '\b([0-9a-f]{40})\b') { return $Matches[1] }
+  return ''
+}
+
+# With -Commit: 0 when the folder is at that commit, 4 (refuse) otherwise. Without it: a warning only, 0.
+function Test-KitCommit([string]$repo, [bool]$byTag) {
+  if (-not $Commit) {
+    if (-not $byTag) { return 0 }
+    Say '태그만으로 받아서 내용이 바뀌지 않았는지 확인하지 못했어요. 확인하려면 README 의 커밋 고정 설치 줄을 써요.' 'Downloaded by tag only, so the content was not checked against a fixed commit. To check it, use the commit-pinned install line in the README.'
+    return 0
+  }
+  $head = Get-HeadCommit $repo
+  if ($head -eq $Commit) {
+    Say "커밋을 확인했어요: $Commit" "Commit checked: $Commit"
+    return 0
+  }
+  if (-not $head) { $head = '?' }
+  Say "받은 폴더의 커밋($head)이 설치 줄의 커밋($Commit)과 달라요. 이 폴더를 쓰지 않고 멈춰요: $repo  태그가 옮겨졌을 수 있어요. 폴더를 지우고 게시된 저장소의 최신 설치 줄을 확인해요." "The folder is at commit $head, not the commit of the install line ($Commit). Stopping without using it: $repo - the tag may have been moved. Delete the folder and check the current install line in the published repository."
+  return 4
+}
+
 function Invoke-Main {
   if (-not (Test-Windows)) {
     Say '이 설치 파일은 Windows 용이에요. 다른 운영체제는 README 의 설명을 따라요.' 'This installer is for Windows. On other systems follow the README.'
@@ -278,6 +307,11 @@ function Invoke-Main {
   $chosen = $Tool.ToLower()
   if ($chosen -notin @('ask', 'claude', 'codex', 'both')) {
     Say "-Tool 은 claude, codex, both 중 하나예요 (받은 값: $Tool)." "-Tool must be claude, codex or both (got: $Tool)."
+    return 2
+  }
+  $Commit = $Commit.Trim().ToLower()
+  if ($Commit -and ($Commit -notmatch '^[0-9a-f]{40}$')) {
+    Say "-Commit 은 40자리 16진수 커밋 SHA 예요 (받은 값: $Commit)." "-Commit must be a full 40-character hexadecimal commit SHA (got: $Commit)."
     return 2
   }
 
@@ -364,6 +398,12 @@ function Invoke-Main {
     }
   }
   $repoReady = Test-Path -LiteralPath (Join-Path $repo 'plugins\sitebrew\.claude-plugin\plugin.json')
+  if ($WhatIf) {
+    if ($Commit) { Write-Host "[WhatIf] would check: git rev-parse HEAD = $Commit" }
+  } elseif ($repoReady -and ($missing -notcontains 'git')) {
+    $kitRc = Test-KitCommit $repo $cloneNeeded
+    if ($kitRc -ne 0) { return $kitRc }
+  }
   if ($repoReady -or $WhatIf) { Remember-KitFolder $repo }
 
   # 4. the plugin
