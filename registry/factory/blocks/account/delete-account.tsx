@@ -119,7 +119,7 @@ export function AccountDeleteAccount({ copy, locale, timeZone, session, subscrip
       return
     }
     // confirmed: [계정 지우기] 가 확인 단계다 — 눌렀다는 선언을 싣는다(P3-7 AXC, R20)
-    const r = await form.run(() => deleteAccount({ confirmed: true, ...(entered !== undefined ? { confirmEmail: entered } : {}) }))
+    const r = await form.run((key) => deleteAccount({ confirmed: true, ...(entered !== undefined ? { confirmEmail: entered } : {}), ...key }))
     if (r) setGraceUntil(r.graceUntil)
   }
 

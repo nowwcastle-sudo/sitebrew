@@ -8488,6 +8488,7 @@
         "nowwcastle-sudo/sitebrew/block-shared-input-format#v0.2.7",
         "nowwcastle-sudo/sitebrew/block-shared-submit-guard#v0.2.7",
         "nowwcastle-sudo/sitebrew/human-actions#v0.2.7",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.7",
         "nowwcastle-sudo/sitebrew/utils#v0.2.7"
       ],
       "files": [
@@ -8816,6 +8817,7 @@
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.7",
         "nowwcastle-sudo/sitebrew/block-shared-billing-format#v0.2.7",
+        "nowwcastle-sudo/sitebrew/ports#v0.2.7",
         "nowwcastle-sudo/sitebrew/utils#v0.2.7"
       ],
       "files": [

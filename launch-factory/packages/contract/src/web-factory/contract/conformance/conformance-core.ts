@@ -17,11 +17,19 @@ export interface ConformanceResult {
  * 확인 입력(`confirmed: true`) 없이 부른 승인 행동은 `{ ok: false, code: "confirmation_required", retryable: false }` 이고 구독·계정·동의 상태는 그대로이며,
  * 확인과 함께 부르면 성공한다 ② 기존 검사가 부르는 승인 행동은 `confirmed: true` 를 자동으로 싣는다(`autoConfirmed`) — 확인을 요구하는 어댑터가 옛 검사에서 거짓으로 떨어지지 않는다.
  * 끄면(기본) 옛 묶음과 똑같다 — 확인을 요구하지 않는 어댑터도 계약을 지킨다(선택 칸이다). 켠 어댑터만 이 검사를 받는다.
+ *
+ * requireIdempotency(WF-7 — ports.ts IdempotencyInput): 어댑터가 **같은 `idempotencyKey` 의 변경 요청을 한 번만 실행한다**고 선언한다. 켜면 새 검사 `*.idempotency.*` 가 돈다 —
+ * ① 같은 키를 다시 보내면 상태를 또 바꾸지 않고 첫 결과를 그대로 돌려준다 ② 다른 키는 따로 실행된다 ③ 키가 없으면 예전과 같다(중복 방지 없음). 끄면(기본) 옛 묶음과 똑같다 —
+ * 키를 모르는 어댑터도 계약을 지킨다(칸을 무시한다). 켠 어댑터만 이 검사를 받는다. 처리 중 같은 키(`in_progress`)는 어댑터마다 지연을 만드는 길이 달라 묶음이 보지 않는다(목 시험이 본다).
  */
 export interface ConformanceOptions {
   timeoutMs?: number
   requireConfirmation?: boolean
+  requireIdempotency?: boolean
 }
+
+/** 멱등 검사가 쓰는 키 — 검사·번호마다 다르고 실행마다 달라서(어댑터가 키를 오래 기억해도) 겹치지 않는다 */
+export const idemKey = (check: string, n: number): string => `conformance-idem-${check}-${n}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
 
 /** 확인 입력(`confirmed: true`)을 받는 승인 행동의 포트 메서드(contract/human-actions 표의 포트 메서드 중 확인 칸이 있는 것) */
 export const CONFIRMED_METHODS = {

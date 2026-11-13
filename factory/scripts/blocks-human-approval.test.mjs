@@ -139,7 +139,7 @@ test('블록 6개는 승인 행동 호출에 confirmed: true 를 싣는다(원�
     }
   }
   // 승인 행동 호출(AXWF 표의 포트 메서드)은 모두 confirmed 를 싣는다 — 새 호출이 생기면 이 표가 먼저 어긋난다
-  const CALL = /\.run\(\(\) => (changePlan|cancel|applyRetentionOffer|acceptPriceChange|changeEmail|deleteAccount|exportMyData)\(|await setConsents\(/
+  const CALL = /\.run\(\((?:key)?\) => (changePlan|cancel|applyRetentionOffer|acceptPriceChange|changeEmail|deleteAccount|exportMyData)\(|await setConsents\(/
   let calls = 0
   for (const [kv] of CONFIRMED_CALLS) {
     for (const line of src(`${B}/${kv}.tsx`).split(/\r?\n/)) {

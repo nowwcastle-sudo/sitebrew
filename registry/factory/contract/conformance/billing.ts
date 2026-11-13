@@ -4,7 +4,7 @@
 import type { ActionResult } from "@/registry/factory/contract/block-contract"
 import type { BillingPort, Money, Plan, RetentionOffer, Subscription, SubscriptionStatus } from "@/registry/factory/contract/ports"
 import { retentionOfferIssues } from "@/registry/factory/lib/retention-offer"
-import { CONFIRMED_METHODS, type ConformanceOptions, type ConformanceResult, autoConfirmed, confirmationProblem, deepEqual, runCheck, show } from "./conformance-core"
+import { CONFIRMED_METHODS, type ConformanceOptions, type ConformanceResult, autoConfirmed, confirmationProblem, deepEqual, idemKey, runCheck, show } from "./conformance-core"
 
 /** adapter-mock MOCK_SUBS + MOCK_SUB_SCENARIOS 와 같은 목록(적합성 테스트가 둘이 같은지 본다) */
 export const BILLING_SCENARIO_IDS = ["none", "trialing", "active", "past_due", "paused", "canceled", "expired", "pending-price-change"] as const
@@ -294,6 +294,42 @@ export async function billingConformance(makeBilling: MakeBilling, options: Conf
     await gate("accept-price-change", { sub: "pending-price-change" }, (port, confirmed) => port.acceptPriceChange(confirmed ? { confirmed: true } : undefined), (s) =>
       s.pendingPriceChange === undefined ? null : "동의했는데 pendingPriceChange 가 남았어요",
     )
+  }
+
+  // 멱등 키(WF-7 — options.requireIdempotency 인 어댑터만). 눈에 보이는 효과가 다시 일어나는지로 잰다: 해지 예약(cancel → cancelAt) → resume 으로 거둠 → 같은 요청 되풀이.
+  // ① 같은 키로 되풀이하면 첫 결과 그대로이고 해지 예약이 다시 붙지 않는다 ② 다른 키면 다시 실행돼 해지 예약이 붙는다 ③ 키가 없으면 되풀이마다 실행된다.
+  if (options.requireIdempotency) {
+    const cancelThenResume = async (port: BillingPort, key?: string) => {
+      const r = await port.cancel({ when: "period_end", ...(key ? { idempotencyKey: key } : {}) })
+      if (!r.ok) throw new Error(`cancel 실패: ${show(r)}`)
+      const back = await port.resume()
+      if (!back.ok) throw new Error(`resume 실패: ${show(back)}`)
+      return r
+    }
+    await check("billing.idempotency.same-key-replay", async () => {
+      const port = await make({ sub: "active" })
+      const key = idemKey("billing-cancel", 1)
+      const first = await cancelThenResume(port, key)
+      if (isDate((await current(port)).cancelAt)) return "resume 뒤에도 해지 예약(cancelAt)이 남았어요(검사를 이어갈 수 없어요)"
+      const replay = await port.cancel({ when: "period_end", idempotencyKey: key })
+      if (!replay.ok) return `같은 키의 되풀이는 첫 결과를 돌려줘야 해요: ${show(replay)}`
+      if (!deepEqual(first, replay)) return `같은 키의 되풀이가 첫 결과와 달라요: ${show(first)} ≠ ${show(replay)}`
+      return isDate((await current(port)).cancelAt) ? "같은 키인데 해지가 다시 실행됐어요(cancelAt 이 다시 붙었어요)" : null
+    })
+    await check("billing.idempotency.different-keys-both-apply", async () => {
+      const port = await make({ sub: "active" })
+      await cancelThenResume(port, idemKey("billing-cancel", 2))
+      const second = await port.cancel({ when: "period_end", idempotencyKey: idemKey("billing-cancel", 3) })
+      if (!second.ok) return `다른 키는 따로 실행돼야 해요: ${show(second)}`
+      return isDate((await current(port)).cancelAt) ? null : "다른 키인데 해지가 실행되지 않았어요(cancelAt 이 없어요)"
+    })
+    await check("billing.idempotency.no-key-unchanged", async () => {
+      const port = await make({ sub: "active" })
+      await cancelThenResume(port)
+      const again = await port.cancel({ when: "period_end" })
+      if (!again.ok) return `키 없는 호출은 예전처럼 실행돼야 해요: ${show(again)}`
+      return isDate((await current(port)).cancelAt) ? null : "키가 없는데 되풀이가 실행되지 않았어요(중복 방지가 키 없는 호출까지 막았어요)"
+    })
   }
   return out
 }

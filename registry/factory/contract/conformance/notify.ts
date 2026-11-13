@@ -1,7 +1,7 @@
 // 알림(마케팅 수신 동의) 포트 적합성 묶음(항목 contract-conformance — P3-3 Task 15, J3). 목은 mockNotify("")(?consent= 없음)다.
 // 선택 동의는 기본 false 이고 미리 체크해 두지 않는다(전자상거래법 §21-2①2·정보통신망법 §50). 바꾸면 준 채널만 바뀌고 updatedAt 이 남는다.
 import type { NotifyPort } from "@/registry/factory/contract/ports"
-import { CONFIRMED_METHODS, type ConformanceOptions, type ConformanceResult, autoConfirmed, confirmationProblem, deepEqual, runCheck, show } from "./conformance-core"
+import { CONFIRMED_METHODS, type ConformanceOptions, type ConformanceResult, autoConfirmed, confirmationProblem, deepEqual, idemKey, runCheck, show } from "./conformance-core"
 
 export const NOTIFY_CHANNELS = ["email", "sms", "kakao", "push"] as const
 /** make 는 이 사람의 수신 동의를 한 번도 정하지 않은 새 포트를 돌려준다 */
@@ -68,6 +68,42 @@ export async function notifyConformance(makeNotify: MakeNotify, options: Conform
       const done = await port.setConsents({ email: true, confirmed: true })
       if (!done.ok) return `확인과 함께 부르면 성공해야 해요: ${show(done)}`
       return (await read(port)).email === true ? null : "확인과 함께 불렀는데 email 이 켜지지 않았어요"
+    })
+  }
+
+  // 멱등 키(WF-7 — options.requireIdempotency 인 어댑터만): 동의를 켜고(K1) → 끄고(K2) → K1 을 되풀이한다.
+  // ① 같은 키의 되풀이는 첫 결과 그대로이고 동의가 다시 켜지지 않는다 ② 다른 키(K2)는 따로 실행돼 꺼진다 ③ 키가 없으면 되풀이마다 실행된다
+  if (options.requireIdempotency) {
+    await check("notify.idempotency.same-key-replay", async () => {
+      const port = await make()
+      const key = idemKey("notify", 1)
+      const first = await port.setConsents({ email: true, idempotencyKey: key })
+      if (!first.ok) return `setConsents 실패: ${show(first)}`
+      const off = await port.setConsents({ email: false, idempotencyKey: idemKey("notify", 2) })
+      if (!off.ok) return `다른 키는 따로 실행돼야 해요: ${show(off)}`
+      if ((await read(port)).email !== false) return "다른 키로 끈 동의가 꺼지지 않았어요(검사를 이어갈 수 없어요)"
+      const replay = await port.setConsents({ email: true, idempotencyKey: key })
+      if (!replay.ok) return `같은 키의 되풀이는 첫 결과를 돌려줘야 해요: ${show(replay)}`
+      if (!deepEqual(first, replay)) return `같은 키의 되풀이가 첫 결과와 달라요: ${show(first)} ≠ ${show(replay)}`
+      return (await read(port)).email === false ? null : "같은 키인데 동의 변경이 다시 실행됐어요(email 이 다시 켜졌어요)"
+    })
+    await check("notify.idempotency.different-keys-both-apply", async () => {
+      const port = await make()
+      for (const [n, on] of [[3, true], [4, false], [5, true]] as const) {
+        const r = await port.setConsents({ email: on, idempotencyKey: idemKey("notify", n) })
+        if (!r.ok) return `setConsents 실패: ${show(r)}`
+        if ((await read(port)).email !== on) return `키마다 따로 실행돼야 해요 — 키 ${n} 뒤 email 이 ${on} 이어야 해요`
+      }
+      return null
+    })
+    await check("notify.idempotency.no-key-unchanged", async () => {
+      const port = await make()
+      for (const on of [true, false, true]) {
+        const r = await port.setConsents({ email: on })
+        if (!r.ok) return `setConsents 실패: ${show(r)}`
+        if ((await read(port)).email !== on) return `키 없는 호출은 호출마다 실행돼야 해요 — email 이 ${on} 이어야 해요`
+      }
+      return null
     })
   }
   return out

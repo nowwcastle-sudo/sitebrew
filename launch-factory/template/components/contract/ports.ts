@@ -88,6 +88,16 @@ export interface RetentionOffer {
 export type HumanConfirmation = { confirmed?: true }
 
 /**
+ * 중복 방지 키 입력(WF-7 — 선택 칸, 계약 판 2 안의 추가라 판은 그대로 2다). 상태를 바꾸는 포트 입력(결제·가입·예약·후기·구독·동의·올리기 티켓)에 더한다 — 읽기와 `signIn` 에는 없다.
+ * **규칙**: ① 키는 블록이 만들지 않는다 — 폼을 여는(조립하는) 쪽이 한 번 만들어 숨은 입력 `idempotencyKey` 로 싣고, 블록은 그 값을 읽어 이 칸에 그대로 옮긴다(`usePortForm` 의 `run((key) => port({ …, ...key }))`).
+ * ② 같은 요청의 재시도(시간 초과 뒤 [다시 시도]·연타)는 **같은 키**다 — 요청마다 새로 만들면 중복을 막지 못한다. 성공한 폼이 다른 요청을 또 보내려면 조립하는 쪽이 새 키를 준다.
+ * ③ 중복 방지는 서버·공급자가 **원자적으로** 한다 — 키를 먼저 차지한 요청만 실행하고, 성공 결과를 보관해 같은 키의 다음 요청에 그대로 돌려준다. 처리 중에 같은 키가 또 오면 `{ ok: false, code: "in_progress", retryable: true }`,
+ * 실패한 요청의 키는 풀어 다시 실행할 수 있게 한다. 클라이언트 검사만으로는 막히지 않는다.
+ * 이 칸을 모르는 어댑터도 계약을 지킨다(칸을 무시한다 — 중복 방지가 없는 예전과 같다). 키가 없는 호출도 예전과 같다.
+ */
+export type IdempotencyInput = { idempotencyKey?: string }
+
+/**
  * 결제 포트. 모든 메서드는 거부(reject)하지 않고 ActionResult 로 끝난다.
  * redirectUrl 이 오면 블록이 그 주소로 이동한다(호스팅 결제창·결제수단 변경 화면).
  */
@@ -104,12 +114,12 @@ export interface BillingPort {
    * 전자상거래법 제17조 제2항 제5호(디지털콘텐츠 제공 개시 뒤 철회 제한)와 제6항 단서(제한 사실의 표시)를 지킨 화면에서만 받는다.
    * 이 칸을 요구하는 어댑터(launch-factory 의 withWithdrawalConsent)는 없으면 fieldErrors.withdrawalConsent 로 거절한다
    */
-  checkout(input: { planId: string; trial?: boolean; withdrawalConsent?: true }): Promise<ActionResult<{ redirectUrl?: string; subscription?: Subscription }>>
+  checkout(input: { planId: string; trial?: boolean; withdrawalConsent?: true } & IdempotencyInput): Promise<ActionResult<{ redirectUrl?: string; subscription?: Subscription }>>
   /** when: 새 요금제가 적용되는 때. "period_end" 는 결과의 scheduledPlanId 로 보인다(예약 기능이 없는 공급자는 어댑터가 예약한다) */
-  changePlan(input: { planId: string; when: "now" | "period_end" } & HumanConfirmation): Promise<ActionResult<Subscription>>
+  changePlan(input: { planId: string; when: "now" | "period_end" } & HumanConfirmation & IdempotencyInput): Promise<ActionResult<Subscription>>
   /** detail 은 사용자가 쓴 자유 글이다 — 계측 props 로 옮기지 않는다(개인정보가 섞일 수 있다) */
-  cancel(input: { reason?: CancelReason; detail?: string; when: "period_end" | "now" } & HumanConfirmation): Promise<ActionResult<Subscription>>
-  pause(input: { until: IsoDate }): Promise<ActionResult<Subscription>>
+  cancel(input: { reason?: CancelReason; detail?: string; when: "period_end" | "now" } & HumanConfirmation & IdempotencyInput): Promise<ActionResult<Subscription>>
+  pause(input: { until: IsoDate } & IdempotencyInput): Promise<ActionResult<Subscription>>
   /** 일시정지를 풀고, 예약된 해지(cancelAt)도 거둔다 */
   resume(): Promise<ActionResult<Subscription>>
   updatePaymentMethod(): Promise<ActionResult<{ redirectUrl: string }>>
@@ -119,9 +129,9 @@ export interface BillingPort {
    */
   portal?(): Promise<ActionResult<{ redirectUrl: string; paymentMethodUrl?: string }>>
   /** 예정된 가격 변경(pendingPriceChange)에 명시 동의한다(L6). 결과 구독에는 pendingPriceChange 가 없다. 동의할 것이 없으면 formError. 입력은 선택 — 확인 칸만 있다(HumanConfirmation) */
-  acceptPriceChange(input?: HumanConfirmation): Promise<ActionResult<Subscription>>
+  acceptPriceChange(input?: HumanConfirmation & IdempotencyInput): Promise<ActionResult<Subscription>>
   /** 해지 흐름에서 고른 대안(RetentionOffer.id)을 적용한다(R2). 예약된 해지(cancelAt)는 거둔다. 모르는 id 는 formError */
-  applyRetentionOffer(input: { offerId: string } & HumanConfirmation): Promise<ActionResult<Subscription>>
+  applyRetentionOffer(input: { offerId: string } & HumanConfirmation & IdempotencyInput): Promise<ActionResult<Subscription>>
 }
 
 export type AuthMethod = "password" | "kakao" | "naver" | "google" | "magic-link"
@@ -166,11 +176,11 @@ export interface AuthPort {
    * redirectTo: 끝나면 돌아갈 같은 출처 경로(선택) — 어댑터가 안전한 주소만 받아 data.redirectUrl 로 돌려준다
    */
   signIn(input: { method: AuthMethod; email?: string; password?: string; rememberMe?: boolean; redirectTo?: string }): Promise<ActionResult<{ redirectUrl?: string; needsTwoFactor?: boolean; emailSent?: boolean }>>
-  signUp(input: { method: AuthMethod; email?: string; password?: string; name?: string; consents: ConsentInput; redirectTo?: string }): Promise<ActionResult<{ redirectUrl?: string; emailSent?: boolean }>>
+  signUp(input: { method: AuthMethod; email?: string; password?: string; name?: string; consents: ConsentInput; redirectTo?: string } & IdempotencyInput): Promise<ActionResult<{ redirectUrl?: string; emailSent?: boolean }>>
   /** method 기본값 "totp"(인증 앱 6자리). "backup-code" 는 1회용 백업 코드. trustDevice 면 이 기기에서 한동안 2단계를 묻지 않는다. 켜기 직후의 첫 확인도 이 메서드다 */
   verifyTwoFactor(input: { code: string; method?: "totp" | "backup-code"; trustDevice?: boolean; redirectTo?: string }): Promise<ActionResult<Session & { redirectUrl?: string }>>
   /** 계정이 있든 없든 같은 결과(sent: true)다 — 가입 여부를 드러내지 않는다 */
-  requestPasswordReset(input: { email: string }): Promise<ActionResult<{ sent: true }>>
+  requestPasswordReset(input: { email: string } & IdempotencyInput): Promise<ActionResult<{ sent: true }>>
   /**
    * 비밀번호 재설정 마무리(선택, 계약 판 2 안의 추가 — D236). 메일 링크가 돌려보내는 주소의 token 과 새 비밀번호로 정한다. 토큰은 한 번만 쓰이고, 틀렸거나 만료·이미 썼으면
    * { ok: false, code: "invalid_token" }(블록이 「링크가 더는 열리지 않아요」 + 다시 요청으로 보낸다), 새 비밀번호가 짧으면 fieldErrors.newPassword 다. 성공하면 모든 기기가 로그아웃되는지는 공급자 설정이다
@@ -201,7 +211,7 @@ export interface AuthPort {
    * 입력은 선택(P3-7 AXC): confirmed 는 사람 확인(HumanConfirmation), confirmEmail 은 사람이 화면에 직접 입력한 이메일 주소(DESIGN §7-B 입력 확인) — 이 칸을 보는 어댑터는
    * 지금 로그인한 주소와 같지 않으면(앞뒤 공백·대소문자 무시) `confirmation_required` + `fieldErrors.confirmEmail` 로 거절한다. 이메일이 없는 계정(소셜 가입)은 confirmed 만이다
    */
-  deleteAccount?(input?: HumanConfirmation & { confirmEmail?: string }): Promise<ActionResult<{ graceUntil: IsoDate }>>
+  deleteAccount?(input?: HumanConfirmation & IdempotencyInput & { confirmEmail?: string }): Promise<ActionResult<{ graceUntil: IsoDate }>>
   /** 내 정보 내려받기(선택, JSON — 개인정보 보호법 제35조 열람). 입력은 선택 — 확인 칸만 있다(HumanConfirmation) */
   exportMyData?(input?: HumanConfirmation): Promise<ActionResult<MyData>>
 }
@@ -231,7 +241,7 @@ export interface ConsentState {
 /** 마케팅 수신 동의(채널별). 정보통신망법 §50 — 바꿀 때마다 updatedAt 을 남기고 결과를 알린다 */
 export interface NotifyPort {
   consents(): Promise<ActionResult<Required<NonNullable<ConsentInput["marketing"]>> & { updatedAt?: IsoDate }>>
-  setConsents(input: NonNullable<ConsentInput["marketing"]> & HumanConfirmation): Promise<ActionResult<{ updatedAt: IsoDate }>>
+  setConsents(input: NonNullable<ConsentInput["marketing"]> & HumanConfirmation & IdempotencyInput): Promise<ActionResult<{ updatedAt: IsoDate }>>
   /**
    * 웹 푸시 구독 저장(선택, 계약 판 2 — 대장 A35). 브라우저의 PushSubscription.toJSON() 결과를 그대로 넘긴다. 권한 요청과 subscribe 는
    * 블록이 사용자가 누른 순간에만 부른다(스스로 띄우지 않는다). 푸시 채널 수신 동의(setConsents 의 push)와는 따로다 — 구독은 기기 단위, 동의는 사람 단위
@@ -265,7 +275,7 @@ export interface BookingDay {
 
 /**
  * 예약 접수 입력. 폼 칸 그대로라 값은 모두 문자열이다(partySize 도 숫자 문자열 — 폼이 보내는 모양). contact 는 이메일 또는 전화번호 하나다.
- * idempotencyKey·봇 확인 토큰은 블록이 만들지 않는다 — 폼을 여는 조립하는 쪽이 숨은 입력으로 더한다(포트 폼 규칙과 같다).
+ * idempotencyKey(IdempotencyInput)·봇 확인 토큰은 블록이 만들지 않는다 — 폼을 여는 조립하는 쪽이 숨은 입력으로 더한다(포트 폼 규칙과 같다). 같은 키의 재시도는 예약을 한 번만 만든다.
  */
 export type BookingRequest = {
   service: string
@@ -274,7 +284,7 @@ export type BookingRequest = {
   name?: string
   contact: string
   note?: string
-}
+} & IdempotencyInput
 
 /** 예약 접수 결과. id 는 예약 번호 — 조회·취소에 쓰므로 화면에 보여 준다 */
 export interface BookingReceipt {
@@ -286,6 +296,8 @@ export interface BookingReceipt {
 
 /** 예약 번호 + 연락처. 조회·취소는 이 둘이 함께 맞아야 한다(로그인 없이 예약한 사람이 자기 예약을 찾는 길) */
 export type BookingLookup = { reference: string; contact: string }
+/** 취소 입력: 조회와 같은 조합 + 중복 방지 키(선택 — IdempotencyInput) */
+export type BookingCancelInput = BookingLookup & IdempotencyInput
 
 /**
  * 예약 번호 + 연락처가 맞는 사람에게 보이는 예약. 연락처는 돌려주지 않는다(이미 아는 값이다).
@@ -320,7 +332,7 @@ export interface BookingPort {
   slots(input: { service: string; from: string; days?: number }): Promise<ActionResult<{ days: BookingDay[] }>>
   book(input: BookingRequest): Promise<ActionResult<BookingReceipt>>
   lookup(input: BookingLookup): Promise<ActionResult<ManagedBooking>>
-  cancel(input: BookingLookup): Promise<ActionResult<BookingChange>>
+  cancel(input: BookingCancelInput): Promise<ActionResult<BookingChange>>
 }
 
 /**
@@ -377,7 +389,7 @@ export interface StoragePort {
    * 올리기 티켓 받기(선택, 계약 판 2 안의 추가 — p3-3c). upload 한 번을 티켓 → 저장소로 직접 PUT → complete 세 걸음으로 나눈 것이다.
    * 종류·크기·형식이 정책을 어기면 fieldErrors, avatar 는 로그인이 필요하다(code: sign_in_required)
    */
-  createTicket?(input: { kind: StorageKind; contentType: string; size: number; fileName?: string }): Promise<ActionResult<UploadTicket>>
+  createTicket?(input: { kind: StorageKind; contentType: string; size: number; fileName?: string } & IdempotencyInput): Promise<ActionResult<UploadTicket>>
   /** 올리기 마침(선택). 서버가 저장된 객체의 크기·형식을 다시 확인한 뒤 ready 로 바꾼다. 비공개 파일의 url 은 짧게 열리는 내려받기 주소다 */
   complete?(input: { id: string }): Promise<ActionResult<{ url: string; key: string }>>
 }
@@ -447,7 +459,7 @@ interface ReviewPageInfo {
 /** kind 로 갈리는 목록 결과. 요약(summary)은 후기에만 있고 게시된 후기 전체로 센 값이다(거르기·쪽과 무관) */
 export type ReviewListResult = ({ kind: "review"; items: Review[]; summary: RatingSummary } | { kind: "question"; items: Question[] }) & ReviewPageInfo
 
-export interface ReviewSubmitInput {
+export type ReviewSubmitInput = {
   subjectType: string
   subjectId: string
   /** 기본 review */
@@ -459,7 +471,7 @@ export interface ReviewSubmitInput {
   /** 로그인 없이 쓰는 문의의 표시 이름(서버가 가려서 저장한다) */
   authorName?: string
   locale?: "ko" | "en"
-}
+} & IdempotencyInput
 
 export interface ReviewsPort {
   list(input: ReviewListInput): Promise<ActionResult<ReviewListResult>>
@@ -504,7 +516,7 @@ export interface SearchPort {
  * 이미 구독 중인 주소도 같은 응답이다(주소가 구독자인지 알리지 않는다). 확인 메일의 링크를 눌러야 구독이 시작된다(해지 링크는 메일에 있다).
  */
 export interface NewsletterPort {
-  subscribe(input: { email: string; consent: true; source?: string; locale?: "ko" | "en" }): Promise<ActionResult<{ confirmationSent: true }>>
+  subscribe(input: { email: string; consent: true; source?: string; locale?: "ko" | "en" } & IdempotencyInput): Promise<ActionResult<{ confirmationSent: true }>>
 }
 
 /** 내 신청 내역(문의 접수) 한 줄. 연락처·내용은 앞 40자까지 가린 미리보기만 싣는다 */

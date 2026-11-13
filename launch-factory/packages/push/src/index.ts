@@ -7,7 +7,7 @@
 // 성공하면 횟수를 0으로 돌린다. 만료 시각(expirationTime)이 지난 구독은 보내지 않고 지운다.
 // sendToUser 의 sent·pruned·failed 는 서로 겹치지 않는다: 성공 / 지움(폐기·만료·한도 초과) / 지우지 않은 실패.
 import type { ActionResult, IsoDate } from "@launch-factory/contract"
-import { bumpPushFailure, deletePushSubscription, deletePushSubscriptionById, listPushSubscriptions, markPushSuccess, upsertPushSubscription, type Database } from "@launch-factory/db"
+import { bumpPushFailure, deletePushSubscription, deletePushSubscriptionById, listPushSubscriptions, markPushSuccess, upsertPushSubscriptionWithinQuota, DEFAULT_MAX_PUSH_SUBSCRIPTIONS_PER_USER, type Database } from "@launch-factory/db"
 import { maskPii } from "@launch-factory/security"
 import { DEFAULT_PUSH_LOCALE, pushMessages, type PushLocale } from "./messages.ts"
 import { preparePayload } from "./payload.ts"
@@ -45,6 +45,8 @@ export interface PushServiceOptions {
   /** 한 건 전송기. 없으면 live=web-push, mock=기록만(외부 호출 0). 주입하면 두 모드 모두 그것을 쓴다 */
   transport?: PushTransport
   now?: () => Date
+  /** 사용자 한 명의 구독(기기) 수 상한. 기본 10 — 닿으면 새 기기 등록은 invalid_state 로 거절한다(쓰는 기기를 몰래 지우지 않는다). 같은 기기의 키 갱신은 세지 않는다 */
+  maxSubscriptionsPerUser?: number
   /** 오류 문구의 언어(기본 ko) */
   locale?: PushLocale
   /** DB 오류 알림. 기본은 개인정보 모양을 가린 한 줄 로그 */
@@ -53,7 +55,7 @@ export interface PushServiceOptions {
 
 export type PushFailure = {
   ok: false
-  code: "provider_unavailable" | "invalid_input"
+  code: "provider_unavailable" | "invalid_input" | "invalid_state"
   retryable: boolean
   formError?: string
   fieldErrors?: Partial<Record<string, string[]>>
@@ -83,7 +85,8 @@ const defaultOnError = (error: unknown): void => {
 }
 
 export function createPushService(options: PushServiceOptions): PushService {
-  const { db, mode, now = () => new Date(), locale: defaultLocale = DEFAULT_PUSH_LOCALE, onError = defaultOnError } = options
+  const { db, mode, now = () => new Date(), locale: defaultLocale = DEFAULT_PUSH_LOCALE, onError = defaultOnError, maxSubscriptionsPerUser = DEFAULT_MAX_PUSH_SUBSCRIPTIONS_PER_USER } = options
+  if (!Number.isSafeInteger(maxSubscriptionsPerUser) || maxSubscriptionsPerUser < 1) throw new TypeError(`push: maxSubscriptionsPerUser 는 1 이상의 정수 (받은 값: ${String(maxSubscriptionsPerUser)})`)
   if (mode !== "mock" && mode !== "live") throw new TypeError(`push: mode 는 "mock" 또는 "live" (받은 값: ${String(mode)})`)
 
   const vapid = isValidVapid(options.vapid) ? options.vapid : undefined
@@ -125,7 +128,9 @@ export function createPushService(options: PushServiceOptions): PushService {
       if (!checked.ok) return invalid(locale, checked.fieldErrors)
       const at = now()
       try {
-        await upsertPushSubscription(db, { ...checked.value, userId, createdAt: at })
+        const saved = await upsertPushSubscriptionWithinQuota(db, { ...checked.value, userId, createdAt: at }, { max: maxSubscriptionsPerUser, now: at })
+        // 가득 찼다 — 오래된 것을 몰래 지우지 않고 알린다(쓰는 기기를 끊지 않기 위해). 같은 요청을 다시 보내도 같다(사용자가 기기를 해제해야 한다)
+        if (!saved.ok) return { ok: false, code: "invalid_state", retryable: false, formError: pushMessages(locale).quotaExceeded.replace("{limit}", String(saved.limit)) }
       } catch (e) {
         onError(e)
         return { ok: false, code: "provider_unavailable", retryable: true, formError: pushMessages(locale).saveFailed }

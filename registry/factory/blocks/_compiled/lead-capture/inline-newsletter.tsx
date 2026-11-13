@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import type { ActionResult, BlockBase } from "@/registry/factory/contract/block-contract"
-import type { AnalyticsPort } from "@/registry/factory/contract/ports"
+import type { AnalyticsPort, IdempotencyInput } from "@/registry/factory/contract/ports"
 import { CheckCircle, Mail } from "@/registry/factory/icons"
 import { cn } from "@/registry/factory/lib/utils"
 import { rise } from "@/registry/factory/motion/gsap-techniques"
@@ -41,7 +41,7 @@ export type LeadCaptureInlineNewsletterCopy = {
   done: { title: string; body: string }
 }
 export type LeadCaptureInlineNewsletterProps = BlockBase<LeadCaptureInlineNewsletterCopy> & {
-  submit: (input: { email: string; consent: true }) => Promise<ActionResult<unknown>>
+  submit: (input: { email: string; consent: true } & IdempotencyInput) => Promise<ActionResult<unknown>>
   track?: AnalyticsPort["track"]
 }
 
@@ -67,7 +67,7 @@ export function LeadCaptureInlineNewsletter({ copy, submit, track, id = "newslet
     const v = form.validate(["email", "consent"], { ...form.read(), consent: agreed ? "on" : "" })
     if (!v) return
     track?.("form_submit", { form: id })
-    const r = await form.run(() => submit({ email: v.email, consent: true }))
+    const r = await form.run((key) => submit({ email: v.email, consent: true, ...key }))
     if (r !== null) setSentTo(v.email)
   }
   const start = () => {

@@ -3,7 +3,7 @@
 // 검사는 모양과 관계만 본다 — 칸 수·자리 수·예약 번호 꼴·문구는 어댑터마다 다르다. 가장 중요한 한 줄: 틀린 번호·연락처 조합은 무엇이 틀렸는지 구별되지 않는다(예약 존재 여부를 흘리지 않는다).
 // 쓰기 검사는 상태를 바꾸므로 검사마다 make 를 새로 부른다.
 import type { BookingPort, BookingStatus } from "@/registry/factory/contract/ports"
-import { type ConformanceOptions, type ConformanceResult, deepEqual, runCheck, show } from "./conformance-core"
+import { type ConformanceOptions, type ConformanceResult, deepEqual, idemKey, runCheck, show } from "./conformance-core"
 
 /** adapter-mock MOCK_BOOKINGS 와 같은 목록(적합성 테스트가 둘이 같은지 본다) */
 export const BOOKING_SCENARIO_IDS = ["open", "full"] as const
@@ -185,5 +185,54 @@ export async function bookingConformance(makeBooking: MakeBooking, options: Book
     const r = await port.book({ service, startsAt: slot.startsAt, contact })
     return !r.ok && r.code === "slot_taken" ? null : `마감된 칸의 예약은 { ok: false, code: "slot_taken" } 여야 해요: ${show(r)}`
   })
+
+  // 멱등 키(WF-7 — options.requireIdempotency 인 어댑터만). 예약은 같은 칸을 두 번 잡을 수 없어(slot_taken) 되풀이가 다시 실행됐는지 눈에 보인다.
+  // ① 같은 키의 예약·취소 되풀이는 첫 결과 그대로(같은 예약 번호) ② 다른 키는 따로 실행된다 ③ 키가 없으면 예전과 같다(되풀이가 첫 결과를 돌려주지 않는다)
+  if (options.requireIdempotency) {
+    const twoSlots = async (port: BookingPort) => {
+      const open = (await listSlots(port)).filter((s) => s.available > 0)
+      if (open.length < 2) throw new Error("자리가 남은 칸이 둘 필요해요(from·days 를 바꿔 보세요)")
+      return [open[0], open[1]] as const
+    }
+    await check("booking.idempotency.book-same-key-replay", async () => {
+      const port = await make()
+      const [slot] = await twoSlots(port)
+      const key = idemKey("booking-book", 1)
+      const first = await port.book({ service, startsAt: slot.startsAt, contact, idempotencyKey: key })
+      if (!first.ok) return `book 실패: ${show(first)}`
+      const afterFirst = await availableAt(port, slot.startsAt)
+      const replay = await port.book({ service, startsAt: slot.startsAt, contact, idempotencyKey: key })
+      if (!replay.ok) return `같은 키의 되풀이는 첫 결과를 돌려줘야 해요(칸이 이미 찼다고 거절하면 안 돼요): ${show(replay)}`
+      if (!deepEqual(first.data, replay.data)) return `같은 키의 되풀이가 첫 결과와 달라요: ${show(first.data)} ≠ ${show(replay.data)}`
+      const afterReplay = await availableAt(port, slot.startsAt)
+      return afterReplay === afterFirst ? null : `같은 키인데 예약이 또 잡혔어요: 남은 자리 ${show(afterFirst)} → ${show(afterReplay)}`
+    })
+    await check("booking.idempotency.book-different-keys", async () => {
+      const port = await make()
+      const [a, b] = await twoSlots(port)
+      const first = await port.book({ service, startsAt: a.startsAt, contact, idempotencyKey: idemKey("booking-book", 2) })
+      const second = await port.book({ service, startsAt: b.startsAt, contact, idempotencyKey: idemKey("booking-book", 3) })
+      if (!first.ok || !second.ok) return `다른 키는 따로 실행돼야 해요: ${show(first)} / ${show(second)}`
+      return first.data.id !== second.data.id ? null : `다른 키의 예약이 같은 예약 번호를 돌려줬어요: ${first.data.id}`
+    })
+    await check("booking.idempotency.book-no-key", async () => {
+      const port = await make()
+      const [slot] = await twoSlots(port)
+      const first = await port.book({ service, startsAt: slot.startsAt, contact })
+      if (!first.ok) return `book 실패: ${show(first)}`
+      const again = await port.book({ service, startsAt: slot.startsAt, contact })
+      return again.ok && again.data.id === first.data.id ? "키가 없는데 되풀이가 첫 결과를 돌려줬어요(중복 방지가 키 없는 호출까지 막았어요)" : null
+    })
+    await check("booking.idempotency.cancel-same-key-replay", async () => {
+      const port = await make()
+      const { receipt } = await bookFirst(port)
+      const key = idemKey("booking-cancel", 1)
+      const first = await port.cancel({ reference: receipt.id, contact, idempotencyKey: key })
+      if (!first.ok) return `취소 실패(from 이 취소 기한 안인지 확인하세요): ${show(first)}`
+      const replay = await port.cancel({ reference: receipt.id, contact, idempotencyKey: key })
+      if (!replay.ok) return `같은 키의 되풀이는 첫 결과를 돌려줘야 해요(이미 취소됨 invalid_state 가 아니라): ${show(replay)}`
+      return deepEqual(first.data, replay.data) ? null : `같은 키의 되풀이가 첫 결과와 달라요: ${show(first.data)} ≠ ${show(replay.data)}`
+    })
+  }
   return out
 }

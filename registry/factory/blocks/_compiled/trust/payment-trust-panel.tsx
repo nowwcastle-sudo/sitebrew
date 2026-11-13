@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import type { ActionResult, BlockBase } from "@/registry/factory/contract/block-contract"
-import type { AnalyticsPort, Money } from "@/registry/factory/contract/ports"
+import type { AnalyticsPort, IdempotencyInput, Money } from "@/registry/factory/contract/ports"
 import { CheckCircle, Info, Lock } from "@/registry/factory/icons"
 import { cn } from "@/registry/factory/lib/utils"
 import { rise } from "@/registry/factory/motion/gsap-techniques"
@@ -48,7 +48,7 @@ export type PaymentReceipt = { redirectUrl?: string }
 export type TrustPaymentTrustPanelProps = BlockBase<TrustPaymentTrustPanelCopy> & {
   orderId: string
   total: Money
-  submit: (input: { method: string }) => Promise<ActionResult<PaymentReceipt>>
+  submit: (input: { method: string } & IdempotencyInput) => Promise<ActionResult<PaymentReceipt>>
   onRedirect?: (url: string) => void
   track?: AnalyticsPort["track"]
 }
@@ -66,7 +66,7 @@ export function TrustPaymentTrustPanel({ copy, orderId, total, submit, onRedirec
     e.preventDefault()
     if (!form.validate(["method"], { method: method ?? "" })) return
     track?.("checkout_start", { planId: orderId })
-    const r = await form.run(() => submit({ method: method ?? "" }))
+    const r = await form.run((key) => submit({ method: method ?? "", ...key }))
     if (!r) return
     if (r.redirectUrl) return goTo(r.redirectUrl, onRedirect)
     setDone(true)

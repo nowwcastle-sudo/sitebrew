@@ -11,6 +11,8 @@ const KO = {
   notConfigured: "푸시 알림이 아직 설정되지 않았어요.",
   saveFailed: "알림 설정을 저장하지 못했어요. 잠시 뒤에 다시 시도해 주세요.",
   invalidInput: "입력을 확인해 주세요.",
+  /** {limit} 은 기기 수 상한으로 바꾼다 */
+  quotaExceeded: "알림을 받을 수 있는 기기는 {limit}대까지예요. 쓰지 않는 기기의 알림을 끈 뒤 다시 시도해 주세요.",
   sub: {
     object: "구독 정보가 올바르지 않아요.",
     endpointRequired: "엔드포인트가 필요해요.",
@@ -39,6 +41,7 @@ const EN: Shape<typeof KO> = {
   notConfigured: "Push notifications are not set up yet.",
   saveFailed: "Couldn't save your notification settings. Please try again shortly.",
   invalidInput: "Please check your input.",
+  quotaExceeded: "You can receive notifications on up to {limit} devices. Turn off notifications on a device you no longer use, then try again.",
   sub: {
     object: "The subscription is not valid.",
     endpointRequired: "An endpoint is required.",
