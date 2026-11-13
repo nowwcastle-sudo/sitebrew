@@ -1,4 +1,4 @@
-// 인증 메일 다리(v0 Task 19). Better Auth 설정(@launch-factory/auth createAuth 의 mailer)에 넣는 계정 보안 메일 넷을 이 패키지의 Mailer 로 보낸다.
+// 인증 메일 다리(v0 Task 19). Better Auth 설정(@launch-factory/auth createAuth 의 mailer)에 넣는 계정 보안 메일(이미 계정이 있다는 안내 포함)을 이 패키지의 Mailer 로 보낸다.
 // auth 패키지를 불러오지 않는다 — 모양(AuthMailer 의 선택 메서드)만 맞춘다. 받는 사람의 언어·시간대는 사용자 행(D74)에서 온다.
 // 보내기 실패는 던진다: auth 쪽 deliver 가 받아 onError 로만 알린다(사용자 응답은 바뀌지 않는다).
 import type { Mailer } from "./send.ts"
@@ -20,6 +20,8 @@ export interface AuthEmailsOptions {
   defaultLocale: Locale
   /** 알림 메일의 「계정 보호하기」 버튼(비밀번호 재설정 화면). 없으면 버튼을 싣지 않는다 */
   securityUrl?: string
+  /** 이미 있는 주소로 가입을 시도했다는 안내(existingAccount)의 「로그인」 버튼(로그인 화면). 재설정 버튼은 securityUrl 을 쓴다. 둘 중 하나라도 없으면 existingAccount 메서드가 없다 */
+  signInUrl?: string
   /** 비밀번호 변경 알림의 「문의하기」 버튼(문의 화면). 없으면 버튼을 싣지 않는다 */
   contactUrl?: string
   /** 확인·재설정·변경 승인 링크가 유효한 시간(분). 기본 60 — createAuth 가 같은 값을 Better Auth 설정에 넣는다(auth 패키지의 LINK_EXPIRES_SECONDS) */
@@ -66,12 +68,18 @@ export function authEmails(mailer: Mailer, o: AuthEmailsOptions) {
   const security = o.securityUrl ? { securityUrl: o.securityUrl } : {}
   const contact = o.contactUrl ? { contactUrl: o.contactUrl } : {}
   const linkValidMinutes = o.linkValidMinutes ?? DEFAULT_LINK_VALID_MINUTES
+  const existing = o.signInUrl && o.securityUrl ? { signInUrl: o.signInUrl, resetUrl: o.securityUrl } : undefined
   return {
     passwordReset: (to: string, url: string, r?: Recipient) => must(mailer.send({ to, template: "passwordReset", input: { ...base(r, o), resetUrl: url, linkValidMinutes } }), "passwordReset"),
     verifyEmail: (to: string, url: string, r?: Recipient) => {
       const notMeUrl = r && o.notMeUrl?.(r)
       return must(mailer.send({ to, template: "verifyEmail", input: { ...base(r, o), verifyUrl: url, linkValidMinutes, ...(notMeUrl ? { notMeUrl } : {}) } }), "verifyEmail")
     },
+    /**
+     * 이미 있는 주소로 가입을 시도했다(conceal): 시도한 사람은 새 가입과 같은 응답을 받고, 그 주소의 주인에게만 이 메일이 간다(CWE-203).
+     * 로그인·재설정 링크(signInUrl·securityUrl)가 둘 다 있을 때만 이 메서드가 생긴다 — 없으면 createAuth 의 가입 응답 기본이 conceal 이 아니라 reveal 로 남는다(안내 메일 없이 숨기지 않는다).
+     */
+    ...(existing ? { existingAccount: (to: string, r?: Recipient) => must(mailer.send({ to, template: "existingAccount", input: { ...base(r, o), ...existing } }), "existingAccount") } : {}),
     changeEmailConfirm: (to: string, input: { newEmail: string; url: string }, r?: Recipient) =>
       must(mailer.send({ to, template: "emailChangeConfirm", input: { ...base(r, o), newEmail: input.newEmail, approveUrl: input.url, linkValidMinutes } }), "emailChangeConfirm"),
     emailChanged: (to: string, input: { newEmail: string }, r?: Recipient) =>

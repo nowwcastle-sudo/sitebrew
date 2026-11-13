@@ -12,8 +12,8 @@ import { inquiryReply, type InquiryReplyInput } from "./templates/inquiry-reply.
 import { bookingConfirmation, type BookingConfirmationInput } from "./templates/booking-confirmation.ts"
 import { bookingCancellation, type BookingCancellationInput } from "./templates/booking-cancellation.ts"
 import { bookingNotice, type BookingNoticeInput } from "./templates/booking-notice.ts"
-import { accountDeletionRequested, emailChangeConfirm, emailChanged, passwordChanged, passwordReset, verifyEmail } from "./templates/account.ts"
-import type { AccountDeletionRequestedInput, EmailChangeConfirmInput, EmailChangedInput, PasswordChangedInput, PasswordResetInput, VerifyEmailInput } from "./templates/account.ts"
+import { accountDeletionRequested, emailChangeConfirm, emailChanged, existingAccount, passwordChanged, passwordReset, verifyEmail } from "./templates/account.ts"
+import type { AccountDeletionRequestedInput, EmailChangeConfirmInput, EmailChangedInput, ExistingAccountInput, PasswordChangedInput, PasswordResetInput, VerifyEmailInput } from "./templates/account.ts"
 import { marketingConsentNotice, type MarketingConsentNoticeInput } from "./templates/marketing-consent-notice.ts"
 import { marketingReconfirm, type MarketingReconfirmInput } from "./templates/marketing-reconfirm.ts"
 import { marketingAnnouncement, type MarketingAnnouncementInput } from "./templates/marketing-announcement.ts"
@@ -39,6 +39,7 @@ export interface TemplateInputs {
   bookingCancellation: BookingCancellationInput
   bookingNotice: BookingNoticeInput
   verifyEmail: VerifyEmailInput
+  existingAccount: ExistingAccountInput
   emailChangeConfirm: EmailChangeConfirmInput
   emailChanged: EmailChangedInput
   passwordReset: PasswordResetInput
@@ -67,6 +68,7 @@ const BUILDERS: { [N in TemplateName]: (input: TemplateInputs[N]) => BuiltEmail 
   bookingCancellation,
   bookingNotice,
   verifyEmail,
+  existingAccount,
   emailChangeConfirm,
   emailChanged,
   passwordReset,

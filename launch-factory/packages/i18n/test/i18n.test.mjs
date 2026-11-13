@@ -27,7 +27,8 @@ test("메시지 키가 ko·en 양쪽에 모두 있다(모든 이름공간)", () 
   // Task 19 가 계정 보안 메일 4묶음 26키(verifyEmail 7·emailChangeConfirm 7·emailChanged 6·passwordChanged 6)를, Task 9b 가 비밀번호 재설정 7키(D180)를, D201 이 마케팅 수신 처리 결과 통지 14키를, F11 이 결제 실패 안내 9키를, LFACCT 가 탈퇴 접수 메일 8키(accountDeletionRequested, D09)를 더했다 / LFMAIL 이 38키(링크 유효 시간·버튼 글자 링크 6, 확인 메일 가입 안 했어요 2, 변경 승인 기한 1, 문의 수신 사유 2, 새 기기 로그인 10, 2년 재확인 9, 광고 표시 8)를 더했다
   // 계획 3b Task 1 이 예약 메일 셋(bookingConfirmation 18·bookingCancellation 12·bookingNotice 17 = 47키)과 예약 서비스 문구 이름공간 booking(20키)을 더했다
   // LFUX2 가 문의 접수 확인의 첫 응답 약속 1키(inquiryReceipt.responseNote)와 「contact us」 알림 둘의 문의 버튼 2키(passwordChanged·emailChanged 의 contactCta)를 더했다
-  assert.equal(Object.keys(en).filter((k) => k.startsWith("email.")).length, 37 + 11 + 6 + 26 + 7 + 14 + 9 + 8 + 3 + 38 + 19 + 47 + 7 + 9 + 15 + 7)
+  assert.equal(Object.keys(en).filter((k) => k.startsWith("email.")).length, 37 + 11 + 6 + 26 + 7 + 14 + 9 + 8 + 3 + 38 + 19 + 47 + 7 + 9 + 15 + 7 + 7)
+  // CWE-203(conceal 기본)이 이미 있는 주소로 가입을 시도했다는 안내 메일 7키(existingAccount)를 더했다
   // 계획 3d 관리 화면(문의 답변)이 답변 메일 inquiryReply 7키를 더했다
   // Task 4(뉴스레터)가 구독 확인 메일 7키(newsletterConfirm)와 구독 완료 안내 9키(newsletterWelcome)를 더했다
   // 양성 대조: 한쪽에만 키를 더하면 잡힌다

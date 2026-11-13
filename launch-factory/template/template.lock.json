@@ -2025,7 +2025,7 @@
     {
       "path": "lib/launch/auth.ts",
       "from": "launch-factory",
-      "sha256": "74bb471b8f6dfa37effa511a94a3919de68d631cb60740128901d13120294291"
+      "sha256": "e25ada8a1e6a189d9b3f2fd549bd52492daed26e2cd6f1d1bc70c38d95b74d5a"
     },
     {
       "path": "lib/launch/billing.ts",

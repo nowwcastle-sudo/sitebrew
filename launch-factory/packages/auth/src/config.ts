@@ -71,8 +71,8 @@ export interface AuthMailer {
   magicLink?(to: string, url: string, who?: Recipient): Promise<void>
   /** 이메일 확인 링크(가입 뒤·다시 보내기·이메일 변경의 새 주소). signUpEnumeration: "conceal" 이면 필수 */
   verifyEmail?(to: string, url: string, who?: Recipient): Promise<void>
-  /** 이미 있는 이메일로 가입을 시도했다는 안내(conceal 에서만 — 주인은 알고, 시도한 사람은 모른다) */
-  existingAccount?(to: string): Promise<void>
+  /** 이미 있는 이메일로 가입을 시도했다는 안내(conceal 에서만 — 주인은 알고, 시도한 사람은 모른다). 로그인·비밀번호 재설정 링크를 싣는다. verifyEmail 과 함께 있으면 conceal 이 기본이다 */
+  existingAccount?(to: string, who?: Recipient): Promise<void>
   /** 이메일 변경 승인 요청 — 지금(확인된) 주소로(D71) */
   changeEmailConfirm?(to: string, input: { newEmail: string; url: string }, who?: Recipient): Promise<void>
   /** 이메일이 바뀐 뒤 옛 주소로 알림(D71, OWASP) */
@@ -182,9 +182,10 @@ export interface CreateAuthOptions {
   requireAgeOver14?: boolean
   /**
    * 이미 있는 이메일로 가입할 때(대장 D48).
-   * - "reveal"(기본): 「이미 가입된 이메일이에요」 필드 오류. 가입 즉시 로그인된다.
-   * - "conceal": 있는 계정·없는 계정 모두 { emailSent: true } 로 같다. 새 계정은 이메일 인증 뒤에 로그인되고,
-   *   있는 계정의 주인에게는 mailer.existingAccount 로 알린다. mailer.verifyEmail 이 필요하다.
+   * - "conceal"(기본 — mailer.verifyEmail·mailer.existingAccount 가 둘 다 있을 때, CWE-203): 있는 계정·없는 계정 모두 { emailSent: true } 로 같다.
+   *   새 계정은 이메일 인증 뒤에 로그인되고, 있는 계정의 주인에게는 mailer.existingAccount 로 알린다. 응답 시간은 Better Auth 가 있는 주소에도 비밀번호 해시를 돌려 맞춘다.
+   * - "reveal": 「이미 가입된 이메일이에요」 필드 오류. 가입 즉시 로그인된다(소프트 인증). 메일을 보낼 수 없는 설정(위 두 메일러가 없음)은 conceal 이 불가능해 기본이 reveal 이다 —
+   *   새 계정이 인증 메일 없이는 로그인할 수 없기 때문이다. 이 경우 가입 여부가 응답으로 드러난다. 명시로 "conceal" 을 주고 메일러가 없으면 createAuth 가 던진다.
    */
   signUpEnumeration?: SignUpEnumeration
   /**
@@ -290,7 +291,8 @@ export function createAuth(options: CreateAuthOptions) {
   const verifyOn = !!mailer?.verifyEmail
   const recentSignIn = (options.recentSignInSeconds ?? RECENT_SIGN_IN_SECONDS) * 1000
   const requireAgeOver14 = options.requireAgeOver14 ?? true
-  const signUpEnumeration = options.signUpEnumeration ?? "reveal"
+  // 기본은 conceal(CWE-203): 인증 메일(새 계정)과 안내 메일(있는 계정)이 둘 다 있어야 같은 응답을 줄 수 있다. 없으면 reveal 로 남는다(위 옵션 설명).
+  const signUpEnumeration = options.signUpEnumeration ?? (mailer?.verifyEmail && mailer.existingAccount ? "conceal" : "reveal")
   const conceal = signUpEnumeration === "conceal"
   if (conceal && !mailer?.verifyEmail) throw new Error("signUpEnumeration 'conceal' needs mailer.verifyEmail (new accounts sign in after verifying their email)")
   /** 가입 경로의 동의: 비밀번호 가입은 요청 본문, 소셜 가입은 OAuth 상태(가입을 시작할 때 어댑터가 실었다)에서 읽는다 */
@@ -396,7 +398,7 @@ export function createAuth(options: CreateAuthOptions) {
             onExistingUserSignUp: async ({ user }: { user: { email: string } }) => {
               if (isPlaceholderEmail(user.email)) return
               if (!mailer?.existingAccount) return onError(new Error("auth mailer.existingAccount is not configured"))
-              await mailer.existingAccount(user.email).catch(onError)
+              await mailer.existingAccount(user.email, who(user)).catch(onError)
             },
           }
         : {}),
