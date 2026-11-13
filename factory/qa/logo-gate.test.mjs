@@ -52,3 +52,11 @@ test('hasBrandLogo: 후보의 브랜드 입력에 로고 경로가 있을 때만
   assert.equal(hasBrandLogo({ brand: { input: { logo: '/x/logo.svg' } } }), true)
   for (const c of [{}, { brand: {} }, { brand: { input: {} } }, { brand: { input: { logo: '  ' } } }, null]) assert.equal(hasBrandLogo(c), false)
 })
+
+test('judgeLogo: 계측이 보이지 않는 로고(visible false)면 높이가 충분해도 실패 · visible 칸이 없는 옛 계측은 예전대로 판정', () => {
+  const hidden = judgeLogo({ k: { present: true, kind: 'img', renderedHeight: 36, naturalWidth: 300, complete: true, visible: false } })
+  assert.equal(hidden.pass, false)
+  assert.match(hidden.problems[0], /^k: 로고가 화면에 보이지 않아요/)
+  assert.equal(judgeLogo({ k: { present: true, kind: 'img', renderedHeight: 36, naturalWidth: 300, complete: true, visible: true } }).pass, true)
+  assert.equal(judgeLogo({ k: { present: true, kind: 'img', renderedHeight: 36, naturalWidth: 300, complete: true } }).pass, true)
+})

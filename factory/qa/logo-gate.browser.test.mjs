@@ -22,7 +22,7 @@ const pngSize = (file) => { const b = readFileSync(file); return { width: b.read
 
 test('쪽에서 읽은 로고 값: 숨은 다크 짝이 앞에 있어도 보이는 그림을 잰다 · mask 로고 · 글자뿐 · 깨진 그림이 서로 다르게 읽히고 2배 머리글이 찍힌다', async () => {
   const img = await uxGate('img.html')
-  assert.deepEqual(logoOf(img), { present: true, kind: 'img', renderedHeight: 36, naturalWidth: 300, complete: true }, 'viewBox 만 있는 SVG 도 naturalWidth > 0')
+  assert.deepEqual(logoOf(img), { present: true, kind: 'img', renderedHeight: 36, naturalWidth: 300, complete: true, visible: true }, 'viewBox 만 있는 SVG 도 naturalWidth > 0')
   const { width, height } = pngSize(join(img, 'header-1440-light-2x.png'))
   assert.equal(width, 2880, '1440px 폭의 2배')
   assert.ok(height >= 2 * 60 && height < 2 * 200, `머리글 높이의 2배 안팎 — ${height}`)
@@ -38,4 +38,15 @@ test('쪽에서 읽은 로고 값: 숨은 다크 짝이 앞에 있어도 보이�
   assert.equal(judgeLogo({ k: logoOf(img) }).pass, true)
   assert.equal(judgeLogo({ k: text }).pass, false)
   assert.equal(judgeLogo({ k: broken }).pass, false)
+})
+
+test('보이지 않는 로고만 있으면 실패한다 — 숨긴(visibility) 그림 · 투명한(opacity 0) 그림은 높이가 있어도 「화면에 보이는 로고」가 아니다 · 정상 선례(숨은 짝 + 보이는 그림)는 통과', async () => {
+  for (const f of ['hidden.html', 'transparent.html']) {
+    const p = logoOf(await uxGate(f))
+    assert.equal(p.visible, false, `${f}: 보이지 않는 로고를 보인다고 읽었다`)
+    const j = judgeLogo({ k: p })
+    assert.equal(j.pass, false, `${f}: 보이지 않는 로고가 관문을 통과했다`)
+    assert.match(j.problems[0], /보이지 않아요/)
+  }
+  assert.equal(judgeLogo({ k: logoOf(await uxGate('img.html')) }).pass, true, '정상 선례')
 })
