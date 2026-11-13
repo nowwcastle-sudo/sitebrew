@@ -1,5 +1,6 @@
 // 관리 화면 브라우저 시험(scripts/e2e-admin)의 순수 부분 — 서버·브라우저 없이 시험한다(scripts/test/e2e-admin.test.mjs). 오케스트레이터는 run.mjs.
 // 템플릿(template/)은 건드리지 않는다: 사본을 만들어 사본에서만 관리자 스위치를 켠다. 그래서 제품 템플릿의 해시 잠금·조립된 제품에는 아무 영향이 없다.
+import { pathToFileURL } from "node:url"
 import { cleanEnv } from "../../template/scripts/ci/smoke-lib.mjs"
 
 /** 시험 계정(=관리자=소유자). 서버의 소유자 메일 이름과 시드 이름에 같은 값을 준다 */
@@ -35,7 +36,8 @@ export function serverEnv({ outbox, twoFactorFile, preload, base = process.env }
     BOOKING_OWNER_EMAIL: ADMIN_EMAIL,
     ADMIN_SEED_EMAIL: ADMIN_EMAIL,
     ADMIN_SEED_2FA_FILE: twoFactorFile,
-    NODE_OPTIONS: `--import=${preload}`,
+    // 경로가 아니라 file: 주소로 — Windows 드라이브 경로(D:\…)는 ESM 이 주소 체계로 읽어 거절하고, 공백은 NODE_OPTIONS 를 가른다.
+    NODE_OPTIONS: `--import=${pathToFileURL(preload).href}`,
   }
 }
 
