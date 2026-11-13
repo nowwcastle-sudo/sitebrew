@@ -30,7 +30,7 @@ test('D236: mockAuth.resetPassword — 가상 토큰만 한 번 통하고, 빈 �
 
 test('D236: 계약 — AuthPort.resetPassword 는 선택 메서드(판 그대로 2)이고, requestPasswordReset 은 이미 있었다', () => {
   const ports = readFileSync(join(root, 'registry', 'factory', 'contract', 'ports.ts'), 'utf8')
-  assert.match(ports, /requestPasswordReset\(input: \{ email: string \}\)/)
+  assert.match(ports, /requestPasswordReset\(input: \{ email: string \}( & IdempotencyInput)?\)/)
   assert.match(ports, /resetPassword\?\(input: \{ token: string; newPassword: string \}\): Promise<ActionResult<Record<string, never>>>/)
   const events = readFileSync(join(root, 'registry', 'factory', 'contract', 'events.ts'), 'utf8')
   assert.match(events, /CONTRACT_VERSION\s*=\s*2\b/)

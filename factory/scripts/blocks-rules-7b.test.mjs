@@ -535,10 +535,10 @@ test('delete-account 입력 확인(P3-7 AXC, DESIGN §7-B): copy.decision.typed 
 })
 test('delete-account·확인 입력 원천: [계정 지우기] 는 confirmed: true 와 입력한 주소(confirmEmail)를 싣고, 틀리면 포트를 부르기 전에 그 칸 오류, [내 데이터 받기] 는 confirmed: true', () => {
   const src = mods.get('account/delete-account').source
-  assert.match(src, /deleteAccount\(\{ confirmed: true, \.\.\.\(entered !== undefined \? \{ confirmEmail: entered \} : \{\}\) \}\)/)
+  assert.match(src, /form\.run\(\(key\) => deleteAccount\(\{ confirmed: true, \.\.\.\(entered !== undefined \? \{ confirmEmail: entered \} : \{\}\), \.\.\.key \}\)/, '멱등 키(WF-7)도 같은 호출에 싣는다')
   assert.match(src, /exportMyData\(\{ confirmed: true \}\)/)
   assert.match(src, /form\.showErrors\(\{ confirmEmail: \[typed\.mismatch\] \}\)/)
-  assert.ok(src.indexOf('form.showErrors') < src.indexOf('form.run(() => deleteAccount({ confirmed'), '틀린 주소는 포트를 부르기 전에 막는다')
+  assert.ok(src.indexOf('form.showErrors') < src.indexOf('form.run((key) => deleteAccount({ confirmed'), '틀린 주소는 포트를 부르기 전에 막는다')
   assert.match(src, /entered\.toLowerCase\(\) !== me\.email\.toLowerCase\(\)/, '대소문자는 무시한다(서버와 같은 규칙)')
 })
 

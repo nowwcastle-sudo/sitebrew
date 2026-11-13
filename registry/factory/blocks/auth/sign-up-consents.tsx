@@ -168,8 +168,8 @@ export function AuthSignUpConsents({ copy, methods, signUp, track, onRedirect, i
     const consents: ConsentInput = { terms: true, privacy: true, ...(copy.ageOver14 ? { ageOver14: true as const } : {}), ...(offered.length ? { marketing: Object.fromEntries(offered.map((ch) => [ch, marketing[ch]])) } : {}) }
     // 포트가 ① 칸(이메일·비밀번호) 오류를 주면 ①로 돌아가 그 칸에 오류를 보이고 포커스한다(적은 값은 그대로)
     const failed: { back?: FieldErrors; exists?: boolean } = {}
-    const r = await form.run(async () => {
-      const res = await signUp(method === "password" && account ? { method, email: account.email, password: account.password, consents } : { method, consents })
+    const r = await form.run(async (key) => {
+      const res = await signUp(method === "password" && account ? { method, email: account.email, password: account.password, consents, ...key } : { method, consents, ...key })
       if (!res.ok && (res.fieldErrors?.email?.length || res.fieldErrors?.password?.length)) failed.back = res.fieldErrors
       if (!res.ok && res.code && ACCOUNT_EXISTS_CODES.includes(res.code.toLowerCase())) failed.exists = true
       return res

@@ -252,14 +252,14 @@ test('ActionFailureCode: LFAX 값(confirmation_required·sign_in_required·provi
   const ports = readFileSync(join(DIR, 'ports.ts'), 'utf8')
   assert.match(ports, /export type HumanConfirmation = \{ confirmed\?: true \}/)
   for (const sig of [
-    /changePlan\(input: \{ planId: string; when: "now" \| "period_end" \} & HumanConfirmation\)/,
-    /cancel\(input: \{[^}]*when: "period_end" \| "now" \} & HumanConfirmation\)/,
-    /applyRetentionOffer\(input: \{ offerId: string \} & HumanConfirmation\)/,
-    /acceptPriceChange\(input\?: HumanConfirmation\)/,
+    /changePlan\(input: \{ planId: string; when: "now" \| "period_end" \} & HumanConfirmation( & IdempotencyInput)?\)/,
+    /cancel\(input: \{[^}]*when: "period_end" \| "now" \} & HumanConfirmation( & IdempotencyInput)?\)/,
+    /applyRetentionOffer\(input: \{ offerId: string \} & HumanConfirmation( & IdempotencyInput)?\)/,
+    /acceptPriceChange\(input\?: HumanConfirmation( & IdempotencyInput)?\)/,
     /changeEmail\?\(input: \{[^}]*\} & HumanConfirmation\)/,
-    /deleteAccount\?\(input\?: HumanConfirmation & \{ confirmEmail\?: string \}\)/,
+    /deleteAccount\?\(input\?: HumanConfirmation( & IdempotencyInput)? & \{ confirmEmail\?: string \}\)/,
     /exportMyData\?\(input\?: HumanConfirmation\)/,
-    /setConsents\(input: NonNullable<ConsentInput\["marketing"\]> & HumanConfirmation\)/,
+    /setConsents\(input: NonNullable<ConsentInput\["marketing"\]> & HumanConfirmation( & IdempotencyInput)?\)/,
   ]) assert.match(ports, sig)
 })
 

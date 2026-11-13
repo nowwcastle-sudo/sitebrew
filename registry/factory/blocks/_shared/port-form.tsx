@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import type { ActionResult } from "@/registry/factory/contract/block-contract"
+import type { IdempotencyInput } from "@/registry/factory/contract/ports"
 import { humanApprovalProps, type HumanApprovalAction } from "@/registry/factory/contract/human-actions"
 import { AlertCircle, Clock, Eye, EyeOff, LoaderCircle } from "@/registry/factory/icons"
 import { cn } from "@/registry/factory/lib/utils"
@@ -15,7 +16,7 @@ import { Input } from "@/registry/factory/ui/input"
 import { fillText } from "../_shared/billing-format"
 import { ApprovalHint } from "../_shared/human-approval"
 import { applyInputFormat, type InputFormat } from "../_shared/input-format"
-import { ApprovalLines, SUBMIT_TIMEOUT_MS, SubmitExtras, TIMED_OUT, cooldownSeconds, failureKind, noticeAttrs, noticeTitle, safeManageUrl, settleWithin, useCooldown, type Notice, type SubmitNotices } from "../_shared/submit-guard"
+import { ApprovalLines, IDEMPOTENCY_SPENT_EVENT, SUBMIT_TIMEOUT_MS, SubmitExtras, TIMED_OUT, cooldownSeconds, createKeyLease, failureKind, noticeAttrs, noticeTitle, readIdempotencyKey, safeManageUrl, useCooldown, type Notice, type SubmitNotices } from "../_shared/submit-guard"
 
 // 포트 폼(P3-2 레인 D1 공유 조각 block-shared-port-form — auth·account 폼이 같이 쓴다). 마케팅 규칙 O2(factory-rules.md §22-3):
 //   · 라벨은 늘 보이고 필수·선택 표시를 둘 다 한다(label 옆 marker).
@@ -25,6 +26,8 @@ import { ApprovalLines, SUBMIT_TIMEOUT_MS, SubmitExtras, TIMED_OUT, cooldownSeco
 //   · 보내는 중: 폼 aria-busy, 보내기 버튼은 aria-disabled(포커스가 버튼에 남는다 — disabled 는 포커스를 body 로 떨어뜨린다).
 //   · 제출 보호(Task 10d, submit-guard): 15초 안에 답이 없으면 「응답이 늦어요」 + [다시 시도](입력 그대로), 실패 code rate_limited 는 보내기 버튼이 남은 초를
 //     보이며 잠기고, provider_unsupported 는 manageUrl 링크를 보인다. notices(블록 copy)가 있을 때만 켜진다.
+//   · 멱등 키(WF-7): run 의 action 은 키 입력을 받는다 — `form.run((key) => port({ …, ...key }))`. 키는 폼을 여는 조립하는 쪽이 숨은 입력 `idempotencyKey` 로 싣는다(블록은 만들지 않는다).
+//     시간 초과 뒤 [다시 시도]는 같은 키로 간다(createKeyLease). 숨은 입력이 없으면 키 칸이 비어 예전과 같다. 성공하면 조립하는 쪽이 새 키를 주도록 알린다.
 
 // 포인터를 누르고 있는 동안의 칸 검사는 뗀 뒤로 미룬다(REL11 — launch-factory LFADB 발견: 진짜 마우스로 보내기 단추를 누르면 제출도 포커스 이동도 안 일어났다).
 // 원인: 단추를 누르는 순간(mousedown) 칸이 포커스를 잃어 칸 검사(blur)가 오류 문구를 그리고, 문구가 단추를 아래로 밀어 버려 손을 뗄 때(mouseup)
@@ -100,6 +103,13 @@ export function usePortForm({
   const [summaryOn, setSummaryOn] = React.useState(false)
   const [rawError, setFormError] = React.useState<Notice | null>(null)
   const cooldown = useCooldown()
+  // 멱등 키 빌려 주기(폼의 숨은 입력을 읽는다 — 보낼 때만 읽으니 서버 렌더와 무관). 같은 폼의 시간 초과 재시도는 같은 키(submit-guard createKeyLease)
+  const [keys] = React.useState(() =>
+    createKeyLease(
+      () => readIdempotencyKey(document.getElementById(formId)),
+      () => document.getElementById(formId)?.dispatchEvent(new CustomEvent(IDEMPOTENCY_SPENT_EVENT, { bubbles: true })),
+    ),
+  )
   usePressTracking()
   // 요청 제한 알림은 남은 초가 끝나면 스스로 사라진다(그때부터 다시 보낼 수 있다)
   const formError = rawError && !(rawError.kind === "rate_limited" && cooldown.seconds === 0) ? rawError : null
@@ -174,14 +184,14 @@ export function usePortForm({
    * 포트 쓰기 하나를 부른다. 성공이면 data, 실패면 null(오류를 그리고 포커스를 옮긴다). 보내는 중·요청 제한 대기 중에는 다시 부르지 않는다.
    * opts.retry: 시간 초과 뒤 [다시 시도]가 부를 것(폼 제출이 아닌 버튼·소셜 로그인처럼 폼을 다시 보내서는 안 되는 자리).
    */
-  const run = async <T,>(action: () => Promise<ActionResult<T>>, opts: { retry?: () => void } = {}): Promise<T | null> => {
+  const run = async <T,>(action: (key: IdempotencyInput) => Promise<ActionResult<T>>, opts: { retry?: () => void } = {}): Promise<T | null> => {
     if (pending || cooldown.seconds > 0) return null
     submitStamp.current++
     setPending(true)
     setSummaryOn(false)
     setFormError(null)
     retryRef.current = opts.retry ?? null
-    const r = notices ? await settleWithin(action, timeoutMs) : await action()
+    const r = await keys.settle(action, notices ? timeoutMs : null)
     submitStamp.current++
     setPending(false)
     if (r === TIMED_OUT) {

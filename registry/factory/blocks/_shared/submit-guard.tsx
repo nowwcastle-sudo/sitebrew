@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import type { ActionResult } from "@/registry/factory/contract/block-contract"
+import type { IdempotencyInput } from "@/registry/factory/contract/ports"
 import { cn } from "@/registry/factory/lib/utils"
 import { Button } from "@/registry/factory/ui/button"
 
@@ -10,7 +11,8 @@ import { fillText } from "../_shared/billing-format"
 
 // 제출 보호(P3-2 Task 10d 공유 조각 block-shared-submit-guard — port-form·form-flow 가 같이 쓴다). 대장 A101·D104·D136·D160, 계약 판 2 의 선택 칸:
 //   · 시간 초과: 15초 안에 답이 없으면 스피너를 멈추고 「응답이 늦어요」 + [다시 시도]. 입력은 그대로(비제어 폼). 늦게 온 답은 버린다 —
-//     서버가 이미 처리했을 수 있어 다시 시도는 같은 폼·같은 멱등 키로 간다(멱등 키는 조립하는 쪽이 폼을 열 때 만든다 — 블록은 키를 모른다).
+//     서버가 이미 처리했을 수 있어 다시 시도는 같은 폼·같은 멱등 키로 간다(멱등 키는 조립하는 쪽이 폼을 열 때 만든다 — 블록은 키를 만들지 않고, 폼의 숨은 입력을 읽어 포트 입력의
+//     `idempotencyKey` 에 싣는다. 시간 초과가 난 시도의 키는 createKeyLease 가 붙잡아 다음 시도에도 같은 키를 쓴다. WF-7).
 //   · 요청 제한: 실패 code "rate_limited" + retryAfter(초) → 보내기 버튼이 남은 초를 보이며 잠기고, 폼 옆 role="timer" 줄이 같은 초를 센다.
 //     role="timer" 는 암묵적 aria-live="off" 라 초마다 읽지 않는다(role="status"·polite 는 시간 표시에 맞지 않는다 — MDN). 입력은 그대로.
 //   · 지원 안 함: code "provider_unsupported"·"scenario_unsupported" + manageUrl(https) → 알림에 「직접 관리하는 곳」 링크. 죽은 버튼 대신 갈 길을 준다.
@@ -68,6 +70,43 @@ export function settleWithin<T>(action: () => Promise<ActionResult<T>>, ms: numb
       finish({ ok: false, retryable: true })
     }
   })
+}
+
+/** 폼의 숨은 입력 이름 — 조립하는 쪽(site-template form-keys)이 폼을 열 때 한 번 만든다(블록은 만들지 않는다) */
+export const IDEMPOTENCY_FIELD = "idempotencyKey"
+/** 성공한 요청의 키를 쓴 것으로 알리는 DOM 이벤트(폼에서 위로 올라간다). 조립하는 쪽이 듣고 숨은 입력에 새 키를 준다 — 같은 폼의 다음 요청이 앞 요청의 결과를 되받지 않게 한다 */
+export const IDEMPOTENCY_SPENT_EVENT = "wf:idempotency-spent"
+
+/** 폼 안 숨은 입력의 키(없거나 비었으면 undefined). DOM 클래스에 기대지 않고 읽는다 — 키 없는 조립은 예전과 같다 */
+export function readIdempotencyKey(form: { querySelector(selector: string): unknown } | null | undefined): string | undefined {
+  const el = form?.querySelector?.(`input[name="${IDEMPOTENCY_FIELD}"]`) as { value?: unknown } | null | undefined
+  const v = typeof el?.value === "string" ? el.value.trim() : ""
+  return v || undefined
+}
+
+/**
+ * 포트 쓰기 하나에 쓸 멱등 키를 빌려 준다(WF-7). read 는 지금 폼의 키(숨은 입력)를 읽는다 — 블록은 키를 만들지 않는다.
+ *  · 같은 요청의 다시 시도는 같은 키다: 시간 초과(TIMED_OUT)가 난 시도의 키는 붙잡아 두고 다음 시도가 그대로 쓴다(서버가 늦게라도 처리했을 수 있다). 다른 결과가 나면 놓는다.
+ *  · 성공하면 spend(key) — 조립하는 쪽이 새 키를 주게 알린다(성공한 폼이 다른 요청을 또 보낼 때 앞 결과를 되받지 않도록). 키를 실제로 읽어 쓴 요청만 알린다(입력 검사만 한 요청은 아니다).
+ * action 은 키 입력(`{ idempotencyKey? }`)을 받아 포트 입력에 펼친다: `settle((key) => port({ …, ...key }))`. ms 가 null 이면 시간 제한을 두지 않는다.
+ */
+export function createKeyLease(read: () => string | undefined, spend?: (key: string) => void) {
+  let pinned: string | undefined
+  return {
+    async settle<T>(action: (key: IdempotencyInput) => Promise<ActionResult<T>>, ms: number | null): Promise<Settled<T>> {
+      const key = pinned ?? read()
+      let used = false
+      const input: IdempotencyInput = {}
+      if (key) Object.defineProperty(input, IDEMPOTENCY_FIELD, { enumerable: true, get: () => ((used = true), key) })
+      const r = ms === null ? await action(input) : await settleWithin(() => action(input), ms)
+      if (r === TIMED_OUT) pinned = key
+      else {
+        pinned = undefined
+        if (key && used && r.ok) spend?.(key)
+      }
+      return r
+    },
+  }
 }
 
 type Failure = Extract<ActionResult<unknown>, { ok: false }>
