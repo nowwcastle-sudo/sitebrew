@@ -10,11 +10,13 @@
 //  6. `--fetch` 가 있으면 `next start` 를 띄워 그 경로들을 받아 상태 200 과 content-type 을 본다(서버는 끝에서 프로세스 나무째 끈다).
 // 종료: 0 = 모든 단계 통과, 1 = 단계 실패 또는 도구 실패(`도구 실패:`, --out 파일을 남기지 않는다), 2 = 인자 오류. 표: docs/agents/agent-guide.md §3.
 // 무거운 관문이다 — `next build` 하나와 서버 하나(진행 기록 잠금 heavy). 설치 폴더는 저장소 밖에 둔다.
-import { spawn, spawnSync } from 'node:child_process'
+import { spawnSync } from 'node:child_process'
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { childEnv } from '../lib/secret-env.mjs'
+import { launchNext } from '../stamp/run-proc.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const DEP_RE = /^nowwcastle-sudo\/sitebrew\/([a-z0-9-]+)#v\d+\.\d+\.\d+$/
@@ -54,22 +56,26 @@ const fail = (msg) => { console.error(`도구 실패: ${msg}`); process.exit(1) 
 const shadcn = join(ROOT, 'node_modules', 'shadcn', 'dist', 'index.js')
 
 function run(label, cmd, args, cwd, log) {
-  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', shell: cmd === 'npm', maxBuffer: 64 * 1024 * 1024 })
+  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', shell: cmd === 'npm', env: childEnv(), maxBuffer: 64 * 1024 * 1024 }) // 설치·빌드는 신뢰하지 않는 코드 — 키 이름을 뺀 환경(보안 수정 A)
   log.push({ step: label, exit: r.status, tail: `${r.stdout ?? ''}${r.stderr ?? ''}`.trim().split('\n').slice(-6).join('\n') })
   console.log(`${r.status === 0 ? '통과' : '실패'} ${label} (종료 ${r.status})`)
   return r.status === 0
 }
 
-async function probe(consumer, port, list, log) {
-  const server = spawn(process.execPath, [join(ROOT, 'node_modules', 'next', 'dist', 'bin', 'next'), 'start', '-p', String(port)], { cwd: consumer, stdio: 'ignore' })
-  const kill = () => spawnSync('taskkill', ['/PID', String(server.pid), '/T', '/F'], { stdio: 'ignore' })
+/**
+ * `next start` 를 띄워 경로를 받아 본다. 서버는 127.0.0.1 에만 열고(없으면 next 기본값 0.0.0.0 — 같은 네트워크에 생성 사이트가 노출된다),
+ * 끝나면 run-proc 의 launchNext 가 프로세스 나무째(POSIX 는 묶음째) 끄고 끝나기를 기다린다 — 예전에는 Windows 전용 taskkill 뿐이라 POSIX 에서 서버가 남았다(보안 수정 D).
+ * nextBin·waitSeconds 는 시험이 가짜 서버로 바꿔 끼운다.
+ */
+export async function probe(consumer, port, list, log, { nextBin = join(ROOT, 'node_modules', 'next', 'dist', 'bin', 'next'), waitSeconds = 60, env = childEnv() } = {}) {
+  const server = launchNext(nextBin, { cwd: consumer, env, port })
   try {
     let up = false
-    for (let i = 0; i < 60 && !up; i++) { await new Promise((r) => setTimeout(r, 1000)); up = await fetch(`http://localhost:${port}/`).then(() => true, () => false) }
-    if (!up) { log.push({ step: 'next start', exit: 1, tail: '60초 안에 뜨지 않았다' }); return false }
+    for (let i = 0; i < waitSeconds && !up && !server.hasExited(); i++) { await new Promise((r) => setTimeout(r, 1000)); up = await fetch(`http://127.0.0.1:${port}/`).then(() => true, () => false) }
+    if (!up) { log.push({ step: 'next start', exit: 1, tail: server.hasExited() ? '서버가 켜지다 종료됐다' : `${waitSeconds}초 안에 뜨지 않았다` }); return false }
     let ok = true
     for (const f of list) {
-      const res = await fetch(`http://localhost:${port}${f.path}`)
+      const res = await fetch(`http://127.0.0.1:${port}${f.path}`)
       const type = res.headers.get('content-type') ?? ''
       const bytes = (await res.arrayBuffer()).byteLength
       const pass = res.status === 200 && type.startsWith(f.type) && bytes > 0
@@ -78,7 +84,7 @@ async function probe(consumer, port, list, log) {
       console.log(`${pass ? '통과' : '실패'} GET ${f.path} — ${res.status} ${type} ${bytes}B`)
     }
     return ok
-  } finally { kill() }
+  } finally { await server.stop() }
 }
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]

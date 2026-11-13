@@ -6,6 +6,7 @@
 import { createReadStream, statSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { extname, join, normalize, sep } from 'node:path'
+import { assertNoLinkInPath, realInside } from '../lib/safe-path.mjs'
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
@@ -18,7 +19,10 @@ const FALLBACK_TYPE = 'application/octet-stream'
 
 const isFile = (p) => { try { return statSync(p).isFile() } catch { return false } }
 
-/** URL 경로 → root 안의 실제 파일(없으면 null). 폴더 밖이면 'forbidden'. */
+/** 찾은 파일의 실제 위치(링크·junction 을 따라간 뒤)가 루트의 실제 위치 안인가. 글자 검사는 루트 안의 링크가 밖을 가리키는 것을 못 본다. */
+const contained = (root, file) => realInside(root, file)
+
+/** URL 경로 → root 안의 실제 파일(없으면 null). 폴더 밖이면 'forbidden' — 글자로 밖으로 나가는 경로도, 루트 안 링크가 밖 파일을 가리키는 경우도. */
 export function resolveFile(root, urlPath) {
   let decoded
   try { decoded = decodeURIComponent(urlPath) } catch { return 'forbidden' }
@@ -26,7 +30,9 @@ export function resolveFile(root, urlPath) {
   const target = normalize(join(root, decoded))
   if (target !== root && !target.startsWith(root + sep)) return 'forbidden'
   const bare = target.replace(/[\\/]+$/, '')
-  return [target, `${bare}.html`, join(bare, 'index.html')].find(isFile) ?? null
+  const found = [target, `${bare}.html`, join(bare, 'index.html')].find(isFile)
+  if (!found) return null
+  return contained(root, found) ? found : 'forbidden'
 }
 
 function send(res, status, file, head) {
@@ -38,6 +44,8 @@ function send(res, status, file, head) {
 /** root 폴더를 서빙하는 서버를 켠다. */
 export function startStaticServer(root, { host = '127.0.0.1', port = 0 } = {}) {
   const base = normalize(root).replace(/[\\/]+$/, '')
+  // 루트 자체가 링크·junction 이면 열지 않는다(루트를 바꿔치기해 다른 폴더를 터널로 공개하는 길).
+  try { assertNoLinkInPath(base) } catch (e) { return Promise.reject(Object.assign(new Error(`static root is not a plain folder: ${e.message}`), { reason: 'unsafeExportDir' })) }
   const server = createServer((req, res) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') {
       res.writeHead(405, { allow: 'GET, HEAD' })
@@ -47,7 +55,7 @@ export function startStaticServer(root, { host = '127.0.0.1', port = 0 } = {}) {
     const found = resolveFile(base, new URL(req.url, 'http://x').pathname)
     if (found && found !== 'forbidden') return send(res, 200, found, head)
     const notFound = join(base, '404.html')
-    if (found !== 'forbidden' && isFile(notFound)) return send(res, 404, notFound, head)
+    if (found !== 'forbidden' && isFile(notFound) && contained(base, notFound)) return send(res, 404, notFound, head)
     res.writeHead(found === 'forbidden' ? 403 : 404, { 'content-type': 'text/plain; charset=utf-8' })
     res.end(head ? undefined : 'Not found')
   })

@@ -1461,7 +1461,7 @@
       "title": "Pretendard",
       "description": "web-factory 폰트 키트: Pretendard Variable 동적 서브셋(npm pretendard, OFL-1.1) — Google Fonts 밖이라 css @import 로 싣는다(docs/qa/pretendard-install.md)",
       "dependencies": [
-        "pretendard@^1.3.9"
+        "pretendard@1.3.9"
       ],
       "css": {
         "@import \"pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css\"": {}
@@ -1489,7 +1489,7 @@
       "title": "Pretendard GOV",
       "description": "web-factory 폰트 키트: Pretendard GOV 동적 서브셋(npm pretendard-gov, OFL-1.1) — Google Fonts 밖이라 css @import 로 싣는다(docs/qa/pretendard-install.md). Pretendard 와 메트릭 호환 변형(meta.aliasOf)",
       "dependencies": [
-        "pretendard-gov@^1.3.9"
+        "pretendard-gov@1.3.9"
       ],
       "css": {
         "@import \"pretendard-gov/dist/web/variable/pretendardvariable-gov-dynamic-subset.css\"": {}

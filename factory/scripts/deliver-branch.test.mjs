@@ -259,7 +259,7 @@ test('local {inquiry} + 문의 폼 블록: route.ts 가 더해지고 lib/contact
   const src = join(local.runDir, 'a', 'site')
   assert.equal(readFileSync(join(r.dir, INQUIRY_TARGETS.route), 'utf8'), readFileSync(join(INQUIRY_ASSETS, 'route.ts'), 'utf8'))
   assert.equal(readFileSync(join(r.dir, INQUIRY_TARGETS.contact), 'utf8'), readFileSync(join(INQUIRY_ASSETS, 'contact.mock.ts'), 'utf8'))
-  const inquiry = ['app/api/inquiry/route.ts', 'lib/inquiry-copy.json']
+  const inquiry = ['app/api/inquiry/route.ts', 'app/api/inquiry/read-capped.ts', 'lib/inquiry-copy.json']
   assert.deepEqual(files(r.dir).filter((p) => !added(p) && !inquiry.includes(p)), kept(src))
   // 접수 코드가 읽는 문장은 deliver-copy.json 의 inquiryRuntime 사본이다
   assert.deepEqual(JSON.parse(readFileSync(join(r.dir, INQUIRY_TARGETS.copy), 'utf8')), DELIVER_COPY.inquiryRuntime)
@@ -276,7 +276,7 @@ test('lead 블록 시안도 같은 결과: 신청 블록만 있어도 접수가 
   const lead = { sections: { s1: { block: 'block-lead-capture-inline-newsletter' } } }
   const runtimeCopy = DELIVER_COPY.inquiryRuntime
   const r = await deliverIntro({ dest, features: { version: 1, table: table.hash, outcomes: ['inquiry'] }, site: lead, runtimeCopy })
-  assert.deepEqual(r, { inquiry: true, added: ['app/api/inquiry/route.ts', 'lib/contact.ts', 'lib/inquiry-copy.json'] })
+  assert.deepEqual(r, { inquiry: true, added: ['app/api/inquiry/route.ts', 'app/api/inquiry/read-capped.ts', 'lib/contact.ts', 'lib/inquiry-copy.json'] })
   assert.match(readFileSync(join(dest, INQUIRY_TARGETS.contact), 'utf8'), /export function makeLeadPorts/)
   const none = await deliverIntro({ dest: out('lead-no'), features: { version: 1, table: table.hash, outcomes: [] }, site: lead, runtimeCopy })
   assert.deepEqual(none, { inquiry: false, added: [] }, '문의를 안 골랐으면 붙이지 않는다')
