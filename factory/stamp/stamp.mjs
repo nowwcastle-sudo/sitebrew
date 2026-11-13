@@ -23,6 +23,7 @@ import { writePreviewUrl } from './deploy-preview.mjs'
 import { STEP_NAMES, inputHash, openRun } from './run-dir.mjs'
 import { pagesCodeKey } from './pages-key.mjs'
 import { failMessage } from './fail-message.mjs'
+import { isNetworkOrDevicePath } from '../lib/safe-path.mjs'
 import { isPendingReview } from '../legal/drafts.mjs'
 import { askIn, grammar } from '../vocab/grammar.mjs'
 import { mapLimit, qaParallelLimit } from './parallel.mjs'
@@ -248,9 +249,11 @@ export async function runStamp(opts, deps) {
   const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex')
   const darkOf = (file) => { const ext = extname(file); const dark = `${file.slice(0, file.length - ext.length)}.dark${ext}`; return ext && existsSync(dark) ? dark : null }
   const logoPath = brief.brand?.logo
-  const darkLogo = logoPath && darkOf(logoPath)
+  // 네트워크(UNC)·장치 경로는 파일 시스템을 건드리기 전에 거른다(보안 수정 C, SB-9) — 경로는 남겨 06 의 headerLogoOf 가 거절 사유를 적게 한다.
+  const netLogo = !!logoPath && isNetworkOrDevicePath(logoPath)
+  const darkLogo = logoPath && !netLogo && darkOf(logoPath)
   // 지정한 파일이 없을 때도 경로를 남겨 06 이 누락 사유를 적게 한다.
-  const logo = logoPath ? { path: logoPath, sha256: existsSync(logoPath) ? sha(logoPath) : null, ...(darkLogo ? { darkSha256: sha(darkLogo) } : {}) } : null
+  const logo = logoPath ? { path: logoPath, sha256: !netLogo && existsSync(logoPath) ? sha(logoPath) : null, ...(darkLogo ? { darkSha256: sha(darkLogo) } : {}) } : null
   const qaSample = leftSamples.length ? { sample: leftSamples } : {} // 남은 예시가 없는 07 은 옛 입력·옛 호출 그대로
   const samplePreview = !!(opts.pick && opts.deployPreview && leftSamples.length)
 

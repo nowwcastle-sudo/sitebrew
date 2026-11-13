@@ -81,6 +81,10 @@
       "ko": "이 사이트는 정적 파일로 내보내는 형태라서 서버로 켤 수 없었어요. 빌드한 out 폴더를 그대로 열어야 해요.",
       "en": "This site is exported as static files, so it could not be started as a server. The built out folder must be served as is."
     },
+    "unsafeExportDir": {
+      "ko": "사이트 설정이 사이트 폴더 밖이나 링크로 이어지는 내보내기 폴더를 가리켜서 열지 않았어요.",
+      "en": "The site settings point the export folder outside the site folder or through a link, so it was not opened."
+    },
     "noPackage": {
       "ko": "이 폴더에는 사이트 파일(package.json)이 없어요.",
       "en": "This folder has no site files (package.json)."

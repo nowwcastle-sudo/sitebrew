@@ -7,7 +7,7 @@ import { createRequire } from 'node:module'
 import { fontProblems, variableOverlaps, fontRegistry, loadSources, koreanListProblems, loadKoreanList, familyOf, canonicalItem, FONTS_DIR, FACES_DIR, faceFiles, faces } from './gen-fonts.mjs'
 import { installPath } from './install-closure.mjs'
 import { fontStacks, isKorean, parseRecipe } from './recipe.mjs'
-import { fontVar, FONT_VAR_END } from './lib/registry-lib.mjs'
+import { fontVar, FONT_VAR_END, lockedVersions } from './lib/registry-lib.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const google = (over = {}, fontOver = {}, metaOver = {}) => ({
@@ -74,12 +74,12 @@ test('a non-Google item (Pretendard path) must still carry a licence and somethi
   assert.ok(rules(fontProblems([{ ...ok, meta: { ...ok.meta, licenseUrl: undefined } }])).includes('license'))
   // 레시피가 var(--font-x-wf, …)로 읽으니 css 항목도 그 변수를 준다.
   assert.ok(rules(fontProblems([{ ...ok, cssVars: { theme: { 'font-x': '"X"' } } }])).includes('variable'))
-  // npm 의존은 원천에 이름만, 고정은 생성기가 package.json 범위로(M7) — 손으로 적은 범위는 문제다.
+  // npm 의존은 원천에 이름만, 고정은 생성기가 package-lock.json 의 정확한 판으로(M7·SB-15) — 손으로 적은 범위는 문제다.
   assert.ok(rules(fontProblems([{ ...ok, dependencies: ['x@^1'] }])).includes('dependencies'))
-  assert.deepEqual(fontRegistry([ok], { x: '^1.2.3' })[0].dependencies, ['x@^1.2.3'])
+  assert.deepEqual(fontRegistry([ok], { x: '1.2.3' })[0].dependencies, ['x@1.2.3'])
   const pretendard = fontRegistry(loadSources()).find((i) => i.name === 'font-pretendard')
-  const pkg = JSON.parse(readFileSync(join(FONTS_DIR, '..', '..', '..', 'package.json'), 'utf8'))
-  assert.deepEqual(pretendard.dependencies, [`pretendard@${pkg.dependencies.pretendard}`])
+  const locked = lockedVersions(join(FONTS_DIR, '..', '..', '..'))
+  assert.deepEqual(pretendard.dependencies, [`pretendard@${locked.pretendard}`])
 })
 
 // Task 10c: Google 밖 서체를 1차 CDN 에서 싣는 css 항목 — @import url(스타일시트) 또는 fontFace(파일만 있을 때 — Task 15 부터 registry:file CSS).

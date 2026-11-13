@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { parseImports, pinDependency, parseRef, parseCss, ICON_LIBRARIES } from './lib/registry-lib.mjs'
+import { parseImports, pinDependency, parseRef, parseCss, ICON_LIBRARIES, lockedVersions } from './lib/registry-lib.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const MOTION_DIR = join(ROOT, 'registry', 'factory', 'motion')
@@ -170,8 +170,7 @@ export function iconItems({ dir = ICONS_DIR, versions } = {}) {
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]
 if (isMain) {
   const ref = parseRef(process.argv.slice(2))
-  const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
-  const versions = { ...pkg.devDependencies, ...pkg.dependencies }
+  const versions = lockedVersions(ROOT)
   const phosphor = readFileSync(join(ICONS_DIR, 'phosphor.ts'), 'utf8')
   for (const w of PHOSPHOR_WEIGHTS) writeFileSync(join(ICONS_DIR, `phosphor-${w}.ts`), phosphorVariant(phosphor, w))
   const write = (dir, items) => { if (!existsSync(dir)) throw new Error(`${dir} 가 없다`); writeFileSync(join(dir, 'registry.json'), JSON.stringify({ $schema: SCHEMA, items }, null, 2) + '\n') }

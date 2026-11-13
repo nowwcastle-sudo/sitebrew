@@ -18,7 +18,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, rmSync, mkdirSync
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
-import { fontVar, pinDependency } from './lib/registry-lib.mjs'
+import { fontVar, pinDependency, lockedVersions } from './lib/registry-lib.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 export const FONTS_DIR = join(ROOT, 'registry', 'factory', 'fonts')
@@ -223,8 +223,8 @@ export function koreanListProblems(items, list) {
 }
 
 // 원천 → 레지스트리 항목(이름순, file 키 제거). 원천이 곧 항목 형식이라 모양은 바꾸지 않는다.
-// npm 의존(registry:item 의 dependencies)은 원천에 이름만 적고 여기서 package.json 범위로 고정한다 — 다른 층과 같은 pinDependency(최종 리뷰 M7).
-const pkgVersions = () => { const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')); return { ...pkg.devDependencies, ...pkg.dependencies } }
+// npm 의존(registry:item 의 dependencies)은 원천에 이름만 적고 여기서 package-lock.json 의 정확한 판으로 고정한다 — 다른 층과 같은 pinDependency(최종 리뷰 M7) — 범위가 아니라 lock 의 정확한 판(lockedVersions, SB-15).
+const pkgVersions = () => lockedVersions(ROOT)
 // fontFace 항목(Task 15)은 fontFace 를 빼고 files(registry:file) + css @import 로 바꾼다 — 면은 faceCss 가 쓴 파일에 있다.
 const shipFaces = ({ fontFace, ...i }) => (fontFace === undefined ? i : {
   ...i,

@@ -16,10 +16,12 @@ import { fileURLToPath } from 'node:url'
 import { brotliDecompressSync } from 'node:zlib'
 import ts from 'typescript'
 import { resolveRefs } from './site-bind.mjs'
+import { safeFetch, HOSTS, LIMITS } from '../lib/safe-fetch.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
 export const GOOGLE_CSS = 'https://fonts.googleapis.com/css2'
+const isOk = (status) => status >= 200 && status < 300
 /** 모든 쪽이 쓰는 기본 글자: 인쇄 가능한 ASCII + 자주 쓰는 기호·문장부호. */
 export const BASE_GLYPHS = Array.from({ length: 95 }, (_, i) => String.fromCharCode(32 + i)).join('') + '·•—–…“”‘’「」『』〈〉→←↑↓✓✕×₩©®™°±≤≥'
 /** 요청 하나의 글자 수 상한 — 실측: 구글 css2 는 text 가 780자쯤을 넘으면(URL 길이가 아니라 글자 수) 조용히 무시하고 조각난 전체 CSS 를 준다. */
@@ -223,17 +225,18 @@ export async function subsetSiteFonts(siteDir, { fetch: fetchImpl = globalThis.f
       const files = []
       let bytes = 0
       for (let gi = 0; gi < groups.length; gi++) {
-        const res = await fetchImpl(css2Url(l.family, weights, groups[gi].chars), { headers: { 'user-agent': UA }, signal: AbortSignal.timeout(30_000) })
-        if (!res.ok) throw new Error(`css2 ${res.status}`)
-        const faces = parseFontFaces(await res.text())
+        // 받는 길은 모두 safeFetch(보안 E, WF-9): css2 는 구글 CSS 호스트만, css2 응답이 가리키는 woff2 주소(= 공급자가 준 2차 주소)는 gstatic 만 — https·리디렉션 재검사·크기 한도.
+        const res = await safeFetch(css2Url(l.family, weights, groups[gi].chars), { allowHosts: HOSTS.googleCss, maxBytes: LIMITS.json, timeoutMs: 30_000, headers: { 'user-agent': UA }, fetch: fetchImpl })
+        if (!isOk(res.status)) throw new Error(`css2 ${res.status}`)
+        const faces = parseFontFaces(res.buffer.toString('utf8'))
         if (!faces.length) throw new Error('woff2 면이 없다')
         if (faces.length > weights.length) throw new Error(`text 가 무시됐다(면 ${faces.length}개 > 굵기 ${weights.length}개)`)
         for (const f of faces) {
-          const r = await fetchImpl(f.url, { headers: { 'user-agent': UA }, signal: AbortSignal.timeout(60_000) })
+          const r = await safeFetch(f.url, { allowHosts: HOSTS.googleFont, maxBytes: LIMITS.font, timeoutMs: 60_000, headers: { 'user-agent': UA }, fetch: fetchImpl })
           // 그 서체에 이 묶음의 글자가 하나도 없으면(라틴 전용 서체 × 한글 묶음) 구글이 빈 파일 주소를 주고 받기는 400 이다 — 공통 묶음(g0)이 아니면 건너뛴다.
-          if (!r.ok && gi > 0 && (r.status === 400 || r.status === 404)) continue
-          if (!r.ok) throw new Error(`woff2 ${r.status}`)
-          const buf = Buffer.from(await r.arrayBuffer())
+          if (!isOk(r.status) && gi > 0 && (r.status === 400 || r.status === 404)) continue
+          if (!isOk(r.status)) throw new Error(`woff2 ${r.status}`)
+          const buf = r.buffer
           if (buf.length < 100 || buf.subarray(0, 4).toString('latin1') !== 'wOF2') throw new Error('woff2 가 아니다')
           files.push({ file: `${slugOf(l.variable)}-${f.weight}-g${gi}.woff2`, weight: f.weight, range: groups.length > 1 ? f.range : null, buf })
           bytes += buf.length

@@ -10,6 +10,8 @@ import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { SECRET_ENV_NAMES } from '../lib/secret-env.mjs'
 import { run as runProc, startServer } from '../stamp/run-proc.mjs'
+import { assertNoLinkInPath, realInside } from '../lib/safe-path.mjs'
+import { isSafeDistDir } from './static-export.mjs'
 import { startStaticServer } from './static-server.mjs'
 
 /** 설치·빌드 시간 제한(ms) */
@@ -18,7 +20,7 @@ export const BUILD_TIMEOUT_MS = 30 * 60_000
 /** 실패 출력에서 남기는 끝줄 수 */
 export const TAIL_LINES = 20
 /** 이 모듈이 던지는 reason — copy.json failures 에 모두 있어야 한다 */
-export const REASONS = Object.freeze(['installFailed', 'buildFailed', 'timeout', 'outputMissing', 'serverFailed', 'exportNeedsStatic'])
+export const REASONS = Object.freeze(['installFailed', 'buildFailed', 'timeout', 'outputMissing', 'serverFailed', 'exportNeedsStatic', 'unsafeExportDir'])
 /** next start 가 정적 내보내기 설정 때문에 거절할 때 출력에 나오는 글 */
 const EXPORT_REFUSAL = /output:\s*["']?export/i
 /** 비밀 값으로 보고 가릴 최소 길이 — 너무 짧은 값은 일반 글자를 망가뜨린다 */
@@ -87,11 +89,24 @@ export async function prepareSite(dir, kind, ctx = {}) {
   return { installed, built }
 }
 
+/**
+ * 정적 내보내기 폴더가 사이트 폴더 안의 진짜 폴더인지 본다 → 그 폴더 경로. 링크·junction·사이트 밖을 가리키는 distDir 은 reason unsafeExportDir 로 던진다.
+ * 이 폴더가 터널로 공개되는 서버의 루트라서 켜기 전에 건다(사이트 폴더 자신은 사용자가 고른 곳이라 링크여도 된다).
+ */
+export function assertStaticRoot(dir, outDir, { exists = existsSync } = {}) {
+  const unsafe = (why) => Object.assign(new Error(`static export folder is not safe: ${why}`), { reason: 'unsafeExportDir' })
+  if (!isSafeDistDir(dir, outDir)) throw unsafe('outside the site folder')
+  const root = join(dir, outDir)
+  try { assertNoLinkInPath(root, { stopAt: dir }) } catch (e) { throw unsafe(e.reason ?? 'link') }
+  if (exists(root) && !realInside(dir, root)) throw unsafe('resolves outside the site folder')
+  return root
+}
+
 /** 서버를 켠다. 정적 내보내기는 out 폴더 정적 서버, 서버형은 next start. 켜지지 않으면 reason(serverFailed·exportNeedsStatic)과 가려진 끝줄을 달아 던진다. */
 export async function serveSite(dir, env, { kind = {}, start = startServer, startStatic = startStaticServer, waitMs, home, env: scrubEnv } = {}) {
   try {
     const s = kind.outDir
-      ? await startStatic(join(dir, kind.outDir))
+      ? await startStatic(assertStaticRoot(dir, kind.outDir))
       : await start(dir, env, '/', { tail: true, ...(waitMs === undefined ? {} : { waitMs }) })
     return { port: s.port, pid: s.pid, stop: s.stop }
   } catch (e) {
