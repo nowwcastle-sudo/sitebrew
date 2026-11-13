@@ -3821,7 +3821,7 @@
       "title": "히어로 — 두 줄 제목 + 같은 기준선 새 소식 + 접힘선 아래 앱 창",
       "description": "web-factory 블록 hero/baseline-news-app-window — layout baseline-news-app-window. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -3869,7 +3869,7 @@
       "title": "히어로 — 바닥선을 공유하는 두 칸 + 치수선 면",
       "description": "web-factory 블록 hero/baseline-split — layout baseline-split. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -3968,7 +3968,7 @@
       "title": "히어로 — 재단 표시 + 타자로 써지는 제목 + 딱딱한 그림자 버튼",
       "description": "web-factory 블록 hero/crop-marks-typed-title — layout crop-marks-typed-title. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4014,7 +4014,7 @@
       "title": "히어로 — 오른쪽 끝에서 잘리는 제목 목록",
       "description": "web-factory 블록 hero/cropped-title-list — layout cropped-title-list. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4107,7 +4107,7 @@
       "title": "히어로 — 여백 액자 속 둥근 카드 + 외곽선·채움 교대 대문자 + 도는 배지",
       "description": "web-factory 블록 hero/framed-card-outline-title — layout framed-card-outline-title. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4309,7 +4309,7 @@
       "title": "히어로 — 문장 속 칩 + 대괄호 캡션 대칭",
       "description": "web-factory 블록 hero/inline-chip-title — layout inline-chip-title. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4475,7 +4475,7 @@
       "title": "히어로 — 층층 평면 풍경 + 가운데 기운 낱자 로고타입",
       "description": "web-factory 블록 hero/layered-landscape-logotype — layout layered-landscape-logotype. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4523,7 +4523,7 @@
       "title": "히어로 — 수치 칩 + 세리프 세 줄 + 오른쪽 아래로 새는 앱 패널",
       "description": "web-factory 블록 hero/leaking-app-panel — layout leaking-app-panel. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4674,7 +4674,7 @@
       "title": "히어로 — 4칸 두꺼운 제목 + 8칸 앱 창 + 창 위 공지 알약",
       "description": "web-factory 블록 hero/narrow-title-wide-window — layout narrow-title-wide-window. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4721,7 +4721,7 @@
       "title": "히어로 — 3D 오브젝트 궤도(이미지 → GLB 모델, 없으면 2.5D·포스터)",
       "description": "web-factory 블록 hero/object-3d-orbit — layout object-3d-orbit. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0",
+        "gsap@3.15.1",
         "three@0.186.1"
       ],
       "registryDependencies": [
@@ -4881,7 +4881,7 @@
       "title": "히어로 — 엇갈린 두 줄 + 가운데 타원 액자",
       "description": "web-factory 블록 hero/staggered-oval-frame — layout staggered-oval-frame. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -4935,7 +4935,7 @@
       "title": "히어로 — 단계 띠 3칸 + 궤도 도면",
       "description": "web-factory 블록 hero/step-band-orbit — layout step-band-orbit. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -5032,7 +5032,7 @@
       "title": "히어로 — 나란한 큰 칸 두 장 + 칸 밑 캡션",
       "description": "web-factory 블록 hero/twin-panels — layout twin-panels. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
@@ -9131,7 +9131,7 @@
       "title": "사회적 증거 — 휩 팬으로 넘기는 큰 후기 한 장",
       "description": "web-factory 블록 social-proof/whip-quotes — layout whip-quotes. 레시피(registry:base) 하나를 먼저 설치한다",
       "dependencies": [
-        "gsap@3.15.0"
+        "gsap@3.15.1"
       ],
       "registryDependencies": [
         "nowwcastle-sudo/sitebrew/block-contract#v0.2.6",
