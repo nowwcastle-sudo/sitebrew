@@ -64,7 +64,13 @@ test("신청 → 확인 → 구독 완료 → 수신거부: 라우트 파일이 
   assert.equal(mail.to, email)
   assert.ok(mail.input.confirmUrl.startsWith(`${BASE}/api/newsletter/confirm?t=`), "링크는 앱 주소에 서명 토큰")
 
-  const ok = await confirm.GET(new Request(mail.input.confirmUrl))
+  // 링크를 열기만 하면(메일 보안 프로그램도 같다) 구독이 확정되지 않고 「구독 확인」 단추 쪽으로만 간다 — 사람이 단추(폼 POST)를 눌러야 확정된다
+  const opened = await confirm.GET(new Request(mail.input.confirmUrl))
+  assert.equal(opened.status, 303)
+  assert.equal(opened.headers.get("location"), `/email?list=newsletter&a=newsletter&t=${tokenOf(mail.input.confirmUrl)}`)
+  assert.equal((await rowOf(email)).status, "pending")
+  assert.equal(sent.filter((m) => m.template === "newsletterWelcome").length, 0)
+  const ok = await confirm.POST(new Request(`${BASE}/api/newsletter/confirm`, { method: "POST", body: new URLSearchParams({ t: tokenOf(mail.input.confirmUrl) }).toString(), headers: { "content-type": "application/x-www-form-urlencoded", "sec-fetch-site": "same-origin" } }))
   assert.equal(ok.status, 303)
   assert.equal(ok.headers.get("location"), "/email?list=newsletter&r=confirmed")
   assert.equal((await rowOf(email)).status, "subscribed")
