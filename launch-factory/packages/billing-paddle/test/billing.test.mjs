@@ -18,6 +18,7 @@ import {
 import { SUBSCRIPTION_CREATED_ENVELOPE, SUBSCRIPTION_ENTITY } from "../fixtures/paddle-examples.mjs"
 import { signature, TEST_WEBHOOK_SECRET, webhookRequest } from "./fake-paddle.mjs"
 import { DAY, PLANS, setup } from "./harness.mjs"
+import { CHUNK, streamPost } from "../../security/test/body-fixtures.mjs"
 
 let h
 before(async () => {
@@ -638,4 +639,46 @@ test("F11 링크 설정: urls.updatePaymentMethod 가 있으면 그 주소로", 
 test("F11 스위치 값: 비었거나 없으면 켜짐, off·0·false·no(대소문자·공백 무시)만 끈다 — 모르는 값은 켜 둔 채로(조용히 꺼지지 않는다)", () => {
   for (const on of [undefined, null, "", "  ", "on", "1", "true", "yes", "offf", "disabled"]) assert.equal(paymentFailedEmailsEnabled(on), true, JSON.stringify(on))
   for (const off of ["off", "OFF", " Off ", "0", "false", "False", "no", "NO"]) assert.equal(paymentFailedEmailsEnabled(off), false, JSON.stringify(off))
+})
+
+// ── 본문 상한(CWE-400) ─────────────────────────────────────
+
+test("본문 상한: 서명 검증 전에 상한을 넘는 본문은 Content-Length 가 있으면 읽지 않고, 없으면(chunked) 상한 근처에서 끊고 413 — DB·공급자는 그대로, 설정으로 바꾼다", async () => {
+  const before = await dbSnapshot()
+  const getsBefore = h.fake.count("GET", /^\/subscriptions\//)
+  const headers = { "paddle-signature": "ts=1;h1=00" }
+  const declared = streamPost(5_000_000, { headers: { ...headers, "content-length": "5000000" } })
+  const r1 = await h.base().handleWebhook(declared.req)
+  assert.equal(r1.status, 413)
+  assert.deepEqual(await r1.json(), { error: "payload_too_large" })
+  assert.equal(declared.pulled(), 0, "선언 길이가 상한을 넘으면 한 바이트도 읽지 않는다")
+  const chunked = streamPost(5_000_000, { headers })
+  assert.equal((await h.base().handleWebhook(chunked.req)).status, 413)
+  assert.ok(chunked.pulled() <= 512 * 1024 + CHUNK, `기본 상한(512KB) 근처에서 끊어야 한다: ${chunked.pulled()}`)
+  const small = streamPost(100_000, { headers })
+  assert.equal((await h.make({ maxWebhookBodyBytes: 4096 }).handleWebhook(small.req)).status, 413)
+  assert.ok(small.pulled() <= 4096 + CHUNK)
+  assert.equal(await dbSnapshot(), before, "DB 가 바뀌었다")
+  assert.equal(h.fake.count("GET", /^\/subscriptions\//), getsBefore, "공급자를 조회했다")
+})
+
+test("본문 상한: 서명 머리가 없으면 본문을 읽지 않고 401 이다", async () => {
+  const s = streamPost(1_000_000)
+  const res = await h.base().handleWebhook(s.req)
+  assert.equal(res.status, 401)
+  assert.equal(s.pulled(), 0)
+})
+
+test("본문 상한: 상한 안의 큰 정상 웹훅(약 380KB, 한글 포함)은 원문 바이트 그대로 서명 검증을 통과해 처리된다", async () => {
+  const { subId } = await subscribed()
+  h.fake.mutate(subId, (s) => {
+    s.status = "past_due"
+  })
+  const env = h.fake.envelope("subscription.past_due", h.fake.get(subId))
+  env.data = { ...env.data, memo: "한글 메모 🙂 ".repeat(20_000) }
+  const bytes = Buffer.byteLength(JSON.stringify(env))
+  assert.ok(bytes > 300_000 && bytes < 512 * 1024, `바이트 ${bytes}`)
+  const res = await h.deliver(env)
+  assert.equal(res.status, 200)
+  assert.equal((await row(subId)).status, "past_due")
 })
