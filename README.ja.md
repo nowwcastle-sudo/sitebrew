@@ -6,7 +6,7 @@
 
 Sitebrew は Claude Code と Codex で使うプラグインです。作りたいサイトをふだんの言葉で説明すると、違う候補を三つ作ります。一つを選び、会話で直して、コードを自分のフォルダーに持ち帰ります。コードの知識も、始めるときの API キーもいりません。
 
-現在のバージョン `v0.2.6` · MIT ライセンス · Windows 10 と 11
+現在のバージョン `v0.2.7` · MIT ライセンス · Windows 10 と 11
 
 ## なぜ Sitebrew なのか
 
@@ -55,13 +55,13 @@ Sitebrew は Claude Code と Codex で使うプラグインです。作りたい
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.6 sitebrew
+npm create sitebrew@0.2.7 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.6 sitebrew
+npx create-sitebrew@0.2.7 sitebrew
 ```
 
 どちらも同じオプションを使えます。`--dry-run` は何も変えずに計画だけを表示し、`--yes` はすべての質問に「はい」と答え、`--tool` は `claude`、`codex`、`both` から選びます。
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.6 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 ```
 
 何もインストールせずに、することだけを見るには:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code で:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
 /plugin install sitebrew@sitebrew
 ```
 
 Codex で:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 部品だけを別の Next.js プロジェクトに入れることもできます。アドレスには必ずタグを付けてください。
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
 ```
 
 ## コントリビュート

@@ -6,7 +6,7 @@
 
 Sitebrew es un plugin para Claude Code y Codex. Describes tu sitio con palabras sencillas. Construye tres candidatos distintos, eliges uno, lo ajustas en la conversación y te llevas el código a tu propia carpeta. No necesitas saber programar ni una clave de API para empezar.
 
-Versión actual `v0.2.6` · licencia MIT · Windows 10 y 11
+Versión actual `v0.2.7` · licencia MIT · Windows 10 y 11
 
 ## Por qué Sitebrew
 
@@ -55,13 +55,13 @@ Las cinco terminan igual: Sitebrew en una carpeta `sitebrew` y el plugin en tu a
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.6 sitebrew
+npm create sitebrew@0.2.7 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.6 sitebrew
+npx create-sitebrew@0.2.7 sitebrew
 ```
 
 Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nada, `--yes` responde que sí a todas las preguntas y `--tool` elige `claude`, `codex` o `both`.
@@ -69,14 +69,14 @@ Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nad
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 ```
 
 Para ver lo que haría sin instalar nada:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 En Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
 /plugin install sitebrew@sitebrew
 ```
 
 En Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ La comprobación antes de una fusión es `npm run ci:verify`. La guía para agen
 También puedes añadir las piezas a otro proyecto de Next.js. Fija siempre la etiqueta:
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
 ```
 
 ## Contribuir

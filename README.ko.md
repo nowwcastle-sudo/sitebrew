@@ -6,7 +6,7 @@
 
 Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 싶은 사이트를 평소 말로 설명하면, 서로 다른 후보 세 개를 만듭니다. 하나를 고르고, 대화로 고친 뒤, 코드를 내 폴더로 가져갑니다. 코딩을 몰라도 되고, 처음 시작할 때 API 키도 필요 없습니다.
 
-현재 버전 `v0.2.6` · MIT 라이선스 · Windows 10·11
+현재 버전 `v0.2.7` · MIT 라이선스 · Windows 10·11
 
 ## 왜 Sitebrew인가
 
@@ -55,13 +55,13 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.6 sitebrew
+npm create sitebrew@0.2.7 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.6 sitebrew
+npx create-sitebrew@0.2.7 sitebrew
 ```
 
 두 방식은 옵션이 같습니다. `--dry-run` 은 아무것도 바꾸지 않고 할 일만 보여 줍니다. `--yes` 는 모든 질문에 「예」로 답합니다. `--tool` 은 `claude`, `codex`, `both` 중에서 고릅니다.
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.6 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 ```
 
 아무것도 설치하지 않고 할 일만 보려면:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code에서:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
 /plugin install sitebrew@sitebrew
 ```
 
 Codex에서:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 부품만 다른 Next.js 프로젝트에 넣을 수도 있습니다. 주소에는 늘 태그를 붙이세요.
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
 ```
 
 ## 기여하기

@@ -6,7 +6,7 @@
 
 Sitebrew is a plugin for Claude Code and Codex. You describe your site in plain words. It builds three different candidates, you pick one, you adjust it in the conversation, and you take the code into your own folder. You do not need to know how to code, and you do not need an API key to start.
 
-Current version `v0.2.6` · MIT license · Windows 10 and 11
+Current version `v0.2.7` · MIT license · Windows 10 and 11
 
 ## Why Sitebrew
 
@@ -55,13 +55,13 @@ All five end in the same place: Sitebrew in a `sitebrew` folder and the plugin i
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.6 sitebrew
+npm create sitebrew@0.2.7 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.6 sitebrew
+npx create-sitebrew@0.2.7 sitebrew
 ```
 
 Both take the same options: `--dry-run` shows the plan and changes nothing, `--yes` answers yes to every question, and `--tool` chooses `claude`, `codex` or `both`.
@@ -69,14 +69,14 @@ Both take the same options: `--dry-run` shows the plan and changes nothing, `--y
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 ```
 
 To see what it would do without installing anything:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 In Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
 /plugin install sitebrew@sitebrew
 ```
 
 In Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ The check before a merge is `npm run ci:verify`. The guide for agents is [docs/a
 You can also add the parts to another Next.js project. Always pin the tag:
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
 ```
 
 ## Contributing

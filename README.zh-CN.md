@@ -6,7 +6,7 @@
 
 Sitebrew 是 Claude Code 和 Codex 的插件。你用平常的话描述想要的网站，它会做出三个不同的候选。你选一个，在对话中修改，然后把代码放进自己的文件夹。不需要会写代码，开始时也不需要 API 密钥。
 
-当前版本 `v0.2.6` · MIT 许可证 · Windows 10 和 11
+当前版本 `v0.2.7` · MIT 许可证 · Windows 10 和 11
 
 ## 为什么用 Sitebrew
 
@@ -55,13 +55,13 @@ Sitebrew 是 Claude Code 和 Codex 的插件。你用平常的话描述想要的
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.6 sitebrew
+npm create sitebrew@0.2.7 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.6 sitebrew
+npx create-sitebrew@0.2.7 sitebrew
 ```
 
 两者的选项相同：`--dry-run` 只显示计划，不做任何改动；`--yes` 对所有问题回答“是”；`--tool` 从 `claude`、`codex`、`both` 中选择。
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.6 sitebrew
 #### 3. PowerShell
 
 ```powershell
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 ```
 
 不安装任何东西、只看会做什么：
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.6/get.ps1 | iex
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.7/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 在 Claude Code 中：
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.6
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
 /plugin install sitebrew@sitebrew
 ```
 
 在 Codex 中：
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.6
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 也可以只把部件加到另一个 Next.js 项目中。地址里一定要带上标签：
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.6 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.6 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
 ```
 
 ## 参与贡献
