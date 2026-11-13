@@ -74,6 +74,12 @@ export const orders = pgTable(
     canceledAt: timestamp("canceled_at", tz),
     /** 결제 대기 주문의 재고 반환 시각(만든 때 + 30분). Cron 이 이 시각이 지난 pending_payment 를 취소한다 */
     expiresAt: timestamp("expires_at", tz).notNull(),
+    /**
+     * 환불 예약표. 공급자에게 환불을 부르기 전에 paid·preparing 주문에 조건부 UPDATE 로 붙인다(null 이 아니면 「취소 진행 중」).
+     * 예약된 주문은 배송 쪽으로 넘어가지 않는다(앞걸음의 조건부 UPDATE 가 refund_claim IS NULL 을 요구한다). 상태 값은 늘리지 않는다 — 계약의 OrderStatus 는 그대로다.
+     * 공급자가 환불을 거절하면 예약을 지우고, 환불이 끝나면(refunded) 같이 지운다. 결과를 알 수 없는 채로 남은 예약(status 가 paid·preparing 인데 값이 있는 주문)이 「중간 상태에 갇힌 주문」이다.
+     */
+    refundClaim: text("refund_claim"),
   },
   (t) => [
     check("orders_status_ck", inList("status", ORDER_STATUSES)),

@@ -336,6 +336,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -399,7 +404,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/auth/[...all]/route.ts",
@@ -701,6 +707,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -747,7 +758,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/webhooks/paddle/route.ts",
@@ -961,6 +973,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1004,7 +1021,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/webhooks/gumroad/route.ts",
@@ -1217,6 +1235,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1259,7 +1282,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/inquiry/route.ts",
@@ -1538,6 +1562,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1579,7 +1608,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/webhooks/portone/route.ts",
@@ -1767,6 +1797,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1807,7 +1842,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/reviews/route.ts"
@@ -2411,6 +2447,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -2448,7 +2489,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/search/route.ts",
@@ -2646,6 +2688,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -2690,7 +2737,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/storage/ticket/route.ts",
@@ -2900,6 +2948,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -2941,7 +2994,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/newsletter/route.ts",
@@ -3163,6 +3217,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3203,7 +3262,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [
             "app/api/booking/route.ts",
@@ -3389,6 +3449,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3430,7 +3495,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [],
           "actions": [],
@@ -3688,6 +3754,11 @@
           "target": "db/migrations/0017_inquiry_replies.sql"
         },
         {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3727,7 +3798,8 @@
             "db/migrations/0014_booking_push_notify.sql",
             "db/migrations/0015_p3c_content_features.sql",
             "db/migrations/0016_booking_deposit.sql",
-            "db/migrations/0017_inquiry_replies.sql"
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql"
           ],
           "routes": [],
           "actions": [
