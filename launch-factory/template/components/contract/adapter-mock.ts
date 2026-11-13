@@ -5,6 +5,7 @@ import type {
   AuthMethod,
   AuthPort,
   BillingPort,
+  BookingCancelInput,
   BookingChange,
   BookingDay,
   BookingLookup,
@@ -16,6 +17,7 @@ import type {
   ConsentState,
   DeviceSession,
   HumanConfirmation,
+  IdempotencyInput,
   IsoDate,
   ManagedBooking,
   MyRequest,
@@ -32,6 +34,7 @@ import type {
   ReviewListInput,
   ReviewRating,
   ReviewsPort,
+  ReviewSubmitInput,
   SearchHit,
   SearchPort,
   Session,
@@ -276,8 +279,12 @@ const NEED_LOGIN = "로그인이 필요해요. 다시 로그인해 주세요."
 const NEED_AGE = { ageOver14: ["만 14세 이상인지 확인해 주세요(필수)."] }
 const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-/** 포트 목 공통 선택지: 읽기 오류 문구(message), 쓰기 결과 문구(fieldErrors·formError), 지연(delayMs — &delay= 가 이긴다) */
-export type PortMockOptions = Pick<MockStateOptions, "message"> & MockSubmitOptions
+/**
+ * 포트 목 공통 선택지: 읽기 오류 문구(message), 쓰기 결과 문구(fieldErrors·formError), 지연(delayMs — &delay= 가 이긴다),
+ * requireIdempotency(WF-7 — 상태를 바꾸는 메서드가 같은 `idempotencyKey` 의 요청을 한 번만 실행한다. 같은 키가 다시 오면 상태를 바꾸지 않고 첫 성공 결과를 돌려주고, 처리 중에 또 오면
+ * `{ ok: false, code: "in_progress", retryable: true }`, 실패한 요청의 키는 풀린다. 키가 없는 호출은 예전과 같다 — launch-factory 의 withIdempotency 와 같은 동작이고, 갤러리 기본은 끔)
+ */
+export type PortMockOptions = Pick<MockStateOptions, "message"> & MockSubmitOptions & { requireIdempotency?: boolean }
 
 interface PortCtx {
   state: MockStateKind | null
@@ -322,6 +329,34 @@ const needsConfirmation =
   <A extends HumanConfirmation | undefined, T>(fn: (input: A) => Promise<ActionResult<T>>): ((input: A) => Promise<ActionResult<T>>) =>
   async (input) =>
     input?.confirmed === true ? fn(input) : confirmationRequired()
+
+// 멱등 키(WF-7 — IdempotencyInput). options.requireIdempotency 이면 포트의 변경 메서드가 같은 `idempotencyKey` 로 온 요청을 한 번만 실행한다(범위 = 「포트.메서드」+키 — 같은 키여도 메서드가 다르면 따로다).
+// 키를 먼저 차지한 요청만 fn 을 부르고, 성공 결과만 보관해 같은 키의 다음 요청에 그대로(복사본) 돌려준다 — 실패한 요청의 키는 풀어 다시 실행할 수 있다. 처리 중에 같은 키가 또 오면 in_progress(다시 시도할 수 있다).
+// 키 점검은 가장 바깥이다(확인 입력·?submit= 결과보다 앞 — 실패는 보관하지 않으니 같은 키로 고쳐 다시 보낼 수 있다). 켜지 않으면 fn 그대로, 키가 없어도 fn 그대로다.
+const IN_PROGRESS = "같은 요청을 처리하고 있어요. 잠시 뒤 결과를 확인해 주세요."
+function idempotency(on: boolean | undefined) {
+  const store = new Map<string, { done: false } | { done: true; result: ActionResult<unknown> }>()
+  return <A extends IdempotencyInput | undefined, T>(scope: string, fn: (input: A) => Promise<ActionResult<T>>): ((input: A) => Promise<ActionResult<T>>) => {
+    if (!on) return fn
+    return async (input) => {
+      const key = typeof input?.idempotencyKey === "string" ? input.idempotencyKey.trim() : ""
+      if (!key) return fn(input)
+      const id = `${scope}:${key}`
+      const seen = store.get(id)
+      if (seen) return seen.done ? copy(seen.result as ActionResult<T>) : { ok: false, code: "in_progress", retryable: true, formError: IN_PROGRESS }
+      store.set(id, { done: false })
+      try {
+        const r = await fn(input)
+        if (r.ok) store.set(id, { done: true, result: copy(r) })
+        else store.delete(id)
+        return r
+      } catch (e) {
+        store.delete(id)
+        throw e
+      }
+    }
+  }
+}
 
 // 읽기: loading 은 끝나지 않고, error 는 다시 시도할 수 있는 오류, empty 는 빈 값(주면), 나머지는 make().
 function reader<T>(ctx: PortCtx, make: () => T, empty?: () => T): () => Promise<ActionResult<T>> {
@@ -396,7 +431,7 @@ export function mockBilling(
   const port: Required<BillingPort> = {
     plans: reader(ctx, () => copy([...plans]), () => []),
     subscription: reader(ctx, () => copy(sub), () => copy(SUBSCRIPTIONS.none)),
-    checkout: writer(ctx, ({ planId, trial, withdrawalConsent }: { planId: string; trial?: boolean; withdrawalConsent?: true }) => {
+    checkout: writer(ctx, ({ planId, trial, withdrawalConsent }: { planId: string; trial?: boolean; withdrawalConsent?: true } & IdempotencyInput) => {
       if (options.requireWithdrawalConsent && withdrawalConsent !== true) return fail(NEED_WITHDRAWAL.withdrawalConsent[0], NEED_WITHDRAWAL)
       const plan = find(planId)
       if (!plan) return fail(NO_PLAN)
@@ -407,19 +442,19 @@ export function mockBilling(
       sub = next
       return { ok: true, data: { subscription: copy(sub) } }
     }),
-    changePlan: writer(ctx, ({ planId, when }: { planId: string; when: "now" | "period_end" } & HumanConfirmation) => {
+    changePlan: writer(ctx, ({ planId, when }: { planId: string; when: "now" | "period_end" } & HumanConfirmation & IdempotencyInput) => {
       if (!find(planId)) return fail(NO_PLAN)
       if (sub.planId === null) return fail(NO_SUB)
       const rest = omit(sub, "scheduledPlanId")
       return set(when === "now" ? { ...rest, planId } : { ...rest, scheduledPlanId: planId })
     }),
-    cancel: writer(ctx, ({ when }: { when: "period_end" | "now" } & HumanConfirmation) => {
+    cancel: writer(ctx, ({ when }: { when: "period_end" | "now" } & HumanConfirmation & IdempotencyInput) => {
       if (sub.planId === null || sub.status === "none") return fail(NO_SUB)
       return when === "now"
         ? set({ planId: sub.planId, status: "canceled", cancelAt: MOCK_NOW })
         : set({ ...sub, cancelAt: sub.currentPeriodEnd ?? sub.trialEnd ?? PERIOD_END })
     }),
-    pause: writer(ctx, ({ until }: { until: IsoDate }) => {
+    pause: writer(ctx, ({ until }: { until: IsoDate } & IdempotencyInput) => {
       if (sub.planId === null || sub.status === "none") return fail(NO_SUB)
       return set({ planId: sub.planId, status: "paused", pausedUntil: until })
     }),
@@ -429,11 +464,11 @@ export function mockBilling(
       return set({ ...rest, status: "active", currentPeriodEnd: rest.currentPeriodEnd ?? PERIOD_END })
     }),
     updatePaymentMethod: writer<void, { redirectUrl: string }>(ctx, () => ({ ok: true, data: { redirectUrl: options.redirectUrl ?? "#mock-update-payment-method" } })),
-    acceptPriceChange: writer<HumanConfirmation | undefined, Subscription>(ctx, () => {
+    acceptPriceChange: writer<(HumanConfirmation & IdempotencyInput) | undefined, Subscription>(ctx, () => {
       if (!sub.pendingPriceChange) return fail(NO_PRICE_CHANGE)
       return set(omit(sub, "pendingPriceChange"))
     }),
-    applyRetentionOffer: writer(ctx, ({ offerId }: { offerId: string } & HumanConfirmation) => {
+    applyRetentionOffer: writer(ctx, ({ offerId }: { offerId: string } & HumanConfirmation & IdempotencyInput) => {
       if (sub.planId === null || sub.status === "none") return fail(NO_SUB)
       const offer = offers.find((o) => o.id === offerId)
       if (!offer) return fail(NO_OFFER)
@@ -468,6 +503,14 @@ export function mockBilling(
     port.applyRetentionOffer = needsConfirmation(port.applyRetentionOffer)
     port.acceptPriceChange = needsConfirmation(port.acceptPriceChange)
   }
+  // 멱등 키(WF-7) — 가장 바깥
+  const idem = idempotency(options.requireIdempotency)
+  port.checkout = idem("billing.checkout", port.checkout)
+  port.changePlan = idem("billing.changePlan", port.changePlan)
+  port.cancel = idem("billing.cancel", port.cancel)
+  port.pause = idem("billing.pause", port.pause)
+  port.acceptPriceChange = idem("billing.acceptPriceChange", port.acceptPriceChange)
+  port.applyRetentionOffer = idem("billing.applyRetentionOffer", port.applyRetentionOffer)
   return port
 }
 
@@ -541,7 +584,7 @@ export function mockAuth(
       session = { ...(session ?? copy(user)), twoFactor: true }
       return { ok: true, data: { ...copy(session), ...(redirectTo ? { redirectUrl: redirectTo } : {}) } }
     }),
-    requestPasswordReset: writer<{ email: string }, { sent: true }>(ctx, () => ({ ok: true, data: { sent: true } as const })),
+    requestPasswordReset: writer<{ email: string } & IdempotencyInput, { sent: true }>(ctx, () => ({ ok: true, data: { sent: true } as const })),
     // 재설정 마무리(D236): 가상 토큰 MOCK_RESET_TOKEN 만 한 번 통한다 — 빈 토큰은 token 칸 오류, 그 밖·이미 쓴 토큰은 code invalid_token, 8자 미만은 newPassword 칸 오류
     resetPassword: writer(ctx, ({ token, newPassword }: { token: string; newPassword: string }) => {
       if (!token) return fail("입력한 내용을 다시 확인해 주세요.", { token: ["재설정 링크의 토큰이 없어요. 메일의 링크로 다시 들어와 주세요."] })
@@ -608,7 +651,7 @@ export function mockAuth(
         return { ok: true, data: { locale: session?.locale ?? null, timeZone: session?.timeZone ?? null } }
       }),
     ),
-    deleteAccount: writer<(HumanConfirmation & { confirmEmail?: string }) | undefined, { graceUntil: IsoDate }>(ctx, () => account(() => ({ ok: true, data: { graceUntil: GRACE_UNTIL } }))),
+    deleteAccount: writer<(HumanConfirmation & IdempotencyInput & { confirmEmail?: string }) | undefined, { graceUntil: IsoDate }>(ctx, () => account(() => ({ ok: true, data: { graceUntil: GRACE_UNTIL } }))),
     exportMyData: writer<HumanConfirmation | undefined, object>(ctx, () => account(() => ({ ok: true, data: { exportedAt: MOCK_NOW, account: { userId: session?.userId, email: session?.email } } }))),
   }
   // 확인 입력 요구(P3-7 AXC). 로그인이 먼저다(로그아웃이면 원래 메서드의 로그인 요구 그대로 — launch-factory 와 같은 순서). 탈퇴는 입력한 이메일(confirmEmail)을 주면 지금 주소와 맞춰 본다.
@@ -628,6 +671,11 @@ export function mockAuth(
       return del(input)
     }
   }
+  // 멱등 키(WF-7) — 가장 바깥
+  const idem = idempotency(options.requireIdempotency)
+  port.signUp = idem("auth.signUp", port.signUp)
+  port.requestPasswordReset = idem("auth.requestPasswordReset", port.requestPasswordReset)
+  port.deleteAccount = idem("auth.deleteAccount", port.deleteAccount)
   return port
 }
 
@@ -646,7 +694,7 @@ export function mockNotify(search: string | URLSearchParams, options: PortMockOp
   let channels: Channels = { email: on, sms: on, kakao: on, push: on }
   let updatedAt: IsoDate | undefined = on ? MOCK_NOW : undefined
   const endpoints = new Set<string>()
-  const setConsents = writer(ctx, (input: Partial<Channels> & HumanConfirmation) => {
+  const setConsents = writer(ctx, (input: Partial<Channels> & HumanConfirmation & IdempotencyInput) => {
     const next = { ...channels }
     for (const k of ["email", "sms", "kakao", "push"] as const) if (typeof input?.[k] === "boolean") next[k] = input[k]
     channels = next
@@ -655,7 +703,7 @@ export function mockNotify(search: string | URLSearchParams, options: PortMockOp
   })
   return {
     consents: reader(ctx, () => ({ ...channels, ...(updatedAt ? { updatedAt } : {}) })),
-    setConsents: options.requireConfirmation ? needsConfirmation(setConsents) : setConsents,
+    setConsents: idempotency(options.requireIdempotency)("notify.setConsents", options.requireConfirmation ? needsConfirmation(setConsents) : setConsents),
     subscribePush: writer(ctx, (input: PushSubscriptionInput) => {
       if (!input?.endpoint || !input.endpoint.startsWith("https://")) return fail("입력한 내용을 다시 확인해 주세요.", { endpoint: ["푸시 구독 주소를 다시 확인해 주세요."] })
       if (!input.keys?.p256dh || !input.keys?.auth) return fail("입력한 내용을 다시 확인해 주세요.", { keys: ["푸시 구독 키를 다시 확인해 주세요."] })
@@ -808,7 +856,7 @@ export function mockBooking(search: string | URLSearchParams, options: PortMockO
     return found ? { ok: true, data: view(found) } : bookingFailure("not_found", BOOKING_NOT_FOUND)
   })
 
-  const cancel = writer<BookingLookup, BookingChange>(ctx, (input) => {
+  const cancel = writer<BookingCancelInput, BookingChange>(ctx, (input) => {
     const bad = pairProblem(input)
     if (bad) return bad
     const found = find(input)
@@ -825,7 +873,8 @@ export function mockBooking(search: string | URLSearchParams, options: PortMockO
     if (ctx.state === "error") return { ok: false, formError: ctx.opts.message ?? DEFAULT_ERROR, retryable: true }
     return lookup(input)
   }
-  return { slots, book, lookup: lookupWithState, cancel }
+  const idem = idempotency(options.requireIdempotency)
+  return { slots, book: idem("booking.book", book), lookup: lookupWithState, cancel: idem("booking.cancel", cancel) }
 }
 
 /** 목 계측이 남긴 호출 하나. attribution 은 track 의 meta 로 출처 태그가 왔을 때만 있다(없으면 키도 없다 — 옛 호출의 기록 모양 그대로) */
@@ -914,7 +963,7 @@ export function mockStorage(
     return { ok: true, data: { key: `mock/${kind}/${n}`, url: options.url?.(kind, n) ?? `#mock-upload/${kind}/${n}` } }
   })
   const tickets = new Map<string, { kind: StorageKind; key: string; n: number }>()
-  const createTicket = writer(ctx, (input: { kind: StorageKind; contentType: string; size: number; fileName?: string }) => {
+  const createTicket = writer(ctx, (input: { kind: StorageKind; contentType: string; size: number; fileName?: string } & IdempotencyInput) => {
     const policy = Object.hasOwn(MOCK_STORAGE_POLICY, input.kind) ? MOCK_STORAGE_POLICY[input.kind] : undefined
     if (!policy) return fail("올릴 수 없는 종류예요.", { kind: ["avatar, image, attachment 중에서 골라 주세요."] })
     if (policy.signInRequired && signedOut) return { ok: false, code: "sign_in_required", retryable: false, formError: NEED_LOGIN }
@@ -936,7 +985,7 @@ export function mockStorage(
     const url = options.url?.(ticket.kind, ticket.n) ?? (priv ? `#mock-download/${ticket.key}?expires=${new Date(Date.parse(MOCK_NOW) + MOCK_TICKET_SECONDS * 1000).toISOString()}` : `#mock-upload/${ticket.kind}/${ticket.n}`)
     return { ok: true, data: { key: ticket.key, url } }
   })
-  return { upload: (file, opts) => upload({ file, kind: opts?.kind }), createTicket, complete }
+  return { upload: (file, opts) => upload({ file, kind: opts?.kind }), createTicket: idempotency(options.requireIdempotency)("storage.createTicket", createTicket), complete }
 }
 
 // ── 후기·검색·뉴스레터·내 신청 내역 목(p3-3c) ─────────────────────────────────────────────────────────────
@@ -1009,7 +1058,7 @@ export function mockReviews(search: string | URLSearchParams, options: PortMockO
           ? { kind: "question", ...pageOf<Question>([], input.page, input.pageSize) }
           : { kind: "review", summary: ratingSummary([]), ...pageOf<Review>([], input.page, input.pageSize) },
     ),
-    submit: writer(ctx, (input) => {
+    submit: idempotency(options.requireIdempotency)("reviews.submit", writer(ctx, (input: ReviewSubmitInput) => {
       const kind = input.kind ?? "review"
       const body = input.body?.trim() ?? ""
       if (!body) return fail("입력한 내용을 다시 확인해 주세요.", { body: ["내용을 입력해 주세요."] })
@@ -1019,7 +1068,7 @@ export function mockReviews(search: string | URLSearchParams, options: PortMockO
       const row: StoredReview = { seq: rows.length, subjectType: input.subjectType, subjectId: input.subjectId, kind, status, mine: true, ...(kind === "review" ? { rating: input.rating, ...(input.title?.trim() ? { title: input.title.trim() } : {}) } : {}), body, author: maskName(input.authorName ?? MOCK_SESSION.name ?? ""), date: DAY(MOCK_NOW) }
       rows.push(row)
       return { ok: true, data: { id: `rv-${row.seq}`, status } }
-    }),
+    })),
   }
 }
 
@@ -1084,13 +1133,13 @@ export function mockSearch(search: string | URLSearchParams, options: PortMockOp
 export function mockNewsletter(search: string | URLSearchParams, options: PortMockOptions = {}): Required<NewsletterPort> {
   const ctx = portCtx(toParams(search), options)
   return {
-    subscribe: writer(ctx, (input) => {
+    subscribe: idempotency(options.requireIdempotency)("newsletter.subscribe", writer(ctx, (input: Parameters<NewsletterPort["subscribe"]>[0]) => {
       const fieldErrors: Partial<Record<string, string[]>> = {}
       if (!EMAIL_SHAPE.test(input.email?.trim() ?? "")) fieldErrors.email = ["이메일 주소를 다시 확인해 주세요."]
       if (input.consent !== true) fieldErrors.consent = ["수신 동의에 체크해 주세요."]
       if (Object.keys(fieldErrors).length) return fail("입력한 내용을 다시 확인해 주세요.", fieldErrors)
       return { ok: true, data: { confirmationSent: true } }
-    }),
+    })),
   }
 }
 
