@@ -1,6 +1,6 @@
 // 브랜드 주색 노출 관문(v0.2.6 T10 · S4 · 설계 D16) — 브리프의 주색이 첫 화면(히어로 1440×900)에 거의 안 보이면 공개 불가.
 //   ① exposureProbe()            쪽 안에서 도는 자기완결 함수. DOM 을 문서 순서로 8px 칸 위에 칠한다(나중에 칠한 요소가 이긴다 — 겹친 상자를 두 번 세지 않는다).
-//                                 칠하는 것: 배경색 · 테두리색 · 글자색(글자 줄 상자). 글자색은 배경 층과 따로 둔다 — 칸이 「배경이 주색」이거나 「그 위 글자가 주색」이면 센다(연한 글자가 주색 상자를 지우지 않는다). 사진·그라데이션·영상은 DOM 색이 아니라 세지 않는다(그 칸은 「주색 아님」으로 남는다).
+//                                 칠하는 것: 배경색 · 테두리색 · 글자색(글자 줄 상자). 글자색은 배경 층과 따로 둔다 — 칸이 「배경이 주색」이거나 「그 위 글자가 주색」이면 센다(연한 글자가 주색 상자를 지우지 않는다). 사진·그라데이션·영상은 DOM 색이 아니라 세지 않는다 — 그림(img·video·canvas·iframe·배경 그림)이 덮은 칸은 「덮음」으로 칠해 그 밑 바탕색을 세지 않는다(나중 배경이 다시 덮으면 풀리고, 그림 위 글자는 센다).
 //   ② measureBrandExposure(page) page = { ev } 로 ①을 돌려 { ratio, samples } 를 받는다 — 주색 근처(OKLab 거리 ≤ threshold) 칸 / 전체 칸.
 //   ③ brandExposureGate(cand, { ratio }) 순수 판정 → { pass, ratio, floor }. 하한은 colorStrategy 별(Restrained 1% · Committed 15% · 그 밖 1%) — 골든 실측 뒤 조정한다.
 //   ④ brandExposureForCandidate  07-qa 어댑터(Chrome 을 띄워 ②를 부른다. 안쪽 측정기 measure 는 시험용으로 바꿀 수 있다).
@@ -39,10 +39,11 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
   const grid = new Float32Array(cols * rows * 3).fill(255) // 캔버스 기본색(흰색)에서 시작한다. 배경·테두리만 칠한다
   const ink = new Float32Array(cols * rows * 3) // 글자색 층: 글자는 바탕을 지우지 않는다(연한 글자가 주색 상자를 덮어 0% 가 되던 결함). 같은 칸에 나중 배경이 칠해지면 비운다
   const inkOn = new Uint8Array(cols * rows)
+  const covered = new Uint8Array(cols * rows) // 그림이 덮은 칸 — 밑 바탕색이 화면에 안 보인다(주색 띠 위 사진을 주색으로 세던 결함)
   const cv = document.createElement('canvas'); cv.width = cv.height = 1
   const cx = cv.getContext('2d', { willReadFrequently: true })
   const rgba = (c) => { cx.clearRect(0, 0, 1, 1); cx.fillStyle = '#000'; cx.fillStyle = c; cx.fillRect(0, 0, 1, 1); const d = cx.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2], d[3] / 255] }
-  const paint = (r, [cr, cg, cb, ca], asInk = false) => {
+  const paint = (r, [cr, cg, cb, ca], asInk = false, asCover = false) => {
     if (ca <= 0) return
     const x0 = Math.max(0, Math.floor(r.left / cell)), x1 = Math.min(cols, Math.ceil(r.right / cell))
     const y0 = Math.max(0, Math.floor(r.top / cell)), y1 = Math.min(rows, Math.ceil(r.bottom / cell))
@@ -50,6 +51,8 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
       const j = y * cols + x, i = j * 3
       if (asInk) { ink[i] = cr * ca + grid[i] * (1 - ca); ink[i + 1] = cg * ca + grid[i + 1] * (1 - ca); ink[i + 2] = cb * ca + grid[i + 2] * (1 - ca); inkOn[j] = 1; continue }
       inkOn[j] = 0
+      if (asCover) { covered[j] = 1; continue }
+      if (ca >= 0.999) covered[j] = 0 // 불투명한 나중 배경이 그림을 다시 덮었다
       grid[i] = cr * ca + grid[i] * (1 - ca); grid[i + 1] = cg * ca + grid[i + 1] * (1 - ca); grid[i + 2] = cb * ca + grid[i + 2] * (1 - ca)
     }
   }
@@ -67,6 +70,7 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
   const view = { left: 0, top: 0, right: W, bottom: H }
   const inView = (r) => r.width > 0 && r.height > 0 && r.right > 0 && r.bottom > 0 && r.left < W && r.top < H
   const SKIP = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'HEAD', 'META', 'LINK', 'TITLE'])
+  const MEDIA = new Set(['IMG', 'VIDEO', 'CANVAS', 'IFRAME', 'OBJECT', 'EMBED'])
   const htmlBgClear = rgba(getComputedStyle(document.documentElement).backgroundColor)[3] === 0
   for (const el of [document.documentElement, document.body, ...document.body.querySelectorAll('*')]) {
     if (SKIP.has(el.tagName)) continue
@@ -79,6 +83,7 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
     if (!wide && !inView(r)) continue
     const bg = rgba(s.backgroundColor)
     if (bg[3] > 0) paint(r, [bg[0], bg[1], bg[2], bg[3] * op])
+    if (MEDIA.has(el.tagName) || (s.backgroundImage && s.backgroundImage !== 'none')) paint(r, [0, 0, 0, 1], false, true)
     for (const [side, w] of [['top', s.borderTopWidth], ['right', s.borderRightWidth], ['bottom', s.borderBottomWidth], ['left', s.borderLeftWidth]]) {
       const width = parseFloat(w)
       const style = s[`border${side[0].toUpperCase()}${side.slice(1)}Style`]
@@ -110,7 +115,7 @@ export function exposureProbe({ colorHex, threshold, cell = 8 }) {
     }
     return hit
   }
-  for (let j = 0; j < cols * rows; j++) if (isNear(grid, j * 3) || (inkOn[j] && isNear(ink, j * 3))) near++
+  for (let j = 0; j < cols * rows; j++) if ((!covered[j] && isNear(grid, j * 3)) || (inkOn[j] && isNear(ink, j * 3))) near++
   const samples = cols * rows
   return { ratio: Math.round((near / samples) * 10000) / 10000, samples }
 }
