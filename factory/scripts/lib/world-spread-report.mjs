@@ -77,12 +77,15 @@ export function renderMarkdown(rows) {
   return out.join('\n') + '\n'
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+export const SNAPSHOT_FILE = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'docs', 'qa', 'v026-world-spread.md')
+
+/** 명령줄 입구. 기본은 표를 내보내고, --write 면 스냅샷 파일(file)에 쓴다. 시험이 같은 프로세스에서 부르도록 함수로 둔다(자식 프로세스 줄은 커버리지에 안 잡힌다). */
+export function main(argv, { file = SNAPSHOT_FILE, out = (s) => process.stdout.write(s) } = {}) {
   const md = renderMarkdown(reportAll())
-  if (process.argv.includes('--write')) {
-    const file = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'docs', 'qa', 'v026-world-spread.md')
-    mkdirSync(dirname(file), { recursive: true })
-    writeFileSync(file, md)
-    process.stdout.write(`wrote ${file}\n`)
-  } else process.stdout.write(md)
+  if (!argv.includes('--write')) return out(md)
+  mkdirSync(dirname(file), { recursive: true })
+  writeFileSync(file, md)
+  out(`wrote ${file}\n`)
 }
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main(process.argv.slice(2))
