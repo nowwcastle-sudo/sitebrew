@@ -10,12 +10,12 @@
 // - 호스팅 체크아웃: 거래를 만들면 checkout.url 이 온다. 대시보드에 기본 결제 링크가 없으면 transaction_default_checkout_url_not_set 오류다.
 import { and, desc, eq } from "drizzle-orm"
 import type { ActionResult, BillingPort, PendingPriceChange, RetentionOffer, Subscription } from "@launch-factory/contract"
-import { subscriptions, type Database } from "@launch-factory/db"
+import { markRetentionOfferApplied, releaseRetentionOffer, reserveRetentionOffer, subscriptions, type Database } from "@launch-factory/db"
 import type { Subscription as PaddleSubscription } from "@paddle/paddle-node-sdk"
 import { CD, customDataOf, omit, pendingOf, PAST_DUE_GRACE_MS, PROVIDER, toContract, type CustomData, type LaunchSubscription, type StoredPriceChange, type SubscriptionRow } from "./map.ts"
 import { createPaddleClient, paddleErrorOf, type PaddleClient, type PaddleEnv } from "./paddle.ts"
 import { contractPlans, planById, validateBillingConfig, type PaddlePlan } from "./plans.ts"
-import { retentionOfferIssues } from "./retention.ts"
+import { eligibleRetentionOffer, retentionOfferIssues } from "./retention.ts"
 import { runScheduledChanges, SCHEDULE_DEFAULTS, type ScheduleOptions, type ScheduleReport } from "./schedule.ts"
 import { storeEntity, type MailConfig, type SyncDeps } from "./sync.ts"
 import { handlePaddleWebhook } from "./webhook.ts"
@@ -131,6 +131,34 @@ export function paddleBilling(config: PaddleBillingConfig) {
   async function patchCustomData(subId: string, change: (cd: CustomData) => CustomData, extra: Record<string, unknown> = {}): Promise<PaddleSubscription> {
     const current = await paddle.subscriptions.get(subId)
     return paddle.subscriptions.update(subId, { ...extra, customData: change(customDataOf(current)) })
+  }
+
+  /** 해지 대안의 공급자 호출(Paddle). 서버가 정한 대안만 여기까지 온다 */
+  async function applyOffer(row: SubscriptionRow, offer: RetentionOffer): Promise<BillingResult<Subscription>> {
+    const subId = row.providerSubId
+    if (offer.kind === "pause") {
+      if (row.cancelAt) await paddle.subscriptions.update(subId, { scheduledChange: null })
+      const until = addMonths(now(), offer.pauseMonths as number)
+      return saved(await paddle.subscriptions.pause(subId, { effectiveFrom: "immediately", resumeAt: until.toISOString() }))
+    }
+    if (offer.kind === "downgrade") {
+      const target = offer.planId as string
+      const entity = await patchCustomData(subId, (cd) => ({ ...cd, [CD.scheduledPlanId]: target }), row.cancelAt ? { scheduledChange: null } : {})
+      return saved(entity)
+    }
+    // discount: 월 요금제만(Paddle 의 반복 횟수는 청구 주기 단위다 — maximum_recurring_intervals)
+    const plan = planById(config.plans, row.planId)
+    const d = offer.discount as { percent: number; months: number }
+    if (plan?.interval !== "month") return fail("offer_unsupported", "This offer is only available on monthly plans.")
+    const discount = await paddle.discounts.create({
+      amount: String(d.percent),
+      type: "percentage",
+      description: `Retention offer ${offer.id}: ${d.percent}% for ${d.months} months`,
+      enabledForCheckout: false,
+      recur: true,
+      maximumRecurringIntervals: d.months,
+    })
+    return saved(await paddle.subscriptions.update(subId, { discount: { id: discount.id, effectiveFrom: "next_billing_period" }, scheduledChange: null }))
   }
 
   function port(session: BillingSession): LaunchBillingPort {
@@ -288,30 +316,22 @@ export function paddleBilling(config: PaddleBillingConfig) {
         return guard(async () => {
           const row = await live()
           if (!row) return noSub()
-          const subId = row.providerSubId
-          if (offer.kind === "pause") {
-            if (row.cancelAt) await paddle.subscriptions.update(subId, { scheduledChange: null })
-            const until = addMonths(now(), offer.pauseMonths as number)
-            return saved(await paddle.subscriptions.pause(subId, { effectiveFrom: "immediately", resumeAt: until.toISOString() }))
+          // 받을 수 있는 대안은 서버가 정한다 — 화면이 보인 첫 대안과 같은 규칙이다. 설정에 있어도 보이지 않는 다른 대안을 직접 제출하면 거절한다
+          const eligible = eligibleRetentionOffer(offers, { planId: row.planId, plans: contractPlans(config.plans) })
+          if (!eligible || eligible.id !== offer.id) return fail("offer_not_eligible", "This offer is not available.")
+          // 공급자를 부르기 전에 이 구독의 이 대안을 먼저 예약한다(원자적) — 이긴 호출만 공급자를 부르고 두 번째부터는 거절된다. 실패하면 예약을 풀어 다시 받을 수 있게 한다
+          const key = { provider: PROVIDER, providerSubId: row.providerSubId, offerId: offer.id }
+          if (!(await reserveRetentionOffer(config.db, key, now()))) return fail("offer_already_used", "This offer has already been used on this subscription.")
+          let result: BillingResult<Subscription>
+          try {
+            result = await applyOffer(row, offer)
+          } catch (e) {
+            await releaseRetentionOffer(config.db, key)
+            throw e
           }
-          if (offer.kind === "downgrade") {
-            const target = offer.planId as string
-            const entity = await patchCustomData(subId, (cd) => ({ ...cd, [CD.scheduledPlanId]: target }), row.cancelAt ? { scheduledChange: null } : {})
-            return saved(entity)
-          }
-          // discount: 월 요금제만(Paddle 의 반복 횟수는 청구 주기 단위다 — maximum_recurring_intervals)
-          const plan = planById(config.plans, row.planId)
-          const d = offer.discount as { percent: number; months: number }
-          if (plan?.interval !== "month") return fail("offer_unsupported", "This offer is only available on monthly plans.")
-          const discount = await paddle.discounts.create({
-            amount: String(d.percent),
-            type: "percentage",
-            description: `Retention offer ${offer.id}: ${d.percent}% for ${d.months} months`,
-            enabledForCheckout: false,
-            recur: true,
-            maximumRecurringIntervals: d.months,
-          })
-          return saved(await paddle.subscriptions.update(subId, { discount: { id: discount.id, effectiveFrom: "next_billing_period" }, scheduledChange: null }))
+          if (!result.ok) await releaseRetentionOffer(config.db, key)
+          else await markRetentionOfferApplied(config.db, key, now())
+          return result
         })
       },
     }
