@@ -138,7 +138,8 @@ export const signUpCopy: AuthSignUpConsentsCopy = {
     retry: "Reload",
   },
   done: { title: "You're all set", body: `Your account is ready.${NEXT_AFTER_SIGNUP.plan}`, label: NEXT_AFTER_SIGNUP.label, href: NEXT_AFTER_SIGNUP.href },
-  emailSent: { title: "Check your email", body: "Open the link in the email we sent to finish signing up." },
+  // CWE-203: 이미 있는 주소로 가입해도 같은 화면이다 — 새 주소는 확인 링크, 있는 주소는 로그인·재설정 안내가 메일로 간다
+  emailSent: { title: "Check your email", body: "Open the link in the email we sent to finish signing up. If you already have an account, that email tells you how to sign in." },
   signIn: { text: "Already have an account?", label: "Sign in", href: "/sign-in" },
   // A04: 약관·정책 링크는 새 탭에서 열어 가입 단계·입력값이 남는다 — 링크 이름에 그 사실을 붙인다
   newTab: "Opens in a new tab",
@@ -485,6 +486,11 @@ export const emailChoiceCopy = {
       body: `Someone signed up for ${PRODUCT_NAME} with your email address. If that wasn't you, delete the account. This can't be undone.`,
       button: "Delete that account",
     },
+    newsletter: {
+      title: "Confirm your subscription",
+      body: `Someone asked to get the ${PRODUCT_NAME} newsletter at this email address. If that was you, press the button to subscribe. If not, ignore this page and nothing will change.`,
+      button: "Confirm subscription",
+    },
   },
   result: {
     unsubscribed: {
@@ -493,6 +499,7 @@ export const emailChoiceCopy = {
     },
     confirmed: { title: "You're subscribed", body: "Thanks for confirming. We sent a short email with the date you agreed and a link to unsubscribe whenever you like." },
     kept: { title: "Thanks for confirming", body: "We'll keep sending you marketing emails. You can unsubscribe from any of them." },
+    already: { title: "You're already subscribed", body: "This subscription was confirmed before, so nothing changed. You can unsubscribe from any email we send." },
     withdrawn: { title: "You had already unsubscribed", body: "Nothing changed. We won't send you marketing emails." },
     removed: { title: "The account was deleted", body: "We deleted the account that was created with your email address." },
     left: { title: "We left that account as it is", body: "It was already confirmed, so we didn't delete it." },

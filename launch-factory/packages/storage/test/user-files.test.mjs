@@ -31,7 +31,7 @@ test("탈퇴 정리: 그 사람의 파일만 지울 때로 당기고, 파기 Cro
     assert.equal(t.ok, true)
     driver.objects.set(t.data.key, { size: 1000, contentType })
     assert.equal((await service.complete({ id: t.data.id }, { ip: `198.51.100.${++ip}`, userId, locale: "en" })).ok, true)
-    return t.data
+    return { ...t.data, key: (await rowOf(t.data.id)).key } // 끝낸 뒤 객체는 읽는 키(최종 키)에 있다
   }
   const mine = await upload("a", "attachment", "application/pdf", "내 서류.pdf")
   const avatar = await upload("a", "avatar", "image/png", "me.png")

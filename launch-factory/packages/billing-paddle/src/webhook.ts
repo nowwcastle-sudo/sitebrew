@@ -8,6 +8,7 @@
 // (https://developer.paddle.com/webhooks/about/how-webhooks-work.md 「Delivery guarantees」). 5초 안에 2xx 를 줘야 한다(https://developer.paddle.com/webhooks/about/respond-to-webhooks.md).
 import { createHash } from "node:crypto"
 import { recordWebhookEvent, type Database } from "@launch-factory/db"
+import { BodyTooLargeError, DEFAULT_WEBHOOK_BODY_BYTES, readBodyText } from "@launch-factory/security/body"
 import type { EventEntity } from "@paddle/paddle-node-sdk"
 import { customDataOf, CD, orderingKey, PROVIDER } from "./map.ts"
 import { planIdForPrice, planById } from "./plans.ts"
@@ -16,6 +17,8 @@ import { applyPaddleSubscription, paymentIssueOf, recipientOf, sendNotices, type
 export interface WebhookDeps extends SyncDeps {
   /** 알림 설정의 엔드포인트 비밀(PADDLE_WEBHOOK_SECRET — 운영자 할 일 O3) */
   webhookSecret: string
+  /** 웹훅 본문 상한(바이트). 기본 DEFAULT_WEBHOOK_BODY_BYTES(512KB) — 서명 검증 전에 이 이상은 읽지 않고 413 으로 답한다 */
+  maxBodyBytes?: number
 }
 
 /** 구독 상태를 다시 읽을 이벤트. 거래 이벤트는 data.subscription_id 로 그 구독을 다시 읽는다 */
@@ -102,8 +105,16 @@ async function verified(deps: WebhookDeps, raw: string, header: string): Promise
 /** Next 경로 처리기에서 그대로 쓴다: `export const POST = (req: Request) => handlePaddleWebhook(req, deps)` */
 export async function handlePaddleWebhook(req: Request, deps: WebhookDeps): Promise<Response> {
   const signature = req.headers.get("paddle-signature")
-  const raw = await req.text() // 원문 그대로 — 공백 하나라도 바뀌면 서명이 맞지 않는다
-  if (!signature || !raw) return json(401, { error: "invalid_signature" })
+  if (!signature) return json(401, { error: "invalid_signature" }) // 서명 머리가 없으면 본문을 읽지 않는다
+  let raw: string
+  try {
+    // 원문 그대로 — 공백 하나라도 바뀌면 서명이 맞지 않는다. 서명 검증 전이므로 상한까지만 읽는다(CWE-400)
+    raw = await readBodyText(req, deps.maxBodyBytes ?? DEFAULT_WEBHOOK_BODY_BYTES)
+  } catch (e) {
+    if (e instanceof BodyTooLargeError) return json(413, { error: "payload_too_large" })
+    raw = "" // 읽다 끊긴 요청 — 아래에서 401
+  }
+  if (!raw) return json(401, { error: "invalid_signature" })
   if (!deps.webhookSecret) {
     deps.log?.("[billing-paddle] PADDLE_WEBHOOK_SECRET is missing (owner action O3)")
     return json(500, { error: "webhook_secret_missing" })

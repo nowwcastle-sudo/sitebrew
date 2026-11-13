@@ -15,6 +15,7 @@
     "@launch-factory/contract": "0.0.0",
     "@launch-factory/db": "0.0.0",
     "@launch-factory/email": "0.0.0",
+    "@launch-factory/security": "0.0.0",
     "@paddle/paddle-node-sdk": "3.10.0",
     "drizzle-orm": "0.45.4"
   },

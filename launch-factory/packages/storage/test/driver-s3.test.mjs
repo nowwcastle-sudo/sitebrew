@@ -100,3 +100,31 @@ test("만들 때 잘못된 설정은 던진다(비밀값은 문구에 없다)", 
   assert.throws(() => createS3Driver({ ...base, secretAccessKey: "" }), /credentials/)
   assert.throws(() => createS3Driver({ ...base, publicBaseUrl: "not a url" }), /publicBaseUrl/)
 })
+
+test("head: ETag 머리가 있으면 etag 로 돌려준다", async () => {
+  const f = fetchOf(() => new Response(null, { status: 200, headers: { "content-length": "7", "content-type": "image/png", etag: '"abc123"' } }))
+  assert.deepEqual(await createS3Driver({ ...base, pathStyle: true, fetch: f }).head(KEY), { size: 7, contentType: "image/png", etag: '"abc123"' })
+})
+
+test("copy: PUT 서명 주소에 x-amz-copy-source 와 -if-match 를 서명해 보낸다 · 412 는 changed · 404 는 missing · 200 이어도 본문이 오류면 가른다", async () => {
+  const PENDING = "uploads/pending/0b9f3c2a-6c1d-4d57-9a53-0f3e7f6a1b2c.png"
+  const sent = []
+  const f = async (url, init) => {
+    sent.push({ url: String(url), method: init.method, headers: init.headers })
+    return new Response("<CopyObjectResult><ETag>\"e\"</ETag></CopyObjectResult>", { status: 200 })
+  }
+  const d = createS3Driver({ ...base, pathStyle: true, fetch: f })
+  assert.equal(await d.copy(PENDING, KEY, { ifMatch: '"abc123"' }), "copied")
+  assert.equal(sent[0].method, "PUT")
+  assert.deepEqual(sent[0].headers, { "x-amz-copy-source": `/mybucket/${PENDING}`, "x-amz-copy-source-if-match": '"abc123"' })
+  const u = new URL(sent[0].url)
+  assert.equal(u.pathname, `/mybucket/${KEY}`, "대상 키에 쓴다")
+  assert.equal(u.searchParams.get("X-Amz-SignedHeaders"), "host;x-amz-copy-source;x-amz-copy-source-if-match", "원본과 조건이 서명에 들어 있어 이 주소로 다른 원본을 복사할 수 없다")
+  const outcome = (response) => createS3Driver({ ...base, pathStyle: true, fetch: async () => response }).copy(PENDING, KEY, { ifMatch: '"abc123"' })
+  assert.equal(await outcome(new Response("<Error><Code>PreconditionFailed</Code></Error>", { status: 412 })), "changed")
+  assert.equal(await outcome(new Response("<Error><Code>NoSuchKey</Code></Error>", { status: 404 })), "missing")
+  assert.equal(await outcome(new Response("<Error><Code>PreconditionFailed</Code></Error>", { status: 200 })), "changed")
+  assert.equal(await outcome(new Response("<Error><Code>NoSuchKey</Code></Error>", { status: 200 })), "missing")
+  await assert.rejects(outcome(new Response("<Error><Code>InternalError</Code><Message>SUPERSECRET</Message></Error>", { status: 200 })), (e) => /error body/.test(e.message) && !e.message.includes("SUPERSECRET"))
+  await assert.rejects(outcome(new Response("denied", { status: 403 })), /status 403/)
+})

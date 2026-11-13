@@ -8,6 +8,7 @@ import { createRateLimiter } from "@launch-factory/security/rate-limit"
 import { createTurnstile } from "@launch-factory/security/turnstile"
 import { anonymizeUserReviews, createReviewsService } from "../src/index.ts"
 import { DUMMY_TOKEN, fakeSiteverify, TEST_SECRET_PASS } from "../../security/test/turnstile-fixtures.mjs"
+import { CHUNK, streamPost } from "../../security/test/body-fixtures.mjs"
 
 /** @type {Awaited<ReturnType<typeof db.local>>} */
 let d
@@ -408,4 +409,19 @@ test("listForModeration search: 제목·본문·작성자 이름에서 대소문
   assert.deepEqual(await find("50%"), ["Discount"])
   assert.deepEqual(await find("%"), ["Discount"], "와일드카드로 전부 찾지 않는다")
   assert.deepEqual(await find("nothing-like-this"), [])
+})
+
+test("본문 상한: 상한을 넘는 본문은 Content-Length 가 있으면 읽지 않고, 없으면(chunked) 상한 근처에서 끊고 413 — 설정으로 바꾼다", async () => {
+  const { svc } = setup()
+  const ip = freshIp()
+  const declared = streamPost(5_000_000, { headers: { "content-length": "5000000", "x-forwarded-for": ip } })
+  assert.equal((await svc.handler(declared.req)).status, 413)
+  assert.equal(declared.pulled(), 0, "선언 길이가 상한을 넘으면 한 바이트도 읽지 않는다")
+  const chunked = streamPost(5_000_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await svc.handler(chunked.req)).status, 413)
+  assert.ok(chunked.pulled() <= 64 * 1024 + CHUNK, `상한 근처에서 끊어야 한다: ${chunked.pulled()}`)
+  const small = setup({ maxBodyBytes: 2048 })
+  const s = streamPost(10_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await small.svc.handler(s.req)).status, 413)
+  assert.ok(s.pulled() <= 2048 + CHUNK)
 })

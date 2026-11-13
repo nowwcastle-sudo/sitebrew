@@ -318,6 +318,62 @@ test("cancelOrder: 환불하는 동안 주문이 배송 중으로 넘어가면 �
   assert.match(errors[0]?.message ?? "", /refunded at the provider/)
 })
 
+/** 공급자 환불이 문 앞에서 멈춰 선다 — 시험이 release 를 부를 때까지. started 는 환불이 시작됐다는 신호다 */
+function stalledGateway(gateway) {
+  let release
+  let started
+  const gate = new Promise((r) => (release = r))
+  const startedSignal = new Promise((r) => (started = r))
+  return { release: () => release(), started: startedSignal, cancel: async (...a) => (started(), await gate, gateway.cancel(...a)) }
+}
+
+test("cancelOrder: 환불이 나가는 동안 관리자가 배송으로 넘기려 하면 거절된다 — 환불과 배송이 둘 다 성립하지 않는다(경합 CWE-362)", async () => {
+  const { ctx, gateway, errors } = await setup()
+  const { order, payment } = await orderFor(ctx, "buyer", [["tote", 1]])
+  gateway.markPaid(payment.paymentId)
+  ok(await confirmPayment(ctx, { paymentId: payment.paymentId }))
+  ok(await advanceOrder(ctx, { orderId: order.id, to: "preparing" }))
+  const stall = stalledGateway(gateway)
+  const slow = withDefaults({ ...ctx, gateway: { prepare: gateway.prepare, verify: gateway.verify, cancel: stall.cancel } })
+  const canceling = cancelOrder(slow, { orderId: order.id, reason: "x", by: "admin" })
+  await stall.started // 공급자 환불 호출 도중
+  const ship = await advanceOrder(ctx, { orderId: order.id, to: "shipped", trackingNumber: "TRK-9" })
+  assert.deepEqual([ship.ok, ship.code, ship.status], [false, "invalid_transition", "preparing"], "취소 진행 중인 주문은 배송으로 못 간다")
+  stall.release()
+  const done = ok(await canceling)
+  assert.deepEqual([done.status, done.trackingNumber], ["refunded", null])
+  assert.equal((await gateway.verify(payment.paymentId)).status, "canceled")
+  assert.deepEqual(errors, [], "수동 처리 알림이 필요 없다")
+  assert.equal((await d.select().from(orders).where(eq(orders.id, order.id)))[0].refundClaim, null, "닫히면 예약표도 지워진다")
+})
+
+test("cancelOrder: 공급자가 환불을 거절하면 예약을 풀어 주문을 다시 배송할 수 있다(정상 고객이 막히지 않는다)", async () => {
+  const { ctx, gateway } = await setup()
+  const { order, payment } = await orderFor(ctx, "buyer", [["tote", 1]])
+  gateway.markPaid(payment.paymentId)
+  ok(await confirmPayment(ctx, { paymentId: payment.paymentId }))
+  ok(await advanceOrder(ctx, { orderId: order.id, to: "preparing" }))
+  const refusing = withDefaults({ ...ctx, gateway: { prepare: gateway.prepare, verify: gateway.verify, cancel: async () => ({ ok: false, code: "provider_error" }) } })
+  assert.equal((await cancelOrder(refusing, { orderId: order.id, reason: "x", by: "admin" })).code, "refund_failed")
+  assert.equal(ok(await advanceOrder(ctx, { orderId: order.id, to: "shipped", trackingNumber: "TRK-1" })).status, "shipped")
+})
+
+test("cancelOrder: 환불 호출이 던져 결과를 모르면 예약을 둔 채(배송 막힘) 알리고, 다시 취소를 부르면 같은 결과로 닫힌다(멱등)", async () => {
+  const { ctx, gateway, errors } = await setup()
+  const { order, payment } = await orderFor(ctx, "buyer", [["tote", 1]])
+  gateway.markPaid(payment.paymentId)
+  ok(await confirmPayment(ctx, { paymentId: payment.paymentId }))
+  // 공급자는 환불을 처리했는데 응답이 끊겼다
+  const lost = withDefaults({ ...ctx, gateway: { prepare: gateway.prepare, verify: gateway.verify, cancel: async (...a) => (await gateway.cancel(...a), Promise.reject(new Error("timeout"))) } })
+  assert.equal((await cancelOrder(lost, { orderId: order.id, reason: "x", by: "admin" })).code, "refund_failed")
+  assert.equal((await loadOrder(d, order.id)).status, "paid")
+  assert.match(errors.map((e) => e.message).join("|"), /refund outcome unknown/)
+  assert.equal((await advanceOrder(ctx, { orderId: order.id, to: "preparing" })).code, "invalid_transition", "환불됐는지 모르는 주문은 앞으로 밀리지 않는다")
+  const again = ok(await cancelOrder(ctx, { orderId: order.id, reason: "retry", by: "admin" }))
+  assert.equal(again.status, "refunded")
+  assert.equal(ok(await cancelOrder(ctx, { orderId: order.id, reason: "retry", by: "admin" })).status, "refunded", "또 불러도 같은 결과")
+})
+
 test("cancelOrder: 공급자에서 이미 취소된 결제(already_canceled)는 돈이 나간 것이므로 refunded 로 맞춘다 — 두 번 동시에 눌러도 한 번만 처리", async () => {
   const { ctx, gateway } = await setup()
   await d.execute(sql`delete from stock_levels where sku = 'pen'`)

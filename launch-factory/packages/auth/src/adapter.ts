@@ -139,7 +139,7 @@ export interface AuthIO {
 /** 어댑터가 쓰는 Better Auth 부분만(테스트에서 끼우기 쉽게) */
 export interface AuthHandlerLike {
   handler(request: Request): Promise<Response>
-  /** createAuth 가 붙이는 우리 설정. 없으면 기본(만 14세 확인 필수·reveal) */
+  /** createAuth 가 붙이는 우리 설정. 없으면(createAuth 가 만들지 않은 auth) 기본(만 14세 확인 필수·reveal) */
   lf?: LaunchAuthSettings
   options: { baseURL?: unknown; basePath?: string; plugins?: readonly { id: string }[]; socialProviders?: object; advanced?: { ipAddress?: { ipAddressHeaders?: readonly string[] } } }
 }

@@ -68,3 +68,16 @@ test("marketingReconfirm 은 광고가 아니다 — (광고) 표기도 광고 �
   assert.ok(!lines.join("\n").includes("(광고)"))
   assert.match(lines.join("\n"), /광고성 메일을 계속 받을지/)
 })
+
+test("authEmails.existingAccount: 로그인·재설정 링크와 받는 사람 언어가 입력으로 가고 렌더된다 — 링크 옵션이 없으면 메서드 자체가 없다(createAuth 가 안내 없이 숨기지 않고 reveal 로 남는다)", async () => {
+  const { sent, mailer } = capture()
+  const e = authEmails(mailer, { ...o, signInUrl: `${APP}/sign-in`, securityUrl: `${APP}/forgot-password` })
+  await e.existingAccount("owner@example.test", { id: "u1", locale: "ko" })
+  assert.equal(sent[0].template, "existingAccount")
+  assert.deepEqual([sent[0].input.locale, sent[0].input.signInUrl, sent[0].input.resetUrl], ["ko", `${APP}/sign-in`, `${APP}/forgot-password`])
+  const mail = await renderEmail(sent[0].template, sent[0].input)
+  assert.match(mail.subject, /이미 계정/)
+  assert.ok(mail.html.includes(`${APP}/sign-in`) && mail.html.includes(`${APP}/forgot-password`))
+  assert.equal("existingAccount" in authEmails(mailer, { ...o, securityUrl: `${APP}/forgot-password` }), false)
+  assert.equal("existingAccount" in authEmails(mailer, { ...o, signInUrl: `${APP}/sign-in` }), false)
+})

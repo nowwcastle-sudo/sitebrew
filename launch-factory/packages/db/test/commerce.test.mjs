@@ -53,7 +53,7 @@ test("표 네 개가 스키마에 있고 칸 이름이 계획과 같다", async 
   assert.deepEqual(await columns("cart_items"), ["product_id", "quantity", "user_id"])
   assert.deepEqual(await columns("order_items"), ["name", "order_id", "product_id", "quantity", "unit_amount"])
   assert.deepEqual(await columns("orders"), [
-    "address", "canceled_at", "created_at", "currency", "expires_at", "id", "paid_at", "payment_id", "shipping", "status", "subtotal", "total", "tracking_number", "user_id",
+    "address", "canceled_at", "created_at", "currency", "expires_at", "id", "paid_at", "payment_id", "refund_claim", "shipping", "status", "subtotal", "total", "tracking_number", "user_id",
   ])
   assert.equal(getTableConfig(stockLevels).name, "stock_levels")
 })

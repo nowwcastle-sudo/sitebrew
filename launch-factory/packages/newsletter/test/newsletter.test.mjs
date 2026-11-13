@@ -10,6 +10,7 @@ import { createRateLimiter, RATE_LIMIT_DEFAULTS } from "@launch-factory/security
 import { createTurnstile } from "@launch-factory/security/turnstile"
 import { createNewsletterHandlers, createNewsletterService, NEWSLETTER_CONSENT_VERSION, NEWSLETTER_RETENTION, newsletterLinks } from "../src/index.ts"
 import { DUMMY_TOKEN, fakeSiteverify, RECORDED, TEST_SECRET_PASS } from "../../security/test/turnstile-fixtures.mjs"
+import { CHUNK, streamPost } from "../../security/test/body-fixtures.mjs"
 
 /** @type {Awaited<ReturnType<typeof db.local>>} */
 let d
@@ -340,11 +341,12 @@ test("라우트 처리기: 확인·수신거부 GET 은 결과 쪽으로 303, �
   const get = (path, t) => new Request(`${BASE}${path}?t=${t}`)
   const loc = (res) => res.headers.get("location")
 
+  // 확인 링크 GET 은 상태를 바꾸지 않고 「구독 확인」 단추 쪽으로만 보낸다(메일 보안 프로그램의 미리 열기에 구독이 확정되면 안 된다)
   const ok = await handlers.confirm(get("/api/newsletter/confirm", confirm))
   assert.equal(ok.status, 303)
-  assert.equal(loc(ok), "/email?list=newsletter&r=confirmed")
+  assert.equal(loc(ok), `/email?list=newsletter&a=newsletter&t=${confirm}`)
   assert.equal(ok.headers.get("cache-control"), "no-store")
-  assert.equal(loc(await handlers.confirm(get("/api/newsletter/confirm", "garbage"))), "/email?list=newsletter&r=invalid")
+  assert.equal(loc(await handlers.confirm(new Request(`${BASE}/api/newsletter/confirm`))), "/email?list=newsletter&r=invalid", "토큰이 없으면 단추 없이 안 되는 링크 쪽")
 
   const unGet = await handlers.unsubscribe(get("/api/newsletter/unsubscribe", unsub))
   assert.equal(unGet.status, 303)
@@ -369,7 +371,72 @@ test("라우트 처리기: 확인·수신거부 GET 은 결과 쪽으로 303, �
   })()
   const postConfirm = await handlers.confirm(new Request(`${BASE}/api/newsletter/confirm?t=${another}`, { method: "POST" }))
   assert.equal(postConfirm.status, 200)
-  assert.deepEqual(await postConfirm.json(), { ok: true })
+  assert.deepEqual(await postConfirm.json(), { ok: true, changed: true })
+})
+
+// ── 확인 링크 GET 은 상태를 바꾸지 않는다(CWE-352) ───────────────────────────────
+
+const formPost = (t, extra = {}) => new Request(`${BASE}/api/newsletter/confirm`, { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded", ...extra }, body: new URLSearchParams({ t }).toString() })
+
+test("확인 링크를 GET 으로 열기만 하면(메일 보안 프로그램·미리보기) 구독이 확정되지 않고 환영 메일도 없다 — 몇 번을 열어도 같다", async () => {
+  const ctx = setup()
+  const handlers = createNewsletterHandlers(ctx.svc)
+  const email = freshEmail()
+  await ctx.svc.subscribe(form({ email }), { ip: freshIp() })
+  const token = confirmTokenFrom(ctx.sent("newsletterConfirm")[0])
+  for (let i = 0; i < 3; i++) {
+    const res = await handlers.confirm(new Request(`${BASE}/api/newsletter/confirm?t=${token}`))
+    assert.equal(res.status, 303)
+    assert.match(res.headers.get("location"), /[?&]a=newsletter&t=/, "확인 단추가 있는 쪽으로 보낸다")
+  }
+  const row = await rowOf(email)
+  assert.deepEqual([row.status, row.confirmedAt], ["pending", null])
+  assert.equal(ctx.sent("newsletterWelcome").length, 0)
+})
+
+test("사람이 링크 → 단추(POST)를 누르면 확정된다 · 같은 토큰을 다시 누르거나 다시 열어도 해가 없다(이미 확인됨, 환영 메일 한 통)", async () => {
+  const ctx = setup()
+  const handlers = createNewsletterHandlers(ctx.svc)
+  const email = freshEmail()
+  await ctx.svc.subscribe(form({ email }), { ip: freshIp() })
+  const token = confirmTokenFrom(ctx.sent("newsletterConfirm")[0])
+
+  const opened = await handlers.confirm(new Request(`${BASE}/api/newsletter/confirm?t=${token}`))
+  const buttonToken = new URL(opened.headers.get("location"), BASE).searchParams.get("t")
+  assert.equal(buttonToken, token, "쪽의 단추가 같은 토큰을 싣는다")
+
+  const first = await handlers.confirm(formPost(buttonToken, { "sec-fetch-site": "same-origin" }))
+  assert.equal(first.status, 303)
+  assert.equal(first.headers.get("location"), "/email?list=newsletter&r=confirmed")
+  assert.equal((await rowOf(email)).status, "subscribed")
+
+  const again = await handlers.confirm(formPost(buttonToken))
+  assert.equal(again.headers.get("location"), "/email?list=newsletter&r=already", "이미 확인됐다는 결과")
+  assert.equal((await handlers.confirm(new Request(`${BASE}/api/newsletter/confirm?t=${token}`))).status, 303, "확정 뒤 링크를 다시 열어도 쪽만 보인다")
+  const row = await rowOf(email)
+  assert.equal(row.status, "subscribed")
+  assert.equal(ctx.sent("newsletterWelcome").length, 1, "환영 메일은 한 통")
+})
+
+test("확인 POST: 만료·가짜 토큰은 거절, 다른 사이트에서 온 POST 는 403 이고 아무것도 바뀌지 않는다", async () => {
+  const ctx = setup()
+  const handlers = createNewsletterHandlers(ctx.svc)
+  const email = freshEmail()
+  await ctx.svc.subscribe(form({ email }), { ip: freshIp() })
+  const token = confirmTokenFrom(ctx.sent("newsletterConfirm")[0])
+
+  const cross = await handlers.confirm(formPost(token, { "sec-fetch-site": "cross-site" }))
+  assert.equal(cross.status, 403)
+  assert.equal((await rowOf(email)).status, "pending")
+  assert.equal((await handlers.confirm(formPost("garbage"))).headers.get("location"), "/email?list=newsletter&r=invalid")
+
+  ctx.now.tick(8 * day) // 확인 링크 기한 7일
+  const late = await handlers.confirm(formPost(token))
+  assert.equal(late.headers.get("location"), "/email?list=newsletter&r=invalid")
+  const json = await handlers.confirm(new Request(`${BASE}/api/newsletter/confirm?t=${token}`, { method: "POST" }))
+  assert.equal(json.status, 400)
+  assert.deepEqual(await json.json(), { ok: false, reason: "invalid" })
+  assert.equal((await rowOf(email)).status, "pending")
 })
 
 // ── 내보내기용 목록 · 파기 ──────────────────────────────────────────────────
@@ -443,4 +510,19 @@ test("서비스를 만들 때: 짧은 비밀·앱 주소 없음은 던진다 —
   assert.throws(() => createNewsletterService({ ...base, secret: SECRET, baseUrl: "" }), /baseUrl/)
   assert.throws(() => createNewsletterService({ ...base, secret: SECRET, baseUrl: BASE, productName: "" }), /productName/)
   assert.throws(() => createNewsletterService({ ...base, secret: SECRET, baseUrl: BASE, senderName: " " }), /senderName/)
+})
+
+test("본문 상한: 상한을 넘는 가입 본문은 Content-Length 가 있으면 읽지 않고, 없으면(chunked) 상한 근처에서 끊고 413 — 설정으로 바꾼다", async () => {
+  const { svc } = setup()
+  const ip = freshIp()
+  const handlers = createNewsletterHandlers(svc)
+  const declared = streamPost(5_000_000, { headers: { "content-length": "5000000", "x-forwarded-for": ip } })
+  assert.equal((await handlers.subscribe(declared.req)).status, 413)
+  assert.equal(declared.pulled(), 0, "선언 길이가 상한을 넘으면 한 바이트도 읽지 않는다")
+  const chunked = streamPost(5_000_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await handlers.subscribe(chunked.req)).status, 413)
+  assert.ok(chunked.pulled() <= 64 * 1024 + CHUNK, `상한 근처에서 끊어야 한다: ${chunked.pulled()}`)
+  const s = streamPost(10_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await createNewsletterHandlers(svc, { maxBodyBytes: 2048 }).subscribe(s.req)).status, 413)
+  assert.ok(s.pulled() <= 2048 + CHUNK)
 })

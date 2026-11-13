@@ -71,6 +71,7 @@
 - 등록 5 — 공개 읽기(avatar · image): 버킷 또는 공개 도메인이 읽기 공개여야 한다. CDN·공개 도메인을 쓰면 `STORAGE_PUBLIC_BASE_URL`.
 - 설정: 다섯 필수(`STORAGE_ENDPOINT` · `BUCKET` · `REGION` · `ACCESS_KEY_ID` · `SECRET_ACCESS_KEY`). R2·MinIO 는 `STORAGE_PATH_STYLE=true`. 종류별 상한·형식은 정책 표(`packages/storage/src/policy.ts`): avatar 2MB(로그인 필요) · image 5MB · attachment 10MB(비공개, 보유 365일).
 - 탈퇴: 전체 템플릿에서는 탈퇴한 사람의 파일이 장부에서 「지울 때」로 당겨지고 파기 직후와 파일 Cron 에서 객체가 지워진다.
+- 임시 키·복사: 브라우저는 임시 키(`uploads/pending/<id>.<확장자>`)에 PUT 한다. 끝내기가 그 객체의 크기·형식을 확인하고 ETag 가 그대로일 때만 서버만 아는 읽는 키(`<종류>/<연도>/<새 uuid>.<확장자>`)로 복사한 뒤 임시 객체를 지운다. 그래서 올리기 주소(15분)가 남아 있어도 끝낸 파일은 바뀌지 않고, 검사~복사 사이에 바뀌면 끝내기가 실패한다(다시 끝내면 바뀐 내용을 처음부터 검사한다). 전용 키에 객체 읽기·쓰기·삭제(복사 = 임시 키 읽기 + 읽는 키 쓰기)가 있어야 하고, 버킷 수명 규칙으로 `uploads/pending/` 접두사를 1일 뒤 지우게 해 두면 못 지운 임시 객체가 남지 않는다. 공개 읽기 정책은 임시 키에 닿지 않게 `avatar/` · `image/` 접두사로 한정하는 편이 낫다. 복사를 지원하지 않는 사용자 정의 드라이버(`StorageDriver.copy` 없음)는 임시 키 없이 PUT 키 = 읽는 키로 동작하며 올리기 주소 재사용을 막지 못한다. 기본 S3 호환 드라이버(AWS S3 · R2 · MinIO)와 로컬 드라이버는 복사를 지원한다. 이 방식 이전에 만든 파일(읽는 키 = PUT 키)은 그대로 내려받는다.
 - 확인: 로그인 → 작은 이미지 올리기 → 티켓 → 저장소에 객체가 생김 → 끝내기 → 주소로 보임. 올리기 단추가 안 나오거나 503 이면 STORAGE 다섯 개 중 빈 값을 본다. 브라우저 콘솔에 CORS 오류가 나면 등록 4.
 - 막힘: `storage.notUploaded`(끝내기가 먼저 불림) → 업로드 PUT 이 실패한 것(CORS·서명 시계 어긋남). 속인 크기·형식은 객체가 지워지고 거절된다.
 
@@ -79,7 +80,7 @@
 - 등록: 새 계정 없음. `G-email` 의 Resend 계정과 인증한 도메인(`EMAIL_FROM`)이 먼저 있어야 확인 메일이 나간다. 봇 확인은 Turnstile.
 - 동의: 체크박스는 **미리 체크하지 않는다**(정보통신망법 제50조). 문구를 고치면 `NEWSLETTER_CONSENT_VERSION` 판을 올린다 — 동의한 때의 판이 구독자 행에 남는다.
 - 흐름: 신청 → 확인 메일(이중 동의) → 링크 확인 → 구독 시작 안내 메일. 이미 구독 중인 주소도 같은 응답(존재 여부를 알리지 않는다).
-- 링크: 확인·수신거부 링크는 `BETTER_AUTH_SECRET` 에서 파생한 서명으로 만든다. 메일 보안 프로그램이 링크를 미리 열면 확인이 사람 손 전에 끝날 수 있다 — 필요하면 `/email` 쪽이 단추를 보이고 POST 하게 한다(항목 문서 4항).
+- 링크: 확인·수신거부 링크는 `BETTER_AUTH_SECRET` 에서 파생한 서명으로 만든다. 확인 링크를 GET 으로 열기만 해서는 구독이 확정되지 않는다(메일 보안 프로그램이 링크를 미리 열어도 같다) — `/email` 쪽이 「구독 확인」 단추를 보이고, 사람이 누르면 POST 로 확정한다(항목 문서 4항).
 - 보내기: 이 모듈의 일이 아니다. 서비스의 구독자 목록(`unsubscribeUrl` 포함)을 보내는 도구에 넘기고, 보내는 도구가 메일마다 본문 링크와 `List-Unsubscribe` 헤더(원클릭)에 수신거부 주소를 단다. 제목 「(광고)」 · 전송자 표시 · 사업자 정보는 보내는 쪽 몫이다.
 - 확인: 시험 주소로 신청 → 확인 메일 수신 → 링크 → 구독 완료 → 같은 주소로 다시 신청해도 같은 화면. 메일이 안 오면 `G-email`(키·도메인 인증)을 본다.
 
@@ -154,6 +155,7 @@ Already in the template `vercel.json`. Add these by hand only to an installed ap
 - Register 5 — public reads (avatar, image): the bucket or a public domain must allow public reads. With a CDN or public domain, set `STORAGE_PUBLIC_BASE_URL`.
 - Config: the five required names (`STORAGE_ENDPOINT`, `BUCKET`, `REGION`, `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY`). R2 and MinIO need `STORAGE_PATH_STYLE=true`. Limits per kind are in the policy table (`packages/storage/src/policy.ts`): avatar 2 MB (sign-in required), image 5 MB, attachment 10 MB (private, kept 365 days).
 - Account deletion: in the full template a deleted user's files are moved to "delete now" in the ledger; objects go right after the purge and in the file Cron.
+- Temporary key and copy: the browser PUTs to a temporary key (`uploads/pending/<id>.<extension>`). Complete checks that object's size and type, then copies it only if its ETag is unchanged to the read key only the server knows (`<kind>/<year>/<new uuid>.<extension>`), and deletes the temporary object. So the upload address (15 minutes) cannot change a finished file, and a swap between the check and the copy makes complete fail (calling it again checks the new content from the start). The dedicated key needs object read, write and delete (a copy reads the temporary key and writes the read key). Add a bucket lifecycle rule that expires the `uploads/pending/` prefix after 1 day so a temporary object that could not be deleted does not stay. Limit public-read policy to the `avatar/` and `image/` prefixes so it never reaches temporary keys. A custom driver without `StorageDriver.copy` works without a temporary key (PUT key = read key) and cannot stop reuse of the upload address. The built-in S3-compatible driver (AWS S3, R2, MinIO) and the local driver support copy. Files made before this change (read key = PUT key) are still downloaded as before.
 - Check: sign in → upload a small image → ticket → the object appears in the bucket → complete → the address shows it. No upload button or a 503 means a blank among the five STORAGE names. A CORS error in the browser console means register 4.
 - Stuck: `storage.notUploaded` (complete called first) → the PUT failed (CORS or signing clock skew). A forged size or type gets the object deleted and the request rejected.
 
@@ -162,6 +164,6 @@ Already in the template `vercel.json`. Add these by hand only to an installed ap
 - Register: no new account. The `G-email` Resend account and a verified domain (`EMAIL_FROM`) must exist first or confirmation mail is not sent. Bot check is Turnstile.
 - Consent: the checkbox is **never pre-checked** (Korean Network Act art. 50). When you change the wording, bump `NEWSLETTER_CONSENT_VERSION` — the version consented to is stored on the subscriber row.
 - Flow: request → confirmation mail (double opt-in) → click → welcome mail. A request for an address that already subscribes gets the same response (existence is not revealed).
-- Links: confirm and unsubscribe links are signed with a secret derived from `BETTER_AUTH_SECRET`. A mail scanner that opens links first can confirm before a human clicks — if needed, make `/email` show a button that POSTs (item doc, point 4).
+- Links: confirm and unsubscribe links are signed with a secret derived from `BETTER_AUTH_SECRET`. Opening a confirm link (GET) does not subscribe anyone, so a mail scanner that opens links first cannot confirm for you — `/email` shows a 'Confirm subscription' button and the POST behind it subscribes (item doc, point 4).
 - Sending: not this module's job. Pass the service's subscriber list (with `unsubscribeUrl`) to your sending tool, which puts the unsubscribe address in each body link and in the `List-Unsubscribe` header (one-click). The "(광고)" subject prefix, sender identification and business details are the sender's duty.
 - Check: subscribe a test address → confirmation mail arrives → click → subscribed → subscribe the same address again and see the same screen. No mail → check `G-email` (key, domain verification).
