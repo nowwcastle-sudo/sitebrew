@@ -39,6 +39,8 @@ export interface PaddleBillingConfig {
   env?: PaddleEnv
   apiKey?: string
   webhookSecret?: string
+  /** 웹훅 본문 상한(바이트). 기본 512KB — 서명 검증 전에 이 이상은 읽지 않고 413 */
+  maxWebhookBodyBytes?: number
   /** 테스트·다른 구성 주입용. 주면 apiKey·env 로 만들지 않는다(그래도 env 검사는 한다) */
   paddle?: PaddleClient
   retentionOffers?: readonly RetentionOffer[]
@@ -378,7 +380,7 @@ export function paddleBilling(config: PaddleBillingConfig) {
     port,
     plans: config.plans,
     /** Next 경로 처리기: `export const POST = (req: Request) => billing.handleWebhook(req)` */
-    handleWebhook: (req: Request) => handlePaddleWebhook(req, { ...deps, webhookSecret: config.webhookSecret ?? "" }),
+    handleWebhook: (req: Request) => handlePaddleWebhook(req, { ...deps, webhookSecret: config.webhookSecret ?? "", ...(config.maxWebhookBodyBytes !== undefined ? { maxBodyBytes: config.maxWebhookBodyBytes } : {}) }),
     /** Vercel Cron 경로에서 부른다(schedule.ts) */
     runScheduledChanges: (at: Date = now()): Promise<ScheduleReport> => runScheduledChanges(deps, at, scheduleOptions),
     schedulePriceChange,

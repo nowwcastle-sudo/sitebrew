@@ -10,6 +10,7 @@ import { createRateLimiter, RATE_LIMIT_DEFAULTS } from "@launch-factory/security
 import { createTurnstile } from "@launch-factory/security/turnstile"
 import { createNewsletterHandlers, createNewsletterService, NEWSLETTER_CONSENT_VERSION, NEWSLETTER_RETENTION, newsletterLinks } from "../src/index.ts"
 import { DUMMY_TOKEN, fakeSiteverify, RECORDED, TEST_SECRET_PASS } from "../../security/test/turnstile-fixtures.mjs"
+import { CHUNK, streamPost } from "../../security/test/body-fixtures.mjs"
 
 /** @type {Awaited<ReturnType<typeof db.local>>} */
 let d
@@ -509,4 +510,19 @@ test("서비스를 만들 때: 짧은 비밀·앱 주소 없음은 던진다 —
   assert.throws(() => createNewsletterService({ ...base, secret: SECRET, baseUrl: "" }), /baseUrl/)
   assert.throws(() => createNewsletterService({ ...base, secret: SECRET, baseUrl: BASE, productName: "" }), /productName/)
   assert.throws(() => createNewsletterService({ ...base, secret: SECRET, baseUrl: BASE, senderName: " " }), /senderName/)
+})
+
+test("본문 상한: 상한을 넘는 가입 본문은 Content-Length 가 있으면 읽지 않고, 없으면(chunked) 상한 근처에서 끊고 413 — 설정으로 바꾼다", async () => {
+  const { svc } = setup()
+  const ip = freshIp()
+  const handlers = createNewsletterHandlers(svc)
+  const declared = streamPost(5_000_000, { headers: { "content-length": "5000000", "x-forwarded-for": ip } })
+  assert.equal((await handlers.subscribe(declared.req)).status, 413)
+  assert.equal(declared.pulled(), 0, "선언 길이가 상한을 넘으면 한 바이트도 읽지 않는다")
+  const chunked = streamPost(5_000_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await handlers.subscribe(chunked.req)).status, 413)
+  assert.ok(chunked.pulled() <= 64 * 1024 + CHUNK, `상한 근처에서 끊어야 한다: ${chunked.pulled()}`)
+  const s = streamPost(10_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await createNewsletterHandlers(svc, { maxBodyBytes: 2048 }).subscribe(s.req)).status, 413)
+  assert.ok(s.pulled() <= 2048 + CHUNK)
 })

@@ -7,12 +7,15 @@
 //                POST  RFC 8058 한 번에 수신거부(List-Unsubscribe-Post) → 쿠키·로그인 없이 JSON 200/400
 // GET 으로 상태를 바꾸는 것은 메일 보안 프로그램의 미리 열기에 취약하다(CWE-352) — 그래서 확인은 GET 이 아니라 단추(POST)가 확정한다. 수신거부는 늘 멱등이라 GET 으로 해도 해가 없다. HEAD 는 아무것도 하지 않는다.
 import { isLocale, type Locale } from "@launch-factory/i18n"
+import { BodyTooLargeError, DEFAULT_FORM_BODY_BYTES, payloadTooLarge, readFormInput } from "@launch-factory/security/body"
 import { blockedResponse, type LaunchActionResult, type LaunchFailure } from "@launch-factory/security/protect"
 import type { NewsletterService, SubmitContext } from "./service.ts"
 
 export interface NewsletterHandlersOptions {
   /** 링크를 누른 뒤 가는 쪽 경로. 기본 "/email" — 결과는 `?list=newsletter&r=confirmed|already|invalid|withdrawn|unsubscribed`, 확인 링크를 열면 `?list=newsletter&a=newsletter&t=<토큰>`(확인 단추 쪽)을 붙인다 */
   resultPath?: string
+  /** 가입 요청 본문 상한(바이트). 기본 64KB — 이보다 큰 본문은 읽기를 끊고 413 */
+  maxBodyBytes?: number
 }
 
 export interface NewsletterHandlers {
@@ -41,6 +44,7 @@ export function toResponse(result: LaunchActionResult<unknown>, locale: Locale =
 
 export function createNewsletterHandlers(service: NewsletterService, options: NewsletterHandlersOptions = {}): NewsletterHandlers {
   const resultPath = options.resultPath ?? "/email"
+  const maxBodyBytes = options.maxBodyBytes ?? DEFAULT_FORM_BODY_BYTES
   const redirect = (r: string): Response => new Response(null, { status: 303, headers: { location: `${resultPath}?list=newsletter&r=${r}`, ...NO_STORE } })
   const tokenOf = (request: Request): string | null => new URL(request.url).searchParams.get("t")
 
@@ -49,9 +53,10 @@ export function createNewsletterHandlers(service: NewsletterService, options: Ne
       if (request.method !== "POST") return methodNotAllowed("POST")
       let input: Record<string, unknown> | FormData
       try {
-        input = (request.headers.get("content-type") ?? "").includes("application/json") ? ((await request.json()) as Record<string, unknown>) : await request.formData()
-      } catch {
-        input = {}
+        input = await readFormInput(request, maxBodyBytes) // 상한까지만 읽는다(CWE-400)
+      } catch (e) {
+        if (e instanceof BodyTooLargeError) return payloadTooLarge()
+        throw e
       }
       const result = await service.subscribe(input, { ...ctx, headers: request.headers })
       return toResponse(result, isLocale(ctx.locale) ? ctx.locale : "en")

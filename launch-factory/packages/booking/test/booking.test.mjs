@@ -10,6 +10,7 @@ import { createRateLimiter } from "@launch-factory/security/rate-limit"
 import { createTurnstile } from "@launch-factory/security/turnstile"
 import { BOOKING_RATE_RULES, createBookingService } from "../src/index.ts"
 import { sampleConfig } from "./fixtures.mjs"
+import { CHUNK, streamPost } from "../../security/test/body-fixtures.mjs"
 
 /** @type {Awaited<ReturnType<typeof db.local>>} */
 let d
@@ -508,4 +509,19 @@ test("메일 로그 줄에는 연락처 전체가 찍히지 않는다", async ()
   assert.equal(r.ok, true)
   assert.ok(lines.length > 0)
   assert.ok(!lines.join("\n").includes("010-4444-5555"))
+})
+
+test("본문 상한: 상한을 넘는 본문은 Content-Length 가 있으면 읽지 않고, 없으면(chunked) 상한 근처에서 끊고 413 — 설정으로 바꾼다", async () => {
+  const { svc } = setup()
+  const ip = freshIp()
+  const declared = streamPost(5_000_000, { headers: { "content-length": "5000000", "x-forwarded-for": ip } })
+  assert.equal((await svc.handler(declared.req)).status, 413)
+  assert.equal(declared.pulled(), 0, "선언 길이가 상한을 넘으면 한 바이트도 읽지 않는다")
+  const chunked = streamPost(5_000_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await svc.handler(chunked.req)).status, 413)
+  assert.ok(chunked.pulled() <= 64 * 1024 + CHUNK, `상한 근처에서 끊어야 한다: ${chunked.pulled()}`)
+  const small = setup({ maxBodyBytes: 2048 })
+  const s = streamPost(10_000, { headers: { "x-forwarded-for": ip } })
+  assert.equal((await small.svc.handler(s.req)).status, 413)
+  assert.ok(s.pulled() <= 2048 + CHUNK)
 })
