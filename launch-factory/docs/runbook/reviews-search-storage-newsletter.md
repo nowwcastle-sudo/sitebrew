@@ -79,7 +79,7 @@
 - 등록: 새 계정 없음. `G-email` 의 Resend 계정과 인증한 도메인(`EMAIL_FROM`)이 먼저 있어야 확인 메일이 나간다. 봇 확인은 Turnstile.
 - 동의: 체크박스는 **미리 체크하지 않는다**(정보통신망법 제50조). 문구를 고치면 `NEWSLETTER_CONSENT_VERSION` 판을 올린다 — 동의한 때의 판이 구독자 행에 남는다.
 - 흐름: 신청 → 확인 메일(이중 동의) → 링크 확인 → 구독 시작 안내 메일. 이미 구독 중인 주소도 같은 응답(존재 여부를 알리지 않는다).
-- 링크: 확인·수신거부 링크는 `BETTER_AUTH_SECRET` 에서 파생한 서명으로 만든다. 메일 보안 프로그램이 링크를 미리 열면 확인이 사람 손 전에 끝날 수 있다 — 필요하면 `/email` 쪽이 단추를 보이고 POST 하게 한다(항목 문서 4항).
+- 링크: 확인·수신거부 링크는 `BETTER_AUTH_SECRET` 에서 파생한 서명으로 만든다. 확인 링크를 GET 으로 열기만 해서는 구독이 확정되지 않는다(메일 보안 프로그램이 링크를 미리 열어도 같다) — `/email` 쪽이 「구독 확인」 단추를 보이고, 사람이 누르면 POST 로 확정한다(항목 문서 4항).
 - 보내기: 이 모듈의 일이 아니다. 서비스의 구독자 목록(`unsubscribeUrl` 포함)을 보내는 도구에 넘기고, 보내는 도구가 메일마다 본문 링크와 `List-Unsubscribe` 헤더(원클릭)에 수신거부 주소를 단다. 제목 「(광고)」 · 전송자 표시 · 사업자 정보는 보내는 쪽 몫이다.
 - 확인: 시험 주소로 신청 → 확인 메일 수신 → 링크 → 구독 완료 → 같은 주소로 다시 신청해도 같은 화면. 메일이 안 오면 `G-email`(키·도메인 인증)을 본다.
 
@@ -162,6 +162,6 @@ Already in the template `vercel.json`. Add these by hand only to an installed ap
 - Register: no new account. The `G-email` Resend account and a verified domain (`EMAIL_FROM`) must exist first or confirmation mail is not sent. Bot check is Turnstile.
 - Consent: the checkbox is **never pre-checked** (Korean Network Act art. 50). When you change the wording, bump `NEWSLETTER_CONSENT_VERSION` — the version consented to is stored on the subscriber row.
 - Flow: request → confirmation mail (double opt-in) → click → welcome mail. A request for an address that already subscribes gets the same response (existence is not revealed).
-- Links: confirm and unsubscribe links are signed with a secret derived from `BETTER_AUTH_SECRET`. A mail scanner that opens links first can confirm before a human clicks — if needed, make `/email` show a button that POSTs (item doc, point 4).
+- Links: confirm and unsubscribe links are signed with a secret derived from `BETTER_AUTH_SECRET`. Opening a confirm link (GET) does not subscribe anyone, so a mail scanner that opens links first cannot confirm for you — `/email` shows a 'Confirm subscription' button and the POST behind it subscribes (item doc, point 4).
 - Sending: not this module's job. Pass the service's subscriber list (with `unsubscribeUrl`) to your sending tool, which puts the unsubscribe address in each body link and in the `List-Unsubscribe` header (one-click). The "(광고)" subject prefix, sender identification and business details are the sender's duty.
 - Check: subscribe a test address → confirmation mail arrives → click → subscribed → subscribe the same address again and see the same screen. No mail → check `G-email` (key, domain verification).

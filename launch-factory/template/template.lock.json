@@ -890,7 +890,7 @@
     {
       "path": "app/api/newsletter/confirm/route.ts",
       "from": "launch-factory",
-      "sha256": "4f0a186a8608b897e4865fb5e39c284aea3d7325017061d673eec408815a240c"
+      "sha256": "9a09132fa05fc4a388e45c72875839f4e9668962d20de0af6dfd9db2ecbc47c1"
     },
     {
       "path": "app/api/newsletter/route.ts",
