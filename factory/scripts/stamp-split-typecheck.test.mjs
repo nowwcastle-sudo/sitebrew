@@ -8,24 +8,18 @@ import { join } from 'node:path'
 import { root } from './lib/stamp-site-fixtures.mjs'
 import { nextBuild } from '../stamp/site-install.mjs'
 
-const win = process.platform === 'win32'
 const TMP = join(root, '.tmp', 'stamp-split-typecheck-test')
 
 function fakeSite(tscExit) {
   mkdirSync(TMP, { recursive: true })
   const dir = mkdtempSync(join(TMP, 'site-'))
-  const bin = join(dir, 'node_modules', '.bin')
-  mkdirSync(bin, { recursive: true })
   writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'fake', version: '0.0.0', scripts: { build: 'node build.mjs' } }))
   writeFileSync(join(dir, 'build.mjs'), "import { appendFileSync } from 'node:fs'\nappendFileSync('calls.txt', `build skip=${process.env.WF_BUILD_SKIP_TYPECHECK ?? ''}\\n`)\n")
-  if (win) {
-    writeFileSync(join(bin, 'next.cmd'), '@echo off\r\necho next %* >> calls.txt\r\nexit /b 0\r\n')
-    writeFileSync(join(bin, 'tsc.cmd'), `@echo off\r\necho tsc %* >> calls.txt\r\nexit /b ${tscExit}\r\n`)
-  } else {
-    // Linux·macOS(P3-8 이식성): 같은 가짜 껍데기를 실행 파일(sh)로 둔다 — nextBuild 는 따옴표 친 `.bin/next` 경로를 sh 로 부른다.
-    writeFileSync(join(bin, 'next'), '#!/bin/sh\necho "next $*" >> calls.txt\nexit 0\n', { mode: 0o755 })
-    writeFileSync(join(bin, 'tsc'), `#!/bin/sh\necho "tsc $*" >> calls.txt\nexit ${tscExit}\n`, { mode: 0o755 })
-  }
+  // 보안 수정 B: nextBuild 는 셸·.bin 껍데기 없이 패키지 진입 파일(next/dist/bin/next·typescript/bin/tsc)을 node 로 부른다 — 가짜도 그 자리에 JS 로 둔다(윈도우·POSIX 공통).
+  const fake = (name, exit) => `const { appendFileSync } = require('node:fs')\nappendFileSync('calls.txt', ${JSON.stringify(name)} + ' ' + process.argv.slice(2).join(' ') + '\\n')\nprocess.exit(${exit})\n`
+  const entry = (rel, body) => { const f = join(dir, 'node_modules', ...rel); mkdirSync(join(f, '..'), { recursive: true }); writeFileSync(f, body) }
+  entry(['next', 'dist', 'bin', 'next'], fake('next', 0))
+  entry(['typescript', 'bin', 'tsc'], fake('tsc', tscExit))
   return dir
 }
 const calls = (dir) => (existsSync(join(dir, 'calls.txt')) ? readFileSync(join(dir, 'calls.txt'), 'utf8').split(/\r?\n/).map((l) => l.trim()).filter(Boolean) : [])

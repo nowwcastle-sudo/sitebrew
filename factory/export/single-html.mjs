@@ -15,6 +15,7 @@ import { createServer } from 'node:http'
 import { dirname, extname, join, posix, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { connect, navigateAndWait, startChrome } from '../qa/cdp.mjs'
+import { childEnv, maskEnvSecrets } from '../lib/secret-env.mjs'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const req = createRequire(join(ROOT, 'package.json'))
@@ -263,10 +264,11 @@ export async function staticExportBuild(siteDir, log) {
     }
     const code = await new Promise((res) => {
       const out = []
-      const p = spawn('npm run build', { cwd: siteDir, shell: true, env: { ...process.env, WF_STATIC_EXPORT: '1', NEXT_PUBLIC_WF_STATIC: '1' } })
+      // 사이트 빌드는 신뢰하지 않는 코드다 — 키 이름을 뺀 환경으로 돌리고, 로그에는 가린 출력만 남긴다(보안 수정 A)
+      const p = spawn('npm run build', { cwd: siteDir, shell: true, env: childEnv({ WF_STATIC_EXPORT: '1', NEXT_PUBLIC_WF_STATIC: '1' }) })
       p.stdout.on('data', (d) => out.push(d))
       p.stderr.on('data', (d) => out.push(d))
-      p.on('close', (c) => { try { mkdirSync(dirname(log), { recursive: true }); writeFileSync(log, Buffer.concat(out)) } catch {} res(c) })
+      p.on('close', (c) => { try { mkdirSync(dirname(log), { recursive: true }); writeFileSync(log, maskEnvSecrets(Buffer.concat(out).toString('utf8'))) } catch {} res(c) })
     })
     return { code, seconds: Math.round((Date.now() - t0) / 100) / 10, log }
   } finally {

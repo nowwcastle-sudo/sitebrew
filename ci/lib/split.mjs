@@ -51,6 +51,7 @@ export const CHROME_TOOL_EXEMPT = {
   'factory/scripts/stamp-qfix3-perf-env.test.mjs': 'ops-gate.mjs 의 순수 판정 함수(lhrToChecks)와 가짜 LHR 만 부른다',
   'factory/scripts/stamp-csp.test.mjs': 'ops-gate.mjs 의 순수 도우미만 부른다',
   'factory/scripts/stamp-export.test.mjs': '순수 변환만 돌고 실제 내보내기(Chrome)는 STAMP_EXPORT_REAL=1 일 때만이다',
+  'factory/scripts/security-child-env.test.mjs': 'single-html.mjs 의 staticExportBuild(가짜 package.json build 스크립트를 npm 으로 돌린다)만 부르고 Chrome 비교는 부르지 않는다',
   'factory/scripts/stamp-qa.test.mjs': '관문 도구 자리에 가짜 함수를 넣어 배선만 본다',
 }
 

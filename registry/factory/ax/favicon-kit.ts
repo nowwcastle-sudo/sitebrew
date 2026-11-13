@@ -1,5 +1,6 @@
 import type { MetadataRoute, Viewport } from "next"
 import { toHex } from "@/registry/factory/ax/brand-color"
+import { inspectMarkSvg } from "@/registry/factory/ax/svg-allowlist"
 
 /**
  * 파비콘 세트 계획(파일 목록). 원천은 브랜드 표지 SVG 하나 — 칠할 곳은 `currentColor` 로 적는다(레시피 색으로 칠한다).
@@ -30,19 +31,15 @@ export interface FaviconColors {
 export const MASKABLE_SAFE_RADIUS = 0.4
 const MASKABLE_BOX = (2 * MASKABLE_SAFE_RADIUS) / Math.SQRT2
 
-const BAD = /<script|<foreignObject|\son[a-z]+\s*=|(?:xlink:)?href\s*=\s*["'](?!#)/i
-
-/** 표지 SVG 를 읽는다: 바깥 <svg> 의 viewBox 와 안쪽 내용. 스크립트·이벤트 속성·외부 참조는 거절한다. */
+/** 표지 SVG 를 읽는다: 바깥 <svg> 의 viewBox 와 안쪽 내용. 허용 목록(`svg-allowlist`) 밖의 요소·속성(스크립트·애니메이션·링크·스타일·이벤트·외부 참조)은 거절한다. */
 export function parseMark(svg: string): { viewBox: string; inner: string } {
-  const m = svg.trim().match(/^(?:<\?xml[^>]*>\s*)?<svg\b([^>]*)>([\s\S]*)<\/svg>\s*$/i)
-  if (!m) throw new Error("faviconSet: <svg>…</svg> 하나로 된 표지가 아닙니다")
-  if (BAD.test(svg)) throw new Error("faviconSet: 표지 SVG 에 스크립트·이벤트 속성·외부 참조를 쓸 수 없습니다")
-  const vb = m[1].match(/viewBox\s*=\s*["']([^"']+)["']/i)
-  if (!vb) throw new Error("faviconSet: 표지 SVG 에 viewBox 가 필요합니다")
-  const [, , w, h] = vb[1].trim().split(/[\s,]+/).map(Number)
-  if (!(w > 0 && h > 0)) throw new Error(`faviconSet: viewBox 가 올바르지 않습니다 — ${vb[1]}`)
-  if (!/currentColor/i.test(m[2])) throw new Error("faviconSet: 칠할 곳을 currentColor 로 적어야 레시피 색으로 칠할 수 있습니다")
-  return { viewBox: vb[1].trim(), inner: m[2] }
+  const r = inspectMarkSvg(svg)
+  if (!r.ok) throw new Error(`faviconSet: 표지 SVG 가 허용 목록을 벗어났습니다 — ${r.reason}`)
+  if (!r.viewBox) throw new Error("faviconSet: 표지 SVG 에 viewBox 가 필요합니다")
+  const [, , w, h] = r.viewBox.trim().split(/[\s,]+/).map(Number)
+  if (!(w > 0 && h > 0)) throw new Error(`faviconSet: viewBox 가 올바르지 않습니다 — ${r.viewBox}`)
+  if (!/currentColor/i.test(r.inner)) throw new Error("faviconSet: 칠할 곳을 currentColor 로 적어야 레시피 색으로 칠할 수 있습니다")
+  return { viewBox: r.viewBox.trim(), inner: r.inner }
 }
 
 /** 표지를 한 변 size 정사각형 가운데에 box 비율로 놓는다(비율 유지). bg 가 있으면 바탕을 깐다. */

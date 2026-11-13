@@ -30,9 +30,13 @@ const OPTIONS = {
   'allow-mock': { type: 'boolean' },
   lang: { type: 'string' },
   kind: { type: 'string' },
+  session: { type: 'string' },
 }
 
-/** argv 를 { command, site?, provider, minutes, allowMock, lang, kind } 로. providers 는 알려진 공급자 id 목록. */
+/** 세션 id: 입구 CLI 가 만든 UUID 모양(데몬에게만 넘기는 내부 값) */
+const SESSION_ID = /^[0-9a-f-]{8,64}$/
+
+/** argv 를 { command, site?, provider, minutes, allowMock, lang, kind, sessionId? } 로. providers 는 알려진 공급자 id 목록. */
 export function parseCliArgs(argv, { providerIds }) {
   let parsed
   try {
@@ -57,5 +61,6 @@ export function parseCliArgs(argv, { providerIds }) {
   if (!/^\d+$/.test(v.minutes ?? '0') || !Number.isInteger(minutes) || minutes < MIN_MINUTES || minutes > MAX_MINUTES) {
     throw new ArgError(`--minutes must be an integer from ${MIN_MINUTES} to ${MAX_MINUTES}: ${JSON.stringify(v.minutes)}`)
   }
-  return { command, site: v.site ? resolve(v.site) : undefined, provider, minutes, allowMock: v['allow-mock'] === true, lang, kind }
+  if (v.session !== undefined && (command !== 'serve' || !SESSION_ID.test(v.session))) throw new ArgError(`--session is only for the internal serve command and must be a UUID: ${JSON.stringify(v.session)}`)
+  return { command, site: v.site ? resolve(v.site) : undefined, provider, minutes, allowMock: v['allow-mock'] === true, lang, kind, sessionId: v.session }
 }

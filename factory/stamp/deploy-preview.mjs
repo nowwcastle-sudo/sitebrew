@@ -8,7 +8,8 @@
 import { spawn } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { maskSecrets, readSecret } from '../lib/secret-env.mjs'
+import { childEnv, maskSecrets, readSecret } from '../lib/secret-env.mjs'
+import { trustedCommand } from '../lib/trusted-bin.mjs'
 
 export const DEFAULT_PROJECT = 'wf-preview'
 const PROJECT = /^[a-z0-9][a-z0-9._-]{0,99}$/
@@ -26,20 +27,33 @@ export function assertPreviewOnly(args) {
   }
 }
 
-/** 실행할 명령 목록. 미리보기 빌드와 배포를 같은 project·target 으로 부른다. */
+/**
+ * 실행할 명령 목록(보안 수정 B). 설정 받기(pull) → 빌드 → 배포 셋이고 셋 다 preview 로 못 박는다.
+ * 빌드(`vercel build`)는 사이트 코드(next build)를 돌리므로 토큰 없는 환경에서 돌린다 — 설정을 미리 받아 두면 빌드가 인증을 찾지 않는다.
+ * 토큰이 필요한 것은 설정 받기와 이미 만든 결과물 올리기(`deploy --prebuilt`)뿐이다.
+ */
 export function previewCommands({ project = DEFAULT_PROJECT, extraArgs = [] } = {}) {
   if (!PROJECT.test(project)) throw new Error(`Vercel 프로젝트 이름은 소문자·숫자·. _ - 만 쓴다: ${JSON.stringify(project)}`)
   const common = ['--yes', '--target=preview', '--project', project, ...extraArgs]
   return [
+    ['vercel', 'pull', '--yes', '--environment=preview', '--project', project, ...extraArgs],
     ['vercel', 'build', ...common],
     ['vercel', 'deploy', '--prebuilt', ...common],
   ]
 }
 
-/** 기본 실행기 — vercel(Windows 는 vercel.cmd)을 돌려 { code, stdout, stderr } 를 돌려준다. 인자는 위에서 정규식·가드를 거친 것뿐이다. */
+/** 토큰을 받는 명령인가 — 사이트 코드를 돌리는 build 는 받지 않는다. */
+export const needsToken = (args) => args[0] !== 'build'
+
+/**
+ * 기본 실행기 — vercel 을 셸 없이 신뢰된 절대 경로로 돌려 { code, stdout, stderr } 를 돌려준다.
+ * 사이트 폴더(cwd)에 놓인 vercel.cmd·vercel 은 고르지 않는다(trusted-bin). 못 찾으면 종료 127.
+ */
 export function defaultSpawn(cmd, args, { cwd, env, timeoutMs = 20 * 60 * 1000 } = {}) {
   return new Promise((res) => {
-    const p = spawn(cmd, args, { cwd, env, shell: process.platform === 'win32', windowsHide: true })
+    const found = trustedCommand(cmd, args, { env, cwd })
+    if (!found) return res({ code: 127, stdout: '', stderr: `${cmd} CLI 를 PATH 의 신뢰된 위치(작업 폴더 밖 절대 경로)에서 찾지 못했다 — npm i -g vercel 로 설치한다` })
+    const p = spawn(found[0], found[1], { cwd, env, shell: false, windowsHide: true })
     let stdout = ''
     let stderr = ''
     const timer = setTimeout(() => p.kill(), timeoutMs)
@@ -75,11 +89,13 @@ export async function deployPreview(siteDir, opts = {}) {
   const cmds = previewCommands(opts)
   for (const [, ...args] of cmds) assertPreviewOnly(args) // 어느 것도 실행하기 전에 전부 검사한다
   const token = read('VERCEL_TOKEN', env)
-  const childEnv = { ...env, ...(token ? { VERCEL_TOKEN: token } : {}) }
+  // 바탕은 키 이름을 뺀 환경 — 빌드는 그대로, 설정 받기·올리기만 토큰을 더한다(보안 수정 A·B)
+  const base = childEnv({}, env)
+  const authed = { ...base, ...(token ? { VERCEL_TOKEN: token } : {}) }
   const secrets = [token]
   let last
   for (const [cmd, ...args] of cmds) {
-    last = await run(cmd, args, { cwd: siteDir, env: childEnv })
+    last = await run(cmd, args, { cwd: siteDir, env: needsToken(args) ? authed : base })
     if (last.code !== 0) {
       const tail = maskSecrets(`${last.stderr ?? ''}\n${last.stdout ?? ''}`, secrets).trim().split(/\r?\n/).slice(-8).join('\n')
       throw new Error(`도구 실패: ${cmd} ${args[0]} 종료 ${last.code}\n${tail}`)

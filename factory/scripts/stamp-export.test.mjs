@@ -49,13 +49,13 @@ test('deploy: --prod 를 주면 프로세스를 띄우기 전에 던진다 (음�
   assert.doesNotThrow(() => assertPreviewOnly(['--target', 'preview']))
 })
 
-test('deploy: 가드는 명령 하나가 아니라 두 명령 모두를 실행 전에 본다', async () => {
+test('deploy: 가드는 명령 하나가 아니라 세 명령 모두를 실행 전에 본다', async () => {
   // 첫 명령(build)이 정상이어도 뒤 명령이 문제면 build 조차 돌지 않는다 — extraArgs 는 두 명령에 붙으므로 여기서는 명령 목록을 직접 검사한다
   const cmds = previewCommands({ extraArgs: [] })
-  assert.equal(cmds.length, 2)
+  assert.equal(cmds.length, 3)
   for (const [, ...args] of cmds) assert.doesNotThrow(() => assertPreviewOnly(args))
   for (const c of cmds) assert.ok(!c.some((a) => /prod/i.test(a)), `--prod 가 없어야 한다: ${c.join(' ')}`)
-  assert.ok(cmds.every((c) => c.includes('--target=preview')))
+  assert.ok(cmds.every((c) => c.includes('--target=preview') || c.includes('--environment=preview')))
 })
 
 test('deploy: 실행하는 명령의 인자를 정확히 고정한다 · 토큰은 환경 변수로만 · 주소를 08-board.json 에 적는다', async () => {
@@ -65,16 +65,19 @@ test('deploy: 실행하는 명령의 인자를 정확히 고정한다 · 토큰�
   const s = stub()
   const r = await deployPreview(join(d, 'site'), { spawn: s.run, readSecret: (n) => (n === 'VERCEL_TOKEN' ? 'tok_SECRET_1234567890' : null), env: { PATH: 'p' } })
   assert.deepEqual(s.calls.map((c) => [c.cmd, ...c.args]), [
+    ['vercel', 'pull', '--yes', '--environment=preview', '--project', 'wf-preview'],
     ['vercel', 'build', '--yes', '--target=preview', '--project', 'wf-preview'],
     ['vercel', 'deploy', '--prebuilt', '--yes', '--target=preview', '--project', 'wf-preview'],
   ])
   assert.deepEqual(r.argv, [
+    ['vercel', 'pull', '--yes', '--environment=preview', '--project', 'wf-preview'],
     ['vercel', 'build', '--yes', '--target=preview', '--project', 'wf-preview'],
     ['vercel', 'deploy', '--prebuilt', '--yes', '--target=preview', '--project', 'wf-preview'],
   ])
   assert.equal(r.url, 'https://wf-preview-abc123-team.vercel.app')
   assert.ok(s.calls.every((c) => c.cwd === join(d, 'site')))
-  assert.ok(s.calls.every((c) => c.env.VERCEL_TOKEN === 'tok_SECRET_1234567890'), '토큰은 자식 환경 변수로')
+  // 보안 수정 B: 사이트 코드를 돌리는 build 는 토큰을 받지 않고, 설정 받기·올리기만 받는다
+  assert.deepEqual(s.calls.map((c) => c.env.VERCEL_TOKEN ?? null), ['tok_SECRET_1234567890', null, 'tok_SECRET_1234567890'], '토큰은 pull·deploy 의 자식 환경 변수로만')
   assert.ok(s.calls.every((c) => !c.args.join(' ').includes('tok_SECRET')), '토큰은 인자에 없다')
   assert.ok(s.calls.every((c) => !c.args.some((a) => /^--prod|^-t$|^--token/.test(a))))
   const board = JSON.parse(readFileSync(join(d, '08-board.json'), 'utf8'))
@@ -88,7 +91,7 @@ test('deploy: 토큰이 없으면 환경 변수를 더하지 않는다(CLI 로�
   const d = cand('login')
   await deployPreview(join(d, 'site'), { spawn: s.run, readSecret: () => null, env: { PATH: 'p' }, project: 'cand-a1', board: false })
   assert.ok(s.calls.every((c) => !('VERCEL_TOKEN' in c.env)))
-  assert.deepEqual(s.calls[1].args, ['deploy', '--prebuilt', '--yes', '--target=preview', '--project', 'cand-a1'])
+  assert.deepEqual(s.calls[2].args, ['deploy', '--prebuilt', '--yes', '--target=preview', '--project', 'cand-a1'])
   assert.equal(existsSync(join(d, '08-board.json')), false, 'board:false 면 쓰지 않는다')
   await assert.rejects(deployPreview(join(d, 'site'), { spawn: s.run, readSecret: () => null, project: 'Bad Name; rm -rf' }), /프로젝트 이름/)
 })
@@ -97,7 +100,7 @@ test('deploy: 실패 오류에 토큰이 없다 · 주소가 없으면 도구 �
   const d = cand('fail')
   const fail = stub({ code: 1, stdout: '', stderr: 'Error: token tok_SECRET_ABCDEF rejected\nmore' })
   await assert.rejects(deployPreview(join(d, 'site'), { spawn: fail.run, readSecret: () => 'tok_SECRET_ABCDEF' }), (e) => { assert.match(e.message, /종료 1/); assert.doesNotMatch(e.message, /tok_SECRET_ABCDEF/); assert.match(e.message, /\*\*\*/); return true })
-  assert.equal(fail.calls.length, 1, 'build 가 실패하면 deploy 를 돌리지 않는다')
+  assert.equal(fail.calls.length, 1, '앞 단계(pull)가 실패하면 build·deploy 를 돌리지 않는다')
   const none = stub({ stdout: 'done' })
   await assert.rejects(deployPreview(join(d, 'site'), { spawn: none.run, readSecret: () => null }), /배포 주소/)
   assert.equal(existsSync(join(d, '08-board.json')), false, '주소를 못 찾으면 08-board.json 을 쓰지 않는다')

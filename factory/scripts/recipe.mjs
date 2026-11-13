@@ -38,7 +38,7 @@ import { ratio, alphaOf, oklchToLinearSrgb } from './lib/contrast-lib.mjs'
 import { parseOklch, tailwindCopy, isCreamBackground, TAILWIND_MAX_DIST, TAILWIND_MIN_C, CREAM, BRAND_KEYS, FIELD_BANDS, FIELD_CREAM, FIELD_MAX, TEXT_MIN, TEXT_TARGET, DUO, BLOCKS, DARK_DEFAULT_BG, isNeon, inBand, hueGroupsAt } from './lib/palette-rules.mjs'
 import { hueDist, ACCENT_C } from './lib/palette-lib.mjs'
 import { compileSource, MARKER } from './compile-styles.mjs'
-import { parseImports, pinDependency, parseRef, BASE_ITEM, fontVar, ICON_LIBRARIES } from './lib/registry-lib.mjs'
+import { parseImports, pinDependency, parseRef, BASE_ITEM, fontVar, ICON_LIBRARIES, lockedVersions } from './lib/registry-lib.mjs'
 import { iconAdapter, iconVars, motionVars } from './gen-kits.mjs'
 import { radiusToken, maskRadiusToken } from './gen-radius-axis.mjs'
 import { ARCHETYPE_IDS } from './archetypes.mjs'
@@ -933,9 +933,9 @@ export function lintRecipeReport(r, { banlist = loadBanlist(), compat = { checkC
 export const lintRecipe = (r, opts) => lintRecipeReport(r, opts).violations
 
 // ── 생성 ────────────────────────────────────────────────────────────────
+// 의존 버전 표 — package-lock.json 의 정확한 판(registry-lib lockedVersions 한 곳, SB-15).
 export function pkgVersions(root = ROOT) {
-  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
-  return { ...pkg.devDependencies, ...pkg.dependencies }
+  return lockedVersions(root)
 }
 // 다른 층(registry/factory/<층>/registry.json)의 항목 이름. 레시피 층(r)은 뺀다.
 export function knownRegistryItems(root = ROOT) {

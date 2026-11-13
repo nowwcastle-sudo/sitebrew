@@ -11,7 +11,7 @@ import { openTunnel } from './open-tunnel.mjs'
 import { TAIL_LINES, prepareSite, scrubTail, serveSite } from './site-server.mjs'
 import { exportDir } from './static-export.mjs'
 import { serveEnv, siteKind } from './site-kind.mjs'
-import { writeState } from './state.mjs'
+import { StateOwnerError, writeState } from './state.mjs'
 import { findTool } from './tools.mjs'
 
 export const DEFAULT_MINUTES = 120
@@ -64,12 +64,13 @@ function candidates(providerId, providers, find) {
 /** 세션 하나를 끝까지 돌린다. */
 export async function runSession(opts, deps = {}) {
   const d = { ...defaults(), ...deps }
-  const { site, providerId = 'auto', minutes = DEFAULT_MINUTES, allowMock = false, lang = 'ko', signal } = opts
+  const { site, providerId = 'auto', minutes = DEFAULT_MINUTES, allowMock = false, lang = 'ko', signal, sessionId } = opts
   check({ minutes, lang, providerId }, d.providers)
 
   const logDir = join(site, '.tmp', 'tunnel')
   const logFile = join(logDir, LOG_NAME)
-  const write = (patch) => { const s = writeState(site, patch); d.onState(s); return s }
+  // sessionId 가 있으면 상태의 세션 id 가 같을 때만 쓴다 — 다른 세션이 상태를 넘겨받았으면 StateOwnerError 로 이 세션은 정리하고 끝난다(보안 수정 D).
+  const write = (patch) => { const s = writeState(site, patch, { owner: sessionId }); d.onState(s); return s }
   // 로그는 어떤 길로 끝나든 남는다: 시작 줄 · 터널 출력 · 실패 이유와 끝줄 · 끝 줄. 비밀 값·경로는 scrubTail 이 가린다.
   const log = (text, lines = 1) => {
     try { mkdirSync(logDir, { recursive: true }); appendFileSync(logFile, `${scrubTail(text, { dir: site, env: d.env }, lines)}\n`) } catch { /* 로그 실패가 세션을 막지 않는다 */ }
@@ -82,7 +83,15 @@ export async function runSession(opts, deps = {}) {
       try { await handle?.stop() } catch { /* 이미 끝났다 */ }
     }
   }
-  const end = (status, reason) => write({ status, reason, url: null, port: null, expiresAt: null, pids: { daemon: null, server: null, tunnel: null } })
+  // 끝 상태는 소유권을 잃은 세션이 쓰지 않는다(새 세션의 상태를 덮지 않는다). 그때는 쓰지 않은 채 끝 상태 모양만 돌려준다.
+  const end = (status, reason) => {
+    try {
+      return write({ status, reason, url: null, port: null, expiresAt: null, pids: { daemon: null, server: null, tunnel: null } })
+    } catch (e) {
+      if (e instanceof StateOwnerError) { log('state owned by another session: final state not written'); return { status, reason } }
+      throw e
+    }
+  }
 
   log(`session start provider=${providerId} minutes=${minutes}`)
   try {

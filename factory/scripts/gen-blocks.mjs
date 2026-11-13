@@ -10,7 +10,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createStyleMap, transformStyle } from 'shadcn/utils'
-import { parseRef } from './lib/registry-lib.mjs'
+import { parseRef, lockedVersions } from './lib/registry-lib.mjs'
 import { loadBlocks, loadShared, repoProblems, blockItems, COMPILED } from './blocks.mjs'
 import { MARKER } from './compile-styles.mjs'
 
@@ -48,8 +48,6 @@ if (isMain) {
     const ri = argv.indexOf('--root')
     const root = ri === -1 ? ROOT : resolve(argv[ri + 1] ?? '')
     const ref = parseRef(argv)
-    const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
-    const versions = { ...pkg.devDependencies, ...pkg.dependencies }
     const styleMap = createStyleMap(readFileSync(join(root, 'registry', 'factory', 'styles', 'base.css'), 'utf8'))
     const blocks = loadBlocks(root)
     const probs = repoProblems(root, { minVariants: 0 }, new Set(Object.keys(styleMap)))
@@ -59,6 +57,7 @@ if (isMain) {
     const files = await compileAll(root, styleMap)
     const left = leftoverHooks(files)
     if (left.length) { for (const x of left) console.error(`gen-blocks: ${x}`); console.error(`gen-blocks: 컴파일되지 않은 훅 ${left.length}건 — 쓰지 않았다`); process.exit(1) }
+    const versions = lockedVersions(root)
     const items = blockItems({ repo: 'nowwcastle-sudo/sitebrew', ref, versions, root })
     // 원천이 사라진 컴파일본을 치운다(폴더째 다시 쓴다 — 생성물 폴더다). 컴파일·항목이 다 된 뒤에만 지운다.
     if (existsSync(out)) rmSync(out, { recursive: true })
