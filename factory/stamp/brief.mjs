@@ -6,6 +6,7 @@
 import { readFileSync } from 'node:fs'
 import { dirname, isAbsolute, resolve } from 'node:path'
 import { z } from 'zod'
+import { isNetworkOrDevicePath } from '../lib/safe-path.mjs'
 
 export const ARCHETYPE_IDS = ['brand', 'commerce', 'dashboard', 'detail', 'local', 'portfolio', 'public', 'pwa', 'saas', 'landing']
 
@@ -107,7 +108,8 @@ export function loadBrief(path) {
   const r = BriefSchema.safeParse(raw)
   if (!r.success) throw new Error(`브리프 모양이 틀렸다 (${path}): ${r.error.issues.map((i) => `${i.path.join('.') || '(맨 위)'} — ${i.message}`).join('; ')}`)
   // 브랜드 로고 경로는 브리프 파일 기준이다(골든 브리프의 assets/ 처럼) — 이후 단계는 찍어내는 폴더에서 돌아 상대 경로를 못 찾는다.
-  if (r.data.brand?.logo && !isAbsolute(r.data.brand.logo)) r.data.brand = { ...r.data.brand, logo: resolve(dirname(resolve(path)), r.data.brand.logo) }
+  // UNC·장치 경로는 그대로 둔다 — 리눅스의 isAbsolute 는 `\\host\share` 를 상대 경로로 보아 앞에 폴더를 붙이고, 그러면 06 의 네트워크 경로 거르기를 지나친다(SB-9).
+  if (r.data.brand?.logo && !isNetworkOrDevicePath(r.data.brand.logo) && !isAbsolute(r.data.brand.logo)) r.data.brand = { ...r.data.brand, logo: resolve(dirname(resolve(path)), r.data.brand.logo) }
   return r.data
 }
 
