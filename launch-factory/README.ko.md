@@ -125,7 +125,7 @@ git diff template/package.json
 
 | 태그 | 날짜 | 내용 | 기록 |
 |---|---|---|---|
-| `v0.2.7` | 2026-11-13 | 보안 릴리스: 뉴스레터 확인을 POST 로 · 환불·배송 경합 · 구독 유지 제안은 한 번만 · 업로드 주소 재사용 막음 · 요청 본문을 상한까지만 읽음 · 계정마다 푸시 구독 상한 · 가입 응답이 이메일 등록 여부를 드러내지 않음 — **동작 변경: 메일러가 있으면 새 계정은 메일 인증 전 로그인할 수 없음** · 템플릿 블록·계약이 web-factory 를 따름(폼 멱등 키) · web-factory 고정은 릴리스 때 따라감 | — |
+| `v0.2.7` | 2026-11-13 | 보안 릴리스: 뉴스레터 확인을 POST 로 · 환불·배송 경합 · 구독 유지 제안은 한 번만 · 업로드 주소 재사용 막음 · 요청 본문을 상한까지만 읽음 · 계정마다 푸시 구독 상한 · 가입 응답이 이메일 등록 여부를 드러내지 않음 — **동작 변경: 인증 메일(`verifyEmail`)과 기존 계정 안내 메일(`existingAccount`) 메일러가 둘 다 있을 때만 가입 응답 기본값이 conceal 이 되어 새 계정은 메일 인증 전 로그인할 수 없음(`signUpEnumeration: "reveal"` 로 끌 수 있음)** · 템플릿 블록·계약이 web-factory 를 따름(폼 멱등 키) · web-factory 고정은 릴리스 때 따라감 | — |
 | `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · 저장소 기능 판; 출시 키트 자체는 그대로 · web-factory 고정은 릴리스 때 맞춤 | — |
 | `v0.2.5` | 2026-11-02 | launch-factory v0.2.2 (internal version) · 패치 판: 관리자 표가 화면 언어와 시간대를 따름(템플릿 블록 사본 갱신) · 이 README 의 요구 web-factory 판 표기를 바로잡음 · posthog-js 1.438.21 · posthog-node 5.57.2 · pglite 0.5.11 과 pglite-tools 0.4.11 · 개발용 playwright 1.64.1·@axe-core/playwright 4.14.0·typescript-eslint 8.72.0 · systeminformation 5.33.16 · web-factory `v0.2.5` 고정 | — |
 | `v0.2.4` | 2026-10-26 | launch-factory v0.2.2 (internal version) · 패치 판: 의존 패키지 갱신만 — drizzle-orm 0.45.4 · posthog-js 1.438.12 와 posthog-node 5.55.2 · resend 6.32.1 · react-day-picker 10.0.2 · 개발용 eslint 10.13.0 과 typescript-eslint 8.71.2 · web-factory `v0.2.4` 고정 | — |
