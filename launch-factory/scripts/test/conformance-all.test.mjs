@@ -57,7 +57,7 @@ test("실제 일괄: 어댑터 6개·검사 185개가 판정대로 — Gumroad �
   assert.equal(report.exit, 0, renderReport(report))
   assert.deepEqual(report.rows.map((r) => r.adapter), ["billing-paddle", "billing-gumroad", "analytics-posthog/client", "analytics-posthog/server", "auth", "consent/notify"])
   const by = Object.fromEntries(report.rows.map((r) => [r.adapter, r]))
-  assert.deepEqual([by["billing-paddle"].total, by["billing-paddle"].passed, by["billing-paddle"].expectedFail], [44, 44, 0]) // 40 + billing.confirmation.* 4(requireConfirmation, LFPIN11)
+  assert.deepEqual([by["billing-paddle"].total, by["billing-paddle"].passed, by["billing-paddle"].expectedFail], [44, 41, 3]) // 40 + billing.confirmation.* 4(requireConfirmation, LFPIN11). 예상 실패 3 = 서버가 정한 대안만 받는 설계(billing.retention.apply 중 첫 대안이 아닌 셋, conformance-run.mjs 의 EXPECTED_FAILURES)
   assert.deepEqual([by["billing-gumroad"].total, by["billing-gumroad"].passed, by["billing-gumroad"].expectedFail], [40, 20, 20])
   assert.equal(by["consent/notify"].total, 5) // 4 + notify.confirmation.* 1
   assert.equal(by.auth.total, 12) // 9 + auth.confirmation.* 3(requireConfirmation — 탈퇴·내려받기는 account-lifecycle 과 합친 조립 포트로, LFCI)

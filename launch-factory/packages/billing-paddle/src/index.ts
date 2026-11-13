@@ -15,6 +15,6 @@ export { assertPaddleEnv, createPaddleClient, PaddleLiveModeError } from "./padd
 export type { PaddleClient, PaddleEnv } from "./paddle.ts"
 export { BillingConfigError, contractPlans, planIdForPrice, validateBillingConfig } from "./plans.ts"
 export type { PaddlePlan } from "./plans.ts"
-export { retentionOfferIssues, RETENTION_DISCOUNT_MAX_PERCENT, RETENTION_DISCOUNT_MONTHS } from "./retention.ts"
+export { eligibleRetentionOffer, retentionOfferIssues, RETENTION_DISCOUNT_MAX_PERCENT, RETENTION_DISCOUNT_MONTHS } from "./retention.ts"
 export { DEFAULT_GRANT_STATUSES, EntitlementError, protectAction, requireEntitlement, withEntitlement } from "./entitlement.ts"
 export type { EntitledPlan, EntitlementOptions } from "./entitlement.ts"

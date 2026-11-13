@@ -8,7 +8,17 @@ import { CD } from "../src/index.ts"
 import { DAY, setup } from "./harness.mjs"
 
 /** 묶음이 돌려야 하는 검사 수(web-factory v0.0.12 기준 — v0.0.10 의 40개에서 44개로: requireConfirmation 을 켜서 `billing.confirmation.*` 4개(change-plan·cancel·apply-retention-offer·accept-price-change)가 늘었다). 0건·모자란 통과를 통과로 읽지 않으려는 못이다 */
-export const PADDLE_PINS = { total: 44, expectedFailures: {} }
+/**
+ * 적합성 묶음의 apply 검사는 설정된 대안 넷(일시정지·다운그레이드·할인 둘)을 한 구독에 각각 적용해 보고 모두 성공하길 기대한다.
+ * 우리 어댑터는 서버가 구독마다 적격 대안 하나(화면이 보이는 첫 대안 — 일시정지 → 다운그레이드 → 할인)를 정하고 그 id 만 받는다(CWE-841, 숨은 대안 직접 제출 막기).
+ * 그래서 첫 대안(conf-pause-1m)이 아닌 셋은 offer_not_eligible 로 거절돼 이 검사들이 실패하는 것이 맞다. 목록 밖 실패·목록 안 통과는 모두 실패로 본다.
+ */
+export const EXPECTED_FAILURES = {
+  "billing.retention.apply.conf-downgrade": "offer_not_eligible",
+  "billing.retention.apply.conf-discount-30-3m": "offer_not_eligible",
+  "billing.retention.apply.conf-discount-10-2m": "offer_not_eligible",
+}
+export const PADDLE_PINS = { total: 44, expectedFailures: EXPECTED_FAILURES }
 
 /** @param {{ mod: { billingConformance: Function } }} loaded */
 export async function runPaddleConformance(loaded) {
