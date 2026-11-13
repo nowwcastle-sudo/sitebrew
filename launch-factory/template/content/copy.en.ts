@@ -485,6 +485,11 @@ export const emailChoiceCopy = {
       body: `Someone signed up for ${PRODUCT_NAME} with your email address. If that wasn't you, delete the account. This can't be undone.`,
       button: "Delete that account",
     },
+    newsletter: {
+      title: "Confirm your subscription",
+      body: `Someone asked to get the ${PRODUCT_NAME} newsletter at this email address. If that was you, press the button to subscribe. If not, ignore this page and nothing will change.`,
+      button: "Confirm subscription",
+    },
   },
   result: {
     unsubscribed: {
@@ -493,6 +498,7 @@ export const emailChoiceCopy = {
     },
     confirmed: { title: "You're subscribed", body: "Thanks for confirming. We sent a short email with the date you agreed and a link to unsubscribe whenever you like." },
     kept: { title: "Thanks for confirming", body: "We'll keep sending you marketing emails. You can unsubscribe from any of them." },
+    already: { title: "You're already subscribed", body: "This subscription was confirmed before, so nothing changed. You can unsubscribe from any email we send." },
     withdrawn: { title: "You had already unsubscribed", body: "Nothing changed. We won't send you marketing emails." },
     removed: { title: "The account was deleted", body: "We deleted the account that was created with your email address." },
     left: { title: "We left that account as it is", body: "It was already confirmed, so we didn't delete it." },

@@ -328,7 +328,7 @@ test("F11 마이그레이션: 공개 표를 만드는 모든 CREATE TABLE 에 �
   const statements = all.split(/\r?\n/).filter((l) => !l.startsWith("--")).join(" ")
   assert.doesNotMatch(statements, /CREATE POLICY|FORCE ROW LEVEL SECURITY/i, "주석 말고 문장에")
   const journal = JSON.parse(readFileSync(join(dir, "meta", "_journal.json"), "utf8"))
-  assert.equal(journal.entries.at(-1).tag, "0017_inquiry_replies")
+  assert.equal(journal.entries.at(-1).tag, "0018_order_refund_claim")
   const whens = journal.entries.map((e) => e.when)
   assert.deepEqual(whens, [...whens].sort((a, b) => a - b), "journal 의 when 은 늘어난다")
 })

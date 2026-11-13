@@ -13,10 +13,13 @@ import { COMPAT, SITES, check, kitRangeOf } from './check-single-version.mjs'
  */
 export function addCompatEntry(text, version) {
   if (JSON.parse(text).guides?.[version]) return text
-  const re = /("guides":\s*\{\n)/
-  if (!re.test(text)) throw new Error(`${COMPAT}: "guides" object not found`)
+  // plugins/ has no .gitattributes (the plugin directory refuses them), so a Windows checkout can give this file CRLF: keep its line ending.
+  const re = /("guides":[ \t]*\{(\r?\n))/
+  const m = re.exec(text)
+  if (!m) throw new Error(`${COMPAT}: "guides" object not found`)
+  const eol = m[2]
   const row = `{ "tag": "v${version}", "status": "pending-release", "range": "${kitRangeOf(version)}" }`
-  return text.replace(re, `$1    "${version}": {\n      "sitebrew": ${row}\n    },\n`)
+  return text.replace(re, `$1    "${version}": {${eol}      "sitebrew": ${row}${eol}    },${eol}`)
 }
 
 export function bump(root, version) {

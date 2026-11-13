@@ -78,7 +78,8 @@ describe('parseVerdict', () => {
 
 describe('review-format.md is the grammar the parser reads', () => {
   // 문서의 예시가 파서와 어긋나면 리뷰어가 문서를 따라 쓴 파일이 거절된다.
-  const doc = readFileSync(join(root, 'plugins/sitebrew/skills/new/references/review-format.md'), 'utf8')
+  // plugins/ 에는 .gitattributes 가 없다(플러그인 디렉터리가 거절한다) — Windows 의 core.autocrlf=true 작업 사본은 CRLF 라 줄바꿈을 맞춰 읽는다.
+  const doc = readFileSync(join(root, 'plugins/sitebrew/skills/new/references/review-format.md'), 'utf8').replace(/\r\n/g, '\n')
   const blocks = [...doc.matchAll(/```\n([\s\S]*?)```/g)].map((m) => m[1])
   it('its review example and its verdict example parse', () => {
     const review = blocks.find((b) => b.startsWith('# Review'))
