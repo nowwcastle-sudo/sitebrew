@@ -13,7 +13,7 @@ export const hasBrandLogo = (cand) => typeof cand?.brand?.input?.logo === 'strin
 /**
  * 쪽 안에서 돈다(Function.toString 으로 건넨다 — 바깥 변수를 읽지 않는다). 머리글 로고 칸 `[data-slot=site-shell-logo]` 의 그려진 모양을 잰다.
  * kind: img(<img>) | mask(CSS mask-image 로 칠한 상자) | svg(인라인 <svg>) | text(그림이 없는 글자) | none(로고 칸 자체가 없음).
- * 다크 짝처럼 둘 이상이면 눈에 보이는 것을 고른다. img 의 complete 는 「다 받았고 깨지지 않았다」(naturalWidth > 0) — 깨진 그림은 complete 가 true 여도 naturalWidth 가 0 이다.
+ * 다크 짝처럼 둘 이상이면 눈에 보이는 것을 고른다(하나도 안 보이면 첫 것을 재되 visible: false 로 적는다). img 의 complete 는 「다 받았고 깨지지 않았다」(naturalWidth > 0) — 깨진 그림은 complete 가 true 여도 naturalWidth 가 0 이다.
  */
 export function logoProbe() {
   const slot = document.querySelector('[data-slot="site-shell-logo"]')
@@ -25,7 +25,8 @@ export function logoProbe() {
   }
   const maskOf = (e) => { const s = getComputedStyle(e); const m = s.maskImage || s.webkitMaskImage; return !!m && m !== 'none' }
   const pick = (list) => list.find(shown) ?? list[0]
-  const out = (kind, e, extra = {}) => ({ present: true, kind, renderedHeight: Math.round(e.getBoundingClientRect().height * 10) / 10, naturalWidth: 0, complete: true, ...extra })
+  // visible: 고른 요소가 실제로 그려지는가 — 숨긴(visibility)·투명한(opacity) 그림도 높이는 남아서, 이 칸 없이는 보이지 않는 로고가 관문을 통과했다
+  const out = (kind, e, extra = {}) => ({ present: true, kind, renderedHeight: Math.round(e.getBoundingClientRect().height * 10) / 10, naturalWidth: 0, complete: true, visible: shown(e), ...extra })
   const img = pick([...slot.querySelectorAll('img')])
   if (img) return out('img', img, { naturalWidth: img.naturalWidth, complete: img.complete && img.naturalWidth > 0 })
   const mask = pick([slot, ...slot.querySelectorAll('*')].filter(maskOf))
@@ -38,7 +39,7 @@ export function logoProbe() {
 const KIND_TEXT = { none: '로고 칸이 머리글에 없어요', text: '로고가 그림이 아니라 글자로 그려졌어요' }
 
 /**
- * @param {Record<string, { present: boolean, kind: string, renderedHeight: number, naturalWidth: number, complete: boolean }|undefined>} probes  ux_gate.json 의 gate[키].logo — 키는 `<폭>-<테마>`
+ * @param {Record<string, { present: boolean, kind: string, renderedHeight: number, naturalWidth: number, complete: boolean, visible?: boolean }|undefined>} probes  ux_gate.json 의 gate[키].logo — 키는 `<폭>-<테마>`
  * @returns {{ pass: boolean, problems: string[] }}  잰 값이 하나도 없으면 통과가 아니라 던진다(못 잰 값은 통과가 아니다)
  */
 export function judgeLogo(probes) {
@@ -47,6 +48,8 @@ export function judgeLogo(probes) {
   const problems = []
   for (const [key, p] of entries) {
     if (KIND_TEXT[p.kind]) { problems.push(`${key}: ${KIND_TEXT[p.kind]}`); continue }
+    // visible 칸이 없는 옛 계측(ux_gate.json)은 예전대로 본다 — 지금 ux-gate 는 늘 적는다
+    if (p.visible === false) { problems.push(`${key}: 로고가 화면에 보이지 않아요(숨김·투명)`); continue }
     if (p.complete === false) problems.push(`${key}: 로고 그림이 깨졌거나 다 받아지지 않았어요`)
     else if (!(p.renderedHeight >= LOGO_MIN_HEIGHT)) problems.push(`${key}: 로고 높이가 ${p.renderedHeight}px 라 ${LOGO_MIN_HEIGHT}px 보다 작아요`)
   }
