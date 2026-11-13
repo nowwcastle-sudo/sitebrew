@@ -3,7 +3,8 @@
 // 실행: node --test --test-force-exit --test-timeout=180000 factory/scripts/stamp-cli.test.mjs
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import fs, { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import { syncBuiltinESMExports } from 'node:module'
 import { createHash } from 'node:crypto'
 import { join, dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -294,6 +295,55 @@ test('T17: 브리프 로고는 세 안의 06 입력과 호출에 실리고(경�
   deps2.pages = async (args) => { seen2.push('logo' in args); return inner2(args) }
   await runStamp({ brief: writeBrief(dir2), run: run2, until: '06-pages' }, deps2)
   assert.deepEqual(seen2, [false, false, false])
+})
+
+test('머리글 로고(SB-9): UNC·장치 로고 경로는 해시를 읽으려고 파일 시스템을 부르지 않고, 경로만 06 에 넘겨 거절 사유를 적게 한다', async (t) => {
+  const dir = fresh()
+  const run = join(dir, 'run')
+  copyOut(run)
+  const logoPaths = ['\\\\attacker\\share\\logo.png', '//attacker/share/logo.png', '\\\\.\\pipe\\logo.png']
+  const calls = []
+  for (const name of ['existsSync', 'readFileSync', 'statSync', 'lstatSync']) {
+    const orig = fs[name]
+    t.mock.method(fs, name, (p, ...rest) => {
+      if (/attacker|pipe/.test(String(p))) { calls.push([name, String(p)]); return name === 'existsSync' ? false : Buffer.alloc(0) }
+      return orig(p, ...rest)
+    })
+  }
+  syncBuiltinESMExports()
+  try {
+    for (const logoPath of logoPaths) {
+      const deps = fakeDeps()
+      const seen = []
+      const inner = deps.pages
+      deps.pages = async (args) => { seen.push(args.logo); return inner(args) }
+      const brief = writeBrief(dir, { ...BRIEF, brand: { logo: logoPath } })
+      const r = await runStamp({ brief, run, until: '06-pages' }, deps)
+      assert.equal(r.code, EXIT.done, r.lines.join('\n'))
+      assert.deepEqual(seen, [{ path: logoPath, sha256: null }, { path: logoPath, sha256: null }, { path: logoPath, sha256: null }], logoPath)
+    }
+    assert.deepEqual(calls, [], '외부 호스트 경로로 fs 를 부르면 SMB 접속이 일어난다')
+  } finally {
+    t.mock.restoreAll()
+    syncBuiltinESMExports()
+  }
+})
+
+test('머리글 로고(SB-9): 리눅스에서도 UNC·장치 로고 경로를 브리프 폴더 기준 상대 경로로 바꾸지 않는다 — 앞에 폴더가 붙으면 표지가 사라져 06 거르기를 지나친다', async (t) => {
+  // 리눅스의 path.isAbsolute('\\\\host\\share') 는 false 다. Windows 에서도 그 동작을 흉내 내 재현한다(web-factory main CI 리눅스 실패 97d84d7).
+  const path = await import('node:path')
+  const files = ['\\\\attacker\\share\\logo.png', '//attacker/share/logo.png', '\\\\.\\pipe\\logo.png'].map((logo) => [logo, writeBrief(fresh(), { ...BRIEF, brand: { logo } })])
+  // 정상 선례(실제 플랫폼): 보통 상대 로고 경로는 그대로 브리프 폴더 기준으로 푼다.
+  const relFile = writeBrief(fresh(), { ...BRIEF, brand: { logo: 'logo.svg' } })
+  assert.equal(loadBrief(relFile).brand.logo, resolve(dirname(relFile), 'logo.svg'))
+  for (const name of ['isAbsolute', 'resolve']) t.mock.method(path.default, name, path.posix[name])
+  syncBuiltinESMExports()
+  try {
+    for (const [logo, file] of files) assert.equal(loadBrief(file).brand.logo, logo, logo)
+  } finally {
+    t.mock.restoreAll()
+    syncBuiltinESMExports()
+  }
 })
 
 test('C314: 진짜 코드 열쇠 — 블록·템플릿·06 코드(import 닫힘)를 보고, 같은 파일이면 같은 값이다', async () => {
