@@ -69,14 +69,14 @@ Both take the same options: `--dry-run` shows the plan and changes nothing, `--y
 #### 3. PowerShell
 
 ```powershell
-$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 ```
 
 To see what it would do without installing anything:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-$env:SITEBREW_COMMIT = '388fd8e557b4f087e011eab2748f7d8cf1efe2f5'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/388fd8e557b4f087e011eab2748f7d8cf1efe2f5/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
