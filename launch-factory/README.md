@@ -4,7 +4,7 @@
 
 This repository is the launch kit that pairs with web-factory, the repository of screen blocks. It owns the back end: auth, data, payments, email, analytics, and jobs. A product starts by copying `template/`, then receives security patches by raising only the version of the `@launch-factory/*` packages.
 
-Current version `v0.2.7` · web-factory pin `v0.2.7` · blocks `7bfca7ba` · contract `cbe0ded6` (contract is the commit of tag v0.2.7; blocks add the price-locale fix)
+Current version `v0.2.8` · web-factory pin `v0.2.8` · blocks `fd56069c` · contract `fd56069c` (blocks and contract are the main commit that carries the v0.2.8 changes)
 
 - Blocks know nothing about providers. Adapters implement the web-factory ports. The same conformance suite checks that an adapter reproduces the same scenarios as the mock.
 - A feature bundle (adapter, server actions, webhook routes, schema, migrations) is one entry in `registry.json`. The record of pinned versions is in [`docs/versions.md`](docs/versions.md).
@@ -125,6 +125,7 @@ Follow the steps in [`docs/RELEASING.md`](docs/RELEASING.md). Updating the READM
 
 | Tag | Date | Changes | Record |
 |---|---|---|---|
+| `v0.2.8` | 2026-11-24 | Maintenance release: next 16.4.6 (security fix) with playwright and tailwindcss at the same versions · template blocks and contract follow web-factory (price lists follow the page locale) · the e2e-admin seed preload works on Windows · the gitleaks tree check keeps LF · web-factory pin follows at release | — |
 | `v0.2.7` | 2026-11-13 | Security release: newsletter confirmation by POST · refund and shipping race · a retention offer is used once · upload addresses cannot be reused · request bodies are read only up to a limit · push subscriptions capped per account · sign-up no longer reveals whether an email is registered — **behaviour change: when both the `verifyEmail` and `existingAccount` mailers are set, sign-up defaults to conceal and a new account cannot sign in before the email is verified (turn it off with `signUpEnumeration: "reveal"`)** · template blocks and contract follow web-factory (form idempotency keys) · web-factory pin follows at release | — |
 | `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · Feature release of the repository; the launch kit itself is unchanged · web-factory pin follows at release | — |
 | `v0.2.5` | 2026-11-02 | launch-factory v0.2.2 (internal version) · Patch release: admin tables follow the screen language and time zone (template block copy updated) · the required web-factory version in this README corrected · posthog-js 1.438.21 · posthog-node 5.57.2 · pglite 0.5.11 and pglite-tools 0.4.11 · playwright 1.64.1 and @axe-core/playwright 4.14.0 and typescript-eslint 8.72.0 for development · systeminformation 5.33.16 · web-factory pinned to `v0.2.5` | — |
