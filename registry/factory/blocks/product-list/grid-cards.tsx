@@ -15,6 +15,7 @@ import { ListEmpty, ListError } from "../_shared/list-status"
 import { ProductPrice, type ProductPriceLabels } from "../_shared/product-price"
 import { ProductThumb } from "../_shared/product-thumb"
 
+// 가격은 쪽 로캘을 따른다(money.locale) — 영어 쪽은 ₩12,000, 한국어 쪽은 12,000원(commerce 는 원화 전용).
 // 상품 목록 — 카드 격자(2 → 3 → 4열). 카드마다 정사각 사진·상품명 h3·가격(할인율·판매가·정가·단위 가격), 카드 전체가 상세 링크.
 // 읽기 데이터 네 상태를 모두 그린다: loading = 같은 격자 모양의 뼈대(높이 고정 — 준비되어도 제목·격자 위치가 그대로),
 // empty = 안내 + 행동 하나, error = 메시지 + [다시 시도](retry), ready = 목록 + 결과 수.
@@ -85,7 +86,7 @@ export function ProductListGridCards({ copy, state, id = "products", className, 
                   p.name
                 )}
               </h3>
-              <ProductPrice product={p} labels={copy.price} />
+              <ProductPrice product={p} labels={copy.price} money={{ currency: "KRW", locale }} />
             </li>
           ))}
         </ul>
