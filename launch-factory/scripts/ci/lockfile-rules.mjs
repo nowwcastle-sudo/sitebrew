@@ -3,6 +3,8 @@
 //   2. node_modules 아래 모든 패키지: resolved 가 https://registry.npmjs.org/ 이고 integrity(sha512)가 있다
 //   3. git·URL·파일 의존이 없다(잠금 파일의 resolved 와 package.json 의 의존 명세 둘 다)
 // npm 작업공간 자신(node_modules 가 아닌 폴더 키, link 항목)은 resolved 가 없는 것이 정상이다.
+// 번들 의존(inBundle: true — 예: @tailwindcss/oxide-wasm32-wasi 안의 @emnapi/*)은 부모 패키지 타르볼에 들어 있어 resolved·integrity 가 원래 없다.
+// 부모 항목이 위 규칙을 그대로 받으므로 번들 항목만 면제한다(부모가 잠금 파일에 없는 번들 항목은 잡는다).
 export const ALLOWED_HOST = "registry.npmjs.org"
 const DEP_SECTIONS = ["dependencies", "devDependencies", "optionalDependencies", "peerDependencies"]
 /** package.json 의 의존 명세가 레지스트리 버전이 아닌 것(git·URL·파일·깃허브 약식) */
@@ -14,6 +16,10 @@ export function checkLockfile(lock, label = "package-lock.json") {
   for (const [key, p] of Object.entries(lock.packages ?? {})) {
     if (key === "" || p.link) continue
     if (!key.includes("node_modules/")) continue // 작업공간 폴더
+    if (p.inBundle === true && !p.resolved && !p.integrity) {
+      const parent = key.slice(0, key.lastIndexOf("/node_modules/"))
+      if (parent !== key && lock.packages?.[parent]) continue // 부모 타르볼에 포함 — 부모가 검사를 받는다
+    }
     if (!p.resolved) {
       v.push(`${label}: ${key} — resolved 가 없다`)
       continue
