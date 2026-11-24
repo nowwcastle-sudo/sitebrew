@@ -83,7 +83,7 @@ export function ProductListRankedList({ copy, state, id = "best", className, loc
                 ) : (
                   <span>{p.name}</span>
                 )}
-                <ProductPrice product={p} labels={copy.price} />
+                <ProductPrice product={p} labels={copy.price} money={{ currency: "KRW", locale }} />
               </span>
             </li>
           ))}

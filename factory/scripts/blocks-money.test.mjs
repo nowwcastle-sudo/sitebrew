@@ -152,3 +152,25 @@ test('가격 곁 리뷰: 금액은 최소 단위 정수 + 통화·로캘, JSON-L
   assert.match(krw, /data-price="billed"[^>]*>89,000원</)
   assert.match(krw, /"price":89000,"priceCurrency":"KRW"/)
 })
+
+test('상품 카드 격자: 가격이 쪽 로캘을 따른다 — ko 는 원 글자, en 은 ₩ 기호(한국어 글자가 새지 않는다)', async () => {
+  const b = SAME.gridCards
+  const mod = await load(b.file)
+  const fx = await fixtureOf(b.fx)
+  const en = renderToStaticMarkup(h(mod[b.name], { ...fx, locale: 'en' }))
+  assert.match(en, />₩12,900</)
+  assert.equal(/[0-9]원</.test(en), false, '영어 쪽 금액 뒤에 「원」이 없다')
+  const ko = renderToStaticMarkup(h(mod[b.name], { ...fx, locale: 'ko' }))
+  assert.match(ko, />12,900원</)
+})
+
+test('상품 순위 목록: 가격이 쪽 로캘을 따른다 — ko 는 원 글자, en 은 ₩ 기호(한국어 글자가 새지 않는다)', async () => {
+  const b = SAME.rankedList
+  const mod = await load(b.file)
+  const fx = await fixtureOf(b.fx)
+  const en = renderToStaticMarkup(h(mod[b.name], { ...fx, locale: 'en' }))
+  assert.match(en, />₩12,900</)
+  assert.equal(/[0-9]원</.test(en), false, '영어 쪽 금액 뒤에 「원」이 없다')
+  const ko = renderToStaticMarkup(h(mod[b.name], { ...fx, locale: 'ko' }))
+  assert.match(ko, />12,900원</)
+})

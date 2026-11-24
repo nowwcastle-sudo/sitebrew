@@ -1,8 +1,8 @@
 {
   "blocks": {
     "source": "nowwcastle-sudo/sitebrew",
-    "ref": "cbe0ded65f948374f7cf0961833c2a4f259a2d0b",
-    "commit": "cbe0ded65f948374f7cf0961833c2a4f259a2d0b",
+    "ref": "7bfca7ba841de61f305b4f5b5e32713b9abc2185",
+    "commit": "7bfca7ba841de61f305b4f5b5e32713b9abc2185",
     "shadcn": "4.22.1",
     "items": [
       "r1-measure",
@@ -301,7 +301,7 @@
       },
       {
         "path": "registry/factory/blocks/_compiled/product-list/grid-cards.tsx",
-        "sha256": "5ac3f9fdbc0d86d1732fe3938d17e7129bcd00e5289f67dc1af3fa5498f324f7"
+        "sha256": "8472ed5055de10ca4da9bdb579106bc3c15bcbb14d0f5b7d9446b6701a183b4e"
       },
       {
         "path": "registry/factory/blocks/_compiled/retention/cancel-flow.tsx",
@@ -1265,7 +1265,7 @@
     {
       "path": "components/blocks/product-list/grid-cards.tsx",
       "from": "web-factory",
-      "sha256": "1cc98eb5f3911209c40a108e44fc9090a1e1729df439fbf129d1f08cc69f9373"
+      "sha256": "78ac72b61a5b6e7750435ec7e93d9c391e81c526f633ed5757ad25ab7f62f279"
     },
     {
       "path": "components/blocks/retention/cancel-flow.tsx",
