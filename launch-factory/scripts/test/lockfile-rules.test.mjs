@@ -48,6 +48,22 @@ test("양성 대조: 규칙 하나씩 어기면 각각 잡힌다", () => {
   }
 })
 
+test("번들 의존(inBundle)은 부모가 잠금 파일에 있을 때만 resolved·integrity 없이 통과한다", () => {
+  const l = clean()
+  l.packages["node_modules/a/node_modules/b"] = { version: "1.0.0", inBundle: true }
+  assert.deepEqual(checkLockfile(l), [])
+  // 음성 대조: 부모가 없는 번들 항목·번들 표시가 없는 항목·resolved 만 있고 integrity 없는 번들 항목은 그대로 잡는다
+  const orphan = clean()
+  orphan.packages["node_modules/z/node_modules/b"] = { version: "1.0.0", inBundle: true }
+  assert.ok(checkLockfile(orphan).some((m) => /resolved 가 없다/.test(m)))
+  const plain = clean()
+  plain.packages["node_modules/a/node_modules/b"] = { version: "1.0.0" }
+  assert.ok(checkLockfile(plain).some((m) => /resolved 가 없다/.test(m)))
+  const half = clean()
+  half.packages["node_modules/a/node_modules/b"] = { version: "1.0.0", inBundle: true, resolved: "https://evil.example.com/b.tgz" }
+  assert.ok(checkLockfile(half).some((m) => /밖 출처/.test(m)))
+})
+
 test("양성 대조: package.json 의 git·URL·파일·깃허브 약식 의존을 잡고 평범한 판은 통과시킨다", () => {
   const bad = ["github:o/r", "git+https://github.com/o/r.git", "https://example.com/a.tgz", "file:../a", "o/r", "o/r#main", "link:../a"]
   for (const spec of bad) assert.equal(checkManifest({ dependencies: { a: spec } }, "p").length, 1, `${spec} 를 못 잡았다`)
