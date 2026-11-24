@@ -6,7 +6,7 @@
 
 Sitebrew は Claude Code と Codex で使うプラグインです。作りたいサイトをふだんの言葉で説明すると、違う候補を三つ作ります。一つを選び、会話で直して、コードを自分のフォルダーに持ち帰ります。コードの知識も、始めるときの API キーもいりません。
 
-現在のバージョン `v0.2.7` · MIT ライセンス · Windows 10 と 11
+現在のバージョン `v0.2.8` · MIT ライセンス · Windows 10 と 11
 
 ## なぜ Sitebrew なのか
 
@@ -55,13 +55,13 @@ Sitebrew は Claude Code と Codex で使うプラグインです。作りたい
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.7 sitebrew
+npm create sitebrew@0.2.8 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.7 sitebrew
+npx create-sitebrew@0.2.8 sitebrew
 ```
 
 どちらも同じオプションを使えます。`--dry-run` は何も変えずに計画だけを表示し、`--yes` はすべての質問に「はい」と答え、`--tool` は `claude`、`codex`、`both` から選びます。
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code で:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.7
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.8
 /plugin install sitebrew@sitebrew
 ```
 
 Codex で:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.7
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.8
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 部品だけを別の Next.js プロジェクトに入れることもできます。アドレスには必ずタグを付けてください。
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.7 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.7 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.8 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.8 -y -o
 ```
 
 ## コントリビュート
@@ -149,6 +149,7 @@ MIT。[LICENSE](LICENSE) と [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) �
 
 | タグ | 日付 | 変更点 | 記録 |
 |---|---|---|---|
+| `v0.2.8` | 2026-11-24 | メンテナンスリリース。依存関係：リポジトリのルート、ローンチキット、テンプレート、生成物を next 16.4.6（セキュリティ修正版）に更新、ほかに npm のマイナー・パッチ更新 7 件 · web-factory：商品一覧（グリッドカード、ランキング一覧）の価格がページのロケールに従う · palette-lib の関数テストを追加 · CI 修正：e2e-admin のシード preload が Windows で動作し、gitleaks のツリー検査が LF を保つ · v0.2.7 の動作変更の説明を実際の条件に修正 | — |
 | `v0.2.7` | 2026-11-13 | セキュリティリリース（daybreak レビュー）。web-factory：子プロセスに秘密の環境変数を渡さない · npm・npx・vercel をシェルなしで信頼できる絶対パスから実行 · ローカルファイルのパスを検査（ネットワークパス・リンク・範囲外） · レジストリ依存をロックの正確な版に固定 · 外部ダウンロードをホスト・サイズ・リダイレクトで制限 · プレビュートンネル起動の競合を修正し QA サーバーをこのコンピューターだけで待ち受け · ロゴとファビコンの SVG を許可リストで検査 · フォームの冪等キーをポートまで渡す · ロゴ関門が隠れた・透明なロゴを拒否し、ブランド色の検査が画像に覆われた色を数えない。ローンチキット：ニュースレターの確認を POST に · 返金と発送の競合 · 解約防止の提案は一度だけ · アップロード先アドレスの再利用を防止 · リクエスト本文を上限までしか読まない · アカウントごとのプッシュ購読に上限 · 登録の応答がメールの登録有無を明かさない — **動作の変更：`verifyEmail` と `existingAccount` のメール送信が両方あるときだけ登録の既定が conceal になり、新しいアカウントはメール確認の前にログインできない（`signUpEnumeration: "reveal"` で無効にできる）**。インストール：PowerShell の行でリリースのコミットを固定でき、動かされたタグを拒否する。依存：next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | 機能版：3 つの候補を実際のサイトとして並べて比較（`npm run board:direction -- <run> --serve`） · ブリーフのロゴが 3 候補すべてのヘッダーに入り、ロゴがなければ 6 つの案を提案 · 任意のサンプル情報（`--sample-facts`）——全ページにサンプル帯が出て、実際の回答に置き換えるまで `deliver` が止まる · ブランドの最初の色がメインカラーになる · 素材の系統・距離ルール・任意の質問（ポジショニング）で候補同士をより離す · 仕上げレビューのループ · ヘッダーのロゴとブランド色の露出の新しい検査 · プラグインのスキル `new`・`deliver`・`revise` を更新 · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
 | `v0.2.5` | 2026-11-02 | パッチ版：管理画面の表が画面の言語とタイムゾーンに従う（`data-table` ブロックの日付・数値・並べ替え・絞り込み候補） · ローンチキットのテンプレートの複製も合わせて更新 · 依存パッケージの更新（@hono/node-server 2.1.3、systeminformation 5.33.16、posthog-js 1.438.21、posthog-node 5.57.2、lucide-react 1.59.0、react-resizable-panels 4.14.8、playwright 1.64.1 と @axe-core/playwright 4.14.0、pglite 0.5.11 と pglite-tools 0.4.11、typescript-eslint 8.72.0） · それ以外のキットとプラグインのスキルは変更なし · web-factory v0.0.16 + launch-factory v0.2.2（内部バージョン） | — |
