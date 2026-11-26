@@ -5,7 +5,7 @@
 //   - 개인정보 보호법 제21조제1항 단서·제3항: 다른 법령이 보존을 요구하면 파기하지 않되 분리해 저장·관리
 // 표 retained_transactions 에는 이름·이메일 칸이 없다. 사람은 subject_ref(키 있는 해시)로만 가리킨다.
 // 행은 고칠 수 없고, retain_until 전에는 지울 수 없다(마이그레이션 0005 트리거).
-import { and, eq, lte, sql } from "drizzle-orm"
+import { and, eq, lt, lte, sql } from "drizzle-orm"
 import {
   accessLogPurgeBefore,
   accessLogs,
@@ -171,6 +171,6 @@ export async function sweepExpired(d: Database, now: Date, accessLogRetention?: 
   const gone = await d.delete(retainedTransactions).where(lte(retainedTransactions.retainUntil, now)).returning({ kind: retainedTransactions.kind })
   const retained = { advertising: 0, contract: 0, payment: 0, dispute: 0 } satisfies Record<RetainedTransactionKind, number>
   for (const g of gone) retained[g.kind]++
-  const logs = await d.delete(accessLogs).where(sql`${accessLogs.occurredAt} < ${accessLogPurgeBefore(now, accessLogRetention)}`).returning({ id: accessLogs.id })
+  const logs = await d.delete(accessLogs).where(lt(accessLogs.occurredAt, accessLogPurgeBefore(now, accessLogRetention))).returning({ id: accessLogs.id })
   return { retained, accessLogs: logs.length }
 }

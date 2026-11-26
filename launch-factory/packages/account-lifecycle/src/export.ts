@@ -7,7 +7,10 @@ export const EXPORT_FORMAT_VERSION = 1
 
 const iso = (v: Date | null | undefined) => (v ? v.toISOString() : null)
 
-export async function exportMyData(db: Database, userId: string, now: Date = new Date()) {
+export type AdditionalSubscriptionExport = { provider: string; planId: string; amount: number; currency: string; status: string; createdAt: string | null; currentPeriodStart: string | null; currentPeriodEnd: string | null; cancelAt: string | null; nextDueAt: string | null }
+export type AdditionalSubscriptionExporter = (db: Database, userId: string) => Promise<AdditionalSubscriptionExport[]>
+
+export async function exportMyData(db: Database, userId: string, now: Date = new Date(), additionalSubscriptions?: AdditionalSubscriptionExporter) {
   const [u] = await db.select().from(user).where(eq(user.id, userId))
   if (!u) return null
   const [accounts, sessions, subs, consents, marketing, memberships, deletions, myOrders] = await Promise.all([
@@ -24,6 +27,7 @@ export async function exportMyData(db: Database, userId: string, now: Date = new
     db.select().from(accountDeletions).where(and(eq(accountDeletions.userId, userId), inArray(accountDeletions.status, ["pending", "purging"]))),
     db.select().from(orders).where(eq(orders.userId, userId)).orderBy(desc(orders.createdAt)),
   ])
+  const additional = additionalSubscriptions ? await additionalSubscriptions(db, userId) : []
   const lines = myOrders.length ? await db.select().from(orderItems).where(inArray(orderItems.orderId, myOrders.map((o) => o.id))).orderBy(asc(orderItems.productId)) : []
   return {
     format: "launch-factory/my-data",
@@ -44,6 +48,7 @@ export async function exportMyData(db: Database, userId: string, now: Date = new
       pausedUntil: iso(s.pausedUntil),
       createdAt: iso(s.createdAt),
     })),
+    additionalSubscriptions: additional,
     orders: myOrders.map((o) => ({
       orderId: o.id,
       status: o.status,

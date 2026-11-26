@@ -593,5 +593,18 @@
     "cancelledRefunded": "예약을 취소했고 예약금을 돌려드렸어요.",
     "cancelledPartial": "예약을 취소했어요. 취소 기한이 지나서 예약금의 일부만 돌려드려요.",
     "cancelledForfeited": "예약을 취소했어요. 취소 기한이 지나서 예약금은 돌려드리지 않아요."
+  },
+  "tossTest": {
+    "unavailable": "시험 결제 상태를 확인할 수 없어요.",
+    "unsupported": "시험 결제에서 이 기능을 사용할 수 없어요.",
+    "signIn": "로그인해 주세요.",
+    "noPendingOrder": "확인 중인 주문이 없어요.",
+    "checkPlan": "요금제를 확인해 주세요.",
+    "noTrial": "시험 구독에는 체험 기간이 없어요.",
+    "checkRegistration": "등록 결과를 확인해 주세요.",
+    "alreadyRegistered": "이미 등록한 시험 구독이 있어요.",
+    "confirmCancellation": "해지를 확인해 주세요.",
+    "checkCancellationTime": "해지 시점을 확인해 주세요.",
+    "nothingToCancel": "해지할 시험 구독이 없어요."
   }
 }

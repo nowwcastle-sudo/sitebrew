@@ -140,9 +140,10 @@ test("진짜 Sentry 서버 SDK(가짜 전송): 서버가 던진 오류가 보고
   await Sentry.close(2000)
 })
 
-test("조립: onRequestError 는 Sentry 의 captureRequestError 이고, 설정 파일은 DSN 이 없으면 init 을 부르지 않는 한 줄만 쓴다", () => {
+test("조립: onRequestError 는 토스 콜백을 제외하고 Sentry에 보내며, DSN 이 없으면 init 하지 않는다", () => {
   const inst = read("instrumentation.ts")
-  assert.match(inst, /export const onRequestError = Sentry\.captureRequestError/)
+  assert.match(inst, /if \(isTossCallbackPath\(request\.path\)\) return/)
+  assert.match(inst, /return Sentry\.captureRequestError\(error, request, context\)/)
   assert.match(inst, /await import\("\.\/sentry\.server\.config"\)/)
   assert.match(inst, /await import\("\.\/sentry\.edge\.config"\)/)
   assert.ok(inst.indexOf("templateEnv()") < inst.indexOf("sentry.server.config"), "환경 검사가 먼저 — 틀리면 Sentry 를 켜기 전에 멈춘다")

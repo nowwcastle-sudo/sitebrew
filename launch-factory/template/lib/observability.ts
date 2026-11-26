@@ -4,6 +4,7 @@
 //   SENTRY_DSN    없으면 오류 수집이 꺼진다. mock 은 DSN 이 있어도 보내지 않는다(개발 기계가 운영 프로젝트로 오류를 보내지 않게 한다).
 // 이 파일은 브라우저에도 간다 — 서버 전용 모듈(env()·DB)을 가져오지 않고 process.env 를 직접 읽는 값은 기본 인자로만 둔다.
 import { sentryIngestOrigin, sentryOptions } from "@launch-factory/security/sentry"
+import { hasTossCallbackSecret } from "./toss-secret-filter.ts"
 
 type Source = Record<string, string | undefined>
 
@@ -35,7 +36,12 @@ export function sentryCsp(dsn: string | undefined): { connectSrc?: readonly stri
  */
 export function sentryInitOptions(dsn: string | undefined, source: Source = process.env) {
   if (!dsn) return undefined
-  return sentryOptions({ dsn, environment: source.VERCEL_ENV || source.NODE_ENV, release: source.VERCEL_GIT_COMMIT_SHA || undefined })
+  const base = sentryOptions({ dsn, environment: source.VERCEL_ENV || source.NODE_ENV, release: source.VERCEL_GIT_COMMIT_SHA || undefined })
+  return {
+    ...base,
+    beforeSend: <E extends object>(event: E): E | null => hasTossCallbackSecret(event) ? null : base.beforeSend(event),
+    beforeBreadcrumb: <B extends object>(breadcrumb: B): B | null => hasTossCallbackSecret(breadcrumb) ? null : base.beforeBreadcrumb(breadcrumb),
+  }
 }
 
 /** 옵션이 있을 때만 init 을 부른다. 불렀으면 true. 서버·엣지·브라우저 설정 파일이 같은 한 줄을 쓴다 */

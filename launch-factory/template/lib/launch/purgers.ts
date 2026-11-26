@@ -4,9 +4,16 @@
 import type { Purger } from "@launch-factory/account-lifecycle"
 import { anonymizeUserReviews } from "@launch-factory/reviews"
 import { scheduleUserFilesForPurge } from "@launch-factory/storage"
+import { blockTossDeletion, exportTossData, prepareTossPurge, tossCollector, tossPurger } from "./toss-account.ts"
+
+export const onDeletionRequested = blockTossDeletion
+export { exportTossData }
+export const preparePurge = prepareTossPurge
+export const collectors = [tossCollector]
 
 /** 파기 트랜잭션 안에서 도는 함수들(user 행을 지우기 직전, 목록 순서대로) */
 export const purgers: readonly Purger[] = [
+  tossPurger,
   // 후기·상품 문의: 작성자 이름을 「탈퇴한 사용자」로 바꾸고 연결을 끊는다(글은 공개 콘텐츠라 남는다)
   async (tx, { userId }) => {
     await anonymizeUserReviews(tx, userId)

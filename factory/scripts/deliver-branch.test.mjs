@@ -7,7 +7,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, 
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { after, before, test } from 'node:test'
-import { loadOutcomes, writeFeatures } from '../intake/features.mjs'
+import { loadOutcomes, readFeatures, writeFeatures } from '../intake/features.mjs'
 import { OUTBOX_KEYS } from '../stamp/check-loop.mjs'
 import { DELIVER_COPY, deliver, parseDeliverArgs } from '../stamp/deliver.mjs'
 import { INQUIRY_ASSETS, INQUIRY_EXPECT, INQUIRY_TARGETS, deliverIntro, hasInquiryForm } from '../stamp/deliver-intro.mjs'
@@ -28,15 +28,40 @@ mkdirSync(join(LF, 'template', 'e2e'), { recursive: true })
 mkdirSync(join(LF, 'scripts', 'compose'), { recursive: true })
 cpSync(TABLE_FILE, join(LF, 'features', 'outcomes.generated.json'))
 writeFileSync(join(LF, 'template', 'e2e', 'loop-steps.json'), JSON.stringify({ steps: { signup: ['signUp'], payments: ['checkout'], inquiry: ['contact'] } }))
+const tossPaths = [
+  ...['registration/start', 'registration/complete', 'registration/fail', 'test-charge', 'test-subscription'].map((route) => `app/api/toss/${route}/route.ts`),
+  'app/api/cron/toss-test/route.ts',
+  'app/(product)/account/billing/toss-test/page.tsx',
+]
+for (const path of ['lib/toss-test-config.ts', ...tossPaths]) {
+  const file = join(LF, 'template', path)
+  mkdirSync(join(file, '..'), { recursive: true })
+  writeFileSync(file, path.startsWith('lib/') ? 'const TOSS_COMPOSE_ENABLED = true\n' : '// test fixture\n')
+}
 writeFileSync(
   join(LF, 'scripts', 'compose', 'compose-product.mjs'),
   `import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-export function composeProduct({ siteDir, features, table, lfDir, to, name }) {
+export function composeProduct({ siteDir, features, table, lfDir, to, name, ...options }) {
   mkdirSync(join(to, 'app'), { recursive: true })
   mkdirSync(join(to, 'content'), { recursive: true })
+  if (options.billingProvider === 'toss-test' && !existsSync(join(lfDir, 'ignore-provider.txt'))) {
+    mkdirSync(join(to, 'lib'), { recursive: true })
+    writeFileSync(join(to, 'lib', 'toss-test-config.ts'), '// Sitebrew billing: toss-test\\nconst TOSS_COMPOSE_ENABLED = true\\n')
+    for (const path of ${JSON.stringify(tossPaths)}) {
+      const file = join(to, path)
+      mkdirSync(join(file, '..'), { recursive: true })
+      writeFileSync(file, '// test fixture\\n')
+    }
+  } else if (options.billingProvider === 'toss-test') {
+    for (const path of ['lib/toss-test-config.ts', ...${JSON.stringify(tossPaths)}]) {
+      const file = join(to, path)
+      mkdirSync(join(file, '..'), { recursive: true })
+      cpSync(join(lfDir, 'template', path), file)
+    }
+  }
   cpSync(join(siteDir, 'content', 'site.json'), join(to, 'content', 'site.json'))
-  writeFileSync(join(to, 'composed.json'), JSON.stringify({ siteDir, features, lfDir, hash: table.hash }))
+  writeFileSync(join(to, 'composed.json'), JSON.stringify({ siteDir, features, lfDir, hash: table.hash, options }))
   // launch-factory 의 rootMeta 단계 흉내: 제품 이름·OG 언어를 시안의 것으로 바꾸고, 못 찾은 자리는 rootMetaSkipped 로 돌려준다
   const locale = JSON.parse(readFileSync(join(siteDir, 'content', 'site.json'), 'utf8')).locale
   writeFileSync(join(to, 'content', 'copy.en.ts'), 'export const PRODUCT_NAME = ' + JSON.stringify(name) + '\\n')
@@ -79,6 +104,58 @@ const out = (name) => join(tmp, 'out', `${name}-${n++}`)
 // deliver 가 더하는 것: README.md · AGENTS.md · .sitebrew/(넘긴 것 기록 — 계획 5 Task 9)
 const added = (p) => p === 'README.md' || p === 'AGENTS.md' || p.startsWith('.sitebrew/')
 const sameAsSite = (r, siteDir) => assert.deepEqual(files(r.dir).filter((p) => !added(p)), kept(siteDir), '복사 목록이 원본에서 빠질 것만 뺀 것이다')
+
+test('플러그인 선택은 features.json 을 거쳐 조립 인자로 전달되고 비선택은 기존 인자만 쓴다', async () => {
+  const input = join(tmp, 'provider-answers.json')
+  writeFileSync(input, JSON.stringify({ payments: true }))
+  const script = join(root, 'plugins', 'sitebrew', 'scripts', 'intake.mjs')
+  const args = [script, '--kit', root, 'features-write', '--archetype', 'saas', '--input', input, '--run', saas.runDir, '--lf', LF]
+  for (const provider of ['toss-test', undefined]) {
+    const write = spawnSync(process.execPath, [...args, ...(provider ? ['--billing-provider', provider] : [])], { encoding: 'utf8' })
+    assert.equal(write.status, 0, write.stderr)
+    const chosen = readFeatures(saas.runDir)
+    assert.deepEqual(chosen, { version: 1, table: table.hash, outcomes: ['signup', 'payments'], ...(provider ? { billingProvider: provider } : {}) })
+    const r = await deliver(saas.runDir, 'a', { to: out('provider'), ...WITH_LF, checkLoop: Boolean(provider) })
+    assert.equal(r.branch, 'product')
+    if (provider) {
+      assert.equal(r.checkLoop.status, 'skipped')
+      assert.equal(r.checkLoop.key, 'checkLoopTossTest')
+      assert.match(readme(r.dir), /docs\/toss-test\.md/)
+    }
+    const composed = JSON.parse(readFileSync(join(r.dir, 'composed.json'), 'utf8'))
+    assert.deepEqual(composed.features, chosen)
+    assert.deepEqual(composed.options, provider ? { billingProvider: 'toss-test' } : {})
+  }
+  const previous = readFileSync(join(saas.runDir, 'features.json'), 'utf8')
+  const bad = spawnSync(process.execPath, [...args, '--billing-provider', 'bad'], { encoding: 'utf8' })
+  assert.notEqual(bad.status, 0)
+  assert.equal(readFileSync(join(saas.runDir, 'features.json'), 'utf8'), previous)
+})
+
+test('토스 시험 조립은 구판을 미리 거부하고 인자를 무시한 결과는 전달 완료 전에 거부한다', async () => {
+  const old = join(tmp, 'old-lf')
+  cpSync(LF, old, { recursive: true })
+  rmSync(join(old, 'template', 'lib', 'toss-test-config.ts'))
+  const selected = { version: 1, table: table.hash, outcomes: ['signup', 'payments'], billingProvider: 'toss-test' }
+  writeFeatures(saas.runDir, selected)
+  const noSupport = out('unsupported')
+  await assert.rejects(deliver(saas.runDir, 'a', { to: noSupport, lf: old, env: {} }), /capability check failed/)
+  assert.equal(existsSync(noSupport), false)
+
+  const ignores = join(tmp, 'ignore-lf')
+  cpSync(LF, ignores, { recursive: true })
+  writeFileSync(join(ignores, 'ignore-provider.txt'), 'ignored')
+  const rejected = out('ignored-provider')
+  await assert.rejects(deliver(saas.runDir, 'a', { to: rejected, lf: ignores, env: {} }), /output check failed/)
+  assert.doesNotMatch(readFileSync(join(rejected, 'lib', 'toss-test-config.ts'), 'utf8'), /Sitebrew billing: toss-test/)
+  assert.equal(existsSync(join(rejected, 'README.md')), false)
+  assert.equal(existsSync(join(rejected, '.sitebrew', 'delivered.json')), false)
+
+  writeFeatures(saas.runDir, { ...selected, billingProvider: undefined })
+  const legacy = await deliver(saas.runDir, 'a', { to: out('old-default'), lf: old, env: {} })
+  assert.equal(legacy.branch, 'product')
+  assert.deepEqual(JSON.parse(readFileSync(join(legacy.dir, 'composed.json'), 'utf8')).options, {})
+})
 
 test('features.json 없음: 파일 목록은 지금 deliver 와 같고, README 에 안내 한 줄(ko·en)이 더해진다', async () => {
   dropFeatures(local.runDir)
@@ -471,6 +548,13 @@ test('진짜 launch-factory 표 → deliver 제품형(진짜 composeProduct)이 
   const enabled = JSON.parse(readFileSync(join(r.dir, 'lib', 'launch', 'enabled.json'), 'utf8'))
   assert.ok(enabled.parts.includes('auth'))
   assert.equal(r.rootMetaSkipped, undefined)
+  const toss = { version: 1, table: real.hash, outcomes: ['signup', 'payments'], billingProvider: 'toss-test' }
+  writeFeatures(saas.runDir, toss)
+  const selected = await deliver(saas.runDir, 'a', { to: out('real-toss-compose'), lf: REAL_LF, env: {}, checkLoop: true })
+  assert.equal(selected.branch, 'product')
+  assert.equal(selected.checkLoop.key, 'checkLoopTossTest')
+  assert.match(readFileSync(join(selected.dir, 'lib', 'toss-test-config.ts'), 'utf8'), /Sitebrew billing: toss-test/)
+  assert.equal(JSON.parse(readFileSync(join(selected.dir, '.sitebrew', 'delivered.json'), 'utf8')).billingProvider, 'toss-test')
 })
 
 

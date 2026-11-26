@@ -31,6 +31,8 @@ export const accountDeletions = pgTable(
     completedAt: timestamp("completed_at", tz),
     /** 마지막 실패 이유(오류 이름·짧은 코드만 — 개인정보를 넣지 않는다). 다음 Cron 이 다시 시도한다. */
     lastError: text("last_error"),
+    /** 파기 재시도 가능 시각. null이면 제한 없이 처리한다. */
+    purgeRetryAt: timestamp("purge_retry_at", tz),
   },
   (t) => [
     check("account_deletions_status_ck", inList("status", ACCOUNT_DELETION_STATUSES)),

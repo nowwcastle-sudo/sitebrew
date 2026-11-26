@@ -27,6 +27,7 @@ export const ITEM_ORDER = [
   "feature-security",
   "feature-billing-paddle",
   "feature-billing-gumroad",
+  "feature-billing-toss",
   "feature-inquiry",
   "feature-payments-kr",
   "feature-commerce",
@@ -133,6 +134,12 @@ export function buildItem(name, root = ROOT) {
   for (const f of src.files ?? []) {
     const path = posix.normalize(posix.join(`registry/${name}`, f))
     add(path, targetOf(f), read(path, root))
+  }
+  // 템플릿을 단일 원천으로 사용한다. 경로 이동과 임의 파일 삽입을 막는다.
+  for (const target of src.templateFiles ?? []) {
+    if (!/^(?:app|lib)\/[A-Za-z0-9_()/.-]+\.(?:ts|tsx)$/.test(target) || target.split("/").includes("..")) throw new Error(`${name}: invalid template file`)
+    const path = `template/${target}`
+    add(path, target, read(path, root))
   }
   const tables = []
   const schema = []

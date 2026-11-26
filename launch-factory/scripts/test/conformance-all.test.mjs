@@ -51,17 +51,18 @@ test("renderTable: 열이 맞고 판정이 보인다", () => {
   assert.match(t, /PASS/)
 })
 
-test("실제 일괄: 어댑터 6개·검사 185개가 판정대로 — Gumroad 지원 안 함 20개는 예상 실패로 고정", { skip: wf.skip ?? false, timeout: 180_000 }, async () => {
+test("실제 일괄: 어댑터 7개·검사 225개가 판정대로 — Gumroad 지원 안 함 20개는 예상 실패로 고정", { skip: wf.skip ?? false, timeout: 180_000 }, async () => {
   const report = await runAll({ loaded: { ...wf, cleanup() {} } })
   assert.equal(report.skipped, undefined, report.skipped)
   assert.equal(report.exit, 0, renderReport(report))
-  assert.deepEqual(report.rows.map((r) => r.adapter), ["billing-paddle", "billing-gumroad", "analytics-posthog/client", "analytics-posthog/server", "auth", "consent/notify"])
+  assert.deepEqual(report.rows.map((r) => r.adapter), ["billing-paddle", "billing-gumroad", "billing-toss-test", "analytics-posthog/client", "analytics-posthog/server", "auth", "consent/notify"])
   const by = Object.fromEntries(report.rows.map((r) => [r.adapter, r]))
   assert.deepEqual([by["billing-paddle"].total, by["billing-paddle"].passed, by["billing-paddle"].expectedFail], [44, 41, 3]) // 40 + billing.confirmation.* 4(requireConfirmation, LFPIN11). 예상 실패 3 = 서버가 정한 대안만 받는 설계(billing.retention.apply 중 첫 대안이 아닌 셋, conformance-run.mjs 의 EXPECTED_FAILURES)
   assert.deepEqual([by["billing-gumroad"].total, by["billing-gumroad"].passed, by["billing-gumroad"].expectedFail], [40, 20, 20])
+  assert.deepEqual([by["billing-toss-test"].total, by["billing-toss-test"].passed, by["billing-toss-test"].expectedFail], [40, 12, 28])
   assert.equal(by["consent/notify"].total, 5) // 4 + notify.confirmation.* 1
   assert.equal(by.auth.total, 12) // 9 + auth.confirmation.* 3(requireConfirmation — 탈퇴·내려받기는 account-lifecycle 과 합친 조립 포트로, LFCI)
-  assert.equal(report.rows.reduce((a, r) => a + r.total, 0), 185)
+  assert.equal(report.rows.reduce((a, r) => a + r.total, 0), 225)
   // web-factory 의 네 묶음이 모두 어댑터를 하나 이상 만났다
   assert.deepEqual(Object.keys(report.suites).sort(), ["analyticsConformance", "authConformance", "billingConformance", "notifyConformance"])
   assert.equal(report.live.status, "not-requested")

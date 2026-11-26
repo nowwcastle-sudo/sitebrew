@@ -1,0 +1,1 @@
+ALTER TABLE "toss_ledger_subscriptions" ADD COLUMN "cancel_at" timestamp with time zone;

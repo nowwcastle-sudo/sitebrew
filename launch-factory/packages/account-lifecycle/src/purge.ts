@@ -30,6 +30,7 @@ export const NO_ANALYTICS_ERASER: AnalyticsEraser = { erase: async () => {} }
 
 /** 파기 트랜잭션 안에서 제품이 더한 표의 행을 지운다(개인 식별 칸이 있는 새 표를 만들면 여기에 더한다) */
 export type Purger = (tx: Tx, ctx: { userId: string; email: string }) => Promise<void>
+export type PurgePreparation = "ready" | "unresolved" | "registration_unresolved" | "charge_unresolved" | "billing_key_delete_unresolved" | "provider_unavailable" | "storage_unavailable"
 
 export interface PurgeDeps extends Omit<DeletionDeps, "graceDays"> {
   /** SUBJECT_REF_KEY(32자 이상) */
@@ -40,6 +41,8 @@ export interface PurgeDeps extends Omit<DeletionDeps, "graceDays"> {
   accessLogRetention?: AccessLogRetention
   /** 한 번에 잡는 요청 수(기본 50) — 짧게 사는 함수의 시간 안에 끝나게 */
   batchSize?: number
+  /** DB 트랜잭션 밖 공급자 정리. 미확정이면 오류를 반환하고 파기를 보류한다. */
+  preparePurge?: (userId: string) => Promise<PurgePreparation>
 }
 
 export interface PurgeFailure {
@@ -68,12 +71,15 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
   const { db } = deps
   const now = (deps.now ?? (() => new Date()))()
   const batch = deps.batchSize ?? 50
+  if (!Number.isInteger(batch) || batch < 1 || batch > 1000) throw new Error("Invalid purge batch size")
   const collectors = deps.collectors ?? DEFAULT_COLLECTORS
+  const leaseUntil = new Date(now.getTime() + 5 * 60_000)
+  const retryUntil = new Date(now.getTime() + 60 * 60_000)
   const report: PurgeReport = { claimed: 0, purged: 0, analyticsErased: 0, completed: 0, failures: [], swept: { retained: { advertising: 0, contract: 0, payment: 0, dispute: 0 }, accessLogs: 0 }, ordersDeidentified: 0 }
   const fail = async (id: string, stage: PurgeFailure["stage"], e: unknown) => {
     const code = `${stage}:${typeof e === "string" ? e : errorCode(e)}`
     report.failures.push({ deletionId: id, stage, error: code })
-    await db.update(accountDeletions).set({ lastError: code }).where(eq(accountDeletions.id, id))
+    await db.update(accountDeletions).set(stage === "analytics" ? { lastError: code } : { lastError: code, purgeRetryAt: retryUntil }).where(stage === "analytics" ? eq(accountDeletions.id, id) : and(eq(accountDeletions.id, id), eq(accountDeletions.status, "purging"), eq(accountDeletions.purgeRetryAt, leaseUntil)))
   }
 
   // 1. 잡기 — 한 문장이라 동시에 로그인해 취소한 요청은 잡히지 않는다
@@ -81,13 +87,17 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
     .update(accountDeletions)
     .set({ status: "purging" })
     .where(
-      sql`${accountDeletions.id} in (select ${accountDeletions.id} from ${accountDeletions} where ${accountDeletions.status} = 'pending' and ${accountDeletions.graceUntil} <= ${now} order by ${accountDeletions.graceUntil} limit ${batch})`,
+      sql`${accountDeletions.id} in (select ${accountDeletions.id} from ${accountDeletions} where ${accountDeletions.status} = 'pending' and ${accountDeletions.graceUntil} <= ${now.toISOString()}::timestamptz order by ${accountDeletions.graceUntil} limit ${batch})`,
     )
     .returning({ id: accountDeletions.id })
   report.claimed = claimed.length
 
-  // 이번에 잡은 것 + 지난번에 멈춘 것(purging 으로 남은 것)
-  const work = await db.select().from(accountDeletions).where(eq(accountDeletions.status, "purging")).orderBy(accountDeletions.graceUntil).limit(batch)
+  // 재시도 시각이 도래한 항목만 원자적으로 선점한다. 작업 중 크래시가 나면 임대가 만료된 뒤 재개한다.
+  const work = await db.update(accountDeletions).set({ purgeRetryAt: leaseUntil }).where(and(
+    eq(accountDeletions.status, "purging"),
+    or(isNull(accountDeletions.purgeRetryAt), lte(accountDeletions.purgeRetryAt, now)),
+    sql`${accountDeletions.id} in (select ${accountDeletions.id} from ${accountDeletions} where ${accountDeletions.status} = 'purging' and (${accountDeletions.purgeRetryAt} is null or ${accountDeletions.purgeRetryAt} <= ${now.toISOString()}::timestamptz) order by coalesce(${accountDeletions.purgeRetryAt}, ${accountDeletions.graceUntil}), ${accountDeletions.id} limit ${batch})`,
+  )).returning()
   for (const del of work) {
     const userId = del.userId
     if (!userId) {
@@ -113,12 +123,22 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
       await fail(del.id, "billing", e)
       continue
     }
+    try {
+      const state = deps.preparePurge ? await deps.preparePurge(userId) : "ready"
+      if (state !== "ready") {
+        const allowed: readonly string[] = ["unresolved", "registration_unresolved", "charge_unresolved", "billing_key_delete_unresolved", "provider_unavailable", "storage_unavailable"]
+        await fail(del.id, "billing", typeof state === "string" && allowed.includes(state) ? state : "unresolved")
+        continue
+      }
+    } catch { await fail(del.id, "billing", "provider_cleanup_unresolved"); continue }
     // 3. DB 파기
     try {
       const done = await db.transaction(async (tx) => {
+        // 청구·접수와 같은 순서로 사용자 행을 먼저 잠근다.
+        const [lockedUser] = await tx.select({ id: user.id, email: user.email }).from(user).where(eq(user.id, userId)).for("update")
         const [locked] = await tx.select().from(accountDeletions).where(eq(accountDeletions.id, del.id)).for("update")
-        if (locked?.status !== "purging") return false // 다른 Cron 이 먼저 끝냈다
-        const [u] = await tx.select({ id: user.id, email: user.email }).from(user).where(eq(user.id, userId))
+        if (locked?.status !== "purging" || locked.purgeRetryAt?.getTime() !== leaseUntil.getTime()) return false // 임대가 만료되었거나 다른 Cron 이 끝냈다
+        const u = lockedUser
         let ref: string | null = locked.subjectRef
         if (u) {
           ref = subjectRef(deps.subjectKey, u.email)
@@ -131,7 +151,7 @@ export async function runPurge(deps: PurgeDeps): Promise<PurgeReport> {
           for (const purge of deps.purgers ?? []) await purge(tx, { userId, email: u.email })
           await tx.delete(user).where(eq(user.id, userId))
         }
-        await tx.update(accountDeletions).set({ status: "purged", purgedAt: now, subjectRef: ref, lastError: null }).where(eq(accountDeletions.id, del.id))
+        await tx.update(accountDeletions).set({ status: "purged", purgedAt: now, subjectRef: ref, lastError: null, purgeRetryAt: null }).where(eq(accountDeletions.id, del.id))
         return true
       })
       if (done) report.purged++

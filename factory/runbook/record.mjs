@@ -126,8 +126,10 @@ export function createRecord({ secretShapes = [] } = {}) {
     return xs.map((x) => guard(x, ID, what))
   }
   const features = (f) => {
-    if (!isObject(f) || Object.keys(f).some((k) => k !== 'table' && k !== 'outcomes')) throw new RecordError('features: expected { table, outcomes }')
-    return { table: guard(f.table, HASH, 'features.table', { phone: false }), outcomes: [...new Set(ids(f.outcomes, 'features.outcomes'))].sort() }
+    if (!isObject(f) || Object.keys(f).some((k) => !['table', 'outcomes', 'billingProvider'].includes(k))) throw new RecordError('features: expected { table, outcomes, billingProvider? }')
+    const outcomes = [...new Set(ids(f.outcomes, 'features.outcomes'))].sort()
+    if ('billingProvider' in f && (f.billingProvider !== 'toss-test' || !outcomes.includes('payments'))) throw new RecordError('features.billingProvider: toss-test requires payments')
+    return { table: guard(f.table, HASH, 'features.table', { phone: false }), outcomes, ...('billingProvider' in f ? { billingProvider: f.billingProvider } : {}) }
   }
 
   /** 쓰기 patch → 칸마다 at 이 붙은 부분 상태. 틀린 것이 하나라도 있으면 던진다(아무것도 쓰기 전에). */
@@ -170,8 +172,10 @@ export function createRecord({ secretShapes = [] } = {}) {
   function delivered(d) {
     if (!isObject(d)) throw new RecordError('delivered: expected an object')
     const keys = Object.keys(d).sort()
-    if (keys.join() !== [...DELIVERED_KEYS].sort().join()) throw new RecordError(`delivered: keys must be exactly ${DELIVERED_KEYS.join(', ')}`)
+    const expected = [...DELIVERED_KEYS, ...('billingProvider' in d ? ['billingProvider'] : [])].sort()
+    if (keys.join() !== expected.join()) throw new RecordError(`delivered: keys must be ${DELIVERED_KEYS.join(', ')} and optional billingProvider`)
     if (d.version !== VERSION) throw new RecordError(`delivered.version: expected ${VERSION}`)
+    if ('billingProvider' in d && (d.billingProvider !== 'toss-test' || d.completion !== 'composed' || !Array.isArray(d.applied) || !d.applied.includes('payments') || !Array.isArray(d.unapplied) || d.unapplied.includes('payments') || !d.tableHash)) throw new RecordError('delivered.billingProvider: toss-test requires applied payments and a matching table')
     return {
       version: VERSION,
       applied: d.applied === null ? null : ids(d.applied, 'delivered.applied'),
@@ -180,6 +184,7 @@ export function createRecord({ secretShapes = [] } = {}) {
       locale: oneOf(d.locale, LANGS, 'delivered.locale'),
       tableHash: d.tableHash === null ? null : guard(d.tableHash, HASH, 'delivered.tableHash', { phone: false }),
       deliveredAt: guard(d.deliveredAt, TIME, 'delivered.deliveredAt', { phone: false }),
+      ...('billingProvider' in d ? { billingProvider: d.billingProvider } : {}),
     }
   }
 

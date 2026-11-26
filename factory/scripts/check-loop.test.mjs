@@ -62,6 +62,21 @@ const stub = (answer) => {
 const smokeCall = (calls) => calls.find((c) => c.args.some((a) => String(a).endsWith('smoke.mjs')))
 const base = (over = {}) => ({ lfDir: LF, features: feats('signup', 'payments'), copy, freeGb: () => 8, hasPlaywright: () => true, env: { PATH: 'x' }, ...over })
 
+test('토스 시험 전용은 설치·운영 빌드 전에 별도 개발 시험 안내로 건너뛴다', async () => {
+  const s = stub({ code: 1, tail: 'must not run' })
+  const chosen = { ...feats('signup', 'payments'), billingProvider: 'toss-test' }
+  const r = await runCheckLoop(productDir({ installed: false }), base({ features: chosen, freeGb: () => 0, spawn: s.spawn }))
+  assert.equal(r.status, 'skipped')
+  assert.equal(r.key, 'checkLoopTossTest')
+  assert.match(r.reason, /개발 환경 시험.*docs\/toss-test\.md/)
+  assert.match(r.reasonEn, /development test/)
+  assert.equal(s.calls.length, 0)
+  for (const lang of ['ko', 'en']) assert.ok(checkLoopSection(r, copy, lang).join('\n').includes('docs/toss-test.md'))
+  const defaultCalls = stub({ code: 0, tail: '' })
+  assert.equal((await runCheckLoop(productDir(), base({ spawn: defaultCalls.spawn }))).status, 'ok')
+  assert.equal(defaultCalls.calls.length, 1)
+})
+
 test('제품형: 전달한 폴더 안에서 smoke --mode loop (--root·템플릿 경로 없음), 고른 기능만 LOOP_FEATURES 로 넘기고 CI 값은 뺀다', async () => {
   const dir = productDir()
   const s = stub({ code: 0, tail: '' })

@@ -5,7 +5,7 @@
 //     종료 0 = ok · 3 = 브라우저 없음(skipped) · 그 밖 = failed(출력 끝줄 detail). 메일 기록은 smoke 가 남긴 마지막 파일을 template 별로 센다.
 //   · 소개형: 문의 접수(app/api/inquiry)가 더해졌을 때만 — 빌드 → 서버 → POST /api/inquiry → 가짜 메일 기록 줄 수가 expect.json 과 같은가. 받는 메일이 「확인 필요」(미리보기)라 접수가 503 으로 답하면 실패가 아니라 skipped.
 //   · 메모리 여유가 MIN_FREE_GB 아래면 기다리지 않고 skipped(잰 값을 이유에 적는다). smoke 자신의 메모리 대기 문턱도 같은 값으로 맞춘다. 서버·브라우저는 띄운 쪽이 PID 나무째 끈다(run-proc.mjs · smoke.mjs).
-//   문장은 deliver-copy.json(checkLoop*) 한 곳 — 여기에는 사용자 문장이 없다. 이유는 ko·en 둘 다 낸다(README 가 두 언어로 쓴다). 실패 원인(영어 detail)은 이유 문장에 섞지 않고 detail 에만 둔다. 이유 문장과 detail 에서는 이 PC 의 절대 경로를 가린다.
+//   이유는 ko·en 둘 다 낸다(README 가 두 언어로 쓴다). 실패 원인(영어 detail)은 이유 문장에 섞지 않고 detail 에만 둔다. 이유 문장과 detail 에서는 이 PC 의 절대 경로를 가린다.
 import { existsSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, statSync } from 'node:fs'
 // killTree·readOutbox·countByTemplate 는 launch-factory 쪽(scripts/ci/smoke.mjs · packages/email)과 모양이 같은 작은 복제다 — 저장소가 둘이라 공유 패키지로 뽑지 않고 시험이 모양을 고정한다(계획 4 결정 기록 M4).
 import { createRequire } from 'node:module'
@@ -14,6 +14,7 @@ import { join, relative, isAbsolute } from 'node:path'
 import { isDeepStrictEqual } from 'node:util'
 import { describeFeatures, loadOutcomes } from '../intake/features.mjs'
 import { envWithoutSecrets } from '../lib/secret-env.mjs'
+import { TOSS_TEST_CHECK_SKIP } from '../runbook/index.mjs'
 import { INQUIRY_EXPECT, INQUIRY_SAMPLE, INQUIRY_TARGETS } from './deliver-intro.mjs'
 import { loadLoopSteps } from './deliver-product.mjs'
 import { isNeedsCheck } from './needs-check.mjs'
@@ -226,6 +227,7 @@ export async function runCheckLoop(outDir, { lfDir, features, table, notice, cop
   const scrub = scrubFor(outDir, lfDir)
   try {
     if (!features || !lfDir) return scrubResult(result(copy, 'skipped', SKIP_BY_NOTICE[notice] ?? 'checkLoopNoFeatures'), scrub)
+    if (features.billingProvider === 'toss-test') return scrubResult(result({ ...copy, checkLoopTossTest: TOSS_TEST_CHECK_SKIP }, 'skipped', 'checkLoopTossTest'), scrub)
     const free = freeGb()
     if (free < MIN_FREE_GB) return scrubResult(result(copy, 'skipped', 'checkLoopMemory', { free: free.toFixed(1) }), scrub)
     const described = describeFeatures(features, table ?? loadOutcomes(lfDir), { loopSteps: loadLoopSteps(lfDir) })

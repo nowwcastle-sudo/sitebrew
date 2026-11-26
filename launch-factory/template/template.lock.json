@@ -1848,9 +1848,39 @@
       "sha256": "e6523f27940482f5aae93bb14cc01b813276b5f0336de1a228556891126a4e98"
     },
     {
+      "path": "db/migrations/0020_toss_registration.sql",
+      "from": "launch-factory",
+      "sha256": "dff1f96a989149c1a66fb4a7f860a5ab9809d4e4853f7b7ea7d64d22bbc2c3a1"
+    },
+    {
+      "path": "db/migrations/0021_toss_registration_identity.sql",
+      "from": "launch-factory",
+      "sha256": "12f2ba862674d27b743fee2a3526f0feeb0968e259512a107f49e404a216588d"
+    },
+    {
+      "path": "db/migrations/0022_toss_schedule.sql",
+      "from": "launch-factory",
+      "sha256": "804b5a61794c1a09ff50a4084c466c5ff17d0a21eac06de62b99165e65d3a062"
+    },
+    {
+      "path": "db/migrations/0023_toss_cancel_at.sql",
+      "from": "launch-factory",
+      "sha256": "a890a1edbccd9701f5aecb74e2b5266a9658a4ebf668b08194d2f7e4663db69c"
+    },
+    {
+      "path": "db/migrations/0024_toss_scheduler_safety.sql",
+      "from": "launch-factory",
+      "sha256": "74017f94b013eaf47f55babca59e03099cc08dfdd503f58fd9335cf833d5cd1b"
+    },
+    {
+      "path": "db/migrations/0025_account_purge_retry.sql",
+      "from": "launch-factory",
+      "sha256": "d3ed24e993164c9d3f5951a95995b9462127fe879a79b50b8df1ee92c5ee8c9e"
+    },
+    {
       "path": "db/migrations/meta/_journal.json",
       "from": "launch-factory",
-      "sha256": "aa49a7b5e6f1d7c5ad713254b4b1fa1d4e99b590d6dc19dd7f25fd9edb57fb14"
+      "sha256": "34997d26862359ff7cba4c1367a74b0bb25a9a617b440848549a6d4db1fd6e5a"
     },
     {
       "path": "db/schema/auth-base.ts",
@@ -1955,7 +1985,7 @@
     {
       "path": "e2e/smoke.mock.spec.ts",
       "from": "launch-factory-ci",
-      "sha256": "7ad013f9944c0b0489e692f268d14932c943a742236b86e61d48eac11d9c49c4"
+      "sha256": "b24248e7efb570d6945f49b2f870f13f3d97ab3f54da9ec749f0fb47d0518b60"
     },
     {
       "path": "hooks/use-mobile.ts",
@@ -1970,7 +2000,7 @@
     {
       "path": "lib/launch/account.ts",
       "from": "launch-factory",
-      "sha256": "02f803cd5560a79954217cec4e31841d68472996fb7324ed27d979d24e150f6f"
+      "sha256": "6fc6e9f4d893d0c26c08eccb0b256aeeb167a6808db84147103783f5d8443219"
     },
     {
       "path": "lib/launch/admin-console.ts",
@@ -2090,7 +2120,7 @@
     {
       "path": "lib/launch/db.ts",
       "from": "launch-factory",
-      "sha256": "145d9d17230848f7089b4447d53f825026f683254c5d021edd30434213e34463"
+      "sha256": "b230eae5955b0a3ecdcc7f162d396c86cc6f96882a23d60e0adfa83d15e5e73a"
     },
     {
       "path": "lib/launch/enabled.json",
@@ -2105,7 +2135,7 @@
     {
       "path": "lib/launch/env.ts",
       "from": "launch-factory",
-      "sha256": "dfb31d4c2b314e3826d0b3d2c9876a6c70f866b80d11ab9024df7571d198ee5a"
+      "sha256": "35314c4f6ec18d6a3f4894285167717ce7bb840d7a6c2f39d0933d518ab33cc6"
     },
     {
       "path": "lib/launch/eu-sales.ts",

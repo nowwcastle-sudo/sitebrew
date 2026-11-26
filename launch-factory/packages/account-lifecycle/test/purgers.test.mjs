@@ -36,8 +36,8 @@ async function seed(id) {
   return { reviewId: review.id, fileId }
 }
 
-test("템플릿 purgers 는 후기 익명화와 파일 정리 두 줄이다", () => {
-  assert.equal(purgers.length, 2)
+test("템플릿 purgers 는 토스 원장·후기·파일을 함께 정리한다", () => {
+  assert.equal(purgers.length, 3)
 })
 
 test("탈퇴 파기: 후기는 익명으로 남고 올린 파일은 지울 때로 당겨지며, 남의 것은 그대로다", async () => {

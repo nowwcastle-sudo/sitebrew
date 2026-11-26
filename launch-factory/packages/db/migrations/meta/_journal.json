@@ -141,6 +141,48 @@
       "when": 1794539533994,
       "tag": "0019_retention_offer_uses",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1795696926100,
+      "tag": "0020_toss_registration",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1795696979659,
+      "tag": "0021_toss_registration_identity",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1795699866062,
+      "tag": "0022_toss_schedule",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1795701522714,
+      "tag": "0023_toss_cancel_at",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1795702522714,
+      "tag": "0024_toss_scheduler_safety",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1795705747703,
+      "tag": "0025_account_purge_retry",
+      "breakpoints": true
     }
   ]
 }

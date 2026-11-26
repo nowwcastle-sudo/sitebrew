@@ -14,10 +14,12 @@ export const LIVE_SUBSCRIPTION_STATUSES: readonly SubscriptionStatus[] = ["trial
 export interface DeletionDeps {
   db: Database
   /** 서버 쪽에서 그 사용자의 결제 포트를 만든다(요청 때는 그 사용자의 세션, Cron 때는 세션 없이 사용자 id 로) */
-  billingFor(userId: string): BillingPort
+  billingFor(userId: string): Pick<BillingPort, "subscription" | "cancel">
   /** 유예 기간(일). 기본 7 */
   graceDays?: number
   now?: () => Date
+  /** 탈퇴 접수 트랜잭션 안의 DB 전용 작업. 외부 API는 호출하지 않는다. */
+  onDeletionRequested?: (tx: Parameters<Parameters<Database["transaction"]>[0]>[0], userId: string) => Promise<void>
 }
 
 export type DeletionFailure =
@@ -56,6 +58,10 @@ export async function requestAccountDeletion(deps: DeletionDeps, userId: string)
   // 2) 요청 기록 + 모든 세션 끊기(한 트랜잭션). 다시 들어오려면 로그인해야 하고, 로그인하면 요청이 취소된다.
   const graceUntil = new Date(now.getTime() + graceDays * 24 * 60 * 60 * 1000)
   const row = await db.transaction(async (tx) => {
+    // 청구 선점과 동일한 사용자 행을 먼저 잠근다. 접수의 선형화 지점은 아래 트랜잭션 커밋이다.
+    const [lockedUser] = await tx.select({ id: user.id }).from(user).where(eq(user.id, userId)).for("update")
+    if (!lockedUser) throw new Error("Deletion user unavailable")
+    await deps.onDeletionRequested?.(tx, userId)
     const [inserted] = await tx.insert(accountDeletions).values({ userId, requestedAt: now, graceUntil }).onConflictDoNothing().returning()
     await tx.delete(session).where(eq(session.userId, userId))
     return inserted

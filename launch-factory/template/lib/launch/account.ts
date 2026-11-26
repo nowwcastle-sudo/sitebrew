@@ -2,9 +2,9 @@
 //   탈퇴 요청 = 살아 있는 구독을 먼저 기간 끝 해지 → 유예(기본 7일) 기록 → 세션 전부 끊기. 유예 중 다시 로그인하면 취소된다(인증 항목의 로그인 훅).
 //   파기 Cron = 유예가 지난 요청을 잡아 구독 즉시 해지 → 개인 식별 정보 삭제(거래기록은 가명 참조로 분리 보존) → 계측 삭제.
 import { authAdapter, isPlaceholderEmail, type LaunchAuthPort } from "@launch-factory/auth"
-import { exportMyData, NO_ANALYTICS_ERASER, requestAccountDeletion, runPurge, type AnalyticsEraser, type PurgeReport } from "@launch-factory/account-lifecycle"
+import { DEFAULT_COLLECTORS, exportMyData, NO_ANALYTICS_ERASER, requestAccountDeletion, runPurge, type AdditionalSubscriptionExporter, type AnalyticsEraser, type DeletionDeps, type PurgePreparation, type PurgeReport, type RetentionCollector } from "@launch-factory/account-lifecycle"
 import { postHogEraser } from "@launch-factory/analytics-posthog/erase"
-import { user } from "@launch-factory/db"
+import { user, type Database } from "@launch-factory/db"
 import { authEmails } from "@launch-factory/email"
 import { eq } from "drizzle-orm"
 import { authIO, getAuth } from "@/lib/launch/auth"
@@ -13,7 +13,10 @@ import { appUrl, DEFAULT_LOCALE, PRODUCT_NAME } from "@/lib/launch/config"
 import { database } from "@/lib/launch/db"
 import { env, optional, required } from "@/lib/launch/env"
 import { mailer } from "@/lib/launch/mailer"
-import { afterPurge, purgers } from "@/lib/launch/purgers"
+import * as purgeExtensions from "@/lib/launch/purgers"
+
+// 기존 제품의 owned purgers.ts는 새 선택 확장을 내보내지 않아도 그대로 동작한다.
+const extensions = purgeExtensions as typeof purgeExtensions & { onDeletionRequested?: DeletionDeps["onDeletionRequested"]; preparePurge?: (db: Database, userId: string) => Promise<PurgePreparation>; collectors?: readonly RetentionCollector[]; exportTossData?: AdditionalSubscriptionExporter }
 
 /**
  * 탈퇴 접수 메일(D09). 새 요청일 때만 보낸다(두 번 눌러도 한 통). 메일이 실패해도 탈퇴는 이미 기록됐다 — 던지지 않고 이름만 로그로 남긴다(주소가 섞일 수 있어 메시지는 싣지 않는다).
@@ -41,11 +44,13 @@ export async function accountPort(): Promise<LaunchAuthPort> {
     locale: DEFAULT_LOCALE,
     account: {
       requestDeletion: async (userId) => {
-        const r = await requestAccountDeletion({ db, billingFor: await billingPorts() }, userId)
+        let r
+        try { r = await requestAccountDeletion({ db, billingFor: await billingPorts(), onDeletionRequested: extensions.onDeletionRequested }, userId) }
+        catch { throw new Error("Account deletion unavailable") }
         if (r.ok && !r.alreadyRequested) await sendDeletionReceipt(userId, r.graceUntil)
         return r
       },
-      exportData: (userId) => exportMyData(db, userId),
+      exportData: (userId) => exportMyData(db, userId, undefined, extensions.exportTossData),
     },
   })
 }
@@ -74,11 +79,12 @@ export function analyticsEraser(): AnalyticsEraser {
 
 /** 파기 Cron 본체. SUBJECT_REF_KEY(32자 이상)로 거래기록의 가명 참조를 만든다 — 바꾸면 이미 남긴 기록을 이메일로 찾을 수 없다 */
 export async function purge(): Promise<PurgeReport> {
-  const report = await runPurge({ db: await database(), billingFor: await billingPorts(), subjectKey: required("SUBJECT_REF_KEY"), analytics: analyticsEraser(), purgers })
+  const db = await database()
+  const report = await runPurge({ db, billingFor: await billingPorts(), subjectKey: required("SUBJECT_REF_KEY"), analytics: analyticsEraser(), collectors: extensions.collectors ? [...DEFAULT_COLLECTORS, ...extensions.collectors] : undefined, purgers: purgeExtensions.purgers, preparePurge: extensions.preparePurge ? (userId) => extensions.preparePurge!(db, userId) : undefined })
   // 커밋된 뒤의 정리(예: 올린 파일 객체 삭제). 실패해도 파기는 끝났다 — 이름만 남기고, 못 지운 것은 각 기능의 Cron 이 다시 한다
   if (report.purged > 0) {
     try {
-      await afterPurge()
+      await purgeExtensions.afterPurge()
     } catch (e) {
       console.error(`[account] after-purge cleanup failed: ${e instanceof Error ? e.name : "unknown"}`)
     }
