@@ -55,13 +55,13 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.8 sitebrew
+npm create sitebrew@0.2.9 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.8 sitebrew
+npx create-sitebrew@0.2.9 sitebrew
 ```
 
 두 방식은 옵션이 같습니다. `--dry-run` 은 아무것도 바꾸지 않고 할 일만 보여 줍니다. `--yes` 는 모든 질문에 「예」로 답합니다. `--tool` 은 `claude`, `codex`, `both` 중에서 고릅니다.

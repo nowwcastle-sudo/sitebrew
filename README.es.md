@@ -55,13 +55,13 @@ Las cinco terminan igual: Sitebrew en una carpeta `sitebrew` y el plugin en tu a
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.8 sitebrew
+npm create sitebrew@0.2.9 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.8 sitebrew
+npx create-sitebrew@0.2.9 sitebrew
 ```
 
 Las dos aceptan las mismas opciones: `--dry-run` muestra el plan sin cambiar nada, `--yes` responde que sí a todas las preguntas y `--tool` elige `claude`, `codex` o `both`.
