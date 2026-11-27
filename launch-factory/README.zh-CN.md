@@ -4,7 +4,7 @@
 
 这是与 web-factory（界面区块仓库）配套的上线套件，后端的认证、数据、支付、邮件、埋点和任务由本仓库负责。产品从复制 `template/` 开始，只需升级 `@launch-factory/*` 包版本，就能获得安全补丁。
 
-当前版本 `v0.2.8` · web-factory 固定 `v0.2.8` · 区块 `fd56069c` · contract `fd56069c`（区块和 contract 为包含 v0.2.8 变更的 main 提交）
+当前版本 `v0.2.9` · web-factory 固定 `v0.2.8` · 区块 `fd56069c` · contract `fd56069c`（区块和 contract 为包含 v0.2.8 变更的 main 提交）
 
 - 区块不了解具体的服务商，由适配器实现 web-factory 的端口。同一套一致性测试用来检查适配器能否复现与 mock 相同的场景。
 - 功能包（适配器、Server Action、Webhook 路由、schema、迁移）由 `registry.json` 中的一个条目打包。版本固定的记录见 [`docs/versions.md`](docs/versions.md)。
@@ -125,6 +125,7 @@ git diff template/package.json
 
 | 标签 | 日期 | 内容 | 记录 |
 |---|---|---|---|
+| `v0.2.9` | 2026-11-27 | 新增仅供测试的 Toss Payments 订阅组装和模拟付款流程；尚不支持生产付款，也未完成官方测试商店验证。 | — |
 | `v0.2.8` | 2026-11-24 | 维护版本：next 16.4.6（安全修复版），playwright 和 tailwindcss 同步到相同版本 · 模板区块和 contract 跟随 web-factory（商品列表价格跟随页面区域设置） · e2e-admin 种子 preload 可在 Windows 上运行 · gitleaks 树检查保持 LF · web-factory 固定在发布时跟随 | — |
 | `v0.2.7` | 2026-11-13 | 安全版本：新闻通讯确认改用 POST · 退款与发货竞争 · 挽留优惠只能使用一次 · 上传地址不能重复使用 · 请求正文只读到上限 · 每个账户的推送订阅有上限 · 注册响应不再透露邮箱是否已注册 — **行为变更：只有同时配置 `verifyEmail` 和 `existingAccount` 邮件发送器时，注册默认使用 conceal，新账户在验证邮箱前不能登录（可用 `signUpEnumeration: "reveal"` 关闭）** · 模板区块和 contract 跟随 web-factory（表单幂等键） · web-factory 固定在发布时跟随 | — |
 | `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · 仓库功能版本；启动套件本身不变 · web-factory 固定版本在发布时同步 | — |

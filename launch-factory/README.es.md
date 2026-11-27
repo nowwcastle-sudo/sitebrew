@@ -4,7 +4,7 @@
 
 Kit de lanzamiento que acompaña a web-factory (el repositorio de bloques de pantalla). Este repositorio se encarga de la parte de servidor: autenticación, datos, pagos, correo, medición y tareas. Cada producto empieza copiando `template/` y recibe los parches de seguridad con solo subir la versión de los paquetes `@launch-factory/*`.
 
-Versión actual `v0.2.8` · web-factory fijado `v0.2.8` · bloques `fd56069c` · contract `fd56069c` (bloques y contract son el commit de main que contiene los cambios de v0.2.8)
+Versión actual `v0.2.9` · web-factory fijado `v0.2.8` · bloques `fd56069c` · contract `fd56069c` (bloques y contract son el commit de main que contiene los cambios de v0.2.8)
 
 - Los bloques no conocen al proveedor: los adaptadores implementan los puertos de web-factory. Un mismo conjunto de pruebas de conformidad comprueba que cada adaptador reproduce los mismos escenarios que el mock.
 - Cada paquete de funcionalidad (adaptador, acciones de servidor, rutas de webhook, esquema y migraciones) se agrupa en una sola entrada de `registry.json`. Las versiones fijadas se detallan en [`docs/versions.md`](docs/versions.md).
@@ -125,6 +125,7 @@ Se siguen los pasos de [`docs/RELEASING.md`](docs/RELEASING.md). Actualizar el R
 
 | Etiqueta | Fecha | Contenido | Registro |
 |---|---|---|---|
+| `v0.2.9` | 2026-11-27 | Se añaden el ensamblaje de suscripciones de prueba de Toss Payments y flujos de pago simulados; los pagos de producción y la verificación en la tienda de prueba oficial aún no están disponibles. | — |
 | `v0.2.8` | 2026-11-24 | Versión de mantenimiento: next 16.4.6 (corrección de seguridad) con playwright y tailwindcss en las mismas versiones · los bloques de la plantilla y el contract siguen a web-factory (los precios de las listas siguen el idioma de la página) · el preload de la semilla de e2e-admin funciona en Windows · la comprobación gitleaks del árbol conserva LF · el web-factory fijado sigue en la publicación | — |
 | `v0.2.7` | 2026-11-13 | Versión de seguridad: confirmación del boletín por POST · carrera entre reembolso y envío · una oferta de retención se usa una sola vez · las direcciones de subida no se reutilizan · los cuerpos de las peticiones se leen solo hasta un límite · suscripciones push limitadas por cuenta · el registro ya no revela si un correo está registrado — **cambio de comportamiento: solo cuando existen los dos correos `verifyEmail` y `existingAccount`, el registro usa conceal por defecto y una cuenta nueva no puede iniciar sesión antes de verificar el correo (se desactiva con `signUpEnumeration: "reveal"`)** · los bloques de la plantilla y el contract siguen a web-factory (claves de idempotencia de formularios) · el web-factory fijado sigue en la publicación | — |
 | `v0.2.6` | 2026-11-06 | launch-factory v0.2.2 (internal version) · Versión de funciones del repositorio; el kit de lanzamiento no cambia · la versión fijada de web-factory se alinea en el lanzamiento | — |
