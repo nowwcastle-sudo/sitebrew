@@ -15,6 +15,10 @@ const here = dirname(fileURLToPath(import.meta.url))
 const inWorkspace = existsSync(join(here, "..", "packages", "contract"))
 
 const config: NextConfig = {
+  ...(process.env.NODE_ENV === "development" && /^\.next-toss-e2e-[a-f0-9]+$/.test(process.env.LF_TOSS_TEST_DIST ?? "") ? { distDir: process.env.LF_TOSS_TEST_DIST } : {}),
+  ...(process.env.NODE_ENV === "development" && /^\.tsconfig-toss-e2e-[a-f0-9]+\.json$/.test(process.env.LF_TOSS_TEST_TSCONFIG ?? "") ? { typescript: { tsconfigPath: process.env.LF_TOSS_TEST_TSCONFIG } } : {}),
+  // 개발 서버의 요청 로그에서 인증 콜백 쿼리를 제외한다.
+  logging: { incomingRequests: { ignore: [/\/api\/toss\/registration\/(?:complete|fail)(?:\?|$)/] } },
   // Next 16.3 은 개발 서버를 켜면 AGENTS.md·CLAUDE.md 를 스스로 만든다 — 템플릿에는 두지 않는다
   agentRules: false,
   turbopack: { root: inWorkspace ? join(here, "..") : here },
@@ -24,6 +28,7 @@ const config: NextConfig = {
     "@launch-factory/analytics-posthog",
     "@launch-factory/auth",
     "@launch-factory/billing-paddle",
+    "@launch-factory/billing-toss",
     "@launch-factory/commerce",
     "@launch-factory/booking",
     "@launch-factory/booking-deposit",

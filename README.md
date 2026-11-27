@@ -6,7 +6,7 @@
 
 Sitebrew is a plugin for Claude Code and Codex. You describe your site in plain words. It builds three different candidates, you pick one, you adjust it in the conversation, and you take the code into your own folder. You do not need to know how to code, and you do not need an API key to start.
 
-Current version `v0.2.8` · MIT license · Windows 10 and 11
+Current version `v0.2.9` · MIT license · Windows 10 and 11
 
 ## Why Sitebrew
 
@@ -55,13 +55,13 @@ All five end in the same place: Sitebrew in a `sitebrew` folder and the plugin i
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.8 sitebrew
+npm create sitebrew@0.2.9 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.8 sitebrew
+npx create-sitebrew@0.2.9 sitebrew
 ```
 
 Both take the same options: `--dry-run` shows the plan and changes nothing, `--yes` answers yes to every question, and `--tool` chooses `claude`, `codex` or `both`.
@@ -69,14 +69,14 @@ Both take the same options: `--dry-run` shows the plan and changes nothing, `--y
 #### 3. PowerShell
 
 ```powershell
-$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 ```
 
 To see what it would do without installing anything:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 In Claude Code:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.8
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.9
 /plugin install sitebrew@sitebrew
 ```
 
 In Codex:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.8
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.9
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ The check before a merge is `npm run ci:verify`. The guide for agents is [docs/a
 You can also add the parts to another Next.js project. Always pin the tag:
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.8 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.8 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.9 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.9 -y -o
 ```
 
 ## Contributing
@@ -149,6 +149,7 @@ MIT. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 | Tag | Date | Changes | Record |
 |---|---|---|---|
+| `v0.2.9` | 2026-11-27 | Test-only Toss Payments subscription assembly and mock billing flows; production payments and official test-store verification are not supported yet. | — |
 | `v0.2.8` | 2026-11-24 | Maintenance release. Dependencies: next 16.4.6 (security fix) in the repository root, the launch kit, the template and generated sites, plus seven npm minor and patch updates · web-factory: price lists (grid cards, ranked list) follow the locale of the page · palette-lib function tests added · CI fixes: the e2e-admin seed preload works on Windows and the gitleaks tree check keeps LF · the v0.2.7 behaviour-change wording now states the real condition | — |
 | `v0.2.7` | 2026-11-13 | Security release (daybreak review). web-factory: child processes no longer receive secret environment variables · npm, npx and vercel run from trusted absolute paths without a shell · local file paths are checked (network paths, links, escapes) · registry dependencies pinned to the exact lock versions · external downloads limited by host, size and redirects · preview tunnel start race fixed and QA servers bound to this computer · logo and favicon SVGs pass an allow list · form idempotency keys reach the ports · the logo gate rejects a hidden or transparent logo and the brand-colour check no longer counts colour covered by images. Launch kit: newsletter confirmation by POST · refund and shipping race · a retention offer is used once · upload addresses cannot be reused · request bodies are read only up to a limit · push subscriptions capped per account · sign-up no longer reveals whether an email is registered — **behaviour change: when both the `verifyEmail` and `existingAccount` mailers are set, sign-up defaults to conceal and a new account cannot sign in before the email is verified (turn it off with `signUpEnumeration: "reveal"`)**. Install: the PowerShell line can pin the release commit, and a moved tag is refused. Dependencies: next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | Feature release: compare the three candidates as real sites side by side (`npm run board:direction -- <run> --serve`) · the logo from the brief sits in the header of all three candidates, and six logo drafts are offered when there is none · optional sample details (`--sample-facts`) with a sample band on every page, and `deliver` stops until real answers replace them · the first brand colour becomes the main colour · candidates are set apart by material family, a distance rule and an optional positioning question · finish-review loop · new checks for the header logo and brand-colour exposure · plugin skills `new`, `deliver` and `revise` updated · web-factory v0.0.16 + launch-factory v0.2.2 (internal versions) | — |

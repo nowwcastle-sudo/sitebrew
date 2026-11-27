@@ -22,7 +22,7 @@ test("D195: 적합성 로더는 하나이고 한 커밋(해시)에 고정돼 있
     assert.ok(!/["']show["']/.test(src), `${f}: web-factory 파일을 git show 로 직접 꺼내지 않는다`)
     assert.ok(!/LF_WF_CONFORMANCE_REF|WEB_FACTORY_DIR/.test(src), `${f}: 저장소·커밋 설정은 로더의 LF_WF_REPO·LF_WF_CONFORMANCE_COMMIT 하나`)
   }
-  // 적합성 묶음을 쓰는 다섯 시험 파일이 모두 공용 로더를 부른다(결제 둘·계측·동의(알림)·인증)
+  // 결제 셋과 계측·동의(알림)·인증 시험이 공용 로더를 부른다.
   const users = tests.filter((f) => readFileSync(f, "utf8").includes("lib/wf-conformance.mjs"))
-  assert.equal(users.length, 5, users.join("\n"))
+  assert.equal(users.length, 6, users.join("\n"))
 })

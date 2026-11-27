@@ -34,6 +34,8 @@ Every command below is `node factory/runbook/runbook.mjs <command> ...`. Fill in
 
 The tool prints one JSON document on standard output and its messages on standard error. This agent path never reads `references/`; those files are for Chatbot mode only.
 
+Show the `G-billing` chapter returned by the runbook CLI. For a delivered site with Toss Payments selected, the CLI serves the test-only chapter and points to `docs/toss-test.md` in the delivered folder. Present that chapter in the overview, expert runbook, or beginner flow as applicable. It covers local test setup and says that the selection does not support real payments. In chatbot mode, use the test-only guidance when the user identifies that selection. If the provider is unknown, leave it unspecified.
+
 Route: 1 door (always first), 2 overview, 3 level (once), 4 expert or 5 beginner, 6 alternatives (any time), 7 resume (only when the user calls the runbook). Every step ends in a defined next action; the Never list is in Rules at the end.
 
 | Exit code | Meaning | What you do |

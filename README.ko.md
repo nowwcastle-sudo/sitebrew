@@ -6,7 +6,7 @@
 
 Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 싶은 사이트를 평소 말로 설명하면, 서로 다른 후보 세 개를 만듭니다. 하나를 고르고, 대화로 고친 뒤, 코드를 내 폴더로 가져갑니다. 코딩을 몰라도 되고, 처음 시작할 때 API 키도 필요 없습니다.
 
-현재 버전 `v0.2.8` · MIT 라이선스 · Windows 10·11
+현재 버전 `v0.2.9` · MIT 라이선스 · Windows 10·11
 
 ## 왜 Sitebrew인가
 
@@ -55,13 +55,13 @@ Sitebrew는 Claude Code와 Codex에서 쓰는 플러그인입니다. 만들고 �
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.8 sitebrew
+npm create sitebrew@0.2.9 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.8 sitebrew
+npx create-sitebrew@0.2.9 sitebrew
 ```
 
 두 방식은 옵션이 같습니다. `--dry-run` 은 아무것도 바꾸지 않고 할 일만 보여 줍니다. `--yes` 는 모든 질문에 「예」로 답합니다. `--tool` 은 `claude`, `codex`, `both` 중에서 고릅니다.
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.8 sitebrew
 #### 3. PowerShell
 
 ```powershell
-$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 ```
 
 아무것도 설치하지 않고 할 일만 보려면:
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 Claude Code에서:
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.8
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.9
 /plugin install sitebrew@sitebrew
 ```
 
 Codex에서:
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.8
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.9
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 부품만 다른 Next.js 프로젝트에 넣을 수도 있습니다. 주소에는 늘 태그를 붙이세요.
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.8 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.8 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.9 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.9 -y -o
 ```
 
 ## 기여하기
@@ -149,6 +149,7 @@ MIT. [LICENSE](LICENSE)와 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)를 �
 
 | 태그 | 날짜 | 바뀐 것 | 기록 |
 |---|---|---|---|
+| `v0.2.9` | 2026-11-27 | 토스페이먼츠 시험 전용 구독 조립과 모의 결제 흐름 추가; 운영 결제 및 공식 테스트 상점 검증은 아직 지원하지 않음. | — |
 | `v0.2.8` | 2026-11-24 | 유지보수 릴리스. 의존성: 저장소 루트·출시 키트·템플릿·생성물의 next 16.4.6(보안 수정판)과 npm 마이너·패치 7건 · web-factory: 상품 목록(그리드 카드·순위 목록)의 가격이 페이지의 로캘을 따름 · palette-lib 함수 시험 추가 · CI 수정: e2e-admin 시드 preload 가 Windows 에서 동작하고 gitleaks 트리 검사가 LF 를 그대로 유지 · v0.2.7 동작 변경 문구를 실제 조건으로 고침 | — |
 | `v0.2.7` | 2026-11-13 | 보안 릴리스(daybreak 검토). web-factory: 자식 프로세스에 비밀 환경 변수를 넘기지 않음 · npm·npx·vercel 을 셸 없이 신뢰한 절대 경로로 실행 · 로컬 파일 경로 검사(네트워크 경로·링크·경로 이탈) · 레지스트리 의존을 잠금의 정확한 판으로 고정 · 외부 내려받기를 호스트·크기·리디렉션으로 제한 · 미리보기 터널 시작 경쟁을 고치고 QA 서버를 이 컴퓨터에만 열기 · 로고·파비콘 SVG 를 허용 목록으로 검사 · 폼 멱등 키를 포트까지 전달 · 로고 관문이 숨김·투명 로고를 거절하고 브랜드 색 검사가 그림이 덮은 색을 세지 않음. 출시 키트: 뉴스레터 확인을 POST 로 · 환불·배송 경합 · 구독 유지 제안은 한 번만 · 업로드 주소 재사용 막음 · 요청 본문을 상한까지만 읽음 · 계정마다 푸시 구독 상한 · 가입 응답이 이메일 등록 여부를 드러내지 않음 — **동작 변경: 인증 메일(`verifyEmail`)과 기존 계정 안내 메일(`existingAccount`) 메일러가 둘 다 있을 때만 가입 응답 기본값이 conceal 이 되어 새 계정은 메일 인증 전 로그인할 수 없음(`signUpEnumeration: "reveal"` 로 끌 수 있음)**. 설치: PowerShell 줄이 릴리스 커밋을 고정할 수 있고 옮겨진 태그를 거절. 의존성: next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | 기능 판: 후보 세 개를 실제 사이트로 나란히 비교(`npm run board:direction -- <run> --serve`) · 브리프의 로고가 세 후보 머리글에 모두 올라가고, 로고가 없으면 시안 6개를 제안 · 선택 기능 예시 정보(`--sample-facts`) — 모든 쪽에 예시 띠가 뜨고 실제 답으로 바꾸기 전에는 `deliver` 가 멈춤 · 브랜드 첫 색이 주색이 됨 · 재료 계열·거리 규칙·선택 질문(포지셔닝)으로 후보끼리 더 다르게 · 마감 리뷰 루프 · 머리글 로고·브랜드 색 노출 새 관문 · 플러그인 스킬 `new`·`deliver`·`revise` 갱신 · web-factory v0.0.16 + launch-factory v0.2.2 (내부 버전) | — |

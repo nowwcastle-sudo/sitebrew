@@ -1,0 +1,1 @@
+ALTER TABLE "account_deletions" ADD COLUMN "purge_retry_at" timestamp with time zone;

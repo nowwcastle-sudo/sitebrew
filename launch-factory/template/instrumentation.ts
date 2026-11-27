@@ -3,6 +3,7 @@
 // 오류 수집(LFOBS): Sentry 공식 Next.js 안내대로 register 가 런타임별 설정 파일을 부르고, onRequestError 가 서버가 던진 오류(서버 컴포넌트·액션·경로)를 Sentry 로 보낸다.
 // SENTRY_DSN 이 없거나 mock 이면 설정 파일이 init 을 부르지 않아 둘 다 아무 일도 하지 않는다.
 import * as Sentry from "@sentry/nextjs"
+import { isTossCallbackPath } from "./lib/toss-secret-filter"
 
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
@@ -13,4 +14,7 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === "edge") await import("./sentry.edge.config")
 }
 
-export const onRequestError = Sentry.captureRequestError
+export const onRequestError: typeof Sentry.captureRequestError = (error, request, context) => {
+  if (isTossCallbackPath(request.path)) return
+  return Sentry.captureRequestError(error, request, context)
+}

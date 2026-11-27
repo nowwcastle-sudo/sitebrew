@@ -2,11 +2,11 @@
 // 시안은 web-factory 를 부르지 않고 실측 모양을 줄인 작은 폴더로 만든다 — 규칙표가 실측 파일 전부를 덮는지는 inventory.json 으로 본다.
 import assert from "node:assert/strict"
 import { spawnSync } from "node:child_process"
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
 import { after, describe, test } from "node:test"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath, pathToFileURL } from "node:url"
 import { checkFeatures, composeProduct } from "../compose/compose-product.mjs"
 import { globToRegExp, isSkipped, isTextFile, matchesAny, urlOf, walk, withSecrets } from "../compose/lib.mjs"
 import { BLOCKS } from "../compose/rules/index.mjs"
@@ -120,6 +120,72 @@ const compose = () => (composed ??= (() => {
   return { to, result: composeProduct({ siteDir: makeSite(), features, table, to }) }
 })())
 const out = (rel) => readFileSync(join(compose().to, rel), "utf8")
+
+test("토스는 payments와 명시 선택에서만 시험 결제 라우트를 조립한다", async () => {
+  const siteDir = makeSite()
+  const off = fresh("toss-off"), on = fresh("toss-on"), bad = fresh("toss-invalid")
+  composeProduct({ siteDir, features, table, to: off })
+  assert.equal(existsSync(join(off, "app/api/toss/registration/start/route.ts")), false)
+  assert.match(readFileSync(join(off, "lib/toss-test-config.ts"), "utf8"), /const TOSS_COMPOSE_ENABLED = false/)
+  composeProduct({ siteDir, features, table, to: on, billingProvider: "toss-test" })
+  for (const file of ["app/api/toss/registration/start/route.ts", "app/api/cron/toss-test/route.ts", "app/(product)/account/billing/toss-test/page.tsx", "vendor/launch-factory/billing-toss/src/ledger.ts", "db/migrations/0023_toss_cancel_at.sql"]) assert.ok(existsSync(join(on, file)), file)
+  assert.match(readFileSync(join(on, "lib/toss-test-config.ts"), "utf8"), /^\/\/ Sitebrew billing: toss-test$/m)
+  assert.match(readFileSync(join(on, "lib/launch/db.ts"), "utf8"), /const TOSS_TEST_DATABASE_ENABLED = true/)
+  assert.match(readFileSync(join(off, "lib/launch/db.ts"), "utf8"), /const TOSS_TEST_DATABASE_ENABLED = false/)
+  assert.match(readFileSync(join(on, "next.config.ts"), "utf8"), /토스 시험 앱은 개발 mock 모드에서만/)
+  assert.match(readFileSync(join(on, "lib/ports.ts"), "utf8"), /checkout: unavailable/)
+  const tossAccount = readFileSync(join(on, "lib/launch/account-billing.ts"), "utf8")
+  assert.match(tossAccount, /status: "none"/)
+  assert.match(tossAccount, /provider_unsupported/)
+  assert.doesNotMatch(tossAccount, /paddle|await billing\(/i)
+  assert.match(readFileSync(join(off, "lib/launch/account-billing.ts"), "utf8"), /paddle\.port/)
+  assert.doesNotMatch(readFileSync(join(off, "next.config.ts"), "utf8"), /토스 시험 앱은 개발 mock 모드에서만/)
+  const env = { NODE_ENV: "development", LF_MODE: "mock", LF_TOSS_TEST: "1", LF_TOSS_TEST_FAKE: "1", TOSS_TEST_CLIENT_KEY: "test_ck_fake", TOSS_TEST_SECRET_KEY: "test_sk_fake", TOSS_TEST_ENCRYPTION_KEY: "11".repeat(32), NEXT_PUBLIC_APP_URL: "https://localhost:4443" }
+  // 가벼운 조립 시험에서는 npm install 대신 env 패키지만 워크스페이스에 연결한다.
+  for (const output of [on, off]) {
+    const scope = join(output, "node_modules", "@launch-factory")
+    mkdirSync(scope, { recursive: true })
+    symlinkSync(join(LF, "packages", "env"), join(scope, "env"), process.platform === "win32" ? "junction" : "dir")
+  }
+  const enabled = (await import(pathToFileURL(join(on, "lib/toss-test-config.ts")).href)).tossTestConfig
+  const disabled = (await import(pathToFileURL(join(off, "lib/toss-test-config.ts")).href)).tossTestConfig
+  assert.ok(enabled(env))
+  assert.equal(disabled(env), null)
+  const sandbox = { ...env, LF_TOSS_TEST_FAKE: "0", TOSS_TEST_CLIENT_KEY: "test_ck_other", TOSS_TEST_SECRET_KEY: "test_sk_other", TOSS_TEST_MERCHANT_ID: "test", TOSS_TEST_DB_DIRECTORY: on }
+  assert.equal(enabled(sandbox)?.fake, false)
+  assert.equal(disabled(sandbox), null)
+  for (const change of [{ NODE_ENV: "production" }, { LF_MODE: "live" }, { TOSS_TEST_SECRET_KEY: "live_sk_key" }]) {
+    assert.equal(enabled({ ...env, ...change }), null)
+    assert.equal(enabled({ ...sandbox, ...change }), null)
+  }
+  assert.throws(() => composeProduct({ siteDir, features: { ...features, outcomes: ["signup"] }, table, to: bad, billingProvider: "toss-test" }), /payments/)
+  assert.throws(() => composeProduct({ siteDir, features, table, to: bad, billingProvider: "live" }), /공급자/)
+  assert.equal(existsSync(bad), false)
+})
+
+test("토스 실제 생성 앱 시험용 CLI 출력", () => {
+  const output = process.env.COMPOSE_TOSS_E2E_OUT || fresh("toss-cli")
+  const featureFile = join(fresh("toss-features"), "features.json")
+  mkdirSync(dirname(featureFile), { recursive: true })
+  writeFileSync(featureFile, JSON.stringify(features))
+  // 독립 E2E는 외부 글꼴 서버를 사용하지 않는다.
+  const localLayout = LAYOUT.replace('import { Besley } from "next/font/google";\n', "").replace("const besleyWf = Besley({subsets:['latin'],variable:'--font-besley-wf'});\n", "").replace(", besleyWf.variable", "")
+  const site = makeSite({ "app/layout.tsx": localLayout, "app/globals.css": readFileSync(join(LF, "template/app/globals.css"), "utf8") })
+  const result = spawnSync(process.execPath, [join(COMPOSE, "compose-product.mjs"), "--site", site, "--features", featureFile, "--to", output, "--billing-provider", "toss-test"], { encoding: "utf8" })
+  assert.equal(result.status, 0, result.stderr)
+  assert.ok(existsSync(join(output, "app/api/cron/toss-test/route.ts")))
+})
+
+test("토스 조립은 마이그레이션 파일이 빠지면 출력 전에 중단한다", () => {
+  const lfDir = fresh("toss-broken-migrations"), to = fresh("toss-no-output")
+  for (const rel of ["template/e2e", "template/db/migrations/meta", "packages/db/migrations/meta"]) mkdirSync(join(lfDir, rel), { recursive: true })
+  writeFileSync(join(lfDir, "template/e2e/loop-steps.json"), JSON.stringify({ steps: { payments: [] } }))
+  const journal = JSON.stringify({ entries: [{ tag: "0000_missing" }] })
+  writeFileSync(join(lfDir, "template/db/migrations/meta/_journal.json"), journal)
+  writeFileSync(join(lfDir, "packages/db/migrations/meta/_journal.json"), journal)
+  assert.throws(() => composeProduct({ siteDir: makeSite(), features, table, lfDir, to, billingProvider: "toss-test" }), /마이그레이션/)
+  assert.equal(existsSync(to), false)
+})
 
 describe("규칙표", () => {
   test("rules.json 이 inventory.json 의 모든 경로를 덮고, 안 쓰이는 규칙은 없다", () => {

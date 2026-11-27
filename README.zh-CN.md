@@ -6,7 +6,7 @@
 
 Sitebrew 是 Claude Code 和 Codex 的插件。你用平常的话描述想要的网站，它会做出三个不同的候选。你选一个，在对话中修改，然后把代码放进自己的文件夹。不需要会写代码，开始时也不需要 API 密钥。
 
-当前版本 `v0.2.8` · MIT 许可证 · Windows 10 和 11
+当前版本 `v0.2.9` · MIT 许可证 · Windows 10 和 11
 
 ## 为什么用 Sitebrew
 
@@ -55,13 +55,13 @@ Sitebrew 是 Claude Code 和 Codex 的插件。你用平常的话描述想要的
 #### 1. npm
 
 ```powershell
-npm create sitebrew@0.2.8 sitebrew
+npm create sitebrew@0.2.9 sitebrew
 ```
 
 #### 2. npx
 
 ```powershell
-npx create-sitebrew@0.2.8 sitebrew
+npx create-sitebrew@0.2.9 sitebrew
 ```
 
 两者的选项相同：`--dry-run` 只显示计划，不做任何改动；`--yes` 对所有问题回答“是”；`--tool` 从 `claude`、`codex`、`both` 中选择。
@@ -69,14 +69,14 @@ npx create-sitebrew@0.2.8 sitebrew
 #### 3. PowerShell
 
 ```powershell
-$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 ```
 
 不安装任何东西、只看会做什么：
 
 ```powershell
 $env:SITEBREW_WHATIF = '1'
-$env:SITEBREW_COMMIT = 'e3ba53200778dd57b7ebad497ef07b9a25b656e7'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/e3ba53200778dd57b7ebad497ef07b9a25b656e7/get.ps1 | iex; Remove-Item Env:SITEBREW_COMMIT
+irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 Remove-Item Env:SITEBREW_WHATIF
 ```
 
@@ -85,14 +85,14 @@ Remove-Item Env:SITEBREW_WHATIF
 在 Claude Code 中：
 
 ```text
-/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.8
+/plugin marketplace add nowwcastle-sudo/sitebrew#v0.2.9
 /plugin install sitebrew@sitebrew
 ```
 
 在 Codex 中：
 
 ```powershell
-codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.8
+codex plugin marketplace add nowwcastle-sudo/sitebrew --ref v0.2.9
 codex plugin add sitebrew@sitebrew
 ```
 
@@ -133,8 +133,8 @@ npm run dev
 也可以只把部件加到另一个 Next.js 项目中。地址里一定要带上标签：
 
 ```bash
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.8 -y -o
-npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.8 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-default#v0.2.9 -y -o
+npx shadcn@4.22.1 add nowwcastle-sudo/sitebrew/factory-base#v0.2.9 -y -o
 ```
 
 ## 参与贡献
@@ -149,6 +149,7 @@ MIT。见 [LICENSE](LICENSE) 和 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md
 
 | 标签 | 日期 | 变更 | 记录 |
 |---|---|---|---|
+| `v0.2.9` | 2026-11-27 | 新增仅供测试的 Toss Payments 订阅组装和模拟付款流程；尚不支持生产付款，也未完成官方测试商店验证。 | — |
 | `v0.2.8` | 2026-11-24 | 维护版本。依赖：仓库根目录、启动套件、模板和生成物升级到 next 16.4.6（安全修复版），另有 7 项 npm 小版本和补丁更新 · web-factory：商品列表（网格卡片、排行列表）的价格跟随页面的区域设置 · 新增 palette-lib 函数测试 · CI 修复：e2e-admin 种子 preload 可在 Windows 上运行，gitleaks 树检查保持 LF · v0.2.7 行为变更的说明改为实际条件 | — |
 | `v0.2.7` | 2026-11-13 | 安全版本（daybreak 审查）。web-factory：子进程不再收到机密环境变量 · npm、npx 和 vercel 以可信绝对路径、不经 shell 运行 · 检查本地文件路径（网络路径、链接、越界） · 注册表依赖固定为锁文件中的确切版本 · 外部下载按主机、大小和重定向限制 · 修复预览隧道启动竞争，QA 服务器只绑定本机 · 标志和网站图标 SVG 按允许列表检查 · 表单幂等键传到端口 · 标志关卡拒绝隐藏或透明的标志，品牌色检查不再计入被图片覆盖的颜色。启动套件：新闻通讯确认改用 POST · 退款与发货竞争 · 挽留优惠只能使用一次 · 上传地址不能重复使用 · 请求正文只读到上限 · 每个账户的推送订阅有上限 · 注册响应不再透露邮箱是否已注册 — **行为变更：只有同时配置 `verifyEmail` 和 `existingAccount` 邮件发送器时，注册默认使用 conceal，新账户在验证邮箱前不能登录（可用 `signUpEnumeration: "reveal"` 关闭）**。安装：PowerShell 命令可以固定发布提交，被移动的标签会被拒绝。依赖：next 16.4.5, hono 4.13.16 | — |
 | `v0.2.6` | 2026-11-06 | 功能版本：三个候选可作为真实网站并排对比（`npm run board:direction -- <run> --serve`） · 简报中的标志出现在三个候选的页头，没有标志时提供 6 个草案 · 可选的示例信息（`--sample-facts`）——每页显示示例横幅，在换成真实答案之前 `deliver` 会停止 · 品牌的第一个颜色成为主色 · 通过材质族、距离规则和可选的定位问题让候选之间差异更大 · 收尾评审循环 · 页头标志与品牌色曝光的新检查 · 插件技能 `new`、`deliver`、`revise` 已更新 · web-factory v0.0.16 + launch-factory v0.2.2（内部版本） | — |

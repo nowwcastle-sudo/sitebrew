@@ -96,3 +96,19 @@ test('shape lock: the real launch-factory runbook data opens, plans every featur
   assert.equal(typeof rb.chapter('all', 'expert').text, 'string')
   t.diagnostic(`shape lock: ${realLf} — chapters ${o.plan.chapters.join(', ') || '(none)'} · missing ${o.plan.missing.length}`)
 })
+
+test('실제 런북 데이터: 토스 선택은 결제 장만 바꾸고 상점 결제 장은 보존한다', (t) => {
+  const bundledLf = join(WF_ROOT, 'launch-factory')
+  const data = JSON.parse(readFileSync(join(bundledLf, 'docs', 'runbook', 'runbook.generated.json'), 'utf8'))
+  assert.ok(data.outcomes.payments && data.outcomes.shop && data.chapters['G-payments-kr'])
+  const root = mkdtempSync(join(tmpdir(), 'runbook-toss-shape-'))
+  t.after(() => rmSync(root, { recursive: true, force: true }))
+  const run = makeRun(root, { version: 1, applied: ['signup', 'payments', 'shop'], unapplied: [], completion: 'composed', locale: 'ko', tableHash: data.outcomesHash, deliveredAt: '2026-10-20T00:00:00.000Z', billingProvider: 'toss-test' })
+  const rb = openRunbook({ run, lf: bundledLf, today: '2026-11-26', env: {} })
+  rb.answerDoor('yes')
+  const billing = rb.chapter('G-billing', 'expert').text
+  assert.match(billing, /토스페이먼츠 시험 전용/)
+  assert.doesNotMatch(billing, /Paddle|PADDLE|웹훅/)
+  const portone = rb.chapter('G-payments-kr', 'expert').text
+  assert.ok(portone.includes(data.chapters['G-payments-kr'].text.ko.body))
+})

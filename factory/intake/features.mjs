@@ -33,7 +33,8 @@ const OutcomeTable = z.looseObject({
   pages: z.array(PageOwner),
   routes: z.array(RouteOwner),
 })
-const Features = z.object({ version: z.literal(TABLE_VERSION), table: z.string(), outcomes: z.array(z.string()) })
+const Features = z.object({ version: z.literal(TABLE_VERSION), table: z.string(), outcomes: z.array(z.string()), billingProvider: z.literal('toss-test').optional() })
+  .refine((f) => !f.billingProvider || f.outcomes.includes('payments'), { message: 'toss-test requires payments', path: ['billingProvider'] })
 
 const unique = (xs) => [...new Set(xs)]
 const byOrder = (a, b) => a.order - b.order
@@ -86,12 +87,12 @@ function closeRequires(chosen, table) {
   return table.outcomes.filter((o) => seen.has(o.id)).sort(byOrder).map((o) => o.id)
 }
 
-export function toFeatures(answers, table) {
+export function toFeatures(answers, table, { billingProvider } = {}) {
   const known = new Set(table.outcomes.map((o) => o.id))
   const stray = Object.keys(answers).filter((k) => !known.has(k))
   if (stray.length) throw new Error(`unknown answer key: ${stray.join(', ')}`)
   const chosen = Object.keys(answers).filter((k) => answers[k] === true)
-  return { version: TABLE_VERSION, table: table.hash, outcomes: closeRequires(chosen, table) }
+  return Features.parse({ version: TABLE_VERSION, table: table.hash, outcomes: closeRequires(chosen, table), ...(billingProvider === undefined ? {} : { billingProvider }) })
 }
 
 export function describeFeatures(features, table, { loopSteps }) {
@@ -113,6 +114,7 @@ export function isProduct(features, table) {
 }
 
 export function writeFeatures(runDir, features) {
+  Features.parse(features)
   mkdirSync(runDir, { recursive: true })
   writeFileSync(join(runDir, FEATURES_FILE), `${JSON.stringify(features, null, 2)}\n`)
 }

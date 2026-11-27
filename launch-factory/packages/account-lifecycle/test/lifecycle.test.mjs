@@ -343,7 +343,8 @@ test("실패는 다음 Cron 이 이어서 한다: 즉시 해지 실패 → 파�
 
   billing.state.failCancel = false
   eraser.failNext()
-  const r2 = await runPurge(purgeDeps(billing, eraser, at))
+  const retryAt = new Date(at.getTime() + 60 * 60 * 1000)
+  const r2 = await runPurge(purgeDeps(billing, eraser, retryAt))
   assert.deepEqual([r2.claimed, r2.purged, r2.analyticsErased, r2.completed], [0, 1, 0, 0])
   assert.deepEqual(r2.failures.map((f) => f.error), ["analytics:Error:http_503"])
   assert.equal((await d.select().from(user).where(eq(user.id, u.id))).length, 0)
@@ -351,7 +352,7 @@ test("실패는 다음 Cron 이 이어서 한다: 즉시 해지 실패 → 파�
   assert.equal(mid.status, "purged")
   assert.equal(mid.completedAt, null)
 
-  const r3 = await runPurge(purgeDeps(billing, eraser, at))
+  const r3 = await runPurge(purgeDeps(billing, eraser, retryAt))
   assert.deepEqual([r3.purged, r3.analyticsErased, r3.completed, r3.failures], [0, 1, 1, []])
   assert.deepEqual(eraser.calls, [[u.id], [u.id]])
   assert.equal(await deletionOf(u.id), undefined, "끝나면 user_id 가 비어 id 로는 찾을 수 없다")
@@ -422,4 +423,43 @@ test("계측 삭제기를 빠뜨리면 Cron 이 켜지지 않는다(조용히 �
   await assert.rejects(runPurge({ db: d, billingFor: billing.billingFor, subjectKey: "short", analytics: NO_ANALYTICS_ERASER }), /at least 32/)
   const r = await runPurge({ db: d, billingFor: billing.billingFor, subjectKey: KEY, analytics: NO_ANALYTICS_ERASER })
   assert.deepEqual(r.failures, [])
+})
+
+
+test("보류된 요청은 새 요청을 막지 않으며 재시도 시각 이후 재개한다", async () => {
+  await isolate()
+  const a = await seedUser({ subscription: null }), b = await seedUser({ subscription: null })
+  const now = new Date(), billing = fakeBilling(), eraser = fakeEraser()
+  const request = (u, at) => requestAccountDeletion({ db: d, billingFor: billing.billingFor, graceDays: 0, now: () => at }, u.id)
+  assert.equal((await request(a, new Date(now.getTime()-2000))).ok, true)
+  assert.equal((await request(b, new Date(now.getTime()-1000))).ok, true)
+  let checks = 0
+  const deps = (at) => ({ ...purgeDeps(billing, eraser, at), batchSize: 1, preparePurge: async (id) => { if (id === a.id) { checks++; return checks === 1 ? "charge_unresolved" : "ready" }; return "ready" } })
+  const first = await runPurge(deps(now))
+  assert.equal(first.purged, 0); assert.equal(first.failures[0].error, "billing:charge_unresolved")
+  const paused = await deletionOf(a.id)
+  assert.equal(paused.purgeRetryAt.getTime(), now.getTime()+60*60*1000)
+  const second = await runPurge(deps(new Date(now.getTime()+1000)))
+  assert.equal(second.purged, 1); assert.equal(checks, 1)
+  assert.equal((await d.select().from(user).where(eq(user.id,b.id))).length,0)
+  assert.equal((await runPurge(deps(new Date(now.getTime()+59*60*1000)))).purged,0)
+  assert.equal(checks, 1)
+  const last = await runPurge(deps(new Date(now.getTime()+60*60*1000)))
+  assert.equal(last.purged,1); assert.equal(checks,2)
+})
+
+test("같은 시각의 동시 Cron은 한 탈퇴 요청을 중복 준비하지 않는다", async () => {
+  await isolate()
+  const a = await seedUser({ subscription: null })
+  const now = new Date(), billing = fakeBilling(), eraser = fakeEraser()
+  await requestAccountDeletion({ db: d, billingFor: billing.billingFor, graceDays: 0, now: () => now }, a.id)
+  let enter, release, calls=0
+  const entered = new Promise((resolve) => { enter=resolve })
+  const gate = new Promise((resolve) => { release=resolve })
+  const deps = { ...purgeDeps(billing, eraser, now), batchSize: 1, preparePurge: async () => { calls++; enter(); await gate; return "ready" } }
+  const first = runPurge(deps)
+  await entered
+  const second = await runPurge(deps)
+  assert.equal(second.purged,0); assert.equal(calls,1)
+  release(); assert.equal((await first).purged,1)
 })

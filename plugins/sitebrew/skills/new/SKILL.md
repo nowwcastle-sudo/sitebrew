@@ -30,7 +30,7 @@ If the command cannot run: with a command tool, where the error says `node` is n
 - Invent a fact (phone, logo, photo, hours, price): the site publishes it as true. Two things are allowed because the site marks them: sample details the kit itself adds with `--sample-facts` (section 3), and a logo draft the user picked (section 2 item 3).
 - Write a colour code the user did not confirm: it becomes the brand colour. The first code is the main colour of all three candidates, so ask the order too.
 - Copy the `positioning` answer into the site's wording or repeat it as a slogan: it only steers which designs the kit offers; the copy step must not quote it.
-- Add a question beyond the printed ones, or ask for a key, account or setting in that step: `brief` refuses an answer key the kit did not print (`모르는 답 칸`) and `features-write` refuses an id that `features` did not print.
+- Add a question beyond the printed ones except the optional test-provider choice in section 2, or ask for a key, account or setting in that step: `brief` refuses an answer key the kit did not print (`모르는 답 칸`) and `features-write` refuses an id that `features` did not print.
 - Describe a step as done that this window did not run: the user would believe a site exists that was never built.
 - Set `WF_REQUIRE_KEYS=1` for the user: `stamp` then refuses to start without keys.
 - Run `npm run setup` yourself: the `setup` skill owns installation and asks the user first.
@@ -102,8 +102,9 @@ A non-zero exit prints one error line: an unknown archetype lists the valid ones
    ```
 
    - `[]` means this Sitebrew has nothing to ask (an older clone, or no launch-factory): ask nothing, say nothing about it, go on.
-   - Otherwise it prints `{ id, ko, en }` yes/no questions. Ask them in the printed order, one at a time, with the `ko` sentence as printed (`en` for a user who does not write Korean). "잘 모르겠어요" and "아직요" count as no. Use the result words, never technical names. `references/features.md` (written at build time from the launch-factory table, so it can be absent) says what a choice adds: read it only when the user asks.
+   - Otherwise it prints `{ id, ko, en }` yes/no questions. Ask them in the printed order, one at a time, with the `ko` sentence as printed (`en` for a user who does not write Korean). "잘 모르겠어요" and "아직요" count as no. Use the result words, except when offering the test-provider choice below. `references/features.md` (written at build time from the launch-factory table, so it can be absent) says what a choice adds: read it only when the user asks.
    - Write `out/features.json`: one `true` or `false` per printed `id`, for example `{ "signup": true }`. With no feature questions, write no file; an `out/features.json` that exists then is stale (see above), so ask the user to move it.
+   - If `payments` was answered yes, offer the optional Toss Payments test-only path: 「토스페이먼츠 시험 전용 결제를 써볼까요? 실제 결제용이 아니에요.」 An explicit yes selects it; no or an unclear answer keeps the existing default. Do not ask this for other outcomes, including `shop`. A handover selects it only if the handover explicitly says so.
 
 ### Write the answers and the brief
 
@@ -121,6 +122,7 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/intake.mjs" --kit . brief --input out/answer
 ```
 
 - `features-write` prints the chosen outcomes, including those the choice pulled in (paying needs signing up). Read them back in one sentence with only their `say.ko` words, never an `id` ("회원가입·로그인과 카드 결제를 넣을게요."). An error naming `features.json` means a value is not `true`/`false` or an id was not printed: fix the file and run it again.
+- Only if the user explicitly selected the Toss Payments test-only path, add `--billing-provider toss-test` to `features-write`; keep the answers JSON unchanged. On any later rewrite of this run's features, keep the same flag while the choice remains selected and `payments` remains true; omit it when the user removes that choice. The delivered app's `docs/toss-test.md` describes the test path; it is not production billing or approval for real payments.
 - `brief` prints `previewOnly`, `missing` and `unread`. Read `missing` back as "still empty, shown as to-be-confirmed".
 - `unread` not empty: stop. Each item is an answer the kit could not take (a colour name instead of a code, a fourth colour). Ask only those items again with the printed reason, update `out/answers.json` and run the `brief` command again with the same run folder. Run `features-write` again only when a feature answer changed. Repeat until `unread` is empty.
 

@@ -17,6 +17,7 @@ import { judge, renderTable } from "./lib/judge.mjs"
 export const RUNNERS = [
   { name: "billing-paddle", suite: "billing", load: () => import("../packages/billing-paddle/test/conformance-run.mjs"), run: (m, mod) => m.runPaddleConformance({ mod }) },
   { name: "billing-gumroad", suite: "billing", load: () => import("../packages/billing-gumroad/test/conformance-run.mjs"), run: (m, mod) => m.runGumroadConformance({ mod }) },
+  { name: "billing-toss-test", suite: "billing", load: () => import("../packages/billing-toss/test/conformance-run.mjs"), run: (m, mod) => m.runTossConformance({ mod }) },
   { name: "analytics-posthog", suite: "analytics", load: () => import("../packages/analytics-posthog/test/conformance-run.mjs"), run: (m, mod) => m.runAnalyticsConformance({ mod }) },
   { name: "auth", suite: "auth", load: () => import("../packages/auth/test/conformance-run.mjs"), run: (m, mod) => m.runAuthConformance({ mod }) },
   { name: "consent/notify", suite: "notify", load: () => import("../packages/consent/test/conformance-run.mjs"), run: (m, mod) => m.runNotifyConformance({ mod }) },

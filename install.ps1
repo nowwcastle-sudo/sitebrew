@@ -1,6 +1,6 @@
 ﻿# Sitebrew installer for Windows (PowerShell 5.1 and PowerShell 7).
-#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.8/get.ps1 | iex
-#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.8/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
+#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
+#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
 #   .\install.ps1 [-Tool claude|codex|both] [-Folder <path>] [-Commit <40-hex SHA>] [-Yes] [-WhatIf]
 # -Commit: the full commit SHA the release tag must point to. After the clone (or with a folder that is already there) the installer compares
 # `git rev-parse HEAD` with it and refuses to go on (code 4) when they differ - a tag can be moved by anyone with write access, a SHA cannot.
@@ -24,7 +24,7 @@ param(
   [string]$Tool = 'ask',
   [string]$Folder = '',
   [string]$Owner = 'nowwcastle-sudo',
-  [string]$Tag = 'v0.2.8',
+  [string]$Tag = 'v0.2.9',
   [string]$Commit = '',
   [switch]$Yes,
   [switch]$WhatIf

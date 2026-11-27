@@ -20,7 +20,7 @@ const ko = leaves(MESSAGES.ko)
 const en = leaves(MESSAGES.en)
 
 test("메시지 키가 ko·en 양쪽에 모두 있다(모든 이름공간)", () => {
-  assert.deepEqual(Object.keys(MESSAGES.en), ["email", "auth", "consent", "checkout", "transfer", "inquiry", "protect", "collection", "commerce", "reviews", "storage", "newsletter", "booking"])
+  assert.deepEqual(Object.keys(MESSAGES.en), ["email", "auth", "consent", "checkout", "transfer", "inquiry", "protect", "collection", "commerce", "reviews", "storage", "newsletter", "booking", "tossTest"])
   assert.deepEqual(Object.keys(ko).filter((k) => !(k in en)), [], "ko 에만 있는 키")
   assert.deepEqual(Object.keys(en).filter((k) => !(k in ko)), [], "en 에만 있는 키")
   // 메일 37키는 그대로 옮겨 왔다(D35). Task 15 가 문의 알림 11키·접수 확인 6키를 더했고,

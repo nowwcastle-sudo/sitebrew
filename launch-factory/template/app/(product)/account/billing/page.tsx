@@ -2,6 +2,7 @@ import { changePlan, plans, portal, resume, subscription, updatePaymentMethod } 
 import { SignInRequired } from "@/components/product/sign-in-required"
 import { BillingBlock, PaymentFailedBlock } from "@/components/product/product-blocks"
 import { currentSession } from "@/lib/session-server"
+import { tossTestConfig } from "@/lib/launch/toss-test"
 
 export const metadata = { title: "Billing" }
 
@@ -9,10 +10,12 @@ export const metadata = { title: "Billing" }
 // F02: 결제가 실패한 구독이면 결제 관리 위에 결제 실패 띠(다시 결제하는 날·접근이 멈추는 날·카드 변경 단추)
 export default async function BillingPage() {
   if (!(await currentSession())) return <SignInRequired next="/account/billing" />
+  const testBilling = tossTestConfig()
   return (
     <>
       <PaymentFailedBlock subscription={subscription} updatePaymentMethod={updatePaymentMethod} />
       <BillingBlock subscription={subscription} plans={plans} changePlan={changePlan} updatePaymentMethod={updatePaymentMethod} resume={resume} portal={portal} />
+      {testBilling && <a href="/account/billing/toss-test">{testBilling.fake ? "모의 카드 등록" : "토스 시험 카드 등록"}</a>}
     </>
   )
 }

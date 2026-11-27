@@ -9,9 +9,13 @@ const TEMPLATE = fileURLToPath(new URL("../../template", import.meta.url))
 const routes = readdirSync(join(TEMPLATE, "app/api/cron"), { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => `/api/cron/${e.name}`)
 const crons = JSON.parse(readFileSync(join(TEMPLATE, "vercel.json"), "utf8")).crons
 
-test("Cron 경로마다 vercel.json 에 일정이 하나 있다", () => {
+test("운영 Cron에는 일정이 있고 토스 시험 Cron은 자동 실행하지 않는다", () => {
   assert.ok(routes.length >= 10)
-  for (const path of routes) assert.equal(crons.filter((c) => c.path === path).length, 1, `${path} 일정이 없거나 둘 이상이다`)
+  const testPath = "/api/cron/toss-test"
+  assert.ok(routes.includes(testPath))
+  for (const path of routes) {
+    assert.equal(crons.filter((c) => c.path === path).length, path === testPath ? 0 : 1, `${path} 일정 설정이 다르다`)
+  }
   assert.deepEqual(crons.map((c) => c.path).filter((p) => !routes.includes(p)), [], "vercel.json 에 있는데 경로 파일이 없는 Cron")
 })
 

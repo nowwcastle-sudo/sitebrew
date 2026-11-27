@@ -7,6 +7,9 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { DATA, delivered, fakeKey, makeLf, makeRun, table, TODAY } from './fixtures/fake-lf.mjs'
+import { recordDelivery } from './index.mjs'
+import { writeFeatures } from '../intake/features.mjs'
+import { createRecord } from './record.mjs'
 
 const CLI = join(import.meta.dirname, 'runbook.mjs')
 const KEY = fakeKey()
@@ -37,6 +40,128 @@ const koAuth = () => [
   DATA.rubric.helpLine.ko,
   DATA.rubric.closing.ko,
 ].join('\n')
+
+test('CLI: 검증된 토스 시험 전달만 시험 장을 쓰며 사이트별 기록과 기본 결제 장을 분리한다', (t) => {
+  const { root, run, cli } = setup(t)
+  const site = join(root, 'toss-site')
+  mkdirSync(join(site, 'lib'), { recursive: true })
+  writeFileSync(join(site, 'lib', 'toss-test-config.ts'), 'const TOSS_COMPOSE_ENABLED = true\n')
+  writeFeatures(run, { version: 1, table: DATA.outcomesHash, outcomes: ['signup', 'payments'], billingProvider: 'toss-test' })
+  recordDelivery({ run, dest: site }, delivered())
+  const at = { at: ['--site', site, '--run', run] }
+  cli(['gate', '--answer', 'yes'], at)
+  for (const args of [['open'], ['chapter', 'G-billing', '--level', 'expert'], ['chapter', 'G-billing', '--level', 'beginner'], ['chapter', 'all', '--level', 'expert'], ['alternatives', 'G-billing']]) {
+    const result = cli(args, at)
+    assert.equal(result.code, 0, result.stderr)
+    const text = JSON.stringify(result.json)
+    assert.match(text, /토스페이먼츠/)
+    assert.doesNotMatch(text, /PADDLE|Paddle|paddle|웹훅/)
+    if (args[0] === 'chapter') assert.match(text, /실결제|실제 결제/)
+  }
+  const en = cli(['chapter', 'G-billing', '--level', 'expert', '--lang', 'en'], at)
+  assert.equal(en.code, 0, en.stderr)
+  assert.match(en.json.text, /does not support real payments/)
+  assert.match(en.json.text, /LF_TOSS_TEST_FAKE/)
+  assert.doesNotMatch(en.json.text, /Paddle|PADDLE|webhook/i)
+  assert.match(cli(['chapter', 'G-auth', '--level', 'expert'], at).json.text, /BETTER_AUTH_SECRET/)
+
+  const other = join(root, 'other-site')
+  mkdirSync(other)
+  recordDelivery({ dest: other }, delivered())
+  const otherAt = { at: ['--site', other, '--run', run] }
+  assert.match(cli(['chapter', 'G-billing', '--level', 'expert'], otherAt).json.text, /PADDLE_API_KEY/)
+  const missing = join(root, 'missing-site')
+  mkdirSync(missing)
+  const unknown = cli(['open'], { at: ['--site', missing, '--run', run] })
+  assert.equal(unknown.code, 3)
+  assert.equal(unknown.json.ask.why, 'unknownChoice')
+  const legacy = join(root, 'legacy-toss')
+  mkdirSync(join(legacy, 'lib'), { recursive: true })
+  writeFileSync(join(legacy, 'lib', 'toss-test-config.ts'), 'const TOSS_COMPOSE_ENABLED = true\n')
+  recordDelivery({ dest: legacy }, delivered())
+  const unrecorded = cli(['chapter', 'G-billing'], { at: ['--site', legacy, '--run', run] })
+  assert.equal(unrecorded.code, 0)
+  assert.match(unrecorded.json.text, /토스페이먼츠 시험 전용/)
+  assert.doesNotMatch(unrecorded.json.text, /PADDLE|Paddle/)
+})
+
+test('토스 사이트의 전달 기록 누락·손상·표 변경 후 일반 기능 재답은 토스 선택을 보존한다', (t) => {
+  const { root, cli } = setup(t)
+  for (const kind of ['missing', 'broken', 'stale']) {
+    const site = join(root, `recover-${kind}`)
+    mkdirSync(join(site, '.sitebrew'), { recursive: true })
+    mkdirSync(join(site, 'lib'), { recursive: true })
+    writeFileSync(join(site, 'lib', 'toss-test-config.ts'), 'const TOSS_COMPOSE_ENABLED = true\n')
+    const file = join(site, '.sitebrew', 'delivered.json')
+    if (kind === 'broken') writeFileSync(file, '{ broken')
+    if (kind === 'stale') writeFileSync(file, JSON.stringify(delivered({ tableHash: 'oldhash', billingProvider: 'toss-test' })))
+    const at = { at: ['--site', site] }
+    assert.equal(cli(['gate', '--answer', 'yes'], at).code, 0)
+    assert.equal(cli(['open'], at).code, 3, kind)
+    const noPayment = cli(['open', '--features', 'signup'], at)
+    assert.equal(noPayment.code, 2, kind)
+    assert.doesNotMatch(JSON.stringify(noPayment), /PADDLE|Paddle/)
+    const selected = cli(['open', '--features', 'payments'], at)
+    assert.equal(selected.code, 0, selected.stderr)
+    assert.match(selected.json.text, /토스페이먼츠/)
+    const saved = JSON.parse(readFileSync(join(site, '.sitebrew', 'runbook.json'), 'utf8'))
+    assert.equal(saved.features.value.billingProvider, 'toss-test')
+    const result = cli(['chapter', 'G-billing', '--level', 'expert'], at)
+    assert.equal(result.code, 0, result.stderr)
+    assert.match(result.json.text, /토스페이먼츠 시험 전용/)
+    assert.doesNotMatch(result.json.text, /PADDLE|Paddle|웹훅/)
+  }
+})
+
+test('손상된 시험 표지와 배송 기록 불일치는 일반 결제 안내로 넘어가지 않는다', (t) => {
+  const { root, cli } = setup(t)
+  const site = join(root, 'invalid-marker')
+  mkdirSync(join(site, 'lib'), { recursive: true })
+  writeFileSync(join(site, 'lib', 'toss-test-config.ts'), 'const TOSS_COMPOSE_ENABLED = maybe\n')
+  recordDelivery({ dest: site }, delivered())
+  const at = { at: ['--site', site] }
+  cli(['gate', '--answer', 'yes'], at)
+  const bad = cli(['open', '--features', 'payments'], at)
+  assert.equal(bad.code, 1)
+  assert.equal(bad.json.code, 'providerUnknown')
+  assert.doesNotMatch(JSON.stringify(bad), /PADDLE|Paddle/)
+})
+
+test('토스 전달 기록은 features·표·생성 설정이 일치할 때만 작성한다', (t) => {
+  const { root, run } = setup(t)
+  const site = join(root, 'site')
+  mkdirSync(join(site, 'lib'), { recursive: true })
+  const config = join(site, 'lib', 'toss-test-config.ts')
+  const features = { version: 1, table: DATA.outcomesHash, outcomes: ['signup', 'payments'], billingProvider: 'toss-test' }
+  writeFeatures(run, features)
+  assert.throws(() => recordDelivery({ run, dest: site }, delivered()), /configuration/)
+  writeFileSync(config, 'const TOSS_COMPOSE_ENABLED = false\n')
+  assert.throws(() => recordDelivery({ run, dest: site }, delivered()), /does not enable/)
+  writeFileSync(config, 'const TOSS_COMPOSE_ENABLED = true\n')
+  assert.throws(() => recordDelivery({ run, dest: site }, delivered({ tableHash: 'other' })), /does not match/)
+  assert.throws(() => recordDelivery({ run, dest: site }, delivered({ applied: ['payments'] })), /does not match/)
+  writeFeatures(run, { version: 1, table: DATA.outcomesHash, outcomes: ['signup', 'payments'] })
+  assert.throws(() => recordDelivery({ run, dest: site }, delivered({ billingProvider: 'toss-test' })), /validated feature selection/)
+  writeFeatures(run, features)
+  assert.equal(existsSync(join(site, '.sitebrew', 'delivered.json')), false)
+  assert.equal(recordDelivery({ run, dest: site }, delivered()).saved, true)
+})
+
+test('저장된 runbook 선택도 토스 시험 장으로 읽되 다른 사이트의 상태는 신뢰하지 않는다', (t) => {
+  const { root, cli } = setup(t)
+  const run = makeRun(root, undefined, 'state-only')
+  const record = createRecord()
+  record.writeState({ run }, { door: 'use', features: { table: DATA.outcomesHash, outcomes: ['signup', 'payments'], billingProvider: 'toss-test' } }, '2026-10-22T00:00:00Z')
+  const result = cli(['chapter', 'G-billing', '--level', 'expert'], { at: ['--run', run] })
+  assert.equal(result.code, 0, result.stderr)
+  assert.match(result.json.text, /토스페이먼츠 시험 전용/)
+  assert.doesNotMatch(result.json.text, /PADDLE|Paddle/)
+  const site = join(root, 'state-foreign-site')
+  mkdirSync(join(site, '.sitebrew'), { recursive: true })
+  const foreign = cli(['open'], { at: ['--site', site, '--run', run] })
+  assert.equal(foreign.code, 3)
+  assert.equal(foreign.json.ask.why, 'unknownChoice')
+})
 
 test('door: ask → body commands exit 5 → gate --answer yes → open/chapter work', (t) => {
   const { cli } = setup(t)

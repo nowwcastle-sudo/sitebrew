@@ -7,8 +7,9 @@
 //        input: { "topic": "...", "archetype": "...", "locale": "ko"|"en", "answers": { "<question id>": "..." } }
 //        out:   the brief for `npm run stamp -- --brief`; stdout is { brief, previewOnly, missing[], unread[{ id, answer, why }], factsApplied[] } (unread: ask the user again)
 //   node intake.mjs features <archetype>               -> JSON list of { id, ko, en }: yes/no questions about what the site must do ([] when there is nothing to ask); an unknown archetype is an error
-//   node intake.mjs features-write --archetype <archetype> --input <answers.json> --run <run folder>
+//   node intake.mjs features-write --archetype <archetype> --input <answers.json> --run <run folder> [--billing-provider toss-test]
 //        input: { "<question id>": true|false } with ids from `features <archetype>` only; anything else is an error naming the input file.
+//        --billing-provider toss-test is an explicit test-only selection and requires payments: true; omit it for the existing default.
 //        Writes <run folder>/features.json (the stamp reads it); stdout is { features: <path>, outcomes: [{ id, say: { ko, en } }] } - the chosen outcomes after `requires` closed them.
 //        A kit without feature questions: one line, nothing written.
 //   node intake.mjs logo-candidates --input <answers.json> --out <folder>
@@ -23,13 +24,13 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { findKit, kitRange } from './lib/kit.mjs'
 
 const PLUGIN_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
-const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> [--facts <facts.json>] | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder> | logo-candidates --input <answers.json> --out <folder>   [--kit <folder>] [--lf <folder>]'
+const USAGE = 'usage: node intake.mjs archetypes | questions <archetype> | brief --input <answers.json> --out <brief.json> [--facts <facts.json>] | features <archetype> | features-write --archetype <archetype> --input <answers.json> --run <folder> [--billing-provider toss-test] | logo-candidates --input <answers.json> --out <folder>   [--kit <folder>] [--lf <folder>]'
 
 function parse(argv) {
   const o = { positional: [] }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
-    if (['--kit', '--input', '--out', '--run', '--archetype', '--lf', '--facts'].includes(a)) {
+    if (['--kit', '--input', '--out', '--run', '--archetype', '--lf', '--facts', '--billing-provider'].includes(a)) {
       const v = argv[++i]
       if (!v || v.startsWith('--')) throw new Error(`${a} needs a value`)
       o[a.slice(2)] = v
@@ -42,10 +43,16 @@ function parse(argv) {
 /** Feature questions need three things: a kit that has features.mjs, the launch-factory outcome table beside it, and (to write) an answers file. Missing either of the first two is not an error. */
 async function features({ cmd, archetype, o, kit, load }) {
   const nothing = () => console.log(cmd === 'features' ? '[]' : 'features: no feature questions in this Sitebrew (or launch-factory was not found) - nothing written')
-  if (!existsSync(join(kit.dir, 'factory', 'intake', 'features.mjs'))) return nothing()
+  if (!existsSync(join(kit.dir, 'factory', 'intake', 'features.mjs'))) {
+    if (o['billing-provider']) throw new Error('this Sitebrew cannot record the test billing provider')
+    return nothing()
+  }
   const { resolveLf } = await load('resolve-lf.mjs')
   const lf = resolveLf({ arg: o.lf, wfRoot: kit.dir })
-  if (!lf) return nothing()
+  if (!lf) {
+    if (o['billing-provider']) throw new Error('launch-factory is required to record the test billing provider')
+    return nothing()
+  }
   const { INTAKE_ARCHETYPES } = await load('questions.mjs')
   const { loadOutcomes, featureQuestionsFor, toFeatures, writeFeatures } = await load('features.mjs')
   const table = loadOutcomes(lf)
@@ -64,7 +71,9 @@ async function features({ cmd, archetype, o, kit, load }) {
     ? 'it must be an object like { "<id>": true }'
     : Object.entries(answers).filter(([k, v]) => typeof v !== 'boolean' || !ids.includes(k)).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')
   if (wrong) throw new Error(`${input}: wrong answers - ${wrong} (every value true or false; ids to use: ${ids.join(', ')})`)
-  const chosen = toFeatures(answers, table)
+  if (o['billing-provider'] && answers.payments !== true) throw new Error(`${input}: toss-test requires payments: true`)
+  const chosen = toFeatures(answers, table, { billingProvider: o['billing-provider'] })
+  if (o['billing-provider'] && chosen.billingProvider !== o['billing-provider']) throw new Error('this Sitebrew cannot record the test billing provider')
   const run = resolve(o.run)
   writeFeatures(run, chosen)
   console.log(JSON.stringify({ features: join(run, 'features.json'), outcomes: table.outcomes.filter((x) => chosen.outcomes.includes(x.id)).map(({ id, say }) => ({ id, say })) }))
@@ -86,6 +95,7 @@ async function main(argv) {
   const o = parse(argv)
   const [cmd, archetype] = o.positional
   if (!['archetypes', 'questions', 'brief', 'features', 'features-write', 'logo-candidates'].includes(cmd)) throw new Error(USAGE)
+  if (o['billing-provider'] !== undefined && (cmd !== 'features-write' || o['billing-provider'] !== 'toss-test')) throw new Error('--billing-provider is only available for features-write with toss-test')
   const kit = findKit({ arg: o.kit, pluginRoot: PLUGIN_ROOT, range: kitRange(PLUGIN_ROOT) })
   if (kit.missing) throw new Error('Sitebrew clone not found - pass --kit <folder> or set SITEBREW_DIR (run doctor.mjs for the fix)')
   const load = (file) => import(pathToFileURL(join(kit.dir, 'factory', 'intake', file)).href)

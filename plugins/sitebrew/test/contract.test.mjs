@@ -241,6 +241,44 @@ describe('feature questions (intake.mjs features, features-write)', () => {
     assert.notEqual(run(['--kit', KIT, 'features-write', '--input', answers, '--run', wrong], { LF_DIR: lf }).code, 0) // --archetype is required
   })
 
+  it('test billing is explicit, requires payments, and is never silently ignored', { skip: SKIP_KIT }, () => {
+    const lf = lfWith([outcome('signup', 1, '가입'), outcome('payments', 2, '결제')])
+    const answers = join(scratch(), 'answers.json')
+    const runDir = join(scratch(), 'run')
+    const command = ['--kit', KIT, 'features-write', '--archetype', 'saas', '--input', answers, '--run', runDir, '--lf', lf]
+    writeFileSync(answers, JSON.stringify({ payments: true }))
+    const selected = run([...command, '--billing-provider', 'toss-test'])
+    assert.equal(selected.code, 0, selected.err)
+    assert.deepEqual(JSON.parse(read(runDir, 'features.json')), { version: 1, table: 'h1', outcomes: ['signup', 'payments'], billingProvider: 'toss-test' })
+    const previous = read(runDir, 'features.json')
+    for (const args of [['--billing-provider', 'other'], ['--billing-provider']]) {
+      assert.notEqual(run([...command, ...args]).code, 0)
+      assert.equal(read(runDir, 'features.json'), previous)
+    }
+    writeFileSync(answers, JSON.stringify({ payments: false }))
+    const missing = run([...command, '--billing-provider', 'toss-test'])
+    assert.notEqual(missing.code, 0)
+    assert.match(missing.err, /requires payments/)
+    assert.equal(read(runDir, 'features.json'), previous)
+    assert.notEqual(run(['--kit', KIT, 'features', 'saas', '--lf', lf, '--billing-provider', 'toss-test']).code, 0)
+    const plain = run(command)
+    assert.equal(plain.code, 0, plain.err)
+    assert.equal(Object.hasOwn(JSON.parse(read(runDir, 'features.json')), 'billingProvider'), false)
+    const oldKit = scratch()
+    mkdirSync(join(oldKit, 'factory'))
+    writeFileSync(join(oldKit, 'factory', 'doctor.mjs'), '// old kit\n')
+    assert.notEqual(run(['--kit', oldKit, 'features-write', '--billing-provider', 'toss-test']).code, 0)
+    mkdirSync(join(oldKit, 'factory', 'intake'))
+    writeFileSync(join(oldKit, 'factory', 'intake', 'resolve-lf.mjs'), 'export const resolveLf = ({ arg }) => arg\n')
+    writeFileSync(join(oldKit, 'factory', 'intake', 'questions.mjs'), "export const INTAKE_ARCHETYPES = ['saas']\n")
+    writeFileSync(join(oldKit, 'factory', 'intake', 'config.json'), '{"featureQuestionLimit":2}')
+    writeFileSync(join(oldKit, 'factory', 'intake', 'features.mjs'), "export const loadOutcomes = () => ({outcomes: []}); export const featureQuestionsFor = () => [{id:'payments'}]; export const toFeatures = () => ({outcomes:['payments']}); export const writeFeatures = () => { throw Error('must not write') }\n")
+    writeFileSync(answers, JSON.stringify({ payments: true }))
+    const ignored = run(['--kit', oldKit, 'features-write', '--archetype', 'saas', '--input', answers, '--run', runDir, '--lf', lf, '--billing-provider', 'toss-test'])
+    assert.notEqual(ignored.code, 0)
+    assert.match(ignored.err, /cannot record the test billing provider/)
+  })
+
   it(`an archetype the intake does not know is an error, not an empty list (${SKIP_KIT || 'kit found'})`, { skip: SKIP_KIT }, () => {
     const lf = lfWith([outcome('signup', 1, '가입')])
     const q = run(['--kit', KIT, 'features', 'no-such-type'], { LF_DIR: lf })
@@ -295,6 +333,8 @@ describe('feature questions (intake.mjs features, features-write)', () => {
     assert.match(text, /intake\.mjs" --kit \. features <archetype>/)
     assert.match(text, /intake\.mjs" --kit \. features-write --archetype <archetype> --input out\/features\.json --run out\/my-site/)
     assert.match(text, /say\.ko/)
+    assert.match(text, /--billing-provider toss-test/)
+    assert.match(text, /test-only/)
     assert.match(text, /npm run stamp -- --brief out\/brief\.json --run out\/my-site/)
     assert.ok(text.includes('references/features.md'), 'the skill does not point at references/features.md')
   })

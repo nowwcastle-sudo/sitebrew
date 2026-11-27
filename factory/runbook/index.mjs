@@ -22,11 +22,13 @@
 //   소개형으로 추정하지 않는다. 사용자 문장은 데이터(rubric·성과 question)에서만 온다 — 이 파일의 메시지는 개발자용 영어다.
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { describeFeatures, loadOutcomes, TableVersionError, toFeatures } from '../intake/features.mjs'
+import { describeFeatures, loadOutcomes, readFeatures, TableVersionError, toFeatures } from '../intake/features.mjs'
 import { resolveLf, TABLE_FILE } from '../intake/resolve-lf.mjs'
 import { beginnerBrief, checkBeginner, problemText } from './beginner.mjs'
 import { alternativesFor, expertText, overviewText, planRunbook } from './plan.mjs'
 import { createRecord, RECORD_DIR, RecordError } from './record.mjs'
+import { tossTestData } from './toss-test.mjs'
+export { TOSS_TEST_CHECK_SKIP } from './toss-test.mjs'
 
 const WF_ROOT = join(import.meta.dirname, '..', '..')
 export const DATA_FILE = join('docs', 'runbook', 'runbook.generated.json')
@@ -106,6 +108,17 @@ function questionsOf(data, table) {
 const secretHits = (text, shapes) => shapes.flatMap(({ re }) => [...String(text).matchAll(new RegExp(re, 'g'))].map((m) => m[0]))
 
 export function recordDelivery(at, d) {
+  let selection
+  if (d.completion === 'composed' && at.run) selection = readFeatures(at.run)
+  if (d.billingProvider !== undefined && selection?.billingProvider !== d.billingProvider) throw new RecordError('delivery billing provider requires a validated feature selection')
+  if (selection?.billingProvider === 'toss-test') {
+    const same = (a, b) => Array.isArray(a) && Array.isArray(b) && [...new Set(a)].sort().join('\0') === [...new Set(b)].sort().join('\0')
+    if (selection.table !== d.tableHash || !same(selection.outcomes, d.applied) || d.unapplied.includes('payments')) throw new RecordError('delivery selection does not match applied features')
+    let config
+    try { config = readFileSync(join(at.dest, 'lib', 'toss-test-config.ts'), 'utf8') } catch { throw new RecordError('delivery has no test billing configuration') }
+    if (!/^const TOSS_COMPOSE_ENABLED = true\s*$/m.test(config)) throw new RecordError('delivery does not enable test billing')
+    d = { ...d, billingProvider: 'toss-test' }
+  }
   return createRecord().recordDelivery(at, d)
 }
 
@@ -150,7 +163,7 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
     }
     if (!r.saved) {
       for (const k of ['door', 'level']) if (k in patch) memory[k] = patch[k]
-      if (patch.features) memory.features = { table: patch.features.table, outcomes: [...new Set(patch.features.outcomes)].sort() }
+      if (patch.features) memory.features = { table: patch.features.table, outcomes: [...new Set(patch.features.outcomes)].sort(), ...(patch.features.billingProvider ? { billingProvider: patch.features.billingProvider } : {}) }
       for (const [gid, status] of Object.entries(patch.chapters ?? {})) memory.chapters[gid] = { status, at: at() }
       memory.alternatives = [...new Set([...memory.alternatives, ...(patch.alternatives ?? [])])].sort()
     }
@@ -174,17 +187,46 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
     if (d !== 'use') throw new DoorClosed(d)
   }
 
+  function siteTossMarker() {
+    if (!where.site) return null
+    let text
+    try { text = readFileSync(join(where.site, 'lib', 'toss-test-config.ts'), 'utf8') } catch (e) {
+      if (e.code === 'ENOENT') return null
+      throw new RunbookToolError('providerUnknown', 'the site billing configuration is unreadable', 'restore the delivered site configuration')
+    }
+    const matches = [...text.matchAll(/^const TOSS_COMPOSE_ENABLED = (true|false)\s*$/gm)]
+    if (matches.length !== 1) throw new RunbookToolError('providerUnknown', 'the site billing configuration is invalid', 'restore the delivered site configuration')
+    return matches[0][1] === 'true'
+  }
+
   // ── 선택과 계획 ──
   function selection() {
     const { data, table } = needKit()
     const hash = data.outcomesHash
-    const d = record().readDelivered(where)
+    const tossMarker = siteTossMarker()
+    const siteDelivery = where.site ? record().readDelivered({ site: where.site }) : null
+    const d = siteDelivery ?? (where.site && tossMarker ? null : record().readDelivered(where))
+    // 다른 사이트의 실행 기록을 현재 사이트의 공급자 선택으로 쓰지 않는다.
+    if (where.site && !siteDelivery && d?.billingProvider && !tossMarker) return { ask: { why: 'unknownChoice', questions: questionsOf(data, table) } }
+    if (siteDelivery?.billingProvider && tossMarker !== true) throw new RunbookToolError('providerUnknown', 'the recorded test billing selection does not match the site', 'restore the delivered site configuration')
+    if (!where.site && d && !d.billingProvider && where.run) {
+      let f
+      try { f = readFeatures(where.run) } catch { throw new RunbookToolError('providerUnknown', 'the feature selection is unreadable', 'restore the feature selection') }
+      if (f?.billingProvider === 'toss-test') throw new RunbookToolError('providerUnknown', 'the test billing selection was not recorded at delivery', 'use its delivered site record or deliver again')
+    }
     const useLang = lang ?? d?.locale ?? 'ko'
-    if (d && Array.isArray(d.applied) && d.tableHash === hash) return { delivered: d, lang: useLang }
+    if (d && Array.isArray(d.applied) && d.tableHash === hash && (!tossMarker || !where.site || siteDelivery)) {
+      if (tossMarker && (d.completion !== 'composed' || !d.applied.includes('payments') || d.unapplied.includes('payments'))) return { ask: { why: 'unknownChoice', questions: questionsOf(data, table) } }
+      return { delivered: tossMarker ? { ...d, billingProvider: 'toss-test' } : d, lang: useLang }
+    }
     const told = state().features
     if (told && told.table === hash) {
       const completion = d?.completion ?? (describeFeatures(told, table, { loopSteps: {} }).product ? 'composed' : 'site')
-      return { delivered: { applied: told.outcomes, unapplied: d?.unapplied ?? [], completion, locale: d?.locale ?? useLang }, lang: useLang }
+      if (told.billingProvider || tossMarker) {
+        const local = where.site ? record().readState({ site: where.site }).features : told
+        if (completion !== 'composed' || !local || local.table !== hash || JSON.stringify(local.outcomes) !== JSON.stringify(told.outcomes) || !told.outcomes.includes('payments') || (d?.tableHash === hash && d.unapplied.includes('payments')) || (where.site && !tossMarker) || (!where.site && local.billingProvider !== 'toss-test')) return { ask: { why: 'unknownChoice', questions: questionsOf(data, table) } }
+      }
+      return { delivered: { applied: told.outcomes, unapplied: d?.tableHash === hash ? d.unapplied : [], completion, locale: d?.locale ?? useLang, ...((told.billingProvider || tossMarker) ? { billingProvider: 'toss-test' } : {}) }, lang: useLang }
     }
     const changed = (d && d.tableHash !== null && d.tableHash !== hash) || (told && told.table !== hash)
     const why = changed ? 'tableChanged' : d ? 'unknownChoice' : 'noRecord'
@@ -194,9 +236,10 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
   function planned() {
     const sel = selection()
     if (sel.ask) return sel
-    const plan = planRunbook(kit.data, sel.delivered, { lang: sel.lang, today })
+    const data = sel.delivered.billingProvider === 'toss-test' ? tossTestData(kit.data) : kit.data
+    const plan = planRunbook(data, sel.delivered, { lang: sel.lang, today })
     const unapplied = new Set(sel.delivered.unapplied)
-    return { plan, applied: sel.delivered.applied.filter((id) => !unapplied.has(id)) }
+    return { plan, data, tossTest: sel.delivered.billingProvider === 'toss-test', applied: sel.delivered.applied.filter((id) => !unapplied.has(id)) }
   }
 
   const inPlan = (plan, gid) => {
@@ -220,7 +263,10 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
       throw new RunbookArgError(`unknown feature id — known: ${Object.keys(data.outcomes).join(', ')}`)
     }
     const { outcomes } = toFeatures(Object.fromEntries(ids.map((id) => [id, true])), table)
-    const { saved } = write({ features: { table: data.outcomesHash, outcomes } })
+    const tossMarker = siteTossMarker()
+    if (tossMarker && !outcomes.includes('payments')) throw new RunbookArgError('the delivered site has test billing; select payments to describe it')
+    if (tossMarker && !isDir(join(where.site, RECORD_DIR))) throw new RunbookToolError('providerUnknown', 'the site has no runbook record directory', 'restore the delivered site record')
+    const { saved } = write({ features: { table: data.outcomesHash, outcomes, ...(tossMarker ? { billingProvider: 'toss-test' } : {}) } })
     return { features: outcomes, saved }
   }
 
@@ -243,7 +289,7 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
       if (p.ask) return p
       const s = state()
       return {
-        text: overviewText(p.plan, kit.data, { lang: p.plan.lang, today }),
+        text: overviewText(p.plan, p.data, { lang: p.plan.lang, today }),
         plan: p.plan,
         level: s.level,
         progress: Object.fromEntries(Object.entries(s.chapters).map(([gid, v]) => [gid, v.status])),
@@ -260,15 +306,15 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
       let text
       if (gid === 'all') {
         if (useLevel !== 'expert') throw new RunbookArgError('the beginner level goes one chapter at a time — give a chapter id')
-        text = expertText(plan, kit.data, { lang: plan.lang, today })
+        text = expertText(plan, p.data, { lang: plan.lang, today })
       } else {
         inPlan(plan, gid)
         if (useLevel === 'beginner') {
           if (out !== undefined) throw new RunbookArgError('--out saves expert text only')
-          return { brief: beginnerBrief(plan, kit.data, { lang: plan.lang, gid }) }
+          return { brief: beginnerBrief(plan, p.data, { lang: plan.lang, gid }) }
         }
         const one = { ...plan, chapters: [gid], missing: [], stale: plan.stale.filter((g) => g === gid) }
-        text = expertText(one, kit.data, { lang: plan.lang, today })
+        text = expertText(one, p.data, { lang: plan.lang, today })
       }
       if (out !== undefined) return { file: writeNew(out, text) }
       return { text }
@@ -280,7 +326,7 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
       const p = planned()
       if (p.ask) return p
       inPlan(p.plan, gid)
-      const { data } = kit
+      const { data } = p
       const lang = p.plan.lang
       const { chapter } = beginnerBrief(p.plan, data, { lang, gid })
       const hits = secretHits(draft, data.secretShapes)
@@ -300,6 +346,7 @@ export function openRunbook({ site, run, lf, today, lang, env = process.env, now
       if (!role) throw new RunbookArgError(`no chapter card for that id — chapters: ${Object.keys(data.chapters).join(', ')}`)
       const p = planned()
       if (p.ask) return p
+      if (p.tossTest && gid === 'G-billing') return { none: true, current: { service: p.data.chapters[gid].card.service, role } }
       const result = alternativesFor(data, gid, { want, applied: p.applied })
       write({ alternatives: [role] })
       return result

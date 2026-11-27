@@ -1,0 +1,38 @@
+{
+  "name": "feature-billing-toss",
+  "title": "토스페이먼츠 시험 구독",
+  "description": "개발 mock에서 가짜 공급자 또는 공식 테스트키로 카드 등록·승인·갱신·해지를 시험합니다. 운영 결제는 지원하지 않습니다.",
+  "npm": ["@launch-factory/billing-toss", "@launch-factory/contract", "@launch-factory/db", "@launch-factory/account-lifecycle", "@launch-factory/auth", "drizzle-orm"],
+  "registryDependencies": ["feature-auth-betterauth", "feature-account-lifecycle"],
+  "envVars": ["LF_MODE", "LF_TOSS_TEST", "LF_TOSS_TEST_FAKE", "TOSS_TEST_CLIENT_KEY", "TOSS_TEST_SECRET_KEY", "TOSS_TEST_ENCRYPTION_KEY", "TOSS_TEST_MERCHANT_ID", "TOSS_TEST_DB_DIRECTORY", "NEXT_PUBLIC_APP_URL", "CRON_SECRET"],
+  "files": ["../_shared/db/migrate.mjs"],
+  "templateFiles": [
+    "app/(product)/account/billing/toss-test/page.tsx",
+    "app/(product)/account/billing/toss-test/toss-test-button.tsx",
+    "app/(product)/account/billing/toss-test/toss-test-charge.tsx",
+    "app/(product)/account/billing/toss-test/toss-test-controls.tsx",
+    "app/api/toss/registration/start/route.ts",
+    "app/api/toss/registration/complete/route.ts",
+    "app/api/toss/registration/fail/route.ts",
+    "app/api/toss/test-charge/route.ts",
+    "app/api/toss/test-subscription/route.ts",
+    "app/api/toss/test-account-delete/route.ts",
+    "app/api/cron/toss-test/route.ts",
+    "lib/launch/toss-account.ts",
+    "lib/launch/toss-test-db.ts",
+    "lib/launch/toss-test.ts",
+    "lib/toss-test-config.ts",
+    "lib/toss-test-sdk-client.ts",
+    "lib/toss-test-status.ts",
+    "lib/toss-test-url.ts",
+    "lib/toss-secret-filter.ts"
+  ],
+  "schema": ["toss-ledger.ts"],
+  "migrations": true,
+  "docs": [
+    "개발 환경에서 모의 공급자 또는 토스 공식 테스트키를 사용합니다. 운영 결제는 지원하지 않습니다. 이 항목은 공개 npm 패키지가 아니라 로컬 소스가 필요합니다. 마이그레이션: node db/migrate.mjs",
+    "등록·탈퇴·관측을 직접 합치는 설치보다 compose-product의 --billing-provider toss-test 조립을 사용하세요. 레지스트리만 설치하면 탈퇴 잠금·파기와 콜백 로그 필터를 앱에 수동 연결해야 하므로 완전한 앱이 아닙니다.",
+    "개발 mock과 LF_TOSS_TEST=1이 필요합니다. LF_TOSS_TEST_FAKE=1은 가짜 키만 받고, 0은 공식 시험 상점 ID와 테스트키만 받습니다. 시험 승인은 유료 권한을 부여하지 않습니다.",
+    "공식 시험 상점과 실제 SDK/CSP 검증 및 미확정 발급·삭제 운영 복구는 남아 있습니다."
+  ]
+}

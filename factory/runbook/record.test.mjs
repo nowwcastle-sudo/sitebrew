@@ -145,3 +145,27 @@ test('delivered.json: 실행 폴더와 사용자 폴더에 쓰고 .gitignore(*) 
   assert.throws(() => record.recordDelivery({ run }, { ...DELIVERED, completion: 'product' }), RecordError)
   assert.throws(() => record.recordDelivery({ run }, { ...DELIVERED, extra: 1 }), RecordError)
 })
+
+test('delivered billingProvider 는 적용된 제품 결제의 toss-test 만 허용한다', () => {
+  const { run } = place()
+  const chosen = { ...DELIVERED, applied: ['signup', 'payments'], billingProvider: 'toss-test' }
+  record.recordDelivery({ run }, chosen)
+  assert.deepEqual(record.readDelivered({ run }), chosen)
+  for (const bad of [
+    { ...chosen, billingProvider: 'paddle' },
+    { ...chosen, applied: ['signup'] },
+    { ...chosen, unapplied: ['payments'] },
+    { ...chosen, completion: 'site' },
+    { ...chosen, tableHash: null },
+  ]) assert.throws(() => record.recordDelivery({ run }, bad), RecordError)
+  assert.deepEqual(record.readDelivered({ run }), chosen)
+})
+
+test('runbook features 의 공급자는 열거형과 결제 선택을 검증해 저장한다', () => {
+  const { run } = place()
+  const features = { table: 'd4d0c274c1b0', outcomes: ['signup', 'payments'], billingProvider: 'toss-test' }
+  record.writeState({ run }, { features }, T1)
+  assert.deepEqual(record.readState({ run }).features, { ...features, outcomes: ['payments', 'signup'] })
+  assert.throws(() => record.writeState({ run }, { features: { ...features, billingProvider: 'paddle' } }, T1), RecordError)
+  assert.throws(() => record.writeState({ run }, { features: { ...features, outcomes: ['signup'] } }, T1), RecordError)
+})

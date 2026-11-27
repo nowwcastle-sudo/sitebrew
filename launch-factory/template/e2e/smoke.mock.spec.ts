@@ -46,8 +46,18 @@ test("없는 주소는 404 이고 오류 경계(not_found)를 그린다", async 
   await expect(page.locator('[data-error-code="not_found"]').first()).toBeVisible()
 })
 
+test("토스 시험 설정이 없으면 등록 화면이 열리지 않는다", async ({ page }) => {
+  test.skip(!routes.includes("/account/billing/toss-test"), "토스 시험 경로가 없는 생성 앱")
+  const res = await page.goto("/account/billing/toss-test")
+  // Next 스트리밍은 notFound() 이전에 응답이 시작되면 200을 유지한다.
+  expect([200, 404]).toContain(res?.status())
+  await expect(page.locator('[data-error-code="not_found"]').first()).toBeVisible()
+  await expect(page.locator('meta[name="robots"][content*="noindex"]').first()).toBeAttached()
+  await expect(page.getByRole("button", { name: "모의 카드 등록" })).toHaveCount(0)
+})
+
 test.describe("쪽 × 장면", () => {
-  for (const route of routes) {
+  for (const route of routes.filter((path) => path !== "/account/billing/toss-test")) {
     for (const scene of scenesFor(route)) {
       test(`${route} · ${scene}`, async ({ page, context, baseURL }) => {
         await context.addCookies([sceneCookie(scene, baseURL!)])

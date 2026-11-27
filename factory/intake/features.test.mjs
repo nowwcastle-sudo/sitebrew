@@ -95,6 +95,20 @@ test('writeFeatures / readFeatures 왕복, 없는 폴더·파일은 null', (t) =
   assert.equal(readFeatures(tmp(t)), null)
 })
 
+test('토스 시험 전용 선택은 결제 기능과 함께 생성·저장·읽기에서 보존하고 유효하지 않은 선택은 거부한다', (t) => {
+  const dir = tmp(t)
+  const chosen = toFeatures({ payments: true }, table, { billingProvider: 'toss-test' })
+  assert.deepEqual(chosen.outcomes, ['signup', 'payments'])
+  writeFeatures(dir, chosen)
+  assert.equal(JSON.parse(readFileSync(join(dir, 'features.json'), 'utf8')).billingProvider, 'toss-test')
+  assert.deepEqual(readFeatures(dir), chosen)
+  assert.throws(() => toFeatures({ signup: true }, table, { billingProvider: 'toss-test' }), /requires payments/)
+  assert.throws(() => toFeatures({ payments: true }, table, { billingProvider: 'other' }))
+  assert.throws(() => writeFeatures(dir, { ...chosen, outcomes: ['signup'] }), /requires payments/)
+  writeFileSync(join(dir, 'features.json'), JSON.stringify({ ...chosen, billingProvider: 'other' }))
+  assert.throws(() => readFeatures(dir), /billingProvider/)
+})
+
 test('readFeatures: 깨진 JSON·모양 틀림은 파일 경로를 붙여 던진다', (t) => {
   const dir = tmp(t)
   const file = join(dir, 'features.json')

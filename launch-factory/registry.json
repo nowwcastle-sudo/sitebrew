@@ -346,6 +346,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -411,7 +441,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/auth/[...all]/route.ts",
@@ -723,6 +759,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -772,7 +838,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/webhooks/paddle/route.ts",
@@ -996,6 +1068,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1042,7 +1144,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/webhooks/gumroad/route.ts",
@@ -1063,6 +1171,355 @@
               "@launch-factory/auth",
               "@launch-factory/billing-gumroad",
               "@launch-factory/billing-paddle",
+              "@launch-factory/consent",
+              "@launch-factory/contract",
+              "@launch-factory/db",
+              "@launch-factory/email",
+              "@launch-factory/env",
+              "@launch-factory/i18n",
+              "@launch-factory/security"
+            ],
+            "serverExternalPackages": [
+              "@electric-sql/pglite"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "feature-billing-toss",
+      "type": "registry:item",
+      "title": "토스페이먼츠 시험 구독",
+      "description": "개발 mock에서 가짜 공급자 또는 공식 테스트키로 카드 등록·승인·갱신·해지를 시험합니다. 운영 결제는 지원하지 않습니다.",
+      "dependencies": [
+        "@launch-factory/billing-toss@0.0.0",
+        "@launch-factory/contract@0.0.0",
+        "@launch-factory/db@0.0.0",
+        "@launch-factory/account-lifecycle@0.0.0",
+        "@launch-factory/auth@0.0.0",
+        "drizzle-orm@0.45.4"
+      ],
+      "registryDependencies": [
+        "@launch-factory/feature-auth-betterauth",
+        "@launch-factory/feature-account-lifecycle"
+      ],
+      "files": [
+        {
+          "path": "registry/_shared/db/migrate.mjs",
+          "type": "registry:file",
+          "target": "db/migrate.mjs"
+        },
+        {
+          "path": "template/app/(product)/account/billing/toss-test/page.tsx",
+          "type": "registry:file",
+          "target": "app/(product)/account/billing/toss-test/page.tsx"
+        },
+        {
+          "path": "template/app/(product)/account/billing/toss-test/toss-test-button.tsx",
+          "type": "registry:file",
+          "target": "app/(product)/account/billing/toss-test/toss-test-button.tsx"
+        },
+        {
+          "path": "template/app/(product)/account/billing/toss-test/toss-test-charge.tsx",
+          "type": "registry:file",
+          "target": "app/(product)/account/billing/toss-test/toss-test-charge.tsx"
+        },
+        {
+          "path": "template/app/(product)/account/billing/toss-test/toss-test-controls.tsx",
+          "type": "registry:file",
+          "target": "app/(product)/account/billing/toss-test/toss-test-controls.tsx"
+        },
+        {
+          "path": "template/app/api/toss/registration/start/route.ts",
+          "type": "registry:file",
+          "target": "app/api/toss/registration/start/route.ts"
+        },
+        {
+          "path": "template/app/api/toss/registration/complete/route.ts",
+          "type": "registry:file",
+          "target": "app/api/toss/registration/complete/route.ts"
+        },
+        {
+          "path": "template/app/api/toss/registration/fail/route.ts",
+          "type": "registry:file",
+          "target": "app/api/toss/registration/fail/route.ts"
+        },
+        {
+          "path": "template/app/api/toss/test-charge/route.ts",
+          "type": "registry:file",
+          "target": "app/api/toss/test-charge/route.ts"
+        },
+        {
+          "path": "template/app/api/toss/test-subscription/route.ts",
+          "type": "registry:file",
+          "target": "app/api/toss/test-subscription/route.ts"
+        },
+        {
+          "path": "template/app/api/toss/test-account-delete/route.ts",
+          "type": "registry:file",
+          "target": "app/api/toss/test-account-delete/route.ts"
+        },
+        {
+          "path": "template/app/api/cron/toss-test/route.ts",
+          "type": "registry:file",
+          "target": "app/api/cron/toss-test/route.ts"
+        },
+        {
+          "path": "template/lib/launch/toss-account.ts",
+          "type": "registry:file",
+          "target": "lib/launch/toss-account.ts"
+        },
+        {
+          "path": "template/lib/launch/toss-test-db.ts",
+          "type": "registry:file",
+          "target": "lib/launch/toss-test-db.ts"
+        },
+        {
+          "path": "template/lib/launch/toss-test.ts",
+          "type": "registry:file",
+          "target": "lib/launch/toss-test.ts"
+        },
+        {
+          "path": "template/lib/toss-test-config.ts",
+          "type": "registry:file",
+          "target": "lib/toss-test-config.ts"
+        },
+        {
+          "path": "template/lib/toss-test-sdk-client.ts",
+          "type": "registry:file",
+          "target": "lib/toss-test-sdk-client.ts"
+        },
+        {
+          "path": "template/lib/toss-test-status.ts",
+          "type": "registry:file",
+          "target": "lib/toss-test-status.ts"
+        },
+        {
+          "path": "template/lib/toss-test-url.ts",
+          "type": "registry:file",
+          "target": "lib/toss-test-url.ts"
+        },
+        {
+          "path": "template/lib/toss-secret-filter.ts",
+          "type": "registry:file",
+          "target": "lib/toss-secret-filter.ts"
+        },
+        {
+          "path": "packages/db/src/schema/toss-ledger.ts",
+          "type": "registry:file",
+          "target": "db/schema/toss-ledger.ts"
+        },
+        {
+          "path": "packages/db/migrations/0000_init.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0000_init.sql"
+        },
+        {
+          "path": "packages/db/migrations/0001_access_logs_append_only.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0001_access_logs_append_only.sql"
+        },
+        {
+          "path": "packages/db/migrations/0002_better_auth_plugins.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0002_better_auth_plugins.sql"
+        },
+        {
+          "path": "packages/db/migrations/0003_consents.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0003_consents.sql"
+        },
+        {
+          "path": "packages/db/migrations/0004_account_lifecycle.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0004_account_lifecycle.sql"
+        },
+        {
+          "path": "packages/db/migrations/0005_evidence_guards.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0005_evidence_guards.sql"
+        },
+        {
+          "path": "packages/db/migrations/0006_account_prefs_past_due.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0006_account_prefs_past_due.sql"
+        },
+        {
+          "path": "packages/db/migrations/0007_inquiries_idempotency.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0007_inquiries_idempotency.sql"
+        },
+        {
+          "path": "packages/db/migrations/0008_inquiry_kind.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0008_inquiry_kind.sql"
+        },
+        {
+          "path": "packages/db/migrations/0009_admin_plugin.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0009_admin_plugin.sql"
+        },
+        {
+          "path": "packages/db/migrations/0010_explicit_rls.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0010_explicit_rls.sql"
+        },
+        {
+          "path": "packages/db/migrations/0011_mail_marketing.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0011_mail_marketing.sql"
+        },
+        {
+          "path": "packages/db/migrations/0012_notice_outbox.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0012_notice_outbox.sql"
+        },
+        {
+          "path": "packages/db/migrations/0013_commerce.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0013_commerce.sql"
+        },
+        {
+          "path": "packages/db/migrations/0014_booking_push_notify.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0014_booking_push_notify.sql"
+        },
+        {
+          "path": "packages/db/migrations/0015_p3c_content_features.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0015_p3c_content_features.sql"
+        },
+        {
+          "path": "packages/db/migrations/0016_booking_deposit.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0016_booking_deposit.sql"
+        },
+        {
+          "path": "packages/db/migrations/0017_inquiry_replies.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0017_inquiry_replies.sql"
+        },
+        {
+          "path": "packages/db/migrations/0018_order_refund_claim.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0018_order_refund_claim.sql"
+        },
+        {
+          "path": "packages/db/migrations/0019_retention_offer_uses.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0019_retention_offer_uses.sql"
+        },
+        {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
+          "path": "packages/db/migrations/meta/_journal.json",
+          "type": "registry:file",
+          "target": "db/migrations/meta/_journal.json"
+        }
+      ],
+      "envVars": {
+        "LF_MODE": "",
+        "LF_TOSS_TEST": "",
+        "LF_TOSS_TEST_FAKE": "",
+        "TOSS_TEST_CLIENT_KEY": "",
+        "TOSS_TEST_SECRET_KEY": "",
+        "TOSS_TEST_ENCRYPTION_KEY": "",
+        "TOSS_TEST_MERCHANT_ID": "",
+        "TOSS_TEST_DB_DIRECTORY": "",
+        "NEXT_PUBLIC_APP_URL": "",
+        "CRON_SECRET": ""
+      },
+      "docs": "개발 환경에서 모의 공급자 또는 토스 공식 테스트키를 사용합니다. 운영 결제는 지원하지 않습니다. 이 항목은 공개 npm 패키지가 아니라 로컬 소스가 필요합니다. 마이그레이션: node db/migrate.mjs\n등록·탈퇴·관측을 직접 합치는 설치보다 compose-product의 --billing-provider toss-test 조립을 사용하세요. 레지스트리만 설치하면 탈퇴 잠금·파기와 콜백 로그 필터를 앱에 수동 연결해야 하므로 완전한 앱이 아닙니다.\n개발 mock과 LF_TOSS_TEST=1이 필요합니다. LF_TOSS_TEST_FAKE=1은 가짜 키만 받고, 0은 공식 시험 상점 ID와 테스트키만 받습니다. 시험 승인은 유료 권한을 부여하지 않습니다.\n공식 시험 상점과 실제 SDK/CSP 검증 및 미확정 발급·삭제 운영 복구는 남아 있습니다.\n공통 설정(자동 생성 — 설치하는 항목이 여럿이면 합집합): 앱 루트 .npmrc 에 save-exact=true. next.config.ts 의 transpilePackages: [\"@launch-factory/account-lifecycle\",\"@launch-factory/admin-console\",\"@launch-factory/analytics-posthog\",\"@launch-factory/auth\",\"@launch-factory/billing-paddle\",\"@launch-factory/billing-toss\",\"@launch-factory/consent\",\"@launch-factory/contract\",\"@launch-factory/db\",\"@launch-factory/email\",\"@launch-factory/env\",\"@launch-factory/i18n\",\"@launch-factory/security\"], serverExternalPackages: [\"@electric-sql/pglite\"].",
+      "meta": {
+        "launch": {
+          "tables": [
+            "toss_ledger_charges",
+            "toss_ledger_subscriptions",
+            "toss_registration_identities",
+            "toss_registration_sessions"
+          ],
+          "schema": [
+            "db/schema/toss-ledger.ts"
+          ],
+          "migrations": [
+            "db/migrations/0000_init.sql",
+            "db/migrations/0001_access_logs_append_only.sql",
+            "db/migrations/0002_better_auth_plugins.sql",
+            "db/migrations/0003_consents.sql",
+            "db/migrations/0004_account_lifecycle.sql",
+            "db/migrations/0005_evidence_guards.sql",
+            "db/migrations/0006_account_prefs_past_due.sql",
+            "db/migrations/0007_inquiries_idempotency.sql",
+            "db/migrations/0008_inquiry_kind.sql",
+            "db/migrations/0009_admin_plugin.sql",
+            "db/migrations/0010_explicit_rls.sql",
+            "db/migrations/0011_mail_marketing.sql",
+            "db/migrations/0012_notice_outbox.sql",
+            "db/migrations/0013_commerce.sql",
+            "db/migrations/0014_booking_push_notify.sql",
+            "db/migrations/0015_p3c_content_features.sql",
+            "db/migrations/0016_booking_deposit.sql",
+            "db/migrations/0017_inquiry_replies.sql",
+            "db/migrations/0018_order_refund_claim.sql",
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
+          ],
+          "routes": [
+            "app/api/toss/registration/start/route.ts",
+            "app/api/toss/registration/complete/route.ts",
+            "app/api/toss/registration/fail/route.ts",
+            "app/api/toss/test-charge/route.ts",
+            "app/api/toss/test-subscription/route.ts",
+            "app/api/toss/test-account-delete/route.ts",
+            "app/api/cron/toss-test/route.ts"
+          ],
+          "actions": [],
+          "noEntrypointReason": null,
+          "setup": {
+            "npmrc": [
+              "save-exact=true"
+            ],
+            "transpilePackages": [
+              "@launch-factory/account-lifecycle",
+              "@launch-factory/admin-console",
+              "@launch-factory/analytics-posthog",
+              "@launch-factory/auth",
+              "@launch-factory/billing-paddle",
+              "@launch-factory/billing-toss",
               "@launch-factory/consent",
               "@launch-factory/contract",
               "@launch-factory/db",
@@ -1265,6 +1722,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1309,7 +1796,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/inquiry/route.ts",
@@ -1598,6 +2091,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1641,7 +2164,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/webhooks/portone/route.ts",
@@ -1839,6 +2368,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -1881,7 +2440,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/reviews/route.ts"
@@ -2495,6 +3060,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -2534,7 +3129,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/search/route.ts",
@@ -2742,6 +3343,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -2788,7 +3419,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/storage/ticket/route.ts",
@@ -3008,6 +3645,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3051,7 +3718,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/newsletter/route.ts",
@@ -3283,6 +3956,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3325,7 +4028,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [
             "app/api/booking/route.ts",
@@ -3521,6 +4230,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3564,7 +4303,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [],
           "actions": [],
@@ -3832,6 +4577,36 @@
           "target": "db/migrations/0019_retention_offer_uses.sql"
         },
         {
+          "path": "packages/db/migrations/0020_toss_registration.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0020_toss_registration.sql"
+        },
+        {
+          "path": "packages/db/migrations/0021_toss_registration_identity.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0021_toss_registration_identity.sql"
+        },
+        {
+          "path": "packages/db/migrations/0022_toss_schedule.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0022_toss_schedule.sql"
+        },
+        {
+          "path": "packages/db/migrations/0023_toss_cancel_at.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0023_toss_cancel_at.sql"
+        },
+        {
+          "path": "packages/db/migrations/0024_toss_scheduler_safety.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0024_toss_scheduler_safety.sql"
+        },
+        {
+          "path": "packages/db/migrations/0025_account_purge_retry.sql",
+          "type": "registry:file",
+          "target": "db/migrations/0025_account_purge_retry.sql"
+        },
+        {
           "path": "packages/db/migrations/meta/_journal.json",
           "type": "registry:file",
           "target": "db/migrations/meta/_journal.json"
@@ -3873,7 +4648,13 @@
             "db/migrations/0016_booking_deposit.sql",
             "db/migrations/0017_inquiry_replies.sql",
             "db/migrations/0018_order_refund_claim.sql",
-            "db/migrations/0019_retention_offer_uses.sql"
+            "db/migrations/0019_retention_offer_uses.sql",
+            "db/migrations/0020_toss_registration.sql",
+            "db/migrations/0021_toss_registration_identity.sql",
+            "db/migrations/0022_toss_schedule.sql",
+            "db/migrations/0023_toss_cancel_at.sql",
+            "db/migrations/0024_toss_scheduler_safety.sql",
+            "db/migrations/0025_account_purge_retry.sql"
           ],
           "routes": [],
           "actions": [

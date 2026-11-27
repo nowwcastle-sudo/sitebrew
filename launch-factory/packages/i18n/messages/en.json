@@ -593,5 +593,18 @@
     "cancelledRefunded": "Your booking was canceled and the deposit was refunded.",
     "cancelledPartial": "Your booking was canceled. The cancellation deadline had passed, so only part of the deposit is refunded.",
     "cancelledForfeited": "Your booking was canceled. The cancellation deadline had passed, so the deposit is not refunded."
+  },
+  "tossTest": {
+    "unavailable": "Could not check the test payment status.",
+    "unsupported": "This test payment does not support that operation.",
+    "signIn": "Sign in to continue.",
+    "noPendingOrder": "There is no pending order to check.",
+    "checkPlan": "Check the plan.",
+    "noTrial": "The test subscription has no trial period.",
+    "checkRegistration": "Check the registration result.",
+    "alreadyRegistered": "There is already a registered test subscription.",
+    "confirmCancellation": "Confirm cancellation.",
+    "checkCancellationTime": "Check the cancellation timing.",
+    "nothingToCancel": "There is no test subscription to cancel."
   }
 }
