@@ -1,11 +1,11 @@
 # Sitebrew one-line installer for Windows PowerShell 5.1 and PowerShell 7.
-#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.8/get.ps1 | iex
+#   irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/get.ps1 | iex
 # This file is plain ASCII with NO byte order mark, on purpose. install.ps1 starts with a BOM so that Windows PowerShell 5.1 reads its Korean
 # text when you run it as a file. A string downloaded with irm keeps that BOM as its first character (U+FEFF); then `param(...)` is no longer
 # the first statement and `irm install.ps1 | iex` stops with a parse error. So this bootstrap downloads install.ps1 of the same tag, removes
 # the BOM and runs it in this same window (no new process, no execution-policy change, the window stays open).
 # Preview only (nothing is installed): set $env:SITEBREW_WHATIF = '1' first. With options, use this form instead:
-#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.8/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
+#   & ([scriptblock]::Create((irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/v0.2.9/install.ps1).TrimStart([char]0xFEFF))) -Tool codex -WhatIf
 # Commit-pinned form (checks that the tag still points to the published commit):
 #   $env:SITEBREW_COMMIT = '<40-hex SHA>'; irm https://raw.githubusercontent.com/nowwcastle-sudo/sitebrew/<40-hex SHA>/get.ps1 | iex
 # With SITEBREW_COMMIT set, install.ps1 is read from that commit (a commit address never changes, a tag can be moved) and gets -Commit, which
@@ -17,7 +17,7 @@
   $ErrorActionPreference = 'Stop'
   function T([string]$hex) { return (-join ($hex -split ' ' | ForEach-Object { [char][Convert]::ToInt32($_, 16) })) }
   $owner = 'nowwcastle-sudo'
-  $tag = 'v0.2.8'
+  $tag = 'v0.2.9'
   if ($owner -eq ('__' + 'OWNER__')) {
     Write-Host (T 'C774 20 C124 CE58 20 C548 B0B4 B294 20 C544 C9C1 20 AC8C C2DC 20 C804 20 D310 C785 B2C8 B2E4 20 2D 20 AC8C C2DC B41C 20 C800 C7A5 C18C C758 20 C548 B0B4 B97C 20 C4F0 C138 C694 2E')
     Write-Host '  This install line is a version from before publication - use the instructions in the published repository.' -ForegroundColor DarkGray

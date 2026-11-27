@@ -1870,7 +1870,7 @@
     {
       "path": "db/migrations/0024_toss_scheduler_safety.sql",
       "from": "launch-factory",
-      "sha256": "74017f94b013eaf47f55babca59e03099cc08dfdd503f58fd9335cf833d5cd1b"
+      "sha256": "be88300196a63065f7bec502877640252fdf1573549da87db62f311773996c42"
     },
     {
       "path": "db/migrations/0025_account_purge_retry.sql",
@@ -2000,7 +2000,7 @@
     {
       "path": "lib/launch/account.ts",
       "from": "launch-factory",
-      "sha256": "6fc6e9f4d893d0c26c08eccb0b256aeeb167a6808db84147103783f5d8443219"
+      "sha256": "484131ce8f955f0325b74fd0a0bcd75a04fcf3bbad539f7fa34abe76671db551"
     },
     {
       "path": "lib/launch/admin-console.ts",
