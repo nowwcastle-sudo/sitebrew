@@ -2,7 +2,7 @@ import { test } from "node:test"
 import assert from "node:assert/strict"
 import { createTestTossClient, TossApiError, TossResponseError } from "../src/index.ts"
 
-const customerKey = "01234567-89ab-4def-8123-456789abcdef"
+const customerKey = "toss-test-customer-".padEnd(36, "0")
 const orderId = "order-test-123456"
 const goodPayment = { mId: "test-mid", orderId, totalAmount: 4900, currency: "KRW", status: "DONE", type: "BILLING", card: {}, paymentKey: "payment-test" }
 const response = (value, status = 200) => new Response(value === undefined ? null : JSON.stringify(value), { status })

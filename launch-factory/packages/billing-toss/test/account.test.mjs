@@ -9,7 +9,7 @@ import { createTestRegistration, createTestTossClient, createTestTossLedger, pre
 import { tossTestDatabase } from "../../../template/lib/launch/toss-test-db.ts"
 import { blockTossDeletion, exportTossData, tossCollector, tossPurger } from "../../../template/lib/launch/toss-account.ts"
 
-const secret = Buffer.alloc(32, 7), subjectKey = "test-subject-key-0123456789-0123456789"
+const secret = Buffer.alloc(32, 7), subjectKey = "test-subject-".padEnd(36, "0")
 const noBilling = () => ({ subscription: async () => ({ ok: true, data: { status: "none", planId: null } }), cancel: async () => ({ ok: true, data: { status: "canceled", planId: null } }) })
 const payment = (body) => ({ mId: "fake-mid", orderId: body.orderId, totalAmount: body.amount, currency: "KRW", status: "DONE", type: "BILLING", card: {}, paymentKey: `fake_${body.orderId}` })
 let d, adapter

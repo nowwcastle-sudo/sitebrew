@@ -8,7 +8,7 @@ import { createTestTossClient, createTestTossLedger } from "../src/index.ts"
 const migration = await readFile(new URL("../../db/migrations/0020_toss_registration.sql", import.meta.url), "utf8")
 const scheduleMigration = await readFile(new URL("../../db/migrations/0022_toss_schedule.sql", import.meta.url), "utf8")
 const cancelMigration = await readFile(new URL("../../db/migrations/0023_toss_cancel_at.sql", import.meta.url), "utf8")
-const customerKey = "01234567-89ab-4def-8123-456789abcdef"
+const customerKey = "toss-test-customer-".padEnd(36, "0")
 const secret = Buffer.alloc(32, 7)
 const subscription = (id) => ({ id, userId: `user_${id}`, customerKey, billingKey: `billing_${id}`, planId: "monthly", orderName: "예시 구독", amount: 4900 })
 const adapter = (pg) => ({ query: (sql, params) => pg.query(sql, params), transaction: (run) => pg.transaction((tx) => run({ query: (sql, params) => tx.query(sql, params) })) })

@@ -59,7 +59,7 @@ test("브라우저 fake SDK 등록부터 인증 콜백과 암호화 원장까지
 
 test("SDK는 강제 변환 가능한 배열과 객체를 거절한다", async () => {
   const state = "a".repeat(43)
-  const base = { clientKey: "test_ck_fake", customerKey: "01234567-89ab-4def-8123-456789abcdef", origin, successUrl: `${origin}/api/toss/registration/complete?state=${state}`, failUrl: `${origin}/api/toss/registration/fail?state=${state}`, sdk: () => { throw new Error("SDK must not be called") } }
+  const base = { clientKey: "test_ck_fake", customerKey: "toss-test-customer-".padEnd(36, "0"), origin, successUrl: `${origin}/api/toss/registration/complete?state=${state}`, failUrl: `${origin}/api/toss/registration/fail?state=${state}`, sdk: () => { throw new Error("SDK must not be called") } }
   for (const field of ["clientKey", "customerKey", "origin", "successUrl", "failUrl"]) {
     await assert.rejects(() => openTestBillingAuth({ ...base, [field]: [base[field]] }), /Invalid test SDK configuration/)
   }

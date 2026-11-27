@@ -61,7 +61,7 @@ test("PostgreSQL 두 연결, 오래된 REPEATABLE READ 스냅샷도 미확정 �
     }
     const make = (connection) => createTestTossLedger({ db: adapter(connection), encryptionKey: Buffer.alloc(32, 4), client: createTestTossClient({ secretKey: "test_sk_fake", merchantId: "fake-mid", fetch }) })
     const first = make(a), second = make(b)
-    await first.createSubscription({ id: "scheduler", userId: "scheduler_user", productId: "schedule_product", customerKey: "01234567-89ab-4def-8123-456789abcdef", billingKey: "fake_key", planId: "monthly", orderName: "test", amount: 4900 })
+    await first.createSubscription({ id: "scheduler", userId: "scheduler_user", productId: "schedule_product", customerKey: "toss-test-customer-".padEnd(36, "0"), billingKey: "fake_key", planId: "monthly", orderName: "test", amount: 4900 })
     assert.equal(await first.chargeInitial("scheduler", "scheduler_user"), "paid")
     await a.query("UPDATE toss_ledger_charges SET billing_month=to_char(now() AT TIME ZONE 'UTC' - interval '1 month','YYYY-MM') WHERE subscription_id='scheduler'")
     await a.query("UPDATE toss_ledger_subscriptions SET billing_anchor=now()-interval '1 month',period_start=now()-interval '1 month',period_end=now()-interval '1 second',next_due_at=now()-interval '1 second' WHERE id='scheduler'")

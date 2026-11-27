@@ -25,7 +25,7 @@ export async function runTossConformance({ mod }) {
       const plan = { id: "monthly", name: "시험", interval: "month", price: { amount: 4900, currency: "KRW", vatIncluded: true }, features: [] }
       const port = createTestTossBilling({ db: adapter, ledger, productId, plan, origin: "https://example.test" }).port(id)
       if (sub !== "none") {
-        await ledger.createSubscription({ id, userId: id, productId, customerKey: "01234567-89ab-4def-8123-456789abcdef", billingKey: "fake_key", planId: "monthly", orderName: "시험", amount: 4900 })
+        await ledger.createSubscription({ id, userId: id, productId, customerKey: "toss-test-customer-".padEnd(36, "0"), billingKey: "fake_key", planId: "monthly", orderName: "시험", amount: 4900 })
         assert.equal(await ledger.chargeInitial(id, id), "paid")
         if (sub === "canceled") await ledger.cancel(id)
         if (sub === "expired") await adapter.query("UPDATE toss_ledger_subscriptions SET period_start=now()-interval '2 months',period_end=now()-interval '1 month' WHERE id=$1", [id])

@@ -9,7 +9,7 @@ import { cronAuthorized } from "../../../template/lib/launch/cron.ts"
 const pg = new PGlite()
 const db = { query: (sql, args) => pg.query(sql, args), transaction: (fn) => pg.transaction((tx) => fn({ query: (sql, args) => tx.query(sql, args) })) }
 const secret = Buffer.alloc(32, 4)
-const customerKey = "01234567-89ab-4def-8123-456789abcdef"
+const customerKey = "toss-test-customer-".padEnd(36, "0")
 const payment = (orderId, amount) => ({ mId: "fake-mid", orderId, totalAmount: amount, currency: "KRW", status: "DONE", type: "BILLING", card: {}, paymentKey: `pay_${orderId}` })
 const json = (body, status = 200) => Response.json(body, { status })
 const ledger = (transport) => createTestTossLedger({ db, encryptionKey: secret, client: createTestTossClient({ secretKey: "test_sk_fake", merchantId: "fake-mid", fetch: transport }) })

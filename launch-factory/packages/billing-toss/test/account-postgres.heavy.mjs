@@ -15,7 +15,7 @@ import { blockTossDeletion } from "../../../template/lib/launch/toss-account.ts"
 
 const noBilling = () => ({ subscription: async () => ({ ok: true, data: { status: "none", planId: null } }), cancel: async () => ({ ok: true, data: { status: "canceled", planId: null } }) })
 const payment = (body) => ({ mId: "fake-mid", orderId: body.orderId, totalAmount: body.amount, currency: "KRW", status: "DONE", type: "BILLING", card: {}, paymentKey: `fake_${body.orderId}` })
-const customerKey = "01234567-89ab-4def-8123-456789abcdef"
+const customerKey = "toss-test-customer-".padEnd(36, "0")
 const signal = () => { let resolve; const promise = new Promise((done) => { resolve = done }); return { promise, resolve } }
 
 test("실제 PostgreSQL 두 연결에서 탈퇴와 초회·월 청구의 양쪽 선점 순서", { timeout: 120_000 }, async () => {
