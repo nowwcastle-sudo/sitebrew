@@ -51,3 +51,11 @@ regexes = ['''^\s*(const SECRET = "(test-secret-test-secret|newsletter-test-secr
 description = "Sitebrew: web-factory's tunnel tests hold made-up tokens (checked by the root config); launch-factory's range scan also walks the root files; v0.2.6 Phase A key guard holds a sha256 reference value (not a secret)"
 targetRules = ["generic-api-key"]
 paths = ['''(^|/)factory/tunnel/(session|site-server|preview-link)\.test\.mjs$''', '''(^|/)factory/scripts/phase-a-key\.test\.mjs$''']
+
+[[allowlists]]
+description = "billing-toss 시험의 가짜 식별자(예전 모양) — 이 PR 의 앞 커밋(c3c76f5)에 남은 값이다. customerKey 는 0~f 를 차례로 늘어놓은 UUID 자리표시, subjectKey 는 'test-subject-key-' + 숫자 나열이다. 지금 파일은 'toss-test-customer-'·'test-subject-' 모양이다(f8bf6ae). 시험 입력일 뿐 실제 고객 키·비밀이 아니다"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''(^|/)packages/billing-toss/test/[A-Za-z0-9.-]+\.mjs$''']
+regexTarget = "secret"
+regexes = ['''^(01234567-89ab-4def-8123-456789abcdef|test-subject-key-0123456789-0123456789)$''']
